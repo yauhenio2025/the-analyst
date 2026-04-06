@@ -410,9 +410,10 @@ def recover_orphaned_jobs() -> tuple[int, int, int]:
 
     This function:
     1. Finds orphaned running/pending jobs
-    2. For jobs WITH full plan_data: resume them (spawn new execution thread)
-    3. For jobs WITH request_snapshot: regenerate plan + resume (spawn thread)
-    4. For jobs WITHOUT plan_data:
+    2. For jobs WITH resumable state:
+       - If started/created < 5 min ago: skip (grace period — old instance may still be running)
+       - Otherwise resume them (spawn new execution thread)
+    3. For jobs WITHOUT resumable state:
        - If created < 5 min ago: skip (grace period — old instance may still be running)
        - If older: mark as failed
 
@@ -441,6 +442,7 @@ def recover_orphaned_jobs() -> tuple[int, int, int]:
         job_id = job["job_id"]
         plan_data = job.get("plan_data")
         document_ids_raw = job.get("document_ids")
+        resumable_age_seconds = _get_job_age_seconds(job.get("started_at")) or _get_job_age_seconds(job.get("created_at"))
 
         # Parse plan_data and document_ids
         if isinstance(plan_data, str):
@@ -459,6 +461,15 @@ def recover_orphaned_jobs() -> tuple[int, int, int]:
             plan_data = None
 
         if plan_data and plan_data.get("_type") in {"request_snapshot", "by_ref_request_snapshot"}:
+            if resumable_age_seconds is not None and resumable_age_seconds < RECOVERY_GRACE_PERIOD_SECONDS:
+                skipped += 1
+                logger.warning(
+                    f"SKIP: Resumable job {job_id} started {resumable_age_seconds:.0f}s ago "
+                    f"(within {RECOVERY_GRACE_PERIOD_SECONDS}s grace period) — "
+                    f"old instance may still be running."
+                )
+                continue
+
             # Has request snapshot — regenerate plan and resume
             logger.info(
                 f"REGENERATE: Orphaned job {job_id} has request snapshot — "
@@ -490,6 +501,15 @@ def recover_orphaned_jobs() -> tuple[int, int, int]:
             )
 
         elif plan_data:
+            if resumable_age_seconds is not None and resumable_age_seconds < RECOVERY_GRACE_PERIOD_SECONDS:
+                skipped += 1
+                logger.warning(
+                    f"SKIP: Resumable job {job_id} started {resumable_age_seconds:.0f}s ago "
+                    f"(within {RECOVERY_GRACE_PERIOD_SECONDS}s grace period) — "
+                    f"old instance may still be running."
+                )
+                continue
+
             # Has full plan data — can resume directly
             completed = get_completed_phases(job_id)
             logger.info(
