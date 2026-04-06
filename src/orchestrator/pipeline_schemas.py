@@ -4,7 +4,7 @@ The pipeline chains document upload -> plan generation -> execution -> presentat
 into a single async job. These schemas define the request/response for that flow.
 """
 
-from typing import Optional
+from typing import Literal, Optional
 
 from pydantic import BaseModel, Field, model_validator
 
@@ -334,3 +334,62 @@ class AnalyzeByRefRequest(BaseModel):
                 "not target_chapters."
             )
         return self
+
+
+class ConceptAnalysisByRefRequest(BaseModel):
+    """Launch a bounded single-concept analysis against registered documents."""
+
+    consumer_key: str
+    external_project_id: str
+    concept_name: str
+    analysis_mode: Literal["inferential", "logical"]
+    workflow_key: str
+    external_doc_keys: list[str] = Field(
+        default_factory=list,
+        description="Ordered registered document refs used for both execution and provenance.",
+    )
+    project_id: Optional[str] = Field(
+        default=None,
+        description="Optional project identifier to scope the executor job.",
+    )
+    subject_author: Optional[str] = Field(
+        default=None,
+        description="Human-readable subject author for prompt framing/provenance.",
+    )
+    subject_name: Optional[str] = Field(
+        default=None,
+        description="Optional subject/work label for prompt framing/provenance.",
+    )
+    depth_preference: Optional[str] = Field(
+        default=None,
+        description="Optional depth override: surface, standard, deep. Defaults are mode-specific.",
+    )
+
+    @model_validator(mode="after")
+    def _validate_contract(self) -> "ConceptAnalysisByRefRequest":
+        if not self.external_doc_keys:
+            raise ValueError("external_doc_keys must not be empty")
+        expected_workflow = (
+            "concept_inferential_single_concept"
+            if self.analysis_mode == "inferential"
+            else "concept_logical_single_concept"
+        )
+        if self.workflow_key != expected_workflow:
+            raise ValueError(
+                f"workflow_key='{self.workflow_key}' does not match "
+                f"analysis_mode='{self.analysis_mode}' (expected '{expected_workflow}')"
+            )
+        return self
+
+
+class ConceptAnalysisLaunchResponse(BaseModel):
+    """Job launch response for analyzer-v2 concept execution."""
+
+    job_id: str
+    plan_id: str
+    concept_name: str
+    workflow_key: str
+    analysis_mode: str
+    status: str
+    cancel_token: Optional[str] = None
+    message: str = ""

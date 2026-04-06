@@ -548,7 +548,6 @@ async def sync_documents(request: SyncDocumentsRequest):
         len(request.documents),
         int((time.perf_counter() - started) * 1000),
     )
-
     return SyncDocumentsResponse(
         consumer_key=request.consumer_key,
         external_project_id=request.external_project_id,

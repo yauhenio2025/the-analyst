@@ -14,8 +14,15 @@ from fastapi import APIRouter, HTTPException, Query
 
 from src.orchestrator.by_ref import run_analysis_by_ref
 from src.orchestrator.catalog import assemble_full_catalog, catalog_to_text
+from src.orchestrator.concept_by_ref import run_concept_analysis_by_ref
 from src.orchestrator.pipeline import run_analysis_pipeline
-from src.orchestrator.pipeline_schemas import AnalyzeByRefRequest, AnalyzeRequest, AnalyzeResponse
+from src.orchestrator.pipeline_schemas import (
+    AnalyzeByRefRequest,
+    AnalyzeRequest,
+    AnalyzeResponse,
+    ConceptAnalysisByRefRequest,
+    ConceptAnalysisLaunchResponse,
+)
 from src.orchestrator.planner import generate_plan, load_plan, list_plans, refine_plan
 from src.orchestrator.schemas import (
     OrchestratorPlanRequest,
@@ -386,6 +393,40 @@ async def analyze_by_ref(request: AnalyzeByRefRequest):
         result.job_id,
         result.status,
         int((time.perf_counter() - started) * 1000),
+    )
+    return result
+
+
+@router.post("/concept-analysis-by-ref", response_model=ConceptAnalysisLaunchResponse)
+async def concept_analysis_by_ref(request: ConceptAnalysisByRefRequest):
+    """Launch one bounded concept-analysis job against already-registered documents."""
+    try:
+        result = run_concept_analysis_by_ref(request)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        logger.error(
+            "Concept by-ref launch failed consumer=%s project=%s concept=%s mode=%s detail=%s",
+            request.consumer_key,
+            request.external_project_id,
+            request.concept_name,
+            request.analysis_mode,
+            e,
+            exc_info=True,
+        )
+        raise HTTPException(
+            status_code=500,
+            detail=f"Concept by-ref launch failed: {e}",
+        )
+
+    logger.info(
+        "Concept by-ref launch consumer=%s project=%s concept=%s mode=%s plan=%s job=%s",
+        request.consumer_key,
+        request.external_project_id,
+        request.concept_name,
+        request.analysis_mode,
+        result.plan_id,
+        result.job_id,
     )
     return result
 

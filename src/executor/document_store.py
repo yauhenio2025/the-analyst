@@ -362,3 +362,21 @@ def load_registered_documents(
         fetch="all",
     )
     return {row["external_doc_key"]: row for row in rows}
+
+
+def load_registered_documents_in_order(
+    *,
+    consumer_key: str,
+    external_project_id: str,
+    external_doc_keys: list[str],
+) -> list[dict[str, Any]]:
+    """Resolve registered documents and preserve caller-supplied ordering."""
+    resolved = load_registered_documents(
+        consumer_key=consumer_key,
+        external_project_id=external_project_id,
+        external_doc_keys=external_doc_keys,
+    )
+    missing = [key for key in external_doc_keys if key not in resolved]
+    if missing:
+        raise ValueError(f"Registered documents not found: {missing}")
+    return [resolved[key] for key in external_doc_keys]

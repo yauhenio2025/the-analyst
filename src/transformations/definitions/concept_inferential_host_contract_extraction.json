@@ -1,0 +1,124 @@
+{
+  "template_key": "concept_inferential_host_contract_extraction",
+  "template_name": "Concept Inferential Host Contract Extraction",
+  "description": "Transforms analyzer-v2 inferential single-concept outputs into the current Critic inferential host contract used by native concept pages and Close Read.",
+  "version": 1,
+  "selection_priority": 100,
+  "transformation_type": "llm_extract",
+  "llm_extraction_schema": {
+    "concept": "string",
+    "analysis_type": "inferential",
+    "framework": "string",
+    "the_deceptively_simple": {
+      "surface_presentation": "string",
+      "hidden_weight": "string",
+      "key_quotes": [
+        {
+          "quote": "string",
+          "source": "string",
+          "analysis": "string"
+        }
+      ]
+    },
+    "commitment_cascade": {
+      "commitment_relations": [
+        {
+          "if_you_endorse": "string",
+          "you_are_committed_to": {
+            "immediate": ["string"],
+            "downstream": ["string"],
+            "practical": ["string"]
+          },
+          "strength": "strict|strong|defeasible",
+          "commonly_recognized": "boolean",
+          "textual_evidence": {
+            "quote": "string",
+            "source": "string"
+          }
+        }
+      ],
+      "hidden_commitments": [
+        {
+          "commitment": "string",
+          "why_hidden": "string",
+          "textual_evidence": "string"
+        }
+      ]
+    },
+    "incompatibility_map": {
+      "incompatibility_relations": [
+        {
+          "concept_a": "string",
+          "concept_b": "string",
+          "severity": "strict|strong|weak",
+          "why_incompatible": "string",
+          "who_is_caught": "string",
+          "textual_evidence": "string"
+        }
+      ],
+      "unstable_combinations": "string"
+    },
+    "tensions": {
+      "unresolved_tensions": [
+        {
+          "conflicting_commitments": ["string"],
+          "source_of_tension": "string",
+          "stability": "unstable|precarious|unresolved",
+          "textual_evidence": [
+            {
+              "quote": "string",
+              "source": "string"
+            }
+          ],
+          "why_it_resists_resolution": "string"
+        }
+      ],
+      "intellectual_fault_lines": "string"
+    },
+    "practical_stakes": {
+      "obligations": ["string"],
+      "prohibitions": ["string"],
+      "affected_decisions": ["string"],
+      "normative_entanglements": "string"
+    },
+    "commitment_packages": [
+      {
+        "package_name": "string",
+        "core_commitments": ["string"],
+        "incompatible_packages": ["string"],
+        "who_endorses": "string"
+      }
+    ],
+    "synthesis": {
+      "inferential_definition": "string",
+      "centrality_score": "number",
+      "stability_score": "number",
+      "most_consequential_commitment": "string",
+      "key_revelation": "string"
+    }
+  },
+  "llm_prompt_template": "You are translating analyzer-v2 inferential concept-analysis output into the exact current Critic host contract.\n\nThe input contains:\n- concept-analysis packet metadata\n- raw inferential_commitment_mapper pass outputs\n- source labels that must be preserved exactly\n\nReturn ONLY valid JSON matching the requested schema.\n\nRules:\n1. Populate the exact host-contract fields requested.\n2. Preserve source-facing labels exactly as they appear in the input packet/output.\n3. the_deceptively_simple must explain both the surface presentation and the hidden analytical weight.\n4. commitment_cascade must assemble actual inferential relations, not generic summaries.\n5. incompatibility_map must capture genuine incompatibilities or leave the array empty; do not invent conflicts.\n6. tensions must preserve unresolved contradictions/tensions distinctly from incompatibilities.\n7. practical_stakes must capture obligations, prohibitions, decisions, and normative entanglements only when evidenced by the analyzer output.\n8. commitment_packages should group bundled commitments when the output supports such grouping; otherwise return an empty array.\n9. synthesis must produce concise, host-ready summary fields, including numeric centrality_score and stability_score between 0 and 1.\n10. If a section is weakly evidenced, return an empty list or cautious string rather than hallucinating detail.\n11. Do not include markdown fences or commentary.",
+  "applicable_renderer_types": [
+    "critic_host_contract"
+  ],
+  "applicable_engines": [
+    "inferential_commitment_mapper"
+  ],
+  "tags": [
+    "concepts",
+    "inferential",
+    "critic",
+    "close-read",
+    "host-contract"
+  ],
+  "status": "active",
+  "model": "claude-sonnet-4-6",
+  "model_fallback": "claude-sonnet-4-6",
+  "max_tokens": 24000,
+  "source": "Close Read concept analyzer-v2 recomposition tranche",
+  "domain": "concepts",
+  "pattern_type": "host_contract_extraction",
+  "data_shape_out": "nested_sections",
+  "compatible_sub_renderers": [],
+  "generation_mode": "curated"
+}

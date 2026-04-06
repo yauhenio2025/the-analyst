@@ -60,6 +60,7 @@ class WorkflowRegistry:
                 phase_count=len(w.phases),
                 version=w.version,
                 target_page=w.target_page,
+                linked_transformation_keys=w.linked_transformation_keys,
             )
             for w in self._workflows.values()
         ]
@@ -76,6 +77,7 @@ class WorkflowRegistry:
                 phase_count=len(w.phases),
                 version=w.version,
                 target_page=w.target_page,
+                linked_transformation_keys=w.linked_transformation_keys,
             )
             for w in self._workflows.values()
             if w.category == category

@@ -1,0 +1,157 @@
+{
+  "template_key": "concept_logical_host_contract_extraction",
+  "template_name": "Concept Logical Host Contract Extraction",
+  "description": "Transforms analyzer-v2 logical single-concept outputs into the exact current Critic LogicalAnalysis host contract used by native concept pages, Close Read, and logical scrutiny.",
+  "version": 1,
+  "selection_priority": 100,
+  "transformation_type": "llm_extract",
+  "llm_extraction_schema": {
+    "concept": "string",
+    "analysis_type": "logical",
+    "framework": "string",
+    "argument_inventory": [
+      {
+        "id": "string",
+        "source": "string",
+        "quote": "string",
+        "logical_form": {
+          "premises": ["string"],
+          "conclusion": "string",
+          "argument_type": "deductive|inductive|abductive",
+          "form_name": "string"
+        },
+        "unstated_premises": ["string"],
+        "concept_role": "string"
+      }
+    ],
+    "argument_chains": [
+      {
+        "chain_id": "string",
+        "sequence": ["string"],
+        "dependencies": [
+          {
+            "from": "string",
+            "to": "string",
+            "relationship": "string"
+          }
+        ],
+        "ultimate_conclusion": "string",
+        "visualization": "string",
+        "inferential_mode": "deductive|inductive|abductive|analogical",
+        "causal_structure": "mechanistic|counterfactual|constitutive|teleological|dispositional",
+        "dialectical_function": "thesis_establishing|antithetical|synthetic|immanent_critique|determinate_negation",
+        "inferential_role": "material|formal|modal|normative|commissive",
+        "argumentative_function": "foundational|elaborative|defensive|bridge|culminative"
+      }
+    ],
+    "causal_architecture": {
+      "concept_as_cause": [
+        {
+          "effect": "string",
+          "cause": "string",
+          "mechanism": "string",
+          "evidence_quote": "string",
+          "source": "string"
+        }
+      ],
+      "concept_as_effect": [
+        {
+          "effect": "string",
+          "cause": "string",
+          "mechanism": "string",
+          "evidence_quote": "string",
+          "source": "string"
+        }
+      ],
+      "mechanism_detail": "low|medium|high",
+      "interventionist_claims": ["string"]
+    },
+    "conditional_web": {
+      "antecedent_uses": [
+        {
+          "conditional": "string",
+          "quote": "string",
+          "source": "string"
+        }
+      ],
+      "consequent_uses": [
+        {
+          "conditional": "string",
+          "quote": "string",
+          "source": "string"
+        }
+      ],
+      "biconditionals": [
+        {
+          "conditional": "string",
+          "quote": "string",
+          "source": "string"
+        }
+      ],
+      "nested_conditionals": [
+        {
+          "conditional": "string",
+          "quote": "string",
+          "source": "string"
+        }
+      ]
+    },
+    "argumentative_weight": {
+      "load_bearing": ["string"],
+      "supporting": ["string"],
+      "defensive": ["string"],
+      "illustrative": ["string"]
+    },
+    "logical_vulnerabilities": [
+      {
+        "vulnerability_type": "unstated_premise|inferential_gap|equivocation|question_begging|false_dichotomy",
+        "argument_id": "string",
+        "description": "string",
+        "potential_challenge": "string",
+        "severity": "high|medium|low"
+      }
+    ],
+    "textual_shifts": [
+      {
+        "argument_id": "string",
+        "change_type": "strengthened|weakened|abandoned|introduced",
+        "nlr_version": "string",
+        "response_version": "string",
+        "analysis": "string"
+      }
+    ],
+    "synthesis": {
+      "argument_density": "string|number",
+      "logical_centrality": "core|important|peripheral",
+      "causal_weight": "heavy|moderate|light",
+      "strongest_arguments": ["string"],
+      "weakest_arguments": ["string"],
+      "vulnerability_summary": "string",
+      "overall_assessment": "string"
+    }
+  },
+  "llm_prompt_template": "You are translating analyzer-v2 logical concept-analysis output into the exact current Critic LogicalAnalysis host contract.\n\nThe input contains:\n- concept-analysis packet metadata\n- raw outputs from the logical concept-analysis chain\n- source labels that must be preserved exactly\n\nReturn ONLY valid JSON matching the requested schema.\n\nRules:\n1. Populate the exact LogicalAnalysis contract requested, including non-tabbed top-level fields.\n2. Preserve or deterministically derive all fields required by native concept pages, Close Read, and logical scrutiny.\n3. argument_inventory is the highest-priority section because scrutiny depends on it. Each argument must preserve source, quote, premises, conclusion, argument_type, unstated_premises, and concept_role when the analyzer output supports them.\n4. argument_chains should reflect real dependencies and may include taxonomy classifications when supported by the logical output; omit optional taxonomy fields only when the chain output gives no basis.\n5. Preserve source-facing labels exactly as they appear in the input packet/output.\n6. conditional_web, argumentative_weight, and textual_shifts are required host-contract sections even if they are not first-class Close Read tabs.\n7. If a required field is weakly evidenced, derive it cautiously from the available analyzer output; do not hallucinate unsupported detail.\n8. If a section truly has no evidence, return the correct empty arrays/object fields rather than dropping the section.\n9. Do not include markdown fences or commentary.",
+  "applicable_renderer_types": [
+    "critic_host_contract"
+  ],
+  "applicable_engines": [
+    "concept_analysis_12_phase"
+  ],
+  "tags": [
+    "concepts",
+    "logical",
+    "critic",
+    "close-read",
+    "host-contract"
+  ],
+  "status": "active",
+  "model": "claude-sonnet-4-6",
+  "model_fallback": "claude-sonnet-4-6",
+  "max_tokens": 32000,
+  "source": "Close Read concept analyzer-v2 recomposition tranche",
+  "domain": "concepts",
+  "pattern_type": "host_contract_extraction",
+  "data_shape_out": "nested_sections",
+  "compatible_sub_renderers": [],
+  "generation_mode": "curated"
+}

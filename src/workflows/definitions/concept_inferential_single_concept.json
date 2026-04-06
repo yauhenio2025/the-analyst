@@ -1,0 +1,35 @@
+{
+  "workflow_key": "concept_inferential_single_concept",
+  "workflow_name": "Single-Concept Inferential Analysis",
+  "description": "Runs analyzer-v2 inferential commitment mapping for one explicit concept over an ordered project-source packet. Used by Critic/Close Read concept analysis rebasing.",
+  "category": "analysis",
+  "version": 1,
+  "target_page": "concepts",
+  "phases": [
+    {
+      "phase_number": 1.0,
+      "phase_name": "Inferential Commitment Mapping",
+      "phase_description": "Run inferential_commitment_mapper against a single concept-analysis packet that preserves source ordering and explicit concept focus.",
+      "engine_key": "inferential_commitment_mapper",
+      "requires_external_docs": false,
+      "caches_result": true,
+      "depends_on_phases": [],
+      "output_schema": null
+    }
+  ],
+  "required_inputs": [
+    "registered_project_documents",
+    "concept_name"
+  ],
+  "optional_inputs": [
+    "subject_author",
+    "subject_name",
+    "depth_preference"
+  ],
+  "linked_transformation_keys": [
+    "concept_inferential_host_contract_extraction"
+  ],
+  "output_description": "Analyzer-v2 inferential commitment analysis for one named concept, executed over a by-reference project corpus packet.",
+  "estimated_phases": 1,
+  "source_project": "critic"
+}

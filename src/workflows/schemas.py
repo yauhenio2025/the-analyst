@@ -166,6 +166,12 @@ class WorkflowDefinition(BaseModel):
         default="",
         description="What the workflow produces",
     )
+    linked_transformation_keys: list[str] = Field(
+        default_factory=list,
+        description="Transformation templates explicitly linked to this workflow. "
+        "Used by analyzer-mgmt to expose host-contract extraction or other post-run "
+        "artifact shaping as first-class composition assets.",
+    )
     final_output_schema: Optional[dict[str, Any]] = Field(
         default=None,
         description="Schema for the final workflow output",
@@ -220,3 +226,4 @@ class WorkflowSummary(BaseModel):
     phase_count: int
     version: int
     target_page: str = ""
+    linked_transformation_keys: list[str] = Field(default_factory=list)
