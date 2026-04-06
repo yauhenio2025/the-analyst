@@ -1,8 +1,16 @@
 from __future__ import annotations
 
 import asyncio
+from datetime import UTC, datetime
 from pathlib import Path
+import sys
 from uuid import uuid4
+
+ROOT = Path(__file__).resolve().parents[1]
+root_str = str(ROOT)
+if root_str in sys.path:
+    sys.path.remove(root_str)
+sys.path.insert(0, root_str)
 
 from src.api.routes.orchestrator import get_concept_analysis_by_ref_result
 from src.executor import db as executor_db
@@ -236,3 +244,19 @@ def test_get_concept_analysis_by_ref_result_supports_exact_lookup(monkeypatch):
     assert response.lookup_mode == "exact_run"
     assert response.analyzer_v2_job_id == "job-inf-1"
     assert response.translated_artifact["synthesis"]["surface_presentation"] == "x"
+
+
+def test_parse_artifact_row_normalizes_datetime_fields():
+    row = authority._parse_artifact_row(
+        {
+            "translated_artifact_json": {"synthesis": {}},
+            "validation_errors": [],
+            "analysis_context": {},
+            "produced_at": datetime(2026, 4, 6, 16, 20, tzinfo=UTC),
+            "updated_at": datetime(2026, 4, 6, 16, 21, tzinfo=UTC),
+        }
+    )
+
+    assert row is not None
+    assert row["produced_at"] == "2026-04-06T16:20:00+00:00"
+    assert row["updated_at"] == "2026-04-06T16:21:00+00:00"

@@ -940,6 +940,10 @@ def _parse_artifact_row(row: Optional[dict[str, Any]]) -> Optional[dict[str, Any
         return None
     for field in ("translated_artifact_json", "validation_errors", "analysis_context"):
         row[field] = _parse_json_field(row.get(field))
+    for field in ("produced_at", "updated_at"):
+        value = row.get(field)
+        if hasattr(value, "isoformat"):
+            row[field] = value.isoformat()
     if row.get("validation_errors") is None:
         row["validation_errors"] = []
     return row
