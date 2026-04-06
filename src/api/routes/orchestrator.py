@@ -14,6 +14,7 @@ from fastapi import APIRouter, HTTPException, Query
 
 from src.orchestrator.by_ref import run_analysis_by_ref
 from src.orchestrator.catalog import assemble_full_catalog, catalog_to_text
+from src.orchestrator.concept_artifact_authority import load_concept_translated_artifact
 from src.orchestrator.concept_by_ref import run_concept_analysis_by_ref
 from src.orchestrator.pipeline import run_analysis_pipeline
 from src.orchestrator.pipeline_schemas import (
@@ -22,6 +23,7 @@ from src.orchestrator.pipeline_schemas import (
     AnalyzeResponse,
     ConceptAnalysisByRefRequest,
     ConceptAnalysisLaunchResponse,
+    ConceptAnalysisResultLookupResponse,
 )
 from src.orchestrator.planner import generate_plan, load_plan, list_plans, refine_plan
 from src.orchestrator.schemas import (
@@ -429,6 +431,46 @@ async def concept_analysis_by_ref(request: ConceptAnalysisByRefRequest):
         result.job_id,
     )
     return result
+
+
+@router.get("/concept-analysis-by-ref/result", response_model=ConceptAnalysisResultLookupResponse)
+async def get_concept_analysis_by_ref_result(
+    consumer_key: str,
+    external_project_id: str,
+    concept_name: str,
+    analysis_mode: str,
+    analyzer_v2_job_id: Optional[str] = None,
+):
+    """Read the analyzer-v2-owned translated host artifact for a concept job."""
+    if analysis_mode not in {"inferential", "logical"}:
+        raise HTTPException(status_code=400, detail="analysis_mode must be 'inferential' or 'logical'")
+
+    row = load_concept_translated_artifact(
+        consumer_key=consumer_key,
+        external_project_id=external_project_id,
+        concept_name=concept_name,
+        analysis_mode=analysis_mode,
+        analyzer_v2_job_id=analyzer_v2_job_id,
+    )
+    if row is None:
+        raise HTTPException(status_code=404, detail="Translated concept artifact not found")
+
+    return ConceptAnalysisResultLookupResponse(
+        consumer_key=row["consumer_key"],
+        external_project_id=row["external_project_id"],
+        concept_name=row["concept_name"],
+        analysis_mode=row["analysis_mode"],
+        workflow_key=row["workflow_key"],
+        engine_or_chain_key=row["engine_or_chain_key"],
+        depth=row["depth"],
+        analyzer_v2_job_id=row["analyzer_v2_job_id"],
+        translation_template_key=row["translation_template_key"],
+        contract_validation_status=row["contract_validation_status"],
+        validation_errors=row.get("validation_errors") or [],
+        produced_at=row["produced_at"],
+        lookup_mode="exact_run" if analyzer_v2_job_id else "latest_validated",
+        translated_artifact=row.get("translated_artifact_json") or {},
+    )
 
 
 @router.get("/analyze/{job_id}")

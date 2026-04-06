@@ -172,12 +172,24 @@ def run_concept_analysis_by_ref(
 
     plan = _build_plan(request, depth=depth)
     _save_plan(plan)
+    plan_payload = plan.model_dump()
+    plan_payload["_concept_by_ref_context"] = {
+        "consumer_key": request.consumer_key,
+        "external_project_id": request.external_project_id,
+        "concept_name": request.concept_name,
+        "analysis_mode": request.analysis_mode,
+        "workflow_key": request.workflow_key,
+        "subject_author": request.subject_author,
+        "subject_name": request.subject_name,
+        "depth": depth,
+        "external_doc_keys": request.external_doc_keys,
+    }
 
     document_ids = {"target": packet_doc_id}
     job_record = create_job(
         job_id=f"job-{plan.plan_id}",
         plan_id=plan.plan_id,
-        plan_data=plan.model_dump(),
+        plan_data=plan_payload,
         document_ids=document_ids,
         workflow_key=request.workflow_key,
         project_id=request.project_id,

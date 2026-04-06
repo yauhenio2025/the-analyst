@@ -55,6 +55,7 @@ from src.executor.schemas import (
     StartJobRequest,
 )
 from src.executor.workflow_runner import start_execution_thread
+from src.orchestrator.concept_artifact_authority import extract_concept_job_context
 
 logger = logging.getLogger(__name__)
 
@@ -223,6 +224,7 @@ async def get_job_status(job_id: str):
         total_llm_calls=job.get("total_llm_calls", 0),
         total_input_tokens=job.get("total_input_tokens", 0),
         total_output_tokens=job.get("total_output_tokens", 0),
+        analysis_context=extract_concept_job_context(job),
     )
 
 

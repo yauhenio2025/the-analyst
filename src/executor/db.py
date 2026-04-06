@@ -267,6 +267,24 @@ def _migrate_postgres():
                created_at TIMESTAMP DEFAULT NOW(),
                updated_at TIMESTAMP DEFAULT NOW()
            )""",
+        """CREATE TABLE IF NOT EXISTS concept_translated_artifacts (
+               artifact_id VARCHAR(100) PRIMARY KEY,
+               consumer_key VARCHAR(100) NOT NULL,
+               external_project_id VARCHAR(120) NOT NULL,
+               concept_name VARCHAR(200) NOT NULL,
+               analysis_mode VARCHAR(32) NOT NULL,
+               workflow_key VARCHAR(100) NOT NULL,
+               engine_or_chain_key VARCHAR(100) NOT NULL,
+               depth VARCHAR(32) NOT NULL DEFAULT '',
+               analyzer_v2_job_id VARCHAR(100) NOT NULL UNIQUE REFERENCES executor_jobs(job_id),
+               translation_template_key VARCHAR(120) NOT NULL,
+               contract_validation_status VARCHAR(32) NOT NULL DEFAULT '',
+               translated_artifact_json JSONB NOT NULL DEFAULT '{}'::jsonb,
+               validation_errors JSONB NOT NULL DEFAULT '[]'::jsonb,
+               analysis_context JSONB NOT NULL DEFAULT '{}'::jsonb,
+               produced_at TIMESTAMP DEFAULT NOW(),
+               updated_at TIMESTAMP DEFAULT NOW()
+           )""",
     ]
     with get_connection() as conn:
         cursor = conn.cursor()
@@ -304,6 +322,15 @@ def _migrate_postgres():
             )
         except Exception as e:
             logger.debug(f"Artifact job index creation skipped: {e}")
+        try:
+            cursor.execute(
+                "CREATE INDEX IF NOT EXISTS idx_concept_translated_identity "
+                "ON concept_translated_artifacts("
+                "consumer_key, external_project_id, concept_name, analysis_mode, "
+                "contract_validation_status, produced_at)"
+            )
+        except Exception as e:
+            logger.debug(f"Concept translated identity index creation skipped: {e}")
         try:
             cursor.execute(
                 "CREATE INDEX IF NOT EXISTS idx_external_document_bindings_project "
@@ -394,6 +421,24 @@ def _migrate_sqlite():
                created_at TEXT,
                updated_at TEXT
            )""",
+        """CREATE TABLE IF NOT EXISTS concept_translated_artifacts (
+               artifact_id TEXT PRIMARY KEY,
+               consumer_key TEXT NOT NULL,
+               external_project_id TEXT NOT NULL,
+               concept_name TEXT NOT NULL,
+               analysis_mode TEXT NOT NULL,
+               workflow_key TEXT NOT NULL,
+               engine_or_chain_key TEXT NOT NULL,
+               depth TEXT NOT NULL DEFAULT '',
+               analyzer_v2_job_id TEXT NOT NULL UNIQUE REFERENCES executor_jobs(job_id),
+               translation_template_key TEXT NOT NULL,
+               contract_validation_status TEXT NOT NULL DEFAULT '',
+               translated_artifact_json TEXT NOT NULL DEFAULT '{}',
+               validation_errors TEXT NOT NULL DEFAULT '[]',
+               analysis_context TEXT NOT NULL DEFAULT '{}',
+               produced_at TEXT,
+               updated_at TEXT
+           )""",
     ]
     with get_connection() as conn:
         cursor = conn.cursor()
@@ -436,6 +481,15 @@ def _migrate_sqlite():
             )
         except Exception as e:
             logger.debug(f"SQLite artifact job index creation skipped: {e}")
+        try:
+            cursor.execute(
+                "CREATE INDEX IF NOT EXISTS idx_concept_translated_identity "
+                "ON concept_translated_artifacts("
+                "consumer_key, external_project_id, concept_name, analysis_mode, "
+                "contract_validation_status, produced_at)"
+            )
+        except Exception as e:
+            logger.debug(f"SQLite concept translated identity index creation skipped: {e}")
         try:
             cursor.execute(
                 "CREATE INDEX IF NOT EXISTS idx_external_document_bindings_project "
@@ -621,6 +675,30 @@ def _init_postgres():
         ON analysis_artifacts(corpus_ref, artifact_family, artifact_slot);
     CREATE INDEX IF NOT EXISTS idx_analysis_artifacts_job
         ON analysis_artifacts(job_id);
+
+    CREATE TABLE IF NOT EXISTS concept_translated_artifacts (
+        artifact_id VARCHAR(100) PRIMARY KEY,
+        consumer_key VARCHAR(100) NOT NULL,
+        external_project_id VARCHAR(120) NOT NULL,
+        concept_name VARCHAR(200) NOT NULL,
+        analysis_mode VARCHAR(32) NOT NULL,
+        workflow_key VARCHAR(100) NOT NULL,
+        engine_or_chain_key VARCHAR(100) NOT NULL,
+        depth VARCHAR(32) NOT NULL DEFAULT '',
+        analyzer_v2_job_id VARCHAR(100) NOT NULL UNIQUE REFERENCES executor_jobs(job_id),
+        translation_template_key VARCHAR(120) NOT NULL,
+        contract_validation_status VARCHAR(32) NOT NULL DEFAULT '',
+        translated_artifact_json JSONB NOT NULL DEFAULT '{}'::jsonb,
+        validation_errors JSONB NOT NULL DEFAULT '[]'::jsonb,
+        analysis_context JSONB NOT NULL DEFAULT '{}'::jsonb,
+        produced_at TIMESTAMP DEFAULT NOW(),
+        updated_at TIMESTAMP DEFAULT NOW()
+    );
+    CREATE INDEX IF NOT EXISTS idx_concept_translated_identity
+        ON concept_translated_artifacts(
+            consumer_key, external_project_id, concept_name, analysis_mode,
+            contract_validation_status, produced_at
+        );
 
     CREATE TABLE IF NOT EXISTS polish_cache (
         id SERIAL PRIMARY KEY,
@@ -889,6 +967,30 @@ def _init_sqlite():
         ON analysis_artifacts(corpus_ref, artifact_family, artifact_slot);
     CREATE INDEX IF NOT EXISTS idx_analysis_artifacts_job
         ON analysis_artifacts(job_id);
+
+    CREATE TABLE IF NOT EXISTS concept_translated_artifacts (
+        artifact_id TEXT PRIMARY KEY,
+        consumer_key TEXT NOT NULL,
+        external_project_id TEXT NOT NULL,
+        concept_name TEXT NOT NULL,
+        analysis_mode TEXT NOT NULL,
+        workflow_key TEXT NOT NULL,
+        engine_or_chain_key TEXT NOT NULL,
+        depth TEXT NOT NULL DEFAULT '',
+        analyzer_v2_job_id TEXT NOT NULL UNIQUE REFERENCES executor_jobs(job_id),
+        translation_template_key TEXT NOT NULL,
+        contract_validation_status TEXT NOT NULL DEFAULT '',
+        translated_artifact_json TEXT NOT NULL DEFAULT '{}',
+        validation_errors TEXT NOT NULL DEFAULT '[]',
+        analysis_context TEXT NOT NULL DEFAULT '{}',
+        produced_at TEXT,
+        updated_at TEXT
+    );
+    CREATE INDEX IF NOT EXISTS idx_concept_translated_identity
+        ON concept_translated_artifacts(
+            consumer_key, external_project_id, concept_name, analysis_mode,
+            contract_validation_status, produced_at
+        );
 
     CREATE TABLE IF NOT EXISTS polish_cache (
         id INTEGER PRIMARY KEY AUTOINCREMENT,

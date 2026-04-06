@@ -4,7 +4,7 @@ The pipeline chains document upload -> plan generation -> execution -> presentat
 into a single async job. These schemas define the request/response for that flow.
 """
 
-from typing import Literal, Optional
+from typing import Any, Literal, Optional
 
 from pydantic import BaseModel, Field, model_validator
 
@@ -393,3 +393,22 @@ class ConceptAnalysisLaunchResponse(BaseModel):
     status: str
     cancel_token: Optional[str] = None
     message: str = ""
+
+
+class ConceptAnalysisResultLookupResponse(BaseModel):
+    """Translated concept host artifact served from analyzer-v2 authority."""
+
+    consumer_key: str
+    external_project_id: str
+    concept_name: str
+    analysis_mode: Literal["inferential", "logical"]
+    workflow_key: str
+    engine_or_chain_key: str
+    depth: str
+    analyzer_v2_job_id: str
+    translation_template_key: str
+    contract_validation_status: str
+    validation_errors: list[str] = Field(default_factory=list)
+    produced_at: str
+    lookup_mode: Literal["exact_run", "latest_validated"]
+    translated_artifact: dict[str, Any] = Field(default_factory=dict)

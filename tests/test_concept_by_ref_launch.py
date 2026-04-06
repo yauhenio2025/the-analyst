@@ -42,13 +42,14 @@ def test_run_concept_analysis_by_ref_builds_single_phase_job(monkeypatch):
         captured["plan"] = plan
 
     monkeypatch.setattr("src.orchestrator.concept_by_ref._save_plan", _save_plan)
-    monkeypatch.setattr(
-        "src.orchestrator.concept_by_ref.create_job",
-        lambda **kwargs: {
+    def _create_job(**kwargs):
+        captured["create_job_kwargs"] = kwargs
+        return {
             "job_id": kwargs["job_id"],
             "cancel_token": "token-123",
-        },
-    )
+        }
+
+    monkeypatch.setattr("src.orchestrator.concept_by_ref.create_job", _create_job)
     monkeypatch.setattr(
         "src.orchestrator.concept_by_ref.start_execution_thread",
         lambda **kwargs: captured.setdefault("thread", kwargs),
@@ -79,3 +80,15 @@ def test_run_concept_analysis_by_ref_builds_single_phase_job(monkeypatch):
     assert response.plan_id == plan.plan_id
     assert response.cancel_token == "token-123"
     assert captured["thread"]["document_ids"] == {"target": "doc-packet-1"}
+    plan_data = captured["create_job_kwargs"]["plan_data"]
+    assert plan_data["_concept_by_ref_context"] == {
+        "consumer_key": "the-critic",
+        "external_project_id": "walter-demo",
+        "concept_name": "history",
+        "analysis_mode": "logical",
+        "workflow_key": "concept_logical_single_concept",
+        "subject_author": "Ryan Walter",
+        "subject_name": "Ryan Walter on Doctrine",
+        "depth": "deep",
+        "external_doc_keys": ["subject-main", "response-1"],
+    }

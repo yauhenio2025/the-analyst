@@ -134,6 +134,7 @@ class JobStatusResponse(BaseModel):
     total_llm_calls: int = 0
     total_input_tokens: int = 0
     total_output_tokens: int = 0
+    analysis_context: Optional[dict[str, Any]] = None
 
 
 class PhaseOutputSummary(BaseModel):

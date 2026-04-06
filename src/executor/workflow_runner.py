@@ -30,6 +30,10 @@ from src.executor.job_manager import (
 )
 from src.executor.phase_runner import run_phase
 from src.executor.schemas import PhaseResult, PhaseStatus
+from src.orchestrator.concept_artifact_authority import (
+    CONCEPT_WORKFLOW_KEYS,
+    materialize_concept_translated_artifact,
+)
 from src.orchestrator.planner import load_plan
 from src.orchestrator.schemas import PhaseExecutionSpec, WorkflowExecutionPlan
 from src.workflows.registry import get_workflow_registry
@@ -365,6 +369,18 @@ def execute_plan(
                     error=f"Phases {failed_phases} failed",
                 )
             else:
+                if plan.workflow_key in CONCEPT_WORKFLOW_KEYS:
+                    update_job_progress(
+                        job_id,
+                        current_phase=total_phases,
+                        phase_name="Translated Host Artifact",
+                        detail="Materializing translated host artifact",
+                        completed_phases=completed_phases,
+                        phase_statuses=phase_statuses,
+                        total_phases=total_phases,
+                    )
+                    materialize_concept_translated_artifact(job_id)
+
                 update_job_status(job_id, "completed")
 
                 # Touch project activity on completion
