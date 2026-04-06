@@ -22,6 +22,7 @@ import json
 import logging
 import os
 import time
+from concurrent.futures import ThreadPoolExecutor, TimeoutError as FutureTimeoutError
 from dataclasses import dataclass
 from typing import Any, Callable, Optional, Protocol, runtime_checkable
 
@@ -46,6 +47,33 @@ class LLMCallResult:
 HEARTBEAT_TIMEOUT = 120  # seconds without data before considering stalled
 HEARTBEAT_LOG_INTERVAL = 30  # Log every 30s to confirm call is alive
 MIN_SALVAGEABLE_CHARS = 5000  # Minimum text chars to salvage on connection error
+SYNC_HARD_TIMEOUT_SECONDS = int(os.environ.get("LLM_SYNC_HARD_TIMEOUT_SECONDS", "480"))
+
+
+def _execute_with_hard_timeout(
+    fn: Callable[[], Any],
+    *,
+    timeout_seconds: int,
+    label: str,
+) -> Any:
+    """Apply a wall-clock timeout to a sync provider request.
+
+    Socket read timeouts are not enough when providers trickle heartbeat bytes or
+    otherwise keep the connection alive indefinitely. This wrapper enforces a
+    hard upper bound so engine_runner retry logic can recover instead of leaving
+    a chain pinned forever on one blocked call.
+    """
+    executor = ThreadPoolExecutor(max_workers=1)
+    future = executor.submit(fn)
+    try:
+        return future.result(timeout=timeout_seconds)
+    except FutureTimeoutError as exc:
+        future.cancel()
+        raise TimeoutError(
+            f"[{label}] Sync LLM call exceeded hard timeout of {timeout_seconds}s"
+        ) from exc
+    finally:
+        executor.shutdown(wait=False, cancel_futures=True)
 
 
 @runtime_checkable
@@ -192,13 +220,19 @@ class AnthropicBackend:
             f"max_tokens={max_tokens}, effort={thinking_effort or 'none'}"
         )
 
-        if use_beta:
-            response = client.beta.messages.create(
-                **kwargs,
-                betas=["context-1m-2025-08-07"],
-            )
-        else:
-            response = client.messages.create(**kwargs)
+        def _perform_request():
+            if use_beta:
+                return client.beta.messages.create(
+                    **kwargs,
+                    betas=["context-1m-2025-08-07"],
+                )
+            return client.messages.create(**kwargs)
+
+        response = _execute_with_hard_timeout(
+            _perform_request,
+            timeout_seconds=SYNC_HARD_TIMEOUT_SECONDS,
+            label=label,
+        )
 
         duration_ms = int((time.time() - start_time) * 1000)
 
