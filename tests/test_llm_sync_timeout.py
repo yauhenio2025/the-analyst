@@ -26,7 +26,7 @@ def test_execute_with_hard_timeout_raises_without_blocking_forever():
     start = time.monotonic()
 
     def _hang():
-        time.sleep(0.25)
+        time.sleep(1.0)
         return "late"
 
     with pytest.raises(TimeoutError, match="hard timeout"):

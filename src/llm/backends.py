@@ -21,8 +21,9 @@ The engine_runner handles model-agnostic concerns:
 import json
 import logging
 import os
+import queue
+import threading
 import time
-from concurrent.futures import ThreadPoolExecutor, TimeoutError as FutureTimeoutError
 from dataclasses import dataclass
 from typing import Any, Callable, Optional, Protocol, runtime_checkable
 
@@ -63,17 +64,31 @@ def _execute_with_hard_timeout(
     hard upper bound so engine_runner retry logic can recover instead of leaving
     a chain pinned forever on one blocked call.
     """
-    executor = ThreadPoolExecutor(max_workers=1)
-    future = executor.submit(fn)
+    result_queue: "queue.Queue[tuple[str, Any]]" = queue.Queue(maxsize=1)
+
+    def _runner() -> None:
+        try:
+            result_queue.put(("ok", fn()))
+        except Exception as exc:  # pragma: no cover - exercised via caller behavior
+            result_queue.put(("error", exc))
+
+    thread = threading.Thread(
+        target=_runner,
+        name=f"llm-sync-timeout:{label or 'unnamed'}",
+        daemon=True,
+    )
+    thread.start()
+
     try:
-        return future.result(timeout=timeout_seconds)
-    except FutureTimeoutError as exc:
-        future.cancel()
+        status, payload = result_queue.get(timeout=timeout_seconds)
+    except queue.Empty as exc:
         raise TimeoutError(
             f"[{label}] Sync LLM call exceeded hard timeout of {timeout_seconds}s"
         ) from exc
-    finally:
-        executor.shutdown(wait=False, cancel_futures=True)
+
+    if status == "error":
+        raise payload
+    return payload
 
 
 @runtime_checkable
