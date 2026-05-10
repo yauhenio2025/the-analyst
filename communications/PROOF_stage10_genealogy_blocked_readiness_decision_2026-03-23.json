@@ -1,0 +1,118 @@
+{
+  "allowed_selectors": [],
+  "aoi_readiness_detail": null,
+  "blocked_selectors": {
+    "adaptive_genealogy_relationship_conditions_v1": [
+      "presentation_status=running",
+      "restore_reason=preparing"
+    ],
+    "adaptive_relationship_surface_v1": [
+      "presentation_status=running",
+      "restore_reason=preparing"
+    ],
+    "bounded_dynamic_genealogy_v1": [
+      "presentation_status=running",
+      "restore_reason=preparing"
+    ],
+    "declarative_genealogy_relationship_conditions_suite_v1": [
+      "presentation_status=running",
+      "restore_reason=preparing"
+    ],
+    "declarative_relationship_surface_v1": [
+      "presentation_status=running",
+      "restore_reason=preparing"
+    ]
+  },
+  "consumer_key": "the-critic",
+  "downstream_followup_contract": {
+    "allowed_composition_modes": [],
+    "blocking_reasons": [
+      "presentation_status=running",
+      "restore_reason=preparing"
+    ],
+    "endpoint": "/v1/results/by-job/job-1/presentation",
+    "method": "GET",
+    "query_fields": {
+      "composition_mode": "<required_from_allowed_composition_modes>",
+      "consumer_key": "the-critic"
+    }
+  },
+  "followup_readiness_status": "blocked",
+  "genealogy_readiness_detail": {
+    "allowed_modes": [],
+    "blocked_modes": {
+      "adaptive_genealogy_relationship_conditions_v1": [
+        "presentation_status=running",
+        "restore_reason=preparing"
+      ],
+      "adaptive_relationship_surface_v1": [
+        "presentation_status=running",
+        "restore_reason=preparing"
+      ],
+      "bounded_dynamic_genealogy_v1": [
+        "presentation_status=running",
+        "restore_reason=preparing"
+      ],
+      "declarative_genealogy_relationship_conditions_suite_v1": [
+        "presentation_status=running",
+        "restore_reason=preparing"
+      ],
+      "declarative_relationship_surface_v1": [
+        "presentation_status=running",
+        "restore_reason=preparing"
+      ]
+    },
+    "inspected_modes": [
+      "bounded_dynamic_genealogy_v1",
+      "adaptive_relationship_surface_v1",
+      "declarative_relationship_surface_v1",
+      "adaptive_genealogy_relationship_conditions_v1",
+      "declarative_genealogy_relationship_conditions_suite_v1"
+    ],
+    "presentation_status": "running",
+    "restore_available": false,
+    "restore_reason": "preparing",
+    "result_state": "preparing",
+    "runtime_inspection_details": {}
+  },
+  "implementation_kind": "genealogy_restore_runtime",
+  "job_id": "job-1",
+  "readiness_status": "blocked",
+  "requested_selector": null,
+  "requested_selector_status": "not_requested",
+  "selector_lifecycle_phase": "restore_runtime",
+  "trace": [
+    {
+      "details": {
+        "consumer_key": "the-critic",
+        "job_id": "job-1",
+        "workflow_key": "intellectual_genealogy"
+      },
+      "stage": "job_lookup"
+    },
+    {
+      "details": {
+        "inspected_selectors": [
+          "bounded_dynamic_genealogy_v1",
+          "adaptive_relationship_surface_v1",
+          "declarative_relationship_surface_v1",
+          "adaptive_genealogy_relationship_conditions_v1",
+          "declarative_genealogy_relationship_conditions_suite_v1"
+        ],
+        "requested_selector": null,
+        "selector_kind": "composition_mode"
+      },
+      "stage": "selector_validation"
+    },
+    {
+      "details": {
+        "presentation_status": "running",
+        "restore_available": false,
+        "restore_reason": "preparing",
+        "result_state": "preparing"
+      },
+      "stage": "manifest_gate"
+    }
+  ],
+  "workflow_key": "intellectual_genealogy"
+}

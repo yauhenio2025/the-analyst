@@ -1,0 +1,93 @@
+{
+  "resolver_version": "compose-from-intent-v1",
+  "entries": [
+    {
+      "stage": "page_plan",
+      "details": {
+        "row_count": 2,
+        "rows": [
+          {
+            "section_index": 0,
+            "pattern_key": "accordion_sections",
+            "view_name": "Thematic Synthesis Explorer",
+            "presentation_stance": "analytical",
+            "rationale": "The thematic synthesis data is multi-faceted per theme — each theme carries a distinct set of sub-fields (claims, commitments, moves, sources) that differ in shape from one another. Accordion sections handle this heterogeneity cleanly, letting the critic scan themes at a glance and drill into any facet without visual overwhelm. prose_narrative would flatten the structured sub-fields; card_grid_grouped would lose the per-facet typed rendering that accordion uniquely provides."
+          },
+          {
+            "section_index": 1,
+            "pattern_key": "accordion_sections",
+            "view_name": "AOI Structured Report",
+            "presentation_stance": "evaluative",
+            "rationale": "The report data is explicitly multi-typed: narrative prose fields (summary, engagement_pattern, reading_implications) sit alongside a badged array (key_divergences) and a counted typology (sin_distribution). Accordion sections is the canonical pattern for exactly this mix of facets with different shapes. Closing the page with this structured report fulfills the user intent to end on a formal analytical artifact, and the accordion's collapsibility lets the critic navigate directly to whichever report facet is most salient without scrolling through the full narrative."
+          }
+        ]
+      }
+    },
+    {
+      "stage": "view_generation",
+      "details": {
+        "views": [
+          {
+            "view_key": "compose_intent_01_aoi_thematic_synthesis",
+            "pattern_key": "accordion_sections",
+            "renderer_type": "accordion",
+            "engine_key": "aoi_thematic_synthesis"
+          },
+          {
+            "view_key": "compose_intent_02_aoi_thematic_report",
+            "pattern_key": "accordion_sections",
+            "renderer_type": "accordion",
+            "engine_key": "aoi_thematic_report"
+          }
+        ]
+      }
+    },
+    {
+      "stage": "transformation_execution",
+      "details": {
+        "views": [
+          {
+            "view_key": "compose_intent_01_aoi_thematic_synthesis",
+            "engine_key": "aoi_thematic_synthesis",
+            "renderer_type": "accordion",
+            "extraction_source": "dynamic",
+            "template_key": null,
+            "cached": false
+          },
+          {
+            "view_key": "compose_intent_02_aoi_thematic_report",
+            "engine_key": "aoi_thematic_report",
+            "renderer_type": "accordion",
+            "extraction_source": "dynamic",
+            "template_key": null,
+            "cached": false
+          }
+        ]
+      }
+    },
+    {
+      "stage": "consumer_adaptation",
+      "details": {
+        "views": [
+          {
+            "view_key": "compose_intent_01_aoi_thematic_synthesis",
+            "renderer_type": "accordion",
+            "adapted": false
+          },
+          {
+            "view_key": "compose_intent_02_aoi_thematic_report",
+            "renderer_type": "accordion",
+            "adapted": false
+          }
+        ]
+      }
+    },
+    {
+      "stage": "contract_validation",
+      "details": {
+        "view_count": 2,
+        "issues": 0
+      }
+    }
+  ]
+}

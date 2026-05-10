@@ -1,0 +1,75 @@
+{
+  "date": "2026-03-24",
+  "scope_memo": "communications/MEMO_2026-03-24_stage13_second_slice_harder_generic_host_proof_scope.md",
+  "runtime_module": "/home/evgeny/projects/the-critic/webapp/src/lib/hostContractRuntime.ts",
+  "typed_contract_module": "/home/evgeny/projects/the-critic/webapp/src/lib/hostContractV1.ts",
+  "generated_contract_artifact": "/home/evgeny/projects/analyzer-v2/communications/PROOF_stage13_host_contract_v1_2026-03-24.json",
+  "host_contract_v1_families_count": 11,
+  "dispatch_modes": {
+    "analyzer_direct": [
+      "run_discovery",
+      "run_detail",
+      "result_discovery",
+      "result_manifest",
+      "result_presentation",
+      "result_refresh",
+      "single_view_fetch",
+      "transient_compose_from_intent",
+      "source_backed_readiness"
+    ],
+    "host_proxy": [
+      "source_backed_transient_launch",
+      "cache_snapshot_warmup"
+    ]
+  },
+  "surface_lookup_keys": [
+    "aoi_result_thematic_experience",
+    "aoi_source_backed_transient_launch_experience",
+    "genealogy_result_backed_workspace_experience"
+  ],
+  "transient_runtime_unification": {
+    "compose_from_intent_client": "/home/evgeny/projects/the-critic/webapp/src/lib/composeFromIntentClient.ts",
+    "transient_error_helper": "/home/evgeny/projects/the-critic/webapp/src/lib/transientComposeErrors.ts",
+    "runtime_authority": [
+      "required-input validation",
+      "owner-aware dispatch",
+      "structural consumer-key enforcement"
+    ]
+  },
+  "surface_lookup_adoption": {
+    "aoi_source_backed_readiness_controls": "/home/evgeny/projects/the-critic/webapp/src/components/influence/AoiV2ThematicPanel.tsx",
+    "genealogy_result_backed_workspace": "/home/evgeny/projects/the-critic/webapp/src/pages/AnalysisWorkspacePage.tsx",
+    "workspace_hook_runtime_gate": "/home/evgeny/projects/the-critic/webapp/src/hooks/useBoundedV2Workspace.ts"
+  },
+  "contract_correction": {
+    "family": "source_backed_transient_launch",
+    "required_inputs": [
+      "project_id",
+      "selected_source_thinker_id",
+      "profile"
+    ],
+    "optional_continuity_selectors": [
+      "source_analysis_id",
+      "source_v2_job_id"
+    ],
+    "reason": "the live the-critic host proxy resolves the latest AOI source result when continuity selectors are omitted"
+  },
+  "verification": {
+    "typescript": {
+      "command": "./webapp/node_modules/.bin/tsc -p /home/evgeny/projects/the-critic/webapp/tsconfig.json --noEmit",
+      "result": "passed"
+    },
+    "jest": {
+      "command": "CI=true npm --prefix /home/evgeny/projects/the-critic/webapp test -- --runInBand --watchAll=false src/lib/hostContractV1.test.ts src/lib/hostContractRuntime.test.ts src/lib/boundedV2Client.test.ts src/lib/composeFromIntentClient.test.ts src/hooks/useBoundedV2Workspace.test.tsx src/components/influence/AoiV2ThematicPanel.test.tsx src/pages/AnalysisWorkspacePage.test.tsx src/pages/AnalysisWorkspacePage.integration.test.tsx src/pages/AoiComposeFromIntentPage.test.tsx src/transientComposeIsolation.test.ts",
+      "suites_passed": 10,
+      "tests_passed": 160,
+      "warnings": [
+        "existing React act(...) warnings remain in several async page/hook tests"
+      ]
+    }
+  },
+  "status_after_slice": {
+    "stage_13": "Partial",
+    "remaining_gap": "proof is still current-consumer-only and AOI source-backed transient launch remains explicitly host-bounded"
+  }
+}

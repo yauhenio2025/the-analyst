@@ -1,0 +1,71 @@
+{
+  "executed_at": "2026-03-26T16:02:28Z",
+  "project_id": "round5-proof-dossier-final-1774100000",
+  "thinker_id": "otto_neurath",
+  "ports": {
+    "analyzer": 8002,
+    "critic_backend": 5555,
+    "critic_webapp": 3456
+  },
+  "provider_gate": {
+    "anthropic_api_key_present": true
+  },
+  "endpoint_checks": {
+    "analyzer_meta": {
+      "url": "http://127.0.0.1:8002/v1/meta/definitions-version",
+      "ok": true,
+      "version_hash": "447fa0eef6b9ee64"
+    },
+    "critic_docs": {
+      "url": "http://127.0.0.1:5555/docs",
+      "ok": true,
+      "status": 200
+    },
+    "critic_aoi_surface": {
+      "url": "http://127.0.0.1:3456/p/round5-proof-dossier-final-1774100000/anxiety-of-influence/otto_neurath/v2-thematic",
+      "ok": true,
+      "status": 200
+    }
+  },
+  "expected_local_files": [
+    "Economic Writings Selections 1904-1945 - Otto Neurath - Vienna Circle Collection - 2004.pdf",
+    "Empiricism and Sociology - Otto Neurath - Vienna Circle Collection - 1973.pdf",
+    "Modern Man in the Making - Otto Neurath - A. A. Knopf - 1939.pdf",
+    "Philosophical Papers 1913-1946 - Otto Neurath - Vienna Circle Collection - 1983.pdf"
+  ],
+  "backend_inventory": {
+    "total_count": 4,
+    "exact_match": true,
+    "texts": [
+      {
+        "text_id": "text-otto_neurath-e52093b7",
+        "filename": "Economic_Writings_Selections_1904-1945_-_Otto_Neurath_-_Vienna_Circle_Collection_-_2004.pdf",
+        "original_filename": "Economic Writings Selections 1904-1945 - Otto Neurath - Vienna Circle Collection - 2004.pdf",
+        "source_document_id": "economic_writings_selections_1904_1945_otto_neurath_vienna_circle_collection_2004",
+        "literature_type": "primary"
+      },
+      {
+        "text_id": "text-otto_neurath-23caef03",
+        "filename": "Empiricism_and_Sociology_-_Otto_Neurath_-_Vienna_Circle_Collection_-_1973.pdf",
+        "original_filename": "Empiricism and Sociology - Otto Neurath - Vienna Circle Collection - 1973.pdf",
+        "source_document_id": "empiricism_and_sociology_otto_neurath_vienna_circle_collection_1973",
+        "literature_type": "primary"
+      },
+      {
+        "text_id": "text-otto_neurath-bbea3f94",
+        "filename": "Modern_Man_in_the_Making_-_Otto_Neurath_-_A._A._Knopf_-_1939.pdf",
+        "original_filename": "Modern Man in the Making - Otto Neurath - A. A. Knopf - 1939.pdf",
+        "source_document_id": "modern_man_in_the_making_otto_neurath_a_a_knopf_1939",
+        "literature_type": "primary"
+      },
+      {
+        "text_id": "text-otto_neurath-0f975c74",
+        "filename": "Philosophical_Papers_1913-1946_-_Otto_Neurath_-_Vienna_Circle_Collection_-_1983.pdf",
+        "original_filename": "Philosophical Papers 1913-1946 - Otto Neurath - Vienna Circle Collection - 1983.pdf",
+        "source_document_id": "philosophical_papers_1913_1946_otto_neurath_vienna_circle_collection_1983",
+        "literature_type": "primary"
+      }
+    ]
+  },
+  "upload_attempted": false
+}

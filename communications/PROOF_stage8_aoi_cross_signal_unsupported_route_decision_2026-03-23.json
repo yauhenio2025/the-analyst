@@ -1,0 +1,99 @@
+{
+  "downstream_launch_contract": {
+    "endpoint": null,
+    "method": null
+  },
+  "launch_contract_kind": "unsupported",
+  "normalized_task_summary": "Compose an AOI dossier about misreading, revision, and source thinker engagement.",
+  "rejected_candidates": [
+    {
+      "details": [
+        "positive_signals=['aoi', 'source thinker', 'misreading', 'revision', 'engagement']",
+        "source_mode 'registered_corpus' is incompatible",
+        "AOI routing is only compatible with saved_result source mode."
+      ],
+      "objective_key": "influence_thematic",
+      "rejection_reason": "selected_candidate_failed_contract_checks"
+    },
+    {
+      "details": [],
+      "objective_key": "genealogical",
+      "rejection_reason": "lower_signal_score_than_selected_candidate"
+    }
+  ],
+  "required_fields": [],
+  "required_host_preparation": [],
+  "routing_confidence": "low",
+  "routing_outcome": "unsupported",
+  "selected_objective_key": "influence_thematic",
+  "selected_workflow_key": "anxiety_of_influence_thematic_single_thinker",
+  "source_sufficiency_status": "insufficient",
+  "trace": [
+    {
+      "details": {
+        "audience": null,
+        "desired_depth": null,
+        "normalized_task_summary": "Compose an AOI dossier about misreading, revision, and source thinker engagement.",
+        "style_expectations": null
+      },
+      "stage": "task_normalization"
+    },
+    {
+      "details": {
+        "candidates": [
+          {
+            "objective_key": "influence_thematic",
+            "positive_signals": [
+              "aoi",
+              "source thinker",
+              "misreading",
+              "revision",
+              "engagement"
+            ],
+            "signal_score": 5,
+            "source_mode": "registered_corpus",
+            "source_mode_compatible": false,
+            "workflow_key": "anxiety_of_influence_thematic_single_thinker"
+          },
+          {
+            "objective_key": "genealogical",
+            "positive_signals": [],
+            "signal_score": 0,
+            "source_mode": "registered_corpus",
+            "source_mode_compatible": true,
+            "workflow_key": "intellectual_genealogy"
+          }
+        ],
+        "objective_hint": null,
+        "objective_hint_status": "not_provided",
+        "workflow_hint": null,
+        "workflow_hint_status": "not_provided"
+      },
+      "stage": "objective_candidate_scoring"
+    },
+    {
+      "details": {
+        "selected_objective_key": "influence_thematic",
+        "selected_workflow_key": "anxiety_of_influence_thematic_single_thinker",
+        "source_mode": "registered_corpus",
+        "source_sufficiency_status": "insufficient",
+        "sufficiency_reasons": [
+          "AOI routing is only compatible with saved_result source mode."
+        ]
+      },
+      "stage": "source_sufficiency_evaluation"
+    },
+    {
+      "details": {
+        "launch_contract_kind": "unsupported",
+        "required_fields": [],
+        "required_host_preparation": [],
+        "routing_confidence": "low",
+        "routing_outcome": "unsupported",
+        "selected_objective_key": "influence_thematic",
+        "selected_workflow_key": "anxiety_of_influence_thematic_single_thinker"
+      },
+      "stage": "routing_decision"
+    }
+  ]
+}

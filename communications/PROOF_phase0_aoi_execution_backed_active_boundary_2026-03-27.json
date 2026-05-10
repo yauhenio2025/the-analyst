@@ -1,0 +1,47 @@
+{
+  "executed_at": "2026-03-26T16:03:16Z",
+  "project_id": "round5-proof-dossier-final-1774100000",
+  "thinker_id": "otto_neurath",
+  "job_id": "job-8c366372e0ef",
+  "command": "/home/evgeny/projects/the-critic/test-stage5-direct-poll-smoke.sh --analyzer-url http://127.0.0.1:8002 --critic-url http://127.0.0.1:5555 --workflow-key anxiety_of_influence_thematic_single_thinker --consumer-key the-critic --project-id round5-proof-dossier-final-1774100000 --thinker-id otto_neurath --run-job-id job-8c366372e0ef",
+  "exit_code": 1,
+  "stdout": [
+    "[stage5-smoke] Runs discovery",
+    "[stage5-smoke]   returned 0 run(s)",
+    "[stage5-smoke] ERROR: runs/discovery did not include run job job-8c366372e0ef"
+  ],
+  "diagnostic_followup": {
+    "executed_at": "2026-03-26T16:04:05Z",
+    "critic_job_detail": {
+      "job_id": "job-8c366372e0ef",
+      "status": "pending",
+      "v2_job_id": "job-8c366372e0ef",
+      "analysis_id": null,
+      "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+      "selected_source_thinker_id": "otto_neurath",
+      "selected_source_thinker_name": "Otto Neurath"
+    },
+    "analyzer_run_detail": {
+      "job_id": "job-8c366372e0ef",
+      "status": "pending",
+      "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+      "consumer_key": "the-critic",
+      "project_id": "round5-proof-dossier-final-1774100000",
+      "selected_source_thinker_id": null,
+      "selected_source_thinker_name": null
+    },
+    "analyzer_active_discovery": [],
+    "analyzer_active_discovery_without_thinker_filter": [
+      {
+        "job_id": "job-8c366372e0ef",
+        "status": "pending",
+        "created_at": "2026-03-26T16:02:58.873246"
+      }
+    ],
+    "analyzer_executor_job_row": {
+      "status": "pending",
+      "plan_data_snapshot_type": "by_ref_request_snapshot"
+    },
+    "diagnostic_status": "fresh_job_exists_but_immediate_active_discovery_missing"
+  }
+}

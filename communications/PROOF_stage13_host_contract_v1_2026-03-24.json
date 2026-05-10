@@ -1,0 +1,313 @@
+{
+  "version": "stage13_host_contract_v1",
+  "consumer_key_asymmetry": {
+    "request_parameter_families": [
+      "run_discovery",
+      "run_detail",
+      "result_discovery",
+      "result_manifest",
+      "result_presentation",
+      "result_refresh",
+      "single_view_fetch",
+      "source_backed_readiness",
+      "cache_snapshot_warmup"
+    ],
+    "structural_the_critic_families": [
+      "transient_compose_from_intent",
+      "source_backed_transient_launch"
+    ],
+    "transient_compose_consumer_key": "the-critic"
+  },
+  "families": [
+    {
+      "family": "cache_snapshot_warmup",
+      "owner": "host_proxy",
+      "canonical_identity": "upstream_v2_job_id",
+      "identity_authority": "upstream_authoritative",
+      "scope_channel": "mixed",
+      "required_inputs": [
+        "project_id",
+        "workflow_key",
+        "v2_job_id"
+      ],
+      "authoritative_response_source": "host_proxy",
+      "local_snapshot_substitution_allowed": false,
+      "host_local_identity_translation_before_launch": false,
+      "contract_level": "must_have_v1",
+      "consumer_key_contract": "request_parameter",
+      "notes": [
+        "Materializes a host-local continuity alias and cached presentation snapshot from canonical upstream identity."
+      ]
+    },
+    {
+      "family": "result_discovery",
+      "owner": "analyzer_direct",
+      "canonical_identity": "not_applicable",
+      "identity_authority": "upstream_authoritative",
+      "scope_channel": "analyzer_query_or_path",
+      "required_inputs": [
+        "project_id",
+        "workflow_key",
+        "consumer_key"
+      ],
+      "authoritative_response_source": "analyzer_direct",
+      "local_snapshot_substitution_allowed": false,
+      "host_local_identity_translation_before_launch": false,
+      "contract_level": "must_have_v1",
+      "consumer_key_contract": "request_parameter",
+      "notes": [
+        "Discovery surfaces canonical upstream job IDs for host result selection."
+      ]
+    },
+    {
+      "family": "result_manifest",
+      "owner": "analyzer_direct",
+      "canonical_identity": "upstream_v2_job_id",
+      "identity_authority": "upstream_authoritative",
+      "scope_channel": "analyzer_query_or_path",
+      "required_inputs": [
+        "job_id",
+        "consumer_key"
+      ],
+      "authoritative_response_source": "analyzer_direct",
+      "local_snapshot_substitution_allowed": true,
+      "host_local_identity_translation_before_launch": false,
+      "contract_level": "must_have_v1",
+      "consumer_key_contract": "request_parameter",
+      "notes": [
+        "Host may use local snapshots as fallback presentation continuity, but manifest truth remains upstream."
+      ]
+    },
+    {
+      "family": "result_presentation",
+      "owner": "analyzer_direct",
+      "canonical_identity": "upstream_v2_job_id",
+      "identity_authority": "upstream_authoritative",
+      "scope_channel": "analyzer_query_or_path",
+      "required_inputs": [
+        "job_id",
+        "consumer_key"
+      ],
+      "authoritative_response_source": "analyzer_direct",
+      "local_snapshot_substitution_allowed": true,
+      "host_local_identity_translation_before_launch": false,
+      "contract_level": "must_have_v1",
+      "consumer_key_contract": "request_parameter",
+      "notes": [
+        "Primary result-backed page presentation family for workspace consumption."
+      ]
+    },
+    {
+      "family": "result_refresh",
+      "owner": "analyzer_direct",
+      "canonical_identity": "upstream_v2_job_id",
+      "identity_authority": "upstream_authoritative",
+      "scope_channel": "analyzer_query_or_path",
+      "required_inputs": [
+        "job_id",
+        "consumer_key"
+      ],
+      "authoritative_response_source": "analyzer_direct",
+      "local_snapshot_substitution_allowed": true,
+      "host_local_identity_translation_before_launch": false,
+      "contract_level": "must_have_v1",
+      "consumer_key_contract": "request_parameter",
+      "notes": [
+        "Refresh mutates presenter-owned delivery artifacts upstream, not host-owned state."
+      ]
+    },
+    {
+      "family": "run_detail",
+      "owner": "analyzer_direct",
+      "canonical_identity": "upstream_job_id",
+      "identity_authority": "upstream_authoritative",
+      "scope_channel": "analyzer_query_or_path",
+      "required_inputs": [
+        "job_id",
+        "consumer_key"
+      ],
+      "authoritative_response_source": "analyzer_direct",
+      "local_snapshot_substitution_allowed": false,
+      "host_local_identity_translation_before_launch": false,
+      "contract_level": "must_have_v1",
+      "consumer_key_contract": "request_parameter",
+      "notes": [
+        "Run detail stays upstream-authoritative even when the host holds local continuity aliases."
+      ]
+    },
+    {
+      "family": "run_discovery",
+      "owner": "analyzer_direct",
+      "canonical_identity": "not_applicable",
+      "identity_authority": "upstream_authoritative",
+      "scope_channel": "analyzer_query_or_path",
+      "required_inputs": [
+        "project_id",
+        "workflow_key",
+        "consumer_key"
+      ],
+      "authoritative_response_source": "analyzer_direct",
+      "local_snapshot_substitution_allowed": false,
+      "host_local_identity_translation_before_launch": false,
+      "contract_level": "must_have_v1",
+      "consumer_key_contract": "request_parameter",
+      "notes": [
+        "Returns upstream run summaries; host does not synthesize run truth locally."
+      ]
+    },
+    {
+      "family": "single_view_fetch",
+      "owner": "analyzer_direct",
+      "canonical_identity": "upstream_v2_job_id",
+      "identity_authority": "upstream_authoritative",
+      "scope_channel": "analyzer_query_or_path",
+      "required_inputs": [
+        "job_id",
+        "view_key",
+        "consumer_key"
+      ],
+      "authoritative_response_source": "analyzer_direct",
+      "local_snapshot_substitution_allowed": false,
+      "host_local_identity_translation_before_launch": false,
+      "contract_level": "must_have_v1",
+      "consumer_key_contract": "request_parameter",
+      "notes": [
+        "Used for lazy-loading individual view payloads from an upstream presentation tree."
+      ]
+    },
+    {
+      "family": "source_backed_readiness",
+      "owner": "analyzer_direct",
+      "canonical_identity": "upstream_v2_job_id",
+      "identity_authority": "upstream_authoritative",
+      "scope_channel": "analyzer_query_or_path",
+      "required_inputs": [
+        "job_id",
+        "consumer_key",
+        "profile|composition_mode"
+      ],
+      "authoritative_response_source": "analyzer_direct",
+      "local_snapshot_substitution_allowed": false,
+      "host_local_identity_translation_before_launch": false,
+      "contract_level": "must_have_v1",
+      "consumer_key_contract": "request_parameter",
+      "notes": [
+        "Read-only analyzer-owned feasibility check for AOI profile and genealogy composition-mode followup."
+      ]
+    },
+    {
+      "family": "source_backed_transient_launch",
+      "owner": "host_proxy",
+      "canonical_identity": "upstream_v2_job_id",
+      "identity_authority": "upstream_authoritative",
+      "scope_channel": "mixed",
+      "required_inputs": [
+        "project_id",
+        "selected_source_thinker_id",
+        "variant"
+      ],
+      "authoritative_response_source": "analyzer_direct",
+      "local_snapshot_substitution_allowed": false,
+      "host_local_identity_translation_before_launch": true,
+      "contract_level": "must_have_v1",
+      "consumer_key_contract": "structural_constant",
+      "notes": [
+        "Host proxy resolves project/thinker-scoped identity before forwarding source-backed transient compose to analyzer-v2.",
+        "variant=profile requires profile; variant=selection requires selection and user_intent.",
+        "source_analysis_id and source_v2_job_id are optional continuity selectors, not hard launch requirements."
+      ]
+    },
+    {
+      "family": "transient_compose_from_intent",
+      "owner": "analyzer_direct",
+      "canonical_identity": "not_applicable",
+      "identity_authority": "upstream_authoritative",
+      "scope_channel": "mixed",
+      "required_inputs": [
+        "workflow_key",
+        "consumer_key",
+        "sections"
+      ],
+      "authoritative_response_source": "analyzer_direct",
+      "local_snapshot_substitution_allowed": false,
+      "host_local_identity_translation_before_launch": false,
+      "contract_level": "must_have_v1",
+      "consumer_key_contract": "structural_constant",
+      "notes": [
+        "Transient compose remains structurally tied to the-critic at the analyzer boundary."
+      ]
+    }
+  ],
+  "readiness_capabilities": [
+    {
+      "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+      "host_surface": "result_backed_workspace",
+      "selector_kind": "composition_mode",
+      "supported": false,
+      "reason": "AOI result-backed composition_mode readiness is out of scope for the bounded Stage 13 slice."
+    },
+    {
+      "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+      "host_surface": "source_backed_transient_launch",
+      "selector_kind": "profile",
+      "supported": true,
+      "reason": "AOI source-backed transient launch is profile-based and backed by analyzer-owned readiness."
+    },
+    {
+      "workflow_key": "intellectual_genealogy",
+      "host_surface": "result_backed_workspace",
+      "selector_kind": "composition_mode",
+      "supported": true,
+      "reason": "Genealogy result-backed proof flows can gate explicit composition_mode usage through analyzer readiness."
+    }
+  ],
+  "host_surface_selection_rules": [
+    {
+      "host_surface_key": "aoi_result_thematic_experience",
+      "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+      "owner": "host_owned_v1",
+      "selected_families": [
+        "run_discovery",
+        "result_discovery",
+        "result_manifest",
+        "result_presentation",
+        "result_refresh",
+        "single_view_fetch"
+      ],
+      "notes": [
+        "Host page chooses the AOI thematic workspace/result surfaces for thinker-scoped result consumption."
+      ]
+    },
+    {
+      "host_surface_key": "aoi_source_backed_transient_launch_experience",
+      "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+      "owner": "host_owned_v1",
+      "selected_families": [
+        "source_backed_readiness",
+        "cache_snapshot_warmup",
+        "source_backed_transient_launch"
+      ],
+      "notes": [
+        "Host page owns source identity resolution, readiness gating, and proxy launch sequencing."
+      ]
+    },
+    {
+      "host_surface_key": "genealogy_result_backed_workspace_experience",
+      "workflow_key": "intellectual_genealogy",
+      "owner": "host_owned_v1",
+      "selected_families": [
+        "run_discovery",
+        "run_detail",
+        "result_discovery",
+        "result_manifest",
+        "result_presentation",
+        "result_refresh",
+        "single_view_fetch",
+        "source_backed_readiness"
+      ],
+      "notes": [
+        "Host workspace owns mode selection, blocked-mode fallback display, and when to call readiness first."
+      ]
+    }
+  ]
+}

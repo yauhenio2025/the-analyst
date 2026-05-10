@@ -1,0 +1,1182 @@
+{
+  "project_id": "round4-proof-balance-final-1774012011",
+  "source_v2_job_id": "proof-round4-adaptive-balance-final-1774012011",
+  "task": "Trace the genealogy and intellectual development visible in this saved result.",
+  "page_url": "http://127.0.0.1:3456/p/round4-proof-balance-final-1774012011/proof/transient/genealogy-saved-result",
+  "run_detail": {
+    "job_id": "proof-round4-adaptive-balance-final-1774012011",
+    "plan_id": "plan-ef57a3fb980c",
+    "project_id": "round4-proof-balance-final-1774012011",
+    "workflow_key": "intellectual_genealogy",
+    "consumer_key": "the-critic",
+    "status": "completed",
+    "created_at": "2026-03-20T13:06:51.348349+00:00",
+    "started_at": "2026-03-20T13:06:51.348349+00:00",
+    "completed_at": "2026-03-20T13:06:51.348349+00:00",
+    "error": null,
+    "progress": {
+      "current_phase": 0,
+      "total_phases": 5,
+      "phase_name": "",
+      "detail": "Waiting to start",
+      "completed_phases": [],
+      "phase_statuses": {},
+      "structured_detail": null,
+      "current_pass": 0,
+      "total_passes": 5,
+      "current_pass_name": ""
+    },
+    "presentation_status": "completed",
+    "presentation_active": false,
+    "result_state": "ready",
+    "restore_available": true,
+    "restore_reason": "presentation_ready",
+    "selected_source_thinker_id": null,
+    "selected_source_thinker_name": null,
+    "links": {
+      "result_url": "/v1/results/by-job/proof-round4-adaptive-balance-final-1774012011?consumer_key=the-critic",
+      "presentation_url": "/v1/results/by-job/proof-round4-adaptive-balance-final-1774012011/presentation?consumer_key=the-critic"
+    }
+  },
+  "routing_decision": {
+    "normalized_task_summary": "Trace the genealogy and intellectual development visible in this saved result.",
+    "selected_objective_key": "genealogical",
+    "selected_workflow_key": "intellectual_genealogy",
+    "routing_outcome": "genealogy_transient_source_backed",
+    "routing_confidence": "medium",
+    "launch_contract_kind": "planner.direct_sections_compose_handoff",
+    "source_sufficiency_status": "sufficient",
+    "required_fields": [
+      "workflow_key",
+      "consumer_key",
+      "source_v2_job_id"
+    ],
+    "required_host_preparation": [
+      "Call plan-task with saved_result planning context to resolve a bounded direct-sections handoff before launch."
+    ],
+    "downstream_launch_contract": {
+      "method": "POST",
+      "endpoint": "/v1/orchestrator/plan-task",
+      "request_fields": {
+        "task_request.workflow_hint": "intellectual_genealogy",
+        "task_request.consumer_key": "the-critic",
+        "planning_context.context_mode": "saved_result",
+        "planning_context.source_v2_job_id": "proof-round4-adaptive-balance-final-1774012011"
+      },
+      "followup_contract_kind": "planner.direct_sections_compose_handoff",
+      "advisory_only": true
+    },
+    "rejected_candidates": [
+      {
+        "objective_key": "influence_thematic",
+        "rejection_reason": "lower_signal_score_than_selected_candidate",
+        "details": []
+      }
+    ],
+    "trace": [
+      {
+        "stage": "task_normalization",
+        "details": {
+          "normalized_task_summary": "Trace the genealogy and intellectual development visible in this saved result.",
+          "audience": null,
+          "desired_depth": null,
+          "style_expectations": null
+        }
+      },
+      {
+        "stage": "objective_candidate_scoring",
+        "details": {
+          "objective_hint": null,
+          "objective_hint_status": "not_provided",
+          "workflow_hint": "intellectual_genealogy",
+          "workflow_hint_status": "accepted_as_consistent",
+          "candidates": [
+            {
+              "objective_key": "influence_thematic",
+              "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+              "signal_score": 0,
+              "positive_signals": [],
+              "source_mode": "saved_result",
+              "source_mode_compatible": true
+            },
+            {
+              "objective_key": "genealogical",
+              "workflow_key": "intellectual_genealogy",
+              "signal_score": 1,
+              "positive_signals": [
+                "genealogy"
+              ],
+              "source_mode": "saved_result",
+              "source_mode_compatible": true
+            }
+          ]
+        }
+      },
+      {
+        "stage": "source_sufficiency_evaluation",
+        "details": {
+          "selected_objective_key": "genealogical",
+          "selected_workflow_key": "intellectual_genealogy",
+          "source_mode": "saved_result",
+          "source_sufficiency_status": "sufficient",
+          "sufficiency_reasons": []
+        }
+      },
+      {
+        "stage": "routing_decision",
+        "details": {
+          "routing_outcome": "genealogy_transient_source_backed",
+          "routing_confidence": "medium",
+          "launch_contract_kind": "planner.direct_sections_compose_handoff",
+          "selected_objective_key": "genealogical",
+          "selected_workflow_key": "intellectual_genealogy",
+          "required_fields": [
+            "workflow_key",
+            "consumer_key",
+            "source_v2_job_id"
+          ],
+          "required_host_preparation": [
+            "Call plan-task with saved_result planning context to resolve a bounded direct-sections handoff before launch."
+          ]
+        }
+      }
+    ]
+  },
+  "planning_decision": {
+    "normalized_task_summary": "Trace the genealogy and intellectual development visible in this saved result.",
+    "planning_decision_id": "planning-decision-b1600d054991",
+    "routing_decision": {
+      "normalized_task_summary": "Trace the genealogy and intellectual development visible in this saved result.",
+      "selected_objective_key": "genealogical",
+      "selected_workflow_key": "intellectual_genealogy",
+      "routing_outcome": "genealogy_transient_source_backed",
+      "routing_confidence": "medium",
+      "launch_contract_kind": "planner.direct_sections_compose_handoff",
+      "source_sufficiency_status": "sufficient",
+      "required_fields": [
+        "workflow_key",
+        "consumer_key",
+        "source_v2_job_id"
+      ],
+      "required_host_preparation": [
+        "Call plan-task with saved_result planning context to resolve a bounded direct-sections handoff before launch."
+      ],
+      "downstream_launch_contract": {
+        "method": "POST",
+        "endpoint": "/v1/orchestrator/plan-task",
+        "request_fields": {
+          "task_request.workflow_hint": "intellectual_genealogy",
+          "task_request.consumer_key": "the-critic",
+          "planning_context.context_mode": "saved_result",
+          "planning_context.source_v2_job_id": "proof-round4-adaptive-balance-final-1774012011"
+        },
+        "followup_contract_kind": "planner.direct_sections_compose_handoff",
+        "advisory_only": true
+      },
+      "rejected_candidates": [
+        {
+          "objective_key": "influence_thematic",
+          "rejection_reason": "lower_signal_score_than_selected_candidate",
+          "details": []
+        }
+      ],
+      "trace": [
+        {
+          "stage": "task_normalization",
+          "details": {
+            "normalized_task_summary": "Trace the genealogy and intellectual development visible in this saved result.",
+            "audience": null,
+            "desired_depth": null,
+            "style_expectations": null
+          }
+        },
+        {
+          "stage": "objective_candidate_scoring",
+          "details": {
+            "objective_hint": null,
+            "objective_hint_status": "not_provided",
+            "workflow_hint": "intellectual_genealogy",
+            "workflow_hint_status": "accepted_as_consistent",
+            "candidates": [
+              {
+                "objective_key": "influence_thematic",
+                "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                "signal_score": 0,
+                "positive_signals": [],
+                "source_mode": "saved_result",
+                "source_mode_compatible": true
+              },
+              {
+                "objective_key": "genealogical",
+                "workflow_key": "intellectual_genealogy",
+                "signal_score": 1,
+                "positive_signals": [
+                  "genealogy"
+                ],
+                "source_mode": "saved_result",
+                "source_mode_compatible": true
+              }
+            ]
+          }
+        },
+        {
+          "stage": "source_sufficiency_evaluation",
+          "details": {
+            "selected_objective_key": "genealogical",
+            "selected_workflow_key": "intellectual_genealogy",
+            "source_mode": "saved_result",
+            "source_sufficiency_status": "sufficient",
+            "sufficiency_reasons": []
+          }
+        },
+        {
+          "stage": "routing_decision",
+          "details": {
+            "routing_outcome": "genealogy_transient_source_backed",
+            "routing_confidence": "medium",
+            "launch_contract_kind": "planner.direct_sections_compose_handoff",
+            "selected_objective_key": "genealogical",
+            "selected_workflow_key": "intellectual_genealogy",
+            "required_fields": [
+              "workflow_key",
+              "consumer_key",
+              "source_v2_job_id"
+            ],
+            "required_host_preparation": [
+              "Call plan-task with saved_result planning context to resolve a bounded direct-sections handoff before launch."
+            ]
+          }
+        }
+      ]
+    },
+    "planning_outcome_kind": "direct_sections_composition_handoff_plan",
+    "planning_confidence": "medium",
+    "hydration_status": "satisfied",
+    "required_hydration": [],
+    "required_host_preparation": [
+      "Lower the persisted direct-sections handoff into compose-from-intent without host-side semantic reconstruction."
+    ],
+    "downstream_readiness": "ready_for_direct_sections_compose_handoff",
+    "downstream_followup_contract": {
+      "method": "POST",
+      "endpoint": "/v1/presenter/compose-from-intent",
+      "handoff_kind": "direct_sections",
+      "request_fields": {
+        "workflow_key": "intellectual_genealogy",
+        "consumer_key": "the-critic",
+        "user_intent": "Trace the genealogy and intellectual development visible in this saved result.",
+        "prose_sections": "<lower from direct_sections_composition_handoff_plan>"
+      }
+    },
+    "hydrated_document_ids": {},
+    "workflow_execution_plan": null,
+    "aoi_composition_handoff_plan": null,
+    "direct_sections_composition_handoff_plan": {
+      "workflow_key": "intellectual_genealogy",
+      "objective_key": "genealogical",
+      "consumer_key": "the-critic",
+      "source_v2_job_id": "proof-round4-adaptive-balance-final-1774012011",
+      "compose_entrypoint_kind": "presenter.compose_from_intent",
+      "resolved_intent_seed": "Trace the genealogy and intellectual development visible in this saved result.",
+      "prose_sections": [
+        {
+          "engine_key": "genealogy_relationship_classification",
+          "title": "Relationship Comparison Map",
+          "prose": "### Influence Channels: The Load-Bearing Architecture of a Sequential Epoch\n\nTo understand the relationship between *The Global Minotaur* (2011) and *Technofeudalism* (2023) is to examine a continuous feat of structural engineering. The 2011 text does not merely provide contextual scaffolding; it pours the concrete foundation upon which the towering, top-heavy edifice of the 2023 argument is constructed. Through the channels of methodology, framing, and vocabulary, Varoufakis engineers a strict chronological dependency. If we pull the foundational pillars forged in the 2011 text out from under the 2023 thesis, the entire superstructure of *Technofeudalism* immediately collapses.\n\nThe primary load-bearing pillar transferred from the prior work to the target work is the **Methodological Channel of Macro-Historical Sequencing**. *Technofeudalism* depends entirely on a highly specific timeline of global surplus recycling. In *The Global Minotaur*, Varoufakis constructs a structural logic where capitalism survives *only* through distinct, epochal mechanisms of surplus distribution: the Global Plan (1944–1971), followed by the Global Minotaur (1971–2008). The 2011 text ends with the structural ruin of this final mechanism—a phase Varoufakis names \"Bankruptocracy,\" where the state desperately pumps fiat liquidity (\"quantitative easing\") into dead zombie banks. \n\nThis specific 2011 conclusion acts as the literal foundational slab for the 2023 thesis. *Technofeudalism* builds directly upward from \"Bankruptocracy.\" The entire 2023 claim that \"Cloud Capital\" was funded by \"poisoned central bank money\" rather than capitalist profit rests directly on the 2011 proof that the 2008 crash irreparably severed capital accumulation from real-world profit. If the reader rejects the 2011 premise that the Global Minotaur died and left a vacuum filled entirely by central bank fiat, the 2023 argument that Big Tech built its fiefdoms outside the traditional capitalist market mechanism has nothing to stand on.\n\nResting upon this chronological foundation is the **Vocabulary and Framing Channel**, where the architectural blueprints for 2023's concepts are first sketched. In *The Global Minotaur*, Varoufakis introduces the \"Handmaidens\" of the beast—specifically Wall Street and Walmart. The 2011 analysis of Walmart serves as the terrestrial prototype for the 2023 \"Cloud Fief.\" The 2011 text frames Walmart not as a traditional competitor, but as an \"extractive business model\" that engineers an \"ideology of cheapness\" to ruthlessly squeeze suppliers while dictating terms from above. This framing is a load-bearing prerequisite for *Technofeudalism*. By establishing in 2011 that monopsony power (Walmart) operates through *extraction* rather than *market competition*, Varoufakis builds the rhetorical runway necessary to claim in 2023 that algorithmic monopsony power (Amazon) operates through feudal *Rent* rather than capitalist *Profit*. Walmart is the physical skeletal frame; Amazon is simply the digital skin stretched over it.\n\nFinally, the **Audience and Authority Channels** act as the reinforcing rebar. By 2023, Varoufakis leverages his established authority as the coroner of the 2008 crash. Because *The Global Minotaur* successfully predicted the intractable nature of the post-2008 European debt crisis and the ensuing \"liquidity traps,\" the audience is primed to trust his even more radical claim a decade later: that the system we have been trapped in since the Minotaur's death is no longer capitalism at all.\n\n\n### Strategic Relevance: Scanning Directives for Pass 2\n\nGiven the **Strong, Direct Precursor** relationship, this prior work requires a **High** level of investigative attention. *The Global Minotaur* is the Rosetta Stone for the target work. A missed structural link here will result in a fundamental misunderstanding of the target text's overarching logic. \n\nThe downstream scanning strategy must treat this text not as a separate book, but as \"Volume I\" of a continuous theoretical project. Pass 2 should prioritize the following structural joints and weak links:\n\n**1. Priority Dimension: The Mutation of \"Extraction\" (Rent vs. Profit)**\n*   **Scanning Strategy:** The scanner must heavily scrutinize the 2011 text's treatment of \"profits\" generated by the Minotaur's handmaidens (Walmart, Wall Street). \n*   **Expected Traces:** Look for the precise moment the vocabulary of *capitalist profit* begins to blur into the vocabulary of *parasitic rent*. If 2011's Walmart is described as extracting a toll from its suppliers, Pass 2 must document this as the direct conceptual ancestor of 2023's \"Cloud Rent.\" This is the single point of failure in both texts: the artificial boundary erected between dynamic profit and extractive rent.\n\n**2. Priority Dimension: The Geopolitical Substructure (The Rise of the Dragon)**\n*   **Scanning Strategy:** Focus tightly on Chapter 8 of the 2011 text regarding China's lack of a Global Surplus Recycling Mechanism (GSRM) and its attempt to build its own \"Global Plan\" in Latin America and Africa.\n*   **Expected Traces:** Map how this 2011 analysis forms the structural basis for 2023's \"New Cold War\" chapter. The scanner should look for early iterations of the \"Super Cloud Fief\" concept—specifically how the Chinese state operates as an integrated financial/technological nexus to bypass dollar hegemony. \n\n**3. Priority Dimension: The Migration of Agency and the \"Labor Theory\" Crisis**\n*   **Scanning Strategy:** *Technofeudalism* suffers from an internal contradiction where exploitation shifts from waged physical labor (Proles) to unwaged experiential labor (Serfs). Pass 2 must scan the 2011 text to see where this shift begins.\n*   **Expected Traces:** Examine how the 2011 text treats human labor. In *The Global Minotaur*, extraction still relies heavily on the physical exploitation of the Third World and the squeezing of the American working class. Trace the architectural transition: how does the text begin to prepare the reader for a world where *financialization* (2011) mutates into *cognitive/behavioral modification* (2023)?\n\n**Cost of Missed Classification:** If this text were incorrectly classified as merely an *indirect contextualizer*, the genealogical analysis would treat *Technofeudalism's* macro-economic claims (e.g., that central bank money severed profit from capital) as novel, unsupported assertions. By recognizing the structural dependency, Pass 2 will correctly identify that the 2023 book delegates all of its macro-economic heavy lifting to the foundations poured in 2011."
+        }
+      ],
+      "section_trace": [
+        {
+          "order": 1,
+          "engine_key": "genealogy_relationship_classification",
+          "title": "Relationship Comparison Map",
+          "provenance_pointer": {
+            "job_id": "proof-round4-adaptive-balance-final-1774012011",
+            "output_id": "po-proof-round4-adaptive-balance-final-1774012011-2-eb5c9863",
+            "phase_number": 1.5,
+            "pass_number": 2,
+            "engine_key": "genealogy_relationship_classification"
+          },
+          "role_hint": "comparison_map",
+          "rationale": "Derived from the analyzer-owned relationship-classification output already saved for the genealogy result."
+        }
+      ],
+      "handoff_notes": [
+        "Derived only from analyzer-owned saved-result truth; no analysis rerun and no host-local semantic reconstruction.",
+        "Lower through the thin compose-from-intent adapter only; do not widen the presenter boundary in this slice."
+      ]
+    },
+    "aoi_selection_blocked_reason_code": null,
+    "aoi_selection_blocked_reason_detail": null,
+    "rejected_planning_alternatives": [
+      {
+        "alternative_key": "influence_thematic",
+        "rejection_reason": "lower_signal_score_than_selected_candidate",
+        "details": []
+      }
+    ],
+    "trace": [
+      {
+        "stage": "effective_task_request",
+        "details": {
+          "consumer_key": "the-critic",
+          "source_mode": "saved_result",
+          "context_mode": "saved_result"
+        }
+      },
+      {
+        "stage": "routing_reuse",
+        "details": {
+          "status": "provided_and_validated",
+          "reused_fields": [
+            "selected_objective_key",
+            "selected_workflow_key",
+            "routing_outcome",
+            "launch_contract_kind",
+            "source_sufficiency_status"
+          ]
+        }
+      },
+      {
+        "stage": "hydration_evaluation",
+        "details": {
+          "status": "satisfied",
+          "context_mode": "saved_result"
+        }
+      },
+      {
+        "stage": "genealogy_saved_result_section_extraction",
+        "details": {
+          "source_v2_job_id": "proof-round4-adaptive-balance-final-1774012011",
+          "section_count": 1,
+          "sections": [
+            {
+              "engine_key": "genealogy_relationship_classification",
+              "title": "Relationship Comparison Map"
+            }
+          ]
+        }
+      },
+      {
+        "stage": "planning_decision",
+        "details": {
+          "planning_outcome_kind": "direct_sections_composition_handoff_plan",
+          "downstream_readiness": "ready_for_direct_sections_compose_handoff"
+        }
+      }
+    ]
+  },
+  "planning_snapshot": {
+    "planning_decision_id": "planning-decision-b1600d054991",
+    "created_at": "2026-03-28T01:20:48.394522+00:00",
+    "workflow_key": "intellectual_genealogy",
+    "consumer_key": "the-critic",
+    "selected_source_thinker_id": null,
+    "selected_source_thinker_name": null,
+    "source_v2_job_id": "proof-round4-adaptive-balance-final-1774012011",
+    "task_request": {
+      "task": "Trace the genealogy and intellectual development visible in this saved result.",
+      "objective_hint": null,
+      "audience": null,
+      "desired_depth": null,
+      "style_expectations": null,
+      "workflow_hint": "intellectual_genealogy",
+      "consumer_key": "the-critic",
+      "source_constraints": {
+        "source_mode": "saved_result",
+        "selected_source_thinker_id": null,
+        "selected_source_thinker_name": null,
+        "source_analysis_id": null,
+        "source_v2_job_id": "proof-round4-adaptive-balance-final-1774012011"
+      }
+    },
+    "routing_decision": {
+      "normalized_task_summary": "Trace the genealogy and intellectual development visible in this saved result.",
+      "selected_objective_key": "genealogical",
+      "selected_workflow_key": "intellectual_genealogy",
+      "routing_outcome": "genealogy_transient_source_backed",
+      "routing_confidence": "medium",
+      "launch_contract_kind": "planner.direct_sections_compose_handoff",
+      "source_sufficiency_status": "sufficient",
+      "required_fields": [
+        "workflow_key",
+        "consumer_key",
+        "source_v2_job_id"
+      ],
+      "required_host_preparation": [
+        "Call plan-task with saved_result planning context to resolve a bounded direct-sections handoff before launch."
+      ],
+      "downstream_launch_contract": {
+        "method": "POST",
+        "endpoint": "/v1/orchestrator/plan-task",
+        "request_fields": {
+          "task_request.workflow_hint": "intellectual_genealogy",
+          "task_request.consumer_key": "the-critic",
+          "planning_context.context_mode": "saved_result",
+          "planning_context.source_v2_job_id": "proof-round4-adaptive-balance-final-1774012011"
+        },
+        "followup_contract_kind": "planner.direct_sections_compose_handoff",
+        "advisory_only": true
+      },
+      "rejected_candidates": [
+        {
+          "objective_key": "influence_thematic",
+          "rejection_reason": "lower_signal_score_than_selected_candidate",
+          "details": []
+        }
+      ],
+      "trace": [
+        {
+          "stage": "task_normalization",
+          "details": {
+            "normalized_task_summary": "Trace the genealogy and intellectual development visible in this saved result.",
+            "audience": null,
+            "desired_depth": null,
+            "style_expectations": null
+          }
+        },
+        {
+          "stage": "objective_candidate_scoring",
+          "details": {
+            "objective_hint": null,
+            "objective_hint_status": "not_provided",
+            "workflow_hint": "intellectual_genealogy",
+            "workflow_hint_status": "accepted_as_consistent",
+            "candidates": [
+              {
+                "objective_key": "influence_thematic",
+                "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                "signal_score": 0,
+                "positive_signals": [],
+                "source_mode": "saved_result",
+                "source_mode_compatible": true
+              },
+              {
+                "objective_key": "genealogical",
+                "workflow_key": "intellectual_genealogy",
+                "signal_score": 1,
+                "positive_signals": [
+                  "genealogy"
+                ],
+                "source_mode": "saved_result",
+                "source_mode_compatible": true
+              }
+            ]
+          }
+        },
+        {
+          "stage": "source_sufficiency_evaluation",
+          "details": {
+            "selected_objective_key": "genealogical",
+            "selected_workflow_key": "intellectual_genealogy",
+            "source_mode": "saved_result",
+            "source_sufficiency_status": "sufficient",
+            "sufficiency_reasons": []
+          }
+        },
+        {
+          "stage": "routing_decision",
+          "details": {
+            "routing_outcome": "genealogy_transient_source_backed",
+            "routing_confidence": "medium",
+            "launch_contract_kind": "planner.direct_sections_compose_handoff",
+            "selected_objective_key": "genealogical",
+            "selected_workflow_key": "intellectual_genealogy",
+            "required_fields": [
+              "workflow_key",
+              "consumer_key",
+              "source_v2_job_id"
+            ],
+            "required_host_preparation": [
+              "Call plan-task with saved_result planning context to resolve a bounded direct-sections handoff before launch."
+            ]
+          }
+        }
+      ]
+    },
+    "planning_decision": {
+      "normalized_task_summary": "Trace the genealogy and intellectual development visible in this saved result.",
+      "planning_decision_id": "planning-decision-b1600d054991",
+      "routing_decision": {
+        "normalized_task_summary": "Trace the genealogy and intellectual development visible in this saved result.",
+        "selected_objective_key": "genealogical",
+        "selected_workflow_key": "intellectual_genealogy",
+        "routing_outcome": "genealogy_transient_source_backed",
+        "routing_confidence": "medium",
+        "launch_contract_kind": "planner.direct_sections_compose_handoff",
+        "source_sufficiency_status": "sufficient",
+        "required_fields": [
+          "workflow_key",
+          "consumer_key",
+          "source_v2_job_id"
+        ],
+        "required_host_preparation": [
+          "Call plan-task with saved_result planning context to resolve a bounded direct-sections handoff before launch."
+        ],
+        "downstream_launch_contract": {
+          "method": "POST",
+          "endpoint": "/v1/orchestrator/plan-task",
+          "request_fields": {
+            "task_request.workflow_hint": "intellectual_genealogy",
+            "task_request.consumer_key": "the-critic",
+            "planning_context.context_mode": "saved_result",
+            "planning_context.source_v2_job_id": "proof-round4-adaptive-balance-final-1774012011"
+          },
+          "followup_contract_kind": "planner.direct_sections_compose_handoff",
+          "advisory_only": true
+        },
+        "rejected_candidates": [
+          {
+            "objective_key": "influence_thematic",
+            "rejection_reason": "lower_signal_score_than_selected_candidate",
+            "details": []
+          }
+        ],
+        "trace": [
+          {
+            "stage": "task_normalization",
+            "details": {
+              "normalized_task_summary": "Trace the genealogy and intellectual development visible in this saved result.",
+              "audience": null,
+              "desired_depth": null,
+              "style_expectations": null
+            }
+          },
+          {
+            "stage": "objective_candidate_scoring",
+            "details": {
+              "objective_hint": null,
+              "objective_hint_status": "not_provided",
+              "workflow_hint": "intellectual_genealogy",
+              "workflow_hint_status": "accepted_as_consistent",
+              "candidates": [
+                {
+                  "objective_key": "influence_thematic",
+                  "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                  "signal_score": 0,
+                  "positive_signals": [],
+                  "source_mode": "saved_result",
+                  "source_mode_compatible": true
+                },
+                {
+                  "objective_key": "genealogical",
+                  "workflow_key": "intellectual_genealogy",
+                  "signal_score": 1,
+                  "positive_signals": [
+                    "genealogy"
+                  ],
+                  "source_mode": "saved_result",
+                  "source_mode_compatible": true
+                }
+              ]
+            }
+          },
+          {
+            "stage": "source_sufficiency_evaluation",
+            "details": {
+              "selected_objective_key": "genealogical",
+              "selected_workflow_key": "intellectual_genealogy",
+              "source_mode": "saved_result",
+              "source_sufficiency_status": "sufficient",
+              "sufficiency_reasons": []
+            }
+          },
+          {
+            "stage": "routing_decision",
+            "details": {
+              "routing_outcome": "genealogy_transient_source_backed",
+              "routing_confidence": "medium",
+              "launch_contract_kind": "planner.direct_sections_compose_handoff",
+              "selected_objective_key": "genealogical",
+              "selected_workflow_key": "intellectual_genealogy",
+              "required_fields": [
+                "workflow_key",
+                "consumer_key",
+                "source_v2_job_id"
+              ],
+              "required_host_preparation": [
+                "Call plan-task with saved_result planning context to resolve a bounded direct-sections handoff before launch."
+              ]
+            }
+          }
+        ]
+      },
+      "planning_outcome_kind": "direct_sections_composition_handoff_plan",
+      "planning_confidence": "medium",
+      "hydration_status": "satisfied",
+      "required_hydration": [],
+      "required_host_preparation": [
+        "Lower the persisted direct-sections handoff into compose-from-intent without host-side semantic reconstruction."
+      ],
+      "downstream_readiness": "ready_for_direct_sections_compose_handoff",
+      "downstream_followup_contract": {
+        "method": "POST",
+        "endpoint": "/v1/presenter/compose-from-intent",
+        "handoff_kind": "direct_sections",
+        "request_fields": {
+          "workflow_key": "intellectual_genealogy",
+          "consumer_key": "the-critic",
+          "user_intent": "Trace the genealogy and intellectual development visible in this saved result.",
+          "prose_sections": "<lower from direct_sections_composition_handoff_plan>"
+        }
+      },
+      "hydrated_document_ids": {},
+      "workflow_execution_plan": null,
+      "aoi_composition_handoff_plan": null,
+      "direct_sections_composition_handoff_plan": {
+        "workflow_key": "intellectual_genealogy",
+        "objective_key": "genealogical",
+        "consumer_key": "the-critic",
+        "source_v2_job_id": "proof-round4-adaptive-balance-final-1774012011",
+        "compose_entrypoint_kind": "presenter.compose_from_intent",
+        "resolved_intent_seed": "Trace the genealogy and intellectual development visible in this saved result.",
+        "prose_sections": [
+          {
+            "engine_key": "genealogy_relationship_classification",
+            "title": "Relationship Comparison Map",
+            "prose": "### Influence Channels: The Load-Bearing Architecture of a Sequential Epoch\n\nTo understand the relationship between *The Global Minotaur* (2011) and *Technofeudalism* (2023) is to examine a continuous feat of structural engineering. The 2011 text does not merely provide contextual scaffolding; it pours the concrete foundation upon which the towering, top-heavy edifice of the 2023 argument is constructed. Through the channels of methodology, framing, and vocabulary, Varoufakis engineers a strict chronological dependency. If we pull the foundational pillars forged in the 2011 text out from under the 2023 thesis, the entire superstructure of *Technofeudalism* immediately collapses.\n\nThe primary load-bearing pillar transferred from the prior work to the target work is the **Methodological Channel of Macro-Historical Sequencing**. *Technofeudalism* depends entirely on a highly specific timeline of global surplus recycling. In *The Global Minotaur*, Varoufakis constructs a structural logic where capitalism survives *only* through distinct, epochal mechanisms of surplus distribution: the Global Plan (1944–1971), followed by the Global Minotaur (1971–2008). The 2011 text ends with the structural ruin of this final mechanism—a phase Varoufakis names \"Bankruptocracy,\" where the state desperately pumps fiat liquidity (\"quantitative easing\") into dead zombie banks. \n\nThis specific 2011 conclusion acts as the literal foundational slab for the 2023 thesis. *Technofeudalism* builds directly upward from \"Bankruptocracy.\" The entire 2023 claim that \"Cloud Capital\" was funded by \"poisoned central bank money\" rather than capitalist profit rests directly on the 2011 proof that the 2008 crash irreparably severed capital accumulation from real-world profit. If the reader rejects the 2011 premise that the Global Minotaur died and left a vacuum filled entirely by central bank fiat, the 2023 argument that Big Tech built its fiefdoms outside the traditional capitalist market mechanism has nothing to stand on.\n\nResting upon this chronological foundation is the **Vocabulary and Framing Channel**, where the architectural blueprints for 2023's concepts are first sketched. In *The Global Minotaur*, Varoufakis introduces the \"Handmaidens\" of the beast—specifically Wall Street and Walmart. The 2011 analysis of Walmart serves as the terrestrial prototype for the 2023 \"Cloud Fief.\" The 2011 text frames Walmart not as a traditional competitor, but as an \"extractive business model\" that engineers an \"ideology of cheapness\" to ruthlessly squeeze suppliers while dictating terms from above. This framing is a load-bearing prerequisite for *Technofeudalism*. By establishing in 2011 that monopsony power (Walmart) operates through *extraction* rather than *market competition*, Varoufakis builds the rhetorical runway necessary to claim in 2023 that algorithmic monopsony power (Amazon) operates through feudal *Rent* rather than capitalist *Profit*. Walmart is the physical skeletal frame; Amazon is simply the digital skin stretched over it.\n\nFinally, the **Audience and Authority Channels** act as the reinforcing rebar. By 2023, Varoufakis leverages his established authority as the coroner of the 2008 crash. Because *The Global Minotaur* successfully predicted the intractable nature of the post-2008 European debt crisis and the ensuing \"liquidity traps,\" the audience is primed to trust his even more radical claim a decade later: that the system we have been trapped in since the Minotaur's death is no longer capitalism at all.\n\n\n### Strategic Relevance: Scanning Directives for Pass 2\n\nGiven the **Strong, Direct Precursor** relationship, this prior work requires a **High** level of investigative attention. *The Global Minotaur* is the Rosetta Stone for the target work. A missed structural link here will result in a fundamental misunderstanding of the target text's overarching logic. \n\nThe downstream scanning strategy must treat this text not as a separate book, but as \"Volume I\" of a continuous theoretical project. Pass 2 should prioritize the following structural joints and weak links:\n\n**1. Priority Dimension: The Mutation of \"Extraction\" (Rent vs. Profit)**\n*   **Scanning Strategy:** The scanner must heavily scrutinize the 2011 text's treatment of \"profits\" generated by the Minotaur's handmaidens (Walmart, Wall Street). \n*   **Expected Traces:** Look for the precise moment the vocabulary of *capitalist profit* begins to blur into the vocabulary of *parasitic rent*. If 2011's Walmart is described as extracting a toll from its suppliers, Pass 2 must document this as the direct conceptual ancestor of 2023's \"Cloud Rent.\" This is the single point of failure in both texts: the artificial boundary erected between dynamic profit and extractive rent.\n\n**2. Priority Dimension: The Geopolitical Substructure (The Rise of the Dragon)**\n*   **Scanning Strategy:** Focus tightly on Chapter 8 of the 2011 text regarding China's lack of a Global Surplus Recycling Mechanism (GSRM) and its attempt to build its own \"Global Plan\" in Latin America and Africa.\n*   **Expected Traces:** Map how this 2011 analysis forms the structural basis for 2023's \"New Cold War\" chapter. The scanner should look for early iterations of the \"Super Cloud Fief\" concept—specifically how the Chinese state operates as an integrated financial/technological nexus to bypass dollar hegemony. \n\n**3. Priority Dimension: The Migration of Agency and the \"Labor Theory\" Crisis**\n*   **Scanning Strategy:** *Technofeudalism* suffers from an internal contradiction where exploitation shifts from waged physical labor (Proles) to unwaged experiential labor (Serfs). Pass 2 must scan the 2011 text to see where this shift begins.\n*   **Expected Traces:** Examine how the 2011 text treats human labor. In *The Global Minotaur*, extraction still relies heavily on the physical exploitation of the Third World and the squeezing of the American working class. Trace the architectural transition: how does the text begin to prepare the reader for a world where *financialization* (2011) mutates into *cognitive/behavioral modification* (2023)?\n\n**Cost of Missed Classification:** If this text were incorrectly classified as merely an *indirect contextualizer*, the genealogical analysis would treat *Technofeudalism's* macro-economic claims (e.g., that central bank money severed profit from capital) as novel, unsupported assertions. By recognizing the structural dependency, Pass 2 will correctly identify that the 2023 book delegates all of its macro-economic heavy lifting to the foundations poured in 2011."
+          }
+        ],
+        "section_trace": [
+          {
+            "order": 1,
+            "engine_key": "genealogy_relationship_classification",
+            "title": "Relationship Comparison Map",
+            "provenance_pointer": {
+              "job_id": "proof-round4-adaptive-balance-final-1774012011",
+              "output_id": "po-proof-round4-adaptive-balance-final-1774012011-2-eb5c9863",
+              "phase_number": 1.5,
+              "pass_number": 2,
+              "engine_key": "genealogy_relationship_classification"
+            },
+            "role_hint": "comparison_map",
+            "rationale": "Derived from the analyzer-owned relationship-classification output already saved for the genealogy result."
+          }
+        ],
+        "handoff_notes": [
+          "Derived only from analyzer-owned saved-result truth; no analysis rerun and no host-local semantic reconstruction.",
+          "Lower through the thin compose-from-intent adapter only; do not widen the presenter boundary in this slice."
+        ]
+      },
+      "aoi_selection_blocked_reason_code": null,
+      "aoi_selection_blocked_reason_detail": null,
+      "rejected_planning_alternatives": [
+        {
+          "alternative_key": "influence_thematic",
+          "rejection_reason": "lower_signal_score_than_selected_candidate",
+          "details": []
+        }
+      ],
+      "trace": [
+        {
+          "stage": "effective_task_request",
+          "details": {
+            "consumer_key": "the-critic",
+            "source_mode": "saved_result",
+            "context_mode": "saved_result"
+          }
+        },
+        {
+          "stage": "routing_reuse",
+          "details": {
+            "status": "provided_and_validated",
+            "reused_fields": [
+              "selected_objective_key",
+              "selected_workflow_key",
+              "routing_outcome",
+              "launch_contract_kind",
+              "source_sufficiency_status"
+            ]
+          }
+        },
+        {
+          "stage": "hydration_evaluation",
+          "details": {
+            "status": "satisfied",
+            "context_mode": "saved_result"
+          }
+        },
+        {
+          "stage": "genealogy_saved_result_section_extraction",
+          "details": {
+            "source_v2_job_id": "proof-round4-adaptive-balance-final-1774012011",
+            "section_count": 1,
+            "sections": [
+              {
+                "engine_key": "genealogy_relationship_classification",
+                "title": "Relationship Comparison Map"
+              }
+            ]
+          }
+        },
+        {
+          "stage": "planning_decision",
+          "details": {
+            "planning_outcome_kind": "direct_sections_composition_handoff_plan",
+            "downstream_readiness": "ready_for_direct_sections_compose_handoff"
+          }
+        }
+      ]
+    }
+  },
+  "lowered_compose_request": {
+    "workflow_key": "intellectual_genealogy",
+    "consumer_key": "the-critic",
+    "user_intent": "Trace the genealogy and intellectual development visible in this saved result.",
+    "prose_sections": [
+      {
+        "engine_key": "genealogy_relationship_classification",
+        "title": "Relationship Comparison Map",
+        "prose": "### Influence Channels: The Load-Bearing Architecture of a Sequential Epoch\n\nTo understand the relationship between *The Global Minotaur* (2011) and *Technofeudalism* (2023) is to examine a continuous feat of structural engineering. The 2011 text does not merely provide contextual scaffolding; it pours the concrete foundation upon which the towering, top-heavy edifice of the 2023 argument is constructed. Through the channels of methodology, framing, and vocabulary, Varoufakis engineers a strict chronological dependency. If we pull the foundational pillars forged in the 2011 text out from under the 2023 thesis, the entire superstructure of *Technofeudalism* immediately collapses.\n\nThe primary load-bearing pillar transferred from the prior work to the target work is the **Methodological Channel of Macro-Historical Sequencing**. *Technofeudalism* depends entirely on a highly specific timeline of global surplus recycling. In *The Global Minotaur*, Varoufakis constructs a structural logic where capitalism survives *only* through distinct, epochal mechanisms of surplus distribution: the Global Plan (1944–1971), followed by the Global Minotaur (1971–2008). The 2011 text ends with the structural ruin of this final mechanism—a phase Varoufakis names \"Bankruptocracy,\" where the state desperately pumps fiat liquidity (\"quantitative easing\") into dead zombie banks. \n\nThis specific 2011 conclusion acts as the literal foundational slab for the 2023 thesis. *Technofeudalism* builds directly upward from \"Bankruptocracy.\" The entire 2023 claim that \"Cloud Capital\" was funded by \"poisoned central bank money\" rather than capitalist profit rests directly on the 2011 proof that the 2008 crash irreparably severed capital accumulation from real-world profit. If the reader rejects the 2011 premise that the Global Minotaur died and left a vacuum filled entirely by central bank fiat, the 2023 argument that Big Tech built its fiefdoms outside the traditional capitalist market mechanism has nothing to stand on.\n\nResting upon this chronological foundation is the **Vocabulary and Framing Channel**, where the architectural blueprints for 2023's concepts are first sketched. In *The Global Minotaur*, Varoufakis introduces the \"Handmaidens\" of the beast—specifically Wall Street and Walmart. The 2011 analysis of Walmart serves as the terrestrial prototype for the 2023 \"Cloud Fief.\" The 2011 text frames Walmart not as a traditional competitor, but as an \"extractive business model\" that engineers an \"ideology of cheapness\" to ruthlessly squeeze suppliers while dictating terms from above. This framing is a load-bearing prerequisite for *Technofeudalism*. By establishing in 2011 that monopsony power (Walmart) operates through *extraction* rather than *market competition*, Varoufakis builds the rhetorical runway necessary to claim in 2023 that algorithmic monopsony power (Amazon) operates through feudal *Rent* rather than capitalist *Profit*. Walmart is the physical skeletal frame; Amazon is simply the digital skin stretched over it.\n\nFinally, the **Audience and Authority Channels** act as the reinforcing rebar. By 2023, Varoufakis leverages his established authority as the coroner of the 2008 crash. Because *The Global Minotaur* successfully predicted the intractable nature of the post-2008 European debt crisis and the ensuing \"liquidity traps,\" the audience is primed to trust his even more radical claim a decade later: that the system we have been trapped in since the Minotaur's death is no longer capitalism at all.\n\n\n### Strategic Relevance: Scanning Directives for Pass 2\n\nGiven the **Strong, Direct Precursor** relationship, this prior work requires a **High** level of investigative attention. *The Global Minotaur* is the Rosetta Stone for the target work. A missed structural link here will result in a fundamental misunderstanding of the target text's overarching logic. \n\nThe downstream scanning strategy must treat this text not as a separate book, but as \"Volume I\" of a continuous theoretical project. Pass 2 should prioritize the following structural joints and weak links:\n\n**1. Priority Dimension: The Mutation of \"Extraction\" (Rent vs. Profit)**\n*   **Scanning Strategy:** The scanner must heavily scrutinize the 2011 text's treatment of \"profits\" generated by the Minotaur's handmaidens (Walmart, Wall Street). \n*   **Expected Traces:** Look for the precise moment the vocabulary of *capitalist profit* begins to blur into the vocabulary of *parasitic rent*. If 2011's Walmart is described as extracting a toll from its suppliers, Pass 2 must document this as the direct conceptual ancestor of 2023's \"Cloud Rent.\" This is the single point of failure in both texts: the artificial boundary erected between dynamic profit and extractive rent.\n\n**2. Priority Dimension: The Geopolitical Substructure (The Rise of the Dragon)**\n*   **Scanning Strategy:** Focus tightly on Chapter 8 of the 2011 text regarding China's lack of a Global Surplus Recycling Mechanism (GSRM) and its attempt to build its own \"Global Plan\" in Latin America and Africa.\n*   **Expected Traces:** Map how this 2011 analysis forms the structural basis for 2023's \"New Cold War\" chapter. The scanner should look for early iterations of the \"Super Cloud Fief\" concept—specifically how the Chinese state operates as an integrated financial/technological nexus to bypass dollar hegemony. \n\n**3. Priority Dimension: The Migration of Agency and the \"Labor Theory\" Crisis**\n*   **Scanning Strategy:** *Technofeudalism* suffers from an internal contradiction where exploitation shifts from waged physical labor (Proles) to unwaged experiential labor (Serfs). Pass 2 must scan the 2011 text to see where this shift begins.\n*   **Expected Traces:** Examine how the 2011 text treats human labor. In *The Global Minotaur*, extraction still relies heavily on the physical exploitation of the Third World and the squeezing of the American working class. Trace the architectural transition: how does the text begin to prepare the reader for a world where *financialization* (2011) mutates into *cognitive/behavioral modification* (2023)?\n\n**Cost of Missed Classification:** If this text were incorrectly classified as merely an *indirect contextualizer*, the genealogical analysis would treat *Technofeudalism's* macro-economic claims (e.g., that central bank money severed profit from capital) as novel, unsupported assertions. By recognizing the structural dependency, Pass 2 will correctly identify that the 2023 book delegates all of its macro-economic heavy lifting to the foundations poured in 2011."
+      }
+    ],
+    "style_school": null,
+    "audience": null
+  },
+  "compose_response": {
+    "presentation": {
+      "workflow_key": "intellectual_genealogy",
+      "consumer_key": "the-critic",
+      "presentation_contract_version": 1,
+      "presentation_hash": "c4490cdddca9621c4f967995d7c9450ae2e15c5a439f8be45bc5c3080989e57d",
+      "presentation_content_hash": "e3bf5126b54a3d9540a5b57eb02c7b7541f95908fe896c23b356138a42379f4a",
+      "resolver_version": "compose-from-intent-v2",
+      "style_school": "explanatory_narrative",
+      "views": [
+        {
+          "view_key": "compose_intent_01_genealogy_relationship_classification",
+          "view_name": "Relationship Comparison Map",
+          "description": "Grouped comparison map for Relationship Comparison Map.",
+          "renderer_type": "card_grid",
+          "renderer_config": {
+            "group_by": "_category",
+            "columns": 2,
+            "expandable": true,
+            "title_field": "relationship_type",
+            "subtitle_field": "relationship_strength",
+            "badge_field": "relationship_strength",
+            "description_field": "relationship_evidence",
+            "expanded_fields": [
+              "influence_channels",
+              "strategic_relevance"
+            ],
+            "group_style_map": {
+              "direct_precursor": {
+                "color": "#1a6b3c",
+                "label": "Direct Precursor"
+              },
+              "indirect_contextualizer": {
+                "color": "#4a6b8a",
+                "label": "Indirect Contextualizer"
+              },
+              "methodological_ancestor": {
+                "color": "#7a4a8a",
+                "label": "Methodological Ancestor"
+              },
+              "contradicted_position": {
+                "color": "#8a2a2a",
+                "label": "Contradicted Position"
+              },
+              "parallel_development": {
+                "color": "#8a6a1a",
+                "label": "Parallel Development"
+              }
+            },
+            "badge_style_map": {
+              "strong": {
+                "color": "#1a6b3c",
+                "label": "Strong"
+              },
+              "moderate": {
+                "color": "#8a6a1a",
+                "label": "Moderate"
+              },
+              "weak": {
+                "color": "#6b6b6b",
+                "label": "Weak"
+              }
+            }
+          },
+          "presentation_stance": "comparison",
+          "rationale": "Matched comparison semantics to a grouped card grid for side-by-side scanning.",
+          "engine_key": "genealogy_relationship_classification",
+          "position": 1,
+          "visibility": "if_data_exists",
+          "has_structured_data": true,
+          "structured_data": {
+            "influence_channels": [
+              {
+                "channel": "methodology",
+                "description": "The Global Minotaur establishes a macro-historical sequencing methodology based on epochal mechanisms of global surplus recycling (Global Plan 1944-1971; Global Minotaur 1971-2008; Bankruptocracy post-2008) that becomes the chronological architecture for Technofeudalism's periodization."
+              },
+              {
+                "channel": "causal_mechanism",
+                "description": "The 2011 proof that the 2008 crash severed capital accumulation from real-world profit forms the causal bedrock for the 2023 claim that Big Tech built fiefdoms outside traditional capitalist markets through central bank-funded 'poisoned money.'"
+              },
+              {
+                "channel": "framework",
+                "description": "The Global Minotaur's framework of monopsony extraction through ideology (Walmart's 'ideology of cheapness') provides the rhetorical and conceptual template for Technofeudalism's analysis of algorithmic monopsony as feudal rent rather than capitalist profit."
+              },
+              {
+                "channel": "vocabulary",
+                "description": "Key concepts like 'Handmaidens,' 'extractive business model,' and the distinction between extraction and market competition are transferred wholesale from the 2011 text to scaffold the 2023 argument about Cloud Fiefs."
+              },
+              {
+                "channel": "authority",
+                "description": "Varoufakis's established authority from successfully predicting the post-2008 European debt crisis and liquidity traps in the 2011 text primes audiences to accept his more radical 2023 claim that the post-Minotaur system is no longer capitalism at all."
+              },
+              {
+                "channel": "periodization",
+                "description": "The Global Minotaur's specific demarcation of the Bankruptocracy phase as the structural end of one system creates the temporal demarcation point from which Technofeudalism begins, making it a prerequisite for the entire periodization scheme of the later work."
+              }
+            ],
+            "key_evidence": [
+              {
+                "evidence_type": "causal_chain_dependency",
+                "description": "The 2023 argument that Cloud Capital was funded by 'poisoned central bank money' depends entirely on the 2011 proof that the 2008 crash irreparably severed capital accumulation from real-world profit. Without this 2011 premise, the 2023 thesis about Big Tech fiefdoms has no foundation.",
+                "quote": "If the reader rejects the 2011 premise that the Global Minotaur died and left a vacuum filled entirely by central bank fiat, the 2023 argument that Big Tech built its fiefdoms outside the traditional capitalist market mechanism has nothing to stand on."
+              },
+              {
+                "evidence_type": "conceptual_import",
+                "description": "The Global Minotaur's analysis of Walmart as an 'extractive business model' using an 'ideology of cheapness' to squeeze suppliers serves as the terrestrial prototype for Technofeudalism's concept of Cloud Fiefs and algorithmic monopsony.",
+                "quote": "The 2011 analysis of Walmart serves as the terrestrial prototype for the 2023 'Cloud Fief.' The 2011 text frames Walmart not as a traditional competitor, but as an 'extractive business model' that engineers an 'ideology of cheapness' to ruthlessly squeeze suppliers while dictating terms from above."
+              },
+              {
+                "evidence_type": "methodological_template",
+                "description": "The Global Minotaur establishes the epochal sequencing methodology (Global Plan → Global Minotaur → Bankruptocracy) that Technofeudalism extends upward to describe Technofeudalism as the next phase.",
+                "quote": "In *The Global Minotaur*, Varoufakis constructs a structural logic where capitalism survives *only* through distinct, epochal mechanisms of surplus distribution: the Global Plan (1944–1971), followed by the Global Minotaur (1971–2008)."
+              },
+              {
+                "evidence_type": "vocabulary_transfer",
+                "description": "The vocabulary of 'Handmaidens,' 'extraction,' and 'monopsony power' flows directly from The Global Minotaur into Technofeudalism, where these terms are applied to digital platforms and cloud infrastructure.",
+                "quote": "In *The Global Minotaur*, Varoufakis introduces the 'Handmaidens' of the beast—specifically Wall Street and Walmart."
+              },
+              {
+                "evidence_type": "structural_precedent",
+                "description": "The Global Minotaur's establishment of the Bankruptocracy phase (state pumping fiat liquidity into zombie banks post-2008) creates the literal starting point and structural condition that necessitates the 2023 thesis about Technofeudalism.",
+                "quote": "This specific 2011 conclusion acts as the literal foundational slab for the 2023 thesis. *Technofeudalism* builds directly upward from 'Bankruptocracy.'"
+              },
+              {
+                "evidence_type": "authority_transfer",
+                "description": "The Global Minotaur's successful prediction of post-2008 debt crises and liquidity traps establishes Varoufakis's credibility, which then legitimates his more radical systemic claims in Technofeudalism.",
+                "quote": "Because *The Global Minotaur* successfully predicted the intractable nature of the post-2008 European debt crisis and the ensuing 'liquidity traps,' the audience is primed to trust his even more radical claim a decade later."
+              },
+              {
+                "evidence_type": "conceptual_mutation",
+                "description": "The Global Minotaur's treatment of extraction and rent begins the conceptual mutation—from capitalist profit to parasitic rent—that Technofeudalism radicalizes into the distinction between profit and feudal rent.",
+                "quote": "Look for the precise moment the vocabulary of *capitalist profit* begins to blur into the vocabulary of *parasitic rent*."
+              }
+            ]
+          },
+          "items": null,
+          "children": []
+        }
+      ],
+      "view_count": 1
+    },
+    "generated_view_definitions": [
+      {
+        "view_key": "compose_intent_01_genealogy_relationship_classification",
+        "view_name": "Relationship Comparison Map",
+        "description": "Grouped comparison map for Relationship Comparison Map.",
+        "version": 1,
+        "target_app": "the-critic",
+        "target_page": "compose_from_intent_transient",
+        "target_section": "results",
+        "renderer_type": "card_grid",
+        "renderer_config": {
+          "items_path": "items",
+          "group_by": "relationship_type",
+          "columns": 2,
+          "expandable": true,
+          "title_field": "relationship_type",
+          "subtitle_field": "relationship_strength",
+          "badge_field": "relationship_strength",
+          "description_field": "relationship_evidence",
+          "expanded_fields": [
+            "influence_channels",
+            "strategic_relevance"
+          ],
+          "group_style_map": {
+            "direct_precursor": {
+              "color": "#1a6b3c",
+              "label": "Direct Precursor"
+            },
+            "indirect_contextualizer": {
+              "color": "#4a6b8a",
+              "label": "Indirect Contextualizer"
+            },
+            "methodological_ancestor": {
+              "color": "#7a4a8a",
+              "label": "Methodological Ancestor"
+            },
+            "contradicted_position": {
+              "color": "#8a2a2a",
+              "label": "Contradicted Position"
+            },
+            "parallel_development": {
+              "color": "#8a6a1a",
+              "label": "Parallel Development"
+            }
+          },
+          "badge_style_map": {
+            "strong": {
+              "color": "#1a6b3c",
+              "label": "Strong"
+            },
+            "moderate": {
+              "color": "#8a6a1a",
+              "label": "Moderate"
+            },
+            "weak": {
+              "color": "#6b6b6b",
+              "label": "Weak"
+            }
+          }
+        },
+        "data_source": {
+          "workflow_key": "intellectual_genealogy",
+          "phase_number": 1,
+          "engine_key": "genealogy_relationship_classification",
+          "chain_key": null,
+          "result_path": "",
+          "scope": "aggregated"
+        },
+        "secondary_sources": [],
+        "transformation": {
+          "type": "llm_extract",
+          "field_mapping": null,
+          "llm_extraction_schema": {
+            "work_title": "string (title of the prior work being classified)",
+            "work_year": "number (publication year)",
+            "relationship_type": "enum: direct_precursor|methodological_ancestor|counter_position|indirect_contextualizer|stylistic_influence|conceptual_sibling",
+            "secondary_relationship_type": "enum or null",
+            "relationship_strength": "enum: strong|moderate|weak",
+            "summary": "string (2-3 sentence summary of the relationship)",
+            "influence_channels": [
+              {
+                "channel": "enum: vocabulary|methodology|causal_mechanism|audience_preparation|authority|framework|periodization|evidence_strategy",
+                "description": "string (1 sentence)"
+              }
+            ],
+            "key_evidence": [
+              {
+                "evidence_type": "string (e.g. explicit_self_citation, vocabulary_transfer, methodological_template)",
+                "description": "string (1-2 sentences)",
+                "quote": "string (short illustrative quote if available, else empty)"
+              }
+            ],
+            "vocabulary_contributed": [
+              "string (terms/concepts that flow from this prior work to the current work)"
+            ],
+            "centrality_assessment": "string (1-2 sentences on how central this work is to the current argument)",
+            "what_would_be_lost": "string (1-2 sentences: what the current argument loses without this prior work)"
+          },
+          "llm_prompt_template": "You are a precise data extraction assistant. Extract structured JSON from an analytical prose text that classifies the relationship between a prior work and a current work in an intellectual genealogy.\n\nIMPORTANT: The input begins with a [SOURCE DOCUMENT: ...] tag that contains the ACTUAL filename/title of the prior work. You MUST use this as the work_title — do NOT invent or guess a different title.\n\nReturn a JSON object with this EXACT structure:\n\n{\n  \"work_title\": \"<MUST match the [SOURCE DOCUMENT] tag exactly, minus file extension>\",\n  \"work_year\": <publication year as number>,\n  \"relationship_type\": \"<one of: direct_precursor, methodological_ancestor, counter_position, indirect_contextualizer, stylistic_influence, conceptual_sibling>\",\n  \"secondary_relationship_type\": \"<same enum or null if no secondary>\",\n  \"relationship_strength\": \"<one of: strong, moderate, weak>\",\n  \"summary\": \"<2-3 sentence summary of how this prior work relates to the current work>\",\n  \"influence_channels\": [\n    {\n      \"channel\": \"<one of: vocabulary, methodology, causal_mechanism, audience_preparation, authority, framework, periodization, evidence_strategy>\",\n      \"description\": \"<1 sentence describing this influence channel>\"\n    }\n  ],\n  \"key_evidence\": [\n    {\n      \"evidence_type\": \"<type of evidence, e.g. explicit_self_citation, vocabulary_transfer, methodological_template, conceptual_import, causal_chain_dependency>\",\n      \"description\": \"<1-2 sentence description of this evidence>\",\n      \"quote\": \"<short illustrative quote if available, else empty string>\"\n    }\n  ],\n  \"vocabulary_contributed\": [\"<terms or concepts that flow from this prior work to the current work>\"],\n  \"centrality_assessment\": \"<1-2 sentences assessing how central this prior work is to the current argument>\",\n  \"what_would_be_lost\": \"<1-2 sentences: what the current argument would lose without this prior work>\"\n}\n\nRULES:\n1. Return ONLY JSON — no markdown fences, no commentary\n2. relationship_type MUST be one of the 6 listed values (use closest match)\n3. Capture 3-6 influence channels\n4. Capture 3-8 key evidence items, ordered by significance\n5. vocabulary_contributed should list specific terms/concepts, not generic descriptions\n6. The summary should capture the essential nature of the intellectual relationship\n7. Preserve analytical depth — don't oversimplify the relationship classification",
+          "stance_key": "comparison"
+        },
+        "presentation_stance": "comparison",
+        "position": 1,
+        "parent_view_key": null,
+        "surface_archetype": null,
+        "scaffold_contract": null,
+        "surface_role": null,
+        "child_display_mode": null,
+        "tab_count_field": null,
+        "visibility": "if_data_exists",
+        "audience_overrides": {},
+        "planner_hint": "Recommend this view when the user needs to compare and contrast how prior works relate to the current argument across relationship types. Especially useful at the start of a genealogical analysis session to orient investigative priorities and allocate analytical depth across direct precursors, methodological ancestors, and contradicted positions.",
+        "planner_eligible": true,
+        "status": "draft",
+        "tags": [
+          "cards",
+          "grouped",
+          "categorized",
+          "expandable",
+          "comparison",
+          "genealogy",
+          "relationship_classification",
+          "intellectual_history",
+          "triage",
+          "influence_mapping"
+        ],
+        "source_project": "compose_from_intent_transient",
+        "generation_mode": "generated"
+      }
+    ],
+    "trace": {
+      "resolver_version": "compose-from-intent-v2",
+      "entries": [
+        {
+          "stage": "semantic_surface_matching",
+          "details": {
+            "sections": [
+              {
+                "section_index": 0,
+                "engine_key": "genealogy_relationship_classification",
+                "title": "Relationship Comparison Map",
+                "source_family_key": null,
+                "composition_role_hint": null,
+                "semantic_role": "comparison_map",
+                "pattern_key": "card_grid_grouped",
+                "inventory_listing": false
+              }
+            ]
+          }
+        },
+        {
+          "stage": "hierarchy_planning",
+          "details": {
+            "grouped": false,
+            "grouping_reason": "flat_all_working_content",
+            "top_level_count": 1,
+            "leaf_count": 1
+          }
+        },
+        {
+          "stage": "page_plan",
+          "details": {
+            "top_level_count": 1,
+            "views": [
+              {
+                "kind": "leaf",
+                "section_index": 0,
+                "pattern_key": "card_grid_grouped",
+                "view_name": "Relationship Comparison Map",
+                "semantic_role": "comparison_map",
+                "presentation_stance": "comparison"
+              }
+            ]
+          }
+        },
+        {
+          "stage": "view_generation",
+          "details": {
+            "views": [
+              {
+                "view_key": "compose_intent_01_genealogy_relationship_classification",
+                "pattern_key": "card_grid_grouped",
+                "renderer_type": "card_grid",
+                "engine_key": "genealogy_relationship_classification",
+                "parent_view_key": null
+              }
+            ]
+          }
+        },
+        {
+          "stage": "transformation_execution",
+          "details": {
+            "views": [
+              {
+                "view_key": "compose_intent_01_genealogy_relationship_classification",
+                "engine_key": "genealogy_relationship_classification",
+                "renderer_type": "card_grid",
+                "extraction_source": "curated",
+                "template_key": "relationship_extraction",
+                "cached": false
+              }
+            ]
+          }
+        },
+        {
+          "stage": "consumer_adaptation",
+          "details": {
+            "views": [
+              {
+                "view_key": "compose_intent_01_genealogy_relationship_classification",
+                "renderer_type": "card_grid",
+                "adapted": false
+              }
+            ]
+          }
+        },
+        {
+          "stage": "contract_validation",
+          "details": {
+            "view_count": 1,
+            "issues": 0
+          }
+        }
+      ]
+    }
+  },
+  "shell_text": "Workflow: intellectual_genealogy\nStyle School: explanatory_narrative\nView Count: 1\nResolver Version: compose-from-intent-v2\nRelationship Comparison Map\nRelationship Comparison Map\n\nGrouped comparison map for Relationship Comparison Map.\n\ngenealogy_relationship_classification\n\nMatched comparison semantics to a grouped card grid for side-by-side scanning.\n\n13 items\nKey Evidence: 7\nInfluence Channels: 6\nKey Evidence\n7 items\nKey Evidence\nCLICK TO EXPAND\nKey Evidence\nCLICK TO EXPAND\nKey Evidence\nCLICK TO EXPAND\nKey Evidence\nCLICK TO EXPAND\nKey Evidence\nCLICK TO EXPAND\nKey Evidence\nCLICK TO EXPAND\nKey Evidence\nCLICK TO EXPAND\nInfluence Channels\n6 items\nInfluence Channels\nCLICK TO EXPAND\nInfluence Channels\nCLICK TO EXPAND\nInfluence Channels\nCLICK TO EXPAND\nInfluence Channels\nCLICK TO EXPAND\nInfluence Channels\nCLICK TO EXPAND\nInfluence Channels\nCLICK TO EXPAND\nTrace and generated definitions",
+  "request_trace": [
+    {
+      "method": "GET",
+      "url": "http://localhost:5555/api/projects",
+      "postData": null,
+      "status": 200,
+      "responseBody": "{\"projects\":[{\"project_id\":\"stage5-proof-aoi-blocked-20260324\",\"name\":\"stage5-proof-aoi-blocked-20260324\",\"description\":\"Synthetic blocked AOI planner fixture project for Stage 5 eval\",\"subject_author\":\"Aaron Benanav\",\"subject_name\":\"Beyond Capitalism 2\",\"critique_author\":\"Otto Neurath\",\"created_at\":\"2026-03-24T14:59:22\",\"updated_at\":\"2026-03-24T14:59:22\",\"config\":{},\"document_count\":0,\"framework_count\":0},{\"project_id\":\"round5-proof-dossier-final-1774100000\",\"name\":\"round5-proof-dossier-final-1774100000\",\"description\":\"Synthetic AOI proof fixture project\",\"subject_author\":\"Aaron Benanav\",\"subject_name\":\"Beyond Capitalism 2\",\"critique_author\":\"Otto Neurath\",\"created_at\":\"2026-03-21T03:44:14\",\"updated_at\":\"2026-03-21T03:44:14\",\"config\":{},\"document_count\":3,\"framework_count\":0},{\"project_id\":\"round5-proof-comparison-final-1774100000\",\"name\":\"round5-proof-comparison-final-1774100000\",\"description\":\"Synthetic AOI proof fixture project\",\"subject_author\":\"Aaron Benanav\",\"subject_name\":\"Beyond Capitalism 2\",\"critique_author\":\"Otto Neurath\",\"created_at\":\"2026-03-21T03:44:14\",\"updated_at\":\"2026-03-21T03:44:14\",\"config\":{},\"document_count\":0,\"framework_count\":0},{\"project_id\":\"round4-proof-balance-final-1774012011\",\"name\":\"Round 4 Adaptive Balance Proof\",\"description\":\"Round 4 adaptive relationship+conditions proof fixture (balance case)\",\"subject_author\":\"Yanis Varoufakis\",\"subject_name\":\"Technofeudalism: What Killed Capitalism\",\"critique_author\":\"analyzer-v2\",\"created_at\":\"2026-03-20T13:08:59\",\"updated_at\":\"2026-03-20T13:08:59\",\"config\":{},\"document_count\":0,\"framework_count\":0},{\"project_id\":\"round4-proof-matrix-final-1774012011\",\"name\":\"Round 4 Adaptive Matrix Proof\",\"description\":\"Round 4 adaptive relationship+conditions proof fixture (matrix case)\",\"subject_author\":\"Yanis Varoufakis\",\"subject_name\":\"Technofeudalism: What Killed Capitalism\",\"critique_author\":\"analyzer-v2\",\"created_at\":\"2026-03-20T13:08:59\",\"updated_at\":\"2026-03-20T13:08:59\",\"config\":{},\"document_count\":0,\"framework_count\":0},{\"project_id\":\"round3-proof-dossier-final-1774002300\",\"name\":\"Round 3 Proof Dossier Final\",\"description\":\"Adaptive surface proof fixture for relationship_profile_dossier\",\"subject_author\":\"Yanis Varoufakis\",\"subject_name\":\"Techno-Feudalism: What Killed Capitalism\",\"critique_author\":\"Adaptive Proof Fixture\",\"created_at\":\"2026-03-20T10:25:00\",\"updated_at\":\"2026-03-20T10:25:00\",\"config\":{},\"document_count\":0,\"framework_count\":0},{\"project_id\":\"round3-proof-comparison-final-1774002300\",\"name\":\"Round 3 Proof Comparison Final\",\"description\":\"Adaptive surface proof fixture for relationship_comparison_review\",\"subject_author\":\"Yanis Varoufakis\",\"subject_name\":\"Techno-Feudalism: What Killed Capitalism\",\"critique_author\":\"Adaptive Proof Fixture\",\"created_at\":\"2026-03-20T10:25:00\",\"updated_at\":\"2026-03-20T10:25:00\",\"config\":{},\"document_count\":0,\"framework_count\":0},{\"project_id\":\"round3-proof-dossier-live-1774002102\",\"name\":\"Round 3 Proof Dossier Live\",\"description\":\"Fresh proof project for adaptive dossier family.\",\"subject_author\":\"Yanis Varoufakis\",\"subject_name\":\"Techno-Feudalism: What Killed Capitalism\",\"critique_author\":\"Adaptive Proof Fixture\",\"created_at\":\"2026-03-20T10:21:42\",\"updated_at\":\"2026-03-20T10:21:42\",\"config\":{},\"document_count\":0,\"framework_count\":0},{\"project_id\":\"round3-proof-dossier-20260320\",\"name\":\"Round 3 Proof Dossier\",\"description\":\"Adaptive relationship surface proof fixture selecting dossier family.\",\"subject_author\":\"Yanis Varoufakis\",\"subject_name\":\"Techno-Feudalism: What Killed Capitalism\",\"critique_author\":\"Adaptive Proof Fixture\",\"created_at\":\"2026-03-20T10:12:37\",\"updated_at\":\"2026-03-20T10:12:37\",\"config\":{},\"document_count\":0,\"framework_count\":0},{\"project_id\":\"round3-proof-comparison-20260320\",\"name\":\"Round 3 Proof Comparison\",\"description\":\"Adaptive relationship surface proof fixture selecting comparison family.\",\"subject_author\":\"Yanis Varoufakis\",\"subject_name\":\"Techno-Feudalism: What Killed Capitalism\",\"critique_author\":\"Adaptive Proof Fixture\",\"created_at\":\"2026-03-20T10:12:37\",\"updated_at\":\"2026-03-20T10:12:37\",\"config\":{},\"document_count\":0,\"framework_count\":0},{\"project_id\":\"markus-2\",\"name\":\"Markus 2\",\"description\":\"Ecological reconstruction target with two background Markus texts for dynamic composition E2E\",\"subject_author\":\"Gyorgy Markus\",\"subject_name\":\"Ecological Reconstruction\",\"critique_author\":\"Evgeny Morozov\",\"created_at\":\"2026-03-10T02:13:02\",\"updated_at\":\"2026-03-11T00:17:24\",\"config\":{\"notebooklm_notebook_id\":\"09809b99-fcc5-4c61-b30e-6d7848f081be\"},\"document_count\":3,\"framework_count\":3},{\"project_id\":\"varoufakis-e2e-1773049971\",\"name\":\"Varoufakis Technofeudalism E2E Test\",\"description\":\"E2E test: Varoufakis Technofeudalism genealogy + Tier 3b/3a\",\"subject_author\":\"Yanis Varoufakis\",\"subject_name\":\"Technofeudalism\",\"critique_author\":\"E2E Tester\",\"created_at\":\"2026-03-09T09:52:51\",\"updated_at\":\"2026-03-09T09:52:51\",\"config\":{},\"document_count\":6,\"framework_count\":0},{\"project_id\":\"morozov-benanav-001\",\"name\":\"Morozov on Benanav\",\"description\":null,\"subject_author\":\"Aaron Benanav\",\"subject_name\":null,\"critique_author\":\"Evgeny Morozov\",\"created_at\":\"2026-02-22T13:59:52\",\"updated_at\":\"2026-03-10T23:56:07\",\"config\":{\"notebooklm_notebook_id\":\"fb38da38-e200-42f7-863e-1db849ebe749\"},\"document_count\":3,\"framework_count\":0},{\"project_id\":\"test-genealogy\",\"name\":\"Test Genealogy Project\",\"description\":null,\"subject_author\":\"Test Author\",\"subject_name\":null,\"critique_author\":\"Test Critic\",\"created_at\":\"2026-02-18T07:34:17\",\"updated_at\":\"2026-02-18T07:34:17\",\"config\":{},\"document_count\":0,\"framework_count\":3}]}"
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:5555/api/projects",
+      "postData": null,
+      "status": 200,
+      "responseBody": "{\"projects\":[{\"project_id\":\"stage5-proof-aoi-blocked-20260324\",\"name\":\"stage5-proof-aoi-blocked-20260324\",\"description\":\"Synthetic blocked AOI planner fixture project for Stage 5 eval\",\"subject_author\":\"Aaron Benanav\",\"subject_name\":\"Beyond Capitalism 2\",\"critique_author\":\"Otto Neurath\",\"created_at\":\"2026-03-24T14:59:22\",\"updated_at\":\"2026-03-24T14:59:22\",\"config\":{},\"document_count\":0,\"framework_count\":0},{\"project_id\":\"round5-proof-dossier-final-1774100000\",\"name\":\"round5-proof-dossier-final-1774100000\",\"description\":\"Synthetic AOI proof fixture project\",\"subject_author\":\"Aaron Benanav\",\"subject_name\":\"Beyond Capitalism 2\",\"critique_author\":\"Otto Neurath\",\"created_at\":\"2026-03-21T03:44:14\",\"updated_at\":\"2026-03-21T03:44:14\",\"config\":{},\"document_count\":3,\"framework_count\":0},{\"project_id\":\"round5-proof-comparison-final-1774100000\",\"name\":\"round5-proof-comparison-final-1774100000\",\"description\":\"Synthetic AOI proof fixture project\",\"subject_author\":\"Aaron Benanav\",\"subject_name\":\"Beyond Capitalism 2\",\"critique_author\":\"Otto Neurath\",\"created_at\":\"2026-03-21T03:44:14\",\"updated_at\":\"2026-03-21T03:44:14\",\"config\":{},\"document_count\":0,\"framework_count\":0},{\"project_id\":\"round4-proof-balance-final-1774012011\",\"name\":\"Round 4 Adaptive Balance Proof\",\"description\":\"Round 4 adaptive relationship+conditions proof fixture (balance case)\",\"subject_author\":\"Yanis Varoufakis\",\"subject_name\":\"Technofeudalism: What Killed Capitalism\",\"critique_author\":\"analyzer-v2\",\"created_at\":\"2026-03-20T13:08:59\",\"updated_at\":\"2026-03-20T13:08:59\",\"config\":{},\"document_count\":0,\"framework_count\":0},{\"project_id\":\"round4-proof-matrix-final-1774012011\",\"name\":\"Round 4 Adaptive Matrix Proof\",\"description\":\"Round 4 adaptive relationship+conditions proof fixture (matrix case)\",\"subject_author\":\"Yanis Varoufakis\",\"subject_name\":\"Technofeudalism: What Killed Capitalism\",\"critique_author\":\"analyzer-v2\",\"created_at\":\"2026-03-20T13:08:59\",\"updated_at\":\"2026-03-20T13:08:59\",\"config\":{},\"document_count\":0,\"framework_count\":0},{\"project_id\":\"round3-proof-dossier-final-1774002300\",\"name\":\"Round 3 Proof Dossier Final\",\"description\":\"Adaptive surface proof fixture for relationship_profile_dossier\",\"subject_author\":\"Yanis Varoufakis\",\"subject_name\":\"Techno-Feudalism: What Killed Capitalism\",\"critique_author\":\"Adaptive Proof Fixture\",\"created_at\":\"2026-03-20T10:25:00\",\"updated_at\":\"2026-03-20T10:25:00\",\"config\":{},\"document_count\":0,\"framework_count\":0},{\"project_id\":\"round3-proof-comparison-final-1774002300\",\"name\":\"Round 3 Proof Comparison Final\",\"description\":\"Adaptive surface proof fixture for relationship_comparison_review\",\"subject_author\":\"Yanis Varoufakis\",\"subject_name\":\"Techno-Feudalism: What Killed Capitalism\",\"critique_author\":\"Adaptive Proof Fixture\",\"created_at\":\"2026-03-20T10:25:00\",\"updated_at\":\"2026-03-20T10:25:00\",\"config\":{},\"document_count\":0,\"framework_count\":0},{\"project_id\":\"round3-proof-dossier-live-1774002102\",\"name\":\"Round 3 Proof Dossier Live\",\"description\":\"Fresh proof project for adaptive dossier family.\",\"subject_author\":\"Yanis Varoufakis\",\"subject_name\":\"Techno-Feudalism: What Killed Capitalism\",\"critique_author\":\"Adaptive Proof Fixture\",\"created_at\":\"2026-03-20T10:21:42\",\"updated_at\":\"2026-03-20T10:21:42\",\"config\":{},\"document_count\":0,\"framework_count\":0},{\"project_id\":\"round3-proof-dossier-20260320\",\"name\":\"Round 3 Proof Dossier\",\"description\":\"Adaptive relationship surface proof fixture selecting dossier family.\",\"subject_author\":\"Yanis Varoufakis\",\"subject_name\":\"Techno-Feudalism: What Killed Capitalism\",\"critique_author\":\"Adaptive Proof Fixture\",\"created_at\":\"2026-03-20T10:12:37\",\"updated_at\":\"2026-03-20T10:12:37\",\"config\":{},\"document_count\":0,\"framework_count\":0},{\"project_id\":\"round3-proof-comparison-20260320\",\"name\":\"Round 3 Proof Comparison\",\"description\":\"Adaptive relationship surface proof fixture selecting comparison family.\",\"subject_author\":\"Yanis Varoufakis\",\"subject_name\":\"Techno-Feudalism: What Killed Capitalism\",\"critique_author\":\"Adaptive Proof Fixture\",\"created_at\":\"2026-03-20T10:12:37\",\"updated_at\":\"2026-03-20T10:12:37\",\"config\":{},\"document_count\":0,\"framework_count\":0},{\"project_id\":\"markus-2\",\"name\":\"Markus 2\",\"description\":\"Ecological reconstruction target with two background Markus texts for dynamic composition E2E\",\"subject_author\":\"Gyorgy Markus\",\"subject_name\":\"Ecological Reconstruction\",\"critique_author\":\"Evgeny Morozov\",\"created_at\":\"2026-03-10T02:13:02\",\"updated_at\":\"2026-03-11T00:17:24\",\"config\":{\"notebooklm_notebook_id\":\"09809b99-fcc5-4c61-b30e-6d7848f081be\"},\"document_count\":3,\"framework_count\":3},{\"project_id\":\"varoufakis-e2e-1773049971\",\"name\":\"Varoufakis Technofeudalism E2E Test\",\"description\":\"E2E test: Varoufakis Technofeudalism genealogy + Tier 3b/3a\",\"subject_author\":\"Yanis Varoufakis\",\"subject_name\":\"Technofeudalism\",\"critique_author\":\"E2E Tester\",\"created_at\":\"2026-03-09T09:52:51\",\"updated_at\":\"2026-03-09T09:52:51\",\"config\":{},\"document_count\":6,\"framework_count\":0},{\"project_id\":\"morozov-benanav-001\",\"name\":\"Morozov on Benanav\",\"description\":null,\"subject_author\":\"Aaron Benanav\",\"subject_name\":null,\"critique_author\":\"Evgeny Morozov\",\"created_at\":\"2026-02-22T13:59:52\",\"updated_at\":\"2026-03-10T23:56:07\",\"config\":{\"notebooklm_notebook_id\":\"fb38da38-e200-42f7-863e-1db849ebe749\"},\"document_count\":3,\"framework_count\":0},{\"project_id\":\"test-genealogy\",\"name\":\"Test Genealogy Project\",\"description\":null,\"subject_author\":\"Test Author\",\"subject_name\":null,\"critique_author\":\"Test Critic\",\"created_at\":\"2026-02-18T07:34:17\",\"updated_at\":\"2026-02-18T07:34:17\",\"config\":{},\"document_count\":0,\"framework_count\":3}]}"
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:5555/api/projects",
+      "postData": null,
+      "status": 200,
+      "responseBody": "{\"projects\":[{\"project_id\":\"stage5-proof-aoi-blocked-20260324\",\"name\":\"stage5-proof-aoi-blocked-20260324\",\"description\":\"Synthetic blocked AOI planner fixture project for Stage 5 eval\",\"subject_author\":\"Aaron Benanav\",\"subject_name\":\"Beyond Capitalism 2\",\"critique_author\":\"Otto Neurath\",\"created_at\":\"2026-03-24T14:59:22\",\"updated_at\":\"2026-03-24T14:59:22\",\"config\":{},\"document_count\":0,\"framework_count\":0},{\"project_id\":\"round5-proof-dossier-final-1774100000\",\"name\":\"round5-proof-dossier-final-1774100000\",\"description\":\"Synthetic AOI proof fixture project\",\"subject_author\":\"Aaron Benanav\",\"subject_name\":\"Beyond Capitalism 2\",\"critique_author\":\"Otto Neurath\",\"created_at\":\"2026-03-21T03:44:14\",\"updated_at\":\"2026-03-21T03:44:14\",\"config\":{},\"document_count\":3,\"framework_count\":0},{\"project_id\":\"round5-proof-comparison-final-1774100000\",\"name\":\"round5-proof-comparison-final-1774100000\",\"description\":\"Synthetic AOI proof fixture project\",\"subject_author\":\"Aaron Benanav\",\"subject_name\":\"Beyond Capitalism 2\",\"critique_author\":\"Otto Neurath\",\"created_at\":\"2026-03-21T03:44:14\",\"updated_at\":\"2026-03-21T03:44:14\",\"config\":{},\"document_count\":0,\"framework_count\":0},{\"project_id\":\"round4-proof-balance-final-1774012011\",\"name\":\"Round 4 Adaptive Balance Proof\",\"description\":\"Round 4 adaptive relationship+conditions proof fixture (balance case)\",\"subject_author\":\"Yanis Varoufakis\",\"subject_name\":\"Technofeudalism: What Killed Capitalism\",\"critique_author\":\"analyzer-v2\",\"created_at\":\"2026-03-20T13:08:59\",\"updated_at\":\"2026-03-20T13:08:59\",\"config\":{},\"document_count\":0,\"framework_count\":0},{\"project_id\":\"round4-proof-matrix-final-1774012011\",\"name\":\"Round 4 Adaptive Matrix Proof\",\"description\":\"Round 4 adaptive relationship+conditions proof fixture (matrix case)\",\"subject_author\":\"Yanis Varoufakis\",\"subject_name\":\"Technofeudalism: What Killed Capitalism\",\"critique_author\":\"analyzer-v2\",\"created_at\":\"2026-03-20T13:08:59\",\"updated_at\":\"2026-03-20T13:08:59\",\"config\":{},\"document_count\":0,\"framework_count\":0},{\"project_id\":\"round3-proof-dossier-final-1774002300\",\"name\":\"Round 3 Proof Dossier Final\",\"description\":\"Adaptive surface proof fixture for relationship_profile_dossier\",\"subject_author\":\"Yanis Varoufakis\",\"subject_name\":\"Techno-Feudalism: What Killed Capitalism\",\"critique_author\":\"Adaptive Proof Fixture\",\"created_at\":\"2026-03-20T10:25:00\",\"updated_at\":\"2026-03-20T10:25:00\",\"config\":{},\"document_count\":0,\"framework_count\":0},{\"project_id\":\"round3-proof-comparison-final-1774002300\",\"name\":\"Round 3 Proof Comparison Final\",\"description\":\"Adaptive surface proof fixture for relationship_comparison_review\",\"subject_author\":\"Yanis Varoufakis\",\"subject_name\":\"Techno-Feudalism: What Killed Capitalism\",\"critique_author\":\"Adaptive Proof Fixture\",\"created_at\":\"2026-03-20T10:25:00\",\"updated_at\":\"2026-03-20T10:25:00\",\"config\":{},\"document_count\":0,\"framework_count\":0},{\"project_id\":\"round3-proof-dossier-live-1774002102\",\"name\":\"Round 3 Proof Dossier Live\",\"description\":\"Fresh proof project for adaptive dossier family.\",\"subject_author\":\"Yanis Varoufakis\",\"subject_name\":\"Techno-Feudalism: What Killed Capitalism\",\"critique_author\":\"Adaptive Proof Fixture\",\"created_at\":\"2026-03-20T10:21:42\",\"updated_at\":\"2026-03-20T10:21:42\",\"config\":{},\"document_count\":0,\"framework_count\":0},{\"project_id\":\"round3-proof-dossier-20260320\",\"name\":\"Round 3 Proof Dossier\",\"description\":\"Adaptive relationship surface proof fixture selecting dossier family.\",\"subject_author\":\"Yanis Varoufakis\",\"subject_name\":\"Techno-Feudalism: What Killed Capitalism\",\"critique_author\":\"Adaptive Proof Fixture\",\"created_at\":\"2026-03-20T10:12:37\",\"updated_at\":\"2026-03-20T10:12:37\",\"config\":{},\"document_count\":0,\"framework_count\":0},{\"project_id\":\"round3-proof-comparison-20260320\",\"name\":\"Round 3 Proof Comparison\",\"description\":\"Adaptive relationship surface proof fixture selecting comparison family.\",\"subject_author\":\"Yanis Varoufakis\",\"subject_name\":\"Techno-Feudalism: What Killed Capitalism\",\"critique_author\":\"Adaptive Proof Fixture\",\"created_at\":\"2026-03-20T10:12:37\",\"updated_at\":\"2026-03-20T10:12:37\",\"config\":{},\"document_count\":0,\"framework_count\":0},{\"project_id\":\"markus-2\",\"name\":\"Markus 2\",\"description\":\"Ecological reconstruction target with two background Markus texts for dynamic composition E2E\",\"subject_author\":\"Gyorgy Markus\",\"subject_name\":\"Ecological Reconstruction\",\"critique_author\":\"Evgeny Morozov\",\"created_at\":\"2026-03-10T02:13:02\",\"updated_at\":\"2026-03-11T00:17:24\",\"config\":{\"notebooklm_notebook_id\":\"09809b99-fcc5-4c61-b30e-6d7848f081be\"},\"document_count\":3,\"framework_count\":3},{\"project_id\":\"varoufakis-e2e-1773049971\",\"name\":\"Varoufakis Technofeudalism E2E Test\",\"description\":\"E2E test: Varoufakis Technofeudalism genealogy + Tier 3b/3a\",\"subject_author\":\"Yanis Varoufakis\",\"subject_name\":\"Technofeudalism\",\"critique_author\":\"E2E Tester\",\"created_at\":\"2026-03-09T09:52:51\",\"updated_at\":\"2026-03-09T09:52:51\",\"config\":{},\"document_count\":6,\"framework_count\":0},{\"project_id\":\"morozov-benanav-001\",\"name\":\"Morozov on Benanav\",\"description\":null,\"subject_author\":\"Aaron Benanav\",\"subject_name\":null,\"critique_author\":\"Evgeny Morozov\",\"created_at\":\"2026-02-22T13:59:52\",\"updated_at\":\"2026-03-10T23:56:07\",\"config\":{\"notebooklm_notebook_id\":\"fb38da38-e200-42f7-863e-1db849ebe749\"},\"document_count\":3,\"framework_count\":0},{\"project_id\":\"test-genealogy\",\"name\":\"Test Genealogy Project\",\"description\":null,\"subject_author\":\"Test Author\",\"subject_name\":null,\"critique_author\":\"Test Critic\",\"created_at\":\"2026-02-18T07:34:17\",\"updated_at\":\"2026-02-18T07:34:17\",\"config\":{},\"document_count\":0,\"framework_count\":3}]}"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8002/v1/runs/by-job/proof-round4-adaptive-balance-final-1774012011?consumer_key=the-critic",
+      "postData": null,
+      "status": 200,
+      "responseBody": "{\"job_id\":\"proof-round4-adaptive-balance-final-1774012011\",\"plan_id\":\"plan-ef57a3fb980c\",\"project_id\":\"round4-proof-balance-final-1774012011\",\"workflow_key\":\"intellectual_genealogy\",\"consumer_key\":\"the-critic\",\"status\":\"completed\",\"created_at\":\"2026-03-20T13:06:51.348349+00:00\",\"started_at\":\"2026-03-20T13:06:51.348349+00:00\",\"completed_at\":\"2026-03-20T13:06:51.348349+00:00\",\"error\":null,\"progress\":{\"current_phase\":0.0,\"total_phases\":5,\"phase_name\":\"\",\"detail\":\"Waiting to start\",\"completed_phases\":[],\"phase_statuses\":{},\"structured_detail\":null,\"current_pass\":0.0,\"total_passes\":5,\"current_pass_name\":\"\"},\"presentation_status\":\"completed\",\"presentation_active\":false,\"result_state\":\"ready\",\"restore_available\":true,\"restore_reason\":\"presentation_ready\",\"selected_source_thinker_id\":null,\"selected_source_thinker_name\":null,\"links\":{\"result_url\":\"/v1/results/by-job/proof-round4-adaptive-balance-final-1774012011?consumer_key=the-critic\",\"presentation_url\":\"/v1/results/by-job/proof-round4-adaptive-balance-final-1774012011/presentation?consumer_key=the-critic\"}}"
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:8002/v1/orchestrator/route-task",
+      "postData": "{\"task\":\"Trace the genealogy and intellectual development visible in this saved result.\",\"workflow_hint\":\"intellectual_genealogy\",\"consumer_key\":\"the-critic\",\"source_constraints\":{\"source_mode\":\"saved_result\",\"source_v2_job_id\":\"proof-round4-adaptive-balance-final-1774012011\"}}",
+      "status": 200,
+      "responseBody": "{\"normalized_task_summary\":\"Trace the genealogy and intellectual development visible in this saved result.\",\"selected_objective_key\":\"genealogical\",\"selected_workflow_key\":\"intellectual_genealogy\",\"routing_outcome\":\"genealogy_transient_source_backed\",\"routing_confidence\":\"medium\",\"launch_contract_kind\":\"planner.direct_sections_compose_handoff\",\"source_sufficiency_status\":\"sufficient\",\"required_fields\":[\"workflow_key\",\"consumer_key\",\"source_v2_job_id\"],\"required_host_preparation\":[\"Call plan-task with saved_result planning context to resolve a bounded direct-sections handoff before launch.\"],\"downstream_launch_contract\":{\"method\":\"POST\",\"endpoint\":\"/v1/orchestrator/plan-task\",\"request_fields\":{\"task_request.workflow_hint\":\"intellectual_genealogy\",\"task_request.consumer_key\":\"the-critic\",\"planning_context.context_mode\":\"saved_result\",\"planning_context.source_v2_job_id\":\"proof-round4-adaptive-balance-final-1774012011\"},\"followup_contract_kind\":\"planner.direct_sections_compose_handoff\",\"advisory_only\":true},\"rejected_candidates\":[{\"objective_key\":\"influence_thematic\",\"rejection_reason\":\"lower_signal_score_than_selected_candidate\",\"details\":[]}],\"trace\":[{\"stage\":\"task_normalization\",\"details\":{\"normalized_task_summary\":\"Trace the genealogy and intellectual development visible in this saved result.\",\"audience\":null,\"desired_depth\":null,\"style_expectations\":null}},{\"stage\":\"objective_candidate_scoring\",\"details\":{\"objective_hint\":null,\"objective_hint_status\":\"not_provided\",\"workflow_hint\":\"intellectual_genealogy\",\"workflow_hint_status\":\"accepted_as_consistent\",\"candidates\":[{\"objective_key\":\"influence_thematic\",\"workflow_key\":\"anxiety_of_influence_thematic_single_thinker\",\"signal_score\":0,\"positive_signals\":[],\"source_mode\":\"saved_result\",\"source_mode_compatible\":true},{\"objective_key\":\"genealogical\",\"workflow_key\":\"intellectual_genealogy\",\"signal_score\":1,\"positive_signals\":[\"genealogy\"],\"source_mode\":\"saved_result\",\"source_mode_compatible\":true}]}},{\"stage\":\"source_sufficiency_evaluation\",\"details\":{\"selected_objective_key\":\"genealogical\",\"selected_workflow_key\":\"intellectual_genealogy\",\"source_mode\":\"saved_result\",\"source_sufficiency_status\":\"sufficient\",\"sufficiency_reasons\":[]}},{\"stage\":\"routing_decision\",\"details\":{\"routing_outcome\":\"genealogy_transient_source_backed\",\"routing_confidence\":\"medium\",\"launch_contract_kind\":\"planner.direct_sections_compose_handoff\",\"selected_objective_key\":\"genealogical\",\"selected_workflow_key\":\"intellectual_genealogy\",\"required_fields\":[\"workflow_key\",\"consumer_key\",\"source_v2_job_id\"],\"required_host_preparation\":[\"Call plan-task with saved_result planning context to resolve a bounded direct-sections handoff before launch.\"]}}]}"
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:8002/v1/orchestrator/plan-task",
+      "postData": "{\"task_request\":{\"task\":\"Trace the genealogy and intellectual development visible in this saved result.\",\"workflow_hint\":\"intellectual_genealogy\",\"consumer_key\":\"the-critic\",\"source_constraints\":{\"source_mode\":\"saved_result\",\"source_v2_job_id\":\"proof-round4-adaptive-balance-final-1774012011\"}},\"prior_routing_decision\":{\"normalized_task_summary\":\"Trace the genealogy and intellectual development visible in this saved result.\",\"selected_objective_key\":\"genealogical\",\"selected_workflow_key\":\"intellectual_genealogy\",\"routing_outcome\":\"genealogy_transient_source_backed\",\"routing_confidence\":\"medium\",\"launch_contract_kind\":\"planner.direct_sections_compose_handoff\",\"source_sufficiency_status\":\"sufficient\",\"required_fields\":[\"workflow_key\",\"consumer_key\",\"source_v2_job_id\"],\"required_host_preparation\":[\"Call plan-task with saved_result planning context to resolve a bounded direct-sections handoff before launch.\"],\"downstream_launch_contract\":{\"method\":\"POST\",\"endpoint\":\"/v1/orchestrator/plan-task\",\"request_fields\":{\"task_request.workflow_hint\":\"intellectual_genealogy\",\"task_request.consumer_key\":\"the-critic\",\"planning_context.context_mode\":\"saved_result\",\"planning_context.source_v2_job_id\":\"proof-round4-adaptive-balance-final-1774012011\"},\"followup_contract_kind\":\"planner.direct_sections_compose_handoff\",\"advisory_only\":true},\"rejected_candidates\":[{\"objective_key\":\"influence_thematic\",\"rejection_reason\":\"lower_signal_score_than_selected_candidate\",\"details\":[]}],\"trace\":[{\"stage\":\"task_normalization\",\"details\":{\"normalized_task_summary\":\"Trace the genealogy and intellectual development visible in this saved result.\",\"audience\":null,\"desired_depth\":null,\"style_expectations\":null}},{\"stage\":\"objective_candidate_scoring\",\"details\":{\"objective_hint\":null,\"objective_hint_status\":\"not_provided\",\"workflow_hint\":\"intellectual_genealogy\",\"workflow_hint_status\":\"accepted_as_consistent\",\"candidates\":[{\"objective_key\":\"influence_thematic\",\"workflow_key\":\"anxiety_of_influence_thematic_single_thinker\",\"signal_score\":0,\"positive_signals\":[],\"source_mode\":\"saved_result\",\"source_mode_compatible\":true},{\"objective_key\":\"genealogical\",\"workflow_key\":\"intellectual_genealogy\",\"signal_score\":1,\"positive_signals\":[\"genealogy\"],\"source_mode\":\"saved_result\",\"source_mode_compatible\":true}]}},{\"stage\":\"source_sufficiency_evaluation\",\"details\":{\"selected_objective_key\":\"genealogical\",\"selected_workflow_key\":\"intellectual_genealogy\",\"source_mode\":\"saved_result\",\"source_sufficiency_status\":\"sufficient\",\"sufficiency_reasons\":[]}},{\"stage\":\"routing_decision\",\"details\":{\"routing_outcome\":\"genealogy_transient_source_backed\",\"routing_confidence\":\"medium\",\"launch_contract_kind\":\"planner.direct_sections_compose_handoff\",\"selected_objective_key\":\"genealogical\",\"selected_workflow_key\":\"intellectual_genealogy\",\"required_fields\":[\"workflow_key\",\"consumer_key\",\"source_v2_job_id\"],\"required_host_preparation\":[\"Call plan-task with saved_result planning context to resolve a bounded direct-sections handoff before launch.\"]}}]},\"planning_context\":{\"context_mode\":\"saved_result\",\"source_v2_job_id\":\"proof-round4-adaptive-balance-final-1774012011\",\"consumer_key\":\"the-critic\"},\"persist_decision\":true}",
+      "status": 200,
+      "responseBody": "{\"normalized_task_summary\":\"Trace the genealogy and intellectual development visible in this saved result.\",\"planning_decision_id\":\"planning-decision-b1600d054991\",\"routing_decision\":{\"normalized_task_summary\":\"Trace the genealogy and intellectual development visible in this saved result.\",\"selected_objective_key\":\"genealogical\",\"selected_workflow_key\":\"intellectual_genealogy\",\"routing_outcome\":\"genealogy_transient_source_backed\",\"routing_confidence\":\"medium\",\"launch_contract_kind\":\"planner.direct_sections_compose_handoff\",\"source_sufficiency_status\":\"sufficient\",\"required_fields\":[\"workflow_key\",\"consumer_key\",\"source_v2_job_id\"],\"required_host_preparation\":[\"Call plan-task with saved_result planning context to resolve a bounded direct-sections handoff before launch.\"],\"downstream_launch_contract\":{\"method\":\"POST\",\"endpoint\":\"/v1/orchestrator/plan-task\",\"request_fields\":{\"task_request.workflow_hint\":\"intellectual_genealogy\",\"task_request.consumer_key\":\"the-critic\",\"planning_context.context_mode\":\"saved_result\",\"planning_context.source_v2_job_id\":\"proof-round4-adaptive-balance-final-1774012011\"},\"followup_contract_kind\":\"planner.direct_sections_compose_handoff\",\"advisory_only\":true},\"rejected_candidates\":[{\"objective_key\":\"influence_thematic\",\"rejection_reason\":\"lower_signal_score_than_selected_candidate\",\"details\":[]}],\"trace\":[{\"stage\":\"task_normalization\",\"details\":{\"normalized_task_summary\":\"Trace the genealogy and intellectual development visible in this saved result.\",\"audience\":null,\"desired_depth\":null,\"style_expectations\":null}},{\"stage\":\"objective_candidate_scoring\",\"details\":{\"objective_hint\":null,\"objective_hint_status\":\"not_provided\",\"workflow_hint\":\"intellectual_genealogy\",\"workflow_hint_status\":\"accepted_as_consistent\",\"candidates\":[{\"objective_key\":\"influence_thematic\",\"workflow_key\":\"anxiety_of_influence_thematic_single_thinker\",\"signal_score\":0,\"positive_signals\":[],\"source_mode\":\"saved_result\",\"source_mode_compatible\":true},{\"objective_key\":\"genealogical\",\"workflow_key\":\"intellectual_genealogy\",\"signal_score\":1,\"positive_signals\":[\"genealogy\"],\"source_mode\":\"saved_result\",\"source_mode_compatible\":true}]}},{\"stage\":\"source_sufficiency_evaluation\",\"details\":{\"selected_objective_key\":\"genealogical\",\"selected_workflow_key\":\"intellectual_genealogy\",\"source_mode\":\"saved_result\",\"source_sufficiency_status\":\"sufficient\",\"sufficiency_reasons\":[]}},{\"stage\":\"routing_decision\",\"details\":{\"routing_outcome\":\"genealogy_transient_source_backed\",\"routing_confidence\":\"medium\",\"launch_contract_kind\":\"planner.direct_sections_compose_handoff\",\"selected_objective_key\":\"genealogical\",\"selected_workflow_key\":\"intellectual_genealogy\",\"required_fields\":[\"workflow_key\",\"consumer_key\",\"source_v2_job_id\"],\"required_host_preparation\":[\"Call plan-task with saved_result planning context to resolve a bounded direct-sections handoff before launch.\"]}}]},\"planning_outcome_kind\":\"direct_sections_composition_handoff_plan\",\"planning_confidence\":\"medium\",\"hydration_status\":\"satisfied\",\"required_hydration\":[],\"required_host_preparation\":[\"Lower the persisted direct-sections handoff into compose-from-intent without host-side semantic reconstruction.\"],\"downstream_readiness\":\"ready_for_direct_sections_compose_handoff\",\"downstream_followup_contract\":{\"method\":\"POST\",\"endpoint\":\"/v1/presenter/compose-from-intent\",\"handoff_kind\":\"direct_sections\",\"request_fields\":{\"workflow_key\":\"intellectual_genealogy\",\"consumer_key\":\"the-critic\",\"user_intent\":\"Trace the genealogy and intellectual development visible in this saved result.\",\"prose_sections\":\"<lower from direct_sections_composition_handoff_plan>\"}},\"hydrated_document_ids\":{},\"workflow_execution_plan\":null,\"aoi_composition_handoff_plan\":null,\"direct_sections_composition_handoff_plan\":{\"workflow_key\":\"intellectual_genealogy\",\"objective_key\":\"genealogical\",\"consumer_key\":\"the-critic\",\"source_v2_job_id\":\"proof-round4-adaptive-balance-final-1774012011\",\"compose_entrypoint_kind\":\"presenter.compose_from_intent\",\"resolved_intent_seed\":\"Trace the genealogy and intellectual development visible in this saved result.\",\"prose_sections\":[{\"engine_key\":\"genealogy_relationship_classification\",\"title\":\"Relationship Comparison Map\",\"prose\":\"### Influence Channels: The Load-Bearing Architecture of a Sequential Epoch\\n\\nTo understand the relationship between *The Global Minotaur* (2011) and *Technofeudalism* (2023) is to examine a continuous feat of structural engineering. The 2011 text does not merely provide contextual scaffolding; it pours the concrete foundation upon which the towering, top-heavy edifice of the 2023 argument is constructed. Through the channels of methodology, framing, and vocabulary, Varoufakis engineers a strict chronological dependency. If we pull the foundational pillars forged in the 2011 text out from under the 2023 thesis, the entire superstructure of *Technofeudalism* immediately collapses.\\n\\nThe primary load-bearing pillar transferred from the prior work to the target work is the **Methodological Channel of Macro-Historical Sequencing**. *Technofeudalism* depends entirely on a highly specific timeline of global surplus recycling. In *The Global Minotaur*, Varoufakis constructs a structural logic where capitalism survives *only* through distinct, epochal mechanisms of surplus distribution: the Global Plan (1944–1971), followed by the Global Minotaur (1971–2008). The 2011 text ends with the structural ruin of this final mechanism—a phase Varoufakis names \\\"Bankruptocracy,\\\" where the state desperately pumps fiat liquidity (\\\"quantitative easing\\\") into dead zombie banks. \\n\\nThis specific 2011 conclusion acts as the literal foundational slab for the 2023 thesis. *Technofeudalism* builds directly upward from \\\"Bankruptocracy.\\\" The entire 2023 claim that \\\"Cloud Capital\\\" was funded by \\\"poisoned central bank money\\\" rather than capitalist profit rests directly on the 2011 proof that the 2008 crash irreparably severed capital accumulation from real-world profit. If the reader rejects the 2011 premise that the Global Minotaur died and left a vacuum filled entirely by central bank fiat, the 2023 argument that Big Tech built its fiefdoms outside the traditional capitalist market mechanism has nothing to stand on.\\n\\nResting upon this chronological foundation is the **Vocabulary and Framing Channel**, where the architectural blueprints for 2023's concepts are first sketched. In *The Global Minotaur*, Varoufakis introduces the \\\"Handmaidens\\\" of the beast—specifically Wall Street and Walmart. The 2011 analysis of Walmart serves as the terrestrial prototype for the 2023 \\\"Cloud Fief.\\\" The 2011 text frames Walmart not as a traditional competitor, but as an \\\"extractive business model\\\" that engineers an \\\"ideology of cheapness\\\" to ruthlessly squeeze suppliers while dictating terms from above. This framing is a load-bearing prerequisite for *Technofeudalism*. By establishing in 2011 that monopsony power (Walmart) operates through *extraction* rather than *market competition*, Varoufakis builds the rhetorical runway necessary to claim in 2023 that algorithmic monopsony power (Amazon) operates through feudal *Rent* rather than capitalist *Profit*. Walmart is the physical skeletal frame; Amazon is simply the digital skin stretched over it.\\n\\nFinally, the **Audience and Authority Channels** act as the reinforcing rebar. By 2023, Varoufakis leverages his established authority as the coroner of the 2008 crash. Because *The Global Minotaur* successfully predicted the intractable nature of the post-2008 European debt crisis and the ensuing \\\"liquidity traps,\\\" the audience is primed to trust his even more radical claim a decade later: that the system we have been trapped in since the Minotaur's death is no longer capitalism at all.\\n\\n\\n### Strategic Relevance: Scanning Directives for Pass 2\\n\\nGiven the **Strong, Direct Precursor** relationship, this prior work requires a **High** level of investigative attention. *The Global Minotaur* is the Rosetta Stone for the target work. A missed structural link here will result in a fundamental misunderstanding of the target text's overarching logic. \\n\\nThe downstream scanning strategy must treat this text not as a separate book, but as \\\"Volume I\\\" of a continuous theoretical project. Pass 2 should prioritize the following structural joints and weak links:\\n\\n**1. Priority Dimension: The Mutation of \\\"Extraction\\\" (Rent vs. Profit)**\\n*   **Scanning Strategy:** The scanner must heavily scrutinize the 2011 text's treatment of \\\"profits\\\" generated by the Minotaur's handmaidens (Walmart, Wall Street). \\n*   **Expected Traces:** Look for the precise moment the vocabulary of *capitalist profit* begins to blur into the vocabulary of *parasitic rent*. If 2011's Walmart is described as extracting a toll from its suppliers, Pass 2 must document this as the direct conceptual ancestor of 2023's \\\"Cloud Rent.\\\" This is the single point of failure in both texts: the artificial boundary erected between dynamic profit and extractive rent.\\n\\n**2. Priority Dimension: The Geopolitical Substructure (The Rise of the Dragon)**\\n*   **Scanning Strategy:** Focus tightly on Chapter 8 of the 2011 text regarding China's lack of a Global Surplus Recycling Mechanism (GSRM) and its attempt to build its own \\\"Global Plan\\\" in Latin America and Africa.\\n*   **Expected Traces:** Map how this 2011 analysis forms the structural basis for 2023's \\\"New Cold War\\\" chapter. The scanner should look for early iterations of the \\\"Super Cloud Fief\\\" concept—specifically how the Chinese state operates as an integrated financial/technological nexus to bypass dollar hegemony. \\n\\n**3. Priority Dimension: The Migration of Agency and the \\\"Labor Theory\\\" Crisis**\\n*   **Scanning Strategy:** *Technofeudalism* suffers from an internal contradiction where exploitation shifts from waged physical labor (Proles) to unwaged experiential labor (Serfs). Pass 2 must scan the 2011 text to see where this shift begins.\\n*   **Expected Traces:** Examine how the 2011 text treats human labor. In *The Global Minotaur*, extraction still relies heavily on the physical exploitation of the Third World and the squeezing of the American working class. Trace the architectural transition: how does the text begin to prepare the reader for a world where *financialization* (2011) mutates into *cognitive/behavioral modification* (2023)?\\n\\n**Cost of Missed Classification:** If this text were incorrectly classified as merely an *indirect contextualizer*, the genealogical analysis would treat *Technofeudalism's* macro-economic claims (e.g., that central bank money severed profit from capital) as novel, unsupported assertions. By recognizing the structural dependency, Pass 2 will correctly identify that the 2023 book delegates all of its macro-economic heavy lifting to the foundations poured in 2011.\"}],\"section_trace\":[{\"order\":1,\"engine_key\":\"genealogy_relationship_classification\",\"title\":\"Relationship Comparison Map\",\"provenance_pointer\":{\"job_id\":\"proof-round4-adaptive-balance-final-1774012011\",\"output_id\":\"po-proof-round4-adaptive-balance-final-1774012011-2-eb5c9863\",\"phase_number\":1.5,\"pass_number\":2,\"engine_key\":\"genealogy_relationship_classification\"},\"role_hint\":\"comparison_map\",\"rationale\":\"Derived from the analyzer-owned relationship-classification output already saved for the genealogy result.\"}],\"handoff_notes\":[\"Derived only from analyzer-owned saved-result truth; no analysis rerun and no host-local semantic reconstruction.\",\"Lower through the thin compose-from-intent adapter only; do not widen the presenter boundary in this slice.\"]},\"aoi_selection_blocked_reason_code\":null,\"aoi_selection_blocked_reason_detail\":null,\"rejected_planning_alternatives\":[{\"alternative_key\":\"influence_thematic\",\"rejection_reason\":\"lower_signal_score_than_selected_candidate\",\"details\":[]}],\"trace\":[{\"stage\":\"effective_task_request\",\"details\":{\"consumer_key\":\"the-critic\",\"source_mode\":\"saved_result\",\"context_mode\":\"saved_result\"}},{\"stage\":\"routing_reuse\",\"details\":{\"status\":\"provided_and_validated\",\"reused_fields\":[\"selected_objective_key\",\"selected_workflow_key\",\"routing_outcome\",\"launch_contract_kind\",\"source_sufficiency_status\"]}},{\"stage\":\"hydration_evaluation\",\"details\":{\"status\":\"satisfied\",\"context_mode\":\"saved_result\"}},{\"stage\":\"genealogy_saved_result_section_extraction\",\"details\":{\"source_v2_job_id\":\"proof-round4-adaptive-balance-final-1774012011\",\"section_count\":1,\"sections\":[{\"engine_key\":\"genealogy_relationship_classification\",\"title\":\"Relationship Comparison Map\"}]}},{\"stage\":\"planning_decision\",\"details\":{\"planning_outcome_kind\":\"direct_sections_composition_handoff_plan\",\"downstream_readiness\":\"ready_for_direct_sections_compose_handoff\"}}]}"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8002/v1/orchestrator/planning-decisions/planning-decision-b1600d054991",
+      "postData": null,
+      "status": 200,
+      "responseBody": "{\"planning_decision_id\":\"planning-decision-b1600d054991\",\"created_at\":\"2026-03-28T01:20:48.394522+00:00\",\"workflow_key\":\"intellectual_genealogy\",\"consumer_key\":\"the-critic\",\"selected_source_thinker_id\":null,\"selected_source_thinker_name\":null,\"source_v2_job_id\":\"proof-round4-adaptive-balance-final-1774012011\",\"task_request\":{\"task\":\"Trace the genealogy and intellectual development visible in this saved result.\",\"objective_hint\":null,\"audience\":null,\"desired_depth\":null,\"style_expectations\":null,\"workflow_hint\":\"intellectual_genealogy\",\"consumer_key\":\"the-critic\",\"source_constraints\":{\"source_mode\":\"saved_result\",\"selected_source_thinker_id\":null,\"selected_source_thinker_name\":null,\"source_analysis_id\":null,\"source_v2_job_id\":\"proof-round4-adaptive-balance-final-1774012011\"}},\"routing_decision\":{\"normalized_task_summary\":\"Trace the genealogy and intellectual development visible in this saved result.\",\"selected_objective_key\":\"genealogical\",\"selected_workflow_key\":\"intellectual_genealogy\",\"routing_outcome\":\"genealogy_transient_source_backed\",\"routing_confidence\":\"medium\",\"launch_contract_kind\":\"planner.direct_sections_compose_handoff\",\"source_sufficiency_status\":\"sufficient\",\"required_fields\":[\"workflow_key\",\"consumer_key\",\"source_v2_job_id\"],\"required_host_preparation\":[\"Call plan-task with saved_result planning context to resolve a bounded direct-sections handoff before launch.\"],\"downstream_launch_contract\":{\"method\":\"POST\",\"endpoint\":\"/v1/orchestrator/plan-task\",\"request_fields\":{\"task_request.workflow_hint\":\"intellectual_genealogy\",\"task_request.consumer_key\":\"the-critic\",\"planning_context.context_mode\":\"saved_result\",\"planning_context.source_v2_job_id\":\"proof-round4-adaptive-balance-final-1774012011\"},\"followup_contract_kind\":\"planner.direct_sections_compose_handoff\",\"advisory_only\":true},\"rejected_candidates\":[{\"objective_key\":\"influence_thematic\",\"rejection_reason\":\"lower_signal_score_than_selected_candidate\",\"details\":[]}],\"trace\":[{\"stage\":\"task_normalization\",\"details\":{\"normalized_task_summary\":\"Trace the genealogy and intellectual development visible in this saved result.\",\"audience\":null,\"desired_depth\":null,\"style_expectations\":null}},{\"stage\":\"objective_candidate_scoring\",\"details\":{\"objective_hint\":null,\"objective_hint_status\":\"not_provided\",\"workflow_hint\":\"intellectual_genealogy\",\"workflow_hint_status\":\"accepted_as_consistent\",\"candidates\":[{\"objective_key\":\"influence_thematic\",\"workflow_key\":\"anxiety_of_influence_thematic_single_thinker\",\"signal_score\":0,\"positive_signals\":[],\"source_mode\":\"saved_result\",\"source_mode_compatible\":true},{\"objective_key\":\"genealogical\",\"workflow_key\":\"intellectual_genealogy\",\"signal_score\":1,\"positive_signals\":[\"genealogy\"],\"source_mode\":\"saved_result\",\"source_mode_compatible\":true}]}},{\"stage\":\"source_sufficiency_evaluation\",\"details\":{\"selected_objective_key\":\"genealogical\",\"selected_workflow_key\":\"intellectual_genealogy\",\"source_mode\":\"saved_result\",\"source_sufficiency_status\":\"sufficient\",\"sufficiency_reasons\":[]}},{\"stage\":\"routing_decision\",\"details\":{\"routing_outcome\":\"genealogy_transient_source_backed\",\"routing_confidence\":\"medium\",\"launch_contract_kind\":\"planner.direct_sections_compose_handoff\",\"selected_objective_key\":\"genealogical\",\"selected_workflow_key\":\"intellectual_genealogy\",\"required_fields\":[\"workflow_key\",\"consumer_key\",\"source_v2_job_id\"],\"required_host_preparation\":[\"Call plan-task with saved_result planning context to resolve a bounded direct-sections handoff before launch.\"]}}]},\"planning_decision\":{\"normalized_task_summary\":\"Trace the genealogy and intellectual development visible in this saved result.\",\"planning_decision_id\":\"planning-decision-b1600d054991\",\"routing_decision\":{\"normalized_task_summary\":\"Trace the genealogy and intellectual development visible in this saved result.\",\"selected_objective_key\":\"genealogical\",\"selected_workflow_key\":\"intellectual_genealogy\",\"routing_outcome\":\"genealogy_transient_source_backed\",\"routing_confidence\":\"medium\",\"launch_contract_kind\":\"planner.direct_sections_compose_handoff\",\"source_sufficiency_status\":\"sufficient\",\"required_fields\":[\"workflow_key\",\"consumer_key\",\"source_v2_job_id\"],\"required_host_preparation\":[\"Call plan-task with saved_result planning context to resolve a bounded direct-sections handoff before launch.\"],\"downstream_launch_contract\":{\"method\":\"POST\",\"endpoint\":\"/v1/orchestrator/plan-task\",\"request_fields\":{\"task_request.workflow_hint\":\"intellectual_genealogy\",\"task_request.consumer_key\":\"the-critic\",\"planning_context.context_mode\":\"saved_result\",\"planning_context.source_v2_job_id\":\"proof-round4-adaptive-balance-final-1774012011\"},\"followup_contract_kind\":\"planner.direct_sections_compose_handoff\",\"advisory_only\":true},\"rejected_candidates\":[{\"objective_key\":\"influence_thematic\",\"rejection_reason\":\"lower_signal_score_than_selected_candidate\",\"details\":[]}],\"trace\":[{\"stage\":\"task_normalization\",\"details\":{\"normalized_task_summary\":\"Trace the genealogy and intellectual development visible in this saved result.\",\"audience\":null,\"desired_depth\":null,\"style_expectations\":null}},{\"stage\":\"objective_candidate_scoring\",\"details\":{\"objective_hint\":null,\"objective_hint_status\":\"not_provided\",\"workflow_hint\":\"intellectual_genealogy\",\"workflow_hint_status\":\"accepted_as_consistent\",\"candidates\":[{\"objective_key\":\"influence_thematic\",\"workflow_key\":\"anxiety_of_influence_thematic_single_thinker\",\"signal_score\":0,\"positive_signals\":[],\"source_mode\":\"saved_result\",\"source_mode_compatible\":true},{\"objective_key\":\"genealogical\",\"workflow_key\":\"intellectual_genealogy\",\"signal_score\":1,\"positive_signals\":[\"genealogy\"],\"source_mode\":\"saved_result\",\"source_mode_compatible\":true}]}},{\"stage\":\"source_sufficiency_evaluation\",\"details\":{\"selected_objective_key\":\"genealogical\",\"selected_workflow_key\":\"intellectual_genealogy\",\"source_mode\":\"saved_result\",\"source_sufficiency_status\":\"sufficient\",\"sufficiency_reasons\":[]}},{\"stage\":\"routing_decision\",\"details\":{\"routing_outcome\":\"genealogy_transient_source_backed\",\"routing_confidence\":\"medium\",\"launch_contract_kind\":\"planner.direct_sections_compose_handoff\",\"selected_objective_key\":\"genealogical\",\"selected_workflow_key\":\"intellectual_genealogy\",\"required_fields\":[\"workflow_key\",\"consumer_key\",\"source_v2_job_id\"],\"required_host_preparation\":[\"Call plan-task with saved_result planning context to resolve a bounded direct-sections handoff before launch.\"]}}]},\"planning_outcome_kind\":\"direct_sections_composition_handoff_plan\",\"planning_confidence\":\"medium\",\"hydration_status\":\"satisfied\",\"required_hydration\":[],\"required_host_preparation\":[\"Lower the persisted direct-sections handoff into compose-from-intent without host-side semantic reconstruction.\"],\"downstream_readiness\":\"ready_for_direct_sections_compose_handoff\",\"downstream_followup_contract\":{\"method\":\"POST\",\"endpoint\":\"/v1/presenter/compose-from-intent\",\"handoff_kind\":\"direct_sections\",\"request_fields\":{\"workflow_key\":\"intellectual_genealogy\",\"consumer_key\":\"the-critic\",\"user_intent\":\"Trace the genealogy and intellectual development visible in this saved result.\",\"prose_sections\":\"<lower from direct_sections_composition_handoff_plan>\"}},\"hydrated_document_ids\":{},\"workflow_execution_plan\":null,\"aoi_composition_handoff_plan\":null,\"direct_sections_composition_handoff_plan\":{\"workflow_key\":\"intellectual_genealogy\",\"objective_key\":\"genealogical\",\"consumer_key\":\"the-critic\",\"source_v2_job_id\":\"proof-round4-adaptive-balance-final-1774012011\",\"compose_entrypoint_kind\":\"presenter.compose_from_intent\",\"resolved_intent_seed\":\"Trace the genealogy and intellectual development visible in this saved result.\",\"prose_sections\":[{\"engine_key\":\"genealogy_relationship_classification\",\"title\":\"Relationship Comparison Map\",\"prose\":\"### Influence Channels: The Load-Bearing Architecture of a Sequential Epoch\\n\\nTo understand the relationship between *The Global Minotaur* (2011) and *Technofeudalism* (2023) is to examine a continuous feat of structural engineering. The 2011 text does not merely provide contextual scaffolding; it pours the concrete foundation upon which the towering, top-heavy edifice of the 2023 argument is constructed. Through the channels of methodology, framing, and vocabulary, Varoufakis engineers a strict chronological dependency. If we pull the foundational pillars forged in the 2011 text out from under the 2023 thesis, the entire superstructure of *Technofeudalism* immediately collapses.\\n\\nThe primary load-bearing pillar transferred from the prior work to the target work is the **Methodological Channel of Macro-Historical Sequencing**. *Technofeudalism* depends entirely on a highly specific timeline of global surplus recycling. In *The Global Minotaur*, Varoufakis constructs a structural logic where capitalism survives *only* through distinct, epochal mechanisms of surplus distribution: the Global Plan (1944–1971), followed by the Global Minotaur (1971–2008). The 2011 text ends with the structural ruin of this final mechanism—a phase Varoufakis names \\\"Bankruptocracy,\\\" where the state desperately pumps fiat liquidity (\\\"quantitative easing\\\") into dead zombie banks. \\n\\nThis specific 2011 conclusion acts as the literal foundational slab for the 2023 thesis. *Technofeudalism* builds directly upward from \\\"Bankruptocracy.\\\" The entire 2023 claim that \\\"Cloud Capital\\\" was funded by \\\"poisoned central bank money\\\" rather than capitalist profit rests directly on the 2011 proof that the 2008 crash irreparably severed capital accumulation from real-world profit. If the reader rejects the 2011 premise that the Global Minotaur died and left a vacuum filled entirely by central bank fiat, the 2023 argument that Big Tech built its fiefdoms outside the traditional capitalist market mechanism has nothing to stand on.\\n\\nResting upon this chronological foundation is the **Vocabulary and Framing Channel**, where the architectural blueprints for 2023's concepts are first sketched. In *The Global Minotaur*, Varoufakis introduces the \\\"Handmaidens\\\" of the beast—specifically Wall Street and Walmart. The 2011 analysis of Walmart serves as the terrestrial prototype for the 2023 \\\"Cloud Fief.\\\" The 2011 text frames Walmart not as a traditional competitor, but as an \\\"extractive business model\\\" that engineers an \\\"ideology of cheapness\\\" to ruthlessly squeeze suppliers while dictating terms from above. This framing is a load-bearing prerequisite for *Technofeudalism*. By establishing in 2011 that monopsony power (Walmart) operates through *extraction* rather than *market competition*, Varoufakis builds the rhetorical runway necessary to claim in 2023 that algorithmic monopsony power (Amazon) operates through feudal *Rent* rather than capitalist *Profit*. Walmart is the physical skeletal frame; Amazon is simply the digital skin stretched over it.\\n\\nFinally, the **Audience and Authority Channels** act as the reinforcing rebar. By 2023, Varoufakis leverages his established authority as the coroner of the 2008 crash. Because *The Global Minotaur* successfully predicted the intractable nature of the post-2008 European debt crisis and the ensuing \\\"liquidity traps,\\\" the audience is primed to trust his even more radical claim a decade later: that the system we have been trapped in since the Minotaur's death is no longer capitalism at all.\\n\\n\\n### Strategic Relevance: Scanning Directives for Pass 2\\n\\nGiven the **Strong, Direct Precursor** relationship, this prior work requires a **High** level of investigative attention. *The Global Minotaur* is the Rosetta Stone for the target work. A missed structural link here will result in a fundamental misunderstanding of the target text's overarching logic. \\n\\nThe downstream scanning strategy must treat this text not as a separate book, but as \\\"Volume I\\\" of a continuous theoretical project. Pass 2 should prioritize the following structural joints and weak links:\\n\\n**1. Priority Dimension: The Mutation of \\\"Extraction\\\" (Rent vs. Profit)**\\n*   **Scanning Strategy:** The scanner must heavily scrutinize the 2011 text's treatment of \\\"profits\\\" generated by the Minotaur's handmaidens (Walmart, Wall Street). \\n*   **Expected Traces:** Look for the precise moment the vocabulary of *capitalist profit* begins to blur into the vocabulary of *parasitic rent*. If 2011's Walmart is described as extracting a toll from its suppliers, Pass 2 must document this as the direct conceptual ancestor of 2023's \\\"Cloud Rent.\\\" This is the single point of failure in both texts: the artificial boundary erected between dynamic profit and extractive rent.\\n\\n**2. Priority Dimension: The Geopolitical Substructure (The Rise of the Dragon)**\\n*   **Scanning Strategy:** Focus tightly on Chapter 8 of the 2011 text regarding China's lack of a Global Surplus Recycling Mechanism (GSRM) and its attempt to build its own \\\"Global Plan\\\" in Latin America and Africa.\\n*   **Expected Traces:** Map how this 2011 analysis forms the structural basis for 2023's \\\"New Cold War\\\" chapter. The scanner should look for early iterations of the \\\"Super Cloud Fief\\\" concept—specifically how the Chinese state operates as an integrated financial/technological nexus to bypass dollar hegemony. \\n\\n**3. Priority Dimension: The Migration of Agency and the \\\"Labor Theory\\\" Crisis**\\n*   **Scanning Strategy:** *Technofeudalism* suffers from an internal contradiction where exploitation shifts from waged physical labor (Proles) to unwaged experiential labor (Serfs). Pass 2 must scan the 2011 text to see where this shift begins.\\n*   **Expected Traces:** Examine how the 2011 text treats human labor. In *The Global Minotaur*, extraction still relies heavily on the physical exploitation of the Third World and the squeezing of the American working class. Trace the architectural transition: how does the text begin to prepare the reader for a world where *financialization* (2011) mutates into *cognitive/behavioral modification* (2023)?\\n\\n**Cost of Missed Classification:** If this text were incorrectly classified as merely an *indirect contextualizer*, the genealogical analysis would treat *Technofeudalism's* macro-economic claims (e.g., that central bank money severed profit from capital) as novel, unsupported assertions. By recognizing the structural dependency, Pass 2 will correctly identify that the 2023 book delegates all of its macro-economic heavy lifting to the foundations poured in 2011.\"}],\"section_trace\":[{\"order\":1,\"engine_key\":\"genealogy_relationship_classification\",\"title\":\"Relationship Comparison Map\",\"provenance_pointer\":{\"job_id\":\"proof-round4-adaptive-balance-final-1774012011\",\"output_id\":\"po-proof-round4-adaptive-balance-final-1774012011-2-eb5c9863\",\"phase_number\":1.5,\"pass_number\":2,\"engine_key\":\"genealogy_relationship_classification\"},\"role_hint\":\"comparison_map\",\"rationale\":\"Derived from the analyzer-owned relationship-classification output already saved for the genealogy result.\"}],\"handoff_notes\":[\"Derived only from analyzer-owned saved-result truth; no analysis rerun and no host-local semantic reconstruction.\",\"Lower through the thin compose-from-intent adapter only; do not widen the presenter boundary in this slice.\"]},\"aoi_selection_blocked_reason_code\":null,\"aoi_selection_blocked_reason_detail\":null,\"rejected_planning_alternatives\":[{\"alternative_key\":\"influence_thematic\",\"rejection_reason\":\"lower_signal_score_than_selected_candidate\",\"details\":[]}],\"trace\":[{\"stage\":\"effective_task_request\",\"details\":{\"consumer_key\":\"the-critic\",\"source_mode\":\"saved_result\",\"context_mode\":\"saved_result\"}},{\"stage\":\"routing_reuse\",\"details\":{\"status\":\"provided_and_validated\",\"reused_fields\":[\"selected_objective_key\",\"selected_workflow_key\",\"routing_outcome\",\"launch_contract_kind\",\"source_sufficiency_status\"]}},{\"stage\":\"hydration_evaluation\",\"details\":{\"status\":\"satisfied\",\"context_mode\":\"saved_result\"}},{\"stage\":\"genealogy_saved_result_section_extraction\",\"details\":{\"source_v2_job_id\":\"proof-round4-adaptive-balance-final-1774012011\",\"section_count\":1,\"sections\":[{\"engine_key\":\"genealogy_relationship_classification\",\"title\":\"Relationship Comparison Map\"}]}},{\"stage\":\"planning_decision\",\"details\":{\"planning_outcome_kind\":\"direct_sections_composition_handoff_plan\",\"downstream_readiness\":\"ready_for_direct_sections_compose_handoff\"}}]}}"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8002/v1/orchestrator/planning-decisions/planning-decision-b1600d054991/compose-from-intent-request?consumer_key=the-critic",
+      "postData": null,
+      "status": 200,
+      "responseBody": "{\"workflow_key\":\"intellectual_genealogy\",\"consumer_key\":\"the-critic\",\"user_intent\":\"Trace the genealogy and intellectual development visible in this saved result.\",\"prose_sections\":[{\"engine_key\":\"genealogy_relationship_classification\",\"title\":\"Relationship Comparison Map\",\"prose\":\"### Influence Channels: The Load-Bearing Architecture of a Sequential Epoch\\n\\nTo understand the relationship between *The Global Minotaur* (2011) and *Technofeudalism* (2023) is to examine a continuous feat of structural engineering. The 2011 text does not merely provide contextual scaffolding; it pours the concrete foundation upon which the towering, top-heavy edifice of the 2023 argument is constructed. Through the channels of methodology, framing, and vocabulary, Varoufakis engineers a strict chronological dependency. If we pull the foundational pillars forged in the 2011 text out from under the 2023 thesis, the entire superstructure of *Technofeudalism* immediately collapses.\\n\\nThe primary load-bearing pillar transferred from the prior work to the target work is the **Methodological Channel of Macro-Historical Sequencing**. *Technofeudalism* depends entirely on a highly specific timeline of global surplus recycling. In *The Global Minotaur*, Varoufakis constructs a structural logic where capitalism survives *only* through distinct, epochal mechanisms of surplus distribution: the Global Plan (1944–1971), followed by the Global Minotaur (1971–2008). The 2011 text ends with the structural ruin of this final mechanism—a phase Varoufakis names \\\"Bankruptocracy,\\\" where the state desperately pumps fiat liquidity (\\\"quantitative easing\\\") into dead zombie banks. \\n\\nThis specific 2011 conclusion acts as the literal foundational slab for the 2023 thesis. *Technofeudalism* builds directly upward from \\\"Bankruptocracy.\\\" The entire 2023 claim that \\\"Cloud Capital\\\" was funded by \\\"poisoned central bank money\\\" rather than capitalist profit rests directly on the 2011 proof that the 2008 crash irreparably severed capital accumulation from real-world profit. If the reader rejects the 2011 premise that the Global Minotaur died and left a vacuum filled entirely by central bank fiat, the 2023 argument that Big Tech built its fiefdoms outside the traditional capitalist market mechanism has nothing to stand on.\\n\\nResting upon this chronological foundation is the **Vocabulary and Framing Channel**, where the architectural blueprints for 2023's concepts are first sketched. In *The Global Minotaur*, Varoufakis introduces the \\\"Handmaidens\\\" of the beast—specifically Wall Street and Walmart. The 2011 analysis of Walmart serves as the terrestrial prototype for the 2023 \\\"Cloud Fief.\\\" The 2011 text frames Walmart not as a traditional competitor, but as an \\\"extractive business model\\\" that engineers an \\\"ideology of cheapness\\\" to ruthlessly squeeze suppliers while dictating terms from above. This framing is a load-bearing prerequisite for *Technofeudalism*. By establishing in 2011 that monopsony power (Walmart) operates through *extraction* rather than *market competition*, Varoufakis builds the rhetorical runway necessary to claim in 2023 that algorithmic monopsony power (Amazon) operates through feudal *Rent* rather than capitalist *Profit*. Walmart is the physical skeletal frame; Amazon is simply the digital skin stretched over it.\\n\\nFinally, the **Audience and Authority Channels** act as the reinforcing rebar. By 2023, Varoufakis leverages his established authority as the coroner of the 2008 crash. Because *The Global Minotaur* successfully predicted the intractable nature of the post-2008 European debt crisis and the ensuing \\\"liquidity traps,\\\" the audience is primed to trust his even more radical claim a decade later: that the system we have been trapped in since the Minotaur's death is no longer capitalism at all.\\n\\n\\n### Strategic Relevance: Scanning Directives for Pass 2\\n\\nGiven the **Strong, Direct Precursor** relationship, this prior work requires a **High** level of investigative attention. *The Global Minotaur* is the Rosetta Stone for the target work. A missed structural link here will result in a fundamental misunderstanding of the target text's overarching logic. \\n\\nThe downstream scanning strategy must treat this text not as a separate book, but as \\\"Volume I\\\" of a continuous theoretical project. Pass 2 should prioritize the following structural joints and weak links:\\n\\n**1. Priority Dimension: The Mutation of \\\"Extraction\\\" (Rent vs. Profit)**\\n*   **Scanning Strategy:** The scanner must heavily scrutinize the 2011 text's treatment of \\\"profits\\\" generated by the Minotaur's handmaidens (Walmart, Wall Street). \\n*   **Expected Traces:** Look for the precise moment the vocabulary of *capitalist profit* begins to blur into the vocabulary of *parasitic rent*. If 2011's Walmart is described as extracting a toll from its suppliers, Pass 2 must document this as the direct conceptual ancestor of 2023's \\\"Cloud Rent.\\\" This is the single point of failure in both texts: the artificial boundary erected between dynamic profit and extractive rent.\\n\\n**2. Priority Dimension: The Geopolitical Substructure (The Rise of the Dragon)**\\n*   **Scanning Strategy:** Focus tightly on Chapter 8 of the 2011 text regarding China's lack of a Global Surplus Recycling Mechanism (GSRM) and its attempt to build its own \\\"Global Plan\\\" in Latin America and Africa.\\n*   **Expected Traces:** Map how this 2011 analysis forms the structural basis for 2023's \\\"New Cold War\\\" chapter. The scanner should look for early iterations of the \\\"Super Cloud Fief\\\" concept—specifically how the Chinese state operates as an integrated financial/technological nexus to bypass dollar hegemony. \\n\\n**3. Priority Dimension: The Migration of Agency and the \\\"Labor Theory\\\" Crisis**\\n*   **Scanning Strategy:** *Technofeudalism* suffers from an internal contradiction where exploitation shifts from waged physical labor (Proles) to unwaged experiential labor (Serfs). Pass 2 must scan the 2011 text to see where this shift begins.\\n*   **Expected Traces:** Examine how the 2011 text treats human labor. In *The Global Minotaur*, extraction still relies heavily on the physical exploitation of the Third World and the squeezing of the American working class. Trace the architectural transition: how does the text begin to prepare the reader for a world where *financialization* (2011) mutates into *cognitive/behavioral modification* (2023)?\\n\\n**Cost of Missed Classification:** If this text were incorrectly classified as merely an *indirect contextualizer*, the genealogical analysis would treat *Technofeudalism's* macro-economic claims (e.g., that central bank money severed profit from capital) as novel, unsupported assertions. By recognizing the structural dependency, Pass 2 will correctly identify that the 2023 book delegates all of its macro-economic heavy lifting to the foundations poured in 2011.\"}],\"style_school\":null,\"audience\":null}"
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:8002/v1/presenter/compose-from-intent",
+      "postData": "{\"workflow_key\":\"intellectual_genealogy\",\"consumer_key\":\"the-critic\",\"user_intent\":\"Trace the genealogy and intellectual development visible in this saved result.\",\"prose_sections\":[{\"engine_key\":\"genealogy_relationship_classification\",\"title\":\"Relationship Comparison Map\",\"prose\":\"### Influence Channels: The Load-Bearing Architecture of a Sequential Epoch\\n\\nTo understand the relationship between *The Global Minotaur* (2011) and *Technofeudalism* (2023) is to examine a continuous feat of structural engineering. The 2011 text does not merely provide contextual scaffolding; it pours the concrete foundation upon which the towering, top-heavy edifice of the 2023 argument is constructed. Through the channels of methodology, framing, and vocabulary, Varoufakis engineers a strict chronological dependency. If we pull the foundational pillars forged in the 2011 text out from under the 2023 thesis, the entire superstructure of *Technofeudalism* immediately collapses.\\n\\nThe primary load-bearing pillar transferred from the prior work to the target work is the **Methodological Channel of Macro-Historical Sequencing**. *Technofeudalism* depends entirely on a highly specific timeline of global surplus recycling. In *The Global Minotaur*, Varoufakis constructs a structural logic where capitalism survives *only* through distinct, epochal mechanisms of surplus distribution: the Global Plan (1944–1971), followed by the Global Minotaur (1971–2008). The 2011 text ends with the structural ruin of this final mechanism—a phase Varoufakis names \\\"Bankruptocracy,\\\" where the state desperately pumps fiat liquidity (\\\"quantitative easing\\\") into dead zombie banks. \\n\\nThis specific 2011 conclusion acts as the literal foundational slab for the 2023 thesis. *Technofeudalism* builds directly upward from \\\"Bankruptocracy.\\\" The entire 2023 claim that \\\"Cloud Capital\\\" was funded by \\\"poisoned central bank money\\\" rather than capitalist profit rests directly on the 2011 proof that the 2008 crash irreparably severed capital accumulation from real-world profit. If the reader rejects the 2011 premise that the Global Minotaur died and left a vacuum filled entirely by central bank fiat, the 2023 argument that Big Tech built its fiefdoms outside the traditional capitalist market mechanism has nothing to stand on.\\n\\nResting upon this chronological foundation is the **Vocabulary and Framing Channel**, where the architectural blueprints for 2023's concepts are first sketched. In *The Global Minotaur*, Varoufakis introduces the \\\"Handmaidens\\\" of the beast—specifically Wall Street and Walmart. The 2011 analysis of Walmart serves as the terrestrial prototype for the 2023 \\\"Cloud Fief.\\\" The 2011 text frames Walmart not as a traditional competitor, but as an \\\"extractive business model\\\" that engineers an \\\"ideology of cheapness\\\" to ruthlessly squeeze suppliers while dictating terms from above. This framing is a load-bearing prerequisite for *Technofeudalism*. By establishing in 2011 that monopsony power (Walmart) operates through *extraction* rather than *market competition*, Varoufakis builds the rhetorical runway necessary to claim in 2023 that algorithmic monopsony power (Amazon) operates through feudal *Rent* rather than capitalist *Profit*. Walmart is the physical skeletal frame; Amazon is simply the digital skin stretched over it.\\n\\nFinally, the **Audience and Authority Channels** act as the reinforcing rebar. By 2023, Varoufakis leverages his established authority as the coroner of the 2008 crash. Because *The Global Minotaur* successfully predicted the intractable nature of the post-2008 European debt crisis and the ensuing \\\"liquidity traps,\\\" the audience is primed to trust his even more radical claim a decade later: that the system we have been trapped in since the Minotaur's death is no longer capitalism at all.\\n\\n\\n### Strategic Relevance: Scanning Directives for Pass 2\\n\\nGiven the **Strong, Direct Precursor** relationship, this prior work requires a **High** level of investigative attention. *The Global Minotaur* is the Rosetta Stone for the target work. A missed structural link here will result in a fundamental misunderstanding of the target text's overarching logic. \\n\\nThe downstream scanning strategy must treat this text not as a separate book, but as \\\"Volume I\\\" of a continuous theoretical project. Pass 2 should prioritize the following structural joints and weak links:\\n\\n**1. Priority Dimension: The Mutation of \\\"Extraction\\\" (Rent vs. Profit)**\\n*   **Scanning Strategy:** The scanner must heavily scrutinize the 2011 text's treatment of \\\"profits\\\" generated by the Minotaur's handmaidens (Walmart, Wall Street). \\n*   **Expected Traces:** Look for the precise moment the vocabulary of *capitalist profit* begins to blur into the vocabulary of *parasitic rent*. If 2011's Walmart is described as extracting a toll from its suppliers, Pass 2 must document this as the direct conceptual ancestor of 2023's \\\"Cloud Rent.\\\" This is the single point of failure in both texts: the artificial boundary erected between dynamic profit and extractive rent.\\n\\n**2. Priority Dimension: The Geopolitical Substructure (The Rise of the Dragon)**\\n*   **Scanning Strategy:** Focus tightly on Chapter 8 of the 2011 text regarding China's lack of a Global Surplus Recycling Mechanism (GSRM) and its attempt to build its own \\\"Global Plan\\\" in Latin America and Africa.\\n*   **Expected Traces:** Map how this 2011 analysis forms the structural basis for 2023's \\\"New Cold War\\\" chapter. The scanner should look for early iterations of the \\\"Super Cloud Fief\\\" concept—specifically how the Chinese state operates as an integrated financial/technological nexus to bypass dollar hegemony. \\n\\n**3. Priority Dimension: The Migration of Agency and the \\\"Labor Theory\\\" Crisis**\\n*   **Scanning Strategy:** *Technofeudalism* suffers from an internal contradiction where exploitation shifts from waged physical labor (Proles) to unwaged experiential labor (Serfs). Pass 2 must scan the 2011 text to see where this shift begins.\\n*   **Expected Traces:** Examine how the 2011 text treats human labor. In *The Global Minotaur*, extraction still relies heavily on the physical exploitation of the Third World and the squeezing of the American working class. Trace the architectural transition: how does the text begin to prepare the reader for a world where *financialization* (2011) mutates into *cognitive/behavioral modification* (2023)?\\n\\n**Cost of Missed Classification:** If this text were incorrectly classified as merely an *indirect contextualizer*, the genealogical analysis would treat *Technofeudalism's* macro-economic claims (e.g., that central bank money severed profit from capital) as novel, unsupported assertions. By recognizing the structural dependency, Pass 2 will correctly identify that the 2023 book delegates all of its macro-economic heavy lifting to the foundations poured in 2011.\"}],\"style_school\":null,\"audience\":null}",
+      "status": 200,
+      "responseBody": "{\"presentation\":{\"workflow_key\":\"intellectual_genealogy\",\"consumer_key\":\"the-critic\",\"presentation_contract_version\":1,\"presentation_hash\":\"c4490cdddca9621c4f967995d7c9450ae2e15c5a439f8be45bc5c3080989e57d\",\"presentation_content_hash\":\"e3bf5126b54a3d9540a5b57eb02c7b7541f95908fe896c23b356138a42379f4a\",\"resolver_version\":\"compose-from-intent-v2\",\"style_school\":\"explanatory_narrative\",\"views\":[{\"view_key\":\"compose_intent_01_genealogy_relationship_classification\",\"view_name\":\"Relationship Comparison Map\",\"description\":\"Grouped comparison map for Relationship Comparison Map.\",\"renderer_type\":\"card_grid\",\"renderer_config\":{\"group_by\":\"_category\",\"columns\":2,\"expandable\":true,\"title_field\":\"relationship_type\",\"subtitle_field\":\"relationship_strength\",\"badge_field\":\"relationship_strength\",\"description_field\":\"relationship_evidence\",\"expanded_fields\":[\"influence_channels\",\"strategic_relevance\"],\"group_style_map\":{\"direct_precursor\":{\"color\":\"#1a6b3c\",\"label\":\"Direct Precursor\"},\"indirect_contextualizer\":{\"color\":\"#4a6b8a\",\"label\":\"Indirect Contextualizer\"},\"methodological_ancestor\":{\"color\":\"#7a4a8a\",\"label\":\"Methodological Ancestor\"},\"contradicted_position\":{\"color\":\"#8a2a2a\",\"label\":\"Contradicted Position\"},\"parallel_development\":{\"color\":\"#8a6a1a\",\"label\":\"Parallel Development\"}},\"badge_style_map\":{\"strong\":{\"color\":\"#1a6b3c\",\"label\":\"Strong\"},\"moderate\":{\"color\":\"#8a6a1a\",\"label\":\"Moderate\"},\"weak\":{\"color\":\"#6b6b6b\",\"label\":\"Weak\"}}},\"presentation_stance\":\"comparison\",\"rationale\":\"Matched comparison semantics to a grouped card grid for side-by-side scanning.\",\"engine_key\":\"genealogy_relationship_classification\",\"position\":1.0,\"visibility\":\"if_data_exists\",\"has_structured_data\":true,\"structured_data\":{\"influence_channels\":[{\"channel\":\"methodology\",\"description\":\"The Global Minotaur establishes a macro-historical sequencing methodology based on epochal mechanisms of global surplus recycling (Global Plan 1944-1971; Global Minotaur 1971-2008; Bankruptocracy post-2008) that becomes the chronological architecture for Technofeudalism's periodization.\"},{\"channel\":\"causal_mechanism\",\"description\":\"The 2011 proof that the 2008 crash severed capital accumulation from real-world profit forms the causal bedrock for the 2023 claim that Big Tech built fiefdoms outside traditional capitalist markets through central bank-funded 'poisoned money.'\"},{\"channel\":\"framework\",\"description\":\"The Global Minotaur's framework of monopsony extraction through ideology (Walmart's 'ideology of cheapness') provides the rhetorical and conceptual template for Technofeudalism's analysis of algorithmic monopsony as feudal rent rather than capitalist profit.\"},{\"channel\":\"vocabulary\",\"description\":\"Key concepts like 'Handmaidens,' 'extractive business model,' and the distinction between extraction and market competition are transferred wholesale from the 2011 text to scaffold the 2023 argument about Cloud Fiefs.\"},{\"channel\":\"authority\",\"description\":\"Varoufakis's established authority from successfully predicting the post-2008 European debt crisis and liquidity traps in the 2011 text primes audiences to accept his more radical 2023 claim that the post-Minotaur system is no longer capitalism at all.\"},{\"channel\":\"periodization\",\"description\":\"The Global Minotaur's specific demarcation of the Bankruptocracy phase as the structural end of one system creates the temporal demarcation point from which Technofeudalism begins, making it a prerequisite for the entire periodization scheme of the later work.\"}],\"key_evidence\":[{\"evidence_type\":\"causal_chain_dependency\",\"description\":\"The 2023 argument that Cloud Capital was funded by 'poisoned central bank money' depends entirely on the 2011 proof that the 2008 crash irreparably severed capital accumulation from real-world profit. Without this 2011 premise, the 2023 thesis about Big Tech fiefdoms has no foundation.\",\"quote\":\"If the reader rejects the 2011 premise that the Global Minotaur died and left a vacuum filled entirely by central bank fiat, the 2023 argument that Big Tech built its fiefdoms outside the traditional capitalist market mechanism has nothing to stand on.\"},{\"evidence_type\":\"conceptual_import\",\"description\":\"The Global Minotaur's analysis of Walmart as an 'extractive business model' using an 'ideology of cheapness' to squeeze suppliers serves as the terrestrial prototype for Technofeudalism's concept of Cloud Fiefs and algorithmic monopsony.\",\"quote\":\"The 2011 analysis of Walmart serves as the terrestrial prototype for the 2023 'Cloud Fief.' The 2011 text frames Walmart not as a traditional competitor, but as an 'extractive business model' that engineers an 'ideology of cheapness' to ruthlessly squeeze suppliers while dictating terms from above.\"},{\"evidence_type\":\"methodological_template\",\"description\":\"The Global Minotaur establishes the epochal sequencing methodology (Global Plan → Global Minotaur → Bankruptocracy) that Technofeudalism extends upward to describe Technofeudalism as the next phase.\",\"quote\":\"In *The Global Minotaur*, Varoufakis constructs a structural logic where capitalism survives *only* through distinct, epochal mechanisms of surplus distribution: the Global Plan (1944–1971), followed by the Global Minotaur (1971–2008).\"},{\"evidence_type\":\"vocabulary_transfer\",\"description\":\"The vocabulary of 'Handmaidens,' 'extraction,' and 'monopsony power' flows directly from The Global Minotaur into Technofeudalism, where these terms are applied to digital platforms and cloud infrastructure.\",\"quote\":\"In *The Global Minotaur*, Varoufakis introduces the 'Handmaidens' of the beast—specifically Wall Street and Walmart.\"},{\"evidence_type\":\"structural_precedent\",\"description\":\"The Global Minotaur's establishment of the Bankruptocracy phase (state pumping fiat liquidity into zombie banks post-2008) creates the literal starting point and structural condition that necessitates the 2023 thesis about Technofeudalism.\",\"quote\":\"This specific 2011 conclusion acts as the literal foundational slab for the 2023 thesis. *Technofeudalism* builds directly upward from 'Bankruptocracy.'\"},{\"evidence_type\":\"authority_transfer\",\"description\":\"The Global Minotaur's successful prediction of post-2008 debt crises and liquidity traps establishes Varoufakis's credibility, which then legitimates his more radical systemic claims in Technofeudalism.\",\"quote\":\"Because *The Global Minotaur* successfully predicted the intractable nature of the post-2008 European debt crisis and the ensuing 'liquidity traps,' the audience is primed to trust his even more radical claim a decade later.\"},{\"evidence_type\":\"conceptual_mutation\",\"description\":\"The Global Minotaur's treatment of extraction and rent begins the conceptual mutation—from capitalist profit to parasitic rent—that Technofeudalism radicalizes into the distinction between profit and feudal rent.\",\"quote\":\"Look for the precise moment the vocabulary of *capitalist profit* begins to blur into the vocabulary of *parasitic rent*.\"}]},\"items\":null,\"children\":[]}],\"view_count\":1},\"generated_view_definitions\":[{\"view_key\":\"compose_intent_01_genealogy_relationship_classification\",\"view_name\":\"Relationship Comparison Map\",\"description\":\"Grouped comparison map for Relationship Comparison Map.\",\"version\":1,\"target_app\":\"the-critic\",\"target_page\":\"compose_from_intent_transient\",\"target_section\":\"results\",\"renderer_type\":\"card_grid\",\"renderer_config\":{\"items_path\":\"items\",\"group_by\":\"relationship_type\",\"columns\":2,\"expandable\":true,\"title_field\":\"relationship_type\",\"subtitle_field\":\"relationship_strength\",\"badge_field\":\"relationship_strength\",\"description_field\":\"relationship_evidence\",\"expanded_fields\":[\"influence_channels\",\"strategic_relevance\"],\"group_style_map\":{\"direct_precursor\":{\"color\":\"#1a6b3c\",\"label\":\"Direct Precursor\"},\"indirect_contextualizer\":{\"color\":\"#4a6b8a\",\"label\":\"Indirect Contextualizer\"},\"methodological_ancestor\":{\"color\":\"#7a4a8a\",\"label\":\"Methodological Ancestor\"},\"contradicted_position\":{\"color\":\"#8a2a2a\",\"label\":\"Contradicted Position\"},\"parallel_development\":{\"color\":\"#8a6a1a\",\"label\":\"Parallel Development\"}},\"badge_style_map\":{\"strong\":{\"color\":\"#1a6b3c\",\"label\":\"Strong\"},\"moderate\":{\"color\":\"#8a6a1a\",\"label\":\"Moderate\"},\"weak\":{\"color\":\"#6b6b6b\",\"label\":\"Weak\"}}},\"data_source\":{\"workflow_key\":\"intellectual_genealogy\",\"phase_number\":1.0,\"engine_key\":\"genealogy_relationship_classification\",\"chain_key\":null,\"result_path\":\"\",\"scope\":\"aggregated\"},\"secondary_sources\":[],\"transformation\":{\"type\":\"llm_extract\",\"field_mapping\":null,\"llm_extraction_schema\":{\"work_title\":\"string (title of the prior work being classified)\",\"work_year\":\"number (publication year)\",\"relationship_type\":\"enum: direct_precursor|methodological_ancestor|counter_position|indirect_contextualizer|stylistic_influence|conceptual_sibling\",\"secondary_relationship_type\":\"enum or null\",\"relationship_strength\":\"enum: strong|moderate|weak\",\"summary\":\"string (2-3 sentence summary of the relationship)\",\"influence_channels\":[{\"channel\":\"enum: vocabulary|methodology|causal_mechanism|audience_preparation|authority|framework|periodization|evidence_strategy\",\"description\":\"string (1 sentence)\"}],\"key_evidence\":[{\"evidence_type\":\"string (e.g. explicit_self_citation, vocabulary_transfer, methodological_template)\",\"description\":\"string (1-2 sentences)\",\"quote\":\"string (short illustrative quote if available, else empty)\"}],\"vocabulary_contributed\":[\"string (terms/concepts that flow from this prior work to the current work)\"],\"centrality_assessment\":\"string (1-2 sentences on how central this work is to the current argument)\",\"what_would_be_lost\":\"string (1-2 sentences: what the current argument loses without this prior work)\"},\"llm_prompt_template\":\"You are a precise data extraction assistant. Extract structured JSON from an analytical prose text that classifies the relationship between a prior work and a current work in an intellectual genealogy.\\n\\nIMPORTANT: The input begins with a [SOURCE DOCUMENT: ...] tag that contains the ACTUAL filename/title of the prior work. You MUST use this as the work_title — do NOT invent or guess a different title.\\n\\nReturn a JSON object with this EXACT structure:\\n\\n{\\n  \\\"work_title\\\": \\\"<MUST match the [SOURCE DOCUMENT] tag exactly, minus file extension>\\\",\\n  \\\"work_year\\\": <publication year as number>,\\n  \\\"relationship_type\\\": \\\"<one of: direct_precursor, methodological_ancestor, counter_position, indirect_contextualizer, stylistic_influence, conceptual_sibling>\\\",\\n  \\\"secondary_relationship_type\\\": \\\"<same enum or null if no secondary>\\\",\\n  \\\"relationship_strength\\\": \\\"<one of: strong, moderate, weak>\\\",\\n  \\\"summary\\\": \\\"<2-3 sentence summary of how this prior work relates to the current work>\\\",\\n  \\\"influence_channels\\\": [\\n    {\\n      \\\"channel\\\": \\\"<one of: vocabulary, methodology, causal_mechanism, audience_preparation, authority, framework, periodization, evidence_strategy>\\\",\\n      \\\"description\\\": \\\"<1 sentence describing this influence channel>\\\"\\n    }\\n  ],\\n  \\\"key_evidence\\\": [\\n    {\\n      \\\"evidence_type\\\": \\\"<type of evidence, e.g. explicit_self_citation, vocabulary_transfer, methodological_template, conceptual_import, causal_chain_dependency>\\\",\\n      \\\"description\\\": \\\"<1-2 sentence description of this evidence>\\\",\\n      \\\"quote\\\": \\\"<short illustrative quote if available, else empty string>\\\"\\n    }\\n  ],\\n  \\\"vocabulary_contributed\\\": [\\\"<terms or concepts that flow from this prior work to the current work>\\\"],\\n  \\\"centrality_assessment\\\": \\\"<1-2 sentences assessing how central this prior work is to the current argument>\\\",\\n  \\\"what_would_be_lost\\\": \\\"<1-2 sentences: what the current argument would lose without this prior work>\\\"\\n}\\n\\nRULES:\\n1. Return ONLY JSON — no markdown fences, no commentary\\n2. relationship_type MUST be one of the 6 listed values (use closest match)\\n3. Capture 3-6 influence channels\\n4. Capture 3-8 key evidence items, ordered by significance\\n5. vocabulary_contributed should list specific terms/concepts, not generic descriptions\\n6. The summary should capture the essential nature of the intellectual relationship\\n7. Preserve analytical depth — don't oversimplify the relationship classification\",\"stance_key\":\"comparison\"},\"presentation_stance\":\"comparison\",\"position\":1.0,\"parent_view_key\":null,\"surface_archetype\":null,\"scaffold_contract\":null,\"surface_role\":null,\"child_display_mode\":null,\"tab_count_field\":null,\"visibility\":\"if_data_exists\",\"audience_overrides\":{},\"planner_hint\":\"Recommend this view when the user needs to compare and contrast how prior works relate to the current argument across relationship types. Especially useful at the start of a genealogical analysis session to orient investigative priorities and allocate analytical depth across direct precursors, methodological ancestors, and contradicted positions.\",\"planner_eligible\":true,\"status\":\"draft\",\"tags\":[\"cards\",\"grouped\",\"categorized\",\"expandable\",\"comparison\",\"genealogy\",\"relationship_classification\",\"intellectual_history\",\"triage\",\"influence_mapping\"],\"source_project\":\"compose_from_intent_transient\",\"generation_mode\":\"generated\"}],\"trace\":{\"resolver_version\":\"compose-from-intent-v2\",\"entries\":[{\"stage\":\"semantic_surface_matching\",\"details\":{\"sections\":[{\"section_index\":0,\"engine_key\":\"genealogy_relationship_classification\",\"title\":\"Relationship Comparison Map\",\"source_family_key\":null,\"composition_role_hint\":null,\"semantic_role\":\"comparison_map\",\"pattern_key\":\"card_grid_grouped\",\"inventory_listing\":false}]}},{\"stage\":\"hierarchy_planning\",\"details\":{\"grouped\":false,\"grouping_reason\":\"flat_all_working_content\",\"top_level_count\":1,\"leaf_count\":1}},{\"stage\":\"page_plan\",\"details\":{\"top_level_count\":1,\"views\":[{\"kind\":\"leaf\",\"section_index\":0,\"pattern_key\":\"card_grid_grouped\",\"view_name\":\"Relationship Comparison Map\",\"semantic_role\":\"comparison_map\",\"presentation_stance\":\"comparison\"}]}},{\"stage\":\"view_generation\",\"details\":{\"views\":[{\"view_key\":\"compose_intent_01_genealogy_relationship_classification\",\"pattern_key\":\"card_grid_grouped\",\"renderer_type\":\"card_grid\",\"engine_key\":\"genealogy_relationship_classification\",\"parent_view_key\":null}]}},{\"stage\":\"transformation_execution\",\"details\":{\"views\":[{\"view_key\":\"compose_intent_01_genealogy_relationship_classification\",\"engine_key\":\"genealogy_relationship_classification\",\"renderer_type\":\"card_grid\",\"extraction_source\":\"curated\",\"template_key\":\"relationship_extraction\",\"cached\":false}]}},{\"stage\":\"consumer_adaptation\",\"details\":{\"views\":[{\"view_key\":\"compose_intent_01_genealogy_relationship_classification\",\"renderer_type\":\"card_grid\",\"adapted\":false}]}},{\"stage\":\"contract_validation\",\"details\":{\"view_count\":1,\"issues\":0}}]}}"
+    }
+  ],
+  "observed_request_urls": [
+    "http://localhost:5555/api/projects",
+    "http://localhost:5555/api/projects",
+    "http://localhost:5555/api/projects",
+    "http://127.0.0.1:8002/v1/runs/by-job/proof-round4-adaptive-balance-final-1774012011?consumer_key=the-critic",
+    "http://127.0.0.1:8002/v1/orchestrator/route-task",
+    "http://127.0.0.1:8002/v1/orchestrator/plan-task",
+    "http://127.0.0.1:8002/v1/orchestrator/planning-decisions/planning-decision-b1600d054991",
+    "http://127.0.0.1:8002/v1/orchestrator/planning-decisions/planning-decision-b1600d054991/compose-from-intent-request?consumer_key=the-critic",
+    "http://127.0.0.1:8002/v1/presenter/compose-from-intent"
+  ],
+  "observed_no_executor_jobs": true,
+  "observed_no_aoi_proxy_compose": true
+}

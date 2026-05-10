@@ -1,0 +1,30 @@
+{
+  "stage": 13,
+  "slice": "minimal_generic_host_contract_v1_first_slice",
+  "date": "2026-03-24",
+  "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+  "surface": "aoi_source_backed_transient_launch",
+  "proof_basis": "host test coverage plus live code inspection",
+  "host_contract_family_evidence": {
+    "source_backed_readiness_client": "webapp/src/lib/boundedV2Client.ts#getBoundedV2SourceBackedReadiness",
+    "host_launch_component": "webapp/src/components/influence/AoiV2ThematicPanel.tsx",
+    "host_proxy_family": "api/server.py#/api/analysis/anxiety_of_influence_thematic_single_thinker/projects/{project_id}/compose-from-source"
+  },
+  "verified_launch_states": [
+    {
+      "state": "ready",
+      "behavior": "readiness runs first, then existing snapshot warmup, then navigation",
+      "test": "webapp/src/components/influence/AoiV2ThematicPanel.test.tsx::launches transient compose with source_analysis_id and no source_v2_job_id in the normal UI path"
+    },
+    {
+      "state": "blocked",
+      "behavior": "analyzer blocker reasons are shown and no warmup or navigation occurs",
+      "test": "webapp/src/components/influence/AoiV2ThematicPanel.test.tsx::blocked readiness prevents warmup and keeps the user on the panel"
+    },
+    {
+      "state": "outside_proof_slice",
+      "behavior": "local alias without canonical v2_job_id skips readiness and remains explicitly outside Stage 13 proof",
+      "test": "webapp/src/components/influence/AoiV2ThematicPanel.test.tsx::local-alias-only launch stays outside the proof slice and skips readiness"
+    }
+  ]
+}

@@ -1,0 +1,1990 @@
+{
+  "plan_id": "plan-12e3db25fb90",
+  "created_at": "2026-03-26T23:42:24.835352",
+  "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+  "thinker_name": "Aaron Benanav",
+  "target_work": {
+    "title": "round5-proof-dossier-final-1774100000",
+    "author": null,
+    "year": null,
+    "description": "Subject corpus by Aaron Benanav for bounded AOI comparison against Otto Neurath"
+  },
+  "prior_works": [
+    {
+      "title": "Economic Writings Selections 1904 1945   Otto Neurath   Vienna Circle Collection   2004",
+      "author": "Otto Neurath",
+      "year": null,
+      "description": "Source work by Otto Neurath",
+      "relationship_hint": "selected_source_thinker_corpus",
+      "source_thinker_id": "otto_neurath",
+      "source_thinker_name": "Otto Neurath",
+      "source_document_id": "economic_writings_selections_1904_1945_otto_neurath_vienna_circle_collection_2004"
+    },
+    {
+      "title": "Empiricism and Sociology   Otto Neurath   Vienna Circle Collection   1973",
+      "author": "Otto Neurath",
+      "year": null,
+      "description": "Source work by Otto Neurath",
+      "relationship_hint": "selected_source_thinker_corpus",
+      "source_thinker_id": "otto_neurath",
+      "source_thinker_name": "Otto Neurath",
+      "source_document_id": "empiricism_and_sociology_otto_neurath_vienna_circle_collection_1973"
+    },
+    {
+      "title": "Modern Man in the Making   Otto Neurath   A. A. Knopf   1939",
+      "author": "Otto Neurath",
+      "year": null,
+      "description": "Source work by Otto Neurath",
+      "relationship_hint": "selected_source_thinker_corpus",
+      "source_thinker_id": "otto_neurath",
+      "source_thinker_name": "Otto Neurath",
+      "source_document_id": "modern_man_in_the_making_otto_neurath_a_a_knopf_1939"
+    },
+    {
+      "title": "Philosophical Papers 1913 1946   Otto Neurath   Vienna Circle Collection   1983",
+      "author": "Otto Neurath",
+      "year": null,
+      "description": "Source work by Otto Neurath",
+      "relationship_hint": "selected_source_thinker_corpus",
+      "source_thinker_id": "otto_neurath",
+      "source_thinker_name": "Otto Neurath",
+      "source_document_id": "philosophical_papers_1913_1946_otto_neurath_vienna_circle_collection_1983"
+    }
+  ],
+  "research_question": null,
+  "selected_source_thinker_id": "otto_neurath",
+  "selected_source_thinker_name": "Otto Neurath",
+  "strategy_summary": "This plan implements a bounded thematic Anxiety of Influence analysis with Otto Neurath as the fixed source thinker and Aaron Benanav's NLR essay collection as the target work. The Neurath source corpus is exceptionally large (~3.6M chars across 4 volumes spanning 1904–1945) and thematically diverse — ranging from economic history and calculation-in-kind theory through socialisation programmes to philosophy of science and visual education. Benanav's target essay explicitly engages Neurath's economic planning ideas, particularly the socialist calculation debate, in-kind valuation, and socialization of investment, but the scope of Neurath's work far exceeds what Benanav references, creating a rich field for strategic silence and selective appropriation findings.\n\nTo handle the source corpus's scale, the plan prepends a Phase 0.5 that profiles each Neurath volume individually via deep summarization and narrative structure analysis, producing distilled structured summaries that Phase 1.0 can synthesise into a stable thematic inventory without exceeding practical context limits. Phase 1.0 then reconstructs Neurath's full thematic world at deep depth, preserving source_document_id provenance across all four volumes. Phases 2.0–3.0 map Benanav's engagement and identify sin findings at standard and deep depth respectively, using opus for discriminating judgment. Phase 4.0 closes the loop with a structured report. All engines belong to the AOI thematic workflow or its direct support infrastructure; no genealogy-discovery, multi-thinker, or hypothesis-generation engines are included.\n\nThe plan recommends the aoi_thematic_analysis parent view as the primary reading surface, which auto-includes child views for source documents, thematic groupings, sin-type groupings, and the final report. No chapter-level targeting is used: the thematic synthesis must survey the full Neurath corpus to detect strategic silences, and the AOI engines are designed for whole-document comparison.",
+  "phases": [
+    {
+      "phase_number": 0.5,
+      "phase_name": "Source Corpus Profiling",
+      "skip": false,
+      "skip_reason": null,
+      "depth": "standard",
+      "engine_overrides": null,
+      "context_emphasis": "Prioritise economic theory, socialisation programmes, calculation-in-kind, planned economy concepts, administrative economy, standard of living inventories, and social planning themes. Capture Neurath's epistemological commitments (physicalism, unified science, anti-foundationalism) as secondary themes since Benanav may selectively engage or ignore these. Preserve chronological context for each essay to support evolutionary theme tracking.",
+      "rationale": "The Neurath source corpus totals ~3.6M characters across 4 volumes. No single LLM pass can ingest this. This phase pre-digests each volume into a structured profile (thesis architecture, conceptual vocabulary, evidence patterns, narrative structure) via the prior_work_profiling chain (deep_summarization → narrative_structure_analyzer). The per-work profiles become the distilled input for Phase 1.0's thematic synthesis, preserving thematic breadth while reducing context demands. Runs per_work so each Neurath volume gets its own focused profiling pass. Uses sonnet because profiling is descriptive-extractive rather than judgment-intensive; the heavy interpretive work is reserved for Phase 1.0 at opus.",
+      "model_hint": "sonnet",
+      "requires_full_documents": true,
+      "per_work_overrides": null,
+      "supplementary_chains": [],
+      "max_context_chars_override": null,
+      "chain_key": "prior_work_profiling",
+      "engine_key": null,
+      "iteration_mode": "per_work",
+      "per_work_chain_map": null,
+      "depends_on": [],
+      "estimated_tokens": 240000,
+      "estimated_cost_usd": 6.0,
+      "chapter_targets": null,
+      "document_scope": "whole"
+    },
+    {
+      "phase_number": 1.0,
+      "phase_name": "Source Thematic Synthesis",
+      "skip": false,
+      "skip_reason": null,
+      "depth": "deep",
+      "engine_overrides": null,
+      "context_emphasis": "Consume Phase 0.5 per-work profiles as primary context; use raw source documents for evidence anchoring where context allows. Build a COMPLETE thematic map covering all major Neurath domains — not just the economic planning themes Benanav explicitly engages but also epistemology (physicalism, protocol sentences), visual education (ISOTYPE), unified science, and social engineering. Each theme must carry source_document_id values from the 4 source works so downstream phases can trace provenance. Flag internal tensions within themes (e.g., early vs. late Neurath on monetary calculation, the evolution of Lebenslagen concepts).",
+      "rationale": "Receives Phase 0.5 per-work profiles (structured summaries of all 4 Neurath volumes) plus raw source documents as backing evidence. Reconstructs Neurath's full thematic world as a stable comparison surface. Deep depth is essential because the source corpus spans 40+ years, encompasses at least five distinct thematic domains (economic history, socialisation theory, philosophy of science, visual education, social planning), and contains significant internal tensions between periods. The theme inventory and source-document inventory produced here are the foundational data structure consumed by all downstream phases. Uses opus for the interpretive judgment required to synthesise across such a diverse corpus.",
+      "model_hint": "opus",
+      "requires_full_documents": true,
+      "per_work_overrides": null,
+      "supplementary_chains": [],
+      "max_context_chars_override": null,
+      "chain_key": null,
+      "engine_key": "aoi_thematic_synthesis",
+      "iteration_mode": "single",
+      "per_work_chain_map": null,
+      "depends_on": [
+        0.5
+      ],
+      "estimated_tokens": 60000,
+      "estimated_cost_usd": 5.0,
+      "chapter_targets": null,
+      "document_scope": "whole"
+    },
+    {
+      "phase_number": 2.0,
+      "phase_name": "Engagement Mapping",
+      "skip": false,
+      "skip_reason": null,
+      "depth": "standard",
+      "engine_overrides": null,
+      "context_emphasis": "Consume Phase 1.0 theme inventory and compare systematically against Benanav's target text. For each Neurath theme, classify engagement level (genuine grappling, partial engagement, strategic silence, distortion). Pay special attention to: (1) Neurath's epistemological themes (physicalism, unified science, anti-foundationalism) which Benanav likely ignores despite their connection to Neurath's economic thought; (2) the calculation-in-kind / in-kind valuation theme where Benanav engages most directly; (3) Neurath's visual education and ISOTYPE work which may be entirely absent from Benanav's engagement. Note where Benanav substitutes contemporary vocabulary (e.g., 'multi-criterial economy' for Neurath's 'economy in kind', 'capabilities approach' for 'Lebenslagen').",
+      "rationale": "Receives Phase 1.0 theme inventory (5-10+ Neurath themes with claims, commitments, and source_document_ids) and maps Benanav's engagement against each theme. Standard depth is appropriate because the target is a single two-part essay (~274K chars) with relatively clear engagement patterns — Benanav explicitly names Neurath and the socialist calculation debate. The analytical challenge is not finding engagement but classifying its character (genuine, partial, distorted, absent) for each theme. Uses opus because engagement classification requires nuanced interpretive judgment, especially for detecting strategic silences and vocabulary substitutions.",
+      "model_hint": "opus",
+      "requires_full_documents": false,
+      "per_work_overrides": null,
+      "supplementary_chains": [],
+      "max_context_chars_override": null,
+      "chain_key": null,
+      "engine_key": "aoi_engagement_mapping",
+      "iteration_mode": "single",
+      "per_work_chain_map": null,
+      "depends_on": [
+        1.0
+      ],
+      "estimated_tokens": 45000,
+      "estimated_cost_usd": 4.0,
+      "chapter_targets": null,
+      "document_scope": "whole"
+    },
+    {
+      "phase_number": 3.0,
+      "phase_name": "AOI Sin Findings",
+      "skip": false,
+      "skip_reason": null,
+      "depth": "deep",
+      "engine_overrides": null,
+      "context_emphasis": "Consume Phase 1.0 theme inventory (with source_document_ids) and Phase 2.0 engagement map (with per-theme engagement levels and divergence descriptions). For each finding, anchor provenance in BOTH target-side passages (Benanav's text) and source-side passages (specific Neurath works via source_document_id). Classify exactly one dominant sin type per finding. Look especially for: (1) clinamen/swerve where Benanav systematically updates Neurath's planning concepts with modern institutional machinery; (2) tessera/completion where Benanav fills gaps Neurath left (e.g., ecological balance, democratic accountability); (3) kenosis where Benanav may strip Neurath's epistemological framework to retain only the economic planning skeleton; (4) strategic silence on Neurath's unified science programme and ISOTYPE work despite their connection to his economic vision.",
+      "rationale": "Receives Phase 1.0 theme inventory and Phase 2.0 engagement map as structured upstream context, plus raw source documents (external docs) for provenance anchoring. Deep depth is critical here because this phase produces the core analytical deliverable — discrete AOI findings with sin classification, severity, and dual provenance. The Benanav-Neurath relationship is complex: Benanav is explicitly sympathetic to Neurath but may still commit systematic sins of selective appropriation, modernisation-as-distortion, and strategic silence on Neurath's epistemological foundations. Deep depth captures secondary findings (e.g., subtle vocabulary mutations) alongside the primary ones. Uses opus for the discriminating judgment required to assign sin types and severity levels with confidence.",
+      "model_hint": "opus",
+      "requires_full_documents": true,
+      "per_work_overrides": null,
+      "supplementary_chains": [],
+      "max_context_chars_override": null,
+      "chain_key": null,
+      "engine_key": "aoi_sin_findings",
+      "iteration_mode": "single",
+      "per_work_chain_map": null,
+      "depends_on": [
+        1.0,
+        2.0
+      ],
+      "estimated_tokens": 55000,
+      "estimated_cost_usd": 5.5,
+      "chapter_targets": null,
+      "document_scope": "whole"
+    },
+    {
+      "phase_number": 4.0,
+      "phase_name": "Thematic AOI Report",
+      "skip": false,
+      "skip_reason": null,
+      "depth": "standard",
+      "engine_overrides": null,
+      "context_emphasis": "Consume all upstream outputs: Phase 1.0 theme inventory, Phase 2.0 engagement map, Phase 3.0 sin findings. Produce a structured report that closes the analysis without broadening into thinker discovery or multi-thinker comparison. The report should: (1) summarise the overall engagement pattern (which themes Benanav genuinely grapples with vs. ignores); (2) highlight the most consequential sin findings with their implications for how readers should interpret Benanav's use of Neurath; (3) note the distribution of sin types across themes; (4) offer a reading recommendation that stays bounded to the Neurath-Benanav thematic tranche.",
+      "rationale": "Receives all upstream outputs (theme inventory, engagement map, sin findings) and synthesises them into a structured, bounded AOI report. Standard depth is sufficient because this is a synthesis/composition phase rather than a discovery phase — all the analytical work is done. Uses sonnet because report generation is compositional rather than judgment-intensive; the upstream opus phases have already made the hard interpretive calls. The report must explicitly close the analysis loop without signalling further investigation directions.",
+      "model_hint": "sonnet",
+      "requires_full_documents": false,
+      "per_work_overrides": null,
+      "supplementary_chains": [],
+      "max_context_chars_override": null,
+      "chain_key": null,
+      "engine_key": "aoi_thematic_report",
+      "iteration_mode": "single",
+      "per_work_chain_map": null,
+      "depends_on": [
+        1.0,
+        2.0,
+        3.0
+      ],
+      "estimated_tokens": 35000,
+      "estimated_cost_usd": 1.5,
+      "chapter_targets": null,
+      "document_scope": "whole"
+    }
+  ],
+  "recommended_views": [
+    {
+      "view_key": "aoi_thematic_analysis",
+      "priority": "primary",
+      "presentation_stance_override": null,
+      "rationale": "The parent AOI surface for the single-thinker thematic tranche. Its child views (source documents, by-theme grouping, by-sin-type grouping, report detail) are auto-included by the presenter, providing the complete reading experience for the bounded AOI analysis. This is the designated primary surface per the planning guidelines."
+    }
+  ],
+  "estimated_llm_calls": 20,
+  "estimated_depth_profile": "Phase 0.5 runs at standard depth (2 passes per engine × 2 engines × 4 works = 16 LLM calls) to produce structured source profiles. Phase 1.0 runs at deep depth (1 pass) for comprehensive thematic synthesis. Phase 2.0 runs at standard depth (1 pass) for engagement classification. Phase 3.0 runs at deep depth (1 pass) for thorough sin identification with dual provenance. Phase 4.0 runs at standard depth (1 pass) for report synthesis. The depth gradient peaks at Phases 1.0 and 3.0 where interpretive discrimination is most demanding.",
+  "status": "draft",
+  "model_used": "claude-opus-4-6",
+  "generation_tokens": 62246,
+  "execution_model": null,
+  "objective_key": "influence_thematic",
+  "book_samples": [
+    {
+      "title": "round5-proof-dossier-final-1774100000",
+      "role": "target",
+      "genre": "essay_collection",
+      "domain": "political economy / socialist theory",
+      "argumentative_style": "systematic",
+      "technical_level": "mixed",
+      "reasoning_modes": [
+        "historical",
+        "comparative",
+        "dialectical",
+        "normative",
+        "institutional",
+        "pragmatic",
+        "deductive"
+      ],
+      "key_vocabulary_sample": [
+        "multi-criterial economy",
+        "profit motive",
+        "socialization of investment",
+        "deindustrialization",
+        "oligopolistic consolidation",
+        "functional finance",
+        "negotiated coordination",
+        "in-kind valuation",
+        "worker-run firms",
+        "investment boards",
+        "data matrix",
+        "dual monetary system",
+        "democratic planning",
+        "ecological balance",
+        "capabilities approach"
+      ],
+      "structural_notes": "Two-part serialized essay published in New Left Review (NLR 153-154, 2025), each part divided into numbered subsections with extensive footnotes. Part 1 provides historical-theoretical groundwork (socialist calculation debate, Keynes, Neurath); Part 2 proposes institutional design for a multi-criterial economy. The dossier also contains a closing section of URL-only footnotes suggesting a compiled research document.",
+      "estimated_length_chars": 274090,
+      "engine_category_affinities": {
+        "scholarly": 0.82,
+        "evidence": 0.45,
+        "concepts": 0.88,
+        "argument": 0.91,
+        "epistemology": 0.65,
+        "methodology": 0.72,
+        "outline": 0.85,
+        "rhetoric": 0.55
+      },
+      "rationale": "This is a systematic two-part political economy essay constructing a positive theory of post-capitalist institutional design, drawing heavily on historical precedent (Neurath, Schumpeter, Keynes, Soviet planning) and proposing specific institutional mechanisms; it is best served by engines that map argument architecture, trace concept evolution, and perform deep summarization of multi-part theoretical constructions.",
+      "chapter_structure": []
+    },
+    {
+      "title": "Economic Writings Selections 1904 1945   Otto Neurath   Vienna Circle Collection   2004",
+      "role": "prior_work",
+      "genre": "essay_collection",
+      "domain": "political economy / philosophy of social science",
+      "argumentative_style": "analytical",
+      "technical_level": "mixed",
+      "reasoning_modes": [
+        "historical",
+        "comparative",
+        "dialectical",
+        "pragmatic",
+        "systematic",
+        "genealogical"
+      ],
+      "key_vocabulary_sample": [
+        "economy in kind",
+        "calculation in kind",
+        "socialisation",
+        "monetary order",
+        "administrative economy",
+        "planned economy",
+        "unified science",
+        "war economy",
+        "productive capacity",
+        "standard of living",
+        "economic order",
+        "macro-economy",
+        "market competition",
+        "neopositivism",
+        "foundational debates"
+      ],
+      "structural_notes": "Edited collection of primary writings spanning 1904–1945, organized into four thematic parts: economic history, theory of economics and social science, socialisation theory, and economics within unified science. Preceded by a lengthy critical introduction by Thomas Uebel contextualizing Neurath's contributions. Individual essays vary in length and register, reflecting different historical moments and audiences. The collection is supplemented by editorial apparatus including translators' notes and an index.",
+      "estimated_length_chars": 1470350,
+      "engine_category_affinities": {
+        "scholarly": 0.9,
+        "evidence": 0.5,
+        "concepts": 0.9,
+        "argument": 0.8,
+        "epistemology": 0.75,
+        "methodology": 0.7,
+        "outline": 0.8,
+        "rhetoric": 0.6
+      },
+      "rationale": "This is a scholarly edited collection of Otto Neurath's economic writings, bridging philosophy of science (Vienna Circle logical empiricism) and heterodox political economy, making it highly relevant to concept tracking, intellectual genealogy, and argument architecture analysis. The writings range across historical, theoretical, and normative registers, employing comparative and dialectical reasoning to advocate for in-kind calculation and planned economy as alternatives to monetary market orders.",
+      "chapter_structure": [
+        {
+          "chapter_id": "ch1",
+          "title": "Section 1: Contextualising Neurath’s Economic Writings. 1.1: Otto Neurath:",
+          "char_count": 4752
+        },
+        {
+          "chapter_id": "ch2",
+          "title": "Part 2 presents Neurath’s metatheoretical reflections about social sci-",
+          "char_count": 33896
+        },
+        {
+          "chapter_id": "ch3",
+          "title": "Part 4 also presents the later Neurath’s considerations of the issues",
+          "char_count": 30678
+        },
+        {
+          "chapter_id": "ch4",
+          "title": "Chapter 7, “On the Theory of Social Science”, represents Neurath’s",
+          "char_count": 4988
+        },
+        {
+          "chapter_id": "ch5",
+          "title": ". . . and today the opposition, which once existed partly due to personal conflicts, practi-",
+          "char_count": 2362
+        },
+        {
+          "chapter_id": "ch6",
+          "title": "Chapter 8 under the heading “Interventions in Discussions of the Social",
+          "char_count": 8839
+        },
+        {
+          "chapter_id": "ch7",
+          "title": "Chapter 10, “The Conceptual Structure of Economics and its",
+          "char_count": 13698
+        },
+        {
+          "chapter_id": "ch8",
+          "title": "Part 3: Neurath’s Writings on Socialisation Theory. Chapters 11",
+          "char_count": 15787
+        },
+        {
+          "chapter_id": "ch9",
+          "title": "Chapter 14, “Socialist Utility Calculation and Capitalist Profit",
+          "char_count": 15374
+        },
+        {
+          "chapter_id": "ch10",
+          "title": "Chapter 14. Moreover, the decoupling of calculation in kind and economy",
+          "char_count": 6961
+        },
+        {
+          "chapter_id": "ch11",
+          "title": "Chapter 13 Neurath also argued that the concept of labour did not fur-",
+          "char_count": 10585
+        },
+        {
+          "chapter_id": "ch12",
+          "title": "Part 4: Economics and Social Science in Unified Science. The",
+          "char_count": 14287
+        },
+        {
+          "chapter_id": "ch13",
+          "title": "Chapter 16, “Sociological Predictions”, a paper given at the Second",
+          "char_count": 3101
+        },
+        {
+          "chapter_id": "ch14",
+          "title": "Chapter 10) had developed further, through the in-kind categories in",
+          "char_count": 6259
+        },
+        {
+          "chapter_id": "ch15",
+          "title": "Chapter 18 and a companion piece already reprinted (“International",
+          "char_count": 26550
+        },
+        {
+          "chapter_id": "ch16",
+          "title": "19. For the role of the latter two, see Leonard (1995, 1997).",
+          "char_count": 4800
+        },
+        {
+          "chapter_id": "ch17",
+          "title": "32. See references in fns. 13 and 22 above and O’Neill (1993).",
+          "char_count": 2013
+        },
+        {
+          "chapter_id": "ch18",
+          "title": "48. Compare Weber (1896 [1988, 408–411]), (1898, 82–84) and (1909 [1988, 360–363]).",
+          "char_count": 4818
+        },
+        {
+          "chapter_id": "ch19",
+          "title": "62. See Fleck (1982) and Uebel (1996, 107–111).",
+          "char_count": 2750
+        },
+        {
+          "chapter_id": "ch20",
+          "title": "74. See Köhler (1982 [1991]) and Bergström (1982) for discussion of Neurath (1912).",
+          "char_count": 2462
+        },
+        {
+          "chapter_id": "ch21",
+          "title": "95. See Reichswirtschaftsministerium (1919), Wissell and Moellendorff (1919) and",
+          "char_count": 18828
+        },
+        {
+          "chapter_id": "ch22",
+          "title": "Chapter 10 and 11 present arguments to counter him.",
+          "char_count": 28574
+        },
+        {
+          "chapter_id": "ch23",
+          "title": "I. Abteilung. Historische und theoretische Grundlagen, 1. Teil. Wirtschaft und",
+          "char_count": 61217
+        },
+        {
+          "chapter_id": "ch24",
+          "title": "Part 1\nSTUDIES IN ANCIENT AND",
+          "char_count": 23365
+        },
+        {
+          "chapter_id": "ch25",
+          "title": "Chapter 7: The Roman Empire as an Economic Unit (beginning of the imperial",
+          "char_count": 3370
+        },
+        {
+          "chapter_id": "ch26",
+          "title": "chapter 1: overview of the economic",
+          "char_count": 34646
+        },
+        {
+          "chapter_id": "ch27",
+          "title": "chapter 8: completion and decline of",
+          "char_count": 27139
+        },
+        {
+          "chapter_id": "ch28",
+          "title": "part in the Roman Empire’s glory survived for a long time; individual",
+          "char_count": 17682
+        },
+        {
+          "chapter_id": "ch29",
+          "title": "9. See Neurath, “Die Entwicklung der antiken Wirtschaftsgeschichte”, Jahrbücher für",
+          "char_count": 7288
+        },
+        {
+          "chapter_id": "ch30",
+          "title": "3. WAR ECONOMY*",
+          "char_count": 113056
+        },
+        {
+          "chapter_id": "ch31",
+          "title": "99. K. Kramar, Das Papiergeld in Österreich seit 1848, Leipzig, 1886, 7.",
+          "char_count": 2619
+        },
+        {
+          "chapter_id": "ch32",
+          "title": "4. SERBIA’S SUCCESSES IN",
+          "char_count": 88529
+        },
+        {
+          "chapter_id": "ch33",
+          "title": "5. STATE CARTELS AND STATE",
+          "char_count": 12993
+        },
+        {
+          "chapter_id": "ch34",
+          "title": "6. THE ECONOMIC ORDER OF THE",
+          "char_count": 55096
+        },
+        {
+          "chapter_id": "ch35",
+          "title": "5. Symbolic and Mathematical Representation. – 6. Value Facts or a Science of",
+          "char_count": 51495
+        },
+        {
+          "chapter_id": "ch36",
+          "title": "1. A is the cause of B",
+          "char_count": 11328
+        },
+        {
+          "chapter_id": "ch37",
+          "title": "17. Ibid., 209",
+          "char_count": 7354
+        },
+        {
+          "chapter_id": "ch38",
+          "title": "26. Compare Pareto, “Anwendungen”, op. cit.",
+          "char_count": 2342
+        },
+        {
+          "chapter_id": "ch39",
+          "title": "8. INTERVENTIONS IN",
+          "char_count": 11015
+        },
+        {
+          "chapter_id": "ch40",
+          "title": "9. ECONOMICS IN KIND,",
+          "char_count": 32946
+        },
+        {
+          "chapter_id": "ch41",
+          "title": "99. We have not created all these concepts as an artificial exercise",
+          "char_count": 5083
+        },
+        {
+          "chapter_id": "ch42",
+          "title": "5. Economic Science. – III. Socialisation. 1. Its Essence. 2. Distribution,",
+          "char_count": 4085
+        },
+        {
+          "chapter_id": "ch43",
+          "title": "2. Whoever is striving for the socialisation of the economy thus has to",
+          "char_count": 2804
+        },
+        {
+          "chapter_id": "ch44",
+          "title": "3. Let us now ask what difference socialisation would make.",
+          "char_count": 5909
+        },
+        {
+          "chapter_id": "ch45",
+          "title": "5. The programme of socialisation here discussed makes an attempt",
+          "char_count": 3322
+        },
+        {
+          "chapter_id": "ch46",
+          "title": "6. The economic plans would not only prevent the economic mistakes",
+          "char_count": 3563
+        },
+        {
+          "chapter_id": "ch47",
+          "title": "1. The economic plan shows how different situations of life arise on",
+          "char_count": 4258
+        },
+        {
+          "chapter_id": "ch48",
+          "title": "1. The preceding discussion has sufficiently shown that the process",
+          "char_count": 3322
+        },
+        {
+          "chapter_id": "ch49",
+          "title": "3. Wherever possible, the realisation of the measures to be",
+          "char_count": 2564
+        },
+        {
+          "chapter_id": "ch50",
+          "title": "5. From the point of view of social engineering, the socialisation",
+          "char_count": 7311
+        },
+        {
+          "chapter_id": "ch51",
+          "title": "6. For the Central Economic Administration and the economic coun-",
+          "char_count": 6720
+        },
+        {
+          "chapter_id": "ch52",
+          "title": "20. Domestic Economy. 21. The Stages of Socialisation. 22. Economic",
+          "char_count": 8756
+        },
+        {
+          "chapter_id": "ch53",
+          "title": "1. Signs of the Time. Consider the most burning concerns of our day –",
+          "char_count": 4719
+        },
+        {
+          "chapter_id": "ch54",
+          "title": "2. Total Socialisation. Socialism is approaching and we help it along",
+          "char_count": 3986
+        },
+        {
+          "chapter_id": "ch55",
+          "title": "3. From Under-Utilisation to Total Utilisation. The critics of the tradi-",
+          "char_count": 3987
+        },
+        {
+          "chapter_id": "ch56",
+          "title": "4. From the Economy of the Masters to the Economy of Community.",
+          "char_count": 2903
+        },
+        {
+          "chapter_id": "ch57",
+          "title": "6. From Net Profit to the Economic Plan. In the free market economy",
+          "char_count": 3175
+        },
+        {
+          "chapter_id": "ch58",
+          "title": "8. From the Rule of the Masters to the Rule of the Community. Sociali-",
+          "char_count": 2506
+        },
+        {
+          "chapter_id": "ch59",
+          "title": "10. The Central Economic Administration. The Central Economic",
+          "char_count": 7463
+        },
+        {
+          "chapter_id": "ch60",
+          "title": "11. The Economic Associations. The doctrine that there is a trend",
+          "char_count": 4440
+        },
+        {
+          "chapter_id": "ch61",
+          "title": "14. The Economic Councils. The economic councils [wirtschaftliche",
+          "char_count": 5382
+        },
+        {
+          "chapter_id": "ch62",
+          "title": "15. The Groups of Experts. The socialist administrative economy will",
+          "char_count": 2598
+        },
+        {
+          "chapter_id": "ch63",
+          "title": "16. Prophecy, Utopia and History. A distinction has to be made",
+          "char_count": 5942
+        },
+        {
+          "chapter_id": "ch64",
+          "title": "18. Forms of Life. Community life, based on tradition and custom,",
+          "char_count": 3697
+        },
+        {
+          "chapter_id": "ch65",
+          "title": "19. Foreign Trade. The community-ruled economy in kind changed",
+          "char_count": 2583
+        },
+        {
+          "chapter_id": "ch66",
+          "title": "20. Domestic Economy. As in the case of foreign trade, a recurrence of",
+          "char_count": 5483
+        },
+        {
+          "chapter_id": "ch67",
+          "title": "21. The Stages of Socialisation. In quick strides we have passed through",
+          "char_count": 2505
+        },
+        {
+          "chapter_id": "ch68",
+          "title": "22. Economic Tolerance. That the levelling power of the free market",
+          "char_count": 3098
+        },
+        {
+          "chapter_id": "ch69",
+          "title": "23. Intuitive Interpretations. What does this all mean for our hearts and",
+          "char_count": 2625
+        },
+        {
+          "chapter_id": "ch70",
+          "title": "Chapter 11 or did not further the information given in text.",
+          "char_count": 2131
+        },
+        {
+          "chapter_id": "ch71",
+          "title": "13. ECONOMIC PLAN AND",
+          "char_count": 10118
+        },
+        {
+          "chapter_id": "ch72",
+          "title": "3. What historical circumstances determine the rise and fall of",
+          "char_count": 150628
+        },
+        {
+          "chapter_id": "ch73",
+          "title": "14. SOCIALIST UTILITY",
+          "char_count": 16540
+        },
+        {
+          "chapter_id": "ch74",
+          "title": "Part 4\nECONOMICS AND SOCIAL",
+          "char_count": 57871
+        },
+        {
+          "chapter_id": "ch75",
+          "title": "16. SOCIOLOGICAL PREDICTIONS*",
+          "char_count": 17412
+        },
+        {
+          "chapter_id": "ch76",
+          "title": "17. INVENTORY OF THE",
+          "char_count": 6114
+        },
+        {
+          "chapter_id": "ch77",
+          "title": "2. States of Felicity (Lebensstimmung). Whereas this atomistic",
+          "char_count": 3516
+        },
+        {
+          "chapter_id": "ch78",
+          "title": "3. The Silhouette of the Standard of Living (Lebenslagenphysiognomie).",
+          "char_count": 5141
+        },
+        {
+          "chapter_id": "ch79",
+          "title": "4. Selection and Grading. In our scientific work it is necessary, on the",
+          "char_count": 5711
+        },
+        {
+          "chapter_id": "ch80",
+          "title": "5. Inventories of Standard of Living (Lebenslagenkataster). The previ-",
+          "char_count": 6393
+        },
+        {
+          "chapter_id": "ch81",
+          "title": "6. Social Analysis and Research into Standard of Living. The inven-",
+          "char_count": 9588
+        },
+        {
+          "chapter_id": "ch82",
+          "title": "18. LATE REFLECTIONS ON THE",
+          "char_count": 51818
+        },
+        {
+          "chapter_id": "ch83",
+          "title": "19. AFTER SIX YEARS*",
+          "char_count": 9517
+        },
+        {
+          "chapter_id": "ch84",
+          "title": "part in any kind of scientific research as well as in our daily life.",
+          "char_count": 21859
+        },
+        {
+          "chapter_id": "ch85",
+          "title": "22. P. Frank and R.S. Cohen (ed.): The Law of Causality and its Limits. 1997",
+          "char_count": 422
+        }
+      ]
+    },
+    {
+      "title": "Empiricism and Sociology   Otto Neurath   Vienna Circle Collection   1973",
+      "role": "prior_work",
+      "genre": "essay_collection",
+      "domain": "philosophy of science / logical empiricism / social science methodology",
+      "argumentative_style": "analytical",
+      "technical_level": "mixed",
+      "reasoning_modes": [
+        "empirical",
+        "comparative",
+        "historical",
+        "pragmatic",
+        "genealogical",
+        "systematic"
+      ],
+      "key_vocabulary_sample": [
+        "empiricism",
+        "unified science",
+        "physicalism",
+        "protocol sentences",
+        "isotype",
+        "visual education",
+        "Vienna Circle",
+        "logical positivism",
+        "Einheitswissenschaft",
+        "meaningfulness",
+        "meta-language",
+        "scientific worldview",
+        "sociology",
+        "neutral symbols",
+        "behaviorism",
+        "encyclopedia",
+        "verificationism",
+        "syntactic analysis",
+        "anti-metaphysics"
+      ],
+      "structural_notes": "Collected essays and writings edited posthumously, organized thematically and chronologically; includes biographical/autobiographical sketches, translated German texts, index of names, and editorial framing; spans Neurath's work on philosophy of science, social planning, visual education (ISOTYPE), and political economy",
+      "estimated_length_chars": 1198791,
+      "engine_category_affinities": {
+        "scholarly": 0.85,
+        "evidence": 0.5,
+        "concepts": 0.9,
+        "argument": 0.75,
+        "epistemology": 0.95,
+        "methodology": 0.8,
+        "outline": 0.7,
+        "rhetoric": 0.4
+      },
+      "rationale": "This is a posthumously edited collected works volume representing Otto Neurath's central contributions to logical empiricism, unified science, and socialist social planning, making it highly relevant to epistemological, conceptual, and methodological engines; its mixed technical register, historical breadth, and cross-domain reach (philosophy, sociology, visual communication) give it strong affinity with concept-tracking, genealogical, and thematic synthesis engines.",
+      "chapter_structure": [
+        {
+          "chapter_id": "ch1",
+          "title": "CHAPTER 12. LIST OF WORKS BY OTTO NEURATH",
+          "char_count": 5088
+        },
+        {
+          "chapter_id": "ch2",
+          "title": "CHAPTER 1 \nMEMORIES OF OTTO NEURATH",
+          "char_count": 7462
+        },
+        {
+          "chapter_id": "ch3",
+          "title": "2. OTTO NEURATH'S CHILDHOOD, FROM",
+          "char_count": 7024
+        },
+        {
+          "chapter_id": "ch4",
+          "title": "3. UNIVERSITY DAYS",
+          "char_count": 2023
+        },
+        {
+          "chapter_id": "ch5",
+          "title": "4. MILITARY LIFE",
+          "char_count": 8103
+        },
+        {
+          "chapter_id": "ch6",
+          "title": "5. A TEACHER OF POLITICAL ECONOMY",
+          "char_count": 4658
+        },
+        {
+          "chapter_id": "ch7",
+          "title": "6. EXCERPTS FROM ERNST LAKENBACHER",
+          "char_count": 5641
+        },
+        {
+          "chapter_id": "ch8",
+          "title": "7. FROM WOLFGANG SCHUMANN",
+          "char_count": 7627
+        },
+        {
+          "chapter_id": "ch9",
+          "title": "8. AUTOBIOGRAPHICAL EXCERPTS FROM OTTO NEURATH",
+          "char_count": 27020
+        },
+        {
+          "chapter_id": "ch10",
+          "title": "9. MUNICH 19 I 9 AND LATER",
+          "char_count": 2356
+        },
+        {
+          "chapter_id": "ch11",
+          "title": "10. FROM OTTO NEURATH'S SON, THE SOCIOLOGIST",
+          "char_count": 31381
+        },
+        {
+          "chapter_id": "ch12",
+          "title": "II. HEINZ UMRATH",
+          "char_count": 4880
+        },
+        {
+          "chapter_id": "ch13",
+          "title": "12. FROM RUDOLF CARNAP'S",
+          "char_count": 5831
+        },
+        {
+          "chapter_id": "ch14",
+          "title": "13. HEINRICH NEIDER",
+          "char_count": 10141
+        },
+        {
+          "chapter_id": "ch15",
+          "title": "14. VIKTOR KRAFT",
+          "char_count": 5023
+        },
+        {
+          "chapter_id": "ch16",
+          "title": "15. KARL R. POPPER",
+          "char_count": 32173
+        },
+        {
+          "chapter_id": "ch17",
+          "title": "17. CHARLES MORRIS",
+          "char_count": 2077
+        },
+        {
+          "chapter_id": "ch18",
+          "title": ".~~~",
+          "char_count": 5849
+        },
+        {
+          "chapter_id": "ch19",
+          "title": "18. MARIE NEURATH: 1940-1945",
+          "char_count": 17441
+        },
+        {
+          "chapter_id": "ch20",
+          "title": "19. BILSTON AND A. V. WILLIAMS",
+          "char_count": 5828
+        },
+        {
+          "chapter_id": "ch21",
+          "title": "part in the social life of the community, e.g. assisting in a small library",
+          "char_count": 4574
+        },
+        {
+          "chapter_id": "ch22",
+          "title": "20. MARIE NEURATH: OTTO'S LAST DAY, 22ND DECEMBER 1945",
+          "char_count": 12842
+        },
+        {
+          "chapter_id": "ch23",
+          "title": "CHAPTER 2 \nSIX LESSONS",
+          "char_count": 11741
+        },
+        {
+          "chapter_id": "ch24",
+          "title": "2. THE STRANGE (By La-Se-Fe)2",
+          "char_count": 6330
+        },
+        {
+          "chapter_id": "ch25",
+          "title": "3. THE LITTLE DISCOURSE ON THE VIRTUES (by La-Se-Fe)3",
+          "char_count": 8696
+        },
+        {
+          "chapter_id": "ch26",
+          "title": "4. ON DELAy4",
+          "char_count": 7183
+        },
+        {
+          "chapter_id": "ch27",
+          "title": "5. MEASURE AND NUMBER 5",
+          "char_count": 2550
+        },
+        {
+          "chapter_id": "ch28",
+          "title": "6. OF MASTERS AND SERVANTS 6",
+          "char_count": 4069
+        },
+        {
+          "chapter_id": "ch29",
+          "title": "CHAPTER 3 \nON THE FOUNDATIONS OF THE",
+          "char_count": 29177
+        },
+        {
+          "chapter_id": "ch30",
+          "title": "CHAPTER 4 \nTHE PROBLEM OF THE",
+          "char_count": 23374
+        },
+        {
+          "chapter_id": "ch31",
+          "title": "17. Utopia as a Social Engineer's Construction (1919)*",
+          "char_count": 84854
+        },
+        {
+          "chapter_id": "ch32",
+          "title": "20. Inner Economy",
+          "char_count": 3337
+        },
+        {
+          "chapter_id": "ch33",
+          "title": "4. Spengler's Description of the World",
+          "char_count": 11151
+        },
+        {
+          "chapter_id": "ch34",
+          "title": "2. PHASES OF CULTURE",
+          "char_count": 31443
+        },
+        {
+          "chapter_id": "ch35",
+          "title": "3. THE CHARACTER OF CULTURE",
+          "char_count": 56579
+        },
+        {
+          "chapter_id": "ch36",
+          "title": "4. SPENGLER'S DESCRIPTION OF THE WORLD",
+          "char_count": 3209
+        },
+        {
+          "chapter_id": "ch37",
+          "title": "part in this change. Since in the field of world-views our language, writing",
+          "char_count": 40744
+        },
+        {
+          "chapter_id": "ch38",
+          "title": "2. VISUAL EDUCATION AND THE SOCIAL AND",
+          "char_count": 6783
+        },
+        {
+          "chapter_id": "ch39",
+          "title": "3. MUSEUMS OF THE FUTURE (1933) [Bib!. Nr. 213]",
+          "char_count": 7563
+        },
+        {
+          "chapter_id": "ch40",
+          "title": "VIII. se.irk",
+          "char_count": 5291
+        },
+        {
+          "chapter_id": "ch41",
+          "title": "4. A NEW LANGUAGE (1937) [from 'Visual Education',",
+          "char_count": 2190
+        },
+        {
+          "chapter_id": "ch42",
+          "title": "I. Tolerance in Education",
+          "char_count": 3829
+        },
+        {
+          "chapter_id": "ch43",
+          "title": "II. Why Humanisation?",
+          "char_count": 9824
+        },
+        {
+          "chapter_id": "ch44",
+          "title": "III. Why Visual Education?",
+          "char_count": 6807
+        },
+        {
+          "chapter_id": "ch45",
+          "title": "VI. New Ways of Visual Education",
+          "char_count": 14160
+        },
+        {
+          "chapter_id": "ch46",
+          "title": "VII. Picture Language",
+          "char_count": 5796
+        },
+        {
+          "chapter_id": "ch47",
+          "title": ".~",
+          "char_count": 3032
+        },
+        {
+          "chapter_id": "ch48",
+          "title": "VIII. Visual Education and the Future",
+          "char_count": 4171
+        },
+        {
+          "chapter_id": "ch49",
+          "title": "5. Marx and Epicurus",
+          "char_count": 9605
+        },
+        {
+          "chapter_id": "ch50",
+          "title": "1. THE COMING MAN IN THE PRESENT",
+          "char_count": 16140
+        },
+        {
+          "chapter_id": "ch51",
+          "title": "2. COMMUNITY LIFE AND ECONOMIC PLAN",
+          "char_count": 20193
+        },
+        {
+          "chapter_id": "ch52",
+          "title": "3. ETERNAL PEACE",
+          "char_count": 22961
+        },
+        {
+          "chapter_id": "ch53",
+          "title": "4. YOUTH ASSOCIATIONS, SCHOOL, VOCATIONAL GUIDANCE",
+          "char_count": 20115
+        },
+        {
+          "chapter_id": "ch54",
+          "title": "5. MARX AND EPICURUS",
+          "char_count": 20387
+        },
+        {
+          "chapter_id": "ch55",
+          "title": "6. TURNING A WAY FROM METAPHYSICS",
+          "char_count": 21527
+        },
+        {
+          "chapter_id": "ch56",
+          "title": "CHAPTER 9 \nWISSENSCHAFTLICHE WELTAUFFASSUNG:",
+          "char_count": 2360
+        },
+        {
+          "chapter_id": "ch57",
+          "title": "1. THE VIENNA CIRCLE OF THE SCIENTIFIC CONCEPTION OF THE",
+          "char_count": 12629
+        },
+        {
+          "chapter_id": "ch58",
+          "title": "2. THE SCIENTIFIC WORLD CONCEPTION",
+          "char_count": 11214
+        },
+        {
+          "chapter_id": "ch59",
+          "title": "3. FIELDS OF PROBLEMS",
+          "char_count": 14507
+        },
+        {
+          "chapter_id": "ch60",
+          "title": "4. RETROSPECT AND PROSPECT",
+          "char_count": 5993
+        },
+        {
+          "chapter_id": "ch61",
+          "title": "CHAPTER 10 \nEMPIRICAL SOCIOLOGyl",
+          "char_count": 30369
+        },
+        {
+          "chapter_id": "ch62",
+          "title": "2. HISTORY",
+          "char_count": 20305
+        },
+        {
+          "chapter_id": "ch63",
+          "title": "3. POLITICAL ECONOMY",
+          "char_count": 19034
+        },
+        {
+          "chapter_id": "ch64",
+          "title": "4. UNITING HISTORY WITH POLITICAL ECONOMY",
+          "char_count": 20209
+        },
+        {
+          "chapter_id": "ch65",
+          "title": "5. METAPHYSICAL COUNTERCURRENTS",
+          "char_count": 13890
+        },
+        {
+          "chapter_id": "ch66",
+          "title": "6. SOCIOLOGY ON A MATERIALIST FOUNDATION",
+          "char_count": 33814
+        },
+        {
+          "chapter_id": "ch67",
+          "title": "7. EXTRAPOLATION [slightly shortened - Ed.]",
+          "char_count": 22899
+        },
+        {
+          "chapter_id": "ch68",
+          "title": "8. COHERENCE [slightly shortened - Ed.]",
+          "char_count": 24224
+        },
+        {
+          "chapter_id": "ch69",
+          "title": "9. STRUCTURE OF SOCIETY",
+          "char_count": 36641
+        },
+        {
+          "chapter_id": "ch70",
+          "title": "10. SOCIOLOGICAL PROGNOSIS",
+          "char_count": 45040
+        },
+        {
+          "chapter_id": "ch71",
+          "title": "... The transition from magical to theological conceptions can be illustrated by two",
+          "char_count": 5147
+        },
+        {
+          "chapter_id": "ch72",
+          "title": "CHAPTER 11 \nINTERNATIONAL PLANNING FOR FREEDOM*",
+          "char_count": 3230
+        },
+        {
+          "chapter_id": "ch73",
+          "title": "1. PURSUIT OF HAPPINESS",
+          "char_count": 11342
+        },
+        {
+          "chapter_id": "ch74",
+          "title": "2. PRODUCTION OF FREEDOM",
+          "char_count": 9017
+        },
+        {
+          "chapter_id": "ch75",
+          "title": "3. INTERNATIONAL PLANNING IN THE MAKING",
+          "char_count": 23879
+        },
+        {
+          "chapter_id": "ch76",
+          "title": "CHAPTER 12 \nLIST OF WORKS BY OTTO NEURATH",
+          "char_count": 15234
+        },
+        {
+          "chapter_id": "ch77",
+          "title": "1. Februar 1919.",
+          "char_count": 3726
+        },
+        {
+          "chapter_id": "ch78",
+          "title": "17. April 1922.",
+          "char_count": 2519
+        },
+        {
+          "chapter_id": "ch79",
+          "title": "37. Jahrgang, No. 12, 135-136. Wien, 1926.",
+          "char_count": 13856
+        },
+        {
+          "chapter_id": "ch80",
+          "title": "27. Okt. 1944. London, 1944.",
+          "char_count": 21073
+        },
+        {
+          "chapter_id": "ch81",
+          "title": "I. C. L. Simonde de Sismondi (1773-1842), Swiss historian.",
+          "char_count": 12001
+        },
+        {
+          "chapter_id": "ch82",
+          "title": "2. JOSEF SCHACHTER, Prolegomena to a Critical Grammar. With a Foreword by",
+          "char_count": 959
+        }
+      ]
+    },
+    {
+      "title": "Modern Man in the Making   Otto Neurath   A. A. Knopf   1939",
+      "role": "prior_work",
+      "genre": "other",
+      "domain": "social science / visual statistics / sociology of modernity",
+      "argumentative_style": "comparative",
+      "technical_level": "accessible",
+      "reasoning_modes": [
+        "comparative",
+        "empirical",
+        "inductive",
+        "descriptive",
+        "statistical",
+        "visual-analytic"
+      ],
+      "key_vocabulary_sample": [
+        "isotype method",
+        "picture-text style",
+        "modernity",
+        "visualization",
+        "social environment",
+        "ruling groups",
+        "fifth estate",
+        "unified science",
+        "internationalism",
+        "modernization",
+        "social facts",
+        "discrimination",
+        "living-conditions",
+        "picture language",
+        "encyclopedic integration"
+      ],
+      "structural_notes": "The book combines brief prose sections with isotype statistical charts and pictograms, functioning as an illustrated survey rather than a conventional monograph. Chapters move thematically across dimensions of modern life (class, housing, health, work, politics) with minimal headers; an extensive notes/sources section and acknowledgments close the volume. Text and image are co-equal carriers of argument.",
+      "estimated_length_chars": 225612,
+      "engine_category_affinities": {
+        "scholarly": 0.35,
+        "evidence": 0.45,
+        "concepts": 0.65,
+        "argument": 0.5,
+        "epistemology": 0.6,
+        "methodology": 0.55,
+        "outline": 0.7,
+        "rhetoric": 0.5
+      },
+      "rationale": "Neurath's work is a hybrid popular-scientific survey of global modernity using his ISOTYPE visual language, making it most relevant to engines concerned with concept mapping, methodological innovation (visual epistemology, encyclopedic empiricism), and descriptive synthesis; its accessible, data-driven comparative style and explicit anti-theoretical stance make it less suited to engines focused on dense scholarly argumentation or dialectical structure.",
+      "chapter_structure": [
+        {
+          "chapter_id": "ch1",
+          "title": ".9",
+          "char_count": 110551
+        },
+        {
+          "chapter_id": "ch2",
+          "title": "part in social and political life.",
+          "char_count": 41616
+        },
+        {
+          "chapter_id": "ch3",
+          "title": "V. A. Smith: The Early History of India (Oxford University Press, 1924),",
+          "char_count": 31704
+        },
+        {
+          "chapter_id": "ch4",
+          "title": ". . . The first century A.D. is the century of a comparatively crystallized Sen¬",
+          "char_count": 2044
+        },
+        {
+          "chapter_id": "ch5",
+          "title": ". . The kill draws to its close for lack of killable material. . . .”",
+          "char_count": 3832
+        },
+        {
+          "chapter_id": "ch6",
+          "title": ". . China.”",
+          "char_count": 4006
+        },
+        {
+          "chapter_id": "ch7",
+          "title": ". . . All the persons interrogated spent some portion of their time on amuse¬",
+          "char_count": 5977
+        }
+      ]
+    },
+    {
+      "title": "Philosophical Papers 1913 1946   Otto Neurath   Vienna Circle Collection   1983",
+      "role": "prior_work",
+      "genre": "essay_collection",
+      "domain": "philosophy of science / logical empiricism",
+      "argumentative_style": "analytical",
+      "technical_level": "moderate",
+      "reasoning_modes": [
+        "deductive",
+        "comparative",
+        "historical",
+        "pragmatic",
+        "genealogical",
+        "systematic"
+      ],
+      "key_vocabulary_sample": [
+        "physicalism",
+        "unified science",
+        "protocol statements",
+        "logical empiricism",
+        "pseudorationalism",
+        "metatheory",
+        "observation statements",
+        "hypothesis systems",
+        "scientific language",
+        "thing-language",
+        "Vienna Circle",
+        "prediction",
+        "scientia universalis",
+        "metaphysics",
+        "physicalist language"
+      ],
+      "structural_notes": "A posthumously compiled collection of papers spanning 1913-1946, edited and translated by Robert S. Cohen and Marie Neurath. Organized chronologically and thematically across chapters covering topics from decision theory and philosophy of science to physicalism and unified science. Includes preface, acknowledgments, table of contents, bibliography of Neurath in English, and an index of names. Individual papers are translated from German originals and include editorial notes referencing original publication identifiers (ON numbers).",
+      "estimated_length_chars": 732369,
+      "engine_category_affinities": {
+        "scholarly": 0.9,
+        "evidence": 0.5,
+        "concepts": 0.95,
+        "argument": 0.85,
+        "epistemology": 0.9,
+        "methodology": 0.8,
+        "outline": 0.75,
+        "rhetoric": 0.5
+      },
+      "rationale": "This is a canonical essay collection from the Vienna Circle tradition, centered on Neurath's analytic-empiricist philosophy of science, physicalism, and the unity of science program. Its high relevance to concept-tracking, epistemological method detection, and argument architecture engines follows from its dense philosophical vocabulary, systematic argumentation, and historical significance as a foundational prior work in logical empiricism.",
+      "chapter_structure": [
+        {
+          "chapter_id": "ch1",
+          "title": "I. \nCohen, Robert Sonne.",
+          "char_count": 6117
+        },
+        {
+          "chapter_id": "ch2",
+          "title": "CHAPTER 1 \nTHE LOST WANDERERS OF DESCARTES AND",
+          "char_count": 5019
+        },
+        {
+          "chapter_id": "ch3",
+          "title": ". . . we are to make use of this doubt only when we are engaged in contemplating the",
+          "char_count": 28196
+        },
+        {
+          "chapter_id": "ch4",
+          "title": "CHAPTER 2 \nON THE CLASSIFICATION OF SYSTEMS OF HYPOTHESES",
+          "char_count": 3437
+        },
+        {
+          "chapter_id": "ch5",
+          "title": "part its origin lies in the fact that Whewell mainly refers to the Dioptrics and",
+          "char_count": 45436
+        },
+        {
+          "chapter_id": "ch6",
+          "title": "CHAPTER 3 \nWA YS OF THE SCIENTIFIC WORLD-CONCEPTION",
+          "char_count": 30151
+        },
+        {
+          "chapter_id": "ch7",
+          "title": ". motion that much more resembles the modern one. According to him motion",
+          "char_count": 16583
+        },
+        {
+          "chapter_id": "ch8",
+          "title": "CHAPTER 4 \nPHYSICALISM: THE PHILOSOPHY OF THE",
+          "char_count": 10774
+        },
+        {
+          "chapter_id": "ch9",
+          "title": "CHAPTER 5 \nPHYSICALISM",
+          "char_count": 14238
+        },
+        {
+          "chapter_id": "ch10",
+          "title": "CHAPTER 6 \nSOCIOLOGY IN THE FRAMEWORK OF PHYSICALISM",
+          "char_count": 11077
+        },
+        {
+          "chapter_id": "ch11",
+          "title": "2. UNIFIED LANGUAGE OF PHYSICALISM",
+          "char_count": 17364
+        },
+        {
+          "chapter_id": "ch12",
+          "title": "3. SOCIOLOGY NOT A MENTAL SCIENCE",
+          "char_count": 8389
+        },
+        {
+          "chapter_id": "ch13",
+          "title": "4. SOCIOLOGY AS SOCIAL BEHAVIOURISM",
+          "char_count": 21277
+        },
+        {
+          "chapter_id": "ch14",
+          "title": "6. ETHICS AND JURISPRUDENCE AS METAPHYSICAL RESIDUES",
+          "char_count": 9734
+        },
+        {
+          "chapter_id": "ch15",
+          "title": "7. THE EMPIRICAL SOCIOLOGY OF MARXISM",
+          "char_count": 17106
+        },
+        {
+          "chapter_id": "ch16",
+          "title": "8. POSSIBILITY OF PREDICTIONS",
+          "char_count": 6966
+        },
+        {
+          "chapter_id": "ch17",
+          "title": "CHAPTER 7 \nPROTOCOL STATEMENTS",
+          "char_count": 18444
+        },
+        {
+          "chapter_id": "ch18",
+          "title": "... )]\". Although Otto Neurath words the protocol concerning the applica-",
+          "char_count": 5659
+        },
+        {
+          "chapter_id": "ch19",
+          "title": "CHAPTER 8 \nRADICAL PHYSICALISM AND THE 'REAL WORLD'",
+          "char_count": 30926
+        },
+        {
+          "chapter_id": "ch20",
+          "title": ". . . the mental acts of judgement appear fitted to serve as a basis for intersubjectively",
+          "char_count": 2946
+        },
+        {
+          "chapter_id": "ch21",
+          "title": "... \" (p. 386). Does this not represent a typical pseudo-formulation of the",
+          "char_count": 6211
+        },
+        {
+          "chapter_id": "ch22",
+          "title": "CHAPTER 9 \nTHE UNITY OF SCIENCE AS A TASK",
+          "char_count": 14684
+        },
+        {
+          "chapter_id": "ch23",
+          "title": "3. NO GENERAL METHOD OF 'INDUCTION' AND 'TESTING'",
+          "char_count": 2482
+        },
+        {
+          "chapter_id": "ch24",
+          "title": "4. SHAKING, AND CONFIRMATION",
+          "char_count": 2898
+        },
+        {
+          "chapter_id": "ch25",
+          "title": "5. INDEFINITE EXISTENTIAL STATEMENTS - LEGITIMATE",
+          "char_count": 3230
+        },
+        {
+          "chapter_id": "ch26",
+          "title": "6. FACTUAL SCIENCES WITHOUT EXPERIMENTS",
+          "char_count": 6875
+        },
+        {
+          "chapter_id": "ch27",
+          "title": "7. PROTOCOL STATEMENTS AND PHYSICALISM",
+          "char_count": 4559
+        },
+        {
+          "chapter_id": "ch28",
+          "title": "8. OLDER SUCCESSFUL THEORIES ARE NOT ALWAYS",
+          "char_count": 2129
+        },
+        {
+          "chapter_id": "ch29",
+          "title": "9. PSEUDO RATIONALISM AND PHILOSOPHY",
+          "char_count": 2989
+        },
+        {
+          "chapter_id": "ch30",
+          "title": "CHAPTER 11 \nINDIVIDUAL SCIENCES, UNIFIED SCIENCE,",
+          "char_count": 18329
+        },
+        {
+          "chapter_id": "ch31",
+          "title": "CHAPTER 12 \nAN INTERNATIONAL ENCYCLOPEDIA OF",
+          "char_count": 14832
+        },
+        {
+          "chapter_id": "ch32",
+          "title": "CHAPTER 13 \nENCYCLOPEDIA AS 'MODEL'",
+          "char_count": 15512
+        },
+        {
+          "chapter_id": "ch33",
+          "title": "... one is well advised to examine all the more rigorously the grounds of proof against",
+          "char_count": 23011
+        },
+        {
+          "chapter_id": "ch34",
+          "title": "CHAPTER 14 \nPHYSICALISM AND THE INVESTIGATION OF KNOWLEDGE",
+          "char_count": 35457
+        },
+        {
+          "chapter_id": "ch35",
+          "title": "CHAPTER 15 \nUNIFIED SCIENCE AND ITS ENCYCLOPEDIA",
+          "char_count": 28114
+        },
+        {
+          "chapter_id": "ch36",
+          "title": "CHAPTER 16 \nTHE CONCEPT OF 'TYPE' IN THE LIGHT OF",
+          "char_count": 16033
+        },
+        {
+          "chapter_id": "ch37",
+          "title": "CHAPTER 17 \nTHE NEW ENCYCLOPEDIA OF SCIENTIFIC EMPIRICISM",
+          "char_count": 33269
+        },
+        {
+          "chapter_id": "ch38",
+          "title": "CHAPTER 18 \nTHE DEPARTMENTALIZATION OF UNIFIED SCIENCE",
+          "char_count": 3530
+        },
+        {
+          "chapter_id": "ch39",
+          "title": "II. NEUTRALITY OF THE INITIAL PROCEDURES",
+          "char_count": 3438
+        },
+        {
+          "chapter_id": "ch40",
+          "title": "III. UNIFICATION OF SCIENCE",
+          "char_count": 2535
+        },
+        {
+          "chapter_id": "ch41",
+          "title": "IV. ENCYCLOPEDISM VERSUS 'PYRAMID ISM'",
+          "char_count": 6802
+        },
+        {
+          "chapter_id": "ch42",
+          "title": "CHAPTER 19 \nCOMMENTS ON THE PAPERS BY BLACK,",
+          "char_count": 8054
+        },
+        {
+          "chapter_id": "ch43",
+          "title": "CHAPTER 20 \nTHE SOCIAL SCIENCES AND UNIFIED SCIENCE 1",
+          "char_count": 11684
+        },
+        {
+          "chapter_id": "ch44",
+          "title": "CHAPTER 21 \nUNIVERSAL JARGON AND TERMINOLOGY",
+          "char_count": 45797
+        },
+        {
+          "chapter_id": "ch45",
+          "title": "CHAPTER 22 \nTHE ORCHESTRA nON OF THE S.CIENCES BY",
+          "char_count": 36720
+        },
+        {
+          "chapter_id": "ch46",
+          "title": "CHAPTER 23 \nPREDICTION AND INDUCTION 1",
+          "char_count": 10275
+        },
+        {
+          "chapter_id": "ch47",
+          "title": "CHAPTER 24 \nBIBLIOGRAPHY A: WORKS CITED",
+          "char_count": 7878
+        },
+        {
+          "chapter_id": "ch48",
+          "title": "69. Chicago: University of Chicago Press.",
+          "char_count": 15259
+        },
+        {
+          "chapter_id": "ch49",
+          "title": "64. Wien, 1926.",
+          "char_count": 15966
+        },
+        {
+          "chapter_id": "ch50",
+          "title": "91. The Correspondence of Otto Neurath and Rudolf Camap, edited by Marie Neurath",
+          "char_count": 4768
+        },
+        {
+          "chapter_id": "ch51",
+          "title": ".. Mead, G. H. 229",
+          "char_count": 2864
+        }
+      ]
+    }
+  ],
+  "estimated_total_cost_usd": 22.0,
+  "decision_trace": {
+    "sampling_insights": [
+      {
+        "work_title": "round5-proof-dossier-final-1774100000",
+        "role": "target",
+        "key_observations": [
+          "Two-part serialized NLR essay on 'multi-criterial economy' with extensive footnotes",
+          "Explicitly engages the socialist calculation debate, Keynes, and Neurath's in-kind valuation",
+          "Part 1 provides historical-theoretical groundwork; Part 2 proposes institutional design",
+          "Key vocabulary closely mirrors Neurath: 'in-kind valuation', 'socialization of investment', 'data matrix', 'democratic planning'",
+          "Also introduces concepts with no direct Neurath ancestry: 'oligopolistic consolidation', 'deindustrialization', 'capabilities approach', 'ecological balance'",
+          "Very high argument (0.9) and concepts (0.9) affinities; moderate rhetoric (0.6) and evidence (0.5)",
+          "274K chars — manageable single-document length"
+        ],
+        "implications": [
+          "The explicit Neurath engagement means engagement mapping should find rich material for genuine grappling",
+          "The vocabulary overlap (in-kind valuation, socialization, planning) combined with vocabulary innovation (multi-criterial economy, capabilities approach) suggests clinamen/swerve sin findings",
+          "The institutional design focus in Part 2 may represent tessera (completion) of Neurath's less-developed institutional proposals",
+          "The absence of Neurath's epistemological vocabulary (physicalism, unified science, protocol sentences) from the target's key vocabulary strongly suggests strategic silence on these themes"
+        ],
+        "affinity_rationale": "High argument and concepts affinities align well with the AOI engines which require close conceptual comparison and argument-level engagement classification."
+      },
+      {
+        "work_title": "Economic Writings Selections 1904 1945   Otto Neurath   Vienna Circle Collection   2004",
+        "role": "prior_work",
+        "key_observations": [
+          "1.47M chars — the largest source volume, nearly half the total source corpus",
+          "85 chapters spanning economic history, theory of social science, socialisation theory, and economics within unified science",
+          "Contains the core texts on economy in kind, calculation in kind, socialisation, administrative economy, planned economy",
+          "Preceded by Thomas Uebel's critical introduction contextualizing Neurath's contributions",
+          "Individual essays vary in length and register, reflecting different historical moments (1904-1945)"
+        ],
+        "implications": [
+          "This is the primary source document for the economic planning themes Benanav engages most directly",
+          "The Uebel introduction provides scholarly framing that may itself be a mediating influence on Benanav",
+          "The 40-year span means Neurath's own positions evolved significantly — the thematic synthesis must capture this internal evolution",
+          "Pre-profiling is essential given the 1.47M char length"
+        ],
+        "affinity_rationale": "Very high scholarly (0.9) and concepts (0.9) affinities. The collection format with thematic organization maps well to the AOI thematic synthesis engine's need to extract theme inventories."
+      },
+      {
+        "work_title": "Empiricism and Sociology   Otto Neurath   Vienna Circle Collection   1973",
+        "role": "prior_work",
+        "key_observations": [
+          "1.2M chars — the second largest source volume",
+          "Organised thematically and chronologically; includes biographical/autobiographical sketches",
+          "Covers philosophy of science, social planning, visual education (ISOTYPE), and political economy",
+          "Contains key texts: 'International Planning for Freedom', 'Empirical Sociology', ISOTYPE writings",
+          "Very high epistemology (0.9) and concepts (0.9) affinities"
+        ],
+        "implications": [
+          "Contains Neurath's epistemological programme (physicalism, unified science) which Benanav likely ignores — strategic silence findings expected here",
+          "The ISOTYPE/visual education material represents a whole thematic domain absent from Benanav's engagement",
+          "The social planning texts ('International Planning for Freedom', 'Community Life and Economic Plan') are directly relevant to Benanav's institutional design proposals",
+          "The biographical material provides context for Neurath's intellectual motivations but is less relevant for thematic synthesis"
+        ],
+        "affinity_rationale": "Epistemology-heavy content provides the clearest contrast case for strategic silence findings. The social planning texts provide parallel engagement material."
+      },
+      {
+        "work_title": "Modern Man in the Making   Otto Neurath   A. A. Knopf   1939",
+        "role": "prior_work",
+        "key_observations": [
+          "225K chars — the smallest source volume",
+          "Illustrated survey combining prose with ISOTYPE statistical charts and pictograms",
+          "Thematic coverage: class, housing, health, work, politics — dimensions of modern life",
+          "Key vocabulary: isotype method, social environment, fifth estate, unified science, internationalism",
+          "Lower engine affinities overall; highest is outline (0.7) and concepts (0.7)"
+        ],
+        "implications": [
+          "Least directly relevant to Benanav's political economy focus",
+          "However, contains Neurath's applied social analysis and his vision of modernity — may reveal themes Benanav systematically ignores (e.g., visual communication as democratic tool)",
+          "The 'social facts' and 'living-conditions' focus connects to Neurath's Lebenslagen concept which Benanav may have transformed into 'capabilities approach'",
+          "Low scholarly affinity (0.3) suggests this work functions differently from the academic essays — more popular/accessible register"
+        ],
+        "affinity_rationale": "Lower analytical density means this volume contributes secondary themes rather than core economic theory. Still needed for completeness of the thematic map."
+      },
+      {
+        "work_title": "Philosophical Papers 1913 1946   Otto Neurath   Vienna Circle Collection   1983",
+        "role": "prior_work",
+        "key_observations": [
+          "732K chars — medium-sized source volume",
+          "Chronologically organised papers on physicalism, unified science, protocol statements, and scientific methodology",
+          "Very high epistemology (0.9), concepts (0.9), and scholarly (0.9) affinities",
+          "Contains Neurath's most systematic philosophical arguments — the theoretical foundations beneath his economic proposals"
+        ],
+        "implications": [
+          "Contains the epistemological commitments (physicalism, anti-foundationalism, encyclopedism vs pyramidism) that underpin Neurath's economic thought",
+          "Benanav's target essay shows no evidence of engaging these philosophical foundations, making this volume the primary evidence base for strategic silence / kenosis findings",
+          "The 'pseudorationalism' concept and 'protocol statements' debate provide a meta-methodological framework that Benanav may unknowingly violate or ignore",
+          "The 'unified science' and 'encyclopedism' themes connect to Neurath's holistic vision that Benanav fragments into purely economic components"
+        ],
+        "affinity_rationale": "Highest epistemological density of the four volumes. Critical for detecting what Benanav strips away from Neurath's integrated intellectual project."
+      }
+    ],
+    "objective_alignment": [
+      {
+        "goal": "Reconstruct the selected source thinker's major themes, claims, commitments, and source-document inventory as a stable comparison surface",
+        "serving_engines": [
+          "deep_summarization",
+          "narrative_structure_analyzer",
+          "aoi_thematic_synthesis"
+        ],
+        "serving_chains": [
+          "prior_work_profiling"
+        ],
+        "coverage_assessment": "fully covered — Phase 0.5 pre-digests the 3.6M char corpus into structured profiles; Phase 1.0 synthesises these into a stable theme inventory with source_document_id provenance"
+      },
+      {
+        "goal": "Map how the subject corpus engages, partially engages, ignores, or distorts each source theme while keeping the selected source thinker fixed",
+        "serving_engines": [
+          "aoi_engagement_mapping"
+        ],
+        "serving_chains": [],
+        "coverage_assessment": "fully covered — Phase 2.0 maps engagement theme by theme with engagement level classification and divergence characterisation"
+      },
+      {
+        "goal": "Identify bounded AOI findings keyed by theme and dominant sin type with explicit target/source provenance",
+        "serving_engines": [
+          "aoi_sin_findings"
+        ],
+        "serving_chains": [],
+        "coverage_assessment": "fully covered — Phase 3.0 at deep depth produces findings with exactly one sin type per finding, severity rating, and dual-provenance anchoring using source_document_ids from Phase 1.0"
+      },
+      {
+        "goal": "Produce a structured thematic report that closes the analysis without broadening into thinker discovery or multi-thinker comparison",
+        "serving_engines": [
+          "aoi_thematic_report"
+        ],
+        "serving_chains": [],
+        "coverage_assessment": "fully covered — Phase 4.0 explicitly closes the loop with a bounded report synthesising engagement patterns, sin distributions, and reading implications"
+      }
+    ],
+    "phase_decisions": [
+      {
+        "phase_number": 0.5,
+        "phase_name": "Source Corpus Profiling",
+        "chain_or_engine": "prior_work_profiling (chain: deep_summarization → narrative_structure_analyzer)",
+        "selection_rationale": "The Neurath source corpus totals ~3.6M characters — far beyond what any single LLM pass can ingest. Pre-profiling each volume into a structured summary (thesis architecture, conceptual vocabulary, evidence patterns, narrative structure) creates a tractable input for Phase 1.0's thematic synthesis. The prior_work_profiling chain was chosen because it combines deep_summarization (which extracts the 8 dimensions of analytical structure) with narrative_structure_analyzer (which captures voice, arc, and temporal construction). Together they produce profiles that preserve thematic content while reducing token demands by an order of magnitude.",
+        "depth_rationale": "Standard depth (2 passes per engine) provides adequate profiling fidelity for source works that will be further synthesised in Phase 1.0. Deep would add passes without proportional benefit since Phase 1.0 does the real interpretive work.",
+        "iteration_mode_rationale": "per_work because each Neurath volume has distinct thematic character (economic writings vs. philosophy of science vs. visual statistics vs. epistemology) and needs its own focused profiling pass. A single pass across all 4 would blur these distinctions.",
+        "alternatives_considered": [
+          "deep_text_profiling chain (deep_summarization → chapter_role_analyzer → narrative_structure_analyzer) — rejected because chapter_role_analyzer adds cost for structural dependency analysis that the AOI thematic synthesis doesn't need; the source works' chapter structures are organizational rather than argumentative",
+          "Skip profiling entirely and let Phase 1.0 handle raw documents — rejected because 3.6M chars exceeds practical context limits; the aoi_thematic_synthesis engine would receive truncated or heavily chunked input",
+          "concept_analysis_suite chain — rejected because it focuses on concept centrality and evolution within a single text, which is the job of Phase 1.0 not a pre-processing step"
+        ],
+        "dependency_rationale": "No dependencies. This is the first phase. Its outputs (4 structured profiles with thesis architecture, conceptual vocabulary, and narrative structure per Neurath volume) flow into Phase 1.0 as the primary analytical input."
+      },
+      {
+        "phase_number": 1.0,
+        "phase_name": "Source Thematic Synthesis",
+        "chain_or_engine": "aoi_thematic_synthesis (engine)",
+        "selection_rationale": "The designated engine for the first phase of the AOI thematic workflow. It synthesises themes, claims, commitments, and source-document inventory across the source corpus. No alternative engine or chain serves this specific function.",
+        "depth_rationale": "Deep depth because the source corpus spans 40+ years (1904–1945), encompasses at least five distinct thematic domains (economic history, socialisation theory, calculation-in-kind, philosophy of science, visual education), and contains significant internal tensions (early Neurath on monetary calculation vs. late Neurath on in-kind only; the evolution of Lebenslagen concepts). Deep depth captures the full thematic map including tensions between closely related themes that standard might collapse.",
+        "iteration_mode_rationale": "Single because the thematic synthesis must integrate across all 4 Neurath volumes simultaneously to identify cross-volume theme patterns and ensure stable source_document_id assignment. Per-work synthesis would fragment the theme inventory.",
+        "alternatives_considered": [
+          "Running aoi_thematic_synthesis at standard depth — rejected because the internal diversity and 40-year span of the source corpus requires deep thematic mapping to avoid collapsing distinct themes into overly broad categories",
+          "Using conceptual_framework_extraction engine instead — rejected because it profiles a single work's frameworks rather than synthesising themes across a multi-work corpus with provenance tracking"
+        ],
+        "dependency_rationale": "Depends on Phase 0.5. Receives 4 per-work structured profiles (thesis architecture, conceptual vocabulary, evidence patterns, narrative structure) as distilled context. Also receives raw source documents for evidence anchoring. The profiles reduce context demands while the raw documents allow the engine to verify and anchor specific claims."
+      },
+      {
+        "phase_number": 2.0,
+        "phase_name": "Engagement Mapping",
+        "chain_or_engine": "aoi_engagement_mapping (engine)",
+        "selection_rationale": "The designated engine for Phase 2 of the AOI thematic workflow. Maps engagement levels (genuine, partial, absent, distorted) per theme. No alternative serves this specific bounded function.",
+        "depth_rationale": "Standard depth because the target is a single two-part essay (~274K chars) with relatively clear engagement patterns. Benanav explicitly names Neurath and the socialist calculation debate, so engagement detection is not the hard problem — classification is. Standard provides adequate discrimination of engagement levels and divergence character.",
+        "iteration_mode_rationale": "Single because there is one target work and one theme inventory to compare against. No iteration needed.",
+        "alternatives_considered": [
+          "Deep depth — rejected because the target's engagement with Neurath is relatively overt (explicit citations, named debates) and deep would add cost without proportional analytical gain",
+          "Adding a supplementary argument_analysis_chain on the target — rejected because this would broaden beyond the bounded AOI scope; the engagement mapping engine already reads the target work directly"
+        ],
+        "dependency_rationale": "Depends on Phase 1.0. Receives the theme inventory (5-10+ themes with claims, commitments, source_document_ids) as the comparison surface. Reads the target work (Benanav) directly to classify engagement level per theme. The theme inventory provides the stable structure against which engagement is assessed."
+      },
+      {
+        "phase_number": 3.0,
+        "phase_name": "AOI Sin Findings",
+        "chain_or_engine": "aoi_sin_findings (engine)",
+        "selection_rationale": "The designated engine for Phase 3 of the AOI thematic workflow. Produces discrete, evidence-bearing AOI findings with sin classification, severity, and dual provenance. No alternative serves this specific function.",
+        "depth_rationale": "Deep depth because this phase produces the core analytical deliverable. The Benanav-Neurath relationship is complex — Benanav is explicitly sympathetic, making sins subtle (selective appropriation, vocabulary modernisation, epistemological stripping) rather than overt. Deep depth captures weaker but still meaningful secondary findings alongside the primary ones, and provides denser evidence and clearer consequence analysis for provenance.",
+        "iteration_mode_rationale": "Single because findings are identified across the full theme-engagement landscape, not per-work. The sin findings engine needs to see the complete picture (all themes, all engagement levels) to assign sin types coherently.",
+        "alternatives_considered": [
+          "Standard depth — rejected because secondary findings (e.g., subtle vocabulary mutations, implicit debt patterns) are likely analytically significant given the sympathetic appropriation dynamic",
+          "concept_appropriation_tracker engine — rejected because it belongs to the genealogy workflow and tracks concept migration rather than classifying AOI sin types; it lacks the sin taxonomy and severity framework"
+        ],
+        "dependency_rationale": "Depends on Phase 1.0 and Phase 2.0. Receives the theme inventory (Phase 1.0) for source-side provenance anchoring via source_document_ids, and the engagement map (Phase 2.0) for per-theme engagement classifications that guide where to look for sins. Also receives raw source documents (external docs) for anchoring specific source-side evidence passages."
+      },
+      {
+        "phase_number": 4.0,
+        "phase_name": "Thematic AOI Report",
+        "chain_or_engine": "aoi_thematic_report (engine)",
+        "selection_rationale": "The designated engine for Phase 4 of the AOI thematic workflow. Produces the structured closeout report. No alternative serves this bounded synthesis function.",
+        "depth_rationale": "Standard depth because this is a synthesis/composition phase. All analytical discovery is complete in upstream phases. Standard provides clear summary, divergence highlights, and reading implications — sufficient for the report deliverable.",
+        "iteration_mode_rationale": "Single because the report synthesises all upstream outputs into a single structured document.",
+        "alternatives_considered": [
+          "Deep depth — rejected because the interpretive work is done; deeper synthesis adds marginal value at significant cost",
+          "Using genealogy_final_synthesis engine — rejected because it produces genealogical narratives (descent, emergence, prosopography) rather than bounded AOI reports; it would broaden the analysis beyond the thematic tranche"
+        ],
+        "dependency_rationale": "Depends on Phase 1.0, 2.0, and 3.0. Receives the theme inventory (Phase 1.0) for the thematic structure, the engagement map (Phase 2.0) for the engagement pattern overview, and the sin findings (Phase 3.0) for the finding summaries and sin-type distribution. All three upstream outputs are required to produce a complete report."
+      }
+    ],
+    "per_work_decisions": [
+      {
+        "phase_number": 0.5,
+        "work_title": "Economic Writings Selections 1904 1945",
+        "chain_key": "prior_work_profiling",
+        "rationale": "The largest source volume (1.47M chars, 85 chapters). Contains the core economic theory texts most directly relevant to Benanav's engagement. Profiling must capture both the early economic history essays and the later socialisation theory to support Phase 1.0's evolutionary theme tracking."
+      },
+      {
+        "phase_number": 0.5,
+        "work_title": "Empiricism and Sociology",
+        "chain_key": "prior_work_profiling",
+        "rationale": "The second largest volume (1.2M chars). Contains epistemological and social planning material that provides the contrast case for strategic silence findings. Profiling should capture both the philosophy of science content and the social planning proposals."
+      },
+      {
+        "phase_number": 0.5,
+        "work_title": "Modern Man in the Making",
+        "chain_key": "prior_work_profiling",
+        "rationale": "The smallest volume (225K chars). A visual statistics survey with lower analytical density. Profiling captures Neurath's applied social analysis and ISOTYPE methodology, contributing secondary themes (visual education, internationalism, social facts) to the thematic inventory."
+      },
+      {
+        "phase_number": 0.5,
+        "work_title": "Philosophical Papers 1913 1946",
+        "chain_key": "prior_work_profiling",
+        "rationale": "Medium-sized volume (732K chars) containing Neurath's most systematic philosophical arguments. Profiling must capture the epistemological programme (physicalism, anti-foundationalism, unified science) that underpins his economic thought and which Benanav likely ignores entirely."
+      }
+    ],
+    "catalog_coverage": [
+      {
+        "engine_key": "aoi_thematic_synthesis",
+        "status": "selected",
+        "reason": "Core AOI Phase 1.0 engine — reconstructs source thinker's thematic world",
+        "used_in_phases": [
+          1.0
+        ]
+      },
+      {
+        "engine_key": "aoi_engagement_mapping",
+        "status": "selected",
+        "reason": "Core AOI Phase 2.0 engine — maps target's per-theme engagement",
+        "used_in_phases": [
+          2.0
+        ]
+      },
+      {
+        "engine_key": "aoi_sin_findings",
+        "status": "selected",
+        "reason": "Core AOI Phase 3.0 engine — produces sin-classified findings with provenance",
+        "used_in_phases": [
+          3.0
+        ]
+      },
+      {
+        "engine_key": "aoi_thematic_report",
+        "status": "selected",
+        "reason": "Core AOI Phase 4.0 engine — produces bounded closeout report",
+        "used_in_phases": [
+          4.0
+        ]
+      },
+      {
+        "engine_key": "deep_summarization",
+        "status": "selected",
+        "reason": "Used in prior_work_profiling chain for Phase 0.5 — extracts thesis architecture, conceptual vocabulary, evidence patterns from each Neurath volume",
+        "used_in_phases": [
+          0.5
+        ]
+      },
+      {
+        "engine_key": "narrative_structure_analyzer",
+        "status": "selected",
+        "reason": "Used in prior_work_profiling chain for Phase 0.5 — captures narrative arc, voice, and temporal construction of each Neurath volume",
+        "used_in_phases": [
+          0.5
+        ]
+      },
+      {
+        "engine_key": "argument_architecture",
+        "status": "rejected",
+        "reason": "Would add argument structure analysis but the AOI workflow focuses on thematic engagement, not argument evaluation. Including it would broaden beyond the bounded thematic tranche.",
+        "used_in_phases": []
+      },
+      {
+        "engine_key": "chapter_role_analyzer",
+        "status": "rejected",
+        "reason": "Chapter structural analysis is valuable for target profiling but unnecessary for source corpus profiling in AOI context. The source works' chapter structures are editorial/organisational rather than argumentatively dependent.",
+        "used_in_phases": []
+      },
+      {
+        "engine_key": "concept_evolution",
+        "status": "rejected",
+        "reason": "Tracks concept evolution between prior and current work — a genealogy function. The AOI workflow handles concept comparison through engagement mapping and sin findings rather than evolutionary tracking.",
+        "used_in_phases": []
+      },
+      {
+        "engine_key": "concept_appropriation_tracker",
+        "status": "rejected",
+        "reason": "Tracks concept migration and mutation — a genealogy function. Overlaps with AOI sin findings but lacks the sin taxonomy and severity framework needed for bounded AOI analysis.",
+        "used_in_phases": []
+      },
+      {
+        "engine_key": "concept_semantic_constellation",
+        "status": "rejected",
+        "reason": "Maps semantic fields within a single text. Useful for deep concept analysis but not needed when the AOI thematic synthesis already builds a theme inventory with claim structures.",
+        "used_in_phases": []
+      },
+      {
+        "engine_key": "concept_synthesis",
+        "status": "rejected",
+        "reason": "Cross-work concept synthesis — a genealogy function. The AOI thematic synthesis engine handles the equivalent task for the bounded AOI workflow.",
+        "used_in_phases": []
+      },
+      {
+        "engine_key": "concept_taxonomy_argumentative_function",
+        "status": "rejected",
+        "reason": "Classifies concepts by argumentative function — a genealogy analysis engine. Not needed in the bounded AOI thematic workflow.",
+        "used_in_phases": []
+      },
+      {
+        "engine_key": "conceptual_framework_extraction",
+        "status": "rejected",
+        "reason": "Extracts frameworks from a single text. Phase 0.5's deep_summarization already captures conceptual vocabulary and framework architecture as part of its 8-dimension profiling.",
+        "used_in_phases": []
+      },
+      {
+        "engine_key": "conditions_of_possibility_analyzer",
+        "status": "rejected",
+        "reason": "Foucauldian conditions analysis — a genealogy function. Would broaden the AOI analysis into intellectual archaeology beyond the thematic comparison mandate.",
+        "used_in_phases": []
+      },
+      {
+        "engine_key": "evolution_tactics_detector",
+        "status": "rejected",
+        "reason": "Detects self-management tactics in an author's own evolution — a genealogy function. Not applicable to the AOI thematic comparison between two different authors.",
+        "used_in_phases": []
+      },
+      {
+        "engine_key": "genealogy_final_synthesis",
+        "status": "rejected",
+        "reason": "Produces genealogical portraits and prosopographic profiles — genealogy deliverables. Would broaden beyond the bounded AOI thematic report.",
+        "used_in_phases": []
+      },
+      {
+        "engine_key": "genealogy_relationship_classification",
+        "status": "rejected",
+        "reason": "Classifies relationships between prior works and target — a genealogy discovery function. In the AOI thematic workflow, the relationship is already fixed (source thinker corpus).",
+        "used_in_phases": []
+      },
+      {
+        "engine_key": "inferential_commitment_mapper",
+        "status": "rejected",
+        "reason": "Maps inferential commitments within a text. Would enrich target analysis but broadens beyond the bounded AOI thematic scope.",
+        "used_in_phases": []
+      },
+      {
+        "engine_key": "concept_centrality_mapper",
+        "status": "rejected",
+        "reason": "Network-theoretic concept analysis. Not needed when AOI thematic synthesis provides theme-level rather than concept-level mapping.",
+        "used_in_phases": []
+      },
+      {
+        "engine_key": "counterfactual_analyzer",
+        "status": "rejected",
+        "reason": "Evaluates counterfactual reasoning. Not relevant to the thematic AOI comparison task.",
+        "used_in_phases": []
+      },
+      {
+        "engine_key": "comparative_reasoning_analyzer",
+        "status": "rejected",
+        "reason": "Analyzes analogical and comparative reasoning structures. Not needed for the bounded AOI thematic workflow.",
+        "used_in_phases": []
+      },
+      {
+        "engine_key": "dialectical_structure",
+        "status": "rejected",
+        "reason": "Maps dialectical tensions within a text. Would enrich analysis but broadens beyond the bounded AOI thematic scope.",
+        "used_in_phases": []
+      },
+      {
+        "engine_key": "epistemological_method_detector",
+        "status": "rejected",
+        "reason": "Detects epistemological methods. Could reveal Benanav's epistemological gaps relative to Neurath but would broaden beyond the thematic comparison mandate.",
+        "used_in_phases": []
+      },
+      {
+        "engine_key": "modal_reasoning_analyzer",
+        "status": "rejected",
+        "reason": "Evaluates modal reasoning. Not relevant to thematic AOI comparison.",
+        "used_in_phases": []
+      },
+      {
+        "engine_key": "specialized_reasoning_classifier",
+        "status": "rejected",
+        "reason": "Classifies specialized reasoning forms. Not needed for bounded AOI thematic analysis.",
+        "used_in_phases": []
+      },
+      {
+        "engine_key": "structural_pattern_detector",
+        "status": "rejected",
+        "reason": "Detects structural patterns in argumentation. Not needed when AOI focuses on thematic engagement rather than argumentative structure.",
+        "used_in_phases": []
+      },
+      {
+        "engine_key": "theory_construction_analyzer",
+        "status": "rejected",
+        "reason": "Analyzes theory construction moves. Would enrich understanding of Benanav's theoretical choices but broadens beyond the bounded AOI scope.",
+        "used_in_phases": []
+      }
+    ],
+    "overall_strategy_rationale": "The plan is structured around a fundamental asymmetry: the source corpus is massive, internally diverse, and spans 40 years, while the target is a focused two-part essay that explicitly but selectively engages one slice of that source. This asymmetry drives two key design decisions. First, Phase 0.5 pre-digests the source corpus because 3.6M characters cannot be processed in a single context window; the prior_work_profiling chain produces structured profiles that preserve thematic content at tractable scale. Second, the depth gradient rises toward Phase 3.0 (sin findings) rather than Phase 2.0 (engagement mapping) because the harder analytical problem is not detecting engagement — Benanav is overtly sympathetic to Neurath — but discriminating between legitimate intellectual development and subtle scholarly sins in a context of sympathetic appropriation. The plan stays strictly bounded: all four AOI-specific engines are used in their canonical sequence, no genealogy-discovery or multi-thinker engines are included, and the report phase is explicitly configured to close the analysis loop. The single recommended view (aoi_thematic_analysis) provides the complete reading surface through its auto-included child views."
+  },
+  "revision_history": [],
+  "current_revision": 0
+}

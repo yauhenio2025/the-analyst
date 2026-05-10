@@ -1,0 +1,353 @@
+{
+  "planning_decision_id": "planning-decision-b1600d054991",
+  "created_at": "2026-03-28T01:20:48.394522+00:00",
+  "workflow_key": "intellectual_genealogy",
+  "consumer_key": "the-critic",
+  "selected_source_thinker_id": null,
+  "selected_source_thinker_name": null,
+  "source_v2_job_id": "proof-round4-adaptive-balance-final-1774012011",
+  "task_request": {
+    "task": "Trace the genealogy and intellectual development visible in this saved result.",
+    "objective_hint": null,
+    "audience": null,
+    "desired_depth": null,
+    "style_expectations": null,
+    "workflow_hint": "intellectual_genealogy",
+    "consumer_key": "the-critic",
+    "source_constraints": {
+      "source_mode": "saved_result",
+      "selected_source_thinker_id": null,
+      "selected_source_thinker_name": null,
+      "source_analysis_id": null,
+      "source_v2_job_id": "proof-round4-adaptive-balance-final-1774012011"
+    }
+  },
+  "routing_decision": {
+    "normalized_task_summary": "Trace the genealogy and intellectual development visible in this saved result.",
+    "selected_objective_key": "genealogical",
+    "selected_workflow_key": "intellectual_genealogy",
+    "routing_outcome": "genealogy_transient_source_backed",
+    "routing_confidence": "medium",
+    "launch_contract_kind": "planner.direct_sections_compose_handoff",
+    "source_sufficiency_status": "sufficient",
+    "required_fields": [
+      "workflow_key",
+      "consumer_key",
+      "source_v2_job_id"
+    ],
+    "required_host_preparation": [
+      "Call plan-task with saved_result planning context to resolve a bounded direct-sections handoff before launch."
+    ],
+    "downstream_launch_contract": {
+      "method": "POST",
+      "endpoint": "/v1/orchestrator/plan-task",
+      "request_fields": {
+        "task_request.workflow_hint": "intellectual_genealogy",
+        "task_request.consumer_key": "the-critic",
+        "planning_context.context_mode": "saved_result",
+        "planning_context.source_v2_job_id": "proof-round4-adaptive-balance-final-1774012011"
+      },
+      "followup_contract_kind": "planner.direct_sections_compose_handoff",
+      "advisory_only": true
+    },
+    "rejected_candidates": [
+      {
+        "objective_key": "influence_thematic",
+        "rejection_reason": "lower_signal_score_than_selected_candidate",
+        "details": []
+      }
+    ],
+    "trace": [
+      {
+        "stage": "task_normalization",
+        "details": {
+          "normalized_task_summary": "Trace the genealogy and intellectual development visible in this saved result.",
+          "audience": null,
+          "desired_depth": null,
+          "style_expectations": null
+        }
+      },
+      {
+        "stage": "objective_candidate_scoring",
+        "details": {
+          "objective_hint": null,
+          "objective_hint_status": "not_provided",
+          "workflow_hint": "intellectual_genealogy",
+          "workflow_hint_status": "accepted_as_consistent",
+          "candidates": [
+            {
+              "objective_key": "influence_thematic",
+              "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+              "signal_score": 0,
+              "positive_signals": [],
+              "source_mode": "saved_result",
+              "source_mode_compatible": true
+            },
+            {
+              "objective_key": "genealogical",
+              "workflow_key": "intellectual_genealogy",
+              "signal_score": 1,
+              "positive_signals": [
+                "genealogy"
+              ],
+              "source_mode": "saved_result",
+              "source_mode_compatible": true
+            }
+          ]
+        }
+      },
+      {
+        "stage": "source_sufficiency_evaluation",
+        "details": {
+          "selected_objective_key": "genealogical",
+          "selected_workflow_key": "intellectual_genealogy",
+          "source_mode": "saved_result",
+          "source_sufficiency_status": "sufficient",
+          "sufficiency_reasons": []
+        }
+      },
+      {
+        "stage": "routing_decision",
+        "details": {
+          "routing_outcome": "genealogy_transient_source_backed",
+          "routing_confidence": "medium",
+          "launch_contract_kind": "planner.direct_sections_compose_handoff",
+          "selected_objective_key": "genealogical",
+          "selected_workflow_key": "intellectual_genealogy",
+          "required_fields": [
+            "workflow_key",
+            "consumer_key",
+            "source_v2_job_id"
+          ],
+          "required_host_preparation": [
+            "Call plan-task with saved_result planning context to resolve a bounded direct-sections handoff before launch."
+          ]
+        }
+      }
+    ]
+  },
+  "planning_decision": {
+    "normalized_task_summary": "Trace the genealogy and intellectual development visible in this saved result.",
+    "planning_decision_id": "planning-decision-b1600d054991",
+    "routing_decision": {
+      "normalized_task_summary": "Trace the genealogy and intellectual development visible in this saved result.",
+      "selected_objective_key": "genealogical",
+      "selected_workflow_key": "intellectual_genealogy",
+      "routing_outcome": "genealogy_transient_source_backed",
+      "routing_confidence": "medium",
+      "launch_contract_kind": "planner.direct_sections_compose_handoff",
+      "source_sufficiency_status": "sufficient",
+      "required_fields": [
+        "workflow_key",
+        "consumer_key",
+        "source_v2_job_id"
+      ],
+      "required_host_preparation": [
+        "Call plan-task with saved_result planning context to resolve a bounded direct-sections handoff before launch."
+      ],
+      "downstream_launch_contract": {
+        "method": "POST",
+        "endpoint": "/v1/orchestrator/plan-task",
+        "request_fields": {
+          "task_request.workflow_hint": "intellectual_genealogy",
+          "task_request.consumer_key": "the-critic",
+          "planning_context.context_mode": "saved_result",
+          "planning_context.source_v2_job_id": "proof-round4-adaptive-balance-final-1774012011"
+        },
+        "followup_contract_kind": "planner.direct_sections_compose_handoff",
+        "advisory_only": true
+      },
+      "rejected_candidates": [
+        {
+          "objective_key": "influence_thematic",
+          "rejection_reason": "lower_signal_score_than_selected_candidate",
+          "details": []
+        }
+      ],
+      "trace": [
+        {
+          "stage": "task_normalization",
+          "details": {
+            "normalized_task_summary": "Trace the genealogy and intellectual development visible in this saved result.",
+            "audience": null,
+            "desired_depth": null,
+            "style_expectations": null
+          }
+        },
+        {
+          "stage": "objective_candidate_scoring",
+          "details": {
+            "objective_hint": null,
+            "objective_hint_status": "not_provided",
+            "workflow_hint": "intellectual_genealogy",
+            "workflow_hint_status": "accepted_as_consistent",
+            "candidates": [
+              {
+                "objective_key": "influence_thematic",
+                "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                "signal_score": 0,
+                "positive_signals": [],
+                "source_mode": "saved_result",
+                "source_mode_compatible": true
+              },
+              {
+                "objective_key": "genealogical",
+                "workflow_key": "intellectual_genealogy",
+                "signal_score": 1,
+                "positive_signals": [
+                  "genealogy"
+                ],
+                "source_mode": "saved_result",
+                "source_mode_compatible": true
+              }
+            ]
+          }
+        },
+        {
+          "stage": "source_sufficiency_evaluation",
+          "details": {
+            "selected_objective_key": "genealogical",
+            "selected_workflow_key": "intellectual_genealogy",
+            "source_mode": "saved_result",
+            "source_sufficiency_status": "sufficient",
+            "sufficiency_reasons": []
+          }
+        },
+        {
+          "stage": "routing_decision",
+          "details": {
+            "routing_outcome": "genealogy_transient_source_backed",
+            "routing_confidence": "medium",
+            "launch_contract_kind": "planner.direct_sections_compose_handoff",
+            "selected_objective_key": "genealogical",
+            "selected_workflow_key": "intellectual_genealogy",
+            "required_fields": [
+              "workflow_key",
+              "consumer_key",
+              "source_v2_job_id"
+            ],
+            "required_host_preparation": [
+              "Call plan-task with saved_result planning context to resolve a bounded direct-sections handoff before launch."
+            ]
+          }
+        }
+      ]
+    },
+    "planning_outcome_kind": "direct_sections_composition_handoff_plan",
+    "planning_confidence": "medium",
+    "hydration_status": "satisfied",
+    "required_hydration": [],
+    "required_host_preparation": [
+      "Lower the persisted direct-sections handoff into compose-from-intent without host-side semantic reconstruction."
+    ],
+    "downstream_readiness": "ready_for_direct_sections_compose_handoff",
+    "downstream_followup_contract": {
+      "method": "POST",
+      "endpoint": "/v1/presenter/compose-from-intent",
+      "handoff_kind": "direct_sections",
+      "request_fields": {
+        "workflow_key": "intellectual_genealogy",
+        "consumer_key": "the-critic",
+        "user_intent": "Trace the genealogy and intellectual development visible in this saved result.",
+        "prose_sections": "<lower from direct_sections_composition_handoff_plan>"
+      }
+    },
+    "hydrated_document_ids": {},
+    "workflow_execution_plan": null,
+    "aoi_composition_handoff_plan": null,
+    "direct_sections_composition_handoff_plan": {
+      "workflow_key": "intellectual_genealogy",
+      "objective_key": "genealogical",
+      "consumer_key": "the-critic",
+      "source_v2_job_id": "proof-round4-adaptive-balance-final-1774012011",
+      "compose_entrypoint_kind": "presenter.compose_from_intent",
+      "resolved_intent_seed": "Trace the genealogy and intellectual development visible in this saved result.",
+      "prose_sections": [
+        {
+          "engine_key": "genealogy_relationship_classification",
+          "title": "Relationship Comparison Map",
+          "prose": "### Influence Channels: The Load-Bearing Architecture of a Sequential Epoch\n\nTo understand the relationship between *The Global Minotaur* (2011) and *Technofeudalism* (2023) is to examine a continuous feat of structural engineering. The 2011 text does not merely provide contextual scaffolding; it pours the concrete foundation upon which the towering, top-heavy edifice of the 2023 argument is constructed. Through the channels of methodology, framing, and vocabulary, Varoufakis engineers a strict chronological dependency. If we pull the foundational pillars forged in the 2011 text out from under the 2023 thesis, the entire superstructure of *Technofeudalism* immediately collapses.\n\nThe primary load-bearing pillar transferred from the prior work to the target work is the **Methodological Channel of Macro-Historical Sequencing**. *Technofeudalism* depends entirely on a highly specific timeline of global surplus recycling. In *The Global Minotaur*, Varoufakis constructs a structural logic where capitalism survives *only* through distinct, epochal mechanisms of surplus distribution: the Global Plan (1944\u20131971), followed by the Global Minotaur (1971\u20132008). The 2011 text ends with the structural ruin of this final mechanism\u2014a phase Varoufakis names \"Bankruptocracy,\" where the state desperately pumps fiat liquidity (\"quantitative easing\") into dead zombie banks. \n\nThis specific 2011 conclusion acts as the literal foundational slab for the 2023 thesis. *Technofeudalism* builds directly upward from \"Bankruptocracy.\" The entire 2023 claim that \"Cloud Capital\" was funded by \"poisoned central bank money\" rather than capitalist profit rests directly on the 2011 proof that the 2008 crash irreparably severed capital accumulation from real-world profit. If the reader rejects the 2011 premise that the Global Minotaur died and left a vacuum filled entirely by central bank fiat, the 2023 argument that Big Tech built its fiefdoms outside the traditional capitalist market mechanism has nothing to stand on.\n\nResting upon this chronological foundation is the **Vocabulary and Framing Channel**, where the architectural blueprints for 2023's concepts are first sketched. In *The Global Minotaur*, Varoufakis introduces the \"Handmaidens\" of the beast\u2014specifically Wall Street and Walmart. The 2011 analysis of Walmart serves as the terrestrial prototype for the 2023 \"Cloud Fief.\" The 2011 text frames Walmart not as a traditional competitor, but as an \"extractive business model\" that engineers an \"ideology of cheapness\" to ruthlessly squeeze suppliers while dictating terms from above. This framing is a load-bearing prerequisite for *Technofeudalism*. By establishing in 2011 that monopsony power (Walmart) operates through *extraction* rather than *market competition*, Varoufakis builds the rhetorical runway necessary to claim in 2023 that algorithmic monopsony power (Amazon) operates through feudal *Rent* rather than capitalist *Profit*. Walmart is the physical skeletal frame; Amazon is simply the digital skin stretched over it.\n\nFinally, the **Audience and Authority Channels** act as the reinforcing rebar. By 2023, Varoufakis leverages his established authority as the coroner of the 2008 crash. Because *The Global Minotaur* successfully predicted the intractable nature of the post-2008 European debt crisis and the ensuing \"liquidity traps,\" the audience is primed to trust his even more radical claim a decade later: that the system we have been trapped in since the Minotaur's death is no longer capitalism at all.\n\n\n### Strategic Relevance: Scanning Directives for Pass 2\n\nGiven the **Strong, Direct Precursor** relationship, this prior work requires a **High** level of investigative attention. *The Global Minotaur* is the Rosetta Stone for the target work. A missed structural link here will result in a fundamental misunderstanding of the target text's overarching logic. \n\nThe downstream scanning strategy must treat this text not as a separate book, but as \"Volume I\" of a continuous theoretical project. Pass 2 should prioritize the following structural joints and weak links:\n\n**1. Priority Dimension: The Mutation of \"Extraction\" (Rent vs. Profit)**\n*   **Scanning Strategy:** The scanner must heavily scrutinize the 2011 text's treatment of \"profits\" generated by the Minotaur's handmaidens (Walmart, Wall Street). \n*   **Expected Traces:** Look for the precise moment the vocabulary of *capitalist profit* begins to blur into the vocabulary of *parasitic rent*. If 2011's Walmart is described as extracting a toll from its suppliers, Pass 2 must document this as the direct conceptual ancestor of 2023's \"Cloud Rent.\" This is the single point of failure in both texts: the artificial boundary erected between dynamic profit and extractive rent.\n\n**2. Priority Dimension: The Geopolitical Substructure (The Rise of the Dragon)**\n*   **Scanning Strategy:** Focus tightly on Chapter 8 of the 2011 text regarding China's lack of a Global Surplus Recycling Mechanism (GSRM) and its attempt to build its own \"Global Plan\" in Latin America and Africa.\n*   **Expected Traces:** Map how this 2011 analysis forms the structural basis for 2023's \"New Cold War\" chapter. The scanner should look for early iterations of the \"Super Cloud Fief\" concept\u2014specifically how the Chinese state operates as an integrated financial/technological nexus to bypass dollar hegemony. \n\n**3. Priority Dimension: The Migration of Agency and the \"Labor Theory\" Crisis**\n*   **Scanning Strategy:** *Technofeudalism* suffers from an internal contradiction where exploitation shifts from waged physical labor (Proles) to unwaged experiential labor (Serfs). Pass 2 must scan the 2011 text to see where this shift begins.\n*   **Expected Traces:** Examine how the 2011 text treats human labor. In *The Global Minotaur*, extraction still relies heavily on the physical exploitation of the Third World and the squeezing of the American working class. Trace the architectural transition: how does the text begin to prepare the reader for a world where *financialization* (2011) mutates into *cognitive/behavioral modification* (2023)?\n\n**Cost of Missed Classification:** If this text were incorrectly classified as merely an *indirect contextualizer*, the genealogical analysis would treat *Technofeudalism's* macro-economic claims (e.g., that central bank money severed profit from capital) as novel, unsupported assertions. By recognizing the structural dependency, Pass 2 will correctly identify that the 2023 book delegates all of its macro-economic heavy lifting to the foundations poured in 2011."
+        }
+      ],
+      "section_trace": [
+        {
+          "order": 1,
+          "engine_key": "genealogy_relationship_classification",
+          "title": "Relationship Comparison Map",
+          "provenance_pointer": {
+            "job_id": "proof-round4-adaptive-balance-final-1774012011",
+            "output_id": "po-proof-round4-adaptive-balance-final-1774012011-2-eb5c9863",
+            "phase_number": 1.5,
+            "pass_number": 2,
+            "engine_key": "genealogy_relationship_classification"
+          },
+          "role_hint": "comparison_map",
+          "rationale": "Derived from the analyzer-owned relationship-classification output already saved for the genealogy result."
+        }
+      ],
+      "handoff_notes": [
+        "Derived only from analyzer-owned saved-result truth; no analysis rerun and no host-local semantic reconstruction.",
+        "Lower through the thin compose-from-intent adapter only; do not widen the presenter boundary in this slice."
+      ]
+    },
+    "aoi_selection_blocked_reason_code": null,
+    "aoi_selection_blocked_reason_detail": null,
+    "rejected_planning_alternatives": [
+      {
+        "alternative_key": "influence_thematic",
+        "rejection_reason": "lower_signal_score_than_selected_candidate",
+        "details": []
+      }
+    ],
+    "trace": [
+      {
+        "stage": "effective_task_request",
+        "details": {
+          "consumer_key": "the-critic",
+          "source_mode": "saved_result",
+          "context_mode": "saved_result"
+        }
+      },
+      {
+        "stage": "routing_reuse",
+        "details": {
+          "status": "provided_and_validated",
+          "reused_fields": [
+            "selected_objective_key",
+            "selected_workflow_key",
+            "routing_outcome",
+            "launch_contract_kind",
+            "source_sufficiency_status"
+          ]
+        }
+      },
+      {
+        "stage": "hydration_evaluation",
+        "details": {
+          "status": "satisfied",
+          "context_mode": "saved_result"
+        }
+      },
+      {
+        "stage": "genealogy_saved_result_section_extraction",
+        "details": {
+          "source_v2_job_id": "proof-round4-adaptive-balance-final-1774012011",
+          "section_count": 1,
+          "sections": [
+            {
+              "engine_key": "genealogy_relationship_classification",
+              "title": "Relationship Comparison Map"
+            }
+          ]
+        }
+      },
+      {
+        "stage": "planning_decision",
+        "details": {
+          "planning_outcome_kind": "direct_sections_composition_handoff_plan",
+          "downstream_readiness": "ready_for_direct_sections_compose_handoff"
+        }
+      }
+    ]
+  }
+}

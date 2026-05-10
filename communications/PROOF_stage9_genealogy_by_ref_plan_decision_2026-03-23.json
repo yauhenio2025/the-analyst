@@ -1,0 +1,239 @@
+{
+  "normalized_task_summary": "Trace the genealogy, lineage, and conditions of possibility behind this work.",
+  "routing_decision": {
+    "normalized_task_summary": "Trace the genealogy, lineage, and conditions of possibility behind this work.",
+    "selected_objective_key": "genealogical",
+    "selected_workflow_key": "intellectual_genealogy",
+    "routing_outcome": "genealogy_job_backed",
+    "routing_confidence": "high",
+    "launch_contract_kind": "orchestrator.analyze_by_ref",
+    "source_sufficiency_status": "sufficient",
+    "required_fields": [
+      "consumer_key",
+      "external_project_id",
+      "thinker_name",
+      "target_work",
+      "target_external_doc_key",
+      "prior_works"
+    ],
+    "required_host_preparation": [
+      "Assemble the registered-corpus analyze-by-ref payload.",
+      "Provide genealogy chapter refs via target_chapter_external_doc_keys if chapter-targeting is needed."
+    ],
+    "downstream_launch_contract": {
+      "method": "POST",
+      "endpoint": "/v1/orchestrator/analyze-by-ref",
+      "request_fields": {
+        "workflow_key": "intellectual_genealogy",
+        "consumer_key": "stage9-proof-consumer",
+        "external_project_id": "stage9-proof-project",
+        "target_external_doc_key": "target-doc",
+        "thinker_name": "<required>",
+        "target_work": "<required>",
+        "prior_works": "<required>"
+      }
+    },
+    "rejected_candidates": [
+      {
+        "objective_key": "influence_thematic",
+        "rejection_reason": "lower_signal_score_than_selected_candidate",
+        "details": [
+          "source_mode 'registered_corpus' is incompatible",
+          "AOI routing is only compatible with saved_result source mode."
+        ]
+      }
+    ],
+    "trace": [
+      {
+        "stage": "task_normalization",
+        "details": {
+          "normalized_task_summary": "Trace the genealogy, lineage, and conditions of possibility behind this work.",
+          "audience": null,
+          "desired_depth": null,
+          "style_expectations": null
+        }
+      },
+      {
+        "stage": "objective_candidate_scoring",
+        "details": {
+          "objective_hint": null,
+          "objective_hint_status": "not_provided",
+          "workflow_hint": null,
+          "workflow_hint_status": "not_provided",
+          "candidates": [
+            {
+              "objective_key": "influence_thematic",
+              "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+              "signal_score": 0,
+              "positive_signals": [],
+              "source_mode": "registered_corpus",
+              "source_mode_compatible": false
+            },
+            {
+              "objective_key": "genealogical",
+              "workflow_key": "intellectual_genealogy",
+              "signal_score": 3,
+              "positive_signals": [
+                "genealogy",
+                "lineage",
+                "conditions of possibility"
+              ],
+              "source_mode": "registered_corpus",
+              "source_mode_compatible": true
+            }
+          ]
+        }
+      },
+      {
+        "stage": "source_sufficiency_evaluation",
+        "details": {
+          "selected_objective_key": "genealogical",
+          "selected_workflow_key": "intellectual_genealogy",
+          "source_mode": "registered_corpus",
+          "source_sufficiency_status": "sufficient",
+          "sufficiency_reasons": []
+        }
+      },
+      {
+        "stage": "routing_decision",
+        "details": {
+          "routing_outcome": "genealogy_job_backed",
+          "routing_confidence": "high",
+          "launch_contract_kind": "orchestrator.analyze_by_ref",
+          "selected_objective_key": "genealogical",
+          "selected_workflow_key": "intellectual_genealogy",
+          "required_fields": [
+            "consumer_key",
+            "external_project_id",
+            "thinker_name",
+            "target_work",
+            "target_external_doc_key",
+            "prior_works"
+          ],
+          "required_host_preparation": [
+            "Assemble the registered-corpus analyze-by-ref payload.",
+            "Provide genealogy chapter refs via target_chapter_external_doc_keys if chapter-targeting is needed."
+          ]
+        }
+      }
+    ]
+  },
+  "planning_outcome_kind": "genealogy_execution_plan",
+  "planning_confidence": "high",
+  "hydration_status": "satisfied",
+  "required_hydration": [],
+  "required_host_preparation": [],
+  "downstream_readiness": "ready_for_genealogy_execution",
+  "downstream_followup_contract": {
+    "method": "POST",
+    "endpoint": "/v1/executor/jobs",
+    "request_fields": {
+      "plan_id": "plan-stage9-proof-byref",
+      "document_ids": {
+        "target": "doc-318e9199c6ef",
+        "Capital": "doc-5f005a2d7344"
+      },
+      "project_id": "<optional>"
+    }
+  },
+  "hydrated_document_ids": {
+    "target": "doc-318e9199c6ef",
+    "Capital": "doc-5f005a2d7344"
+  },
+  "workflow_execution_plan": {
+    "plan_id": "plan-stage9-proof-byref",
+    "created_at": "2026-03-23T00:00:00",
+    "workflow_key": "intellectual_genealogy",
+    "thinker_name": "Walter Benjamin",
+    "target_work": {
+      "title": "The Arcades Project",
+      "author": "Walter Benjamin",
+      "year": null,
+      "description": "Target work"
+    },
+    "prior_works": [
+      {
+        "title": "Capital",
+        "author": "Karl Marx",
+        "year": null,
+        "description": "Prior work",
+        "relationship_hint": "upstream influence",
+        "source_thinker_id": null,
+        "source_thinker_name": null,
+        "source_document_id": null
+      }
+    ],
+    "research_question": null,
+    "selected_source_thinker_id": null,
+    "selected_source_thinker_name": null,
+    "strategy_summary": "Deterministic proof plan for Stage 9.",
+    "phases": [],
+    "recommended_views": [],
+    "estimated_llm_calls": 4,
+    "estimated_depth_profile": "standard",
+    "status": "draft",
+    "model_used": "",
+    "generation_tokens": 0,
+    "execution_model": null,
+    "objective_key": "genealogical",
+    "book_samples": [],
+    "estimated_total_cost_usd": 0.0,
+    "decision_trace": null,
+    "revision_history": [],
+    "current_revision": 0
+  },
+  "aoi_composition_handoff_plan": null,
+  "rejected_planning_alternatives": [
+    {
+      "alternative_key": "influence_thematic",
+      "rejection_reason": "lower_signal_score_than_selected_candidate",
+      "details": [
+        "source_mode 'registered_corpus' is incompatible",
+        "AOI routing is only compatible with saved_result source mode."
+      ]
+    }
+  ],
+  "trace": [
+    {
+      "stage": "effective_task_request",
+      "details": {
+        "consumer_key": "stage9-proof-consumer",
+        "source_mode": "registered_corpus",
+        "context_mode": "registered_corpus"
+      }
+    },
+    {
+      "stage": "routing_reuse",
+      "details": {
+        "status": "not_provided"
+      }
+    },
+    {
+      "stage": "hydration_evaluation",
+      "details": {
+        "status": "satisfied",
+        "context_mode": "registered_corpus"
+      }
+    },
+    {
+      "stage": "genealogy_plan_generated",
+      "details": {
+        "plan_id": "plan-stage9-proof-byref",
+        "workflow_key": "intellectual_genealogy",
+        "objective_key": "genealogical",
+        "phase_count": 0,
+        "document_id_keys": [
+          "Capital",
+          "target"
+        ]
+      }
+    },
+    {
+      "stage": "planning_decision",
+      "details": {
+        "planning_outcome_kind": "genealogy_execution_plan",
+        "downstream_readiness": "ready_for_genealogy_execution"
+      }
+    }
+  ]
+}

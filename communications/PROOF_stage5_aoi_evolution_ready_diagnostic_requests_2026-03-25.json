@@ -1,0 +1,809 @@
+{
+  "case_key": "evolution_ready",
+  "expected_outcome": "ready",
+  "fixture_strength": "fixture_backed",
+  "task": "Show how Aaron Benanav's use of Otto Neurath's planning argument evolves across the corpus.",
+  "url": "http://localhost:3457/p/round5-proof-dossier-final-1774100000/anxiety-of-influence/otto_neurath/v2-thematic",
+  "attempt_label": "attempt_4_post_identity_repair",
+  "environment_changes": [
+    "started the-critic against local analyzer with ANALYZER_V2_URL=http://127.0.0.1:8002",
+    "preferred ports 5555/3456 were occupied, so this authoritative attempt ran on 5556/3457"
+  ],
+  "actual_outcome": "compose_error",
+  "final_url": "http://localhost:3457/p/round5-proof-dossier-final-1774100000/analysis/anxiety_of_influence_thematic_single_thinker/compose-from-intent?selected_source_thinker_id=otto_neurath&source_analysis_id=gen-v2-3834f733047a&origin=aoi_v2_thematic&return_to=%2Fp%2Fround5-proof-dossier-final-1774100000%2Fanxiety-of-influence%2Fotto_neurath%2Fv2-thematic&source_v2_job_id=proof-round5-adaptive-aoi-dossier-final-1774100000&selected_source_thinker_name=Otto+Neurath",
+  "planner_banner": null,
+  "compose_alert": "Source result not found: Saved AOI result not found: gen-v2-3834f733047a",
+  "selection_summary_text": "All four available families are selected because they form a complementary and complete stack for tracing the evolution of Benanav's use of Neurath's planning argument: thematic_synthesis anchors the thematic arc, engagement_mapping charts the relational dynamics, sin_findings supplies granular textual evidence of shifts, and thematic_report closes with interpretive summary and divergence analysis. No family is redundant for this single bounded handoff.",
+  "compose_shell_visible": false,
+  "blocked_reason_visible": false,
+  "plan_outcome_kind": "aoi_composition_handoff_plan",
+  "compose_endpoint_used": "compose-from-selection",
+  "compose_request_variant": "selection",
+  "source_v2_job_id_preserved": true,
+  "compose_from_source_unused": true,
+  "planner_selection_trace": {
+    "timeout_s": 45,
+    "retry_policy": {
+      "max_retries": 0
+    },
+    "exception_class_name": null,
+    "provider_outcome": "success",
+    "blocked_reason_code": null,
+    "blocked_reason_detail": null
+  },
+  "route_plan_compose_requests": {
+    "route_task": [
+      {
+        "phase": "request",
+        "url": "http://127.0.0.1:8002/v1/orchestrator/route-task",
+        "method": "POST",
+        "at": "2026-03-25T06:21:39.713Z",
+        "body": {
+          "task": "Show how Aaron Benanav's use of Otto Neurath's planning argument evolves across the corpus.",
+          "consumer_key": "the-critic",
+          "workflow_hint": "anxiety_of_influence_thematic_single_thinker",
+          "objective_hint": "influence_thematic",
+          "source_constraints": {
+            "source_mode": "saved_result",
+            "selected_source_thinker_id": "otto_neurath",
+            "selected_source_thinker_name": "Otto Neurath",
+            "source_v2_job_id": "proof-round5-adaptive-aoi-dossier-final-1774100000"
+          }
+        }
+      },
+      {
+        "phase": "response",
+        "url": "http://127.0.0.1:8002/v1/orchestrator/route-task",
+        "status": 200,
+        "at": "2026-03-25T06:21:39.758Z",
+        "latency_ms": 45,
+        "body": {
+          "normalized_task_summary": "Show how Aaron Benanav's use of Otto Neurath's planning argument evolves across the corpus.",
+          "selected_objective_key": "influence_thematic",
+          "selected_workflow_key": "anxiety_of_influence_thematic_single_thinker",
+          "routing_outcome": "aoi_transient_source_backed",
+          "routing_confidence": "high",
+          "launch_contract_kind": "planner.aoi_compose_handoff",
+          "source_sufficiency_status": "sufficient",
+          "required_fields": [
+            "workflow_key",
+            "consumer_key",
+            "source_v2_job_id"
+          ],
+          "required_host_preparation": [
+            "Call plan-task with saved_result planning context to resolve AOI source selection before launch."
+          ],
+          "downstream_launch_contract": {
+            "method": "POST",
+            "endpoint": "/v1/orchestrator/plan-task",
+            "request_fields": {
+              "task_request.workflow_hint": "anxiety_of_influence_thematic_single_thinker",
+              "task_request.consumer_key": "the-critic",
+              "planning_context.context_mode": "saved_result",
+              "planning_context.source_v2_job_id": "proof-round5-adaptive-aoi-dossier-final-1774100000"
+            }
+          },
+          "rejected_candidates": [
+            {
+              "objective_key": "genealogical",
+              "rejection_reason": "not_selected",
+              "details": [
+                "source_mode 'saved_result' is incompatible",
+                "Genealogy routing is not compatible with saved_result source mode."
+              ]
+            }
+          ],
+          "trace": [
+            {
+              "stage": "task_normalization",
+              "details": {
+                "normalized_task_summary": "Show how Aaron Benanav's use of Otto Neurath's planning argument evolves across the corpus.",
+                "audience": null,
+                "desired_depth": null,
+                "style_expectations": null
+              }
+            },
+            {
+              "stage": "objective_candidate_scoring",
+              "details": {
+                "objective_hint": "influence_thematic",
+                "objective_hint_status": "provided_and_validated",
+                "workflow_hint": "anxiety_of_influence_thematic_single_thinker",
+                "workflow_hint_status": "accepted_as_consistent",
+                "candidates": [
+                  {
+                    "objective_key": "influence_thematic",
+                    "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                    "signal_score": 0,
+                    "positive_signals": [],
+                    "source_mode": "saved_result",
+                    "source_mode_compatible": true
+                  },
+                  {
+                    "objective_key": "genealogical",
+                    "workflow_key": "intellectual_genealogy",
+                    "signal_score": 0,
+                    "positive_signals": [],
+                    "source_mode": "saved_result",
+                    "source_mode_compatible": false
+                  }
+                ]
+              }
+            },
+            {
+              "stage": "source_sufficiency_evaluation",
+              "details": {
+                "selected_objective_key": "influence_thematic",
+                "selected_workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                "source_mode": "saved_result",
+                "source_sufficiency_status": "sufficient",
+                "sufficiency_reasons": []
+              }
+            },
+            {
+              "stage": "routing_decision",
+              "details": {
+                "routing_outcome": "aoi_transient_source_backed",
+                "routing_confidence": "high",
+                "launch_contract_kind": "planner.aoi_compose_handoff",
+                "selected_objective_key": "influence_thematic",
+                "selected_workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                "required_fields": [
+                  "workflow_key",
+                  "consumer_key",
+                  "source_v2_job_id"
+                ],
+                "required_host_preparation": [
+                  "Call plan-task with saved_result planning context to resolve AOI source selection before launch."
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "plan_task": [
+      {
+        "phase": "request",
+        "url": "http://127.0.0.1:8002/v1/orchestrator/plan-task",
+        "method": "POST",
+        "at": "2026-03-25T06:21:39.766Z",
+        "body": {
+          "task_request": {
+            "task": "Show how Aaron Benanav's use of Otto Neurath's planning argument evolves across the corpus.",
+            "consumer_key": "the-critic",
+            "workflow_hint": "anxiety_of_influence_thematic_single_thinker",
+            "objective_hint": "influence_thematic",
+            "source_constraints": {
+              "source_mode": "saved_result",
+              "selected_source_thinker_id": "otto_neurath",
+              "selected_source_thinker_name": "Otto Neurath",
+              "source_v2_job_id": "proof-round5-adaptive-aoi-dossier-final-1774100000"
+            }
+          },
+          "prior_routing_decision": {
+            "normalized_task_summary": "Show how Aaron Benanav's use of Otto Neurath's planning argument evolves across the corpus.",
+            "selected_objective_key": "influence_thematic",
+            "selected_workflow_key": "anxiety_of_influence_thematic_single_thinker",
+            "routing_outcome": "aoi_transient_source_backed",
+            "routing_confidence": "high",
+            "launch_contract_kind": "planner.aoi_compose_handoff",
+            "source_sufficiency_status": "sufficient",
+            "required_fields": [
+              "workflow_key",
+              "consumer_key",
+              "source_v2_job_id"
+            ],
+            "required_host_preparation": [
+              "Call plan-task with saved_result planning context to resolve AOI source selection before launch."
+            ],
+            "downstream_launch_contract": {
+              "method": "POST",
+              "endpoint": "/v1/orchestrator/plan-task",
+              "request_fields": {
+                "task_request.workflow_hint": "anxiety_of_influence_thematic_single_thinker",
+                "task_request.consumer_key": "the-critic",
+                "planning_context.context_mode": "saved_result",
+                "planning_context.source_v2_job_id": "proof-round5-adaptive-aoi-dossier-final-1774100000"
+              }
+            },
+            "rejected_candidates": [
+              {
+                "objective_key": "genealogical",
+                "rejection_reason": "not_selected",
+                "details": [
+                  "source_mode 'saved_result' is incompatible",
+                  "Genealogy routing is not compatible with saved_result source mode."
+                ]
+              }
+            ],
+            "trace": [
+              {
+                "stage": "task_normalization",
+                "details": {
+                  "normalized_task_summary": "Show how Aaron Benanav's use of Otto Neurath's planning argument evolves across the corpus.",
+                  "audience": null,
+                  "desired_depth": null,
+                  "style_expectations": null
+                }
+              },
+              {
+                "stage": "objective_candidate_scoring",
+                "details": {
+                  "objective_hint": "influence_thematic",
+                  "objective_hint_status": "provided_and_validated",
+                  "workflow_hint": "anxiety_of_influence_thematic_single_thinker",
+                  "workflow_hint_status": "accepted_as_consistent",
+                  "candidates": [
+                    {
+                      "objective_key": "influence_thematic",
+                      "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                      "signal_score": 0,
+                      "positive_signals": [],
+                      "source_mode": "saved_result",
+                      "source_mode_compatible": true
+                    },
+                    {
+                      "objective_key": "genealogical",
+                      "workflow_key": "intellectual_genealogy",
+                      "signal_score": 0,
+                      "positive_signals": [],
+                      "source_mode": "saved_result",
+                      "source_mode_compatible": false
+                    }
+                  ]
+                }
+              },
+              {
+                "stage": "source_sufficiency_evaluation",
+                "details": {
+                  "selected_objective_key": "influence_thematic",
+                  "selected_workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                  "source_mode": "saved_result",
+                  "source_sufficiency_status": "sufficient",
+                  "sufficiency_reasons": []
+                }
+              },
+              {
+                "stage": "routing_decision",
+                "details": {
+                  "routing_outcome": "aoi_transient_source_backed",
+                  "routing_confidence": "high",
+                  "launch_contract_kind": "planner.aoi_compose_handoff",
+                  "selected_objective_key": "influence_thematic",
+                  "selected_workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                  "required_fields": [
+                    "workflow_key",
+                    "consumer_key",
+                    "source_v2_job_id"
+                  ],
+                  "required_host_preparation": [
+                    "Call plan-task with saved_result planning context to resolve AOI source selection before launch."
+                  ]
+                }
+              }
+            ]
+          },
+          "planning_context": {
+            "context_mode": "saved_result",
+            "source_v2_job_id": "proof-round5-adaptive-aoi-dossier-final-1774100000",
+            "consumer_key": "the-critic"
+          }
+        }
+      },
+      {
+        "phase": "response",
+        "url": "http://127.0.0.1:8002/v1/orchestrator/plan-task",
+        "status": 200,
+        "at": "2026-03-25T06:21:51.287Z",
+        "latency_ms": 11521,
+        "body": {
+          "normalized_task_summary": "Show how Aaron Benanav's use of Otto Neurath's planning argument evolves across the corpus.",
+          "routing_decision": {
+            "normalized_task_summary": "Show how Aaron Benanav's use of Otto Neurath's planning argument evolves across the corpus.",
+            "selected_objective_key": "influence_thematic",
+            "selected_workflow_key": "anxiety_of_influence_thematic_single_thinker",
+            "routing_outcome": "aoi_transient_source_backed",
+            "routing_confidence": "high",
+            "launch_contract_kind": "planner.aoi_compose_handoff",
+            "source_sufficiency_status": "sufficient",
+            "required_fields": [
+              "workflow_key",
+              "consumer_key",
+              "source_v2_job_id"
+            ],
+            "required_host_preparation": [
+              "Call plan-task with saved_result planning context to resolve AOI source selection before launch."
+            ],
+            "downstream_launch_contract": {
+              "method": "POST",
+              "endpoint": "/v1/orchestrator/plan-task",
+              "request_fields": {
+                "task_request.workflow_hint": "anxiety_of_influence_thematic_single_thinker",
+                "task_request.consumer_key": "the-critic",
+                "planning_context.context_mode": "saved_result",
+                "planning_context.source_v2_job_id": "proof-round5-adaptive-aoi-dossier-final-1774100000"
+              }
+            },
+            "rejected_candidates": [
+              {
+                "objective_key": "genealogical",
+                "rejection_reason": "not_selected",
+                "details": [
+                  "source_mode 'saved_result' is incompatible",
+                  "Genealogy routing is not compatible with saved_result source mode."
+                ]
+              }
+            ],
+            "trace": [
+              {
+                "stage": "task_normalization",
+                "details": {
+                  "normalized_task_summary": "Show how Aaron Benanav's use of Otto Neurath's planning argument evolves across the corpus.",
+                  "audience": null,
+                  "desired_depth": null,
+                  "style_expectations": null
+                }
+              },
+              {
+                "stage": "objective_candidate_scoring",
+                "details": {
+                  "objective_hint": "influence_thematic",
+                  "objective_hint_status": "provided_and_validated",
+                  "workflow_hint": "anxiety_of_influence_thematic_single_thinker",
+                  "workflow_hint_status": "accepted_as_consistent",
+                  "candidates": [
+                    {
+                      "objective_key": "influence_thematic",
+                      "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                      "signal_score": 0,
+                      "positive_signals": [],
+                      "source_mode": "saved_result",
+                      "source_mode_compatible": true
+                    },
+                    {
+                      "objective_key": "genealogical",
+                      "workflow_key": "intellectual_genealogy",
+                      "signal_score": 0,
+                      "positive_signals": [],
+                      "source_mode": "saved_result",
+                      "source_mode_compatible": false
+                    }
+                  ]
+                }
+              },
+              {
+                "stage": "source_sufficiency_evaluation",
+                "details": {
+                  "selected_objective_key": "influence_thematic",
+                  "selected_workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                  "source_mode": "saved_result",
+                  "source_sufficiency_status": "sufficient",
+                  "sufficiency_reasons": []
+                }
+              },
+              {
+                "stage": "routing_decision",
+                "details": {
+                  "routing_outcome": "aoi_transient_source_backed",
+                  "routing_confidence": "high",
+                  "launch_contract_kind": "planner.aoi_compose_handoff",
+                  "selected_objective_key": "influence_thematic",
+                  "selected_workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                  "required_fields": [
+                    "workflow_key",
+                    "consumer_key",
+                    "source_v2_job_id"
+                  ],
+                  "required_host_preparation": [
+                    "Call plan-task with saved_result planning context to resolve AOI source selection before launch."
+                  ]
+                }
+              }
+            ]
+          },
+          "planning_outcome_kind": "aoi_composition_handoff_plan",
+          "planning_confidence": "high",
+          "hydration_status": "satisfied",
+          "required_hydration": [],
+          "required_host_preparation": [
+            "Carry planner-selected source families and the resolved intent seed into compose-from-selection."
+          ],
+          "downstream_readiness": "ready_for_aoi_compose_handoff",
+          "downstream_followup_contract": {
+            "method": "POST",
+            "endpoint": "/v1/presenter/compose-from-selection",
+            "selection_kind": "explicit",
+            "legacy_profile_equivalent": null,
+            "request_fields": {
+              "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+              "consumer_key": "the-critic",
+              "source_v2_job_id": "proof-round5-adaptive-aoi-dossier-final-1774100000",
+              "selection": [
+                {
+                  "source_family_key": "thematic_synthesis",
+                  "selection_rank": 1,
+                  "rationale": "Directly tracks how Benanav engages Neurath's planning argument across the corpus by consolidating themes and source documents into a unified synthesis. Its 'themes' and 'overall_synthesis' keys are essential for tracing argumentative evolution across texts."
+                },
+                {
+                  "source_family_key": "engagement_mapping",
+                  "selection_rank": 2,
+                  "rationale": "Maps precisely how Benanav engages, partially adopts, distorts, or ignores Neurath's planning argument. The 'themes_engaged', 'themes_partial', and 'themes_distorted' keys are ideal for showing shifts and developments in that engagement across the corpus."
+                },
+                {
+                  "source_family_key": "sin_findings",
+                  "selection_rank": 3,
+                  "rationale": "Provides granular findings organized by theme and sin type, which can surface specific moments where Benanav's treatment of Neurath changes character—whether through selective citation, misappropriation, or transformation—supporting an evolutionary arc argument."
+                },
+                {
+                  "source_family_key": "thematic_report",
+                  "selection_rank": 4,
+                  "rationale": "Serves as the closeout layer with 'key_divergences', 'sin_distribution', and 'reading_implications' that synthesize the evolutionary pattern into a coherent narrative frame, completing the bounded single-handoff composition."
+                }
+              ],
+              "user_intent": "Trace how Aaron Benanav's engagement with Otto Neurath's planning argument develops and shifts across his corpus, identifying thematic continuities, distortions, and divergences."
+            }
+          },
+          "hydrated_document_ids": {},
+          "workflow_execution_plan": null,
+          "aoi_composition_handoff_plan": {
+            "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+            "objective_key": "influence_thematic",
+            "consumer_key": "the-critic",
+            "source_v2_job_id": "proof-round5-adaptive-aoi-dossier-final-1774100000",
+            "compose_entrypoint_kind": "presenter.compose_from_selection",
+            "selected_source_thinker_id": "otto_neurath",
+            "selected_source_thinker_name": "Otto Neurath",
+            "selected_sources": [
+              {
+                "source_family_key": "thematic_synthesis",
+                "selection_rank": 1,
+                "rationale": "Directly tracks how Benanav engages Neurath's planning argument across the corpus by consolidating themes and source documents into a unified synthesis. Its 'themes' and 'overall_synthesis' keys are essential for tracing argumentative evolution across texts."
+              },
+              {
+                "source_family_key": "engagement_mapping",
+                "selection_rank": 2,
+                "rationale": "Maps precisely how Benanav engages, partially adopts, distorts, or ignores Neurath's planning argument. The 'themes_engaged', 'themes_partial', and 'themes_distorted' keys are ideal for showing shifts and developments in that engagement across the corpus."
+              },
+              {
+                "source_family_key": "sin_findings",
+                "selection_rank": 3,
+                "rationale": "Provides granular findings organized by theme and sin type, which can surface specific moments where Benanav's treatment of Neurath changes character—whether through selective citation, misappropriation, or transformation—supporting an evolutionary arc argument."
+              },
+              {
+                "source_family_key": "thematic_report",
+                "selection_rank": 4,
+                "rationale": "Serves as the closeout layer with 'key_divergences', 'sin_distribution', and 'reading_implications' that synthesize the evolutionary pattern into a coherent narrative frame, completing the bounded single-handoff composition."
+              }
+            ],
+            "rejected_sources": [],
+            "selection_summary": "All four available families are selected because they form a complementary and complete stack for tracing the evolution of Benanav's use of Neurath's planning argument: thematic_synthesis anchors the thematic arc, engagement_mapping charts the relational dynamics, sin_findings supplies granular textual evidence of shifts, and thematic_report closes with interpretive summary and divergence analysis. No family is redundant for this single bounded handoff.",
+            "resolved_intent_seed": "Trace how Aaron Benanav's engagement with Otto Neurath's planning argument develops and shifts across his corpus, identifying thematic continuities, distortions, and divergences.",
+            "legacy_profile_equivalent": null,
+            "expected_source_families": [
+              "thematic_synthesis",
+              "engagement_mapping",
+              "sin_findings",
+              "thematic_report"
+            ],
+            "available_source_families": [
+              "thematic_synthesis",
+              "engagement_mapping",
+              "sin_findings",
+              "thematic_report"
+            ],
+            "expected_producer_engines": [
+              "aoi_engagement_mapping",
+              "aoi_sin_findings",
+              "aoi_thematic_report",
+              "aoi_thematic_synthesis"
+            ],
+            "bridge_contract_targets": [
+              "CompositionSourceCatalog",
+              "CompositionSourceSelection"
+            ],
+            "allowed_profiles": [
+              "dossier",
+              "comparison"
+            ],
+            "blocked_profiles": {},
+            "handoff_notes": [
+              "Stage 9 AOI planning resolves explicit source-family selection before transient composition handoff.",
+              "allowed_profiles and blocked_profiles remain transition diagnostics only; the planner-primary proof path launches by explicit selection."
+            ]
+          },
+          "aoi_selection_blocked_reason_code": null,
+          "aoi_selection_blocked_reason_detail": null,
+          "rejected_planning_alternatives": [
+            {
+              "alternative_key": "genealogical",
+              "rejection_reason": "not_selected",
+              "details": [
+                "source_mode 'saved_result' is incompatible",
+                "Genealogy routing is not compatible with saved_result source mode."
+              ]
+            }
+          ],
+          "trace": [
+            {
+              "stage": "effective_task_request",
+              "details": {
+                "consumer_key": "the-critic",
+                "source_mode": "saved_result",
+                "context_mode": "saved_result"
+              }
+            },
+            {
+              "stage": "routing_reuse",
+              "details": {
+                "status": "provided_and_validated",
+                "reused_fields": [
+                  "selected_objective_key",
+                  "selected_workflow_key",
+                  "routing_outcome",
+                  "launch_contract_kind",
+                  "source_sufficiency_status"
+                ]
+              }
+            },
+            {
+              "stage": "source_catalog_resolution",
+              "details": {
+                "source_v2_job_id": "proof-round5-adaptive-aoi-dossier-final-1774100000",
+                "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                "objective_key": "influence_thematic",
+                "objective_source": "workflow_default",
+                "plan_context_found": true,
+                "plan_context_source": "job_plan_data",
+                "selected_source_thinker_id": "otto_neurath",
+                "selected_source_thinker_name": "Otto Neurath",
+                "candidates": [
+                  {
+                    "source_family_key": "thematic_synthesis",
+                    "engine_key": "aoi_thematic_synthesis",
+                    "title": "Thematic Synthesis",
+                    "source_backend_kind": "artifact",
+                    "candidate_state": "available",
+                    "provenance_pointer": {
+                      "job_id": "proof-round5-adaptive-aoi-dossier-final-1774100000",
+                      "engine_key": "aoi_thematic_synthesis"
+                    },
+                    "composition_role_hint": "synthesis_primary",
+                    "summary_metadata": {
+                      "payload_kind": "normalized_artifact",
+                      "top_level_keys": [
+                        "overall_synthesis",
+                        "selected_source_thinker",
+                        "source_documents",
+                        "themes"
+                      ]
+                    },
+                    "plan_context": {
+                      "plan_context_found": true,
+                      "plan_state": "not_declared",
+                      "objective_key": null,
+                      "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                      "selected_source_thinker_id": "otto_neurath",
+                      "selected_source_thinker_name": "Otto Neurath",
+                      "phase_matches": []
+                    },
+                    "resolution_note": "Loaded from normalized AOI artifact store."
+                  },
+                  {
+                    "source_family_key": "engagement_mapping",
+                    "engine_key": "aoi_engagement_mapping",
+                    "title": "Engagement Mapping",
+                    "source_backend_kind": "artifact",
+                    "candidate_state": "available",
+                    "provenance_pointer": {
+                      "job_id": "proof-round5-adaptive-aoi-dossier-final-1774100000",
+                      "engine_key": "aoi_engagement_mapping"
+                    },
+                    "composition_role_hint": "comparison_map",
+                    "summary_metadata": {
+                      "payload_kind": "normalized_artifact",
+                      "top_level_keys": [
+                        "engagement_pattern",
+                        "engagements",
+                        "themes_distorted",
+                        "themes_engaged",
+                        "themes_ignored",
+                        "themes_partial"
+                      ]
+                    },
+                    "plan_context": {
+                      "plan_context_found": true,
+                      "plan_state": "not_declared",
+                      "objective_key": null,
+                      "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                      "selected_source_thinker_id": "otto_neurath",
+                      "selected_source_thinker_name": "Otto Neurath",
+                      "phase_matches": []
+                    },
+                    "resolution_note": "Loaded from normalized AOI artifact store."
+                  },
+                  {
+                    "source_family_key": "sin_findings",
+                    "engine_key": "aoi_sin_findings",
+                    "title": "Sin Findings",
+                    "source_backend_kind": "artifact",
+                    "candidate_state": "available",
+                    "provenance_pointer": {
+                      "job_id": "proof-round5-adaptive-aoi-dossier-final-1774100000",
+                      "engine_key": "aoi_sin_findings"
+                    },
+                    "composition_role_hint": "findings_bank",
+                    "summary_metadata": {
+                      "payload_kind": "normalized_artifact",
+                      "top_level_keys": [
+                        "findings",
+                        "findings_by_sin_type",
+                        "findings_by_theme"
+                      ]
+                    },
+                    "plan_context": {
+                      "plan_context_found": true,
+                      "plan_state": "not_declared",
+                      "objective_key": null,
+                      "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                      "selected_source_thinker_id": "otto_neurath",
+                      "selected_source_thinker_name": "Otto Neurath",
+                      "phase_matches": []
+                    },
+                    "resolution_note": "Loaded from normalized AOI artifact store."
+                  },
+                  {
+                    "source_family_key": "thematic_report",
+                    "engine_key": "aoi_thematic_report",
+                    "title": "AOI Report",
+                    "source_backend_kind": "normalized_report_payload",
+                    "candidate_state": "available",
+                    "provenance_pointer": {
+                      "job_id": "proof-round5-adaptive-aoi-dossier-final-1774100000",
+                      "engine_key": "aoi_thematic_report",
+                      "output_id": "po-3eb68e59c703",
+                      "phase_number": 4,
+                      "pass_number": 1,
+                      "created_at": "2026-03-21T03:43:57.206318"
+                    },
+                    "composition_role_hint": "report_closeout",
+                    "summary_metadata": {
+                      "payload_kind": "report_sections",
+                      "top_level_keys": [
+                        "engagement_pattern",
+                        "key_divergences",
+                        "reading_implications",
+                        "sin_distribution",
+                        "summary"
+                      ],
+                      "derived_payload_kind": "normalized_report_payload"
+                    },
+                    "plan_context": {
+                      "plan_context_found": true,
+                      "plan_state": "not_declared",
+                      "objective_key": null,
+                      "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                      "selected_source_thinker_id": "otto_neurath",
+                      "selected_source_thinker_name": "Otto Neurath",
+                      "phase_matches": []
+                    },
+                    "resolution_note": "Loaded from the latest thematic report phase output metadata."
+                  }
+                ]
+              }
+            },
+            {
+              "stage": "source_selection",
+              "details": {
+                "prompt_version": "aoi-selection-v1",
+                "model_used": "claude-sonnet-4-6",
+                "timeout_s": 45,
+                "retry_policy": {
+                  "max_retries": 0
+                },
+                "provider_outcome": "success",
+                "validator_version": "aoi-selection-validator-v1",
+                "selected_sources": [
+                  {
+                    "source_family_key": "thematic_synthesis",
+                    "selection_rank": 1,
+                    "rationale": "Directly tracks how Benanav engages Neurath's planning argument across the corpus by consolidating themes and source documents into a unified synthesis. Its 'themes' and 'overall_synthesis' keys are essential for tracing argumentative evolution across texts."
+                  },
+                  {
+                    "source_family_key": "engagement_mapping",
+                    "selection_rank": 2,
+                    "rationale": "Maps precisely how Benanav engages, partially adopts, distorts, or ignores Neurath's planning argument. The 'themes_engaged', 'themes_partial', and 'themes_distorted' keys are ideal for showing shifts and developments in that engagement across the corpus."
+                  },
+                  {
+                    "source_family_key": "sin_findings",
+                    "selection_rank": 3,
+                    "rationale": "Provides granular findings organized by theme and sin type, which can surface specific moments where Benanav's treatment of Neurath changes character—whether through selective citation, misappropriation, or transformation—supporting an evolutionary arc argument."
+                  },
+                  {
+                    "source_family_key": "thematic_report",
+                    "selection_rank": 4,
+                    "rationale": "Serves as the closeout layer with 'key_divergences', 'sin_distribution', and 'reading_implications' that synthesize the evolutionary pattern into a coherent narrative frame, completing the bounded single-handoff composition."
+                  }
+                ],
+                "rejected_sources": [],
+                "selection_summary": "All four available families are selected because they form a complementary and complete stack for tracing the evolution of Benanav's use of Neurath's planning argument: thematic_synthesis anchors the thematic arc, engagement_mapping charts the relational dynamics, sin_findings supplies granular textual evidence of shifts, and thematic_report closes with interpretive summary and divergence analysis. No family is redundant for this single bounded handoff.",
+                "resolved_intent_seed": "Trace how Aaron Benanav's engagement with Otto Neurath's planning argument develops and shifts across his corpus, identifying thematic continuities, distortions, and divergences."
+              }
+            },
+            {
+              "stage": "planning_decision",
+              "details": {
+                "planning_outcome_kind": "aoi_composition_handoff_plan",
+                "downstream_readiness": "ready_for_aoi_compose_handoff",
+                "selection_summary": "All four available families are selected because they form a complementary and complete stack for tracing the evolution of Benanav's use of Neurath's planning argument: thematic_synthesis anchors the thematic arc, engagement_mapping charts the relational dynamics, sin_findings supplies granular textual evidence of shifts, and thematic_report closes with interpretive summary and divergence analysis. No family is redundant for this single bounded handoff.",
+                "legacy_profile_equivalent": null,
+                "available_source_families": [
+                  "thematic_synthesis",
+                  "engagement_mapping",
+                  "sin_findings",
+                  "thematic_report"
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "compose_from_selection": [
+      {
+        "phase": "request",
+        "url": "http://localhost:5556/api/analysis/anxiety_of_influence_thematic_single_thinker/projects/round5-proof-dossier-final-1774100000/compose-from-selection",
+        "method": "POST",
+        "at": "2026-03-25T06:22:01.837Z",
+        "body": {
+          "variant": "selection",
+          "selected_source_thinker_id": "otto_neurath",
+          "selected_source_thinker_name": "Otto Neurath",
+          "selection": [
+            {
+              "source_family_key": "thematic_synthesis",
+              "selection_rank": 1,
+              "rationale": "Directly tracks how Benanav engages Neurath's planning argument across the corpus by consolidating themes and source documents into a unified synthesis. Its 'themes' and 'overall_synthesis' keys are essential for tracing argumentative evolution across texts."
+            },
+            {
+              "source_family_key": "engagement_mapping",
+              "selection_rank": 2,
+              "rationale": "Maps precisely how Benanav engages, partially adopts, distorts, or ignores Neurath's planning argument. The 'themes_engaged', 'themes_partial', and 'themes_distorted' keys are ideal for showing shifts and developments in that engagement across the corpus."
+            },
+            {
+              "source_family_key": "sin_findings",
+              "selection_rank": 3,
+              "rationale": "Provides granular findings organized by theme and sin type, which can surface specific moments where Benanav's treatment of Neurath changes character—whether through selective citation, misappropriation, or transformation—supporting an evolutionary arc argument."
+            },
+            {
+              "source_family_key": "thematic_report",
+              "selection_rank": 4,
+              "rationale": "Serves as the closeout layer with 'key_divergences', 'sin_distribution', and 'reading_implications' that synthesize the evolutionary pattern into a coherent narrative frame, completing the bounded single-handoff composition."
+            }
+          ],
+          "source_analysis_id": "gen-v2-3834f733047a",
+          "source_v2_job_id": "proof-round5-adaptive-aoi-dossier-final-1774100000",
+          "user_intent": "Trace how Aaron Benanav's engagement with Otto Neurath's planning argument develops and shifts across his corpus, identifying thematic continuities, distortions, and divergences.",
+          "selection_summary": "All four available families are selected because they form a complementary and complete stack for tracing the evolution of Benanav's use of Neurath's planning argument: thematic_synthesis anchors the thematic arc, engagement_mapping charts the relational dynamics, sin_findings supplies granular textual evidence of shifts, and thematic_report closes with interpretive summary and divergence analysis. No family is redundant for this single bounded handoff."
+        }
+      },
+      {
+        "phase": "response",
+        "url": "http://localhost:5556/api/analysis/anxiety_of_influence_thematic_single_thinker/projects/round5-proof-dossier-final-1774100000/compose-from-selection",
+        "status": 404,
+        "at": "2026-03-25T06:22:06.783Z",
+        "latency_ms": 4946,
+        "body": {
+          "detail": "Saved AOI result not found: gen-v2-3834f733047a"
+        }
+      }
+    ],
+    "compose_from_source": []
+  },
+  "latencies_ms": {
+    "planner_selection_latency": 11521,
+    "composition_latency": 4946,
+    "total_user_visible_latency": 27140
+  },
+  "captured_at": "2026-03-25T06:22:09.117Z"
+}

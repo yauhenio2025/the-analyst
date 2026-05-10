@@ -1,0 +1,60 @@
+{
+  "date": "2026-03-24",
+  "tier": "Stage 13 Tier A",
+  "status": "closed",
+  "environment": {
+    "analyzer_url": "http://127.0.0.1:8001",
+    "canary_url": "http://127.0.0.1:4174/",
+    "canary_mode": "vite-preview-live"
+  },
+  "acceptance_scope": {
+    "project_id": "round5-proof-dossier-final-1774100000",
+    "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+    "consumer_key": "aoi-canary",
+    "selected_source_thinker_id": null,
+    "attach_project_needed": false,
+    "resolved_job_id": "proof-round5-adaptive-aoi-dossier-final-1774100000"
+  },
+  "acceptance_chain": [
+    "GET /v1/results/discovery?project_id=round5-proof-dossier-final-1774100000&workflow_key=anxiety_of_influence_thematic_single_thinker&consumer_key=aoi-canary&limit=1",
+    "GET /v1/results/by-job/proof-round5-adaptive-aoi-dossier-final-1774100000?consumer_key=aoi-canary",
+    "GET /v1/results/by-job/proof-round5-adaptive-aoi-dossier-final-1774100000/presentation?consumer_key=aoi-canary"
+  ],
+  "secondary_debug_routes": [
+    "GET /v1/presenter/trace/proof-round5-adaptive-aoi-dossier-final-1774100000?consumer_key=aoi-canary",
+    "GET /v1/presenter/status/proof-round5-adaptive-aoi-dossier-final-1774100000?consumer_key=aoi-canary"
+  ],
+  "presenter_page_on_success_path": false,
+  "negative_proof": {
+    "kind": "discovery_empty",
+    "request": "GET /v1/results/discovery?project_id=round5-proof-dossier-final-1774100000-empty&workflow_key=anxiety_of_influence_thematic_single_thinker&consumer_key=aoi-canary&limit=1",
+    "response_status": 200,
+    "response_body": [],
+    "artifact_fallback_observed": false,
+    "presenter_page_observed": false
+  },
+  "quality_boundary": {
+    "claim": "contract_seam_proof_not_preparation_or_polish_quality_proof",
+    "presentation_run_stats": {
+      "proof_fixture": true,
+      "round": 5
+    },
+    "presentation_artifacts_count_for_round5_aoi_proof_jobs": 0,
+    "polish_cache_count_for_round5_aoi_proof_jobs": 0
+  },
+  "artifacts": {
+    "ready_har": "communications/PROOF_stage13_tier_a_aoi_canary_ready_session_2026-03-24.har",
+    "ready_requests": "communications/PROOF_stage13_tier_a_aoi_canary_ready_requests_2026-03-24.json",
+    "ready_screenshot": "communications/PROOF_stage13_tier_a_aoi_canary_ready_state_2026-03-24.png",
+    "negative_har": "communications/PROOF_stage13_tier_a_aoi_canary_discovery_empty_session_2026-03-24.har",
+    "negative_requests": "communications/PROOF_stage13_tier_a_aoi_canary_discovery_empty_requests_2026-03-24.json",
+    "negative_screenshot": "communications/PROOF_stage13_tier_a_aoi_canary_discovery_empty_state_2026-03-24.png",
+    "proof_note": "communications/PROOF_2026-03-24_stage13_tier_a_aoi_canary_live_proof_closeout.md"
+  },
+  "verification": {
+    "type_check": "passed",
+    "canary_tests": "13 passed",
+    "analyzer_contract_test": "1 passed"
+  },
+  "remaining_gap": "Stage 13 overall remains partial because Tier B transient and stronger host-neutral proof remain open."
+}

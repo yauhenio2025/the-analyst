@@ -1,0 +1,596 @@
+{
+  "planning_decision_id": "planning-decision-1b0dbef41b28",
+  "created_at": "2026-03-30T03:37:41.333981+00:00",
+  "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+  "consumer_key": "the-critic",
+  "selected_source_thinker_id": "otto_neurath",
+  "selected_source_thinker_name": "Otto Neurath",
+  "source_v2_job_id": "job-744edf255ad5",
+  "task_request": {
+    "task": "Write an AOI synthesis from this saved result.",
+    "objective_hint": null,
+    "audience": null,
+    "desired_depth": null,
+    "style_expectations": null,
+    "workflow_hint": "anxiety_of_influence_thematic_single_thinker",
+    "consumer_key": "the-critic",
+    "source_constraints": {
+      "source_mode": "saved_result",
+      "selected_source_thinker_id": null,
+      "selected_source_thinker_name": null,
+      "source_analysis_id": null,
+      "source_v2_job_id": "job-744edf255ad5"
+    }
+  },
+  "routing_decision": {
+    "normalized_task_summary": "Write an AOI synthesis from this saved result.",
+    "selected_objective_key": "influence_thematic",
+    "selected_workflow_key": "anxiety_of_influence_thematic_single_thinker",
+    "routing_outcome": "aoi_transient_source_backed",
+    "routing_confidence": "medium",
+    "launch_contract_kind": "planner.aoi_compose_handoff",
+    "source_sufficiency_status": "sufficient",
+    "required_fields": [
+      "workflow_key",
+      "consumer_key",
+      "source_v2_job_id"
+    ],
+    "required_host_preparation": [
+      "Call plan-task with saved_result planning context to resolve AOI source selection before launch."
+    ],
+    "downstream_launch_contract": {
+      "method": "POST",
+      "endpoint": "/v1/orchestrator/plan-task",
+      "request_fields": {
+        "task_request.workflow_hint": "anxiety_of_influence_thematic_single_thinker",
+        "task_request.consumer_key": "the-critic",
+        "planning_context.context_mode": "saved_result",
+        "planning_context.source_v2_job_id": "job-744edf255ad5"
+      }
+    },
+    "rejected_candidates": [
+      {
+        "objective_key": "genealogical",
+        "rejection_reason": "lower_signal_score_than_selected_candidate",
+        "details": []
+      }
+    ],
+    "trace": [
+      {
+        "stage": "task_normalization",
+        "details": {
+          "normalized_task_summary": "Write an AOI synthesis from this saved result.",
+          "audience": null,
+          "desired_depth": null,
+          "style_expectations": null
+        }
+      },
+      {
+        "stage": "objective_candidate_scoring",
+        "details": {
+          "objective_hint": null,
+          "objective_hint_status": "not_provided",
+          "workflow_hint": "anxiety_of_influence_thematic_single_thinker",
+          "workflow_hint_status": "accepted_as_consistent",
+          "candidates": [
+            {
+              "objective_key": "influence_thematic",
+              "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+              "signal_score": 1,
+              "positive_signals": [
+                "aoi"
+              ],
+              "source_mode": "saved_result",
+              "source_mode_compatible": true
+            },
+            {
+              "objective_key": "genealogical",
+              "workflow_key": "intellectual_genealogy",
+              "signal_score": 0,
+              "positive_signals": [],
+              "source_mode": "saved_result",
+              "source_mode_compatible": true
+            }
+          ]
+        }
+      },
+      {
+        "stage": "source_sufficiency_evaluation",
+        "details": {
+          "selected_objective_key": "influence_thematic",
+          "selected_workflow_key": "anxiety_of_influence_thematic_single_thinker",
+          "source_mode": "saved_result",
+          "source_sufficiency_status": "sufficient",
+          "sufficiency_reasons": []
+        }
+      },
+      {
+        "stage": "routing_decision",
+        "details": {
+          "routing_outcome": "aoi_transient_source_backed",
+          "routing_confidence": "medium",
+          "launch_contract_kind": "planner.aoi_compose_handoff",
+          "selected_objective_key": "influence_thematic",
+          "selected_workflow_key": "anxiety_of_influence_thematic_single_thinker",
+          "required_fields": [
+            "workflow_key",
+            "consumer_key",
+            "source_v2_job_id"
+          ],
+          "required_host_preparation": [
+            "Call plan-task with saved_result planning context to resolve AOI source selection before launch."
+          ]
+        }
+      }
+    ]
+  },
+  "planning_decision": {
+    "normalized_task_summary": "Write an AOI synthesis from this saved result.",
+    "planning_decision_id": "planning-decision-1b0dbef41b28",
+    "routing_decision": {
+      "normalized_task_summary": "Write an AOI synthesis from this saved result.",
+      "selected_objective_key": "influence_thematic",
+      "selected_workflow_key": "anxiety_of_influence_thematic_single_thinker",
+      "routing_outcome": "aoi_transient_source_backed",
+      "routing_confidence": "medium",
+      "launch_contract_kind": "planner.aoi_compose_handoff",
+      "source_sufficiency_status": "sufficient",
+      "required_fields": [
+        "workflow_key",
+        "consumer_key",
+        "source_v2_job_id"
+      ],
+      "required_host_preparation": [
+        "Call plan-task with saved_result planning context to resolve AOI source selection before launch."
+      ],
+      "downstream_launch_contract": {
+        "method": "POST",
+        "endpoint": "/v1/orchestrator/plan-task",
+        "request_fields": {
+          "task_request.workflow_hint": "anxiety_of_influence_thematic_single_thinker",
+          "task_request.consumer_key": "the-critic",
+          "planning_context.context_mode": "saved_result",
+          "planning_context.source_v2_job_id": "job-744edf255ad5"
+        }
+      },
+      "rejected_candidates": [
+        {
+          "objective_key": "genealogical",
+          "rejection_reason": "lower_signal_score_than_selected_candidate",
+          "details": []
+        }
+      ],
+      "trace": [
+        {
+          "stage": "task_normalization",
+          "details": {
+            "normalized_task_summary": "Write an AOI synthesis from this saved result.",
+            "audience": null,
+            "desired_depth": null,
+            "style_expectations": null
+          }
+        },
+        {
+          "stage": "objective_candidate_scoring",
+          "details": {
+            "objective_hint": null,
+            "objective_hint_status": "not_provided",
+            "workflow_hint": "anxiety_of_influence_thematic_single_thinker",
+            "workflow_hint_status": "accepted_as_consistent",
+            "candidates": [
+              {
+                "objective_key": "influence_thematic",
+                "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                "signal_score": 1,
+                "positive_signals": [
+                  "aoi"
+                ],
+                "source_mode": "saved_result",
+                "source_mode_compatible": true
+              },
+              {
+                "objective_key": "genealogical",
+                "workflow_key": "intellectual_genealogy",
+                "signal_score": 0,
+                "positive_signals": [],
+                "source_mode": "saved_result",
+                "source_mode_compatible": true
+              }
+            ]
+          }
+        },
+        {
+          "stage": "source_sufficiency_evaluation",
+          "details": {
+            "selected_objective_key": "influence_thematic",
+            "selected_workflow_key": "anxiety_of_influence_thematic_single_thinker",
+            "source_mode": "saved_result",
+            "source_sufficiency_status": "sufficient",
+            "sufficiency_reasons": []
+          }
+        },
+        {
+          "stage": "routing_decision",
+          "details": {
+            "routing_outcome": "aoi_transient_source_backed",
+            "routing_confidence": "medium",
+            "launch_contract_kind": "planner.aoi_compose_handoff",
+            "selected_objective_key": "influence_thematic",
+            "selected_workflow_key": "anxiety_of_influence_thematic_single_thinker",
+            "required_fields": [
+              "workflow_key",
+              "consumer_key",
+              "source_v2_job_id"
+            ],
+            "required_host_preparation": [
+              "Call plan-task with saved_result planning context to resolve AOI source selection before launch."
+            ]
+          }
+        }
+      ]
+    },
+    "planning_outcome_kind": "aoi_composition_handoff_plan",
+    "planning_confidence": "medium",
+    "hydration_status": "satisfied",
+    "required_hydration": [],
+    "required_host_preparation": [
+      "Carry planner-selected source families and the resolved intent seed into compose-from-selection."
+    ],
+    "downstream_readiness": "ready_for_aoi_compose_handoff",
+    "downstream_followup_contract": {
+      "method": "POST",
+      "endpoint": "/v1/presenter/compose-from-selection",
+      "selection_kind": "explicit",
+      "legacy_profile_equivalent": null,
+      "request_fields": {
+        "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+        "consumer_key": "the-critic",
+        "source_v2_job_id": "job-744edf255ad5",
+        "selection": [
+          {
+            "source_family_key": "thematic_synthesis",
+            "selection_rank": 1,
+            "rationale": "Primary synthesis artifact for a single-thinker AOI workflow. Contains overall_synthesis, themes, and selected_source_thinker \u2014 the core narrative material needed to write an AOI synthesis composition. Carries composition_role_hint of synthesis_primary, directly matching the task."
+          },
+          {
+            "source_family_key": "sin_findings",
+            "selection_rank": 2,
+            "rationale": "Provides the concrete findings bank (findings_by_sin_type, findings_by_theme) that gives the synthesis its evidential backbone. Essential for grounding the AOI composition in specific acts of misreading, swerving, or distortion rather than abstract thematic claims."
+          },
+          {
+            "source_family_key": "engagement_mapping",
+            "selection_rank": 3,
+            "rationale": "Supplies the engagement topology (themes_engaged, themes_ignored, themes_distorted, themes_partial, engagement_pattern) which enriches the handoff with structural contrast \u2014 showing how the ephebe thinker navigated the precursor's thematic field. Useful for a bounded single-handoff composition."
+          },
+          {
+            "source_family_key": "thematic_report",
+            "selection_rank": 4,
+            "rationale": "Serves as a closeout reference providing pre-distilled summary, key_divergences, reading_implications, and sin_distribution. Useful for framing the composition's arc and ensuring the synthesis does not omit significant divergence signals already computed by the report engine."
+          }
+        ],
+        "user_intent": "Write an Anxiety of Influence synthesis tracing how the selected thinker engages, distorts, and swerves from the precursor's key themes, grounded in the sin findings and engagement map."
+      }
+    },
+    "hydrated_document_ids": {},
+    "workflow_execution_plan": null,
+    "aoi_composition_handoff_plan": {
+      "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+      "objective_key": "influence_thematic",
+      "consumer_key": "the-critic",
+      "source_v2_job_id": "job-744edf255ad5",
+      "compose_entrypoint_kind": "presenter.compose_from_selection",
+      "selected_source_thinker_id": "otto_neurath",
+      "selected_source_thinker_name": "Otto Neurath",
+      "selected_sources": [
+        {
+          "source_family_key": "thematic_synthesis",
+          "selection_rank": 1,
+          "rationale": "Primary synthesis artifact for a single-thinker AOI workflow. Contains overall_synthesis, themes, and selected_source_thinker \u2014 the core narrative material needed to write an AOI synthesis composition. Carries composition_role_hint of synthesis_primary, directly matching the task."
+        },
+        {
+          "source_family_key": "sin_findings",
+          "selection_rank": 2,
+          "rationale": "Provides the concrete findings bank (findings_by_sin_type, findings_by_theme) that gives the synthesis its evidential backbone. Essential for grounding the AOI composition in specific acts of misreading, swerving, or distortion rather than abstract thematic claims."
+        },
+        {
+          "source_family_key": "engagement_mapping",
+          "selection_rank": 3,
+          "rationale": "Supplies the engagement topology (themes_engaged, themes_ignored, themes_distorted, themes_partial, engagement_pattern) which enriches the handoff with structural contrast \u2014 showing how the ephebe thinker navigated the precursor's thematic field. Useful for a bounded single-handoff composition."
+        },
+        {
+          "source_family_key": "thematic_report",
+          "selection_rank": 4,
+          "rationale": "Serves as a closeout reference providing pre-distilled summary, key_divergences, reading_implications, and sin_distribution. Useful for framing the composition's arc and ensuring the synthesis does not omit significant divergence signals already computed by the report engine."
+        }
+      ],
+      "rejected_sources": [],
+      "selection_summary": "All four available families are selected because together they form the complete AOI artifact set for a single-thinker thematic handoff: the thematic synthesis anchors the narrative, sin findings supply evidence, engagement mapping provides structural contrast, and the thematic report closes out with pre-aggregated divergence signals. No family is redundant for a bounded transient composition handoff of this type.",
+      "resolved_intent_seed": "Write an Anxiety of Influence synthesis tracing how the selected thinker engages, distorts, and swerves from the precursor's key themes, grounded in the sin findings and engagement map.",
+      "legacy_profile_equivalent": null,
+      "expected_source_families": [
+        "thematic_synthesis",
+        "engagement_mapping",
+        "sin_findings",
+        "thematic_report"
+      ],
+      "available_source_families": [
+        "thematic_synthesis",
+        "engagement_mapping",
+        "sin_findings",
+        "thematic_report"
+      ],
+      "expected_producer_engines": [
+        "aoi_engagement_mapping",
+        "aoi_sin_findings",
+        "aoi_thematic_report",
+        "aoi_thematic_synthesis"
+      ],
+      "bridge_contract_targets": [
+        "CompositionSourceCatalog",
+        "CompositionSourceSelection"
+      ],
+      "allowed_profiles": [
+        "dossier",
+        "comparison"
+      ],
+      "blocked_profiles": {},
+      "handoff_notes": [
+        "Stage 9 AOI planning resolves explicit source-family selection before transient composition handoff.",
+        "allowed_profiles and blocked_profiles remain transition diagnostics only; the planner-primary proof path launches by explicit selection."
+      ]
+    },
+    "direct_sections_composition_handoff_plan": null,
+    "aoi_selection_blocked_reason_code": null,
+    "aoi_selection_blocked_reason_detail": null,
+    "rejected_planning_alternatives": [
+      {
+        "alternative_key": "genealogical",
+        "rejection_reason": "lower_signal_score_than_selected_candidate",
+        "details": []
+      }
+    ],
+    "trace": [
+      {
+        "stage": "effective_task_request",
+        "details": {
+          "consumer_key": "the-critic",
+          "source_mode": "saved_result",
+          "context_mode": "saved_result"
+        }
+      },
+      {
+        "stage": "routing_reuse",
+        "details": {
+          "status": "not_provided"
+        }
+      },
+      {
+        "stage": "source_catalog_resolution",
+        "details": {
+          "source_v2_job_id": "job-744edf255ad5",
+          "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+          "objective_key": "influence_thematic",
+          "objective_source": "job_plan_data",
+          "plan_context_found": true,
+          "plan_context_source": "job_plan_data",
+          "selected_source_thinker_id": "otto_neurath",
+          "selected_source_thinker_name": "Otto Neurath",
+          "candidates": [
+            {
+              "source_family_key": "thematic_synthesis",
+              "engine_key": "aoi_thematic_synthesis",
+              "title": "Thematic Synthesis",
+              "source_backend_kind": "artifact",
+              "candidate_state": "available",
+              "provenance_pointer": {
+                "job_id": "job-744edf255ad5",
+                "engine_key": "aoi_thematic_synthesis"
+              },
+              "composition_role_hint": "synthesis_primary",
+              "summary_metadata": {
+                "payload_kind": "normalized_artifact",
+                "top_level_keys": [
+                  "overall_synthesis",
+                  "selected_source_thinker",
+                  "source_documents",
+                  "themes"
+                ]
+              },
+              "plan_context": {
+                "plan_context_found": true,
+                "plan_state": "declared_active",
+                "objective_key": "influence_thematic",
+                "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                "selected_source_thinker_id": "otto_neurath",
+                "selected_source_thinker_name": "Otto Neurath",
+                "phase_matches": [
+                  {
+                    "phase_number": 1.5,
+                    "phase_name": "Source Thematic Synthesis",
+                    "skip": false,
+                    "skip_reason": null
+                  }
+                ]
+              },
+              "resolution_note": "Loaded from normalized AOI artifact store."
+            },
+            {
+              "source_family_key": "engagement_mapping",
+              "engine_key": "aoi_engagement_mapping",
+              "title": "Engagement Mapping",
+              "source_backend_kind": "artifact",
+              "candidate_state": "available",
+              "provenance_pointer": {
+                "job_id": "job-744edf255ad5",
+                "engine_key": "aoi_engagement_mapping"
+              },
+              "composition_role_hint": "comparison_map",
+              "summary_metadata": {
+                "payload_kind": "normalized_artifact",
+                "top_level_keys": [
+                  "engagement_pattern",
+                  "engagements",
+                  "themes_distorted",
+                  "themes_engaged",
+                  "themes_ignored",
+                  "themes_partial"
+                ]
+              },
+              "plan_context": {
+                "plan_context_found": true,
+                "plan_state": "declared_active",
+                "objective_key": "influence_thematic",
+                "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                "selected_source_thinker_id": "otto_neurath",
+                "selected_source_thinker_name": "Otto Neurath",
+                "phase_matches": [
+                  {
+                    "phase_number": 2.0,
+                    "phase_name": "Engagement Mapping",
+                    "skip": false,
+                    "skip_reason": null
+                  }
+                ]
+              },
+              "resolution_note": "Loaded from normalized AOI artifact store."
+            },
+            {
+              "source_family_key": "sin_findings",
+              "engine_key": "aoi_sin_findings",
+              "title": "Sin Findings",
+              "source_backend_kind": "artifact",
+              "candidate_state": "available",
+              "provenance_pointer": {
+                "job_id": "job-744edf255ad5",
+                "engine_key": "aoi_sin_findings"
+              },
+              "composition_role_hint": "findings_bank",
+              "summary_metadata": {
+                "payload_kind": "normalized_artifact",
+                "top_level_keys": [
+                  "findings",
+                  "findings_by_sin_type",
+                  "findings_by_theme"
+                ]
+              },
+              "plan_context": {
+                "plan_context_found": true,
+                "plan_state": "declared_active",
+                "objective_key": "influence_thematic",
+                "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                "selected_source_thinker_id": "otto_neurath",
+                "selected_source_thinker_name": "Otto Neurath",
+                "phase_matches": [
+                  {
+                    "phase_number": 3.0,
+                    "phase_name": "AOI Sin Findings",
+                    "skip": false,
+                    "skip_reason": null
+                  }
+                ]
+              },
+              "resolution_note": "Loaded from normalized AOI artifact store."
+            },
+            {
+              "source_family_key": "thematic_report",
+              "engine_key": "aoi_thematic_report",
+              "title": "AOI Report",
+              "source_backend_kind": "normalized_report_payload",
+              "candidate_state": "available",
+              "provenance_pointer": {
+                "job_id": "job-744edf255ad5",
+                "engine_key": "aoi_thematic_report",
+                "output_id": "po-5f451496abc4",
+                "phase_number": 4.0,
+                "pass_number": 2,
+                "created_at": "2026-03-27T05:02:23.256173"
+              },
+              "composition_role_hint": "report_closeout",
+              "summary_metadata": {
+                "payload_kind": "report_sections",
+                "top_level_keys": [
+                  "engagement_pattern",
+                  "key_divergences",
+                  "reading_implications",
+                  "sin_distribution",
+                  "summary"
+                ],
+                "derived_payload_kind": "normalized_report_payload"
+              },
+              "plan_context": {
+                "plan_context_found": true,
+                "plan_state": "declared_active",
+                "objective_key": "influence_thematic",
+                "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                "selected_source_thinker_id": "otto_neurath",
+                "selected_source_thinker_name": "Otto Neurath",
+                "phase_matches": [
+                  {
+                    "phase_number": 4.0,
+                    "phase_name": "Thematic AOI Report",
+                    "skip": false,
+                    "skip_reason": null
+                  }
+                ]
+              },
+              "resolution_note": "Loaded from the latest thematic report phase output metadata."
+            }
+          ]
+        }
+      },
+      {
+        "stage": "source_selection",
+        "details": {
+          "prompt_version": "aoi-selection-v1",
+          "model_used": "claude-sonnet-4-6",
+          "timeout_s": 45.0,
+          "retry_policy": {
+            "max_retries": 0
+          },
+          "provider_outcome": "success",
+          "validator_version": "aoi-selection-validator-v1",
+          "selected_sources": [
+            {
+              "source_family_key": "thematic_synthesis",
+              "selection_rank": 1,
+              "rationale": "Primary synthesis artifact for a single-thinker AOI workflow. Contains overall_synthesis, themes, and selected_source_thinker \u2014 the core narrative material needed to write an AOI synthesis composition. Carries composition_role_hint of synthesis_primary, directly matching the task."
+            },
+            {
+              "source_family_key": "sin_findings",
+              "selection_rank": 2,
+              "rationale": "Provides the concrete findings bank (findings_by_sin_type, findings_by_theme) that gives the synthesis its evidential backbone. Essential for grounding the AOI composition in specific acts of misreading, swerving, or distortion rather than abstract thematic claims."
+            },
+            {
+              "source_family_key": "engagement_mapping",
+              "selection_rank": 3,
+              "rationale": "Supplies the engagement topology (themes_engaged, themes_ignored, themes_distorted, themes_partial, engagement_pattern) which enriches the handoff with structural contrast \u2014 showing how the ephebe thinker navigated the precursor's thematic field. Useful for a bounded single-handoff composition."
+            },
+            {
+              "source_family_key": "thematic_report",
+              "selection_rank": 4,
+              "rationale": "Serves as a closeout reference providing pre-distilled summary, key_divergences, reading_implications, and sin_distribution. Useful for framing the composition's arc and ensuring the synthesis does not omit significant divergence signals already computed by the report engine."
+            }
+          ],
+          "rejected_sources": [],
+          "selection_summary": "All four available families are selected because together they form the complete AOI artifact set for a single-thinker thematic handoff: the thematic synthesis anchors the narrative, sin findings supply evidence, engagement mapping provides structural contrast, and the thematic report closes out with pre-aggregated divergence signals. No family is redundant for a bounded transient composition handoff of this type.",
+          "resolved_intent_seed": "Write an Anxiety of Influence synthesis tracing how the selected thinker engages, distorts, and swerves from the precursor's key themes, grounded in the sin findings and engagement map."
+        }
+      },
+      {
+        "stage": "planning_decision",
+        "details": {
+          "planning_outcome_kind": "aoi_composition_handoff_plan",
+          "downstream_readiness": "ready_for_aoi_compose_handoff",
+          "selection_summary": "All four available families are selected because together they form the complete AOI artifact set for a single-thinker thematic handoff: the thematic synthesis anchors the narrative, sin findings supply evidence, engagement mapping provides structural contrast, and the thematic report closes out with pre-aggregated divergence signals. No family is redundant for a bounded transient composition handoff of this type.",
+          "legacy_profile_equivalent": null,
+          "available_source_families": [
+            "thematic_synthesis",
+            "engagement_mapping",
+            "sin_findings",
+            "thematic_report"
+          ]
+        }
+      }
+    ]
+  }
+}

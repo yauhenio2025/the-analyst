@@ -1,0 +1,31 @@
+{
+  "stage": 13,
+  "slice": "minimal_generic_host_contract_v1_first_slice",
+  "date": "2026-03-24",
+  "workflow_key": "intellectual_genealogy",
+  "surface": "genealogy_result_backed_workspace",
+  "proof_basis": "shared hook/workspace integration tests plus live code inspection",
+  "host_contract_family_evidence": {
+    "readiness_client": "webapp/src/lib/boundedV2Client.ts#getBoundedV2SourceBackedReadiness",
+    "shared_workspace_hook": "webapp/src/hooks/useBoundedV2Workspace.ts",
+    "workspace_page": "webapp/src/pages/AnalysisWorkspacePage.tsx"
+  },
+  "verified_mode_states": [
+    {
+      "state": "requested_mode_ready",
+      "behavior": "requestedMode and displayMode stay aligned and downstream manifest/presentation calls keep composition_mode",
+      "test": "webapp/src/hooks/useBoundedV2Workspace.test.tsx::genealogy readiness-ready mode keeps requested and display mode aligned"
+    },
+    {
+      "state": "requested_mode_blocked_initial_load",
+      "behavior": "requestedMode stays in state/URL, displayMode becomes default/no-mode, analyzer blockers are surfaced",
+      "test": "webapp/src/pages/AnalysisWorkspacePage.integration.test.tsx::genealogy blocked requested mode shows analyzer blockers and falls back to default presentation"
+    },
+    {
+      "state": "requested_mode_blocked_existing_presentation",
+      "behavior": "current presentation stays visible while the blocked requested mode is reported explicitly",
+      "test": "webapp/src/hooks/useBoundedV2Workspace.test.tsx::genealogy blocked mode keeps the current presentation when the same job is already visible"
+    }
+  ],
+  "bounded_non_goal": "AOI result-backed composition_mode readiness remains unsupported in this slice and is not auto-gated."
+}

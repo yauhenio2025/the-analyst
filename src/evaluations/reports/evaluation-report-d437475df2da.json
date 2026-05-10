@@ -1,0 +1,250 @@
+{
+  "evaluation_report_id": "evaluation-report-d437475df2da",
+  "created_at": "2026-03-30T03:43:53.925139+00:00",
+  "evaluation_pack_key": "phase4_routing_planning_governance_v1",
+  "case_key": "genealogy_saved_result_direct_sections_snapshot_march28",
+  "subject_kind": "planning_decision",
+  "subject_identity": "planning-decision-b1600d054991",
+  "workflow_key": "intellectual_genealogy",
+  "consumer_key": "the-critic",
+  "supporting_subjects": {
+    "source_v2_job_id": "proof-round4-adaptive-balance-final-1774012011"
+  },
+  "input_evidence_refs": [
+    {
+      "ref_key": "phase2_trace_multi_surface",
+      "source_kind": "frozen_artifact",
+      "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase2_host_neutral_transient_proof_trace_2026-03-28.json",
+      "expected_sha256": "af95f300d6393525e44d830fd24a0a9456cd2cd2b77bbaa36d68f77565eb5275",
+      "observed_sha256": "af95f300d6393525e44d830fd24a0a9456cd2cd2b77bbaa36d68f77565eb5275",
+      "note": null
+    },
+    {
+      "ref_key": "genealogy_planning_snapshot",
+      "source_kind": "frozen_artifact",
+      "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase_d_genealogy_direct_sections_planning_snapshot_2026-03-30.json",
+      "expected_sha256": "a3829761409372d2e1c0c7adb1dc9e4a3efbc04ee3ddf714da27ff10de4cbb24",
+      "observed_sha256": "a3829761409372d2e1c0c7adb1dc9e4a3efbc04ee3ddf714da27ff10de4cbb24",
+      "note": null
+    }
+  ],
+  "checks": [
+    {
+      "check_key": "route_fidelity",
+      "label": "Routing decision matches the declared objective/workflow/contract law",
+      "status": "pass",
+      "required": true,
+      "summary": "selected_objective_key=genealogical selected_workflow_key=intellectual_genealogy routing_outcome=genealogy_transient_source_backed launch_contract_kind=planner.direct_sections_compose_handoff",
+      "evidence_mode": "frozen_artifact",
+      "evidence_observed_at": "2026-03-30T03:43:53.925948+00:00",
+      "live_revalidation_performed": false,
+      "evidence_refs": [
+        {
+          "ref_key": "phase2_trace_multi_surface:routing_decision",
+          "source_kind": "frozen_artifact",
+          "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase2_host_neutral_transient_proof_trace_2026-03-28.json#routing_decision",
+          "expected_sha256": "af95f300d6393525e44d830fd24a0a9456cd2cd2b77bbaa36d68f77565eb5275",
+          "observed_sha256": "af95f300d6393525e44d830fd24a0a9456cd2cd2b77bbaa36d68f77565eb5275",
+          "note": "Multi-surface genealogy trace artifact supplying routing evidence."
+        }
+      ],
+      "observed_values": {
+        "selected_objective_key": "genealogical",
+        "selected_workflow_key": "intellectual_genealogy",
+        "routing_outcome": "genealogy_transient_source_backed",
+        "launch_contract_kind": "planner.direct_sections_compose_handoff"
+      }
+    },
+    {
+      "check_key": "source_contract_fidelity",
+      "label": "Source-contract fields stay coherent for the declared route/planning mode",
+      "status": "pass",
+      "required": true,
+      "summary": "source_sufficiency_status=sufficient required_fields=['workflow_key', 'consumer_key', 'source_v2_job_id'] snapshot_source_v2_job_id=proof-round4-adaptive-balance-final-1774012011",
+      "evidence_mode": "frozen_artifact",
+      "evidence_observed_at": "2026-03-30T03:43:53.925948+00:00",
+      "live_revalidation_performed": false,
+      "evidence_refs": [
+        {
+          "ref_key": "phase2_trace_multi_surface:routing_decision",
+          "source_kind": "frozen_artifact",
+          "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase2_host_neutral_transient_proof_trace_2026-03-28.json#routing_decision",
+          "expected_sha256": "af95f300d6393525e44d830fd24a0a9456cd2cd2b77bbaa36d68f77565eb5275",
+          "observed_sha256": "af95f300d6393525e44d830fd24a0a9456cd2cd2b77bbaa36d68f77565eb5275",
+          "note": "Multi-surface genealogy trace artifact supplying routing evidence."
+        },
+        {
+          "ref_key": "phase2_trace_multi_surface:planning_decision",
+          "source_kind": "frozen_artifact",
+          "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase2_host_neutral_transient_proof_trace_2026-03-28.json#planning_decision",
+          "expected_sha256": "af95f300d6393525e44d830fd24a0a9456cd2cd2b77bbaa36d68f77565eb5275",
+          "observed_sha256": "af95f300d6393525e44d830fd24a0a9456cd2cd2b77bbaa36d68f77565eb5275",
+          "note": "Multi-surface genealogy trace artifact supplying planning evidence."
+        },
+        {
+          "ref_key": "phase2_trace_multi_surface:planning_snapshot",
+          "source_kind": "frozen_artifact",
+          "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase2_host_neutral_transient_proof_trace_2026-03-28.json#planning_snapshot",
+          "expected_sha256": "af95f300d6393525e44d830fd24a0a9456cd2cd2b77bbaa36d68f77565eb5275",
+          "observed_sha256": "af95f300d6393525e44d830fd24a0a9456cd2cd2b77bbaa36d68f77565eb5275",
+          "note": "Embedded planning snapshot from the multi-surface genealogy trace artifact."
+        },
+        {
+          "ref_key": "genealogy_planning_snapshot",
+          "source_kind": "frozen_artifact",
+          "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase_d_genealogy_direct_sections_planning_snapshot_2026-03-30.json",
+          "expected_sha256": "a3829761409372d2e1c0c7adb1dc9e4a3efbc04ee3ddf714da27ff10de4cbb24",
+          "observed_sha256": "a3829761409372d2e1c0c7adb1dc9e4a3efbc04ee3ddf714da27ff10de4cbb24",
+          "note": null
+        }
+      ],
+      "observed_values": {
+        "source_sufficiency_status": "sufficient",
+        "required_fields": [
+          "workflow_key",
+          "consumer_key",
+          "source_v2_job_id"
+        ],
+        "snapshot_workflow_key": "intellectual_genealogy",
+        "snapshot_consumer_key": "the-critic",
+        "snapshot_source_v2_job_id": "proof-round4-adaptive-balance-final-1774012011",
+        "snapshot_selected_source_thinker_id": null,
+        "snapshot_selected_source_thinker_name": null
+      }
+    },
+    {
+      "check_key": "planning_followup_fidelity",
+      "label": "Planning outcome and downstream followup contract match the declared case",
+      "status": "pass",
+      "required": true,
+      "summary": "planning_outcome_kind=direct_sections_composition_handoff_plan downstream_readiness=ready_for_direct_sections_compose_handoff followup_endpoint=/v1/presenter/compose-from-intent",
+      "evidence_mode": "frozen_artifact",
+      "evidence_observed_at": "2026-03-30T03:43:53.925948+00:00",
+      "live_revalidation_performed": false,
+      "evidence_refs": [
+        {
+          "ref_key": "phase2_trace_multi_surface:planning_decision",
+          "source_kind": "frozen_artifact",
+          "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase2_host_neutral_transient_proof_trace_2026-03-28.json#planning_decision",
+          "expected_sha256": "af95f300d6393525e44d830fd24a0a9456cd2cd2b77bbaa36d68f77565eb5275",
+          "observed_sha256": "af95f300d6393525e44d830fd24a0a9456cd2cd2b77bbaa36d68f77565eb5275",
+          "note": "Multi-surface genealogy trace artifact supplying planning evidence."
+        }
+      ],
+      "observed_values": {
+        "planning_outcome_kind": "direct_sections_composition_handoff_plan",
+        "downstream_readiness": "ready_for_direct_sections_compose_handoff",
+        "downstream_followup_contract": {
+          "method": "POST",
+          "endpoint": "/v1/presenter/compose-from-intent",
+          "handoff_kind": "direct_sections",
+          "request_fields": {
+            "workflow_key": "intellectual_genealogy",
+            "consumer_key": "the-critic",
+            "user_intent": "Trace the genealogy and intellectual development visible in this saved result.",
+            "prose_sections": "<lower from direct_sections_composition_handoff_plan>"
+          }
+        }
+      }
+    },
+    {
+      "check_key": "decision_trace_integrity",
+      "label": "Trace stages and persisted snapshot agree across the decision surfaces",
+      "status": "pass",
+      "required": true,
+      "summary": "route_trace_stages=['task_normalization', 'objective_candidate_scoring', 'source_sufficiency_evaluation', 'routing_decision'] planning_trace_stages=['effective_task_request', 'routing_reuse', 'hydration_evaluation', 'genealogy_saved_result_section_extraction', 'planning_decision'] planning_decision_id=planning-decision-b1600d054991",
+      "evidence_mode": "frozen_artifact",
+      "evidence_observed_at": "2026-03-30T03:43:53.925948+00:00",
+      "live_revalidation_performed": false,
+      "evidence_refs": [
+        {
+          "ref_key": "phase2_trace_multi_surface:routing_decision",
+          "source_kind": "frozen_artifact",
+          "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase2_host_neutral_transient_proof_trace_2026-03-28.json#routing_decision",
+          "expected_sha256": "af95f300d6393525e44d830fd24a0a9456cd2cd2b77bbaa36d68f77565eb5275",
+          "observed_sha256": "af95f300d6393525e44d830fd24a0a9456cd2cd2b77bbaa36d68f77565eb5275",
+          "note": "Multi-surface genealogy trace artifact supplying routing evidence."
+        },
+        {
+          "ref_key": "phase2_trace_multi_surface:planning_decision",
+          "source_kind": "frozen_artifact",
+          "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase2_host_neutral_transient_proof_trace_2026-03-28.json#planning_decision",
+          "expected_sha256": "af95f300d6393525e44d830fd24a0a9456cd2cd2b77bbaa36d68f77565eb5275",
+          "observed_sha256": "af95f300d6393525e44d830fd24a0a9456cd2cd2b77bbaa36d68f77565eb5275",
+          "note": "Multi-surface genealogy trace artifact supplying planning evidence."
+        },
+        {
+          "ref_key": "phase2_trace_multi_surface:planning_snapshot",
+          "source_kind": "frozen_artifact",
+          "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase2_host_neutral_transient_proof_trace_2026-03-28.json#planning_snapshot",
+          "expected_sha256": "af95f300d6393525e44d830fd24a0a9456cd2cd2b77bbaa36d68f77565eb5275",
+          "observed_sha256": "af95f300d6393525e44d830fd24a0a9456cd2cd2b77bbaa36d68f77565eb5275",
+          "note": "Embedded planning snapshot from the multi-surface genealogy trace artifact."
+        },
+        {
+          "ref_key": "genealogy_planning_snapshot",
+          "source_kind": "frozen_artifact",
+          "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase_d_genealogy_direct_sections_planning_snapshot_2026-03-30.json",
+          "expected_sha256": "a3829761409372d2e1c0c7adb1dc9e4a3efbc04ee3ddf714da27ff10de4cbb24",
+          "observed_sha256": "a3829761409372d2e1c0c7adb1dc9e4a3efbc04ee3ddf714da27ff10de4cbb24",
+          "note": null
+        }
+      ],
+      "observed_values": {
+        "route_trace_stages": [
+          "task_normalization",
+          "objective_candidate_scoring",
+          "source_sufficiency_evaluation",
+          "routing_decision"
+        ],
+        "planning_trace_stages": [
+          "effective_task_request",
+          "routing_reuse",
+          "hydration_evaluation",
+          "genealogy_saved_result_section_extraction",
+          "planning_decision"
+        ],
+        "snapshot_planning_decision_id": "planning-decision-b1600d054991",
+        "snapshot_workflow_key": "intellectual_genealogy",
+        "snapshot_consumer_key": "the-critic",
+        "snapshot_source_v2_job_id": "proof-round4-adaptive-balance-final-1774012011",
+        "embedded_snapshot_planning_decision_id": "planning-decision-b1600d054991"
+      }
+    }
+  ],
+  "dimension_summaries": [
+    {
+      "dimension_key": "route_fidelity",
+      "status": "pass",
+      "summary": "selected_objective_key=genealogical selected_workflow_key=intellectual_genealogy routing_outcome=genealogy_transient_source_backed launch_contract_kind=planner.direct_sections_compose_handoff",
+      "supporting_checks": [
+        "route_fidelity"
+      ]
+    },
+    {
+      "dimension_key": "source_contract_fidelity",
+      "status": "pass",
+      "summary": "source_sufficiency_status=sufficient required_fields=['workflow_key', 'consumer_key', 'source_v2_job_id'] snapshot_source_v2_job_id=proof-round4-adaptive-balance-final-1774012011",
+      "supporting_checks": [
+        "source_contract_fidelity"
+      ]
+    },
+    {
+      "dimension_key": "planning_followup_fidelity",
+      "status": "pass",
+      "summary": "planning_outcome_kind=direct_sections_composition_handoff_plan downstream_readiness=ready_for_direct_sections_compose_handoff followup_endpoint=/v1/presenter/compose-from-intent",
+      "supporting_checks": [
+        "planning_followup_fidelity"
+      ]
+    },
+    {
+      "dimension_key": "decision_trace_integrity",
+      "status": "pass",
+      "summary": "route_trace_stages=['task_normalization', 'objective_candidate_scoring', 'source_sufficiency_evaluation', 'routing_decision'] planning_trace_stages=['effective_task_request', 'routing_reuse', 'hydration_evaluation', 'genealogy_saved_result_section_extraction', 'planning_decision'] planning_decision_id=planning-decision-b1600d054991",
+      "supporting_checks": [
+        "decision_trace_integrity"
+      ]
+    }
+  ],
+  "overall_verdict": "pass"
+}

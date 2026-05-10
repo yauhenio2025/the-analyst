@@ -1,0 +1,70 @@
+{
+  "capture_timestamp": "2026-04-01T00:42:26.704Z",
+  "analyzer_base_url": "http://127.0.0.1:8001",
+  "harness_url": "http://127.0.0.1:4175",
+  "proof_case": "source_selection",
+  "pinned_fixture_identity": "../transient-proof-harness/src/fixtures/transient-source-selection-probe.json",
+  "pinned_fixture_key": "phase_e_transient_proof_probe_source_selection_v1",
+  "proof_bundle_identity": "communications/PROOF_phase_e_transient_proof_probe_source_selection_2026-04-01.json",
+  "consumer_key": "transient-proof-probe",
+  "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+  "route_family": "source_selection",
+  "planning_decision_id": "planning-decision-d6b6bb0cd7ac",
+  "analyzer_v2_commit_sha": "01427880e1c4c5ddb896b8b0c7fb8c74f6b228c9",
+  "analyzer_v2_repo_state": "dirty",
+  "transient_proof_harness_commit_sha": "c11fa0f0297d0c62135fbbbaf45bc325d4ceb8ff",
+  "transient_proof_harness_repo_state": "dirty",
+  "compose_call": {
+    "method": "POST",
+    "endpoint": "/v1/presenter/compose-from-selection"
+  },
+  "observed_request_json": {
+    "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+    "consumer_key": "transient-proof-probe",
+    "source_v2_job_id": "job-744edf255ad5",
+    "selection": [
+      {
+        "source_family_key": "thematic_synthesis",
+        "selection_rank": 1,
+        "rationale": "This is the primary composition input for an AOI synthesis. It contains overall_synthesis, themes, selected_source_thinker, and source_documents — exactly the structured thematic material needed to write a bounded single-thinker AOI synthesis. Its composition_role_hint of synthesis_primary confirms it as the anchor source."
+      },
+      {
+        "source_family_key": "sin_findings",
+        "selection_rank": 2,
+        "rationale": "Sin findings provide the granular evidence bank (findings indexed by sin type and theme) that gives the synthesis its analytical backbone. For a single-thinker AOI workflow, identifying specific sins of omission, distortion, or misreading is essential to grounding the synthesis in concrete textual behavior."
+      },
+      {
+        "source_family_key": "engagement_mapping",
+        "selection_rank": 3,
+        "rationale": "Engagement mapping supplies the structural contrast layer — which themes were engaged, ignored, distorted, or only partially addressed. This directly informs the handoff composition by revealing the pattern of influence anxiety and selective engagement, adding necessary texture beyond raw findings."
+      },
+      {
+        "source_family_key": "thematic_report",
+        "selection_rank": 4,
+        "rationale": "The AOI report provides a pre-integrated narrative with summary, key divergences, reading implications, and sin distribution. For a bounded transient handoff, this closeout artifact helps frame the composition arc and ensures the synthesis aligns with already-derived high-level conclusions rather than reconstructing them from scratch."
+      }
+    ],
+    "user_intent": "Write an Anxiety of Influence synthesis for the selected thinker, drawing on thematic findings, sin evidence, and engagement patterns from this saved result.",
+    "selection_summary": "All four available families are selected because this is a bounded single-thinker AOI synthesis task and each family contributes a distinct, non-redundant compositional layer: thematic_synthesis anchors the primary content, sin_findings supplies evidentiary detail, engagement_mapping provides the structural contrast pattern, and thematic_report closes the arc with integrated narrative framing. No family was extraneous to this workflow."
+  },
+  "observed_request_json_equals_pinned_fixture_request": true,
+  "response_status": 200,
+  "resolver_version": "compose-from-selection-v1",
+  "response_presentation_consumer_key": "transient-proof-probe",
+  "observed_root_renderer": "tab",
+  "expected_root_renderer": "tab",
+  "root_renderer_matches": true,
+  "raw_json_leaf_keys": [
+    "compose_intent_04_aoi_thematic_report"
+  ],
+  "expected_raw_json_view_keys": [
+    "compose_intent_04_aoi_thematic_report"
+  ],
+  "raw_json_set_matches": true,
+  "compose_request_count_in_session": 1,
+  "forbidden_analytical_requests_observed": [],
+  "allowed_supporting_requests": [],
+  "browser_title": "transient-proof-harness",
+  "screenshot_path": "communications/PROOF_phase_e_transient_proof_probe_source_selection_live_closeout_2026-04-01.png",
+  "har_path": "communications/PROOF_phase_e_transient_proof_probe_source_selection_live_closeout_2026-04-01.har"
+}

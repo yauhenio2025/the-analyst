@@ -1,0 +1,91 @@
+{
+  "downstream_launch_contract": {
+    "endpoint": null,
+    "method": null
+  },
+  "launch_contract_kind": "unsupported",
+  "normalized_task_summary": "Compare how this work relates to earlier texts.",
+  "rejected_candidates": [
+    {
+      "details": [
+        "AOI routing requires saved_result source constraints."
+      ],
+      "objective_key": "influence_thematic",
+      "rejection_reason": "ambiguous_or_weak_task_signals"
+    },
+    {
+      "details": [
+        "Genealogy routing requires registered_corpus or inline_documents source constraints."
+      ],
+      "objective_key": "genealogical",
+      "rejection_reason": "ambiguous_or_weak_task_signals"
+    }
+  ],
+  "required_fields": [],
+  "required_host_preparation": [],
+  "routing_confidence": "low",
+  "routing_outcome": "unsupported",
+  "selected_objective_key": null,
+  "selected_workflow_key": null,
+  "source_sufficiency_status": "ambiguous",
+  "trace": [
+    {
+      "details": {
+        "audience": null,
+        "desired_depth": null,
+        "normalized_task_summary": "Compare how this work relates to earlier texts.",
+        "style_expectations": null
+      },
+      "stage": "task_normalization"
+    },
+    {
+      "details": {
+        "candidates": [
+          {
+            "objective_key": "influence_thematic",
+            "positive_signals": [],
+            "signal_score": 0,
+            "source_mode": null,
+            "source_mode_compatible": true,
+            "workflow_key": "anxiety_of_influence_thematic_single_thinker"
+          },
+          {
+            "objective_key": "genealogical",
+            "positive_signals": [],
+            "signal_score": 0,
+            "source_mode": null,
+            "source_mode_compatible": true,
+            "workflow_key": "intellectual_genealogy"
+          }
+        ],
+        "objective_hint": null,
+        "objective_hint_status": "not_provided",
+        "workflow_hint": null,
+        "workflow_hint_status": "not_provided"
+      },
+      "stage": "objective_candidate_scoring"
+    },
+    {
+      "details": {
+        "selected_objective_key": null,
+        "selected_workflow_key": null,
+        "source_mode": null,
+        "source_sufficiency_status": "ambiguous",
+        "sufficiency_reasons": []
+      },
+      "stage": "source_sufficiency_evaluation"
+    },
+    {
+      "details": {
+        "launch_contract_kind": "unsupported",
+        "required_fields": [],
+        "required_host_preparation": [],
+        "routing_confidence": "low",
+        "routing_outcome": "unsupported",
+        "selected_objective_key": null,
+        "selected_workflow_key": null
+      },
+      "stage": "routing_decision"
+    }
+  ]
+}

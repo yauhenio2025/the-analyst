@@ -1,0 +1,856 @@
+{
+  "presentation": {
+    "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+    "consumer_key": "the-critic",
+    "presentation_contract_version": 1,
+    "presentation_hash": "2c671db6196b4884feca1b2a388bacb5fb4685876c15ce405916dd0dc046bdfc",
+    "presentation_content_hash": "05dbf7aa73bb971b6c29bbb914a0426302888803f705f30f087395869f1faa39",
+    "resolver_version": "compose-from-intent-v1",
+    "style_school": "explanatory_narrative",
+    "views": [
+      {
+        "view_key": "compose_intent_01_aoi_thematic_synthesis",
+        "view_name": "Thematic Synthesis Explorer",
+        "description": "Renders each identified AOI theme as a collapsible accordion section, exposing key claims, philosophical commitments, argumentative moves, and source documents per theme, with the overall synthesis surfaced at the top as an orientating lead-in.",
+        "renderer_type": "accordion",
+        "renderer_config": {
+          "sections": [
+            {
+              "key": "source_thinker_header",
+              "title": "Source Thinker & Documents"
+            },
+            {
+              "key": "theme_inventory",
+              "title": "Theme Inventory"
+            },
+            {
+              "key": "key_claims",
+              "title": "Key Claims"
+            },
+            {
+              "key": "philosophical_commitments",
+              "title": "Philosophical Commitments"
+            },
+            {
+              "key": "argumentative_moves",
+              "title": "Argumentative Moves"
+            },
+            {
+              "key": "representative_quotes",
+              "title": "Representative Quotes"
+            }
+          ],
+          "expand_first": true,
+          "section_renderers": {
+            "source_thinker_header": {
+              "renderer_type": "key_value_table",
+              "config": {
+                "data_path": "source_documents",
+                "rows": [
+                  {
+                    "label": "Thinker",
+                    "field_path": "selected_source_thinker.thinker_name"
+                  },
+                  {
+                    "label": "Thinker ID",
+                    "field_path": "selected_source_thinker.thinker_id"
+                  }
+                ],
+                "secondary_data_path": "source_documents",
+                "secondary_renderer": {
+                  "renderer_type": "mini_card_list",
+                  "config": {
+                    "title_field": "title",
+                    "description_field": "description",
+                    "subtitle_field": "subtitle",
+                    "id_field": "source_document_id"
+                  }
+                },
+                "show_secondary_label": "Source Documents"
+              }
+            },
+            "theme_inventory": {
+              "renderer_type": "mini_card_list",
+              "config": {
+                "data_path": "themes",
+                "title_field": "theme_name",
+                "description_field": "overview",
+                "badge_field": "centrality",
+                "badge_style_map": {
+                  "core": "accent",
+                  "major": "neutral",
+                  "minor": "muted"
+                },
+                "detail_fields": [
+                  {
+                    "label": "Source Documents",
+                    "field": "source_documents",
+                    "render_as": "chip_list"
+                  }
+                ],
+                "sort_by": "centrality",
+                "sort_order": [
+                  "core",
+                  "major",
+                  "minor"
+                ]
+              }
+            },
+            "key_claims": {
+              "renderer_type": "mini_card_list",
+              "config": {
+                "data_path": "themes",
+                "title_field": "theme_name",
+                "description_field": "overview",
+                "badge_field": "centrality",
+                "expand_list_field": {
+                  "label": "Claims",
+                  "field": "key_claims",
+                  "render_as": "ordered_prose_list"
+                }
+              }
+            },
+            "philosophical_commitments": {
+              "renderer_type": "mini_card_list",
+              "config": {
+                "data_path": "themes",
+                "title_field": "theme_name",
+                "badge_field": "centrality",
+                "expand_list_field": {
+                  "label": "Commitments",
+                  "field": "philosophical_commitments",
+                  "render_as": "chip_grid"
+                }
+              }
+            },
+            "argumentative_moves": {
+              "renderer_type": "mini_card_list",
+              "config": {
+                "data_path": "themes",
+                "title_field": "theme_name",
+                "badge_field": "centrality",
+                "expand_list_field": {
+                  "label": "Moves",
+                  "field": "argumentative_moves",
+                  "render_as": "ordered_prose_list"
+                }
+              }
+            },
+            "representative_quotes": {
+              "renderer_type": "mini_card_list",
+              "config": {
+                "data_path": "themes",
+                "title_field": "theme_name",
+                "badge_field": "centrality",
+                "nested_list_field": {
+                  "field": "representative_quotes",
+                  "item_title_field": "source_work_title",
+                  "item_subtitle_field": "source_locator",
+                  "item_body_field": "quote",
+                  "render_as": "quote_block"
+                }
+              }
+            }
+          }
+        },
+        "presentation_stance": "analytical",
+        "rationale": "The thematic synthesis data is multi-faceted per theme — each theme carries a distinct set of sub-fields (claims, commitments, moves, sources) that differ in shape from one another. Accordion sections handle this heterogeneity cleanly, letting the critic scan themes at a glance and drill into any facet without visual overwhelm. prose_narrative would flatten the structured sub-fields; card_grid_grouped would lose the per-facet typed rendering that accordion uniquely provides.",
+        "engine_key": "aoi_thematic_synthesis",
+        "position": 1.0,
+        "visibility": "if_data_exists",
+        "has_structured_data": true,
+        "structured_data": {
+          "sections": [
+            {
+              "key": "theme_inventory",
+              "title": "Theme Inventory",
+              "items": [
+                {
+                  "theme_name": "Calculation Without Prices",
+                  "overview": "Benanav leans on Neurath's insistence that planning can coordinate production without market prices.",
+                  "centrality": "core",
+                  "source_documents": [
+                    "Through War Economy to Economy in Kind",
+                    "Economic Plan and Calculation in Kind"
+                  ]
+                },
+                {
+                  "theme_name": "Planning as Public Knowledge",
+                  "overview": "Benanav partially echoes Neurath's view that planning depends on public knowledge infrastructures and civic intelligibility.",
+                  "centrality": "major",
+                  "source_documents": [
+                    "International Planning for Freedom"
+                  ]
+                }
+              ]
+            },
+            {
+              "key": "key_claims",
+              "title": "Key Claims",
+              "items": [
+                {
+                  "theme_name": "Calculation Without Prices",
+                  "key_claims": [
+                    "Planning can orient production without market-clearing signals.",
+                    "Material coordination can be treated as an information design problem."
+                  ]
+                },
+                {
+                  "theme_name": "Planning as Public Knowledge",
+                  "key_claims": [
+                    "Planning requires transparent social knowledge rather than hidden market revelation."
+                  ]
+                }
+              ]
+            },
+            {
+              "key": "philosophical_commitments",
+              "title": "Philosophical Commitments",
+              "items": [
+                {
+                  "theme_name": "Calculation Without Prices",
+                  "philosophical_commitments": [
+                    "Economic rationality is not exhausted by price signals."
+                  ]
+                },
+                {
+                  "theme_name": "Planning as Public Knowledge",
+                  "philosophical_commitments": [
+                    "Democratic coordination depends on shared intelligibility."
+                  ]
+                }
+              ]
+            },
+            {
+              "key": "argumentative_moves",
+              "title": "Argumentative Moves",
+              "items": [
+                {
+                  "theme_name": "Calculation Without Prices",
+                  "argumentative_moves": [
+                    "Recasts socialist calculation as a coordination problem rather than a scarcity-pricing puzzle."
+                  ]
+                },
+                {
+                  "theme_name": "Planning as Public Knowledge",
+                  "argumentative_moves": [
+                    "Turns epistemic planning into a public-capacity argument."
+                  ]
+                }
+              ]
+            },
+            {
+              "key": "synthesis_summary",
+              "title": "Synthesis Summary",
+              "items": [
+                {
+                  "label": "Overall Pattern",
+                  "content": "The dossier fixture concentrates on one dominant Neurathian planning theme with a secondary civic-intelligibility theme."
+                }
+              ]
+            }
+          ]
+        },
+        "items": null,
+        "children": []
+      },
+      {
+        "view_key": "compose_intent_02_aoi_thematic_report",
+        "view_name": "AOI Structured Report",
+        "description": "Presents the full AOI report as a set of collapsible accordion sections — Summary, Engagement Pattern, Key Divergences, Sin Distribution, and Reading Implications — each rendered according to its own data shape, with badge-tagged divergence entries and sin-type tallies surfaced inline.",
+        "renderer_type": "accordion",
+        "renderer_config": {
+          "sections": [
+            {
+              "key": "summary",
+              "title": "Summary"
+            },
+            {
+              "key": "engagement_pattern",
+              "title": "Engagement Pattern"
+            },
+            {
+              "key": "key_divergences",
+              "title": "Key Divergences"
+            },
+            {
+              "key": "sin_distribution",
+              "title": "Sin Distribution"
+            },
+            {
+              "key": "reading_implications",
+              "title": "Reading Implications"
+            }
+          ],
+          "expand_first": true,
+          "section_renderers": {
+            "summary": {
+              "renderer_type": "prose_block",
+              "config": {
+                "field": "report_sections.summary"
+              }
+            },
+            "engagement_pattern": {
+              "renderer_type": "prose_block",
+              "config": {
+                "field": "report_sections.engagement_pattern"
+              }
+            },
+            "key_divergences": {
+              "renderer_type": "mini_card_list",
+              "config": {
+                "field": "report_sections.key_divergences",
+                "title_field": "title",
+                "subtitle_field": "subtitle",
+                "description_field": "description",
+                "badge_field": "badge",
+                "badge_values": [
+                  "critical",
+                  "high",
+                  "medium",
+                  "low"
+                ]
+              }
+            },
+            "sin_distribution": {
+              "renderer_type": "key_value_table",
+              "config": {
+                "field": "report_sections.sin_distribution",
+                "key_field": "sin_type",
+                "value_field": "count",
+                "annotation_field": "description"
+              }
+            },
+            "reading_implications": {
+              "renderer_type": "prose_block",
+              "config": {
+                "field": "report_sections.reading_implications"
+              }
+            }
+          }
+        },
+        "presentation_stance": "evaluative",
+        "rationale": "The report data is explicitly multi-typed: narrative prose fields (summary, engagement_pattern, reading_implications) sit alongside a badged array (key_divergences) and a counted typology (sin_distribution). Accordion sections is the canonical pattern for exactly this mix of facets with different shapes. Closing the page with this structured report fulfills the user intent to end on a formal analytical artifact, and the accordion's collapsibility lets the critic navigate directly to whichever report facet is most salient without scrolling through the full narrative.",
+        "engine_key": "aoi_thematic_report",
+        "position": 2.0,
+        "visibility": "if_data_exists",
+        "has_structured_data": true,
+        "structured_data": {
+          "sections": [
+            {
+              "key": "summary",
+              "title": "Summary",
+              "items": [
+                {
+                  "content": "Benanav's AOI pattern is dominated by one planning theme, with a secondary civic-intelligibility strand that stays visible but subordinate."
+                }
+              ]
+            },
+            {
+              "key": "engagement_pattern",
+              "title": "Engagement Pattern",
+              "items": [
+                {
+                  "content": "The engagement is strongest when Benanav reframes Neurath's planning arguments as contemporary coordination problems and weaker when Neurath's democratic epistemology would need to be foregrounded."
+                }
+              ]
+            },
+            {
+              "key": "key_divergences",
+              "title": "Key Divergences",
+              "items": [
+                {
+                  "title": "Planning becomes infrastructural coordination",
+                  "subtitle": "Calculation Without Prices",
+                  "description": "Benanav preserves the anti-price premise but redescribes it as infrastructural coordination.",
+                  "badge": "high"
+                },
+                {
+                  "title": "Democratic pedagogy is compressed",
+                  "subtitle": "Planning as Public Knowledge",
+                  "description": "Neurath's public-education emphasis appears only as a secondary implication.",
+                  "badge": "medium"
+                }
+              ]
+            },
+            {
+              "key": "sin_distribution",
+              "title": "Sin Distribution",
+              "items": [
+                {
+                  "sin_type": "Appropriation",
+                  "count": 2,
+                  "description": "Two findings show strong borrowing with updated language."
+                },
+                {
+                  "sin_type": "Misreading",
+                  "count": 1,
+                  "description": "One finding compresses Neurath's accounting doctrine into computational administration."
+                }
+              ]
+            },
+            {
+              "key": "reading_implications",
+              "title": "Reading Implications",
+              "items": [
+                {
+                  "content": "The dossier case reads Benanav as leaning heavily on one Neurathian planning strand while trimming the democratic and bureaucratic thickness that made the original view distinctive."
+                }
+              ]
+            }
+          ]
+        },
+        "items": null,
+        "children": []
+      }
+    ],
+    "view_count": 2
+  },
+  "generated_view_definitions": [
+    {
+      "view_key": "compose_intent_01_aoi_thematic_synthesis",
+      "view_name": "Thematic Synthesis Explorer",
+      "description": "Renders each identified AOI theme as a collapsible accordion section, exposing key claims, philosophical commitments, argumentative moves, and source documents per theme, with the overall synthesis surfaced at the top as an orientating lead-in.",
+      "version": 1,
+      "target_app": "the-critic",
+      "target_page": "compose_from_intent_transient",
+      "target_section": "results",
+      "renderer_type": "accordion",
+      "renderer_config": {
+        "sections": [
+          {
+            "key": "source_thinker_header",
+            "title": "Source Thinker & Documents"
+          },
+          {
+            "key": "theme_inventory",
+            "title": "Theme Inventory"
+          },
+          {
+            "key": "key_claims",
+            "title": "Key Claims"
+          },
+          {
+            "key": "philosophical_commitments",
+            "title": "Philosophical Commitments"
+          },
+          {
+            "key": "argumentative_moves",
+            "title": "Argumentative Moves"
+          },
+          {
+            "key": "representative_quotes",
+            "title": "Representative Quotes"
+          }
+        ],
+        "expand_first": true,
+        "section_renderers": {
+          "source_thinker_header": {
+            "renderer_type": "key_value_table",
+            "config": {
+              "data_path": "source_documents",
+              "rows": [
+                {
+                  "label": "Thinker",
+                  "field_path": "selected_source_thinker.thinker_name"
+                },
+                {
+                  "label": "Thinker ID",
+                  "field_path": "selected_source_thinker.thinker_id"
+                }
+              ],
+              "secondary_data_path": "source_documents",
+              "secondary_renderer": {
+                "renderer_type": "mini_card_list",
+                "config": {
+                  "title_field": "title",
+                  "description_field": "description",
+                  "subtitle_field": "subtitle",
+                  "id_field": "source_document_id"
+                }
+              },
+              "show_secondary_label": "Source Documents"
+            }
+          },
+          "theme_inventory": {
+            "renderer_type": "mini_card_list",
+            "config": {
+              "data_path": "themes",
+              "title_field": "theme_name",
+              "description_field": "overview",
+              "badge_field": "centrality",
+              "badge_style_map": {
+                "core": "accent",
+                "major": "neutral",
+                "minor": "muted"
+              },
+              "detail_fields": [
+                {
+                  "label": "Source Documents",
+                  "field": "source_documents",
+                  "render_as": "chip_list"
+                }
+              ],
+              "sort_by": "centrality",
+              "sort_order": [
+                "core",
+                "major",
+                "minor"
+              ]
+            }
+          },
+          "key_claims": {
+            "renderer_type": "mini_card_list",
+            "config": {
+              "data_path": "themes",
+              "title_field": "theme_name",
+              "description_field": "overview",
+              "badge_field": "centrality",
+              "expand_list_field": {
+                "label": "Claims",
+                "field": "key_claims",
+                "render_as": "ordered_prose_list"
+              }
+            }
+          },
+          "philosophical_commitments": {
+            "renderer_type": "mini_card_list",
+            "config": {
+              "data_path": "themes",
+              "title_field": "theme_name",
+              "badge_field": "centrality",
+              "expand_list_field": {
+                "label": "Commitments",
+                "field": "philosophical_commitments",
+                "render_as": "chip_grid"
+              }
+            }
+          },
+          "argumentative_moves": {
+            "renderer_type": "mini_card_list",
+            "config": {
+              "data_path": "themes",
+              "title_field": "theme_name",
+              "badge_field": "centrality",
+              "expand_list_field": {
+                "label": "Moves",
+                "field": "argumentative_moves",
+                "render_as": "ordered_prose_list"
+              }
+            }
+          },
+          "representative_quotes": {
+            "renderer_type": "mini_card_list",
+            "config": {
+              "data_path": "themes",
+              "title_field": "theme_name",
+              "badge_field": "centrality",
+              "nested_list_field": {
+                "field": "representative_quotes",
+                "item_title_field": "source_work_title",
+                "item_subtitle_field": "source_locator",
+                "item_body_field": "quote",
+                "render_as": "quote_block"
+              }
+            }
+          }
+        }
+      },
+      "data_source": {
+        "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+        "phase_number": 1.0,
+        "engine_key": "aoi_thematic_synthesis",
+        "chain_key": null,
+        "result_path": "",
+        "scope": "aggregated"
+      },
+      "secondary_sources": [],
+      "transformation": {
+        "type": "llm_extract",
+        "field_mapping": null,
+        "llm_extraction_schema": {
+          "type": "object",
+          "description": "Object whose keys become accordion section headings. Each value must be an object (rendered via sub-renderer), an array (rendered as a list), or a string (rendered as prose). Numbers and booleans are rejected because they produce empty sections.",
+          "minProperties": 1,
+          "additionalProperties": {
+            "oneOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "array"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "llm_prompt_template": "You are a precise data extraction assistant. Your task is to read analytical prose and extract structured JSON suitable for rendering in a specific UI component. Return ONLY valid JSON — no markdown code fences, no commentary.\n\n## About the Analysis\n\nThis prose was produced by the \"AOI Thematic Synthesis\" engine, which performs synthesis analysis.\nCore question: What are the major themes in the selected source thinker's corpus, and how should they be identified for downstream AOI analysis?\nAnalytical dimensions: theme_inventory, claim_structure\n\n## Target Rendering\n\nThe extracted data will be rendered in a \"Accordion with Expandable Sections\" (container) component.\nThis renderer expects data in one of these shapes: nested_sections, object_array, key_value_pairs.\nThe renderer maps data using these field references:\n  - sections: Ordered list of sections to display\n  - section_renderers: Per-section renderer hints keyed by section_key\nThis is a container renderer that organizes data into sections. Each section can use sub-renderers like: chip_grid, mini_card_list, key_value_table, prose_block, annotated_prose, stat_row.\n\n\nReturn a JSON object with a \"sections\" key containing an array of section objects. Each section should have:\n  - \"key\": a snake_case identifier\n  - \"title\": human-readable section title\n  - \"items\": array of objects with fields appropriate to the section content\n\nOrganize the analytical content into 3-8 thematic sections. Each section should group related findings.\n\n## Engine Output Structure (Reference)\n\nThe engine's canonical output includes these fields. Use this as a guide for what information is available in the prose — extract what matches the target renderer's shape:\n\n{\n  \"selected_source_thinker\": {\n    \"thinker_id\": \"john_oneill\",\n    \"thinker_name\": \"John O'Neill\"\n  },\n  \"source_documents\": [\n    {\n      \"source_document_id\": \"string - stable slug for the source work\",\n      \"title\": \"string\",\n      \"subtitle\": \"string - author and/or year\",\n      \"description\": \"string\"\n    }\n  ],\n  \"themes\": [\n    {\n      \"theme_name\": \"string\",\n      \"overview\": \"string\",\n      \"key_claims\": [\n        \"string\"\n      ],\n      \"philosophical_commitments\": [\n        \"string\"\n      ],\n      \"argumentative_moves\": [\n        \"string\"\n      ],\n      \"source_documents\": [\n        \"string or source-document object\"\n      ],\n      \"representative_quotes\": [\n        {\n          \"source_work_title\": \"string\",\n          \"source_locator\": \"string\",\n          \"quote\": \"string\"\n        }\n      ],\n      \"centrality\": \"core | major | minor\"\n    }\n  ]\n}\n\n## Key Fields\n\n- **theme_inventory**: Identify the major themes that recur across the selected source corpus.\n- **claim_structure**: Capture the key claims, commitments, and argumentative moves that define each theme.\n\n## Transient Compose Context\nPattern key: accordion_sections\nUse the final renderer configuration below when choosing field names and nesting.\nRenderer config:\n{\n  \"sections\": [\n    {\n      \"key\": \"source_thinker_header\",\n      \"title\": \"Source Thinker & Documents\"\n    },\n    {\n      \"key\": \"theme_inventory\",\n      \"title\": \"Theme Inventory\"\n    },\n    {\n      \"key\": \"key_claims\",\n      \"title\": \"Key Claims\"\n    },\n    {\n      \"key\": \"philosophical_commitments\",\n      \"title\": \"Philosophical Commitments\"\n    },\n    {\n      \"key\": \"argumentative_moves\",\n      \"title\": \"Argumentative Moves\"\n    },\n    {\n      \"key\": \"representative_quotes\",\n      \"title\": \"Representative Quotes\"\n    }\n  ],\n  \"expand_first\": true,\n  \"section_renderers\": {\n    \"source_thinker_header\": {\n      \"renderer_type\": \"key_value_table\",\n      \"config\": {\n        \"data_path\": \"source_documents\",\n        \"rows\": [\n          {\n            \"label\": \"Thinker\",\n            \"field_path\": \"selected_source_thinker.thinker_name\"\n          },\n          {\n            \"label\": \"Thinker ID\",\n            \"field_path\": \"selected_source_thinker.thinker_id\"\n          }\n        ],\n        \"secondary_data_path\": \"source_documents\",\n        \"secondary_renderer\": {\n          \"renderer_type\": \"mini_card_list\",\n          \"config\": {\n            \"title_field\": \"title\",\n            \"description_field\": \"description\",\n            \"subtitle_field\": \"subtitle\",\n            \"id_field\": \"source_document_id\"\n          }\n        },\n        \"show_secondary_label\": \"Source Documents\"\n      }\n    },\n    \"theme_inventory\": {\n      \"renderer_type\": \"mini_card_list\",\n      \"config\": {\n        \"data_path\": \"themes\",\n        \"title_field\": \"theme_name\",\n        \"description_field\": \"overview\",\n        \"badge_field\": \"centrality\",\n        \"badge_style_map\": {\n          \"core\": \"accent\",\n          \"major\": \"neutral\",\n          \"minor\": \"muted\"\n        },\n        \"detail_fields\": [\n          {\n            \"label\": \"Source Documents\",\n            \"field\": \"source_documents\",\n            \"render_as\": \"chip_list\"\n          }\n        ],\n        \"sort_by\": \"centrality\",\n        \"sort_order\": [\n          \"core\",\n          \"major\",\n          \"minor\"\n        ]\n      }\n    },\n    \"key_claims\": {\n      \"renderer_type\": \"mini_card_list\",\n      \"config\": {\n        \"data_path\": \"themes\",\n        \"title_field\": \"theme_name\",\n        \"description_field\": \"overview\",\n        \"badge_field\": \"centrality\",\n        \"expand_list_field\": {\n          \"label\": \"Claims\",\n          \"field\": \"key_claims\",\n          \"render_as\": \"ordered_prose_list\"\n        }\n      }\n    },\n    \"philosophical_commitments\": {\n      \"renderer_type\": \"mini_card_list\",\n      \"config\": {\n        \"data_path\": \"themes\",\n        \"title_field\": \"theme_name\",\n        \"badge_field\": \"centrality\",\n        \"expand_list_field\": {\n          \"label\": \"Commitments\",\n          \"field\": \"philosophical_commitments\",\n          \"render_as\": \"chip_grid\"\n        }\n      }\n    },\n    \"argumentative_moves\": {\n      \"renderer_type\": \"mini_card_list\",\n      \"config\": {\n        \"data_path\": \"themes\",\n        \"title_field\": \"theme_name\",\n        \"badge_field\": \"centrality\",\n        \"expand_list_field\": {\n          \"label\": \"Moves\",\n          \"field\": \"argumentative_moves\",\n          \"render_as\": \"ordered_prose_list\"\n        }\n      }\n    },\n    \"representative_quotes\": {\n      \"renderer_type\": \"mini_card_list\",\n      \"config\": {\n        \"data_path\": \"themes\",\n        \"title_field\": \"theme_name\",\n        \"badge_field\": \"centrality\",\n        \"nested_list_field\": {\n          \"field\": \"representative_quotes\",\n          \"item_title_field\": \"source_work_title\",\n          \"item_subtitle_field\": \"source_locator\",\n          \"item_body_field\": \"quote\",\n          \"render_as\": \"quote_block\"\n        }\n      }\n    }\n  }\n}\n\nThe following renderer input schema is prompt guidance for the target shape.\nInput data schema:\n{\n  \"type\": \"object\",\n  \"description\": \"Object whose keys become accordion section headings. Each value must be an object (rendered via sub-renderer), an array (rendered as a list), or a string (rendered as prose). Numbers and booleans are rejected because they produce empty sections.\",\n  \"minProperties\": 1,\n  \"additionalProperties\": {\n    \"oneOf\": [\n      {\n        \"type\": \"object\"\n      },\n      {\n        \"type\": \"array\"\n      },\n      {\n        \"type\": \"string\"\n      }\n    ]\n  }\n}",
+        "stance_key": "analytical"
+      },
+      "presentation_stance": "analytical",
+      "position": 1.0,
+      "parent_view_key": null,
+      "surface_archetype": null,
+      "scaffold_contract": null,
+      "surface_role": null,
+      "child_display_mode": null,
+      "tab_count_field": null,
+      "visibility": "if_data_exists",
+      "audience_overrides": {},
+      "planner_hint": "Recommend this view when the user is beginning an Anxiety of Influence analysis and needs a structured map of a source thinker's thematic corpus before proceeding to comparative or influence-tracing phases. Ideal as the first output in the workflow, establishing the evidential baseline for all subsequent critique.",
+      "planner_eligible": true,
+      "status": "draft",
+      "tags": [
+        "anxiety-of-influence",
+        "thematic-synthesis",
+        "source-thinker",
+        "theme-inventory",
+        "claim-structure",
+        "philosophical-commitments",
+        "argumentative-moves",
+        "accordion",
+        "multi-section",
+        "analytical",
+        "the-critic",
+        "aoi-phase-1"
+      ],
+      "source_project": "compose_from_intent_transient",
+      "generation_mode": "generated"
+    },
+    {
+      "view_key": "compose_intent_02_aoi_thematic_report",
+      "view_name": "AOI Structured Report",
+      "description": "Presents the full AOI report as a set of collapsible accordion sections — Summary, Engagement Pattern, Key Divergences, Sin Distribution, and Reading Implications — each rendered according to its own data shape, with badge-tagged divergence entries and sin-type tallies surfaced inline.",
+      "version": 1,
+      "target_app": "the-critic",
+      "target_page": "compose_from_intent_transient",
+      "target_section": "results",
+      "renderer_type": "accordion",
+      "renderer_config": {
+        "sections": [
+          {
+            "key": "summary",
+            "title": "Summary"
+          },
+          {
+            "key": "engagement_pattern",
+            "title": "Engagement Pattern"
+          },
+          {
+            "key": "key_divergences",
+            "title": "Key Divergences"
+          },
+          {
+            "key": "sin_distribution",
+            "title": "Sin Distribution"
+          },
+          {
+            "key": "reading_implications",
+            "title": "Reading Implications"
+          }
+        ],
+        "expand_first": true,
+        "section_renderers": {
+          "summary": {
+            "renderer_type": "prose_block",
+            "config": {
+              "field": "report_sections.summary"
+            }
+          },
+          "engagement_pattern": {
+            "renderer_type": "prose_block",
+            "config": {
+              "field": "report_sections.engagement_pattern"
+            }
+          },
+          "key_divergences": {
+            "renderer_type": "mini_card_list",
+            "config": {
+              "field": "report_sections.key_divergences",
+              "title_field": "title",
+              "subtitle_field": "subtitle",
+              "description_field": "description",
+              "badge_field": "badge",
+              "badge_values": [
+                "critical",
+                "high",
+                "medium",
+                "low"
+              ]
+            }
+          },
+          "sin_distribution": {
+            "renderer_type": "key_value_table",
+            "config": {
+              "field": "report_sections.sin_distribution",
+              "key_field": "sin_type",
+              "value_field": "count",
+              "annotation_field": "description"
+            }
+          },
+          "reading_implications": {
+            "renderer_type": "prose_block",
+            "config": {
+              "field": "report_sections.reading_implications"
+            }
+          }
+        }
+      },
+      "data_source": {
+        "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+        "phase_number": 1.0,
+        "engine_key": "aoi_thematic_report",
+        "chain_key": null,
+        "result_path": "",
+        "scope": "aggregated"
+      },
+      "secondary_sources": [],
+      "transformation": {
+        "type": "llm_extract",
+        "field_mapping": null,
+        "llm_extraction_schema": {
+          "type": "object",
+          "description": "Object whose keys become accordion section headings. Each value must be an object (rendered via sub-renderer), an array (rendered as a list), or a string (rendered as prose). Numbers and booleans are rejected because they produce empty sections.",
+          "minProperties": 1,
+          "additionalProperties": {
+            "oneOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "array"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "llm_prompt_template": "You are a precise data extraction assistant. Your task is to read analytical prose and extract structured JSON suitable for rendering in a specific UI component. Return ONLY valid JSON — no markdown code fences, no commentary.\n\n## About the Analysis\n\nThis prose was produced by the \"AOI Thematic Report\" engine, which performs synthesis analysis.\nCore question: What bounded AOI report best summarizes the thematic relationship between the subject corpus and the selected source thinker?\nAnalytical dimensions: summary\n\n## Target Rendering\n\nThe extracted data will be rendered in a \"Accordion with Expandable Sections\" (container) component.\nThis renderer expects data in one of these shapes: nested_sections, object_array, key_value_pairs.\nThe renderer maps data using these field references:\n  - sections: Ordered list of sections to display\n  - section_renderers: Per-section renderer hints keyed by section_key\nThis is a container renderer that organizes data into sections. Each section can use sub-renderers like: chip_grid, mini_card_list, key_value_table, prose_block, annotated_prose, stat_row.\n\n\nReturn a JSON object with a \"sections\" key containing an array of section objects. Each section should have:\n  - \"key\": a snake_case identifier\n  - \"title\": human-readable section title\n  - \"items\": array of objects with fields appropriate to the section content\n\nOrganize the analytical content into 3-8 thematic sections. Each section should group related findings.\n\n## Engine Output Structure (Reference)\n\nThe engine's canonical output includes these fields. Use this as a guide for what information is available in the prose — extract what matches the target renderer's shape:\n\n{\n  \"report_sections\": {\n    \"summary\": \"string\",\n    \"engagement_pattern\": \"string\",\n    \"key_divergences\": [\n      {\n        \"title\": \"string\",\n        \"subtitle\": \"string\",\n        \"description\": \"string\",\n        \"badge\": \"critical | high | medium | low\"\n      }\n    ],\n    \"sin_distribution\": [\n      {\n        \"sin_type\": \"string\",\n        \"count\": 0,\n        \"description\": \"string\"\n      }\n    ],\n    \"reading_implications\": \"string\"\n  }\n}\n\n## Key Fields\n\n- **summary**: Summarize the overall AOI result clearly enough to orient a reader.\n\n## Transient Compose Context\nPattern key: accordion_sections\nUse the final renderer configuration below when choosing field names and nesting.\nRenderer config:\n{\n  \"sections\": [\n    {\n      \"key\": \"summary\",\n      \"title\": \"Summary\"\n    },\n    {\n      \"key\": \"engagement_pattern\",\n      \"title\": \"Engagement Pattern\"\n    },\n    {\n      \"key\": \"key_divergences\",\n      \"title\": \"Key Divergences\"\n    },\n    {\n      \"key\": \"sin_distribution\",\n      \"title\": \"Sin Distribution\"\n    },\n    {\n      \"key\": \"reading_implications\",\n      \"title\": \"Reading Implications\"\n    }\n  ],\n  \"expand_first\": true,\n  \"section_renderers\": {\n    \"summary\": {\n      \"renderer_type\": \"prose_block\",\n      \"config\": {\n        \"field\": \"report_sections.summary\"\n      }\n    },\n    \"engagement_pattern\": {\n      \"renderer_type\": \"prose_block\",\n      \"config\": {\n        \"field\": \"report_sections.engagement_pattern\"\n      }\n    },\n    \"key_divergences\": {\n      \"renderer_type\": \"mini_card_list\",\n      \"config\": {\n        \"field\": \"report_sections.key_divergences\",\n        \"title_field\": \"title\",\n        \"subtitle_field\": \"subtitle\",\n        \"description_field\": \"description\",\n        \"badge_field\": \"badge\",\n        \"badge_values\": [\n          \"critical\",\n          \"high\",\n          \"medium\",\n          \"low\"\n        ]\n      }\n    },\n    \"sin_distribution\": {\n      \"renderer_type\": \"key_value_table\",\n      \"config\": {\n        \"field\": \"report_sections.sin_distribution\",\n        \"key_field\": \"sin_type\",\n        \"value_field\": \"count\",\n        \"annotation_field\": \"description\"\n      }\n    },\n    \"reading_implications\": {\n      \"renderer_type\": \"prose_block\",\n      \"config\": {\n        \"field\": \"report_sections.reading_implications\"\n      }\n    }\n  }\n}\n\nThe following renderer input schema is prompt guidance for the target shape.\nInput data schema:\n{\n  \"type\": \"object\",\n  \"description\": \"Object whose keys become accordion section headings. Each value must be an object (rendered via sub-renderer), an array (rendered as a list), or a string (rendered as prose). Numbers and booleans are rejected because they produce empty sections.\",\n  \"minProperties\": 1,\n  \"additionalProperties\": {\n    \"oneOf\": [\n      {\n        \"type\": \"object\"\n      },\n      {\n        \"type\": \"array\"\n      },\n      {\n        \"type\": \"string\"\n      }\n    ]\n  }\n}",
+        "stance_key": "evaluative"
+      },
+      "presentation_stance": "evaluative",
+      "position": 2.0,
+      "parent_view_key": null,
+      "surface_archetype": null,
+      "scaffold_contract": null,
+      "surface_role": null,
+      "child_display_mode": null,
+      "tab_count_field": null,
+      "visibility": "if_data_exists",
+      "audience_overrides": {},
+      "planner_hint": "Recommend this view when a completed AOI workflow is available and the user needs a synthesized, interpretive portrait of how a subject author engages with a source thinker — particularly when divergences, revisionary ratios, and overall reading implications should be surfaced together in a single inspectable report.",
+      "planner_eligible": true,
+      "status": "draft",
+      "tags": [
+        "accordion",
+        "multi-section",
+        "aoi",
+        "thematic-report",
+        "evaluative",
+        "divergences",
+        "sin-distribution",
+        "prose",
+        "anxiety-of-influence",
+        "the-critic"
+      ],
+      "source_project": "compose_from_intent_transient",
+      "generation_mode": "generated"
+    }
+  ],
+  "trace": {
+    "resolver_version": "compose-from-intent-v1",
+    "entries": [
+      {
+        "stage": "page_plan",
+        "details": {
+          "row_count": 2,
+          "rows": [
+            {
+              "section_index": 0,
+              "pattern_key": "accordion_sections",
+              "view_name": "Thematic Synthesis Explorer",
+              "presentation_stance": "analytical",
+              "rationale": "The thematic synthesis data is multi-faceted per theme — each theme carries a distinct set of sub-fields (claims, commitments, moves, sources) that differ in shape from one another. Accordion sections handle this heterogeneity cleanly, letting the critic scan themes at a glance and drill into any facet without visual overwhelm. prose_narrative would flatten the structured sub-fields; card_grid_grouped would lose the per-facet typed rendering that accordion uniquely provides."
+            },
+            {
+              "section_index": 1,
+              "pattern_key": "accordion_sections",
+              "view_name": "AOI Structured Report",
+              "presentation_stance": "evaluative",
+              "rationale": "The report data is explicitly multi-typed: narrative prose fields (summary, engagement_pattern, reading_implications) sit alongside a badged array (key_divergences) and a counted typology (sin_distribution). Accordion sections is the canonical pattern for exactly this mix of facets with different shapes. Closing the page with this structured report fulfills the user intent to end on a formal analytical artifact, and the accordion's collapsibility lets the critic navigate directly to whichever report facet is most salient without scrolling through the full narrative."
+            }
+          ]
+        }
+      },
+      {
+        "stage": "view_generation",
+        "details": {
+          "views": [
+            {
+              "view_key": "compose_intent_01_aoi_thematic_synthesis",
+              "pattern_key": "accordion_sections",
+              "renderer_type": "accordion",
+              "engine_key": "aoi_thematic_synthesis"
+            },
+            {
+              "view_key": "compose_intent_02_aoi_thematic_report",
+              "pattern_key": "accordion_sections",
+              "renderer_type": "accordion",
+              "engine_key": "aoi_thematic_report"
+            }
+          ]
+        }
+      },
+      {
+        "stage": "transformation_execution",
+        "details": {
+          "views": [
+            {
+              "view_key": "compose_intent_01_aoi_thematic_synthesis",
+              "engine_key": "aoi_thematic_synthesis",
+              "renderer_type": "accordion",
+              "extraction_source": "dynamic",
+              "template_key": null,
+              "cached": false
+            },
+            {
+              "view_key": "compose_intent_02_aoi_thematic_report",
+              "engine_key": "aoi_thematic_report",
+              "renderer_type": "accordion",
+              "extraction_source": "dynamic",
+              "template_key": null,
+              "cached": false
+            }
+          ]
+        }
+      },
+      {
+        "stage": "consumer_adaptation",
+        "details": {
+          "views": [
+            {
+              "view_key": "compose_intent_01_aoi_thematic_synthesis",
+              "renderer_type": "accordion",
+              "adapted": false
+            },
+            {
+              "view_key": "compose_intent_02_aoi_thematic_report",
+              "renderer_type": "accordion",
+              "adapted": false
+            }
+          ]
+        }
+      },
+      {
+        "stage": "contract_validation",
+        "details": {
+          "view_count": 2,
+          "issues": 0
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,265 @@
+{
+  "evaluation_report_id": "evaluation-report-c24a8b707b49",
+  "created_at": "2026-03-30T03:43:53.924031+00:00",
+  "evaluation_pack_key": "phase4_routing_planning_governance_v1",
+  "case_key": "aoi_saved_result_handoff_current_contract",
+  "subject_kind": "planning_decision",
+  "subject_identity": "planning-decision-1b0dbef41b28",
+  "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+  "consumer_key": "the-critic",
+  "supporting_subjects": {
+    "source_v2_job_id": "job-744edf255ad5"
+  },
+  "input_evidence_refs": [
+    {
+      "ref_key": "aoi_route_current_contract",
+      "source_kind": "frozen_artifact",
+      "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase_d_aoi_route_decision_current_contract_2026-03-30.json",
+      "expected_sha256": "548858520b821238a2970774f0e7766f52e41c66bad38805a19d201d419393a2",
+      "observed_sha256": "548858520b821238a2970774f0e7766f52e41c66bad38805a19d201d419393a2",
+      "note": null
+    },
+    {
+      "ref_key": "aoi_planning_current_contract",
+      "source_kind": "frozen_artifact",
+      "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase_d_aoi_planning_decision_current_contract_2026-03-30.json",
+      "expected_sha256": "4606bbb3756d54dd43f84d4541f07536a7c800cb1857f25788c3c1100ed4f6d9",
+      "observed_sha256": "4606bbb3756d54dd43f84d4541f07536a7c800cb1857f25788c3c1100ed4f6d9",
+      "note": null
+    },
+    {
+      "ref_key": "aoi_planning_snapshot_current_contract",
+      "source_kind": "frozen_artifact",
+      "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase_d_aoi_planning_snapshot_current_contract_2026-03-30.json",
+      "expected_sha256": "116e12d743fb3ceba9fac7ff51bb34aab8a34af8757badb5d1107cf94f0bf95e",
+      "observed_sha256": "116e12d743fb3ceba9fac7ff51bb34aab8a34af8757badb5d1107cf94f0bf95e",
+      "note": null
+    }
+  ],
+  "checks": [
+    {
+      "check_key": "route_fidelity",
+      "label": "Routing decision matches the declared objective/workflow/contract law",
+      "status": "pass",
+      "required": true,
+      "summary": "selected_objective_key=influence_thematic selected_workflow_key=anxiety_of_influence_thematic_single_thinker routing_outcome=aoi_transient_source_backed launch_contract_kind=planner.aoi_compose_handoff",
+      "evidence_mode": "frozen_artifact",
+      "evidence_observed_at": "2026-03-30T03:43:53.924779+00:00",
+      "live_revalidation_performed": false,
+      "evidence_refs": [
+        {
+          "ref_key": "aoi_route_current_contract",
+          "source_kind": "frozen_artifact",
+          "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase_d_aoi_route_decision_current_contract_2026-03-30.json",
+          "expected_sha256": "548858520b821238a2970774f0e7766f52e41c66bad38805a19d201d419393a2",
+          "observed_sha256": "548858520b821238a2970774f0e7766f52e41c66bad38805a19d201d419393a2",
+          "note": null
+        }
+      ],
+      "observed_values": {
+        "selected_objective_key": "influence_thematic",
+        "selected_workflow_key": "anxiety_of_influence_thematic_single_thinker",
+        "routing_outcome": "aoi_transient_source_backed",
+        "launch_contract_kind": "planner.aoi_compose_handoff"
+      }
+    },
+    {
+      "check_key": "source_contract_fidelity",
+      "label": "Source-contract fields stay coherent for the declared route/planning mode",
+      "status": "pass",
+      "required": true,
+      "summary": "source_sufficiency_status=sufficient required_fields=['workflow_key', 'consumer_key', 'source_v2_job_id'] snapshot_source_v2_job_id=job-744edf255ad5",
+      "evidence_mode": "frozen_artifact",
+      "evidence_observed_at": "2026-03-30T03:43:53.924779+00:00",
+      "live_revalidation_performed": false,
+      "evidence_refs": [
+        {
+          "ref_key": "aoi_route_current_contract",
+          "source_kind": "frozen_artifact",
+          "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase_d_aoi_route_decision_current_contract_2026-03-30.json",
+          "expected_sha256": "548858520b821238a2970774f0e7766f52e41c66bad38805a19d201d419393a2",
+          "observed_sha256": "548858520b821238a2970774f0e7766f52e41c66bad38805a19d201d419393a2",
+          "note": null
+        },
+        {
+          "ref_key": "aoi_planning_current_contract",
+          "source_kind": "frozen_artifact",
+          "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase_d_aoi_planning_decision_current_contract_2026-03-30.json",
+          "expected_sha256": "4606bbb3756d54dd43f84d4541f07536a7c800cb1857f25788c3c1100ed4f6d9",
+          "observed_sha256": "4606bbb3756d54dd43f84d4541f07536a7c800cb1857f25788c3c1100ed4f6d9",
+          "note": null
+        },
+        {
+          "ref_key": "aoi_planning_snapshot_current_contract",
+          "source_kind": "frozen_artifact",
+          "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase_d_aoi_planning_snapshot_current_contract_2026-03-30.json",
+          "expected_sha256": "116e12d743fb3ceba9fac7ff51bb34aab8a34af8757badb5d1107cf94f0bf95e",
+          "observed_sha256": "116e12d743fb3ceba9fac7ff51bb34aab8a34af8757badb5d1107cf94f0bf95e",
+          "note": null
+        }
+      ],
+      "observed_values": {
+        "source_sufficiency_status": "sufficient",
+        "required_fields": [
+          "workflow_key",
+          "consumer_key",
+          "source_v2_job_id"
+        ],
+        "snapshot_workflow_key": "anxiety_of_influence_thematic_single_thinker",
+        "snapshot_consumer_key": "the-critic",
+        "snapshot_source_v2_job_id": "job-744edf255ad5",
+        "snapshot_selected_source_thinker_id": "otto_neurath",
+        "snapshot_selected_source_thinker_name": "Otto Neurath"
+      }
+    },
+    {
+      "check_key": "planning_followup_fidelity",
+      "label": "Planning outcome and downstream followup contract match the declared case",
+      "status": "pass",
+      "required": true,
+      "summary": "planning_outcome_kind=aoi_composition_handoff_plan downstream_readiness=ready_for_aoi_compose_handoff followup_endpoint=/v1/presenter/compose-from-selection",
+      "evidence_mode": "frozen_artifact",
+      "evidence_observed_at": "2026-03-30T03:43:53.924779+00:00",
+      "live_revalidation_performed": false,
+      "evidence_refs": [
+        {
+          "ref_key": "aoi_planning_current_contract",
+          "source_kind": "frozen_artifact",
+          "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase_d_aoi_planning_decision_current_contract_2026-03-30.json",
+          "expected_sha256": "4606bbb3756d54dd43f84d4541f07536a7c800cb1857f25788c3c1100ed4f6d9",
+          "observed_sha256": "4606bbb3756d54dd43f84d4541f07536a7c800cb1857f25788c3c1100ed4f6d9",
+          "note": null
+        }
+      ],
+      "observed_values": {
+        "planning_outcome_kind": "aoi_composition_handoff_plan",
+        "downstream_readiness": "ready_for_aoi_compose_handoff",
+        "downstream_followup_contract": {
+          "method": "POST",
+          "endpoint": "/v1/presenter/compose-from-selection",
+          "selection_kind": "explicit",
+          "legacy_profile_equivalent": null,
+          "request_fields": {
+            "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+            "consumer_key": "the-critic",
+            "source_v2_job_id": "job-744edf255ad5",
+            "selection": [
+              {
+                "source_family_key": "thematic_synthesis",
+                "selection_rank": 1,
+                "rationale": "Primary synthesis artifact for a single-thinker AOI workflow. Contains overall_synthesis, themes, and selected_source_thinker — the core narrative material needed to write an AOI synthesis composition. Carries composition_role_hint of synthesis_primary, directly matching the task."
+              },
+              {
+                "source_family_key": "sin_findings",
+                "selection_rank": 2,
+                "rationale": "Provides the concrete findings bank (findings_by_sin_type, findings_by_theme) that gives the synthesis its evidential backbone. Essential for grounding the AOI composition in specific acts of misreading, swerving, or distortion rather than abstract thematic claims."
+              },
+              {
+                "source_family_key": "engagement_mapping",
+                "selection_rank": 3,
+                "rationale": "Supplies the engagement topology (themes_engaged, themes_ignored, themes_distorted, themes_partial, engagement_pattern) which enriches the handoff with structural contrast — showing how the ephebe thinker navigated the precursor's thematic field. Useful for a bounded single-handoff composition."
+              },
+              {
+                "source_family_key": "thematic_report",
+                "selection_rank": 4,
+                "rationale": "Serves as a closeout reference providing pre-distilled summary, key_divergences, reading_implications, and sin_distribution. Useful for framing the composition's arc and ensuring the synthesis does not omit significant divergence signals already computed by the report engine."
+              }
+            ],
+            "user_intent": "Write an Anxiety of Influence synthesis tracing how the selected thinker engages, distorts, and swerves from the precursor's key themes, grounded in the sin findings and engagement map."
+          }
+        }
+      }
+    },
+    {
+      "check_key": "decision_trace_integrity",
+      "label": "Trace stages and persisted snapshot agree across the decision surfaces",
+      "status": "pass",
+      "required": true,
+      "summary": "route_trace_stages=['task_normalization', 'objective_candidate_scoring', 'source_sufficiency_evaluation', 'routing_decision'] planning_trace_stages=['effective_task_request', 'routing_reuse', 'source_catalog_resolution', 'source_selection', 'planning_decision'] planning_decision_id=planning-decision-1b0dbef41b28",
+      "evidence_mode": "frozen_artifact",
+      "evidence_observed_at": "2026-03-30T03:43:53.924779+00:00",
+      "live_revalidation_performed": false,
+      "evidence_refs": [
+        {
+          "ref_key": "aoi_route_current_contract",
+          "source_kind": "frozen_artifact",
+          "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase_d_aoi_route_decision_current_contract_2026-03-30.json",
+          "expected_sha256": "548858520b821238a2970774f0e7766f52e41c66bad38805a19d201d419393a2",
+          "observed_sha256": "548858520b821238a2970774f0e7766f52e41c66bad38805a19d201d419393a2",
+          "note": null
+        },
+        {
+          "ref_key": "aoi_planning_current_contract",
+          "source_kind": "frozen_artifact",
+          "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase_d_aoi_planning_decision_current_contract_2026-03-30.json",
+          "expected_sha256": "4606bbb3756d54dd43f84d4541f07536a7c800cb1857f25788c3c1100ed4f6d9",
+          "observed_sha256": "4606bbb3756d54dd43f84d4541f07536a7c800cb1857f25788c3c1100ed4f6d9",
+          "note": null
+        },
+        {
+          "ref_key": "aoi_planning_snapshot_current_contract",
+          "source_kind": "frozen_artifact",
+          "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase_d_aoi_planning_snapshot_current_contract_2026-03-30.json",
+          "expected_sha256": "116e12d743fb3ceba9fac7ff51bb34aab8a34af8757badb5d1107cf94f0bf95e",
+          "observed_sha256": "116e12d743fb3ceba9fac7ff51bb34aab8a34af8757badb5d1107cf94f0bf95e",
+          "note": null
+        }
+      ],
+      "observed_values": {
+        "route_trace_stages": [
+          "task_normalization",
+          "objective_candidate_scoring",
+          "source_sufficiency_evaluation",
+          "routing_decision"
+        ],
+        "planning_trace_stages": [
+          "effective_task_request",
+          "routing_reuse",
+          "source_catalog_resolution",
+          "source_selection",
+          "planning_decision"
+        ],
+        "snapshot_planning_decision_id": "planning-decision-1b0dbef41b28",
+        "snapshot_workflow_key": "anxiety_of_influence_thematic_single_thinker",
+        "snapshot_consumer_key": "the-critic",
+        "snapshot_source_v2_job_id": "job-744edf255ad5",
+        "embedded_snapshot_planning_decision_id": null
+      }
+    }
+  ],
+  "dimension_summaries": [
+    {
+      "dimension_key": "route_fidelity",
+      "status": "pass",
+      "summary": "selected_objective_key=influence_thematic selected_workflow_key=anxiety_of_influence_thematic_single_thinker routing_outcome=aoi_transient_source_backed launch_contract_kind=planner.aoi_compose_handoff",
+      "supporting_checks": [
+        "route_fidelity"
+      ]
+    },
+    {
+      "dimension_key": "source_contract_fidelity",
+      "status": "pass",
+      "summary": "source_sufficiency_status=sufficient required_fields=['workflow_key', 'consumer_key', 'source_v2_job_id'] snapshot_source_v2_job_id=job-744edf255ad5",
+      "supporting_checks": [
+        "source_contract_fidelity"
+      ]
+    },
+    {
+      "dimension_key": "planning_followup_fidelity",
+      "status": "pass",
+      "summary": "planning_outcome_kind=aoi_composition_handoff_plan downstream_readiness=ready_for_aoi_compose_handoff followup_endpoint=/v1/presenter/compose-from-selection",
+      "supporting_checks": [
+        "planning_followup_fidelity"
+      ]
+    },
+    {
+      "dimension_key": "decision_trace_integrity",
+      "status": "pass",
+      "summary": "route_trace_stages=['task_normalization', 'objective_candidate_scoring', 'source_sufficiency_evaluation', 'routing_decision'] planning_trace_stages=['effective_task_request', 'routing_reuse', 'source_catalog_resolution', 'source_selection', 'planning_decision'] planning_decision_id=planning-decision-1b0dbef41b28",
+      "supporting_checks": [
+        "decision_trace_integrity"
+      ]
+    }
+  ],
+  "overall_verdict": "pass"
+}

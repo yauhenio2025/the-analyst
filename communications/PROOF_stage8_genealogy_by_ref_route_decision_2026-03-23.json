@@ -1,0 +1,118 @@
+{
+  "downstream_launch_contract": {
+    "endpoint": "/v1/orchestrator/analyze-by-ref",
+    "method": "POST",
+    "request_fields": {
+      "consumer_key": "the-critic",
+      "external_project_id": "proj-1",
+      "prior_works": "<required>",
+      "target_external_doc_key": "target-doc",
+      "target_work": "<required>",
+      "thinker_name": "<required>",
+      "workflow_key": "intellectual_genealogy"
+    }
+  },
+  "launch_contract_kind": "orchestrator.analyze_by_ref",
+  "normalized_task_summary": "Trace the genealogy, lineage, and conditions of possibility behind this work.",
+  "rejected_candidates": [
+    {
+      "details": [
+        "source_mode 'registered_corpus' is incompatible",
+        "AOI routing is only compatible with saved_result source mode."
+      ],
+      "objective_key": "influence_thematic",
+      "rejection_reason": "lower_signal_score_than_selected_candidate"
+    }
+  ],
+  "required_fields": [
+    "consumer_key",
+    "external_project_id",
+    "thinker_name",
+    "target_work",
+    "target_external_doc_key",
+    "prior_works"
+  ],
+  "required_host_preparation": [
+    "Assemble the registered-corpus analyze-by-ref payload.",
+    "Provide genealogy chapter refs via target_chapter_external_doc_keys if chapter-targeting is needed."
+  ],
+  "routing_confidence": "high",
+  "routing_outcome": "genealogy_job_backed",
+  "selected_objective_key": "genealogical",
+  "selected_workflow_key": "intellectual_genealogy",
+  "source_sufficiency_status": "sufficient",
+  "trace": [
+    {
+      "details": {
+        "audience": null,
+        "desired_depth": null,
+        "normalized_task_summary": "Trace the genealogy, lineage, and conditions of possibility behind this work.",
+        "style_expectations": null
+      },
+      "stage": "task_normalization"
+    },
+    {
+      "details": {
+        "candidates": [
+          {
+            "objective_key": "influence_thematic",
+            "positive_signals": [],
+            "signal_score": 0,
+            "source_mode": "registered_corpus",
+            "source_mode_compatible": false,
+            "workflow_key": "anxiety_of_influence_thematic_single_thinker"
+          },
+          {
+            "objective_key": "genealogical",
+            "positive_signals": [
+              "genealogy",
+              "lineage",
+              "conditions of possibility"
+            ],
+            "signal_score": 3,
+            "source_mode": "registered_corpus",
+            "source_mode_compatible": true,
+            "workflow_key": "intellectual_genealogy"
+          }
+        ],
+        "objective_hint": null,
+        "objective_hint_status": "not_provided",
+        "workflow_hint": null,
+        "workflow_hint_status": "not_provided"
+      },
+      "stage": "objective_candidate_scoring"
+    },
+    {
+      "details": {
+        "selected_objective_key": "genealogical",
+        "selected_workflow_key": "intellectual_genealogy",
+        "source_mode": "registered_corpus",
+        "source_sufficiency_status": "sufficient",
+        "sufficiency_reasons": []
+      },
+      "stage": "source_sufficiency_evaluation"
+    },
+    {
+      "details": {
+        "launch_contract_kind": "orchestrator.analyze_by_ref",
+        "required_fields": [
+          "consumer_key",
+          "external_project_id",
+          "thinker_name",
+          "target_work",
+          "target_external_doc_key",
+          "prior_works"
+        ],
+        "required_host_preparation": [
+          "Assemble the registered-corpus analyze-by-ref payload.",
+          "Provide genealogy chapter refs via target_chapter_external_doc_keys if chapter-targeting is needed."
+        ],
+        "routing_confidence": "high",
+        "routing_outcome": "genealogy_job_backed",
+        "selected_objective_key": "genealogical",
+        "selected_workflow_key": "intellectual_genealogy"
+      },
+      "stage": "routing_decision"
+    }
+  ]
+}

@@ -1,0 +1,328 @@
+{
+  "evaluation_report_id": "evaluation-report-e29a6a606cad",
+  "created_at": "2026-03-29T23:29:57.386563+00:00",
+  "evaluation_pack_key": "phase4_genealogy_lifecycle_governance_v1",
+  "case_key": "genealogy_lifecycle_march28_session_reopen",
+  "subject_kind": "compose_session",
+  "subject_identity": "compose-session-0877864dcca7",
+  "workflow_key": "intellectual_genealogy",
+  "consumer_key": "the-critic",
+  "supporting_subjects": {
+    "project_id": "round4-proof-balance-final-1774012011",
+    "source_v2_job_id": "proof-round4-adaptive-balance-final-1774012011",
+    "planning_decision_id": "planning-decision-2524994934e0"
+  },
+  "input_evidence_refs": [
+    {
+      "ref_key": "phase3_preflight",
+      "source_kind": "frozen_artifact",
+      "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase3_bounded_lifecycle_v1_preflight_2026-03-28.json",
+      "expected_sha256": "6cc3361f1566794cc4c451f881c3671d718d1630798a720aaa3e264897652c67",
+      "observed_sha256": "6cc3361f1566794cc4c451f881c3671d718d1630798a720aaa3e264897652c67",
+      "note": null
+    },
+    {
+      "ref_key": "phase3_saved_session",
+      "source_kind": "frozen_artifact",
+      "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase3_bounded_lifecycle_v1_saved_session_2026-03-28.json",
+      "expected_sha256": "92a3daeb4319cc44aeb3ea81ed51f652e41cd8ae434e567e07a5ef6abc3a97e0",
+      "observed_sha256": "92a3daeb4319cc44aeb3ea81ed51f652e41cd8ae434e567e07a5ef6abc3a97e0",
+      "note": null
+    },
+    {
+      "ref_key": "phase3_reopen_segment",
+      "source_kind": "frozen_artifact",
+      "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase3_bounded_lifecycle_v1_reopen_segment_2026-03-28.json",
+      "expected_sha256": "9ca0bef56abbe3b8f1f7a382a5787aa12670115bfe858eeb2fc196102fe074d1",
+      "observed_sha256": "9ca0bef56abbe3b8f1f7a382a5787aa12670115bfe858eeb2fc196102fe074d1",
+      "note": null
+    },
+    {
+      "ref_key": "phase3_invalid_session",
+      "source_kind": "frozen_artifact",
+      "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase3_bounded_lifecycle_v1_invalid_session_2026-03-28.json",
+      "expected_sha256": "1be918042e277124bdb2424d224add7791e6f828bd293cdf3093c0235a434dbf",
+      "observed_sha256": "1be918042e277124bdb2424d224add7791e6f828bd293cdf3093c0235a434dbf",
+      "note": null
+    }
+  ],
+  "checks": [
+    {
+      "check_key": "compose_session_exists",
+      "label": "Compose session exists and matches workflow/consumer truth",
+      "status": "pass",
+      "required": true,
+      "summary": "workflow_key=intellectual_genealogy consumer_key=the-critic",
+      "evidence_mode": "stored_object",
+      "evidence_observed_at": "2026-03-29T23:29:57.387002+00:00",
+      "live_revalidation_performed": true,
+      "evidence_refs": [
+        {
+          "ref_key": "compose_session_store",
+          "source_kind": "stored_object",
+          "locator": "compose_session_store.load_compose_session(compose-session-0877864dcca7)",
+          "expected_sha256": null,
+          "observed_sha256": null,
+          "note": null
+        }
+      ],
+      "observed_values": {
+        "session_id": "compose-session-0877864dcca7",
+        "workflow_key": "intellectual_genealogy",
+        "consumer_key": "the-critic",
+        "planning_decision_id": "planning-decision-2524994934e0",
+        "source_v2_job_id": "proof-round4-adaptive-balance-final-1774012011"
+      }
+    },
+    {
+      "check_key": "planning_decision_exists",
+      "label": "Referenced planning decision exists as provenance",
+      "status": "pass",
+      "required": true,
+      "summary": "planning_decision_id=planning-decision-2524994934e0",
+      "evidence_mode": "stored_object",
+      "evidence_observed_at": "2026-03-29T23:29:57.387002+00:00",
+      "live_revalidation_performed": true,
+      "evidence_refs": [
+        {
+          "ref_key": "planning_decision_store",
+          "source_kind": "stored_object",
+          "locator": "planning_decision_store.load_task_planning_decision(planning-decision-2524994934e0)",
+          "expected_sha256": null,
+          "observed_sha256": null,
+          "note": null
+        }
+      ],
+      "observed_values": {
+        "planning_decision_id": "planning-decision-2524994934e0",
+        "workflow_key": "intellectual_genealogy",
+        "source_v2_job_id": "proof-round4-adaptive-balance-final-1774012011"
+      }
+    },
+    {
+      "check_key": "source_manifest_ready",
+      "label": "Supporting source result remains ready and restorable",
+      "status": "pass",
+      "required": true,
+      "summary": "result_state=ready presentation_status=completed restore_available=True",
+      "evidence_mode": "inspection_route",
+      "evidence_observed_at": "2026-03-29T23:29:57.387002+00:00",
+      "live_revalidation_performed": true,
+      "evidence_refs": [
+        {
+          "ref_key": "result_manifest",
+          "source_kind": "inspection_route",
+          "locator": "build_result_manifest(proof-round4-adaptive-balance-final-1774012011, consumer_key=the-critic)",
+          "expected_sha256": null,
+          "observed_sha256": null,
+          "note": null
+        }
+      ],
+      "observed_values": {
+        "source_v2_job_id": "proof-round4-adaptive-balance-final-1774012011",
+        "result_state": "ready",
+        "presentation_status": "completed",
+        "restore_available": true
+      }
+    },
+    {
+      "check_key": "source_readiness_bounded_dynamic_genealogy",
+      "label": "Source-backed readiness still exposes bounded dynamic genealogy",
+      "status": "pass",
+      "required": true,
+      "summary": "readiness_status=partially_ready selectors=['bounded_dynamic_genealogy_v1']",
+      "evidence_mode": "inspection_route",
+      "evidence_observed_at": "2026-03-29T23:29:57.387002+00:00",
+      "live_revalidation_performed": true,
+      "evidence_refs": [
+        {
+          "ref_key": "source_backed_readiness",
+          "source_kind": "inspection_route",
+          "locator": "build_source_backed_readiness(proof-round4-adaptive-balance-final-1774012011, consumer_key=the-critic)",
+          "expected_sha256": null,
+          "observed_sha256": null,
+          "note": null
+        }
+      ],
+      "observed_values": {
+        "source_v2_job_id": "proof-round4-adaptive-balance-final-1774012011",
+        "readiness_status": "partially_ready",
+        "allowed_selectors": [
+          "bounded_dynamic_genealogy_v1"
+        ]
+      }
+    },
+    {
+      "check_key": "preflight_artifact_valid",
+      "label": "Frozen preflight artifact records the expected ready genealogy source job",
+      "status": "pass",
+      "required": true,
+      "summary": "The frozen preflight artifact records a completed, ready, restorable genealogy source result.",
+      "evidence_mode": "frozen_artifact",
+      "evidence_observed_at": "2026-03-29T23:29:57.387002+00:00",
+      "live_revalidation_performed": false,
+      "evidence_refs": [
+        {
+          "ref_key": "phase3_preflight",
+          "source_kind": "frozen_artifact",
+          "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase3_bounded_lifecycle_v1_preflight_2026-03-28.json",
+          "expected_sha256": "6cc3361f1566794cc4c451f881c3671d718d1630798a720aaa3e264897652c67",
+          "observed_sha256": "6cc3361f1566794cc4c451f881c3671d718d1630798a720aaa3e264897652c67",
+          "note": null
+        }
+      ],
+      "observed_values": {
+        "source_v2_job_id": "proof-round4-adaptive-balance-final-1774012011",
+        "workflow_key": "intellectual_genealogy",
+        "result_state": "ready",
+        "presentation_status": "completed",
+        "restore_available": true
+      }
+    },
+    {
+      "check_key": "stored_session_fidelity_fields_present",
+      "label": "Stored compose session carries the expected lifecycle identity and fidelity fields",
+      "status": "pass",
+      "required": true,
+      "summary": "The stored compose session carries the expected lifecycle identity and non-empty fidelity hashes.",
+      "evidence_mode": "stored_object",
+      "evidence_observed_at": "2026-03-29T23:29:57.387002+00:00",
+      "live_revalidation_performed": true,
+      "evidence_refs": [
+        {
+          "ref_key": "compose_session_store",
+          "source_kind": "stored_object",
+          "locator": "compose_session_store.load_compose_session(compose-session-0877864dcca7)",
+          "expected_sha256": null,
+          "observed_sha256": null,
+          "note": null
+        }
+      ],
+      "observed_values": {
+        "stored_session_id": "compose-session-0877864dcca7",
+        "stored_workflow_key": "intellectual_genealogy",
+        "stored_consumer_key": "the-critic",
+        "stored_presentation_hash": "7269c27d5591825b19da9d0e82300d20863ee2230fbf91c7f29d54436c050340",
+        "stored_presentation_content_hash": "340f49ca60b60855bc786eae96aec9448a636906b86a3b1d65c1851e499a62a2",
+        "stored_resolver_version": "compose-from-intent-v2"
+      }
+    },
+    {
+      "check_key": "frozen_saved_session_artifact_valid",
+      "label": "Frozen saved-session artifact records the expected lifecycle identity and fidelity fields",
+      "status": "pass",
+      "required": true,
+      "summary": "The frozen saved-session artifact records the expected session identity, provenance, and fidelity hashes.",
+      "evidence_mode": "frozen_artifact",
+      "evidence_observed_at": "2026-03-29T23:29:57.387002+00:00",
+      "live_revalidation_performed": false,
+      "evidence_refs": [
+        {
+          "ref_key": "phase3_saved_session",
+          "source_kind": "frozen_artifact",
+          "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase3_bounded_lifecycle_v1_saved_session_2026-03-28.json",
+          "expected_sha256": "92a3daeb4319cc44aeb3ea81ed51f652e41cd8ae434e567e07a5ef6abc3a97e0",
+          "observed_sha256": "92a3daeb4319cc44aeb3ea81ed51f652e41cd8ae434e567e07a5ef6abc3a97e0",
+          "note": null
+        }
+      ],
+      "observed_values": {
+        "artifact_session_id": "compose-session-0877864dcca7",
+        "artifact_workflow_key": "intellectual_genealogy",
+        "artifact_consumer_key": "the-critic",
+        "artifact_planning_decision_id": "planning-decision-2524994934e0",
+        "artifact_source_v2_job_id": "proof-round4-adaptive-balance-final-1774012011",
+        "artifact_presentation_hash": "7269c27d5591825b19da9d0e82300d20863ee2230fbf91c7f29d54436c050340",
+        "artifact_presentation_content_hash": "340f49ca60b60855bc786eae96aec9448a636906b86a3b1d65c1851e499a62a2",
+        "artifact_resolver_version": "compose-from-intent-v2"
+      }
+    },
+    {
+      "check_key": "reopen_segment_no_recompute",
+      "label": "Frozen reopen segment shows one session fetch and zero recomputation endpoints",
+      "status": "pass",
+      "required": true,
+      "summary": "The frozen reopen segment shows session-based reopen without planner or composition replay.",
+      "evidence_mode": "frozen_artifact",
+      "evidence_observed_at": "2026-03-29T23:29:57.387002+00:00",
+      "live_revalidation_performed": false,
+      "evidence_refs": [
+        {
+          "ref_key": "phase3_reopen_segment",
+          "source_kind": "frozen_artifact",
+          "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase3_bounded_lifecycle_v1_reopen_segment_2026-03-28.json",
+          "expected_sha256": "9ca0bef56abbe3b8f1f7a382a5787aa12670115bfe858eeb2fc196102fe074d1",
+          "observed_sha256": "9ca0bef56abbe3b8f1f7a382a5787aa12670115bfe858eeb2fc196102fe074d1",
+          "note": null
+        }
+      ],
+      "observed_values": {
+        "required_session_fetch_count": 1,
+        "forbidden_endpoint_matches": []
+      }
+    },
+    {
+      "check_key": "invalid_session_fails_closed",
+      "label": "Frozen invalid-session proof fails closed without recomputation",
+      "status": "pass",
+      "required": true,
+      "summary": "The frozen invalid-session proof shows a visible not-found error and no fallback recomputation.",
+      "evidence_mode": "frozen_artifact",
+      "evidence_observed_at": "2026-03-29T23:29:57.387002+00:00",
+      "live_revalidation_performed": false,
+      "evidence_refs": [
+        {
+          "ref_key": "phase3_invalid_session",
+          "source_kind": "frozen_artifact",
+          "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase3_bounded_lifecycle_v1_invalid_session_2026-03-28.json",
+          "expected_sha256": "1be918042e277124bdb2424d224add7791e6f828bd293cdf3093c0235a434dbf",
+          "observed_sha256": "1be918042e277124bdb2424d224add7791e6f828bd293cdf3093c0235a434dbf",
+          "note": null
+        }
+      ],
+      "observed_values": {
+        "alert_text": "Proof Error\n\nCompose session 'compose-session-invalid' not found",
+        "forbidden_endpoint_matches": []
+      }
+    }
+  ],
+  "dimension_summaries": [
+    {
+      "dimension_key": "identity_integrity",
+      "status": "pass",
+      "summary": "Lifecycle identity stays anchored on the saved compose session with valid provenance and source truth.",
+      "supporting_checks": [
+        "compose_session_exists",
+        "planning_decision_exists",
+        "source_manifest_ready"
+      ]
+    },
+    {
+      "dimension_key": "saved_truth_fidelity",
+      "status": "pass",
+      "summary": "Stored compose-session truth and the frozen saved-session artifact independently record the expected lifecycle identity and fidelity hashes.",
+      "supporting_checks": [
+        "stored_session_fidelity_fields_present",
+        "frozen_saved_session_artifact_valid"
+      ]
+    },
+    {
+      "dimension_key": "reopen_integrity",
+      "status": "pass",
+      "summary": "The frozen reopen segment shows session-based reopen without planner or composition replay.",
+      "supporting_checks": [
+        "reopen_segment_no_recompute"
+      ]
+    },
+    {
+      "dimension_key": "boundary_observance",
+      "status": "pass",
+      "summary": "The lifecycle proof stays within the bounded genealogy transient surface and fails closed on invalid reopen identity.",
+      "supporting_checks": [
+        "invalid_session_fails_closed",
+        "source_readiness_bounded_dynamic_genealogy"
+      ]
+    }
+  ],
+  "overall_verdict": "pass"
+}

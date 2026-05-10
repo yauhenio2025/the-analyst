@@ -1,0 +1,102 @@
+{
+  "normalized_task_summary": "Write an AOI synthesis from this saved result.",
+  "selected_objective_key": "influence_thematic",
+  "selected_workflow_key": "anxiety_of_influence_thematic_single_thinker",
+  "routing_outcome": "aoi_transient_source_backed",
+  "routing_confidence": "medium",
+  "launch_contract_kind": "planner.aoi_compose_handoff",
+  "source_sufficiency_status": "sufficient",
+  "required_fields": [
+    "workflow_key",
+    "consumer_key",
+    "source_v2_job_id"
+  ],
+  "required_host_preparation": [
+    "Call plan-task with saved_result planning context to resolve AOI source selection before launch."
+  ],
+  "downstream_launch_contract": {
+    "method": "POST",
+    "endpoint": "/v1/orchestrator/plan-task",
+    "request_fields": {
+      "task_request.workflow_hint": "anxiety_of_influence_thematic_single_thinker",
+      "task_request.consumer_key": "the-critic",
+      "planning_context.context_mode": "saved_result",
+      "planning_context.source_v2_job_id": "job-744edf255ad5"
+    }
+  },
+  "rejected_candidates": [
+    {
+      "objective_key": "genealogical",
+      "rejection_reason": "lower_signal_score_than_selected_candidate",
+      "details": []
+    }
+  ],
+  "trace": [
+    {
+      "stage": "task_normalization",
+      "details": {
+        "normalized_task_summary": "Write an AOI synthesis from this saved result.",
+        "audience": null,
+        "desired_depth": null,
+        "style_expectations": null
+      }
+    },
+    {
+      "stage": "objective_candidate_scoring",
+      "details": {
+        "objective_hint": null,
+        "objective_hint_status": "not_provided",
+        "workflow_hint": "anxiety_of_influence_thematic_single_thinker",
+        "workflow_hint_status": "accepted_as_consistent",
+        "candidates": [
+          {
+            "objective_key": "influence_thematic",
+            "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+            "signal_score": 1,
+            "positive_signals": [
+              "aoi"
+            ],
+            "source_mode": "saved_result",
+            "source_mode_compatible": true
+          },
+          {
+            "objective_key": "genealogical",
+            "workflow_key": "intellectual_genealogy",
+            "signal_score": 0,
+            "positive_signals": [],
+            "source_mode": "saved_result",
+            "source_mode_compatible": true
+          }
+        ]
+      }
+    },
+    {
+      "stage": "source_sufficiency_evaluation",
+      "details": {
+        "selected_objective_key": "influence_thematic",
+        "selected_workflow_key": "anxiety_of_influence_thematic_single_thinker",
+        "source_mode": "saved_result",
+        "source_sufficiency_status": "sufficient",
+        "sufficiency_reasons": []
+      }
+    },
+    {
+      "stage": "routing_decision",
+      "details": {
+        "routing_outcome": "aoi_transient_source_backed",
+        "routing_confidence": "medium",
+        "launch_contract_kind": "planner.aoi_compose_handoff",
+        "selected_objective_key": "influence_thematic",
+        "selected_workflow_key": "anxiety_of_influence_thematic_single_thinker",
+        "required_fields": [
+          "workflow_key",
+          "consumer_key",
+          "source_v2_job_id"
+        ],
+        "required_host_preparation": [
+          "Call plan-task with saved_result planning context to resolve AOI source selection before launch."
+        ]
+      }
+    }
+  ]
+}

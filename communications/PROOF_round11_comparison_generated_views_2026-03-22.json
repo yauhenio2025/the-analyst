@@ -1,0 +1,469 @@
+[
+  {
+    "view_key": "compose_intent_01_aoi_engagement_mapping",
+    "view_name": "Engagement Map",
+    "description": "A grouped card grid presenting each Neurathian theme as a card, badged by engagement level and divergence type, with expandable detail on Benanav's position, the divergence description, and severity rationale. Groups can be organized by engagement level (engaged vs. partial) to surface which themes received fuller uptake.",
+    "version": 1,
+    "target_app": "the-critic",
+    "target_page": "compose_from_intent_transient",
+    "target_section": "results",
+    "renderer_type": "card_grid",
+    "renderer_config": {
+      "items_path": "engagements",
+      "group_by": "engagement_level",
+      "group_order": [
+        "engaged",
+        "partial",
+        "distorted",
+        "ignored"
+      ],
+      "group_style_map": {
+        "engaged": {
+          "label": "Engaged",
+          "color_scheme": "green",
+          "icon": "check-circle"
+        },
+        "partial": {
+          "label": "Partial",
+          "color_scheme": "yellow",
+          "icon": "minus-circle"
+        },
+        "distorted": {
+          "label": "Distorted",
+          "color_scheme": "orange",
+          "icon": "alert-circle"
+        },
+        "ignored": {
+          "label": "Ignored",
+          "color_scheme": "gray",
+          "icon": "x-circle"
+        }
+      },
+      "columns": 2,
+      "expandable": true,
+      "title_field": "theme_name",
+      "subtitle_field": "benanav_position",
+      "badge_field": "divergence_type",
+      "description_field": "divergence_description",
+      "secondary_badge_field": "severity",
+      "secondary_badge_style_map": {
+        "critical": {
+          "color_scheme": "red"
+        },
+        "high": {
+          "color_scheme": "orange"
+        },
+        "medium": {
+          "color_scheme": "yellow"
+        },
+        "low": {
+          "color_scheme": "gray"
+        }
+      },
+      "expandable_fields": [
+        {
+          "field": "benanav_position",
+          "label": "Source Thinker's Position"
+        },
+        {
+          "field": "divergence_description",
+          "label": "Divergence Description"
+        },
+        {
+          "field": "severity_rationale",
+          "label": "Severity Rationale"
+        },
+        {
+          "field": "benanav_sources",
+          "label": "Supporting Sources",
+          "field_type": "source_list",
+          "source_fields": {
+            "label_field": "target_document_label",
+            "locator_field": "target_locator",
+            "quote_field": "target_quote",
+            "key_field": "target_chapter_key"
+          }
+        }
+      ],
+      "card_meta_fields": [
+        {
+          "field": "theme_id",
+          "label": "Theme ID",
+          "display": "muted"
+        }
+      ],
+      "footer_summary_field": "engagement_pattern",
+      "footer_summary_label": "Overall Engagement Pattern"
+    },
+    "data_source": {
+      "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+      "phase_number": 1.0,
+      "engine_key": "aoi_engagement_mapping",
+      "chain_key": null,
+      "result_path": "",
+      "scope": "aggregated"
+    },
+    "secondary_sources": [],
+    "transformation": {
+      "type": "llm_extract",
+      "field_mapping": null,
+      "llm_extraction_schema": {
+        "description": "Either a flat array of card objects, or a category-keyed object whose values are arrays of card objects.",
+        "oneOf": [
+          {
+            "type": "array",
+            "description": "Flat list of card objects",
+            "items": {
+              "type": "object",
+              "minProperties": 1
+            },
+            "minItems": 1
+          },
+          {
+            "type": "object",
+            "description": "Category-keyed groups of card objects",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "minProperties": 1
+              }
+            }
+          }
+        ]
+      },
+      "llm_prompt_template": "You are a precise data extraction assistant. Your task is to read analytical prose and extract structured JSON suitable for rendering in a specific UI component. Return ONLY valid JSON — no markdown code fences, no commentary.\n\n## About the Analysis\n\nThis prose was produced by the \"AOI Engagement Mapping\" engine, which performs comparison analysis.\nCore question: How does the subject author engage each theme from the selected source thinker?\nAnalytical dimensions: engagement_inventory, divergence_character\n\n## Target Rendering\n\nThe extracted data will be rendered in a \"Card Grid\" (list) component.\nThis renderer expects data in one of these shapes: object_array, flat_list.\nThe renderer maps data using these field references:\n  - title_field: Field name for card title\n  - subtitle_field: Field name for card subtitle\n  - description_field: Field name for card body text\n  - badge_field: Field name for badge/tag on card\n\nReturn a JSON array of objects. Each object should have fields like: {\"title_field\": \"...\", \"subtitle_field\": \"...\", \"description_field\": \"...\", \"badge_field\": \"...\"}. Include as many items as the prose supports.\n\n## Engine Output Structure (Reference)\n\nThe engine's canonical output includes these fields. Use this as a guide for what information is available in the prose — extract what matches the target renderer's shape:\n\n{\n  \"engagements\": [\n    {\n      \"theme_id\": \"string - must match an upstream theme identifier\",\n      \"theme_name\": \"string\",\n      \"engagement_level\": \"engaged | partial | ignored | distorted\",\n      \"benanav_position\": \"string\",\n      \"benanav_sources\": [\n        {\n          \"target_chapter_key\": \"nlr_153 | nlr_154 | response\",\n          \"target_document_label\": \"string\",\n          \"target_locator\": \"string\",\n          \"target_quote\": \"string\"\n        }\n      ],\n      \"divergence_description\": \"string\",\n      \"divergence_type\": \"substantive | framing | emphasis | omission\",\n      \"severity\": \"critical | high | medium | low\",\n      \"severity_rationale\": \"string\"\n    }\n  ],\n  \"engagement_pattern\": \"string\"\n}\n\n## Key Fields\n\n- **engagement_inventory**: Determine the engagement level for each theme.\n- **divergence_character**: Describe how the subject author diverges from the source thinker within each theme.\n\n## Transient Compose Context\nPattern key: card_grid_grouped\nUse the final renderer configuration below when choosing field names and nesting.\nRenderer config:\n{\n  \"items_path\": \"engagements\",\n  \"group_by\": \"engagement_level\",\n  \"group_order\": [\n    \"engaged\",\n    \"partial\",\n    \"distorted\",\n    \"ignored\"\n  ],\n  \"group_style_map\": {\n    \"engaged\": {\n      \"label\": \"Engaged\",\n      \"color_scheme\": \"green\",\n      \"icon\": \"check-circle\"\n    },\n    \"partial\": {\n      \"label\": \"Partial\",\n      \"color_scheme\": \"yellow\",\n      \"icon\": \"minus-circle\"\n    },\n    \"distorted\": {\n      \"label\": \"Distorted\",\n      \"color_scheme\": \"orange\",\n      \"icon\": \"alert-circle\"\n    },\n    \"ignored\": {\n      \"label\": \"Ignored\",\n      \"color_scheme\": \"gray\",\n      \"icon\": \"x-circle\"\n    }\n  },\n  \"columns\": 2,\n  \"expandable\": true,\n  \"title_field\": \"theme_name\",\n  \"subtitle_field\": \"benanav_position\",\n  \"badge_field\": \"divergence_type\",\n  \"description_field\": \"divergence_description\",\n  \"secondary_badge_field\": \"severity\",\n  \"secondary_badge_style_map\": {\n    \"critical\": {\n      \"color_scheme\": \"red\"\n    },\n    \"high\": {\n      \"color_scheme\": \"orange\"\n    },\n    \"medium\": {\n      \"color_scheme\": \"yellow\"\n    },\n    \"low\": {\n      \"color_scheme\": \"gray\"\n    }\n  },\n  \"expandable_fields\": [\n    {\n      \"field\": \"benanav_position\",\n      \"label\": \"Source Thinker's Position\"\n    },\n    {\n      \"field\": \"divergence_description\",\n      \"label\": \"Divergence Description\"\n    },\n    {\n      \"field\": \"severity_rationale\",\n      \"label\": \"Severity Rationale\"\n    },\n    {\n      \"field\": \"benanav_sources\",\n      \"label\": \"Supporting Sources\",\n      \"field_type\": \"source_list\",\n      \"source_fields\": {\n        \"label_field\": \"target_document_label\",\n        \"locator_field\": \"target_locator\",\n        \"quote_field\": \"target_quote\",\n        \"key_field\": \"target_chapter_key\"\n      }\n    }\n  ],\n  \"card_meta_fields\": [\n    {\n      \"field\": \"theme_id\",\n      \"label\": \"Theme ID\",\n      \"display\": \"muted\"\n    }\n  ],\n  \"footer_summary_field\": \"engagement_pattern\",\n  \"footer_summary_label\": \"Overall Engagement Pattern\"\n}\n\nThe following renderer input schema is prompt guidance for the target shape.\nInput data schema:\n{\n  \"description\": \"Either a flat array of card objects, or a category-keyed object whose values are arrays of card objects.\",\n  \"oneOf\": [\n    {\n      \"type\": \"array\",\n      \"description\": \"Flat list of card objects\",\n      \"items\": {\n        \"type\": \"object\",\n        \"minProperties\": 1\n      },\n      \"minItems\": 1\n    },\n    {\n      \"type\": \"object\",\n      \"description\": \"Category-keyed groups of card objects\",\n      \"minProperties\": 1,\n      \"additionalProperties\": {\n        \"type\": \"array\",\n        \"items\": {\n          \"type\": \"object\",\n          \"minProperties\": 1\n        }\n      }\n    }\n  ]\n}",
+      "stance_key": "analytical"
+    },
+    "presentation_stance": "analytical",
+    "position": 1.0,
+    "parent_view_key": null,
+    "surface_archetype": null,
+    "scaffold_contract": null,
+    "surface_role": null,
+    "child_display_mode": null,
+    "tab_count_field": null,
+    "visibility": "if_data_exists",
+    "audience_overrides": {},
+    "planner_hint": "Use this view when the workflow has produced an engagement map for a single source thinker and the user needs to survey which themes received genuine uptake versus partial, distorted, or absent treatment. Especially useful as a first analytical view before drilling into specific anxiety-of-influence findings.",
+    "planner_eligible": true,
+    "status": "draft",
+    "tags": [
+      "cards",
+      "grouped",
+      "engagement",
+      "thematic",
+      "categorized",
+      "expandable",
+      "analytical",
+      "aoi",
+      "divergence",
+      "anxiety-of-influence"
+    ],
+    "source_project": "compose_from_intent_transient",
+    "generation_mode": "generated"
+  },
+  {
+    "view_key": "compose_intent_02_aoi_sin_findings",
+    "view_name": "SIN Findings",
+    "description": "An accordion where each collapsible section corresponds to one SIN finding, typed by sin_type (appropriation, misreading, omission). Each panel surfaces the finding title, severity badge, target and source quotes in contrast, discrepancy analysis, and argumentative implication — allowing the critic to drill into any finding while keeping the others collapsed.",
+    "version": 1,
+    "target_app": "the-critic",
+    "target_page": "compose_from_intent_transient",
+    "target_section": "results",
+    "renderer_type": "accordion",
+    "renderer_config": {
+      "sections": [
+        {
+          "key": "finding_identity",
+          "title": "Finding Identity & Classification"
+        },
+        {
+          "key": "target_evidence",
+          "title": "Target Passage"
+        },
+        {
+          "key": "source_evidence",
+          "title": "Source Passage"
+        },
+        {
+          "key": "discrepancy_analysis",
+          "title": "Discrepancy Analysis"
+        },
+        {
+          "key": "argumentative_implication",
+          "title": "Argumentative Implication"
+        }
+      ],
+      "expand_first": true,
+      "iterate_over": "findings",
+      "panel_title_field": "title",
+      "panel_badge_field": "severity",
+      "panel_badge_secondary_field": "sin_type",
+      "section_renderers": {
+        "finding_identity": {
+          "renderer_type": "key_value_table",
+          "config": {
+            "fields": [
+              {
+                "key": "theme_id",
+                "label": "Theme"
+              },
+              {
+                "key": "sin_type",
+                "label": "Sin Type"
+              },
+              {
+                "key": "engagement_level",
+                "label": "Engagement Level"
+              },
+              {
+                "key": "severity",
+                "label": "Severity"
+              },
+              {
+                "key": "severity_rationale",
+                "label": "Severity Rationale"
+              },
+              {
+                "key": "summary",
+                "label": "Summary"
+              }
+            ]
+          }
+        },
+        "target_evidence": {
+          "renderer_type": "key_value_table",
+          "config": {
+            "fields": [
+              {
+                "key": "target_document_label",
+                "label": "Document"
+              },
+              {
+                "key": "target_chapter_key",
+                "label": "Chapter Key"
+              },
+              {
+                "key": "target_locator",
+                "label": "Locator"
+              },
+              {
+                "key": "target_quote",
+                "label": "Passage",
+                "display_as": "blockquote"
+              }
+            ]
+          }
+        },
+        "source_evidence": {
+          "renderer_type": "key_value_table",
+          "config": {
+            "fields": [
+              {
+                "key": "source_work_title",
+                "label": "Source Work"
+              },
+              {
+                "key": "source_document_id",
+                "label": "Source ID"
+              },
+              {
+                "key": "source_locator",
+                "label": "Locator"
+              },
+              {
+                "key": "source_quote",
+                "label": "Passage",
+                "display_as": "blockquote",
+                "null_label": "No direct quotation — strategic silence"
+              }
+            ]
+          }
+        },
+        "discrepancy_analysis": {
+          "renderer_type": "prose_block",
+          "config": {
+            "content_field": "discrepancy_analysis",
+            "secondary_content_field": "what_benanav_misses",
+            "secondary_label": "What Benanav Misses"
+          }
+        },
+        "argumentative_implication": {
+          "renderer_type": "prose_block",
+          "config": {
+            "content_field": "implication_for_argument"
+          }
+        }
+      }
+    },
+    "data_source": {
+      "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+      "phase_number": 1.0,
+      "engine_key": "aoi_sin_findings",
+      "chain_key": null,
+      "result_path": "",
+      "scope": "aggregated"
+    },
+    "secondary_sources": [],
+    "transformation": {
+      "type": "llm_extract",
+      "field_mapping": null,
+      "llm_extraction_schema": {
+        "type": "object",
+        "description": "Object whose keys become accordion section headings. Each value must be an object (rendered via sub-renderer), an array (rendered as a list), or a string (rendered as prose). Numbers and booleans are rejected because they produce empty sections.",
+        "minProperties": 1,
+        "additionalProperties": {
+          "oneOf": [
+            {
+              "type": "object"
+            },
+            {
+              "type": "array"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "llm_prompt_template": "You are a precise data extraction assistant. Your task is to read analytical prose and extract structured JSON suitable for rendering in a specific UI component. Return ONLY valid JSON — no markdown code fences, no commentary.\n\n## About the Analysis\n\nThis prose was produced by the \"AOI Sin Findings\" engine, which performs synthesis analysis.\nCore question: What specific AOI findings emerge when the subject author's engagement with the selected source thinker is tested theme by theme?\nAnalytical dimensions: finding_identification, provenance\n\n## Target Rendering\n\nThe extracted data will be rendered in a \"Accordion with Expandable Sections\" (container) component.\nThis renderer expects data in one of these shapes: nested_sections, object_array, key_value_pairs.\nThe renderer maps data using these field references:\n  - sections: Ordered list of sections to display\n  - section_renderers: Per-section renderer hints keyed by section_key\nThis is a container renderer that organizes data into sections. Each section can use sub-renderers like: chip_grid, mini_card_list, key_value_table, prose_block, annotated_prose, stat_row.\n\n\nReturn a JSON object with a \"sections\" key containing an array of section objects. Each section should have:\n  - \"key\": a snake_case identifier\n  - \"title\": human-readable section title\n  - \"items\": array of objects with fields appropriate to the section content\n\nOrganize the analytical content into 3-8 thematic sections. Each section should group related findings.\n\n## Engine Output Structure (Reference)\n\nThe engine's canonical output includes these fields. Use this as a guide for what information is available in the prose — extract what matches the target renderer's shape:\n\n{\n  \"findings\": [\n    {\n      \"theme_id\": \"string - must match an upstream theme identifier\",\n      \"sin_type\": \"misreading | unacknowledged_debt | misappropriation | decontextualization | selective_citation | flattening | ventriloquism | strategic_silence | premature_synthesis | legitimation_borrowing\",\n      \"engagement_level\": \"engaged | partial | ignored | distorted\",\n      \"severity\": \"critical | high | medium | low\",\n      \"severity_rationale\": \"string\",\n      \"title\": \"string\",\n      \"summary\": \"string\",\n      \"target_chapter_key\": \"nlr_153 | nlr_154 | response\",\n      \"target_document_label\": \"string\",\n      \"target_locator\": \"string\",\n      \"target_quote\": \"string\",\n      \"source_document_id\": \"string - stable slug for the source work\",\n      \"source_work_title\": \"string\",\n      \"source_locator\": \"string\",\n      \"source_quote\": \"string or null for strategic silence\",\n      \"discrepancy_analysis\": \"string\",\n      \"what_benanav_misses\": \"string\",\n      \"implication_for_argument\": \"string\"\n    }\n  ]\n}\n\n## Key Fields\n\n- **finding_identification**: Identify the discrete AOI findings that deserve naming.\n- **provenance**: Preserve concrete target/source provenance for each finding.\n\n## Transient Compose Context\nPattern key: accordion_sections\nUse the final renderer configuration below when choosing field names and nesting.\nRenderer config:\n{\n  \"sections\": [\n    {\n      \"key\": \"finding_identity\",\n      \"title\": \"Finding Identity & Classification\"\n    },\n    {\n      \"key\": \"target_evidence\",\n      \"title\": \"Target Passage\"\n    },\n    {\n      \"key\": \"source_evidence\",\n      \"title\": \"Source Passage\"\n    },\n    {\n      \"key\": \"discrepancy_analysis\",\n      \"title\": \"Discrepancy Analysis\"\n    },\n    {\n      \"key\": \"argumentative_implication\",\n      \"title\": \"Argumentative Implication\"\n    }\n  ],\n  \"expand_first\": true,\n  \"iterate_over\": \"findings\",\n  \"panel_title_field\": \"title\",\n  \"panel_badge_field\": \"severity\",\n  \"panel_badge_secondary_field\": \"sin_type\",\n  \"section_renderers\": {\n    \"finding_identity\": {\n      \"renderer_type\": \"key_value_table\",\n      \"config\": {\n        \"fields\": [\n          {\n            \"key\": \"theme_id\",\n            \"label\": \"Theme\"\n          },\n          {\n            \"key\": \"sin_type\",\n            \"label\": \"Sin Type\"\n          },\n          {\n            \"key\": \"engagement_level\",\n            \"label\": \"Engagement Level\"\n          },\n          {\n            \"key\": \"severity\",\n            \"label\": \"Severity\"\n          },\n          {\n            \"key\": \"severity_rationale\",\n            \"label\": \"Severity Rationale\"\n          },\n          {\n            \"key\": \"summary\",\n            \"label\": \"Summary\"\n          }\n        ]\n      }\n    },\n    \"target_evidence\": {\n      \"renderer_type\": \"key_value_table\",\n      \"config\": {\n        \"fields\": [\n          {\n            \"key\": \"target_document_label\",\n            \"label\": \"Document\"\n          },\n          {\n            \"key\": \"target_chapter_key\",\n            \"label\": \"Chapter Key\"\n          },\n          {\n            \"key\": \"target_locator\",\n            \"label\": \"Locator\"\n          },\n          {\n            \"key\": \"target_quote\",\n            \"label\": \"Passage\",\n            \"display_as\": \"blockquote\"\n          }\n        ]\n      }\n    },\n    \"source_evidence\": {\n      \"renderer_type\": \"key_value_table\",\n      \"config\": {\n        \"fields\": [\n          {\n            \"key\": \"source_work_title\",\n            \"label\": \"Source Work\"\n          },\n          {\n            \"key\": \"source_document_id\",\n            \"label\": \"Source ID\"\n          },\n          {\n            \"key\": \"source_locator\",\n            \"label\": \"Locator\"\n          },\n          {\n            \"key\": \"source_quote\",\n            \"label\": \"Passage\",\n            \"display_as\": \"blockquote\",\n            \"null_label\": \"No direct quotation — strategic silence\"\n          }\n        ]\n      }\n    },\n    \"discrepancy_analysis\": {\n      \"renderer_type\": \"prose_block\",\n      \"config\": {\n        \"content_field\": \"discrepancy_analysis\",\n        \"secondary_content_field\": \"what_benanav_misses\",\n        \"secondary_label\": \"What Benanav Misses\"\n      }\n    },\n    \"argumentative_implication\": {\n      \"renderer_type\": \"prose_block\",\n      \"config\": {\n        \"content_field\": \"implication_for_argument\"\n      }\n    }\n  }\n}\n\nThe following renderer input schema is prompt guidance for the target shape.\nInput data schema:\n{\n  \"type\": \"object\",\n  \"description\": \"Object whose keys become accordion section headings. Each value must be an object (rendered via sub-renderer), an array (rendered as a list), or a string (rendered as prose). Numbers and booleans are rejected because they produce empty sections.\",\n  \"minProperties\": 1,\n  \"additionalProperties\": {\n    \"oneOf\": [\n      {\n        \"type\": \"object\"\n      },\n      {\n        \"type\": \"array\"\n      },\n      {\n        \"type\": \"string\"\n      }\n    ]\n  }\n}",
+      "stance_key": "investigative"
+    },
+    "presentation_stance": "investigative",
+    "position": 2.0,
+    "parent_view_key": null,
+    "surface_archetype": null,
+    "scaffold_contract": null,
+    "surface_role": null,
+    "child_display_mode": null,
+    "tab_count_field": null,
+    "visibility": "if_data_exists",
+    "audience_overrides": {},
+    "planner_hint": "Recommend this view when the critic is working through Anxiety of Influence analysis and needs to inspect discrete, evidence-bearing findings — especially where sin classification, textual provenance, and argumentative consequence must be surfaced together for each finding.",
+    "planner_eligible": true,
+    "status": "draft",
+    "tags": [
+      "anxiety_of_influence",
+      "sin_findings",
+      "provenance",
+      "investigative",
+      "accordion",
+      "multi-section",
+      "heterogeneous",
+      "evidence",
+      "scholarly_critique",
+      "aoi"
+    ],
+    "source_project": "compose_from_intent_transient",
+    "generation_mode": "generated"
+  },
+  {
+    "view_key": "compose_intent_03_aoi_thematic_report",
+    "view_name": "AOI Report Closeout",
+    "description": "A long-form narrative closing the page, rendering the report summary, the key divergences synthesis, sin distribution overview, and reading implications as flowing prose with optional section anchors for 'Summary,' 'Key Divergences,' 'Sin Distribution,' and 'Reading Implications.' This provides a unified interpretive conclusion after the map and findings have done their analytical work.",
+    "version": 1,
+    "target_app": "the-critic",
+    "target_page": "compose_from_intent_transient",
+    "target_section": "results",
+    "renderer_type": "prose",
+    "renderer_config": {
+      "section_anchors": true,
+      "table_of_contents": true,
+      "highlight_key_findings": true,
+      "show_reading_time": true,
+      "show_section_nav": true,
+      "max_preview_lines": 20,
+      "prose_field_mapping": {
+        "lead_field": "report_sections.summary",
+        "sections": [
+          {
+            "anchor": "summary",
+            "label": "Summary",
+            "field": "report_sections.summary",
+            "render_as": "prose"
+          },
+          {
+            "anchor": "engagement-pattern",
+            "label": "Engagement Pattern",
+            "field": "report_sections.engagement_pattern",
+            "render_as": "prose"
+          },
+          {
+            "anchor": "key-divergences",
+            "label": "Key Divergences",
+            "field": "report_sections.key_divergences",
+            "render_as": "badged_list",
+            "item_shape": {
+              "title_field": "title",
+              "subtitle_field": "subtitle",
+              "description_field": "description",
+              "badge_field": "badge"
+            }
+          },
+          {
+            "anchor": "sin-distribution",
+            "label": "Sin Distribution",
+            "field": "report_sections.sin_distribution",
+            "render_as": "summary_list",
+            "item_shape": {
+              "label_field": "sin_type",
+              "count_field": "count",
+              "description_field": "description"
+            }
+          },
+          {
+            "anchor": "reading-implications",
+            "label": "Reading Implications",
+            "field": "report_sections.reading_implications",
+            "render_as": "prose"
+          }
+        ]
+      }
+    },
+    "data_source": {
+      "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+      "phase_number": 1.0,
+      "engine_key": "aoi_thematic_report",
+      "chain_key": null,
+      "result_path": "",
+      "scope": "aggregated"
+    },
+    "secondary_sources": [],
+    "transformation": {
+      "type": "none",
+      "field_mapping": null,
+      "llm_extraction_schema": null,
+      "llm_prompt_template": null,
+      "stance_key": null
+    },
+    "presentation_stance": "synthetic",
+    "position": 3.0,
+    "parent_view_key": null,
+    "surface_archetype": null,
+    "scaffold_contract": null,
+    "surface_role": null,
+    "child_display_mode": null,
+    "tab_count_field": null,
+    "visibility": "if_data_exists",
+    "audience_overrides": {},
+    "planner_hint": "Recommend this view as the closing narrative on any anxiety-of-influence analysis page. It should appear after engagement map and individual findings views, providing the unified interpretive conclusion that ties all upstream analytical work together into a coherent portrait of the subject author's relationship to the selected source thinker.",
+    "planner_eligible": true,
+    "status": "draft",
+    "tags": [
+      "prose",
+      "narrative",
+      "synthesis",
+      "report",
+      "aoi",
+      "thematic",
+      "anxiety-of-influence",
+      "closing-narrative",
+      "key-divergences",
+      "reading-implications"
+    ],
+    "source_project": "compose_from_intent_transient",
+    "generation_mode": "generated"
+  }
+]

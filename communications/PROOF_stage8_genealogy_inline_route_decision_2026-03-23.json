@@ -1,0 +1,109 @@
+{
+  "downstream_launch_contract": {
+    "endpoint": "/v1/orchestrator/analyze",
+    "method": "POST",
+    "request_fields": {
+      "prior_works": "<required>",
+      "target_work": "<required>",
+      "target_work_text": "<required>",
+      "thinker_name": "<required>",
+      "workflow_key": "intellectual_genealogy"
+    }
+  },
+  "launch_contract_kind": "orchestrator.analyze",
+  "normalized_task_summary": "Trace the genealogy and inheritance patterns in this target work.",
+  "rejected_candidates": [
+    {
+      "details": [
+        "source_mode 'inline_documents' is incompatible",
+        "AOI routing is only compatible with saved_result source mode."
+      ],
+      "objective_key": "influence_thematic",
+      "rejection_reason": "lower_signal_score_than_selected_candidate"
+    }
+  ],
+  "required_fields": [
+    "thinker_name",
+    "target_work",
+    "target_work_text",
+    "prior_works"
+  ],
+  "required_host_preparation": [
+    "Assemble the inline-documents analyze payload."
+  ],
+  "routing_confidence": "high",
+  "routing_outcome": "genealogy_job_backed",
+  "selected_objective_key": "genealogical",
+  "selected_workflow_key": "intellectual_genealogy",
+  "source_sufficiency_status": "sufficient",
+  "trace": [
+    {
+      "details": {
+        "audience": null,
+        "desired_depth": null,
+        "normalized_task_summary": "Trace the genealogy and inheritance patterns in this target work.",
+        "style_expectations": null
+      },
+      "stage": "task_normalization"
+    },
+    {
+      "details": {
+        "candidates": [
+          {
+            "objective_key": "influence_thematic",
+            "positive_signals": [],
+            "signal_score": 0,
+            "source_mode": "inline_documents",
+            "source_mode_compatible": false,
+            "workflow_key": "anxiety_of_influence_thematic_single_thinker"
+          },
+          {
+            "objective_key": "genealogical",
+            "positive_signals": [
+              "genealogy",
+              "inheritance"
+            ],
+            "signal_score": 2,
+            "source_mode": "inline_documents",
+            "source_mode_compatible": true,
+            "workflow_key": "intellectual_genealogy"
+          }
+        ],
+        "objective_hint": null,
+        "objective_hint_status": "not_provided",
+        "workflow_hint": null,
+        "workflow_hint_status": "not_provided"
+      },
+      "stage": "objective_candidate_scoring"
+    },
+    {
+      "details": {
+        "selected_objective_key": "genealogical",
+        "selected_workflow_key": "intellectual_genealogy",
+        "source_mode": "inline_documents",
+        "source_sufficiency_status": "sufficient",
+        "sufficiency_reasons": []
+      },
+      "stage": "source_sufficiency_evaluation"
+    },
+    {
+      "details": {
+        "launch_contract_kind": "orchestrator.analyze",
+        "required_fields": [
+          "thinker_name",
+          "target_work",
+          "target_work_text",
+          "prior_works"
+        ],
+        "required_host_preparation": [
+          "Assemble the inline-documents analyze payload."
+        ],
+        "routing_confidence": "high",
+        "routing_outcome": "genealogy_job_backed",
+        "selected_objective_key": "genealogical",
+        "selected_workflow_key": "intellectual_genealogy"
+      },
+      "stage": "routing_decision"
+    }
+  ]
+}

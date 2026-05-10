@@ -1,0 +1,256 @@
+{
+  "evaluation_report_id": "evaluation-report-14f259bb7d9b",
+  "created_at": "2026-03-30T09:21:41.884573+00:00",
+  "evaluation_pack_key": "phase4_planner_to_presentation_cross_campaign_governance_v1",
+  "case_key": "aoi_compose_selection_current_contract_fresh_campaign",
+  "subject_kind": "planning_decision",
+  "subject_identity": "planning-decision-d6b6bb0cd7ac",
+  "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+  "consumer_key": "the-critic",
+  "supporting_subjects": {
+    "source_v2_job_id": "job-744edf255ad5"
+  },
+  "input_evidence_refs": [
+    {
+      "ref_key": "aoi_transient_compose_cross_campaign",
+      "source_kind": "frozen_artifact",
+      "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase_d_cross_campaign_aoi_transient_compose_2026-03-30.json",
+      "expected_sha256": "448051ed0976b4db1a2cdea6d5df77c4f47cfa2c476beecd10fef08a36986bb8",
+      "observed_sha256": "448051ed0976b4db1a2cdea6d5df77c4f47cfa2c476beecd10fef08a36986bb8",
+      "note": null
+    }
+  ],
+  "checks": [
+    {
+      "check_key": "handoff_contract_fidelity",
+      "label": "Planner handoff contract matches the declared composition surface",
+      "status": "pass",
+      "required": true,
+      "summary": "planning_outcome_kind=aoi_composition_handoff_plan downstream_readiness=ready_for_aoi_compose_handoff followup_endpoint=/v1/presenter/compose-from-selection",
+      "evidence_mode": "frozen_artifact",
+      "evidence_observed_at": "2026-03-30T09:21:41.886127+00:00",
+      "live_revalidation_performed": false,
+      "evidence_refs": [
+        {
+          "ref_key": "aoi_transient_compose_cross_campaign:planning_decision",
+          "source_kind": "frozen_artifact",
+          "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase_d_cross_campaign_aoi_transient_compose_2026-03-30.json#planning_decision",
+          "expected_sha256": "448051ed0976b4db1a2cdea6d5df77c4f47cfa2c476beecd10fef08a36986bb8",
+          "observed_sha256": "448051ed0976b4db1a2cdea6d5df77c4f47cfa2c476beecd10fef08a36986bb8",
+          "note": "Cross-campaign AOI transient compose bundle supplying planning evidence."
+        }
+      ],
+      "observed_values": {
+        "planning_outcome_kind": "aoi_composition_handoff_plan",
+        "downstream_readiness": "ready_for_aoi_compose_handoff",
+        "downstream_followup_contract": {
+          "method": "POST",
+          "endpoint": "/v1/presenter/compose-from-selection",
+          "selection_kind": "explicit",
+          "legacy_profile_equivalent": null,
+          "request_fields": {
+            "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+            "consumer_key": "the-critic",
+            "source_v2_job_id": "job-744edf255ad5",
+            "selection": [
+              {
+                "source_family_key": "thematic_synthesis",
+                "selection_rank": 1,
+                "rationale": "This is the primary composition input for an AOI synthesis. It contains overall_synthesis, themes, selected_source_thinker, and source_documents — exactly the structured thematic material needed to write a bounded single-thinker AOI synthesis. Its composition_role_hint of synthesis_primary confirms it as the anchor source."
+              },
+              {
+                "source_family_key": "sin_findings",
+                "selection_rank": 2,
+                "rationale": "Sin findings provide the granular evidence bank (findings indexed by sin type and theme) that gives the synthesis its analytical backbone. For a single-thinker AOI workflow, identifying specific sins of omission, distortion, or misreading is essential to grounding the synthesis in concrete textual behavior."
+              },
+              {
+                "source_family_key": "engagement_mapping",
+                "selection_rank": 3,
+                "rationale": "Engagement mapping supplies the structural contrast layer — which themes were engaged, ignored, distorted, or only partially addressed. This directly informs the handoff composition by revealing the pattern of influence anxiety and selective engagement, adding necessary texture beyond raw findings."
+              },
+              {
+                "source_family_key": "thematic_report",
+                "selection_rank": 4,
+                "rationale": "The AOI report provides a pre-integrated narrative with summary, key divergences, reading implications, and sin distribution. For a bounded transient handoff, this closeout artifact helps frame the composition arc and ensures the synthesis aligns with already-derived high-level conclusions rather than reconstructing them from scratch."
+              }
+            ],
+            "user_intent": "Write an Anxiety of Influence synthesis for the selected thinker, drawing on thematic findings, sin evidence, and engagement patterns from this saved result."
+          }
+        },
+        "aoi_compose_entrypoint_kind": "presenter.compose_from_selection",
+        "genealogy_handoff_kind": null
+      }
+    },
+    {
+      "check_key": "planner_presentation_agreement",
+      "label": "Planning truth, compose request, and served presentation agree for the declared case",
+      "status": "pass",
+      "required": true,
+      "summary": "bundle_planning_decision_id=planning-decision-d6b6bb0cd7ac planning_decision_id=planning-decision-d6b6bb0cd7ac compose_binding_planning_decision_id=planning-decision-d6b6bb0cd7ac presentation_workflow_key=anxiety_of_influence_thematic_single_thinker presentation_consumer_key=the-critic",
+      "evidence_mode": "frozen_artifact",
+      "evidence_observed_at": "2026-03-30T09:21:41.886127+00:00",
+      "live_revalidation_performed": false,
+      "evidence_refs": [
+        {
+          "ref_key": "aoi_transient_compose_cross_campaign:planning_decision",
+          "source_kind": "frozen_artifact",
+          "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase_d_cross_campaign_aoi_transient_compose_2026-03-30.json#planning_decision",
+          "expected_sha256": "448051ed0976b4db1a2cdea6d5df77c4f47cfa2c476beecd10fef08a36986bb8",
+          "observed_sha256": "448051ed0976b4db1a2cdea6d5df77c4f47cfa2c476beecd10fef08a36986bb8",
+          "note": "Cross-campaign AOI transient compose bundle supplying planning evidence."
+        },
+        {
+          "ref_key": "aoi_transient_compose_cross_campaign:planning_snapshot",
+          "source_kind": "frozen_artifact",
+          "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase_d_cross_campaign_aoi_transient_compose_2026-03-30.json#planning_snapshot",
+          "expected_sha256": "448051ed0976b4db1a2cdea6d5df77c4f47cfa2c476beecd10fef08a36986bb8",
+          "observed_sha256": "448051ed0976b4db1a2cdea6d5df77c4f47cfa2c476beecd10fef08a36986bb8",
+          "note": "Cross-campaign AOI transient compose bundle supplying persisted planning snapshot evidence."
+        },
+        {
+          "ref_key": "aoi_transient_compose_cross_campaign:compose_from_selection.request_json",
+          "source_kind": "frozen_artifact",
+          "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase_d_cross_campaign_aoi_transient_compose_2026-03-30.json#compose_from_selection.request_json",
+          "expected_sha256": "448051ed0976b4db1a2cdea6d5df77c4f47cfa2c476beecd10fef08a36986bb8",
+          "observed_sha256": "448051ed0976b4db1a2cdea6d5df77c4f47cfa2c476beecd10fef08a36986bb8",
+          "note": "Cross-campaign AOI transient compose bundle supplying compose-from-selection request evidence."
+        },
+        {
+          "ref_key": "aoi_transient_compose_cross_campaign:compose_from_selection.planning_decision_id",
+          "source_kind": "frozen_artifact",
+          "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase_d_cross_campaign_aoi_transient_compose_2026-03-30.json#compose_from_selection.planning_decision_id",
+          "expected_sha256": "448051ed0976b4db1a2cdea6d5df77c4f47cfa2c476beecd10fef08a36986bb8",
+          "observed_sha256": "448051ed0976b4db1a2cdea6d5df77c4f47cfa2c476beecd10fef08a36986bb8",
+          "note": "Cross-campaign AOI transient compose bundle nested binding to the persisted planning decision."
+        },
+        {
+          "ref_key": "aoi_transient_compose_cross_campaign:planning_decision_id",
+          "source_kind": "frozen_artifact",
+          "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase_d_cross_campaign_aoi_transient_compose_2026-03-30.json#planning_decision_id",
+          "expected_sha256": "448051ed0976b4db1a2cdea6d5df77c4f47cfa2c476beecd10fef08a36986bb8",
+          "observed_sha256": "448051ed0976b4db1a2cdea6d5df77c4f47cfa2c476beecd10fef08a36986bb8",
+          "note": "Cross-campaign AOI transient compose bundle top-level binding to the persisted planning decision."
+        },
+        {
+          "ref_key": "aoi_transient_compose_cross_campaign:compose_from_selection.response_json",
+          "source_kind": "frozen_artifact",
+          "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase_d_cross_campaign_aoi_transient_compose_2026-03-30.json#compose_from_selection.response_json",
+          "expected_sha256": "448051ed0976b4db1a2cdea6d5df77c4f47cfa2c476beecd10fef08a36986bb8",
+          "observed_sha256": "448051ed0976b4db1a2cdea6d5df77c4f47cfa2c476beecd10fef08a36986bb8",
+          "note": "Cross-campaign AOI transient compose bundle supplying compose-from-selection response evidence."
+        }
+      ],
+      "observed_values": {
+        "bundle_planning_decision_id": "planning-decision-d6b6bb0cd7ac",
+        "snapshot_planning_decision_id": "planning-decision-d6b6bb0cd7ac",
+        "compose_binding_planning_decision_id": "planning-decision-d6b6bb0cd7ac",
+        "snapshot_workflow_key": "anxiety_of_influence_thematic_single_thinker",
+        "snapshot_consumer_key": "the-critic",
+        "snapshot_source_v2_job_id": "job-744edf255ad5",
+        "compose_request_workflow_key": "anxiety_of_influence_thematic_single_thinker",
+        "compose_request_consumer_key": "the-critic",
+        "compose_request_source_v2_job_id": "job-744edf255ad5",
+        "presentation_workflow_key": "anxiety_of_influence_thematic_single_thinker",
+        "presentation_consumer_key": "the-critic",
+        "selected_source_thinker_id": "otto_neurath",
+        "selected_source_thinker_name": "Otto Neurath"
+      }
+    },
+    {
+      "check_key": "presentation_contract_fidelity",
+      "label": "Compose response presentation contract matches the declared case",
+      "status": "pass",
+      "required": true,
+      "summary": "presentation_workflow_key=anxiety_of_influence_thematic_single_thinker presentation_consumer_key=the-critic resolver_version=compose-from-selection-v1 view_count=5 generated_view_definition_count=5",
+      "evidence_mode": "frozen_artifact",
+      "evidence_observed_at": "2026-03-30T09:21:41.886127+00:00",
+      "live_revalidation_performed": false,
+      "evidence_refs": [
+        {
+          "ref_key": "aoi_transient_compose_cross_campaign:compose_from_selection.response_json",
+          "source_kind": "frozen_artifact",
+          "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase_d_cross_campaign_aoi_transient_compose_2026-03-30.json#compose_from_selection.response_json",
+          "expected_sha256": "448051ed0976b4db1a2cdea6d5df77c4f47cfa2c476beecd10fef08a36986bb8",
+          "observed_sha256": "448051ed0976b4db1a2cdea6d5df77c4f47cfa2c476beecd10fef08a36986bb8",
+          "note": "Cross-campaign AOI transient compose bundle supplying compose-from-selection response evidence."
+        }
+      ],
+      "observed_values": {
+        "presentation_workflow_key": "anxiety_of_influence_thematic_single_thinker",
+        "presentation_consumer_key": "the-critic",
+        "resolver_version": "compose-from-selection-v1",
+        "presentation_view_count": 5,
+        "generated_view_definition_count": 5
+      }
+    },
+    {
+      "check_key": "composition_trace_integrity",
+      "label": "Compose trace includes the required stages for the declared composition surface",
+      "status": "pass",
+      "required": true,
+      "summary": "compose_trace_stages=['source_catalog_resolution', 'source_selection', 'section_materialization', 'semantic_surface_matching', 'hierarchy_planning', 'page_plan', 'view_generation', 'transformation_execution', 'consumer_adaptation', 'contract_validation']",
+      "evidence_mode": "frozen_artifact",
+      "evidence_observed_at": "2026-03-30T09:21:41.886127+00:00",
+      "live_revalidation_performed": false,
+      "evidence_refs": [
+        {
+          "ref_key": "aoi_transient_compose_cross_campaign:compose_from_selection.response_json",
+          "source_kind": "frozen_artifact",
+          "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase_d_cross_campaign_aoi_transient_compose_2026-03-30.json#compose_from_selection.response_json",
+          "expected_sha256": "448051ed0976b4db1a2cdea6d5df77c4f47cfa2c476beecd10fef08a36986bb8",
+          "observed_sha256": "448051ed0976b4db1a2cdea6d5df77c4f47cfa2c476beecd10fef08a36986bb8",
+          "note": "Cross-campaign AOI transient compose bundle supplying compose-from-selection response evidence."
+        }
+      ],
+      "observed_values": {
+        "compose_trace_stages": [
+          "source_catalog_resolution",
+          "source_selection",
+          "section_materialization",
+          "semantic_surface_matching",
+          "hierarchy_planning",
+          "page_plan",
+          "view_generation",
+          "transformation_execution",
+          "consumer_adaptation",
+          "contract_validation"
+        ]
+      }
+    }
+  ],
+  "dimension_summaries": [
+    {
+      "dimension_key": "handoff_contract_fidelity",
+      "status": "pass",
+      "summary": "planning_outcome_kind=aoi_composition_handoff_plan downstream_readiness=ready_for_aoi_compose_handoff followup_endpoint=/v1/presenter/compose-from-selection",
+      "supporting_checks": [
+        "handoff_contract_fidelity"
+      ]
+    },
+    {
+      "dimension_key": "planner_presentation_agreement",
+      "status": "pass",
+      "summary": "bundle_planning_decision_id=planning-decision-d6b6bb0cd7ac planning_decision_id=planning-decision-d6b6bb0cd7ac compose_binding_planning_decision_id=planning-decision-d6b6bb0cd7ac presentation_workflow_key=anxiety_of_influence_thematic_single_thinker presentation_consumer_key=the-critic",
+      "supporting_checks": [
+        "planner_presentation_agreement"
+      ]
+    },
+    {
+      "dimension_key": "presentation_contract_fidelity",
+      "status": "pass",
+      "summary": "presentation_workflow_key=anxiety_of_influence_thematic_single_thinker presentation_consumer_key=the-critic resolver_version=compose-from-selection-v1 view_count=5 generated_view_definition_count=5",
+      "supporting_checks": [
+        "presentation_contract_fidelity"
+      ]
+    },
+    {
+      "dimension_key": "composition_trace_integrity",
+      "status": "pass",
+      "summary": "compose_trace_stages=['source_catalog_resolution', 'source_selection', 'section_materialization', 'semantic_surface_matching', 'hierarchy_planning', 'page_plan', 'view_generation', 'transformation_execution', 'consumer_adaptation', 'contract_validation']",
+      "supporting_checks": [
+        "composition_trace_integrity"
+      ]
+    }
+  ],
+  "overall_verdict": "pass"
+}

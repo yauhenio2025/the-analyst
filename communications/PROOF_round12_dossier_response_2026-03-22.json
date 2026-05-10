@@ -1,0 +1,718 @@
+{
+  "presentation": {
+    "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+    "consumer_key": "the-critic",
+    "presentation_contract_version": 1,
+    "presentation_hash": "e47a2ab6d32dc7f5ee614bceabe6b83b4ff2f550dea3e977fa474091ab69fd81",
+    "presentation_content_hash": "bf2611233cde5e26ee3304c463331283616759dc81da8a703559faf6fdb14b06",
+    "resolver_version": "compose-from-intent-v1",
+    "style_school": "explanatory_narrative",
+    "views": [
+      {
+        "view_key": "compose_intent_01_aoi_thematic_synthesis",
+        "view_name": "Thematic Synthesis Explorer",
+        "description": "Renders each identified Neurathian theme (Calculation Without Prices, Planning as Public Knowledge) as a collapsible accordion section, exposing key claims, philosophical commitments, argumentative moves, and source documents per theme, with the overall synthesis visible as a header or closing panel.",
+        "renderer_type": "accordion",
+        "renderer_config": {
+          "sections": [
+            {
+              "key": "source_documents",
+              "title": "Source Corpus"
+            },
+            {
+              "key": "themes_overview",
+              "title": "Theme Inventory"
+            },
+            {
+              "key": "key_claims",
+              "title": "Key Claims"
+            },
+            {
+              "key": "philosophical_commitments",
+              "title": "Philosophical Commitments"
+            },
+            {
+              "key": "argumentative_moves",
+              "title": "Argumentative Moves"
+            },
+            {
+              "key": "representative_quotes",
+              "title": "Representative Quotes"
+            }
+          ],
+          "expand_first": true,
+          "section_renderers": {
+            "source_documents": {
+              "renderer_type": "mini_card_list",
+              "config": {
+                "data_path": "source_documents",
+                "title_field": "title",
+                "description_field": "description",
+                "subtitle_field": "subtitle",
+                "id_field": "source_document_id"
+              }
+            },
+            "themes_overview": {
+              "renderer_type": "mini_card_list",
+              "config": {
+                "data_path": "themes",
+                "title_field": "theme_name",
+                "description_field": "overview",
+                "badge_field": "centrality",
+                "badge_values": {
+                  "core": "primary",
+                  "major": "secondary",
+                  "minor": "muted"
+                }
+              }
+            },
+            "key_claims": {
+              "renderer_type": "chip_grid",
+              "config": {
+                "data_path": "themes",
+                "group_by_field": "theme_name",
+                "items_field": "key_claims",
+                "chip_label_field": null,
+                "chip_style": "outlined"
+              }
+            },
+            "philosophical_commitments": {
+              "renderer_type": "chip_grid",
+              "config": {
+                "data_path": "themes",
+                "group_by_field": "theme_name",
+                "items_field": "philosophical_commitments",
+                "chip_label_field": null,
+                "chip_style": "filled"
+              }
+            },
+            "argumentative_moves": {
+              "renderer_type": "chip_grid",
+              "config": {
+                "data_path": "themes",
+                "group_by_field": "theme_name",
+                "items_field": "argumentative_moves",
+                "chip_label_field": null,
+                "chip_style": "tonal"
+              }
+            },
+            "representative_quotes": {
+              "renderer_type": "mini_card_list",
+              "config": {
+                "data_path": "themes[*].representative_quotes",
+                "title_field": "source_work_title",
+                "description_field": "quote",
+                "subtitle_field": "source_locator",
+                "truncate_description": true,
+                "max_description_chars": 300
+              }
+            }
+          }
+        },
+        "presentation_stance": "analytical",
+        "rationale": "The thematic synthesis data contains multiple themes each with heterogeneous sub-fields (key_claims, philosophical_commitments, argumentative_moves, source_documents) — exactly the multi-faceted analytical output with differing data shapes that accordion_sections handles best. The collapsible structure lets the critic scan theme names at a glance and drill into whichever facet demands attention, matching the explanatory_narrative style by layering detail progressively.",
+        "engine_key": "aoi_thematic_synthesis",
+        "position": 1,
+        "visibility": "if_data_exists",
+        "has_structured_data": true,
+        "structured_data": {
+          "sections": [
+            {
+              "key": "source_documents",
+              "title": "Source Corpus",
+              "items": [
+                {
+                  "source_document_id": "through_war_economy",
+                  "title": "Through War Economy to Economy in Kind",
+                  "subtitle": "Neurath",
+                  "description": "Foundational text on material coordination and calculation without prices"
+                },
+                {
+                  "source_document_id": "economic_plan_calculation",
+                  "title": "Economic Plan and Calculation in Kind",
+                  "subtitle": "Neurath",
+                  "description": "Analysis of calculation methods in planned economies"
+                },
+                {
+                  "source_document_id": "international_planning",
+                  "title": "International Planning for Freedom",
+                  "subtitle": "Neurath",
+                  "description": "Exploration of planning and public knowledge infrastructures"
+                }
+              ]
+            },
+            {
+              "key": "themes_overview",
+              "title": "Theme Inventory",
+              "items": [
+                {
+                  "theme_name": "Calculation Without Prices",
+                  "overview": "Benanav leans on Neurath's insistence that planning can coordinate production without market prices.",
+                  "centrality": "core"
+                },
+                {
+                  "theme_name": "Planning as Public Knowledge",
+                  "overview": "Benanav partially echoes Neurath's view that planning depends on public knowledge infrastructures and civic intelligibility.",
+                  "centrality": "major"
+                }
+              ]
+            },
+            {
+              "key": "key_claims",
+              "title": "Key Claims",
+              "items": [
+                {
+                  "theme_name": "Calculation Without Prices",
+                  "claims": [
+                    "Planning can orient production without market-clearing signals.",
+                    "Material coordination can be treated as an information design problem."
+                  ]
+                },
+                {
+                  "theme_name": "Planning as Public Knowledge",
+                  "claims": [
+                    "Planning requires transparent social knowledge rather than hidden market revelation."
+                  ]
+                }
+              ]
+            },
+            {
+              "key": "philosophical_commitments",
+              "title": "Philosophical Commitments",
+              "items": [
+                {
+                  "theme_name": "Calculation Without Prices",
+                  "commitments": [
+                    "Economic rationality is not exhausted by price signals."
+                  ]
+                },
+                {
+                  "theme_name": "Planning as Public Knowledge",
+                  "commitments": [
+                    "Democratic coordination depends on shared intelligibility."
+                  ]
+                }
+              ]
+            },
+            {
+              "key": "argumentative_moves",
+              "title": "Argumentative Moves",
+              "items": [
+                {
+                  "theme_name": "Calculation Without Prices",
+                  "moves": [
+                    "Recasts socialist calculation as a coordination problem rather than a scarcity-pricing puzzle."
+                  ]
+                },
+                {
+                  "theme_name": "Planning as Public Knowledge",
+                  "moves": [
+                    "Turns epistemic planning into a public-capacity argument."
+                  ]
+                }
+              ]
+            },
+            {
+              "key": "synthesis_summary",
+              "title": "Synthesis Summary",
+              "items": [
+                {
+                  "summary": "The dossier concentrates on one dominant Neurathian planning theme (Calculation Without Prices) with a secondary civic-intelligibility theme (Planning as Public Knowledge). Together these themes establish Benanav's argument that economic coordination can be reimagined through non-price mechanisms and democratic epistemic transparency."
+                }
+              ]
+            }
+          ]
+        },
+        "items": null,
+        "children": []
+      },
+      {
+        "view_key": "compose_intent_02_aoi_thematic_report",
+        "view_name": "AOI Structured Report",
+        "description": "Presents the AOI report as grouped cards: key divergences grouped by badge severity (high/medium) and sin distribution grouped by sin type, with prose fields (summary, engagement_pattern, reading_implications) surfaced as contextual headers or card-level prose within the grid, using badges to signal analytical weight.",
+        "renderer_type": "card_grid",
+        "renderer_config": {
+          "group_by": "badge",
+          "columns": 2,
+          "expandable": true,
+          "title_field": "title",
+          "subtitle_field": "subtitle",
+          "description_field": "description",
+          "badge_field": "badge",
+          "group_style_map": {
+            "critical": {
+              "color": "#b91c1c",
+              "label": "Critical Divergence"
+            },
+            "high": {
+              "color": "#c2410c",
+              "label": "High Divergence"
+            },
+            "medium": {
+              "color": "#b45309",
+              "label": "Medium Divergence"
+            },
+            "low": {
+              "color": "#4b5563",
+              "label": "Low Divergence"
+            }
+          },
+          "prose_headers": [
+            {
+              "field_path": "report_sections.summary",
+              "label": "Summary",
+              "position": "top",
+              "style": "summary_block"
+            },
+            {
+              "field_path": "report_sections.engagement_pattern",
+              "label": "Engagement Pattern",
+              "position": "top",
+              "style": "contextual_callout"
+            },
+            {
+              "field_path": "report_sections.reading_implications",
+              "label": "Reading Implications",
+              "position": "bottom",
+              "style": "interpretive_footer"
+            }
+          ],
+          "secondary_grid": {
+            "items_path": "report_sections.sin_distribution",
+            "group_by": "sin_type",
+            "columns": 3,
+            "expandable": false,
+            "title_field": "sin_type",
+            "badge_field": "count",
+            "description_field": "description",
+            "label": "Sin Distribution"
+          }
+        },
+        "presentation_stance": "evaluative",
+        "rationale": "The report section contains two naturally categorized arrays — key_divergences (categorized by badge level) and sin_distribution (categorized by sin type) — which map cleanly onto card_grid_grouped's per-group headers and expandable detail model. Badges on divergence cards directly encode the high/medium severity field. This closes the page with a structured, scannable verdict view that complements the narrative accordion above, fulfilling the user intent to close with the structured report.",
+        "engine_key": "aoi_thematic_report",
+        "position": 2,
+        "visibility": "if_data_exists",
+        "has_structured_data": true,
+        "structured_data": [
+          {
+            "title": "Planning becomes infrastructural coordination",
+            "subtitle": "Calculation Without Prices",
+            "description": "Benanav preserves the anti-price premise but redescribes it as infrastructural coordination.",
+            "badge": "high"
+          },
+          {
+            "title": "Democratic pedagogy is compressed",
+            "subtitle": "Planning as Public Knowledge",
+            "description": "Neurath's public-education emphasis appears only as a secondary implication.",
+            "badge": "medium"
+          }
+        ],
+        "items": null,
+        "children": []
+      }
+    ],
+    "view_count": 2
+  },
+  "generated_view_definitions": [
+    {
+      "view_key": "compose_intent_01_aoi_thematic_synthesis",
+      "view_name": "Thematic Synthesis Explorer",
+      "description": "Renders each identified Neurathian theme (Calculation Without Prices, Planning as Public Knowledge) as a collapsible accordion section, exposing key claims, philosophical commitments, argumentative moves, and source documents per theme, with the overall synthesis visible as a header or closing panel.",
+      "version": 1,
+      "target_app": "the-critic",
+      "target_page": "compose_from_intent_transient",
+      "target_section": "results",
+      "renderer_type": "accordion",
+      "renderer_config": {
+        "sections": [
+          {
+            "key": "source_documents",
+            "title": "Source Corpus"
+          },
+          {
+            "key": "themes_overview",
+            "title": "Theme Inventory"
+          },
+          {
+            "key": "key_claims",
+            "title": "Key Claims"
+          },
+          {
+            "key": "philosophical_commitments",
+            "title": "Philosophical Commitments"
+          },
+          {
+            "key": "argumentative_moves",
+            "title": "Argumentative Moves"
+          },
+          {
+            "key": "representative_quotes",
+            "title": "Representative Quotes"
+          }
+        ],
+        "expand_first": true,
+        "section_renderers": {
+          "source_documents": {
+            "renderer_type": "mini_card_list",
+            "config": {
+              "data_path": "source_documents",
+              "title_field": "title",
+              "description_field": "description",
+              "subtitle_field": "subtitle",
+              "id_field": "source_document_id"
+            }
+          },
+          "themes_overview": {
+            "renderer_type": "mini_card_list",
+            "config": {
+              "data_path": "themes",
+              "title_field": "theme_name",
+              "description_field": "overview",
+              "badge_field": "centrality",
+              "badge_values": {
+                "core": "primary",
+                "major": "secondary",
+                "minor": "muted"
+              }
+            }
+          },
+          "key_claims": {
+            "renderer_type": "chip_grid",
+            "config": {
+              "data_path": "themes",
+              "group_by_field": "theme_name",
+              "items_field": "key_claims",
+              "chip_label_field": null,
+              "chip_style": "outlined"
+            }
+          },
+          "philosophical_commitments": {
+            "renderer_type": "chip_grid",
+            "config": {
+              "data_path": "themes",
+              "group_by_field": "theme_name",
+              "items_field": "philosophical_commitments",
+              "chip_label_field": null,
+              "chip_style": "filled"
+            }
+          },
+          "argumentative_moves": {
+            "renderer_type": "chip_grid",
+            "config": {
+              "data_path": "themes",
+              "group_by_field": "theme_name",
+              "items_field": "argumentative_moves",
+              "chip_label_field": null,
+              "chip_style": "tonal"
+            }
+          },
+          "representative_quotes": {
+            "renderer_type": "mini_card_list",
+            "config": {
+              "data_path": "themes[*].representative_quotes",
+              "title_field": "source_work_title",
+              "description_field": "quote",
+              "subtitle_field": "source_locator",
+              "truncate_description": true,
+              "max_description_chars": 300
+            }
+          }
+        }
+      },
+      "data_source": {
+        "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+        "phase_number": 1,
+        "engine_key": "aoi_thematic_synthesis",
+        "chain_key": null,
+        "result_path": "",
+        "scope": "aggregated"
+      },
+      "secondary_sources": [],
+      "transformation": {
+        "type": "llm_extract",
+        "field_mapping": null,
+        "llm_extraction_schema": {
+          "type": "object",
+          "description": "Object whose keys become accordion section headings. Each value must be an object (rendered via sub-renderer), an array (rendered as a list), or a string (rendered as prose). Numbers and booleans are rejected because they produce empty sections.",
+          "minProperties": 1,
+          "additionalProperties": {
+            "oneOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "array"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "llm_prompt_template": "You are a precise data extraction assistant. Your task is to read analytical prose and extract structured JSON suitable for rendering in a specific UI component. Return ONLY valid JSON — no markdown code fences, no commentary.\n\n## About the Analysis\n\nThis prose was produced by the \"AOI Thematic Synthesis\" engine, which performs synthesis analysis.\nCore question: What are the major themes in the selected source thinker's corpus, and how should they be identified for downstream AOI analysis?\nAnalytical dimensions: theme_inventory, claim_structure\n\n## Target Rendering\n\nThe extracted data will be rendered in a \"Accordion with Expandable Sections\" (container) component.\nThis renderer expects data in one of these shapes: nested_sections, object_array, key_value_pairs.\nThe renderer maps data using these field references:\n  - sections: Ordered list of sections to display\n  - section_renderers: Per-section renderer hints keyed by section_key\nThis is a container renderer that organizes data into sections. Each section can use sub-renderers like: chip_grid, mini_card_list, key_value_table, prose_block, annotated_prose, stat_row.\n\n\nReturn a JSON object with a \"sections\" key containing an array of section objects. Each section should have:\n  - \"key\": a snake_case identifier\n  - \"title\": human-readable section title\n  - \"items\": array of objects with fields appropriate to the section content\n\nOrganize the analytical content into 3-8 thematic sections. Each section should group related findings.\n\n## Engine Output Structure (Reference)\n\nThe engine's canonical output includes these fields. Use this as a guide for what information is available in the prose — extract what matches the target renderer's shape:\n\n{\n  \"selected_source_thinker\": {\n    \"thinker_id\": \"john_oneill\",\n    \"thinker_name\": \"John O'Neill\"\n  },\n  \"source_documents\": [\n    {\n      \"source_document_id\": \"string - stable slug for the source work\",\n      \"title\": \"string\",\n      \"subtitle\": \"string - author and/or year\",\n      \"description\": \"string\"\n    }\n  ],\n  \"themes\": [\n    {\n      \"theme_name\": \"string\",\n      \"overview\": \"string\",\n      \"key_claims\": [\n        \"string\"\n      ],\n      \"philosophical_commitments\": [\n        \"string\"\n      ],\n      \"argumentative_moves\": [\n        \"string\"\n      ],\n      \"source_documents\": [\n        \"string or source-document object\"\n      ],\n      \"representative_quotes\": [\n        {\n          \"source_work_title\": \"string\",\n          \"source_locator\": \"string\",\n          \"quote\": \"string\"\n        }\n      ],\n      \"centrality\": \"core | major | minor\"\n    }\n  ]\n}\n\n## Key Fields\n\n- **theme_inventory**: Identify the major themes that recur across the selected source corpus.\n- **claim_structure**: Capture the key claims, commitments, and argumentative moves that define each theme.\n\n## Transient Compose Context\nPattern key: accordion_sections\nUse the final renderer configuration below when choosing field names and nesting.\nRenderer config:\n{\n  \"sections\": [\n    {\n      \"key\": \"source_documents\",\n      \"title\": \"Source Corpus\"\n    },\n    {\n      \"key\": \"themes_overview\",\n      \"title\": \"Theme Inventory\"\n    },\n    {\n      \"key\": \"key_claims\",\n      \"title\": \"Key Claims\"\n    },\n    {\n      \"key\": \"philosophical_commitments\",\n      \"title\": \"Philosophical Commitments\"\n    },\n    {\n      \"key\": \"argumentative_moves\",\n      \"title\": \"Argumentative Moves\"\n    },\n    {\n      \"key\": \"representative_quotes\",\n      \"title\": \"Representative Quotes\"\n    }\n  ],\n  \"expand_first\": true,\n  \"section_renderers\": {\n    \"source_documents\": {\n      \"renderer_type\": \"mini_card_list\",\n      \"config\": {\n        \"data_path\": \"source_documents\",\n        \"title_field\": \"title\",\n        \"description_field\": \"description\",\n        \"subtitle_field\": \"subtitle\",\n        \"id_field\": \"source_document_id\"\n      }\n    },\n    \"themes_overview\": {\n      \"renderer_type\": \"mini_card_list\",\n      \"config\": {\n        \"data_path\": \"themes\",\n        \"title_field\": \"theme_name\",\n        \"description_field\": \"overview\",\n        \"badge_field\": \"centrality\",\n        \"badge_values\": {\n          \"core\": \"primary\",\n          \"major\": \"secondary\",\n          \"minor\": \"muted\"\n        }\n      }\n    },\n    \"key_claims\": {\n      \"renderer_type\": \"chip_grid\",\n      \"config\": {\n        \"data_path\": \"themes\",\n        \"group_by_field\": \"theme_name\",\n        \"items_field\": \"key_claims\",\n        \"chip_label_field\": null,\n        \"chip_style\": \"outlined\"\n      }\n    },\n    \"philosophical_commitments\": {\n      \"renderer_type\": \"chip_grid\",\n      \"config\": {\n        \"data_path\": \"themes\",\n        \"group_by_field\": \"theme_name\",\n        \"items_field\": \"philosophical_commitments\",\n        \"chip_label_field\": null,\n        \"chip_style\": \"filled\"\n      }\n    },\n    \"argumentative_moves\": {\n      \"renderer_type\": \"chip_grid\",\n      \"config\": {\n        \"data_path\": \"themes\",\n        \"group_by_field\": \"theme_name\",\n        \"items_field\": \"argumentative_moves\",\n        \"chip_label_field\": null,\n        \"chip_style\": \"tonal\"\n      }\n    },\n    \"representative_quotes\": {\n      \"renderer_type\": \"mini_card_list\",\n      \"config\": {\n        \"data_path\": \"themes[*].representative_quotes\",\n        \"title_field\": \"source_work_title\",\n        \"description_field\": \"quote\",\n        \"subtitle_field\": \"source_locator\",\n        \"truncate_description\": true,\n        \"max_description_chars\": 300\n      }\n    }\n  }\n}\n\nThe following renderer input schema is prompt guidance for the target shape.\nInput data schema:\n{\n  \"type\": \"object\",\n  \"description\": \"Object whose keys become accordion section headings. Each value must be an object (rendered via sub-renderer), an array (rendered as a list), or a string (rendered as prose). Numbers and booleans are rejected because they produce empty sections.\",\n  \"minProperties\": 1,\n  \"additionalProperties\": {\n    \"oneOf\": [\n      {\n        \"type\": \"object\"\n      },\n      {\n        \"type\": \"array\"\n      },\n      {\n        \"type\": \"string\"\n      }\n    ]\n  }\n}",
+        "stance_key": "analytical"
+      },
+      "presentation_stance": "analytical",
+      "position": 1,
+      "parent_view_key": null,
+      "surface_archetype": null,
+      "scaffold_contract": null,
+      "surface_role": null,
+      "child_display_mode": null,
+      "tab_count_field": null,
+      "visibility": "if_data_exists",
+      "audience_overrides": {},
+      "planner_hint": "Recommend this view when the user is in the opening phase of an Anxiety of Influence workflow and needs to survey the thematic landscape of the selected source thinker before moving to comparative or critical phases. Best suited when the engine has returned a populated theme inventory from the source corpus.",
+      "planner_eligible": true,
+      "status": "draft",
+      "tags": [
+        "accordion",
+        "multi-section",
+        "thematic-analysis",
+        "anxiety-of-influence",
+        "source-corpus",
+        "key-claims",
+        "philosophical-commitments",
+        "argumentative-moves",
+        "representative-quotes",
+        "analytical",
+        "heterogeneous",
+        "literary-criticism",
+        "the-critic"
+      ],
+      "source_project": "compose_from_intent_transient",
+      "generation_mode": "generated"
+    },
+    {
+      "view_key": "compose_intent_02_aoi_thematic_report",
+      "view_name": "AOI Structured Report",
+      "description": "Presents the AOI report as grouped cards: key divergences grouped by badge severity (high/medium) and sin distribution grouped by sin type, with prose fields (summary, engagement_pattern, reading_implications) surfaced as contextual headers or card-level prose within the grid, using badges to signal analytical weight.",
+      "version": 1,
+      "target_app": "the-critic",
+      "target_page": "compose_from_intent_transient",
+      "target_section": "results",
+      "renderer_type": "card_grid",
+      "renderer_config": {
+        "items_path": "report_sections.key_divergences",
+        "group_by": "badge",
+        "columns": 2,
+        "expandable": true,
+        "title_field": "title",
+        "subtitle_field": "subtitle",
+        "description_field": "description",
+        "badge_field": "badge",
+        "group_style_map": {
+          "critical": {
+            "color": "#b91c1c",
+            "label": "Critical Divergence"
+          },
+          "high": {
+            "color": "#c2410c",
+            "label": "High Divergence"
+          },
+          "medium": {
+            "color": "#b45309",
+            "label": "Medium Divergence"
+          },
+          "low": {
+            "color": "#4b5563",
+            "label": "Low Divergence"
+          }
+        },
+        "prose_headers": [
+          {
+            "field_path": "report_sections.summary",
+            "label": "Summary",
+            "position": "top",
+            "style": "summary_block"
+          },
+          {
+            "field_path": "report_sections.engagement_pattern",
+            "label": "Engagement Pattern",
+            "position": "top",
+            "style": "contextual_callout"
+          },
+          {
+            "field_path": "report_sections.reading_implications",
+            "label": "Reading Implications",
+            "position": "bottom",
+            "style": "interpretive_footer"
+          }
+        ],
+        "secondary_grid": {
+          "items_path": "report_sections.sin_distribution",
+          "group_by": "sin_type",
+          "columns": 3,
+          "expandable": false,
+          "title_field": "sin_type",
+          "badge_field": "count",
+          "description_field": "description",
+          "label": "Sin Distribution"
+        }
+      },
+      "data_source": {
+        "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+        "phase_number": 1,
+        "engine_key": "aoi_thematic_report",
+        "chain_key": null,
+        "result_path": "",
+        "scope": "aggregated"
+      },
+      "secondary_sources": [],
+      "transformation": {
+        "type": "llm_extract",
+        "field_mapping": null,
+        "llm_extraction_schema": {
+          "description": "Either a flat array of card objects, or a category-keyed object whose values are arrays of card objects.",
+          "oneOf": [
+            {
+              "type": "array",
+              "description": "Flat list of card objects",
+              "items": {
+                "type": "object",
+                "minProperties": 1
+              },
+              "minItems": 1
+            },
+            {
+              "type": "object",
+              "description": "Category-keyed groups of card objects",
+              "minProperties": 1,
+              "additionalProperties": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "minProperties": 1
+                }
+              }
+            }
+          ]
+        },
+        "llm_prompt_template": "You are a precise data extraction assistant. Your task is to read analytical prose and extract structured JSON suitable for rendering in a specific UI component. Return ONLY valid JSON — no markdown code fences, no commentary.\n\n## About the Analysis\n\nThis prose was produced by the \"AOI Thematic Report\" engine, which performs synthesis analysis.\nCore question: What bounded AOI report best summarizes the thematic relationship between the subject corpus and the selected source thinker?\nAnalytical dimensions: summary\n\n## Target Rendering\n\nThe extracted data will be rendered in a \"Card Grid\" (list) component.\nThis renderer expects data in one of these shapes: object_array, flat_list.\nThe renderer maps data using these field references:\n  - title_field: Field name for card title\n  - subtitle_field: Field name for card subtitle\n  - description_field: Field name for card body text\n  - badge_field: Field name for badge/tag on card\n\nReturn a JSON array of objects. Each object should have fields like: {\"title_field\": \"...\", \"subtitle_field\": \"...\", \"description_field\": \"...\", \"badge_field\": \"...\"}. Include as many items as the prose supports.\n\n## Engine Output Structure (Reference)\n\nThe engine's canonical output includes these fields. Use this as a guide for what information is available in the prose — extract what matches the target renderer's shape:\n\n{\n  \"report_sections\": {\n    \"summary\": \"string\",\n    \"engagement_pattern\": \"string\",\n    \"key_divergences\": [\n      {\n        \"title\": \"string\",\n        \"subtitle\": \"string\",\n        \"description\": \"string\",\n        \"badge\": \"critical | high | medium | low\"\n      }\n    ],\n    \"sin_distribution\": [\n      {\n        \"sin_type\": \"string\",\n        \"count\": 0,\n        \"description\": \"string\"\n      }\n    ],\n    \"reading_implications\": \"string\"\n  }\n}\n\n## Key Fields\n\n- **summary**: Summarize the overall AOI result clearly enough to orient a reader.\n\n## Transient Compose Context\nPattern key: card_grid_grouped\nUse the final renderer configuration below when choosing field names and nesting.\nRenderer config:\n{\n  \"items_path\": \"report_sections.key_divergences\",\n  \"group_by\": \"badge\",\n  \"columns\": 2,\n  \"expandable\": true,\n  \"title_field\": \"title\",\n  \"subtitle_field\": \"subtitle\",\n  \"description_field\": \"description\",\n  \"badge_field\": \"badge\",\n  \"group_style_map\": {\n    \"critical\": {\n      \"color\": \"#b91c1c\",\n      \"label\": \"Critical Divergence\"\n    },\n    \"high\": {\n      \"color\": \"#c2410c\",\n      \"label\": \"High Divergence\"\n    },\n    \"medium\": {\n      \"color\": \"#b45309\",\n      \"label\": \"Medium Divergence\"\n    },\n    \"low\": {\n      \"color\": \"#4b5563\",\n      \"label\": \"Low Divergence\"\n    }\n  },\n  \"prose_headers\": [\n    {\n      \"field_path\": \"report_sections.summary\",\n      \"label\": \"Summary\",\n      \"position\": \"top\",\n      \"style\": \"summary_block\"\n    },\n    {\n      \"field_path\": \"report_sections.engagement_pattern\",\n      \"label\": \"Engagement Pattern\",\n      \"position\": \"top\",\n      \"style\": \"contextual_callout\"\n    },\n    {\n      \"field_path\": \"report_sections.reading_implications\",\n      \"label\": \"Reading Implications\",\n      \"position\": \"bottom\",\n      \"style\": \"interpretive_footer\"\n    }\n  ],\n  \"secondary_grid\": {\n    \"items_path\": \"report_sections.sin_distribution\",\n    \"group_by\": \"sin_type\",\n    \"columns\": 3,\n    \"expandable\": false,\n    \"title_field\": \"sin_type\",\n    \"badge_field\": \"count\",\n    \"description_field\": \"description\",\n    \"label\": \"Sin Distribution\"\n  }\n}\n\nThe following renderer input schema is prompt guidance for the target shape.\nInput data schema:\n{\n  \"description\": \"Either a flat array of card objects, or a category-keyed object whose values are arrays of card objects.\",\n  \"oneOf\": [\n    {\n      \"type\": \"array\",\n      \"description\": \"Flat list of card objects\",\n      \"items\": {\n        \"type\": \"object\",\n        \"minProperties\": 1\n      },\n      \"minItems\": 1\n    },\n    {\n      \"type\": \"object\",\n      \"description\": \"Category-keyed groups of card objects\",\n      \"minProperties\": 1,\n      \"additionalProperties\": {\n        \"type\": \"array\",\n        \"items\": {\n          \"type\": \"object\",\n          \"minProperties\": 1\n        }\n      }\n    }\n  ]\n}",
+        "stance_key": "evaluative"
+      },
+      "presentation_stance": "evaluative",
+      "position": 2,
+      "parent_view_key": null,
+      "surface_archetype": null,
+      "scaffold_contract": null,
+      "surface_role": null,
+      "child_display_mode": null,
+      "tab_count_field": null,
+      "visibility": "if_data_exists",
+      "audience_overrides": {},
+      "planner_hint": "Recommend this view when the user needs a structured evaluative overview of a completed AOI analysis, particularly to surface key divergences by severity and sin distribution by type alongside interpretive prose. Best used as the primary output surface for thematic AOI reports in compose or review contexts.",
+      "planner_eligible": true,
+      "status": "draft",
+      "tags": [
+        "aoi",
+        "thematic_report",
+        "divergences",
+        "sin_distribution",
+        "grouped",
+        "cards",
+        "evaluative",
+        "categorized",
+        "expandable",
+        "the-critic",
+        "anxiety_of_influence"
+      ],
+      "source_project": "compose_from_intent_transient",
+      "generation_mode": "generated"
+    }
+  ],
+  "trace": {
+    "resolver_version": "compose-from-intent-v1",
+    "entries": [
+      {
+        "stage": "page_plan",
+        "details": {
+          "row_count": 2,
+          "rows": [
+            {
+              "section_index": 0,
+              "pattern_key": "accordion_sections",
+              "view_name": "Thematic Synthesis Explorer",
+              "presentation_stance": "analytical",
+              "rationale": "The thematic synthesis data contains multiple themes each with heterogeneous sub-fields (key_claims, philosophical_commitments, argumentative_moves, source_documents) — exactly the multi-faceted analytical output with differing data shapes that accordion_sections handles best. The collapsible structure lets the critic scan theme names at a glance and drill into whichever facet demands attention, matching the explanatory_narrative style by layering detail progressively."
+            },
+            {
+              "section_index": 1,
+              "pattern_key": "card_grid_grouped",
+              "view_name": "AOI Structured Report",
+              "presentation_stance": "evaluative",
+              "rationale": "The report section contains two naturally categorized arrays — key_divergences (categorized by badge level) and sin_distribution (categorized by sin type) — which map cleanly onto card_grid_grouped's per-group headers and expandable detail model. Badges on divergence cards directly encode the high/medium severity field. This closes the page with a structured, scannable verdict view that complements the narrative accordion above, fulfilling the user intent to close with the structured report."
+            }
+          ]
+        }
+      },
+      {
+        "stage": "view_generation",
+        "details": {
+          "views": [
+            {
+              "view_key": "compose_intent_01_aoi_thematic_synthesis",
+              "pattern_key": "accordion_sections",
+              "renderer_type": "accordion",
+              "engine_key": "aoi_thematic_synthesis"
+            },
+            {
+              "view_key": "compose_intent_02_aoi_thematic_report",
+              "pattern_key": "card_grid_grouped",
+              "renderer_type": "card_grid",
+              "engine_key": "aoi_thematic_report"
+            }
+          ]
+        }
+      },
+      {
+        "stage": "transformation_execution",
+        "details": {
+          "views": [
+            {
+              "view_key": "compose_intent_01_aoi_thematic_synthesis",
+              "engine_key": "aoi_thematic_synthesis",
+              "renderer_type": "accordion",
+              "extraction_source": "dynamic",
+              "template_key": null,
+              "cached": false
+            },
+            {
+              "view_key": "compose_intent_02_aoi_thematic_report",
+              "engine_key": "aoi_thematic_report",
+              "renderer_type": "card_grid",
+              "extraction_source": "dynamic",
+              "template_key": null,
+              "cached": false
+            }
+          ]
+        }
+      },
+      {
+        "stage": "consumer_adaptation",
+        "details": {
+          "views": [
+            {
+              "view_key": "compose_intent_01_aoi_thematic_synthesis",
+              "renderer_type": "accordion",
+              "adapted": false
+            },
+            {
+              "view_key": "compose_intent_02_aoi_thematic_report",
+              "renderer_type": "card_grid",
+              "adapted": false
+            }
+          ]
+        }
+      },
+      {
+        "stage": "contract_validation",
+        "details": {
+          "view_count": 2,
+          "issues": 0
+        }
+      }
+    ]
+  }
+}

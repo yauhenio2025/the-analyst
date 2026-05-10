@@ -1,0 +1,45 @@
+{
+  "composition_mode": "declarative_relationship_surface_v1",
+  "workflow_key": "intellectual_genealogy",
+  "target_surface": "genealogy_relationship_landscape",
+  "signal_extractor_key": "relationship_surface_signals_v1",
+  "default_family": "relationship_comparison_review",
+  "families": [
+    {
+      "family_key": "relationship_profile_dossier",
+      "builder_template_key": "relationship_profile_dossier",
+      "view_name": "Relationship Dossier"
+    },
+    {
+      "family_key": "relationship_comparison_review",
+      "builder_template_key": "relationship_comparison_review",
+      "view_name": "Relationship Comparison Review"
+    }
+  ],
+  "decision_rules": [
+    {
+      "family_key": "relationship_profile_dossier",
+      "match_any": [
+        [
+          {
+            "metric": "relationship_count",
+            "operator": "eq",
+            "value": 1
+          }
+        ],
+        [
+          {
+            "metric": "top_share",
+            "operator": "gte",
+            "value": 0.45
+          },
+          {
+            "metric": "score_gap",
+            "operator": "gte",
+            "value": 5
+          }
+        ]
+      ]
+    }
+  ]
+}

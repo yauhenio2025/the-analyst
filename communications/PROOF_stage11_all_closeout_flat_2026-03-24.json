@@ -1,0 +1,173 @@
+{
+  "presentation": {
+    "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+    "consumer_key": "the-critic",
+    "presentation_contract_version": 1,
+    "presentation_hash": "5d97d10a8b94939eca73a476953305e48210c16fb52b4a318064674f2c6f92ec",
+    "presentation_content_hash": "11964bcc722135b8ff9ad781f852a3f06dc25d96076810bec44ca3782c333f57",
+    "resolver_version": "compose-from-intent-v2",
+    "style_school": "explanatory_narrative",
+    "views": [
+      {
+        "view_key": "compose_intent_01_aoi_thematic_report",
+        "view_name": "AOI Report",
+        "description": "Narrative report closeout for AOI Report.",
+        "renderer_type": "prose",
+        "renderer_config": {
+          "show_section_nav": false
+        },
+        "presentation_stance": "narrative",
+        "rationale": "Matched closeout semantics to prose so the report reads as a connected narrative.",
+        "engine_key": "aoi_thematic_report",
+        "position": 1.0,
+        "visibility": "if_data_exists",
+        "has_structured_data": true,
+        "structured_data": "This is a report closeout only.",
+        "items": null,
+        "children": []
+      }
+    ],
+    "view_count": 1
+  },
+  "generated_view_definitions": [
+    {
+      "view_key": "compose_intent_01_aoi_thematic_report",
+      "view_name": "AOI Report",
+      "description": "Narrative report closeout for AOI Report.",
+      "version": 1,
+      "target_app": "the-critic",
+      "target_page": "compose_from_intent_transient",
+      "target_section": "results",
+      "renderer_type": "prose",
+      "renderer_config": {
+        "show_section_nav": false
+      },
+      "data_source": {
+        "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+        "phase_number": 1.0,
+        "engine_key": "aoi_thematic_report",
+        "chain_key": null,
+        "result_path": "",
+        "scope": "aggregated"
+      },
+      "secondary_sources": [],
+      "transformation": {
+        "type": "none",
+        "field_mapping": null,
+        "llm_extraction_schema": null,
+        "llm_prompt_template": null,
+        "stance_key": null
+      },
+      "presentation_stance": "narrative",
+      "position": 1.0,
+      "parent_view_key": null,
+      "surface_archetype": null,
+      "scaffold_contract": null,
+      "surface_role": null,
+      "child_display_mode": null,
+      "tab_count_field": null,
+      "visibility": "if_data_exists",
+      "audience_overrides": {},
+      "planner_hint": "",
+      "planner_eligible": true,
+      "status": "draft",
+      "tags": [],
+      "source_project": "compose_from_intent_transient",
+      "generation_mode": "generated"
+    }
+  ],
+  "trace": {
+    "resolver_version": "compose-from-intent-v2",
+    "entries": [
+      {
+        "stage": "semantic_surface_matching",
+        "details": {
+          "sections": [
+            {
+              "section_index": 0,
+              "engine_key": "aoi_thematic_report",
+              "title": "AOI Report",
+              "source_family_key": null,
+              "composition_role_hint": null,
+              "semantic_role": "report_closeout",
+              "pattern_key": "prose_narrative",
+              "inventory_listing": false
+            }
+          ]
+        }
+      },
+      {
+        "stage": "hierarchy_planning",
+        "details": {
+          "grouped": false,
+          "grouping_reason": "flat_all_closeout",
+          "top_level_count": 1,
+          "leaf_count": 1
+        }
+      },
+      {
+        "stage": "page_plan",
+        "details": {
+          "top_level_count": 1,
+          "views": [
+            {
+              "kind": "leaf",
+              "section_index": 0,
+              "pattern_key": "prose_narrative",
+              "view_name": "AOI Report",
+              "semantic_role": "report_closeout",
+              "presentation_stance": "narrative"
+            }
+          ]
+        }
+      },
+      {
+        "stage": "view_generation",
+        "details": {
+          "views": [
+            {
+              "view_key": "compose_intent_01_aoi_thematic_report",
+              "pattern_key": "prose_narrative",
+              "renderer_type": "prose",
+              "engine_key": "aoi_thematic_report",
+              "parent_view_key": null
+            }
+          ]
+        }
+      },
+      {
+        "stage": "transformation_execution",
+        "details": {
+          "views": [
+            {
+              "view_key": "compose_intent_01_aoi_thematic_report",
+              "engine_key": "aoi_thematic_report",
+              "renderer_type": "prose",
+              "extraction_source": "passthrough",
+              "template_key": null
+            }
+          ]
+        }
+      },
+      {
+        "stage": "consumer_adaptation",
+        "details": {
+          "views": [
+            {
+              "view_key": "compose_intent_01_aoi_thematic_report",
+              "renderer_type": "prose",
+              "adapted": false
+            }
+          ]
+        }
+      },
+      {
+        "stage": "contract_validation",
+        "details": {
+          "view_count": 1,
+          "issues": 0
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,2452 @@
+{
+  "attempt_label": "frozen_pack_rerun",
+  "case_key": "engagement_ready",
+  "fixture_strength": "fixture_backed",
+  "expected_outcome": "ready",
+  "actual_outcome": "ready",
+  "expectation_met": true,
+  "captured_at": "2026-03-25T11:09:48.840Z",
+  "url": "http://127.0.0.1:3456/p/round5-proof-dossier-final-1774100000/anxiety-of-influence/otto_neurath/v2-thematic",
+  "final_url": "http://127.0.0.1:3456/p/round5-proof-dossier-final-1774100000/analysis/anxiety_of_influence_thematic_single_thinker/compose-from-intent?selected_source_thinker_id=otto_neurath&source_analysis_id=gen-v2-bc775422fe5c&origin=aoi_v2_thematic&return_to=%2Fp%2Fround5-proof-dossier-final-1774100000%2Fanxiety-of-influence%2Fotto_neurath%2Fv2-thematic&source_v2_job_id=proof-round5-adaptive-aoi-dossier-final-1774100000&selected_source_thinker_name=Otto+Neurath",
+  "task": "Show where Aaron Benanav most directly engages, contests, or reframes Otto Neurath’s positions on planning.",
+  "route_plan_compose_requests": {
+    "route_task": [
+      {
+        "phase": "request",
+        "url": "http://127.0.0.1:8002/v1/orchestrator/route-task",
+        "method": "POST",
+        "at": "2026-03-25T11:06:42.040Z",
+        "body": {
+          "task": "Show where Aaron Benanav most directly engages, contests, or reframes Otto Neurath’s positions on planning.",
+          "consumer_key": "the-critic",
+          "workflow_hint": "anxiety_of_influence_thematic_single_thinker",
+          "objective_hint": "influence_thematic",
+          "source_constraints": {
+            "source_mode": "saved_result",
+            "selected_source_thinker_id": "otto_neurath",
+            "selected_source_thinker_name": "Otto Neurath",
+            "source_analysis_id": "gen-v2-bc775422fe5c",
+            "source_v2_job_id": "proof-round5-adaptive-aoi-dossier-final-1774100000"
+          }
+        }
+      },
+      {
+        "phase": "response",
+        "url": "http://127.0.0.1:8002/v1/orchestrator/route-task",
+        "status": 200,
+        "at": "2026-03-25T11:06:42.048Z",
+        "latency_ms": 8,
+        "body": {
+          "normalized_task_summary": "Show where Aaron Benanav most directly engages, contests, or reframes Otto Neurath’s positions on planning.",
+          "selected_objective_key": "influence_thematic",
+          "selected_workflow_key": "anxiety_of_influence_thematic_single_thinker",
+          "routing_outcome": "aoi_transient_source_backed",
+          "routing_confidence": "high",
+          "launch_contract_kind": "planner.aoi_compose_handoff",
+          "source_sufficiency_status": "sufficient",
+          "required_fields": [
+            "workflow_key",
+            "consumer_key",
+            "source_v2_job_id"
+          ],
+          "required_host_preparation": [
+            "Call plan-task with saved_result planning context to resolve AOI source selection before launch."
+          ],
+          "downstream_launch_contract": {
+            "method": "POST",
+            "endpoint": "/v1/orchestrator/plan-task",
+            "request_fields": {
+              "task_request.workflow_hint": "anxiety_of_influence_thematic_single_thinker",
+              "task_request.consumer_key": "the-critic",
+              "planning_context.context_mode": "saved_result",
+              "planning_context.source_v2_job_id": "proof-round5-adaptive-aoi-dossier-final-1774100000"
+            }
+          },
+          "rejected_candidates": [
+            {
+              "objective_key": "genealogical",
+              "rejection_reason": "not_selected",
+              "details": [
+                "source_mode 'saved_result' is incompatible",
+                "Genealogy routing is not compatible with saved_result source mode."
+              ]
+            }
+          ],
+          "trace": [
+            {
+              "stage": "task_normalization",
+              "details": {
+                "normalized_task_summary": "Show where Aaron Benanav most directly engages, contests, or reframes Otto Neurath’s positions on planning.",
+                "audience": null,
+                "desired_depth": null,
+                "style_expectations": null
+              }
+            },
+            {
+              "stage": "objective_candidate_scoring",
+              "details": {
+                "objective_hint": "influence_thematic",
+                "objective_hint_status": "provided_and_validated",
+                "workflow_hint": "anxiety_of_influence_thematic_single_thinker",
+                "workflow_hint_status": "accepted_as_consistent",
+                "candidates": [
+                  {
+                    "objective_key": "influence_thematic",
+                    "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                    "signal_score": 0,
+                    "positive_signals": [],
+                    "source_mode": "saved_result",
+                    "source_mode_compatible": true
+                  },
+                  {
+                    "objective_key": "genealogical",
+                    "workflow_key": "intellectual_genealogy",
+                    "signal_score": 0,
+                    "positive_signals": [],
+                    "source_mode": "saved_result",
+                    "source_mode_compatible": false
+                  }
+                ]
+              }
+            },
+            {
+              "stage": "source_sufficiency_evaluation",
+              "details": {
+                "selected_objective_key": "influence_thematic",
+                "selected_workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                "source_mode": "saved_result",
+                "source_sufficiency_status": "sufficient",
+                "sufficiency_reasons": []
+              }
+            },
+            {
+              "stage": "routing_decision",
+              "details": {
+                "routing_outcome": "aoi_transient_source_backed",
+                "routing_confidence": "high",
+                "launch_contract_kind": "planner.aoi_compose_handoff",
+                "selected_objective_key": "influence_thematic",
+                "selected_workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                "required_fields": [
+                  "workflow_key",
+                  "consumer_key",
+                  "source_v2_job_id"
+                ],
+                "required_host_preparation": [
+                  "Call plan-task with saved_result planning context to resolve AOI source selection before launch."
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "plan_task": [
+      {
+        "phase": "request",
+        "url": "http://127.0.0.1:8002/v1/orchestrator/plan-task",
+        "method": "POST",
+        "at": "2026-03-25T11:06:42.047Z",
+        "body": {
+          "task_request": {
+            "task": "Show where Aaron Benanav most directly engages, contests, or reframes Otto Neurath’s positions on planning.",
+            "consumer_key": "the-critic",
+            "workflow_hint": "anxiety_of_influence_thematic_single_thinker",
+            "objective_hint": "influence_thematic",
+            "source_constraints": {
+              "source_mode": "saved_result",
+              "selected_source_thinker_id": "otto_neurath",
+              "selected_source_thinker_name": "Otto Neurath",
+              "source_analysis_id": "gen-v2-bc775422fe5c",
+              "source_v2_job_id": "proof-round5-adaptive-aoi-dossier-final-1774100000"
+            }
+          },
+          "prior_routing_decision": {
+            "normalized_task_summary": "Show where Aaron Benanav most directly engages, contests, or reframes Otto Neurath’s positions on planning.",
+            "selected_objective_key": "influence_thematic",
+            "selected_workflow_key": "anxiety_of_influence_thematic_single_thinker",
+            "routing_outcome": "aoi_transient_source_backed",
+            "routing_confidence": "high",
+            "launch_contract_kind": "planner.aoi_compose_handoff",
+            "source_sufficiency_status": "sufficient",
+            "required_fields": [
+              "workflow_key",
+              "consumer_key",
+              "source_v2_job_id"
+            ],
+            "required_host_preparation": [
+              "Call plan-task with saved_result planning context to resolve AOI source selection before launch."
+            ],
+            "downstream_launch_contract": {
+              "method": "POST",
+              "endpoint": "/v1/orchestrator/plan-task",
+              "request_fields": {
+                "task_request.workflow_hint": "anxiety_of_influence_thematic_single_thinker",
+                "task_request.consumer_key": "the-critic",
+                "planning_context.context_mode": "saved_result",
+                "planning_context.source_v2_job_id": "proof-round5-adaptive-aoi-dossier-final-1774100000"
+              }
+            },
+            "rejected_candidates": [
+              {
+                "objective_key": "genealogical",
+                "rejection_reason": "not_selected",
+                "details": [
+                  "source_mode 'saved_result' is incompatible",
+                  "Genealogy routing is not compatible with saved_result source mode."
+                ]
+              }
+            ],
+            "trace": [
+              {
+                "stage": "task_normalization",
+                "details": {
+                  "normalized_task_summary": "Show where Aaron Benanav most directly engages, contests, or reframes Otto Neurath’s positions on planning.",
+                  "audience": null,
+                  "desired_depth": null,
+                  "style_expectations": null
+                }
+              },
+              {
+                "stage": "objective_candidate_scoring",
+                "details": {
+                  "objective_hint": "influence_thematic",
+                  "objective_hint_status": "provided_and_validated",
+                  "workflow_hint": "anxiety_of_influence_thematic_single_thinker",
+                  "workflow_hint_status": "accepted_as_consistent",
+                  "candidates": [
+                    {
+                      "objective_key": "influence_thematic",
+                      "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                      "signal_score": 0,
+                      "positive_signals": [],
+                      "source_mode": "saved_result",
+                      "source_mode_compatible": true
+                    },
+                    {
+                      "objective_key": "genealogical",
+                      "workflow_key": "intellectual_genealogy",
+                      "signal_score": 0,
+                      "positive_signals": [],
+                      "source_mode": "saved_result",
+                      "source_mode_compatible": false
+                    }
+                  ]
+                }
+              },
+              {
+                "stage": "source_sufficiency_evaluation",
+                "details": {
+                  "selected_objective_key": "influence_thematic",
+                  "selected_workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                  "source_mode": "saved_result",
+                  "source_sufficiency_status": "sufficient",
+                  "sufficiency_reasons": []
+                }
+              },
+              {
+                "stage": "routing_decision",
+                "details": {
+                  "routing_outcome": "aoi_transient_source_backed",
+                  "routing_confidence": "high",
+                  "launch_contract_kind": "planner.aoi_compose_handoff",
+                  "selected_objective_key": "influence_thematic",
+                  "selected_workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                  "required_fields": [
+                    "workflow_key",
+                    "consumer_key",
+                    "source_v2_job_id"
+                  ],
+                  "required_host_preparation": [
+                    "Call plan-task with saved_result planning context to resolve AOI source selection before launch."
+                  ]
+                }
+              }
+            ]
+          },
+          "planning_context": {
+            "context_mode": "saved_result",
+            "source_v2_job_id": "proof-round5-adaptive-aoi-dossier-final-1774100000",
+            "consumer_key": "the-critic"
+          }
+        }
+      },
+      {
+        "phase": "response",
+        "url": "http://127.0.0.1:8002/v1/orchestrator/plan-task",
+        "status": 200,
+        "at": "2026-03-25T11:06:56.180Z",
+        "latency_ms": 14133,
+        "body": {
+          "normalized_task_summary": "Show where Aaron Benanav most directly engages, contests, or reframes Otto Neurath’s positions on planning.",
+          "routing_decision": {
+            "normalized_task_summary": "Show where Aaron Benanav most directly engages, contests, or reframes Otto Neurath’s positions on planning.",
+            "selected_objective_key": "influence_thematic",
+            "selected_workflow_key": "anxiety_of_influence_thematic_single_thinker",
+            "routing_outcome": "aoi_transient_source_backed",
+            "routing_confidence": "high",
+            "launch_contract_kind": "planner.aoi_compose_handoff",
+            "source_sufficiency_status": "sufficient",
+            "required_fields": [
+              "workflow_key",
+              "consumer_key",
+              "source_v2_job_id"
+            ],
+            "required_host_preparation": [
+              "Call plan-task with saved_result planning context to resolve AOI source selection before launch."
+            ],
+            "downstream_launch_contract": {
+              "method": "POST",
+              "endpoint": "/v1/orchestrator/plan-task",
+              "request_fields": {
+                "task_request.workflow_hint": "anxiety_of_influence_thematic_single_thinker",
+                "task_request.consumer_key": "the-critic",
+                "planning_context.context_mode": "saved_result",
+                "planning_context.source_v2_job_id": "proof-round5-adaptive-aoi-dossier-final-1774100000"
+              }
+            },
+            "rejected_candidates": [
+              {
+                "objective_key": "genealogical",
+                "rejection_reason": "not_selected",
+                "details": [
+                  "source_mode 'saved_result' is incompatible",
+                  "Genealogy routing is not compatible with saved_result source mode."
+                ]
+              }
+            ],
+            "trace": [
+              {
+                "stage": "task_normalization",
+                "details": {
+                  "normalized_task_summary": "Show where Aaron Benanav most directly engages, contests, or reframes Otto Neurath’s positions on planning.",
+                  "audience": null,
+                  "desired_depth": null,
+                  "style_expectations": null
+                }
+              },
+              {
+                "stage": "objective_candidate_scoring",
+                "details": {
+                  "objective_hint": "influence_thematic",
+                  "objective_hint_status": "provided_and_validated",
+                  "workflow_hint": "anxiety_of_influence_thematic_single_thinker",
+                  "workflow_hint_status": "accepted_as_consistent",
+                  "candidates": [
+                    {
+                      "objective_key": "influence_thematic",
+                      "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                      "signal_score": 0,
+                      "positive_signals": [],
+                      "source_mode": "saved_result",
+                      "source_mode_compatible": true
+                    },
+                    {
+                      "objective_key": "genealogical",
+                      "workflow_key": "intellectual_genealogy",
+                      "signal_score": 0,
+                      "positive_signals": [],
+                      "source_mode": "saved_result",
+                      "source_mode_compatible": false
+                    }
+                  ]
+                }
+              },
+              {
+                "stage": "source_sufficiency_evaluation",
+                "details": {
+                  "selected_objective_key": "influence_thematic",
+                  "selected_workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                  "source_mode": "saved_result",
+                  "source_sufficiency_status": "sufficient",
+                  "sufficiency_reasons": []
+                }
+              },
+              {
+                "stage": "routing_decision",
+                "details": {
+                  "routing_outcome": "aoi_transient_source_backed",
+                  "routing_confidence": "high",
+                  "launch_contract_kind": "planner.aoi_compose_handoff",
+                  "selected_objective_key": "influence_thematic",
+                  "selected_workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                  "required_fields": [
+                    "workflow_key",
+                    "consumer_key",
+                    "source_v2_job_id"
+                  ],
+                  "required_host_preparation": [
+                    "Call plan-task with saved_result planning context to resolve AOI source selection before launch."
+                  ]
+                }
+              }
+            ]
+          },
+          "planning_outcome_kind": "aoi_composition_handoff_plan",
+          "planning_confidence": "high",
+          "hydration_status": "satisfied",
+          "required_hydration": [],
+          "required_host_preparation": [
+            "Carry planner-selected source families and the resolved intent seed into compose-from-selection."
+          ],
+          "downstream_readiness": "ready_for_aoi_compose_handoff",
+          "downstream_followup_contract": {
+            "method": "POST",
+            "endpoint": "/v1/presenter/compose-from-selection",
+            "selection_kind": "explicit",
+            "legacy_profile_equivalent": null,
+            "request_fields": {
+              "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+              "consumer_key": "the-critic",
+              "source_v2_job_id": "proof-round5-adaptive-aoi-dossier-final-1774100000",
+              "selection": [
+                {
+                  "source_family_key": "engagement_mapping",
+                  "selection_rank": 1,
+                  "rationale": "Engagement Mapping is the most directly relevant family for this task. Its structure — engagements, themes_engaged, themes_distorted, themes_partial, themes_ignored, engagement_pattern — maps precisely onto the question of where Benanav directly engages, contests, or reframes Neurath's positions. It provides granular, positional data on the nature of each intellectual encounter."
+                },
+                {
+                  "source_family_key": "thematic_synthesis",
+                  "selection_rank": 2,
+                  "rationale": "Thematic Synthesis supplies the overarching interpretive frame across themes, grounding the engagement data in a coherent narrative about Benanav's relationship to Neurath's planning thought. The 'themes' and 'overall_synthesis' keys provide the connective tissue needed for a bounded handoff that must be readable as a composition seed."
+                },
+                {
+                  "source_family_key": "thematic_report",
+                  "selection_rank": 3,
+                  "rationale": "The AOI Report provides a structured closeout layer with key_divergences, engagement_pattern, and summary — directly useful for characterizing the handoff as bounded and transient. Its 'key_divergences' key is especially pertinent to contrasting Benanav's reframings against Neurath's original positions."
+                },
+                {
+                  "source_family_key": "sin_findings",
+                  "selection_rank": 4,
+                  "rationale": "Sin Findings captures where Benanav misreads, omits, or distorts Neurath — a critical dimension of 'contesting or reframing.' The findings_by_theme index allows targeted retrieval relevant to planning-specific positions, supporting the single-thinker anxiety-of-influence workflow."
+                }
+              ],
+              "user_intent": "Show where Aaron Benanav most directly engages, contests, or reframes Otto Neurath's positions on planning, highlighting key divergences, thematic distortions, and the overall pattern of influence."
+            }
+          },
+          "hydrated_document_ids": {},
+          "workflow_execution_plan": null,
+          "aoi_composition_handoff_plan": {
+            "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+            "objective_key": "influence_thematic",
+            "consumer_key": "the-critic",
+            "source_v2_job_id": "proof-round5-adaptive-aoi-dossier-final-1774100000",
+            "compose_entrypoint_kind": "presenter.compose_from_selection",
+            "selected_source_thinker_id": "otto_neurath",
+            "selected_source_thinker_name": "Otto Neurath",
+            "selected_sources": [
+              {
+                "source_family_key": "engagement_mapping",
+                "selection_rank": 1,
+                "rationale": "Engagement Mapping is the most directly relevant family for this task. Its structure — engagements, themes_engaged, themes_distorted, themes_partial, themes_ignored, engagement_pattern — maps precisely onto the question of where Benanav directly engages, contests, or reframes Neurath's positions. It provides granular, positional data on the nature of each intellectual encounter."
+              },
+              {
+                "source_family_key": "thematic_synthesis",
+                "selection_rank": 2,
+                "rationale": "Thematic Synthesis supplies the overarching interpretive frame across themes, grounding the engagement data in a coherent narrative about Benanav's relationship to Neurath's planning thought. The 'themes' and 'overall_synthesis' keys provide the connective tissue needed for a bounded handoff that must be readable as a composition seed."
+              },
+              {
+                "source_family_key": "thematic_report",
+                "selection_rank": 3,
+                "rationale": "The AOI Report provides a structured closeout layer with key_divergences, engagement_pattern, and summary — directly useful for characterizing the handoff as bounded and transient. Its 'key_divergences' key is especially pertinent to contrasting Benanav's reframings against Neurath's original positions."
+              },
+              {
+                "source_family_key": "sin_findings",
+                "selection_rank": 4,
+                "rationale": "Sin Findings captures where Benanav misreads, omits, or distorts Neurath — a critical dimension of 'contesting or reframing.' The findings_by_theme index allows targeted retrieval relevant to planning-specific positions, supporting the single-thinker anxiety-of-influence workflow."
+              }
+            ],
+            "rejected_sources": [],
+            "selection_summary": "All four available families are selected because each contributes a distinct and non-redundant layer to the task: Engagement Mapping provides the direct positional record of engagements; Thematic Synthesis provides interpretive coherence across themes; AOI Report provides divergence summaries and a closing pattern assessment; Sin Findings surfaces misreadings and omissions. Together they form a complete bounded transient handoff for the single-thinker AOI workflow focused on Benanav and Neurath's planning positions.",
+            "resolved_intent_seed": "Show where Aaron Benanav most directly engages, contests, or reframes Otto Neurath's positions on planning, highlighting key divergences, thematic distortions, and the overall pattern of influence.",
+            "legacy_profile_equivalent": null,
+            "expected_source_families": [
+              "thematic_synthesis",
+              "engagement_mapping",
+              "sin_findings",
+              "thematic_report"
+            ],
+            "available_source_families": [
+              "thematic_synthesis",
+              "engagement_mapping",
+              "sin_findings",
+              "thematic_report"
+            ],
+            "expected_producer_engines": [
+              "aoi_engagement_mapping",
+              "aoi_sin_findings",
+              "aoi_thematic_report",
+              "aoi_thematic_synthesis"
+            ],
+            "bridge_contract_targets": [
+              "CompositionSourceCatalog",
+              "CompositionSourceSelection"
+            ],
+            "allowed_profiles": [
+              "dossier",
+              "comparison"
+            ],
+            "blocked_profiles": {},
+            "handoff_notes": [
+              "Stage 9 AOI planning resolves explicit source-family selection before transient composition handoff.",
+              "allowed_profiles and blocked_profiles remain transition diagnostics only; the planner-primary proof path launches by explicit selection."
+            ]
+          },
+          "aoi_selection_blocked_reason_code": null,
+          "aoi_selection_blocked_reason_detail": null,
+          "rejected_planning_alternatives": [
+            {
+              "alternative_key": "genealogical",
+              "rejection_reason": "not_selected",
+              "details": [
+                "source_mode 'saved_result' is incompatible",
+                "Genealogy routing is not compatible with saved_result source mode."
+              ]
+            }
+          ],
+          "trace": [
+            {
+              "stage": "effective_task_request",
+              "details": {
+                "consumer_key": "the-critic",
+                "source_mode": "saved_result",
+                "context_mode": "saved_result"
+              }
+            },
+            {
+              "stage": "routing_reuse",
+              "details": {
+                "status": "provided_and_validated",
+                "reused_fields": [
+                  "selected_objective_key",
+                  "selected_workflow_key",
+                  "routing_outcome",
+                  "launch_contract_kind",
+                  "source_sufficiency_status"
+                ]
+              }
+            },
+            {
+              "stage": "source_catalog_resolution",
+              "details": {
+                "source_v2_job_id": "proof-round5-adaptive-aoi-dossier-final-1774100000",
+                "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                "objective_key": "influence_thematic",
+                "objective_source": "workflow_default",
+                "plan_context_found": true,
+                "plan_context_source": "job_plan_data",
+                "selected_source_thinker_id": "otto_neurath",
+                "selected_source_thinker_name": "Otto Neurath",
+                "candidates": [
+                  {
+                    "source_family_key": "thematic_synthesis",
+                    "engine_key": "aoi_thematic_synthesis",
+                    "title": "Thematic Synthesis",
+                    "source_backend_kind": "artifact",
+                    "candidate_state": "available",
+                    "provenance_pointer": {
+                      "job_id": "proof-round5-adaptive-aoi-dossier-final-1774100000",
+                      "engine_key": "aoi_thematic_synthesis"
+                    },
+                    "composition_role_hint": "synthesis_primary",
+                    "summary_metadata": {
+                      "payload_kind": "normalized_artifact",
+                      "top_level_keys": [
+                        "overall_synthesis",
+                        "selected_source_thinker",
+                        "source_documents",
+                        "themes"
+                      ]
+                    },
+                    "plan_context": {
+                      "plan_context_found": true,
+                      "plan_state": "not_declared",
+                      "objective_key": null,
+                      "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                      "selected_source_thinker_id": "otto_neurath",
+                      "selected_source_thinker_name": "Otto Neurath",
+                      "phase_matches": []
+                    },
+                    "resolution_note": "Loaded from normalized AOI artifact store."
+                  },
+                  {
+                    "source_family_key": "engagement_mapping",
+                    "engine_key": "aoi_engagement_mapping",
+                    "title": "Engagement Mapping",
+                    "source_backend_kind": "artifact",
+                    "candidate_state": "available",
+                    "provenance_pointer": {
+                      "job_id": "proof-round5-adaptive-aoi-dossier-final-1774100000",
+                      "engine_key": "aoi_engagement_mapping"
+                    },
+                    "composition_role_hint": "comparison_map",
+                    "summary_metadata": {
+                      "payload_kind": "normalized_artifact",
+                      "top_level_keys": [
+                        "engagement_pattern",
+                        "engagements",
+                        "themes_distorted",
+                        "themes_engaged",
+                        "themes_ignored",
+                        "themes_partial"
+                      ]
+                    },
+                    "plan_context": {
+                      "plan_context_found": true,
+                      "plan_state": "not_declared",
+                      "objective_key": null,
+                      "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                      "selected_source_thinker_id": "otto_neurath",
+                      "selected_source_thinker_name": "Otto Neurath",
+                      "phase_matches": []
+                    },
+                    "resolution_note": "Loaded from normalized AOI artifact store."
+                  },
+                  {
+                    "source_family_key": "sin_findings",
+                    "engine_key": "aoi_sin_findings",
+                    "title": "Sin Findings",
+                    "source_backend_kind": "artifact",
+                    "candidate_state": "available",
+                    "provenance_pointer": {
+                      "job_id": "proof-round5-adaptive-aoi-dossier-final-1774100000",
+                      "engine_key": "aoi_sin_findings"
+                    },
+                    "composition_role_hint": "findings_bank",
+                    "summary_metadata": {
+                      "payload_kind": "normalized_artifact",
+                      "top_level_keys": [
+                        "findings",
+                        "findings_by_sin_type",
+                        "findings_by_theme"
+                      ]
+                    },
+                    "plan_context": {
+                      "plan_context_found": true,
+                      "plan_state": "not_declared",
+                      "objective_key": null,
+                      "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                      "selected_source_thinker_id": "otto_neurath",
+                      "selected_source_thinker_name": "Otto Neurath",
+                      "phase_matches": []
+                    },
+                    "resolution_note": "Loaded from normalized AOI artifact store."
+                  },
+                  {
+                    "source_family_key": "thematic_report",
+                    "engine_key": "aoi_thematic_report",
+                    "title": "AOI Report",
+                    "source_backend_kind": "normalized_report_payload",
+                    "candidate_state": "available",
+                    "provenance_pointer": {
+                      "job_id": "proof-round5-adaptive-aoi-dossier-final-1774100000",
+                      "engine_key": "aoi_thematic_report",
+                      "output_id": "po-3eb68e59c703",
+                      "phase_number": 4,
+                      "pass_number": 1,
+                      "created_at": "2026-03-21T03:43:57.206318"
+                    },
+                    "composition_role_hint": "report_closeout",
+                    "summary_metadata": {
+                      "payload_kind": "report_sections",
+                      "top_level_keys": [
+                        "engagement_pattern",
+                        "key_divergences",
+                        "reading_implications",
+                        "sin_distribution",
+                        "summary"
+                      ],
+                      "derived_payload_kind": "normalized_report_payload"
+                    },
+                    "plan_context": {
+                      "plan_context_found": true,
+                      "plan_state": "not_declared",
+                      "objective_key": null,
+                      "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                      "selected_source_thinker_id": "otto_neurath",
+                      "selected_source_thinker_name": "Otto Neurath",
+                      "phase_matches": []
+                    },
+                    "resolution_note": "Loaded from the latest thematic report phase output metadata."
+                  }
+                ]
+              }
+            },
+            {
+              "stage": "source_selection",
+              "details": {
+                "prompt_version": "aoi-selection-v1",
+                "model_used": "claude-sonnet-4-6",
+                "timeout_s": 45,
+                "retry_policy": {
+                  "max_retries": 0
+                },
+                "provider_outcome": "success",
+                "validator_version": "aoi-selection-validator-v1",
+                "selected_sources": [
+                  {
+                    "source_family_key": "engagement_mapping",
+                    "selection_rank": 1,
+                    "rationale": "Engagement Mapping is the most directly relevant family for this task. Its structure — engagements, themes_engaged, themes_distorted, themes_partial, themes_ignored, engagement_pattern — maps precisely onto the question of where Benanav directly engages, contests, or reframes Neurath's positions. It provides granular, positional data on the nature of each intellectual encounter."
+                  },
+                  {
+                    "source_family_key": "thematic_synthesis",
+                    "selection_rank": 2,
+                    "rationale": "Thematic Synthesis supplies the overarching interpretive frame across themes, grounding the engagement data in a coherent narrative about Benanav's relationship to Neurath's planning thought. The 'themes' and 'overall_synthesis' keys provide the connective tissue needed for a bounded handoff that must be readable as a composition seed."
+                  },
+                  {
+                    "source_family_key": "thematic_report",
+                    "selection_rank": 3,
+                    "rationale": "The AOI Report provides a structured closeout layer with key_divergences, engagement_pattern, and summary — directly useful for characterizing the handoff as bounded and transient. Its 'key_divergences' key is especially pertinent to contrasting Benanav's reframings against Neurath's original positions."
+                  },
+                  {
+                    "source_family_key": "sin_findings",
+                    "selection_rank": 4,
+                    "rationale": "Sin Findings captures where Benanav misreads, omits, or distorts Neurath — a critical dimension of 'contesting or reframing.' The findings_by_theme index allows targeted retrieval relevant to planning-specific positions, supporting the single-thinker anxiety-of-influence workflow."
+                  }
+                ],
+                "rejected_sources": [],
+                "selection_summary": "All four available families are selected because each contributes a distinct and non-redundant layer to the task: Engagement Mapping provides the direct positional record of engagements; Thematic Synthesis provides interpretive coherence across themes; AOI Report provides divergence summaries and a closing pattern assessment; Sin Findings surfaces misreadings and omissions. Together they form a complete bounded transient handoff for the single-thinker AOI workflow focused on Benanav and Neurath's planning positions.",
+                "resolved_intent_seed": "Show where Aaron Benanav most directly engages, contests, or reframes Otto Neurath's positions on planning, highlighting key divergences, thematic distortions, and the overall pattern of influence."
+              }
+            },
+            {
+              "stage": "planning_decision",
+              "details": {
+                "planning_outcome_kind": "aoi_composition_handoff_plan",
+                "downstream_readiness": "ready_for_aoi_compose_handoff",
+                "selection_summary": "All four available families are selected because each contributes a distinct and non-redundant layer to the task: Engagement Mapping provides the direct positional record of engagements; Thematic Synthesis provides interpretive coherence across themes; AOI Report provides divergence summaries and a closing pattern assessment; Sin Findings surfaces misreadings and omissions. Together they form a complete bounded transient handoff for the single-thinker AOI workflow focused on Benanav and Neurath's planning positions.",
+                "legacy_profile_equivalent": null,
+                "available_source_families": [
+                  "thematic_synthesis",
+                  "engagement_mapping",
+                  "sin_findings",
+                  "thematic_report"
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "warm_snapshot": [
+      {
+        "phase": "request",
+        "url": "http://localhost:5555/api/analysis/anxiety_of_influence_thematic_single_thinker/cache-v2/proof-round5-adaptive-aoi-dossier-final-1774100000?project_id=round5-proof-dossier-final-1774100000",
+        "method": "POST",
+        "at": "2026-03-25T11:06:41.979Z",
+        "body": null
+      },
+      {
+        "phase": "response",
+        "url": "http://localhost:5555/api/analysis/anxiety_of_influence_thematic_single_thinker/cache-v2/proof-round5-adaptive-aoi-dossier-final-1774100000?project_id=round5-proof-dossier-final-1774100000",
+        "status": 200,
+        "at": "2026-03-25T11:06:56.282Z",
+        "latency_ms": 14303,
+        "body": {
+          "status": "cached",
+          "v2_job_id": "proof-round5-adaptive-aoi-dossier-final-1774100000",
+          "analysis_id": "gen-v2-8ab87c254c1f",
+          "view_count": 1
+        }
+      },
+      {
+        "phase": "request",
+        "url": "http://localhost:5555/api/analysis/anxiety_of_influence_thematic_single_thinker/cache-v2/proof-round5-adaptive-aoi-dossier-final-1774100000?project_id=round5-proof-dossier-final-1774100000",
+        "method": "POST",
+        "at": "2026-03-25T11:06:56.302Z",
+        "body": null
+      },
+      {
+        "phase": "request",
+        "url": "http://localhost:5555/api/analysis/anxiety_of_influence_thematic_single_thinker/cache-v2/proof-round5-adaptive-aoi-dossier-final-1774100000?project_id=round5-proof-dossier-final-1774100000",
+        "method": "POST",
+        "at": "2026-03-25T11:06:56.337Z",
+        "body": null
+      },
+      {
+        "phase": "response",
+        "url": "http://localhost:5555/api/analysis/anxiety_of_influence_thematic_single_thinker/cache-v2/proof-round5-adaptive-aoi-dossier-final-1774100000?project_id=round5-proof-dossier-final-1774100000",
+        "status": 200,
+        "at": "2026-03-25T11:06:56.377Z",
+        "latency_ms": 75,
+        "body": {
+          "status": "cached",
+          "v2_job_id": "proof-round5-adaptive-aoi-dossier-final-1774100000",
+          "analysis_id": "gen-v2-9726d1c0125d",
+          "view_count": 1
+        }
+      },
+      {
+        "phase": "response",
+        "url": "http://localhost:5555/api/analysis/anxiety_of_influence_thematic_single_thinker/cache-v2/proof-round5-adaptive-aoi-dossier-final-1774100000?project_id=round5-proof-dossier-final-1774100000",
+        "status": 503,
+        "at": "2026-03-25T11:06:57.524Z",
+        "latency_ms": 1187,
+        "body": {
+          "detail": "Could not persist warmed local snapshot."
+        }
+      }
+    ],
+    "compose_from_selection": [
+      {
+        "phase": "request",
+        "url": "http://localhost:5555/api/analysis/anxiety_of_influence_thematic_single_thinker/projects/round5-proof-dossier-final-1774100000/compose-from-selection",
+        "method": "POST",
+        "at": "2026-03-25T11:06:56.322Z",
+        "body": {
+          "variant": "selection",
+          "selected_source_thinker_id": "otto_neurath",
+          "selected_source_thinker_name": "Otto Neurath",
+          "selection": [
+            {
+              "source_family_key": "engagement_mapping",
+              "selection_rank": 1,
+              "rationale": "Engagement Mapping is the most directly relevant family for this task. Its structure — engagements, themes_engaged, themes_distorted, themes_partial, themes_ignored, engagement_pattern — maps precisely onto the question of where Benanav directly engages, contests, or reframes Neurath's positions. It provides granular, positional data on the nature of each intellectual encounter."
+            },
+            {
+              "source_family_key": "thematic_synthesis",
+              "selection_rank": 2,
+              "rationale": "Thematic Synthesis supplies the overarching interpretive frame across themes, grounding the engagement data in a coherent narrative about Benanav's relationship to Neurath's planning thought. The 'themes' and 'overall_synthesis' keys provide the connective tissue needed for a bounded handoff that must be readable as a composition seed."
+            },
+            {
+              "source_family_key": "thematic_report",
+              "selection_rank": 3,
+              "rationale": "The AOI Report provides a structured closeout layer with key_divergences, engagement_pattern, and summary — directly useful for characterizing the handoff as bounded and transient. Its 'key_divergences' key is especially pertinent to contrasting Benanav's reframings against Neurath's original positions."
+            },
+            {
+              "source_family_key": "sin_findings",
+              "selection_rank": 4,
+              "rationale": "Sin Findings captures where Benanav misreads, omits, or distorts Neurath — a critical dimension of 'contesting or reframing.' The findings_by_theme index allows targeted retrieval relevant to planning-specific positions, supporting the single-thinker anxiety-of-influence workflow."
+            }
+          ],
+          "source_analysis_id": "gen-v2-bc775422fe5c",
+          "source_v2_job_id": "proof-round5-adaptive-aoi-dossier-final-1774100000",
+          "user_intent": "Show where Aaron Benanav most directly engages, contests, or reframes Otto Neurath's positions on planning, highlighting key divergences, thematic distortions, and the overall pattern of influence.",
+          "selection_summary": "All four available families are selected because each contributes a distinct and non-redundant layer to the task: Engagement Mapping provides the direct positional record of engagements; Thematic Synthesis provides interpretive coherence across themes; AOI Report provides divergence summaries and a closing pattern assessment; Sin Findings surfaces misreadings and omissions. Together they form a complete bounded transient handoff for the single-thinker AOI workflow focused on Benanav and Neurath's planning positions."
+        }
+      },
+      {
+        "phase": "response",
+        "url": "http://localhost:5555/api/analysis/anxiety_of_influence_thematic_single_thinker/projects/round5-proof-dossier-final-1774100000/compose-from-selection",
+        "status": 200,
+        "at": "2026-03-25T11:07:47.543Z",
+        "latency_ms": 51221,
+        "body": {
+          "presentation": {
+            "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+            "consumer_key": "the-critic",
+            "presentation_contract_version": 1,
+            "presentation_hash": "cf73687840852b11ac6d4d3b1fabbed9396a3e8f65aea2bb483ef956215cd465",
+            "presentation_content_hash": "20ced17b49bc5c975e22adb6754ab78e61d4ae3e5ec265c18330f9860746ca78",
+            "resolver_version": "compose-from-selection-v1",
+            "style_school": "explanatory_narrative",
+            "views": [
+              {
+                "view_key": "compose_intent_parent_aoi_comparison",
+                "view_name": "AOI Comparison",
+                "description": "Tabbed AOI navigation that separates working analytical surfaces from the report closeout.",
+                "renderer_type": "tab",
+                "renderer_config": {
+                  "tab_style": "underline",
+                  "default_tab": 0,
+                  "show_count_badges": false
+                },
+                "presentation_stance": "comparison",
+                "rationale": "Grouped mixed working-content and closeout sections into a bounded tab shell.",
+                "engine_key": null,
+                "position": 1,
+                "visibility": "if_data_exists",
+                "has_structured_data": true,
+                "structured_data": {
+                  "compose_intent_01_aoi_engagement_mapping": {
+                    "label": "Engagement Mapping",
+                    "description": "Grouped comparison map for Engagement Mapping.",
+                    "semantic_role": "comparison_map",
+                    "position": 1
+                  },
+                  "compose_intent_02_aoi_thematic_synthesis": {
+                    "label": "Thematic Synthesis",
+                    "description": "Structured thematic synthesis for Thematic Synthesis.",
+                    "semantic_role": "synthesis_primary",
+                    "position": 2
+                  },
+                  "compose_intent_03_aoi_sin_findings": {
+                    "label": "Sin Findings",
+                    "description": "Structured findings bank for Sin Findings.",
+                    "semantic_role": "findings_bank",
+                    "position": 3
+                  },
+                  "compose_intent_04_aoi_thematic_report": {
+                    "label": "AOI Report",
+                    "description": "Narrative report closeout for AOI Report.",
+                    "semantic_role": "report_closeout",
+                    "position": 4
+                  }
+                },
+                "items": null,
+                "children": [
+                  {
+                    "view_key": "compose_intent_01_aoi_engagement_mapping",
+                    "view_name": "Engagement Mapping",
+                    "description": "Grouped comparison map for Engagement Mapping.",
+                    "renderer_type": "card_grid",
+                    "renderer_config": {
+                      "group_by": "engagement_level",
+                      "columns": 2,
+                      "expandable": true,
+                      "title_field": "theme_name",
+                      "subtitle_field": "divergence_type",
+                      "badge_field": "severity",
+                      "description_field": "divergence_description",
+                      "secondary_description_field": "benanav_position",
+                      "group_style_map": {
+                        "engaged": {
+                          "color": "#2e7d32",
+                          "label": "Engaged"
+                        },
+                        "partial": {
+                          "color": "#f57c00",
+                          "label": "Partial Engagement"
+                        },
+                        "ignored": {
+                          "color": "#757575",
+                          "label": "Ignored"
+                        },
+                        "distorted": {
+                          "color": "#c62828",
+                          "label": "Distorted"
+                        }
+                      },
+                      "badge_style_map": {
+                        "critical": {
+                          "color": "#b71c1c",
+                          "label": "Critical"
+                        },
+                        "high": {
+                          "color": "#e53935",
+                          "label": "High"
+                        },
+                        "medium": {
+                          "color": "#fb8c00",
+                          "label": "Medium"
+                        },
+                        "low": {
+                          "color": "#43a047",
+                          "label": "Low"
+                        }
+                      },
+                      "footer_field": "severity_rationale",
+                      "id_field": "theme_id"
+                    },
+                    "presentation_stance": "comparison",
+                    "rationale": "Matched comparison semantics to a grouped card grid for side-by-side scanning.",
+                    "engine_key": "aoi_engagement_mapping",
+                    "position": 1,
+                    "visibility": "if_data_exists",
+                    "has_structured_data": true,
+                    "structured_data": [
+                      {
+                        "benanav_position": "Uses non-price calculation as one strand of a broader coordination argument.",
+                        "benanav_sources": [],
+                        "divergence_description": "The theme is present but not dominant.",
+                        "divergence_type": "partial uptake",
+                        "engagement_id": "eng-001",
+                        "engagement_level": "partial",
+                        "severity": "medium",
+                        "severity_rationale": "The borrowing is real but distributed.",
+                        "theme_id": "theme_calculation_without_prices",
+                        "theme_name": "Calculation Without Prices"
+                      },
+                      {
+                        "benanav_position": "Administrative reasoning appears in logistics language.",
+                        "benanav_sources": [],
+                        "divergence_description": "Administrative coordination is invoked without Neurath's full institutional imagination.",
+                        "divergence_type": "compression",
+                        "engagement_id": "eng-002",
+                        "engagement_level": "partial",
+                        "severity": "medium",
+                        "severity_rationale": "The theme is recognizable but thinned.",
+                        "theme_id": "theme_administrative_coordination",
+                        "theme_name": "Administrative Coordination"
+                      },
+                      {
+                        "benanav_position": "Accounting appears as a background requirement rather than a foreground doctrine.",
+                        "benanav_sources": [],
+                        "divergence_description": "The accounting strand remains visible but secondary.",
+                        "divergence_type": "backgrounding",
+                        "engagement_id": "eng-003",
+                        "engagement_level": "partial",
+                        "severity": "low",
+                        "severity_rationale": "This is omission by de-emphasis, not by denial.",
+                        "theme_id": "theme_public_accounting",
+                        "theme_name": "Public Accounting"
+                      },
+                      {
+                        "benanav_position": "Benanav treats planning as a cross-border coordination question.",
+                        "benanav_sources": [],
+                        "divergence_description": "The international horizon is explicit but adapted to contemporary logistics.",
+                        "divergence_type": "reframing",
+                        "engagement_id": "eng-004",
+                        "engagement_level": "engaged",
+                        "severity": "medium",
+                        "severity_rationale": "The scale is preserved while the vocabulary changes.",
+                        "theme_id": "theme_international_planning",
+                        "theme_name": "International Planning"
+                      }
+                    ],
+                    "items": null,
+                    "children": []
+                  },
+                  {
+                    "view_key": "compose_intent_02_aoi_thematic_synthesis",
+                    "view_name": "Thematic Synthesis",
+                    "description": "Structured thematic synthesis for Thematic Synthesis.",
+                    "renderer_type": "accordion",
+                    "renderer_config": {
+                      "sections": [
+                        {
+                          "key": "source_documents",
+                          "title": "Source Documents"
+                        },
+                        {
+                          "key": "themes",
+                          "title": "Themes"
+                        }
+                      ],
+                      "expand_first": true,
+                      "section_renderers": {
+                        "source_documents": {
+                          "renderer_type": "mini_card_list",
+                          "config": {
+                            "data_field": "source_documents",
+                            "title_field": "title",
+                            "description_field": "description",
+                            "subtitle_field": "subtitle",
+                            "id_field": "source_document_id"
+                          }
+                        },
+                        "themes": {
+                          "renderer_type": "mini_card_list",
+                          "config": {
+                            "data_field": "themes",
+                            "title_field": "theme_name",
+                            "description_field": "overview",
+                            "badge_field": "centrality",
+                            "badge_values": {
+                              "core": "primary",
+                              "major": "secondary",
+                              "minor": "muted"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "presentation_stance": "summary",
+                    "rationale": "Matched synthesis semantics to an accordion surface for concise layered reading.",
+                    "engine_key": "aoi_thematic_synthesis",
+                    "position": 2,
+                    "visibility": "if_data_exists",
+                    "has_structured_data": true,
+                    "structured_data": {
+                      "overall_synthesis": "The comparison fixture distributes AOI pressure across several Neurath themes rather than letting one dominate.",
+                      "selected_source_thinker": {
+                        "thinker_id": "otto_neurath",
+                        "thinker_name": "Otto Neurath"
+                      },
+                      "source_documents": [
+                        {
+                          "badge": "Otto Neurath",
+                          "description": "Neurath on non-market calculation and wartime planning.",
+                          "source_document_id": "through_war_economy_to_economy_in_kind",
+                          "subtitle": "Otto Neurath | 1919",
+                          "title": "Through War Economy to Economy in Kind"
+                        },
+                        {
+                          "badge": "Otto Neurath",
+                          "description": "Neurath on planning, democracy, and international coordination.",
+                          "source_document_id": "international_planning_for_freedom",
+                          "subtitle": "Otto Neurath | 1942",
+                          "title": "International Planning for Freedom"
+                        },
+                        {
+                          "badge": "Otto Neurath",
+                          "description": "Neurath on in-kind accounting and the economic plan.",
+                          "source_document_id": "economic_plan_and_calculation_in_kind",
+                          "subtitle": "Otto Neurath | 1925",
+                          "title": "Economic Plan and Calculation in Kind"
+                        },
+                        {
+                          "badge": "Otto Neurath",
+                          "description": "Neurath on socialist utility calculation versus profit metrics.",
+                          "source_document_id": "socialist_utility_calculation_and_capitalist_profit_calculation",
+                          "subtitle": "Otto Neurath | 1920",
+                          "title": "Socialist Utility Calculation and Capitalist Profit Calculation"
+                        }
+                      ],
+                      "themes": [
+                        {
+                          "argumentative_moves": [
+                            "Uses Neurath to destabilize price-naturalism."
+                          ],
+                          "centrality": "major",
+                          "key_claims": [
+                            "Non-price coordination remains thinkable."
+                          ],
+                          "overview": "Benanav revisits non-price calculation as a planning possibility.",
+                          "philosophical_commitments": [
+                            "Markets are not the only medium of rational coordination."
+                          ],
+                          "representative_quotes": [],
+                          "source_documents": [
+                            {
+                              "badge": "Otto Neurath",
+                              "description": "Neurath on in-kind accounting and the economic plan.",
+                              "source_document_id": "economic_plan_and_calculation_in_kind",
+                              "subtitle": "Otto Neurath | 1925",
+                              "title": "Economic Plan and Calculation in Kind"
+                            }
+                          ],
+                          "theme_id": "theme_calculation_without_prices",
+                          "theme_name": "Calculation Without Prices"
+                        },
+                        {
+                          "argumentative_moves": [
+                            "Recasts bureaucracy as logistics."
+                          ],
+                          "centrality": "major",
+                          "key_claims": [
+                            "Administration can coordinate complex production."
+                          ],
+                          "overview": "Benanav intermittently borrows Neurath's administrative imagination but keeps it fragmented.",
+                          "philosophical_commitments": [
+                            "Institutional design matters more than market spontaneity."
+                          ],
+                          "representative_quotes": [],
+                          "source_documents": [
+                            {
+                              "badge": "Otto Neurath",
+                              "description": "Neurath on non-market calculation and wartime planning.",
+                              "source_document_id": "through_war_economy_to_economy_in_kind",
+                              "subtitle": "Otto Neurath | 1919",
+                              "title": "Through War Economy to Economy in Kind"
+                            }
+                          ],
+                          "theme_id": "theme_administrative_coordination",
+                          "theme_name": "Administrative Coordination"
+                        },
+                        {
+                          "argumentative_moves": [
+                            "Keeps accounting in the background of the planning case."
+                          ],
+                          "centrality": "major",
+                          "key_claims": [
+                            "Collective accounting can orient planning."
+                          ],
+                          "overview": "Benanav gestures toward public accounting and social measurement without fully reconstructing Neurath's picture language.",
+                          "philosophical_commitments": [
+                            "Social measurement is politically constructed."
+                          ],
+                          "representative_quotes": [],
+                          "source_documents": [
+                            {
+                              "badge": "Otto Neurath",
+                              "description": "Neurath on socialist utility calculation versus profit metrics.",
+                              "source_document_id": "socialist_utility_calculation_and_capitalist_profit_calculation",
+                              "subtitle": "Otto Neurath | 1920",
+                              "title": "Socialist Utility Calculation and Capitalist Profit Calculation"
+                            }
+                          ],
+                          "theme_id": "theme_public_accounting",
+                          "theme_name": "Public Accounting"
+                        },
+                        {
+                          "argumentative_moves": [
+                            "Links planning to planetary logistics."
+                          ],
+                          "centrality": "major",
+                          "key_claims": [
+                            "Coordination must cross borders."
+                          ],
+                          "overview": "Benanav intermittently echoes Neurath's cosmopolitan planning horizon.",
+                          "philosophical_commitments": [
+                            "Planning has an international scale."
+                          ],
+                          "representative_quotes": [],
+                          "source_documents": [
+                            {
+                              "badge": "Otto Neurath",
+                              "description": "Neurath on planning, democracy, and international coordination.",
+                              "source_document_id": "international_planning_for_freedom",
+                              "subtitle": "Otto Neurath | 1942",
+                              "title": "International Planning for Freedom"
+                            }
+                          ],
+                          "theme_id": "theme_international_planning",
+                          "theme_name": "International Planning"
+                        }
+                      ]
+                    },
+                    "items": null,
+                    "children": []
+                  },
+                  {
+                    "view_key": "compose_intent_03_aoi_sin_findings",
+                    "view_name": "Sin Findings",
+                    "description": "Structured findings bank for Sin Findings.",
+                    "renderer_type": "accordion",
+                    "renderer_config": {
+                      "sections": [],
+                      "expand_first": true,
+                      "section_renderers": {}
+                    },
+                    "presentation_stance": "evidence",
+                    "rationale": "Matched findings-bank semantics to an accordion surface to preserve grouped evidence.",
+                    "engine_key": "aoi_sin_findings",
+                    "position": 3,
+                    "visibility": "if_data_exists",
+                    "has_structured_data": true,
+                    "structured_data": {
+                      "findings": [
+                        {
+                          "discrepancy_analysis": "The idea is reused but detached from Neurath's accounting apparatus.",
+                          "engagement_level": "partial",
+                          "finding_id": "find-4f5bc29fe0",
+                          "implication_for_argument": "It broadens the conceptual space beyond market coordination.",
+                          "severity": "medium",
+                          "severity_rationale": "",
+                          "sin_type": "appropriation",
+                          "source_document_id": "economic_plan_and_calculation_in_kind",
+                          "source_locator": "",
+                          "source_quote": "Economic planning can proceed in kind.",
+                          "source_work_title": "Economic Plan and Calculation in Kind",
+                          "summary": "Benanav keeps Neurath's anti-price premise in circulation.",
+                          "target_chapter_key": "beyond_capitalism_2",
+                          "target_document_label": "Beyond Capitalism 2",
+                          "target_locator": "",
+                          "target_quote": "Prices are not the only way to coordinate complexity.",
+                          "theme_id": "theme_calculation_without_prices",
+                          "theme_name": "Calculation Without Prices",
+                          "title": "Non-price coordination remains a live option",
+                          "what_benanav_misses": ""
+                        },
+                        {
+                          "discrepancy_analysis": "The institutional thickness is simplified into a logistics metaphor.",
+                          "engagement_level": "partial",
+                          "finding_id": "find-467953f627",
+                          "implication_for_argument": "That simplification makes the planning case easier to transpose.",
+                          "severity": "medium",
+                          "severity_rationale": "",
+                          "sin_type": "misreading",
+                          "source_document_id": "through_war_economy_to_economy_in_kind",
+                          "source_locator": "",
+                          "source_quote": "War economy required detailed administrative coordination.",
+                          "source_work_title": "Through War Economy to Economy in Kind",
+                          "summary": "A thicker administrative vision is translated into logistics language.",
+                          "target_chapter_key": "beyond_capitalism_2",
+                          "target_document_label": "Beyond Capitalism 2",
+                          "target_locator": "",
+                          "target_quote": "Coordination depends on logistical capabilities.",
+                          "theme_id": "theme_administrative_coordination",
+                          "theme_name": "Administrative Coordination",
+                          "title": "Administration becomes logistics",
+                          "what_benanav_misses": ""
+                        },
+                        {
+                          "discrepancy_analysis": "The accounting dimension is present but underdeveloped.",
+                          "engagement_level": "partial",
+                          "finding_id": "find-b4b80377f9",
+                          "implication_for_argument": "The result is more schematic than Neurath's original account.",
+                          "severity": "low",
+                          "severity_rationale": "",
+                          "sin_type": "omission",
+                          "source_document_id": "socialist_utility_calculation_and_capitalist_profit_calculation",
+                          "source_locator": "",
+                          "source_quote": "Socialist utility calculation depends on public accounting practices.",
+                          "source_work_title": "Socialist Utility Calculation and Capitalist Profit Calculation",
+                          "summary": "Public accounting appears as an unelaborated premise.",
+                          "target_chapter_key": "beyond_capitalism_2",
+                          "target_document_label": "Beyond Capitalism 2",
+                          "target_locator": "",
+                          "target_quote": "Coordination requires usable social information.",
+                          "theme_id": "theme_public_accounting",
+                          "theme_name": "Public Accounting",
+                          "title": "Accounting remains backgrounded",
+                          "what_benanav_misses": ""
+                        },
+                        {
+                          "discrepancy_analysis": "The global horizon is retained but routed through contemporary supply-chain language.",
+                          "engagement_level": "engaged",
+                          "finding_id": "find-ab7da2e75d",
+                          "implication_for_argument": "It prevents the planning case from collapsing into national developmentalism.",
+                          "severity": "medium",
+                          "severity_rationale": "",
+                          "sin_type": "appropriation",
+                          "source_document_id": "international_planning_for_freedom",
+                          "source_locator": "",
+                          "source_quote": "Planning must be international if freedom is to be real.",
+                          "source_work_title": "International Planning for Freedom",
+                          "summary": "Benanav keeps Neurath's international planning horizon alive.",
+                          "target_chapter_key": "beyond_capitalism_2",
+                          "target_document_label": "Beyond Capitalism 2",
+                          "target_locator": "",
+                          "target_quote": "Coordination must scale beyond national containers.",
+                          "theme_id": "theme_international_planning",
+                          "theme_name": "International Planning",
+                          "title": "International coordination is carried forward",
+                          "what_benanav_misses": ""
+                        }
+                      ],
+                      "findings_by_sin_type": {
+                        "appropriation": [
+                          {
+                            "discrepancy_analysis": "The idea is reused but detached from Neurath's accounting apparatus.",
+                            "engagement_level": "partial",
+                            "finding_id": "find-4f5bc29fe0",
+                            "implication_for_argument": "It broadens the conceptual space beyond market coordination.",
+                            "severity": "medium",
+                            "severity_rationale": "",
+                            "sin_type": "appropriation",
+                            "source_document_id": "economic_plan_and_calculation_in_kind",
+                            "source_locator": "",
+                            "source_quote": "Economic planning can proceed in kind.",
+                            "source_work_title": "Economic Plan and Calculation in Kind",
+                            "summary": "Benanav keeps Neurath's anti-price premise in circulation.",
+                            "target_chapter_key": "beyond_capitalism_2",
+                            "target_document_label": "Beyond Capitalism 2",
+                            "target_locator": "",
+                            "target_quote": "Prices are not the only way to coordinate complexity.",
+                            "theme_id": "theme_calculation_without_prices",
+                            "theme_name": "Calculation Without Prices",
+                            "title": "Non-price coordination remains a live option",
+                            "what_benanav_misses": ""
+                          },
+                          {
+                            "discrepancy_analysis": "The global horizon is retained but routed through contemporary supply-chain language.",
+                            "engagement_level": "engaged",
+                            "finding_id": "find-ab7da2e75d",
+                            "implication_for_argument": "It prevents the planning case from collapsing into national developmentalism.",
+                            "severity": "medium",
+                            "severity_rationale": "",
+                            "sin_type": "appropriation",
+                            "source_document_id": "international_planning_for_freedom",
+                            "source_locator": "",
+                            "source_quote": "Planning must be international if freedom is to be real.",
+                            "source_work_title": "International Planning for Freedom",
+                            "summary": "Benanav keeps Neurath's international planning horizon alive.",
+                            "target_chapter_key": "beyond_capitalism_2",
+                            "target_document_label": "Beyond Capitalism 2",
+                            "target_locator": "",
+                            "target_quote": "Coordination must scale beyond national containers.",
+                            "theme_id": "theme_international_planning",
+                            "theme_name": "International Planning",
+                            "title": "International coordination is carried forward",
+                            "what_benanav_misses": ""
+                          }
+                        ],
+                        "misreading": [
+                          {
+                            "discrepancy_analysis": "The institutional thickness is simplified into a logistics metaphor.",
+                            "engagement_level": "partial",
+                            "finding_id": "find-467953f627",
+                            "implication_for_argument": "That simplification makes the planning case easier to transpose.",
+                            "severity": "medium",
+                            "severity_rationale": "",
+                            "sin_type": "misreading",
+                            "source_document_id": "through_war_economy_to_economy_in_kind",
+                            "source_locator": "",
+                            "source_quote": "War economy required detailed administrative coordination.",
+                            "source_work_title": "Through War Economy to Economy in Kind",
+                            "summary": "A thicker administrative vision is translated into logistics language.",
+                            "target_chapter_key": "beyond_capitalism_2",
+                            "target_document_label": "Beyond Capitalism 2",
+                            "target_locator": "",
+                            "target_quote": "Coordination depends on logistical capabilities.",
+                            "theme_id": "theme_administrative_coordination",
+                            "theme_name": "Administrative Coordination",
+                            "title": "Administration becomes logistics",
+                            "what_benanav_misses": ""
+                          }
+                        ],
+                        "omission": [
+                          {
+                            "discrepancy_analysis": "The accounting dimension is present but underdeveloped.",
+                            "engagement_level": "partial",
+                            "finding_id": "find-b4b80377f9",
+                            "implication_for_argument": "The result is more schematic than Neurath's original account.",
+                            "severity": "low",
+                            "severity_rationale": "",
+                            "sin_type": "omission",
+                            "source_document_id": "socialist_utility_calculation_and_capitalist_profit_calculation",
+                            "source_locator": "",
+                            "source_quote": "Socialist utility calculation depends on public accounting practices.",
+                            "source_work_title": "Socialist Utility Calculation and Capitalist Profit Calculation",
+                            "summary": "Public accounting appears as an unelaborated premise.",
+                            "target_chapter_key": "beyond_capitalism_2",
+                            "target_document_label": "Beyond Capitalism 2",
+                            "target_locator": "",
+                            "target_quote": "Coordination requires usable social information.",
+                            "theme_id": "theme_public_accounting",
+                            "theme_name": "Public Accounting",
+                            "title": "Accounting remains backgrounded",
+                            "what_benanav_misses": ""
+                          }
+                        ]
+                      },
+                      "findings_by_theme": {
+                        "theme_administrative_coordination": [
+                          {
+                            "discrepancy_analysis": "The institutional thickness is simplified into a logistics metaphor.",
+                            "engagement_level": "partial",
+                            "finding_id": "find-467953f627",
+                            "implication_for_argument": "That simplification makes the planning case easier to transpose.",
+                            "severity": "medium",
+                            "severity_rationale": "",
+                            "sin_type": "misreading",
+                            "source_document_id": "through_war_economy_to_economy_in_kind",
+                            "source_locator": "",
+                            "source_quote": "War economy required detailed administrative coordination.",
+                            "source_work_title": "Through War Economy to Economy in Kind",
+                            "summary": "A thicker administrative vision is translated into logistics language.",
+                            "target_chapter_key": "beyond_capitalism_2",
+                            "target_document_label": "Beyond Capitalism 2",
+                            "target_locator": "",
+                            "target_quote": "Coordination depends on logistical capabilities.",
+                            "theme_id": "theme_administrative_coordination",
+                            "theme_name": "Administrative Coordination",
+                            "title": "Administration becomes logistics",
+                            "what_benanav_misses": ""
+                          }
+                        ],
+                        "theme_calculation_without_prices": [
+                          {
+                            "discrepancy_analysis": "The idea is reused but detached from Neurath's accounting apparatus.",
+                            "engagement_level": "partial",
+                            "finding_id": "find-4f5bc29fe0",
+                            "implication_for_argument": "It broadens the conceptual space beyond market coordination.",
+                            "severity": "medium",
+                            "severity_rationale": "",
+                            "sin_type": "appropriation",
+                            "source_document_id": "economic_plan_and_calculation_in_kind",
+                            "source_locator": "",
+                            "source_quote": "Economic planning can proceed in kind.",
+                            "source_work_title": "Economic Plan and Calculation in Kind",
+                            "summary": "Benanav keeps Neurath's anti-price premise in circulation.",
+                            "target_chapter_key": "beyond_capitalism_2",
+                            "target_document_label": "Beyond Capitalism 2",
+                            "target_locator": "",
+                            "target_quote": "Prices are not the only way to coordinate complexity.",
+                            "theme_id": "theme_calculation_without_prices",
+                            "theme_name": "Calculation Without Prices",
+                            "title": "Non-price coordination remains a live option",
+                            "what_benanav_misses": ""
+                          }
+                        ],
+                        "theme_international_planning": [
+                          {
+                            "discrepancy_analysis": "The global horizon is retained but routed through contemporary supply-chain language.",
+                            "engagement_level": "engaged",
+                            "finding_id": "find-ab7da2e75d",
+                            "implication_for_argument": "It prevents the planning case from collapsing into national developmentalism.",
+                            "severity": "medium",
+                            "severity_rationale": "",
+                            "sin_type": "appropriation",
+                            "source_document_id": "international_planning_for_freedom",
+                            "source_locator": "",
+                            "source_quote": "Planning must be international if freedom is to be real.",
+                            "source_work_title": "International Planning for Freedom",
+                            "summary": "Benanav keeps Neurath's international planning horizon alive.",
+                            "target_chapter_key": "beyond_capitalism_2",
+                            "target_document_label": "Beyond Capitalism 2",
+                            "target_locator": "",
+                            "target_quote": "Coordination must scale beyond national containers.",
+                            "theme_id": "theme_international_planning",
+                            "theme_name": "International Planning",
+                            "title": "International coordination is carried forward",
+                            "what_benanav_misses": ""
+                          }
+                        ],
+                        "theme_public_accounting": [
+                          {
+                            "discrepancy_analysis": "The accounting dimension is present but underdeveloped.",
+                            "engagement_level": "partial",
+                            "finding_id": "find-b4b80377f9",
+                            "implication_for_argument": "The result is more schematic than Neurath's original account.",
+                            "severity": "low",
+                            "severity_rationale": "",
+                            "sin_type": "omission",
+                            "source_document_id": "socialist_utility_calculation_and_capitalist_profit_calculation",
+                            "source_locator": "",
+                            "source_quote": "Socialist utility calculation depends on public accounting practices.",
+                            "source_work_title": "Socialist Utility Calculation and Capitalist Profit Calculation",
+                            "summary": "Public accounting appears as an unelaborated premise.",
+                            "target_chapter_key": "beyond_capitalism_2",
+                            "target_document_label": "Beyond Capitalism 2",
+                            "target_locator": "",
+                            "target_quote": "Coordination requires usable social information.",
+                            "theme_id": "theme_public_accounting",
+                            "theme_name": "Public Accounting",
+                            "title": "Accounting remains backgrounded",
+                            "what_benanav_misses": ""
+                          }
+                        ]
+                      }
+                    },
+                    "items": null,
+                    "children": []
+                  },
+                  {
+                    "view_key": "compose_intent_04_aoi_thematic_report",
+                    "view_name": "AOI Report",
+                    "description": "Narrative report closeout for AOI Report.",
+                    "renderer_type": "prose",
+                    "renderer_config": {
+                      "section_anchors": true,
+                      "table_of_contents": true,
+                      "highlight_key_findings": true,
+                      "show_reading_time": true,
+                      "show_section_nav": true,
+                      "max_preview_lines": 20,
+                      "title_field": "report_sections.summary",
+                      "prose_field": "report_sections.summary",
+                      "sections": [
+                        {
+                          "key": "summary",
+                          "title": "Summary",
+                          "field": "report_sections.summary",
+                          "anchor": "summary"
+                        },
+                        {
+                          "key": "engagement_pattern",
+                          "title": "Engagement Pattern",
+                          "field": "report_sections.engagement_pattern",
+                          "anchor": "engagement-pattern"
+                        },
+                        {
+                          "key": "key_divergences",
+                          "title": "Key Divergences",
+                          "field": "report_sections.key_divergences",
+                          "anchor": "key-divergences",
+                          "sub_renderer": "badge_list",
+                          "badge_field": "badge",
+                          "title_field": "title",
+                          "subtitle_field": "subtitle",
+                          "description_field": "description"
+                        },
+                        {
+                          "key": "sin_distribution",
+                          "title": "Sin Distribution",
+                          "field": "report_sections.sin_distribution",
+                          "anchor": "sin-distribution",
+                          "sub_renderer": "count_list",
+                          "label_field": "sin_type",
+                          "count_field": "count",
+                          "description_field": "description"
+                        },
+                        {
+                          "key": "reading_implications",
+                          "title": "Reading Implications",
+                          "field": "report_sections.reading_implications",
+                          "anchor": "reading-implications"
+                        }
+                      ]
+                    },
+                    "presentation_stance": "narrative",
+                    "rationale": "Matched closeout semantics to prose so the report reads as a connected narrative.",
+                    "engine_key": "aoi_thematic_report",
+                    "position": 4,
+                    "visibility": "if_data_exists",
+                    "has_structured_data": true,
+                    "structured_data": "{\"report_sections\": {\"engagement_pattern\": \"The engagement is strongest when Benanav reframes Neurath's planning arguments as contemporary coordination problems and weaker when Neurath's democratic epistemology would need to be foregrounded.\", \"key_divergences\": [{\"badge\": \"high\", \"description\": \"Benanav preserves the anti-price premise but redescribes it as infrastructural coordination.\", \"subtitle\": \"Calculation Without Prices\", \"title\": \"Planning becomes infrastructural coordination\"}, {\"badge\": \"medium\", \"description\": \"Neurath's public-education emphasis appears only as a secondary implication.\", \"subtitle\": \"Planning as Public Knowledge\", \"title\": \"Democratic pedagogy is compressed\"}], \"reading_implications\": \"The dossier case reads Benanav as leaning heavily on one Neurathian planning strand while trimming the democratic and bureaucratic thickness that made the original view distinctive.\", \"sin_distribution\": [{\"count\": 2, \"description\": \"Two findings show strong borrowing with updated language.\", \"sin_type\": \"Appropriation\"}, {\"count\": 1, \"description\": \"One finding compresses Neurath's accounting doctrine into computational administration.\", \"sin_type\": \"Misreading\"}], \"summary\": \"Benanav's AOI pattern is dominated by one planning theme, with a secondary civic-intelligibility strand that stays visible but subordinate.\"}}",
+                    "items": null,
+                    "children": []
+                  }
+                ]
+              }
+            ],
+            "view_count": 5
+          },
+          "generated_view_definitions": [
+            {
+              "view_key": "compose_intent_parent_aoi_comparison",
+              "view_name": "AOI Comparison",
+              "description": "Tabbed AOI navigation that separates working analytical surfaces from the report closeout.",
+              "version": 1,
+              "target_app": "the-critic",
+              "target_page": "compose_from_intent_transient",
+              "target_section": "results",
+              "renderer_type": "tab",
+              "renderer_config": {
+                "tab_style": "underline",
+                "default_tab": 0,
+                "show_count_badges": false
+              },
+              "data_source": {
+                "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                "phase_number": 1,
+                "engine_key": null,
+                "chain_key": null,
+                "result_path": "compose_from_intent_transient.parent",
+                "scope": "aggregated"
+              },
+              "secondary_sources": [],
+              "transformation": {
+                "type": "none",
+                "field_mapping": null,
+                "llm_extraction_schema": null,
+                "llm_prompt_template": null,
+                "stance_key": null
+              },
+              "presentation_stance": "comparison",
+              "position": 1,
+              "parent_view_key": null,
+              "surface_archetype": null,
+              "scaffold_contract": null,
+              "surface_role": null,
+              "child_display_mode": "deep_dives",
+              "tab_count_field": null,
+              "visibility": "if_data_exists",
+              "audience_overrides": {},
+              "planner_hint": "",
+              "planner_eligible": false,
+              "status": "draft",
+              "tags": [],
+              "source_project": "compose_from_intent_transient",
+              "generation_mode": "generated"
+            },
+            {
+              "view_key": "compose_intent_01_aoi_engagement_mapping",
+              "view_name": "Engagement Mapping",
+              "description": "Grouped comparison map for Engagement Mapping.",
+              "version": 1,
+              "target_app": "the-critic",
+              "target_page": "compose_from_intent_transient",
+              "target_section": "results",
+              "renderer_type": "card_grid",
+              "renderer_config": {
+                "items_path": "engagements",
+                "group_by": "engagement_level",
+                "columns": 2,
+                "expandable": true,
+                "title_field": "theme_name",
+                "subtitle_field": "divergence_type",
+                "badge_field": "severity",
+                "description_field": "divergence_description",
+                "secondary_description_field": "benanav_position",
+                "group_style_map": {
+                  "engaged": {
+                    "color": "#2e7d32",
+                    "label": "Engaged"
+                  },
+                  "partial": {
+                    "color": "#f57c00",
+                    "label": "Partial Engagement"
+                  },
+                  "ignored": {
+                    "color": "#757575",
+                    "label": "Ignored"
+                  },
+                  "distorted": {
+                    "color": "#c62828",
+                    "label": "Distorted"
+                  }
+                },
+                "badge_style_map": {
+                  "critical": {
+                    "color": "#b71c1c",
+                    "label": "Critical"
+                  },
+                  "high": {
+                    "color": "#e53935",
+                    "label": "High"
+                  },
+                  "medium": {
+                    "color": "#fb8c00",
+                    "label": "Medium"
+                  },
+                  "low": {
+                    "color": "#43a047",
+                    "label": "Low"
+                  }
+                },
+                "footer_field": "severity_rationale",
+                "id_field": "theme_id"
+              },
+              "data_source": {
+                "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                "phase_number": 1,
+                "engine_key": "aoi_engagement_mapping",
+                "chain_key": null,
+                "result_path": "",
+                "scope": "aggregated"
+              },
+              "secondary_sources": [],
+              "transformation": {
+                "type": "none",
+                "field_mapping": null,
+                "llm_extraction_schema": null,
+                "llm_prompt_template": null,
+                "stance_key": null
+              },
+              "presentation_stance": "comparison",
+              "position": 1,
+              "parent_view_key": "compose_intent_parent_aoi_comparison",
+              "surface_archetype": null,
+              "scaffold_contract": null,
+              "surface_role": null,
+              "child_display_mode": null,
+              "tab_count_field": null,
+              "visibility": "if_data_exists",
+              "audience_overrides": {},
+              "planner_hint": "Use this view when the session requires a structured comparison of how a subject author engages with a source thinker's thematic terrain. Particularly valuable at the opening of an anxiety-of-influence analysis to establish where genuine grappling, partial contact, omission, or distortion occurs before diagnosing specific AOI patterns.",
+              "planner_eligible": true,
+              "status": "draft",
+              "tags": [
+                "cards",
+                "grouped",
+                "categorized",
+                "expandable",
+                "engagement",
+                "comparison",
+                "thematic",
+                "divergence",
+                "anxiety-of-influence",
+                "aoi",
+                "engagement-mapping"
+              ],
+              "source_project": "compose_from_intent_transient",
+              "generation_mode": "generated"
+            },
+            {
+              "view_key": "compose_intent_02_aoi_thematic_synthesis",
+              "view_name": "Thematic Synthesis",
+              "description": "Structured thematic synthesis for Thematic Synthesis.",
+              "version": 1,
+              "target_app": "the-critic",
+              "target_page": "compose_from_intent_transient",
+              "target_section": "results",
+              "renderer_type": "accordion",
+              "renderer_config": {
+                "sections": [
+                  {
+                    "key": "source_documents",
+                    "title": "Source Documents"
+                  },
+                  {
+                    "key": "themes",
+                    "title": "Themes"
+                  }
+                ],
+                "expand_first": true,
+                "section_renderers": {
+                  "source_documents": {
+                    "renderer_type": "mini_card_list",
+                    "config": {
+                      "data_field": "source_documents",
+                      "title_field": "title",
+                      "description_field": "description",
+                      "subtitle_field": "subtitle",
+                      "id_field": "source_document_id"
+                    }
+                  },
+                  "themes": {
+                    "renderer_type": "mini_card_list",
+                    "config": {
+                      "data_field": "themes",
+                      "title_field": "theme_name",
+                      "description_field": "overview",
+                      "badge_field": "centrality",
+                      "badge_values": {
+                        "core": "primary",
+                        "major": "secondary",
+                        "minor": "muted"
+                      }
+                    }
+                  }
+                }
+              },
+              "data_source": {
+                "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                "phase_number": 1,
+                "engine_key": "aoi_thematic_synthesis",
+                "chain_key": null,
+                "result_path": "",
+                "scope": "aggregated"
+              },
+              "secondary_sources": [],
+              "transformation": {
+                "type": "none",
+                "field_mapping": null,
+                "llm_extraction_schema": null,
+                "llm_prompt_template": null,
+                "stance_key": null
+              },
+              "presentation_stance": "summary",
+              "position": 2,
+              "parent_view_key": "compose_intent_parent_aoi_comparison",
+              "surface_archetype": null,
+              "scaffold_contract": null,
+              "surface_role": null,
+              "child_display_mode": null,
+              "tab_count_field": null,
+              "visibility": "if_data_exists",
+              "audience_overrides": {},
+              "planner_hint": "Recommend this view when the user is beginning an Anxiety of Influence analysis and needs to establish the thematic inventory of the source thinker's corpus. Appropriate at phase 1 of the workflow, before any comparative or critical analysis of the subject author begins.",
+              "planner_eligible": true,
+              "status": "draft",
+              "tags": [
+                "accordion",
+                "multi-section",
+                "thematic-synthesis",
+                "anxiety-of-influence",
+                "source-thinker",
+                "theme-inventory",
+                "claim-structure",
+                "literary-criticism",
+                "the-critic",
+                "phase-1"
+              ],
+              "source_project": "compose_from_intent_transient",
+              "generation_mode": "generated"
+            },
+            {
+              "view_key": "compose_intent_03_aoi_sin_findings",
+              "view_name": "Sin Findings",
+              "description": "Structured findings bank for Sin Findings.",
+              "version": 1,
+              "target_app": "the-critic",
+              "target_page": "compose_from_intent_transient",
+              "target_section": "results",
+              "renderer_type": "accordion",
+              "renderer_config": {
+                "sections": [],
+                "expand_first": true,
+                "section_renderers": {}
+              },
+              "data_source": {
+                "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                "phase_number": 1,
+                "engine_key": "aoi_sin_findings",
+                "chain_key": null,
+                "result_path": "",
+                "scope": "aggregated"
+              },
+              "secondary_sources": [],
+              "transformation": {
+                "type": "none",
+                "field_mapping": null,
+                "llm_extraction_schema": null,
+                "llm_prompt_template": null,
+                "stance_key": null
+              },
+              "presentation_stance": "evidence",
+              "position": 3,
+              "parent_view_key": "compose_intent_parent_aoi_comparison",
+              "surface_archetype": null,
+              "scaffold_contract": null,
+              "surface_role": null,
+              "child_display_mode": null,
+              "tab_count_field": null,
+              "visibility": "if_data_exists",
+              "audience_overrides": {},
+              "planner_hint": "Recommend when the user needs to inspect or cite the raw evidence base for AOI sin findings — especially when building a critique that requires traceable provenance between target passages and source works, or when severity triage and sin classification are the immediate analytical task.",
+              "planner_eligible": true,
+              "status": "draft",
+              "tags": [
+                "aoi",
+                "sin_findings",
+                "evidence",
+                "accordion",
+                "multi-section",
+                "provenance",
+                "classification",
+                "anxiety_of_influence",
+                "scholarly_critique",
+                "the-critic"
+              ],
+              "source_project": "compose_from_intent_transient",
+              "generation_mode": "generated"
+            },
+            {
+              "view_key": "compose_intent_04_aoi_thematic_report",
+              "view_name": "AOI Report",
+              "description": "Narrative report closeout for AOI Report.",
+              "version": 1,
+              "target_app": "the-critic",
+              "target_page": "compose_from_intent_transient",
+              "target_section": "results",
+              "renderer_type": "prose",
+              "renderer_config": {
+                "section_anchors": true,
+                "table_of_contents": true,
+                "highlight_key_findings": true,
+                "show_reading_time": true,
+                "show_section_nav": true,
+                "max_preview_lines": 20,
+                "title_field": "report_sections.summary",
+                "prose_field": "report_sections.summary",
+                "sections": [
+                  {
+                    "key": "summary",
+                    "title": "Summary",
+                    "field": "report_sections.summary",
+                    "anchor": "summary"
+                  },
+                  {
+                    "key": "engagement_pattern",
+                    "title": "Engagement Pattern",
+                    "field": "report_sections.engagement_pattern",
+                    "anchor": "engagement-pattern"
+                  },
+                  {
+                    "key": "key_divergences",
+                    "title": "Key Divergences",
+                    "field": "report_sections.key_divergences",
+                    "anchor": "key-divergences",
+                    "sub_renderer": "badge_list",
+                    "badge_field": "badge",
+                    "title_field": "title",
+                    "subtitle_field": "subtitle",
+                    "description_field": "description"
+                  },
+                  {
+                    "key": "sin_distribution",
+                    "title": "Sin Distribution",
+                    "field": "report_sections.sin_distribution",
+                    "anchor": "sin-distribution",
+                    "sub_renderer": "count_list",
+                    "label_field": "sin_type",
+                    "count_field": "count",
+                    "description_field": "description"
+                  },
+                  {
+                    "key": "reading_implications",
+                    "title": "Reading Implications",
+                    "field": "report_sections.reading_implications",
+                    "anchor": "reading-implications"
+                  }
+                ]
+              },
+              "data_source": {
+                "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                "phase_number": 1,
+                "engine_key": "aoi_thematic_report",
+                "chain_key": null,
+                "result_path": "",
+                "scope": "aggregated"
+              },
+              "secondary_sources": [],
+              "transformation": {
+                "type": "none",
+                "field_mapping": null,
+                "llm_extraction_schema": null,
+                "llm_prompt_template": null,
+                "stance_key": null
+              },
+              "presentation_stance": "narrative",
+              "position": 4,
+              "parent_view_key": "compose_intent_parent_aoi_comparison",
+              "surface_archetype": null,
+              "scaffold_contract": null,
+              "surface_role": null,
+              "child_display_mode": null,
+              "tab_count_field": null,
+              "visibility": "if_data_exists",
+              "audience_overrides": {},
+              "planner_hint": "Recommend this view as the final closeout report when an AOI thematic analysis has been completed and the user needs an interpretive narrative portrait of the subject author's engagement with a source thinker.",
+              "planner_eligible": true,
+              "status": "draft",
+              "tags": [
+                "prose",
+                "narrative",
+                "synthesis",
+                "report",
+                "aoi",
+                "thematic",
+                "anxiety-of-influence",
+                "closeout",
+                "the-critic"
+              ],
+              "source_project": "compose_from_intent_transient",
+              "generation_mode": "generated"
+            }
+          ],
+          "trace": {
+            "resolver_version": "compose-from-selection-v1",
+            "entries": [
+              {
+                "stage": "source_catalog_resolution",
+                "details": {
+                  "source_v2_job_id": "proof-round5-adaptive-aoi-dossier-final-1774100000",
+                  "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                  "objective_key": "influence_thematic",
+                  "objective_source": "workflow_default",
+                  "plan_context_found": true,
+                  "plan_context_source": "job_plan_data",
+                  "selected_source_thinker_id": "otto_neurath",
+                  "selected_source_thinker_name": "Otto Neurath",
+                  "candidates": [
+                    {
+                      "source_family_key": "thematic_synthesis",
+                      "engine_key": "aoi_thematic_synthesis",
+                      "title": "Thematic Synthesis",
+                      "source_backend_kind": "artifact",
+                      "candidate_state": "available",
+                      "provenance_pointer": {
+                        "job_id": "proof-round5-adaptive-aoi-dossier-final-1774100000",
+                        "engine_key": "aoi_thematic_synthesis"
+                      },
+                      "composition_role_hint": "synthesis_primary",
+                      "summary_metadata": {
+                        "payload_kind": "normalized_artifact",
+                        "top_level_keys": [
+                          "overall_synthesis",
+                          "selected_source_thinker",
+                          "source_documents",
+                          "themes"
+                        ]
+                      },
+                      "plan_context": {
+                        "plan_context_found": true,
+                        "plan_state": "not_declared",
+                        "objective_key": null,
+                        "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                        "selected_source_thinker_id": "otto_neurath",
+                        "selected_source_thinker_name": "Otto Neurath",
+                        "phase_matches": []
+                      },
+                      "resolution_note": "Loaded from normalized AOI artifact store."
+                    },
+                    {
+                      "source_family_key": "engagement_mapping",
+                      "engine_key": "aoi_engagement_mapping",
+                      "title": "Engagement Mapping",
+                      "source_backend_kind": "artifact",
+                      "candidate_state": "available",
+                      "provenance_pointer": {
+                        "job_id": "proof-round5-adaptive-aoi-dossier-final-1774100000",
+                        "engine_key": "aoi_engagement_mapping"
+                      },
+                      "composition_role_hint": "comparison_map",
+                      "summary_metadata": {
+                        "payload_kind": "normalized_artifact",
+                        "top_level_keys": [
+                          "engagement_pattern",
+                          "engagements",
+                          "themes_distorted",
+                          "themes_engaged",
+                          "themes_ignored",
+                          "themes_partial"
+                        ]
+                      },
+                      "plan_context": {
+                        "plan_context_found": true,
+                        "plan_state": "not_declared",
+                        "objective_key": null,
+                        "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                        "selected_source_thinker_id": "otto_neurath",
+                        "selected_source_thinker_name": "Otto Neurath",
+                        "phase_matches": []
+                      },
+                      "resolution_note": "Loaded from normalized AOI artifact store."
+                    },
+                    {
+                      "source_family_key": "sin_findings",
+                      "engine_key": "aoi_sin_findings",
+                      "title": "Sin Findings",
+                      "source_backend_kind": "artifact",
+                      "candidate_state": "available",
+                      "provenance_pointer": {
+                        "job_id": "proof-round5-adaptive-aoi-dossier-final-1774100000",
+                        "engine_key": "aoi_sin_findings"
+                      },
+                      "composition_role_hint": "findings_bank",
+                      "summary_metadata": {
+                        "payload_kind": "normalized_artifact",
+                        "top_level_keys": [
+                          "findings",
+                          "findings_by_sin_type",
+                          "findings_by_theme"
+                        ]
+                      },
+                      "plan_context": {
+                        "plan_context_found": true,
+                        "plan_state": "not_declared",
+                        "objective_key": null,
+                        "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                        "selected_source_thinker_id": "otto_neurath",
+                        "selected_source_thinker_name": "Otto Neurath",
+                        "phase_matches": []
+                      },
+                      "resolution_note": "Loaded from normalized AOI artifact store."
+                    },
+                    {
+                      "source_family_key": "thematic_report",
+                      "engine_key": "aoi_thematic_report",
+                      "title": "AOI Report",
+                      "source_backend_kind": "normalized_report_payload",
+                      "candidate_state": "available",
+                      "provenance_pointer": {
+                        "job_id": "proof-round5-adaptive-aoi-dossier-final-1774100000",
+                        "engine_key": "aoi_thematic_report",
+                        "output_id": "po-3eb68e59c703",
+                        "phase_number": 4,
+                        "pass_number": 1,
+                        "created_at": "2026-03-21T03:43:57.206318"
+                      },
+                      "composition_role_hint": "report_closeout",
+                      "summary_metadata": {
+                        "payload_kind": "report_sections",
+                        "top_level_keys": [
+                          "engagement_pattern",
+                          "key_divergences",
+                          "reading_implications",
+                          "sin_distribution",
+                          "summary"
+                        ],
+                        "derived_payload_kind": "normalized_report_payload"
+                      },
+                      "plan_context": {
+                        "plan_context_found": true,
+                        "plan_state": "not_declared",
+                        "objective_key": null,
+                        "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                        "selected_source_thinker_id": "otto_neurath",
+                        "selected_source_thinker_name": "Otto Neurath",
+                        "phase_matches": []
+                      },
+                      "resolution_note": "Loaded from the latest thematic report phase output metadata."
+                    }
+                  ]
+                }
+              },
+              {
+                "stage": "source_selection",
+                "details": {
+                  "selection_kind": "explicit",
+                  "selected": [
+                    {
+                      "source_family_key": "engagement_mapping",
+                      "engine_key": "aoi_engagement_mapping",
+                      "candidate_state": "available",
+                      "selection_rank": 1,
+                      "rationale": "Engagement Mapping is the most directly relevant family for this task. Its structure — engagements, themes_engaged, themes_distorted, themes_partial, themes_ignored, engagement_pattern — maps precisely onto the question of where Benanav directly engages, contests, or reframes Neurath's positions. It provides granular, positional data on the nature of each intellectual encounter."
+                    },
+                    {
+                      "source_family_key": "thematic_synthesis",
+                      "engine_key": "aoi_thematic_synthesis",
+                      "candidate_state": "available",
+                      "selection_rank": 2,
+                      "rationale": "Thematic Synthesis supplies the overarching interpretive frame across themes, grounding the engagement data in a coherent narrative about Benanav's relationship to Neurath's planning thought. The 'themes' and 'overall_synthesis' keys provide the connective tissue needed for a bounded handoff that must be readable as a composition seed."
+                    },
+                    {
+                      "source_family_key": "thematic_report",
+                      "engine_key": "aoi_thematic_report",
+                      "candidate_state": "available",
+                      "selection_rank": 3,
+                      "rationale": "The AOI Report provides a structured closeout layer with key_divergences, engagement_pattern, and summary — directly useful for characterizing the handoff as bounded and transient. Its 'key_divergences' key is especially pertinent to contrasting Benanav's reframings against Neurath's original positions."
+                    },
+                    {
+                      "source_family_key": "sin_findings",
+                      "engine_key": "aoi_sin_findings",
+                      "candidate_state": "available",
+                      "selection_rank": 4,
+                      "rationale": "Sin Findings captures where Benanav misreads, omits, or distorts Neurath — a critical dimension of 'contesting or reframing.' The findings_by_theme index allows targeted retrieval relevant to planning-specific positions, supporting the single-thinker anxiety-of-influence workflow."
+                    }
+                  ],
+                  "rejected": [],
+                  "selection_summary": "All four available families are selected because each contributes a distinct and non-redundant layer to the task: Engagement Mapping provides the direct positional record of engagements; Thematic Synthesis provides interpretive coherence across themes; AOI Report provides divergence summaries and a closing pattern assessment; Sin Findings surfaces misreadings and omissions. Together they form a complete bounded transient handoff for the single-thinker AOI workflow focused on Benanav and Neurath's planning positions."
+                }
+              },
+              {
+                "stage": "section_materialization",
+                "details": {
+                  "selection_kind": "explicit",
+                  "section_count": 4,
+                  "sections": [
+                    {
+                      "source_family_key": "engagement_mapping",
+                      "engine_key": "aoi_engagement_mapping",
+                      "title": "Engagement Mapping",
+                      "selection_rank": 1
+                    },
+                    {
+                      "source_family_key": "thematic_synthesis",
+                      "engine_key": "aoi_thematic_synthesis",
+                      "title": "Thematic Synthesis",
+                      "selection_rank": 2
+                    },
+                    {
+                      "source_family_key": "thematic_report",
+                      "engine_key": "aoi_thematic_report",
+                      "title": "AOI Report",
+                      "selection_rank": 3
+                    },
+                    {
+                      "source_family_key": "sin_findings",
+                      "engine_key": "aoi_sin_findings",
+                      "title": "Sin Findings",
+                      "selection_rank": 4
+                    }
+                  ]
+                }
+              },
+              {
+                "stage": "semantic_surface_matching",
+                "details": {
+                  "sections": [
+                    {
+                      "section_index": 0,
+                      "engine_key": "aoi_engagement_mapping",
+                      "title": "Engagement Mapping",
+                      "source_family_key": "engagement_mapping",
+                      "composition_role_hint": "comparison_map",
+                      "semantic_role": "comparison_map",
+                      "pattern_key": "card_grid_grouped",
+                      "inventory_listing": false
+                    },
+                    {
+                      "section_index": 1,
+                      "engine_key": "aoi_thematic_synthesis",
+                      "title": "Thematic Synthesis",
+                      "source_family_key": "thematic_synthesis",
+                      "composition_role_hint": "synthesis_primary",
+                      "semantic_role": "synthesis_primary",
+                      "pattern_key": "accordion_sections",
+                      "inventory_listing": false
+                    },
+                    {
+                      "section_index": 3,
+                      "engine_key": "aoi_sin_findings",
+                      "title": "Sin Findings",
+                      "source_family_key": "sin_findings",
+                      "composition_role_hint": "findings_bank",
+                      "semantic_role": "findings_bank",
+                      "pattern_key": "accordion_sections",
+                      "inventory_listing": false
+                    },
+                    {
+                      "section_index": 2,
+                      "engine_key": "aoi_thematic_report",
+                      "title": "AOI Report",
+                      "source_family_key": "thematic_report",
+                      "composition_role_hint": "report_closeout",
+                      "semantic_role": "report_closeout",
+                      "pattern_key": "prose_narrative",
+                      "inventory_listing": false
+                    }
+                  ]
+                }
+              },
+              {
+                "stage": "hierarchy_planning",
+                "details": {
+                  "grouped": true,
+                  "grouping_reason": "mixed_working_content_and_closeout",
+                  "top_level_count": 1,
+                  "leaf_count": 4,
+                  "parent": {
+                    "pattern_key": "tab_with_children",
+                    "view_name": "AOI Comparison",
+                    "presentation_stance": "comparison"
+                  }
+                }
+              },
+              {
+                "stage": "page_plan",
+                "details": {
+                  "top_level_count": 1,
+                  "views": [
+                    {
+                      "kind": "parent",
+                      "pattern_key": "tab_with_children",
+                      "view_name": "AOI Comparison",
+                      "presentation_stance": "comparison",
+                      "children": [
+                        {
+                          "kind": "leaf",
+                          "section_index": 0,
+                          "pattern_key": "card_grid_grouped",
+                          "view_name": "Engagement Mapping",
+                          "semantic_role": "comparison_map",
+                          "presentation_stance": "comparison"
+                        },
+                        {
+                          "kind": "leaf",
+                          "section_index": 1,
+                          "pattern_key": "accordion_sections",
+                          "view_name": "Thematic Synthesis",
+                          "semantic_role": "synthesis_primary",
+                          "presentation_stance": "summary"
+                        },
+                        {
+                          "kind": "leaf",
+                          "section_index": 3,
+                          "pattern_key": "accordion_sections",
+                          "view_name": "Sin Findings",
+                          "semantic_role": "findings_bank",
+                          "presentation_stance": "evidence"
+                        },
+                        {
+                          "kind": "leaf",
+                          "section_index": 2,
+                          "pattern_key": "prose_narrative",
+                          "view_name": "AOI Report",
+                          "semantic_role": "report_closeout",
+                          "presentation_stance": "narrative"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "stage": "view_generation",
+                "details": {
+                  "views": [
+                    {
+                      "view_key": "compose_intent_parent_aoi_comparison",
+                      "pattern_key": "tab_with_children",
+                      "renderer_type": "tab",
+                      "engine_key": null,
+                      "parent_view_key": null,
+                      "kind": "container"
+                    },
+                    {
+                      "view_key": "compose_intent_01_aoi_engagement_mapping",
+                      "pattern_key": "card_grid_grouped",
+                      "renderer_type": "card_grid",
+                      "engine_key": "aoi_engagement_mapping",
+                      "parent_view_key": "compose_intent_parent_aoi_comparison"
+                    },
+                    {
+                      "view_key": "compose_intent_02_aoi_thematic_synthesis",
+                      "pattern_key": "accordion_sections",
+                      "renderer_type": "accordion",
+                      "engine_key": "aoi_thematic_synthesis",
+                      "parent_view_key": "compose_intent_parent_aoi_comparison"
+                    },
+                    {
+                      "view_key": "compose_intent_03_aoi_sin_findings",
+                      "pattern_key": "accordion_sections",
+                      "renderer_type": "accordion",
+                      "engine_key": "aoi_sin_findings",
+                      "parent_view_key": "compose_intent_parent_aoi_comparison"
+                    },
+                    {
+                      "view_key": "compose_intent_04_aoi_thematic_report",
+                      "pattern_key": "prose_narrative",
+                      "renderer_type": "prose",
+                      "engine_key": "aoi_thematic_report",
+                      "parent_view_key": "compose_intent_parent_aoi_comparison"
+                    }
+                  ]
+                }
+              },
+              {
+                "stage": "transformation_execution",
+                "details": {
+                  "views": [
+                    {
+                      "view_key": "compose_intent_01_aoi_engagement_mapping",
+                      "engine_key": "aoi_engagement_mapping",
+                      "renderer_type": "card_grid",
+                      "extraction_source": "source_family_preserved",
+                      "template_key": null,
+                      "source_family_key": "engagement_mapping"
+                    },
+                    {
+                      "view_key": "compose_intent_02_aoi_thematic_synthesis",
+                      "engine_key": "aoi_thematic_synthesis",
+                      "renderer_type": "accordion",
+                      "extraction_source": "source_family_preserved",
+                      "template_key": null,
+                      "source_family_key": "thematic_synthesis"
+                    },
+                    {
+                      "view_key": "compose_intent_03_aoi_sin_findings",
+                      "engine_key": "aoi_sin_findings",
+                      "renderer_type": "accordion",
+                      "extraction_source": "source_family_preserved",
+                      "template_key": null,
+                      "source_family_key": "sin_findings"
+                    },
+                    {
+                      "view_key": "compose_intent_04_aoi_thematic_report",
+                      "engine_key": "aoi_thematic_report",
+                      "renderer_type": "prose",
+                      "extraction_source": "passthrough",
+                      "template_key": null
+                    }
+                  ]
+                }
+              },
+              {
+                "stage": "consumer_adaptation",
+                "details": {
+                  "views": [
+                    {
+                      "view_key": "compose_intent_01_aoi_engagement_mapping",
+                      "renderer_type": "card_grid",
+                      "adapted": false
+                    },
+                    {
+                      "view_key": "compose_intent_02_aoi_thematic_synthesis",
+                      "renderer_type": "accordion",
+                      "adapted": false
+                    },
+                    {
+                      "view_key": "compose_intent_03_aoi_sin_findings",
+                      "renderer_type": "accordion",
+                      "adapted": false
+                    },
+                    {
+                      "view_key": "compose_intent_04_aoi_thematic_report",
+                      "renderer_type": "prose",
+                      "adapted": false
+                    },
+                    {
+                      "view_key": "compose_intent_parent_aoi_comparison",
+                      "renderer_type": "tab",
+                      "adapted": false
+                    }
+                  ]
+                }
+              },
+              {
+                "stage": "contract_validation",
+                "details": {
+                  "view_count": 5,
+                  "issues": 0
+                }
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "compose_from_source": []
+  },
+  "plan_outcome_kind": "aoi_composition_handoff_plan",
+  "selection_summary_text": "All four available families are selected because each contributes a distinct and non-redundant layer to the task: Engagement Mapping provides the direct positional record of engagements; Thematic Synthesis provides interpretive coherence across themes; AOI Report provides divergence summaries and a closing pattern assessment; Sin Findings surfaces misreadings and omissions. Together they form a complete bounded transient handoff for the single-thinker AOI workflow focused on Benanav and Neurath's planning positions.",
+  "planner_banner": "Planner-backed selectionAll four available families are selected because each contributes a distinct and non-redundant layer to the task: Engagement Mapping provides the direct positional record of engagements; Thematic Synthesis provides interpretive coherence across themes; AOI Report provides divergence summaries and a closing pattern assessment; Sin Findings surfaces misreadings and omissions. Together they form a complete bounded transient handoff for the single-thinker AOI workflow focused on Benanav and Neurath's planning positions.1. engagement_mapping: Engagement Mapping is the most directly relevant family for this task. Its structure — engagements, themes_engaged, themes_distorted, themes_partial, themes_ignored, engagement_pattern — maps precisely onto the question of where Benanav directly engages, contests, or reframes Neurath's positions. It provides granular, positional data on the nature of each intellectual encounter.2. thematic_synthesis: Thematic Synthesis supplies the overarching interpretive frame across themes, grounding the engagement data in a coherent narrative about Benanav's relationship to Neurath's planning thought. The 'themes' and 'overall_synthesis' keys provide the connective tissue needed for a bounded handoff that must be readable as a composition seed.3. thematic_report: The AOI Report provides a structured closeout layer with key_divergences, engagement_pattern, and summary — directly useful for characterizing the handoff as bounded and transient. Its 'key_divergences' key is especially pertinent to contrasting Benanav's reframings against Neurath's original positions.4. sin_findings: Sin Findings captures where Benanav misreads, omits, or distorts Neurath — a critical dimension of 'contesting or reframing.' The findings_by_theme index allows targeted retrieval relevant to planning-specific positions, supporting the single-thinker anxiety-of-influence workflow.",
+  "compose_endpoint_used": "compose-from-selection",
+  "compose_request_variant": "selection",
+  "source_v2_job_id_preserved": true,
+  "compose_from_source_unused": true,
+  "compose_alert": null,
+  "compose_shell_visible": true,
+  "page_errors": [],
+  "console_errors": [
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: the server responded with a status of 503 (Service Unavailable)",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED"
+  ],
+  "artifact_paths": {
+    "har": "/home/evgeny/projects/analyzer-v2/communications/PROOF_stage5_aoi_engagement_ready_session_2026-03-25.har",
+    "json": "/home/evgeny/projects/analyzer-v2/communications/PROOF_stage5_aoi_engagement_ready_requests_2026-03-25.json",
+    "screenshot": "/home/evgeny/projects/analyzer-v2/communications/PROOF_stage5_aoi_engagement_ready_state_2026-03-25.png"
+  }
+}

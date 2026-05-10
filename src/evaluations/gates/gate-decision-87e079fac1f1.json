@@ -1,0 +1,59 @@
+{
+  "gate_decision_id": "gate-decision-87e079fac1f1",
+  "created_at": "2026-03-29T23:29:57.498715+00:00",
+  "gate_key": "bounded_genealogy_lifecycle_readiness_v1",
+  "gate_definition_version": "v1",
+  "evaluation_pack_key": "phase4_genealogy_lifecycle_governance_v1",
+  "input_report_ids_by_case_key": {
+    "genealogy_lifecycle_march28_session_reopen": "evaluation-report-e29a6a606cad"
+  },
+  "contains_live_revalidation": true,
+  "rule_table": {
+    "scope_label": "retrospective_frozen_pack_gate",
+    "required_cases": [
+      {
+        "case_key": "genealogy_lifecycle_march28_session_reopen",
+        "required_verdict": "pass",
+        "required_dimensions": [
+          "identity_integrity",
+          "saved_truth_fidelity",
+          "reopen_integrity",
+          "boundary_observance"
+        ]
+      }
+    ],
+    "verdict_policy": {
+      "required_report_verdict": "pass",
+      "missing_required_report_outcome": "error",
+      "unexpected_input_case_outcome": "error",
+      "report_error_outcome": "error",
+      "report_fail_outcome": "fail",
+      "missing_required_dimension_outcome": "error",
+      "dimension_error_outcome": "error",
+      "dimension_fail_outcome": "fail",
+      "dimension_not_applicable_outcome": "fail"
+    }
+  },
+  "case_summaries": [
+    {
+      "case_key": "genealogy_lifecycle_march28_session_reopen",
+      "evaluation_report_id": "evaluation-report-e29a6a606cad",
+      "report_overall_verdict": "pass",
+      "dimension_verdicts": {
+        "identity_integrity": "pass",
+        "saved_truth_fidelity": "pass",
+        "reopen_integrity": "pass",
+        "boundary_observance": "pass"
+      },
+      "case_verdict": "pass",
+      "contains_live_revalidation": true,
+      "subject_kind": "compose_session",
+      "subject_identity": "compose-session-0877864dcca7",
+      "workflow_key": "intellectual_genealogy",
+      "consumer_key": "the-critic",
+      "blocking_reasons": []
+    }
+  ],
+  "overall_verdict": "pass",
+  "blocking_reasons": []
+}

@@ -1,0 +1,149 @@
+{
+  "allowed_selectors": [
+    "dossier"
+  ],
+  "aoi_readiness_detail": {
+    "available_source_families": [
+      "thematic_synthesis",
+      "engagement_mapping",
+      "thematic_report"
+    ],
+    "expected_producer_engines": [
+      "aoi_engagement_mapping",
+      "aoi_sin_findings",
+      "aoi_thematic_report",
+      "aoi_thematic_synthesis"
+    ],
+    "expected_source_families": [
+      "thematic_synthesis",
+      "engagement_mapping",
+      "sin_findings",
+      "thematic_report"
+    ],
+    "selected_source_thinker_id": "otto_neurath",
+    "selected_source_thinker_name": "Otto Neurath",
+    "source_v2_job_id": "job-aoi"
+  },
+  "blocked_selectors": {
+    "comparison": [
+      "sin_findings (unavailable)"
+    ]
+  },
+  "consumer_key": "the-critic",
+  "downstream_followup_contract": {
+    "allowed_profiles": [
+      "dossier"
+    ],
+    "endpoint": "/v1/presenter/compose-from-source",
+    "method": "POST",
+    "request_fields": {
+      "consumer_key": "the-critic",
+      "profile": "<required_from_allowed_profiles>",
+      "source_v2_job_id": "job-aoi",
+      "workflow_key": "anxiety_of_influence_thematic_single_thinker"
+    }
+  },
+  "followup_readiness_status": "ready",
+  "genealogy_readiness_detail": null,
+  "implementation_kind": "aoi_source_reconstruction",
+  "job_id": "job-aoi",
+  "readiness_status": "partially_ready",
+  "requested_selector": null,
+  "requested_selector_status": "not_requested",
+  "selector_lifecycle_phase": "source_selection",
+  "trace": [
+    {
+      "details": {
+        "consumer_key": "the-critic",
+        "job_id": "job-aoi",
+        "workflow_key": "anxiety_of_influence_thematic_single_thinker"
+      },
+      "stage": "job_lookup"
+    },
+    {
+      "details": {
+        "inspected_selectors": [
+          "dossier",
+          "comparison"
+        ],
+        "requested_selector": null,
+        "selector_kind": "profile"
+      },
+      "stage": "selector_validation"
+    },
+    {
+      "details": {
+        "candidates": [
+          {
+            "candidate_state": "available",
+            "composition_role_hint": "",
+            "engine_key": "aoi_thematic_synthesis",
+            "plan_context": {},
+            "provenance_pointer": {},
+            "source_backend_kind": "artifact",
+            "source_family_key": "thematic_synthesis",
+            "summary_metadata": {},
+            "title": "Thematic Synthesis"
+          },
+          {
+            "candidate_state": "available",
+            "composition_role_hint": "",
+            "engine_key": "aoi_engagement_mapping",
+            "plan_context": {},
+            "provenance_pointer": {},
+            "source_backend_kind": "artifact",
+            "source_family_key": "engagement_mapping",
+            "summary_metadata": {},
+            "title": "Engagement Mapping"
+          },
+          {
+            "candidate_state": "unavailable",
+            "composition_role_hint": "",
+            "engine_key": "aoi_sin_findings",
+            "plan_context": {},
+            "provenance_pointer": {},
+            "source_backend_kind": "artifact",
+            "source_family_key": "sin_findings",
+            "summary_metadata": {},
+            "title": "Sin Findings"
+          },
+          {
+            "candidate_state": "available",
+            "composition_role_hint": "",
+            "engine_key": "aoi_thematic_report",
+            "plan_context": {},
+            "provenance_pointer": {},
+            "source_backend_kind": "phase_output_metadata",
+            "source_family_key": "thematic_report",
+            "summary_metadata": {},
+            "title": "AOI Report"
+          }
+        ],
+        "objective_key": "influence_thematic",
+        "objective_source": "job_plan_data",
+        "plan_context_found": true,
+        "plan_context_source": "job_plan_data",
+        "selected_source_thinker_id": "otto_neurath",
+        "selected_source_thinker_name": "Otto Neurath",
+        "source_v2_job_id": "job-aoi",
+        "workflow_key": "anxiety_of_influence_thematic_single_thinker"
+      },
+      "stage": "source_catalog_resolution"
+    },
+    {
+      "details": {
+        "allowed_profiles": [
+          "dossier"
+        ],
+        "blocked_profiles": {
+          "comparison": [
+            "sin_findings (unavailable)"
+          ]
+        },
+        "followup_blockers": []
+      },
+      "stage": "profile_feasibility"
+    }
+  ],
+  "workflow_key": "anxiety_of_influence_thematic_single_thinker"
+}

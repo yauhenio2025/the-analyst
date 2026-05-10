@@ -1,0 +1,28 @@
+{
+  "captured_at": "2026-03-27T03:24:10Z",
+  "job_id": "job-3503e9e65338",
+  "plan_id": "plan-8dba8c450012",
+  "launch_mode": "by_ref",
+  "phase_3_repair_verdict": "implemented_but_not_yet_live_validated",
+  "new_blocker": {
+    "phase_number": 1.0,
+    "phase_name": "Source Thematic Synthesis",
+    "engine_or_chain": "aoi_thematic_synthesis",
+    "failure_kind": "local_prompt_budget_guard",
+    "failure_message": "[Phase 1.0 | aoi_thematic_synthesis | Pass 1 (Source Theme Discovery)] Prompt budget exceeded locally: ~908,141 estimated tokens (3,632,565 chars) >= 900,000 limit. Aborting before provider call.",
+    "dominant_shape": "full selected-source corpus in Phase 1.0 exceeded the then-active 900000 local guard even after Phase 3.0 became target-only",
+    "pass_budget_observation": {
+      "document_text_chars": 3627836,
+      "shared_context_chars": 830,
+      "prompt_chars": 4729,
+      "estimated_input_chars": 3632565,
+      "estimated_input_tokens": 908141,
+      "note": "prompt_chars already includes shared_context_chars in the recomposed system prompt"
+    }
+  },
+  "execution_nuance": {
+    "phase_0_5_parallel_sibling": "continued running after Phase 1.0 fault because the phase group was parallel",
+    "operator_action": "force_cancel_requested_to_stop further spend once the new seam was established",
+    "interpretation_rule": "Do not treat cancelled terminal state or still-running phase_statuses as evidence that Phase 1.0 succeeded."
+  }
+}

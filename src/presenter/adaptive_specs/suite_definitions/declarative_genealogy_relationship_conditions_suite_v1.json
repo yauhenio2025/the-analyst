@@ -1,0 +1,85 @@
+{
+  "composition_mode": "declarative_genealogy_relationship_conditions_suite_v1",
+  "workflow_key": "intellectual_genealogy",
+  "surfaces": [
+    {
+      "target_surface": "genealogy_relationship_landscape",
+      "signal_extractor_key": "relationship_surface_signals_v1",
+      "default_family": "relationship_comparison_review",
+      "families": [
+        {
+          "family_key": "relationship_profile_dossier",
+          "builder_template_key": "relationship_profile_dossier",
+          "view_name": "Relationship Dossier"
+        },
+        {
+          "family_key": "relationship_comparison_review",
+          "builder_template_key": "relationship_comparison_review",
+          "view_name": "Relationship Comparison Review"
+        }
+      ],
+      "decision_rules": [
+        {
+          "family_key": "relationship_profile_dossier",
+          "match_any": [
+            [
+              {
+                "metric": "relationship_count",
+                "operator": "eq",
+                "value": 1
+              }
+            ],
+            [
+              {
+                "metric": "top_share",
+                "operator": "gte",
+                "value": 0.45
+              },
+              {
+                "metric": "score_gap",
+                "operator": "gte",
+                "value": 5
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "target_surface": "genealogy_conditions",
+      "signal_extractor_key": "conditions_surface_signals_v1",
+      "default_family": "conditions_balance_sheet",
+      "families": [
+        {
+          "family_key": "conditions_balance_sheet",
+          "builder_template_key": "conditions_balance_sheet",
+          "view_name": "Conditions Balance Sheet"
+        },
+        {
+          "family_key": "conditions_path_dependency_matrix",
+          "builder_template_key": "conditions_path_dependency_matrix",
+          "view_name": "Conditions Path-Dependency Matrix"
+        }
+      ],
+      "decision_rules": [
+        {
+          "family_key": "conditions_path_dependency_matrix",
+          "match_any": [
+            [
+              {
+                "metric": "path_dependencies_count",
+                "operator": "gte",
+                "value": 2
+              },
+              {
+                "metric": "path_signal_minus_balance_signal",
+                "operator": "gte",
+                "value": 0
+              }
+            ]
+          ]
+        }
+      ]
+    }
+  ]
+}

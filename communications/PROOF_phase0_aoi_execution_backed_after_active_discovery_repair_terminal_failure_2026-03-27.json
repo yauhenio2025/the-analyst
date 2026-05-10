@@ -1,0 +1,53 @@
+{
+  "executed_at": "2026-03-27T00:41:42.436637Z",
+  "job_id": "job-226f65f43a3b",
+  "critic_job_detail": {
+    "job_id": "job-226f65f43a3b",
+    "status": "failed",
+    "error": "Phases [3.0] failed",
+    "completed_at": "2026-03-27T00:40:30.282541",
+    "v2_plan_id": "plan-54b6f075fdf2",
+    "v2_job_id": "job-226f65f43a3b",
+    "selected_source_thinker_id": "otto_neurath",
+    "selected_source_thinker_name": "Otto Neurath",
+    "analysis_id": null
+  },
+  "analyzer_run_detail": {
+    "job_id": "job-226f65f43a3b",
+    "status": "failed",
+    "error": "Phases [3.0] failed",
+    "presentation_status": "not_started",
+    "result_state": "failed",
+    "restore_reason": "failed",
+    "progress": {
+      "current_phase": 4.0,
+      "total_phases": 6,
+      "phase_name": "Thematic AOI Report",
+      "detail": "Engine: aoi_thematic_report",
+      "completed_phases": [
+        "0.5: Target Work Profiling",
+        "1.5: Source Work Profiling",
+        "1.0: Source Thematic Synthesis",
+        "2.0: Engagement Mapping"
+      ],
+      "phase_statuses": {
+        "0.5": "completed",
+        "1.5": "completed",
+        "1.0": "completed",
+        "2.0": "completed",
+        "3.0": "failed",
+        "4.0": "running"
+      }
+    }
+  },
+  "failure_excerpt": {
+    "phase": "3.0",
+    "engine": "aoi_sin_findings",
+    "pass": "Finding Discovery",
+    "anthropic_error_type": "invalid_request_error",
+    "anthropic_message": "prompt is too long: 1037154 tokens > 1000000 maximum",
+    "request_id": "req_011CZSeareraYJVt9p5Krt5Q"
+  },
+  "browser_proof_attempted": false,
+  "completed_boundary_artifact_available": false
+}

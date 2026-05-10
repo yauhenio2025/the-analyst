@@ -1,0 +1,311 @@
+{
+  "normalized_task_summary": "Compose an anxiety of influence dossier about revision and misreading.",
+  "routing_decision": {
+    "normalized_task_summary": "Compose an anxiety of influence dossier about revision and misreading.",
+    "selected_objective_key": "influence_thematic",
+    "selected_workflow_key": "anxiety_of_influence_thematic_single_thinker",
+    "routing_outcome": "aoi_transient_source_backed",
+    "routing_confidence": "high",
+    "launch_contract_kind": "presenter.compose_from_source",
+    "source_sufficiency_status": "sufficient",
+    "required_fields": [
+      "workflow_key",
+      "consumer_key",
+      "source_v2_job_id",
+      "profile"
+    ],
+    "required_host_preparation": [
+      "Choose the bounded AOI profile (dossier or comparison) before launching compose-from-source."
+    ],
+    "downstream_launch_contract": {
+      "method": "POST",
+      "endpoint": "/v1/presenter/compose-from-source",
+      "request_fields": {
+        "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+        "consumer_key": "the-critic",
+        "source_v2_job_id": "job-aoi-stage9-proof",
+        "profile": "<required>"
+      }
+    },
+    "rejected_candidates": [
+      {
+        "objective_key": "genealogical",
+        "rejection_reason": "lower_signal_score_than_selected_candidate",
+        "details": [
+          "source_mode 'saved_result' is incompatible",
+          "Genealogy routing is not compatible with saved_result source mode."
+        ]
+      }
+    ],
+    "trace": [
+      {
+        "stage": "task_normalization",
+        "details": {
+          "normalized_task_summary": "Compose an anxiety of influence dossier about revision and misreading.",
+          "audience": null,
+          "desired_depth": null,
+          "style_expectations": null
+        }
+      },
+      {
+        "stage": "objective_candidate_scoring",
+        "details": {
+          "objective_hint": null,
+          "objective_hint_status": "not_provided",
+          "workflow_hint": null,
+          "workflow_hint_status": "not_provided",
+          "candidates": [
+            {
+              "objective_key": "influence_thematic",
+              "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+              "signal_score": 4,
+              "positive_signals": [
+                "anxiety of influence",
+                "misreading",
+                "revision",
+                "influence"
+              ],
+              "source_mode": "saved_result",
+              "source_mode_compatible": true
+            },
+            {
+              "objective_key": "genealogical",
+              "workflow_key": "intellectual_genealogy",
+              "signal_score": 0,
+              "positive_signals": [],
+              "source_mode": "saved_result",
+              "source_mode_compatible": false
+            }
+          ]
+        }
+      },
+      {
+        "stage": "source_sufficiency_evaluation",
+        "details": {
+          "selected_objective_key": "influence_thematic",
+          "selected_workflow_key": "anxiety_of_influence_thematic_single_thinker",
+          "source_mode": "saved_result",
+          "source_sufficiency_status": "sufficient",
+          "sufficiency_reasons": []
+        }
+      },
+      {
+        "stage": "routing_decision",
+        "details": {
+          "routing_outcome": "aoi_transient_source_backed",
+          "routing_confidence": "high",
+          "launch_contract_kind": "presenter.compose_from_source",
+          "selected_objective_key": "influence_thematic",
+          "selected_workflow_key": "anxiety_of_influence_thematic_single_thinker",
+          "required_fields": [
+            "workflow_key",
+            "consumer_key",
+            "source_v2_job_id",
+            "profile"
+          ],
+          "required_host_preparation": [
+            "Choose the bounded AOI profile (dossier or comparison) before launching compose-from-source."
+          ]
+        }
+      }
+    ]
+  },
+  "planning_outcome_kind": "aoi_composition_handoff_plan",
+  "planning_confidence": "high",
+  "hydration_status": "satisfied",
+  "required_hydration": [],
+  "required_host_preparation": [
+    "Choose one of the feasible AOI profiles before launching compose-from-source: dossier."
+  ],
+  "downstream_readiness": "ready_for_aoi_compose_handoff",
+  "downstream_followup_contract": {
+    "method": "POST",
+    "endpoint": "/v1/presenter/compose-from-source",
+    "allowed_profiles": [
+      "dossier"
+    ],
+    "request_fields": {
+      "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+      "consumer_key": "the-critic",
+      "source_v2_job_id": "job-aoi-stage9-proof",
+      "profile": "<required>"
+    }
+  },
+  "hydrated_document_ids": {},
+  "workflow_execution_plan": null,
+  "aoi_composition_handoff_plan": {
+    "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+    "objective_key": "influence_thematic",
+    "consumer_key": "the-critic",
+    "source_v2_job_id": "job-aoi-stage9-proof",
+    "compose_entrypoint_kind": "presenter.compose_from_source",
+    "selected_source_thinker_id": "otto_neurath",
+    "selected_source_thinker_name": "Otto Neurath",
+    "expected_source_families": [
+      "thematic_synthesis",
+      "engagement_mapping",
+      "sin_findings",
+      "thematic_report"
+    ],
+    "available_source_families": [
+      "thematic_synthesis",
+      "engagement_mapping",
+      "thematic_report"
+    ],
+    "expected_producer_engines": [
+      "aoi_engagement_mapping",
+      "aoi_sin_findings",
+      "aoi_thematic_report",
+      "aoi_thematic_synthesis"
+    ],
+    "bridge_contract_targets": [
+      "CompositionSourceCatalog",
+      "CompositionSourceSelection"
+    ],
+    "allowed_profiles": [
+      "dossier"
+    ],
+    "blocked_profiles": {
+      "comparison": [
+        "sin_findings (unavailable)"
+      ]
+    },
+    "handoff_notes": [
+      "Stage 9 AOI planning stops at composition handoff metadata over the Stage 7 source bridge.",
+      "Only a subset of compose profiles is currently feasible; blocked profiles are listed explicitly in blocked_profiles."
+    ]
+  },
+  "rejected_planning_alternatives": [
+    {
+      "alternative_key": "genealogical",
+      "rejection_reason": "lower_signal_score_than_selected_candidate",
+      "details": [
+        "source_mode 'saved_result' is incompatible",
+        "Genealogy routing is not compatible with saved_result source mode."
+      ]
+    }
+  ],
+  "trace": [
+    {
+      "stage": "effective_task_request",
+      "details": {
+        "consumer_key": "the-critic",
+        "source_mode": "saved_result",
+        "context_mode": "saved_result"
+      }
+    },
+    {
+      "stage": "routing_reuse",
+      "details": {
+        "status": "not_provided"
+      }
+    },
+    {
+      "stage": "source_catalog_resolution",
+      "details": {
+        "source_v2_job_id": "job-aoi-stage9-proof",
+        "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+        "objective_key": "influence_thematic",
+        "objective_source": "plan_context",
+        "plan_context_found": true,
+        "plan_context_source": "plan_file",
+        "selected_source_thinker_id": "otto_neurath",
+        "selected_source_thinker_name": "Otto Neurath",
+        "candidates": [
+          {
+            "source_family_key": "thematic_synthesis",
+            "engine_key": "aoi_thematic_synthesis",
+            "title": "Thematic Synthesis",
+            "source_backend_kind": "artifact",
+            "candidate_state": "available",
+            "provenance_pointer": {
+              "job_id": "job-aoi-stage9-proof"
+            },
+            "composition_role_hint": "synthesis_primary",
+            "summary_metadata": {
+              "payload_kind": "normalized_artifact"
+            },
+            "plan_context": {
+              "plan_context_found": true
+            },
+            "resolution_note": "Loaded from deterministic proof stub."
+          },
+          {
+            "source_family_key": "engagement_mapping",
+            "engine_key": "aoi_engagement_mapping",
+            "title": "Engagement Mapping",
+            "source_backend_kind": "artifact",
+            "candidate_state": "available",
+            "provenance_pointer": {
+              "job_id": "job-aoi-stage9-proof"
+            },
+            "composition_role_hint": "comparison_map",
+            "summary_metadata": {
+              "payload_kind": "normalized_artifact"
+            },
+            "plan_context": {
+              "plan_context_found": true
+            },
+            "resolution_note": "Loaded from deterministic proof stub."
+          },
+          {
+            "source_family_key": "sin_findings",
+            "engine_key": "aoi_sin_findings",
+            "title": "Sin Findings",
+            "source_backend_kind": "artifact",
+            "candidate_state": "unavailable",
+            "provenance_pointer": {
+              "job_id": "job-aoi-stage9-proof"
+            },
+            "composition_role_hint": "findings_bank",
+            "summary_metadata": {
+              "payload_kind": "normalized_artifact"
+            },
+            "plan_context": {
+              "plan_context_found": true
+            },
+            "resolution_note": "Missing from deterministic proof stub."
+          },
+          {
+            "source_family_key": "thematic_report",
+            "engine_key": "aoi_thematic_report",
+            "title": "AOI Report",
+            "source_backend_kind": "phase_output_metadata",
+            "candidate_state": "available",
+            "provenance_pointer": {
+              "job_id": "job-aoi-stage9-proof"
+            },
+            "composition_role_hint": "report_closeout",
+            "summary_metadata": {
+              "payload_kind": "report_sections"
+            },
+            "plan_context": {
+              "plan_context_found": true
+            },
+            "resolution_note": "Loaded from deterministic proof stub."
+          }
+        ]
+      }
+    },
+    {
+      "stage": "planning_decision",
+      "details": {
+        "planning_outcome_kind": "aoi_composition_handoff_plan",
+        "downstream_readiness": "ready_for_aoi_compose_handoff",
+        "allowed_profiles": [
+          "dossier"
+        ],
+        "blocked_profiles": {
+          "comparison": [
+            "sin_findings (unavailable)"
+          ]
+        },
+        "available_source_families": [
+          "thematic_synthesis",
+          "engagement_mapping",
+          "thematic_report"
+        ]
+      }
+    }
+  ]
+}

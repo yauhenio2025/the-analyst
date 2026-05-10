@@ -1,0 +1,111 @@
+{
+  "date": "2026-03-25",
+  "rubric_memo": "/home/evgeny/projects/analyzer-v2/communications/MEMO_2026-03-24_stage5_aoi_exemplar_rubric.md",
+  "output_dir": "/home/evgeny/projects/analyzer-v2/communications",
+  "strongest_fixture_strength": "fixture_backed",
+  "stage5_seam_gate_pass": true,
+  "stage2_documentary_closure_pass": false,
+  "cases": [
+    {
+      "case_key": "evolution_ready",
+      "expected_outcome": "ready",
+      "actual_outcome": "ready",
+      "selection_fit": true,
+      "rationale_clarity": true,
+      "rendered_usefulness": true,
+      "operational_behavior": true,
+      "selected_families": [
+        "thematic_synthesis",
+        "engagement_mapping",
+        "sin_findings",
+        "thematic_report"
+      ],
+      "generated_view_keys": [
+        "compose_intent_parent_aoi_comparison",
+        "compose_intent_01_aoi_thematic_synthesis",
+        "compose_intent_02_aoi_engagement_mapping",
+        "compose_intent_03_aoi_sin_findings",
+        "compose_intent_04_aoi_thematic_report"
+      ],
+      "source_v2_job_id_preserved": true,
+      "compose_from_source_unused": true,
+      "json": "/home/evgeny/projects/analyzer-v2/communications/PROOF_stage5_aoi_evolution_ready_requests_2026-03-25.json",
+      "har": "/home/evgeny/projects/analyzer-v2/communications/PROOF_stage5_aoi_evolution_ready_session_2026-03-25.har",
+      "screenshot": "/home/evgeny/projects/analyzer-v2/communications/PROOF_stage5_aoi_evolution_ready_state_2026-03-25.png"
+    },
+    {
+      "case_key": "engagement_ready",
+      "expected_outcome": "ready",
+      "actual_outcome": "ready",
+      "selection_fit": true,
+      "rationale_clarity": true,
+      "rendered_usefulness": true,
+      "operational_behavior": true,
+      "selected_families": [
+        "engagement_mapping",
+        "thematic_synthesis",
+        "thematic_report",
+        "sin_findings"
+      ],
+      "generated_view_keys": [
+        "compose_intent_parent_aoi_comparison",
+        "compose_intent_01_aoi_engagement_mapping",
+        "compose_intent_02_aoi_thematic_synthesis",
+        "compose_intent_03_aoi_sin_findings",
+        "compose_intent_04_aoi_thematic_report"
+      ],
+      "source_v2_job_id_preserved": true,
+      "compose_from_source_unused": true,
+      "json": "/home/evgeny/projects/analyzer-v2/communications/PROOF_stage5_aoi_engagement_ready_requests_2026-03-25.json",
+      "har": "/home/evgeny/projects/analyzer-v2/communications/PROOF_stage5_aoi_engagement_ready_session_2026-03-25.har",
+      "screenshot": "/home/evgeny/projects/analyzer-v2/communications/PROOF_stage5_aoi_engagement_ready_state_2026-03-25.png"
+    },
+    {
+      "case_key": "non_profile_ready",
+      "expected_outcome": "ready",
+      "actual_outcome": "ready",
+      "selection_fit": true,
+      "rationale_clarity": true,
+      "rendered_usefulness": true,
+      "operational_behavior": true,
+      "selected_families": [
+        "thematic_synthesis",
+        "engagement_mapping",
+        "thematic_report"
+      ],
+      "rejected_families": [
+        "sin_findings"
+      ],
+      "generated_view_keys": [
+        "compose_intent_parent_aoi_comparison",
+        "compose_intent_01_aoi_thematic_synthesis",
+        "compose_intent_02_aoi_engagement_mapping",
+        "compose_intent_03_aoi_thematic_report"
+      ],
+      "source_v2_job_id_preserved": true,
+      "compose_from_source_unused": true,
+      "json": "/home/evgeny/projects/analyzer-v2/communications/PROOF_stage5_aoi_non_profile_ready_requests_2026-03-25.json",
+      "har": "/home/evgeny/projects/analyzer-v2/communications/PROOF_stage5_aoi_non_profile_ready_session_2026-03-25.har",
+      "screenshot": "/home/evgeny/projects/analyzer-v2/communications/PROOF_stage5_aoi_non_profile_ready_state_2026-03-25.png"
+    },
+    {
+      "case_key": "selection_blocked",
+      "expected_outcome": "aoi_selection_blocked",
+      "actual_outcome": "aoi_selection_blocked",
+      "rationale_clarity": true,
+      "operational_behavior": true,
+      "blocked_reason_code": "no_usable_source_families",
+      "blocked_reason_detail": "plan-task could not resolve any AOI source material for source_v2_job_id 'stage5-aoi-blocked-source-20260324'.",
+      "compose_from_selection_unused": true,
+      "compose_from_source_unused": true,
+      "json": "/home/evgeny/projects/analyzer-v2/communications/PROOF_stage5_aoi_selection_blocked_requests_2026-03-25.json",
+      "har": "/home/evgeny/projects/analyzer-v2/communications/PROOF_stage5_aoi_selection_blocked_session_2026-03-25.har",
+      "screenshot": "/home/evgeny/projects/analyzer-v2/communications/PROOF_stage5_aoi_selection_blocked_state_2026-03-25.png"
+    }
+  ],
+  "non_blocking_observations": [
+    "All four browser runs logged repeated resource load ERR_CONNECTION_REFUSED console noise, but no page exceptions were recorded.",
+    "The pack is fixture-backed only, so Stage 2 documentary closure still remains open."
+  ],
+  "next_step": "Keep Stage 2 open. The next closure-grade step is at least one execution-backed ready AOI run or stronger."
+}

@@ -1,0 +1,630 @@
+{
+  "attempt_label": "frozen_pack_rerun",
+  "case_key": "selection_blocked",
+  "fixture_strength": "fixture_backed",
+  "expected_outcome": "aoi_selection_blocked",
+  "actual_outcome": "aoi_selection_blocked",
+  "expectation_met": true,
+  "captured_at": "2026-03-25T11:10:34.079Z",
+  "url": "http://127.0.0.1:3456/p/stage5-proof-aoi-blocked-20260324/anxiety-of-influence/otto_neurath/v2-thematic",
+  "final_url": "http://127.0.0.1:3456/p/stage5-proof-aoi-blocked-20260324/anxiety-of-influence/otto_neurath/v2-thematic",
+  "task": "Show how Aaron Benanav's use of Otto Neurath's planning argument evolves across the corpus.",
+  "route_plan_compose_requests": {
+    "route_task": [
+      {
+        "phase": "request",
+        "url": "http://127.0.0.1:8002/v1/orchestrator/route-task",
+        "method": "POST",
+        "at": "2026-03-25T11:10:32.751Z",
+        "body": {
+          "task": "Show how Aaron Benanav's use of Otto Neurath's planning argument evolves across the corpus.",
+          "consumer_key": "the-critic",
+          "workflow_hint": "anxiety_of_influence_thematic_single_thinker",
+          "objective_hint": "influence_thematic",
+          "source_constraints": {
+            "source_mode": "saved_result",
+            "selected_source_thinker_id": "otto_neurath",
+            "selected_source_thinker_name": "Otto Neurath",
+            "source_v2_job_id": "stage5-aoi-blocked-source-20260324"
+          }
+        }
+      },
+      {
+        "phase": "response",
+        "url": "http://127.0.0.1:8002/v1/orchestrator/route-task",
+        "status": 200,
+        "at": "2026-03-25T11:10:32.763Z",
+        "latency_ms": 12,
+        "body": {
+          "normalized_task_summary": "Show how Aaron Benanav's use of Otto Neurath's planning argument evolves across the corpus.",
+          "selected_objective_key": "influence_thematic",
+          "selected_workflow_key": "anxiety_of_influence_thematic_single_thinker",
+          "routing_outcome": "aoi_transient_source_backed",
+          "routing_confidence": "high",
+          "launch_contract_kind": "planner.aoi_compose_handoff",
+          "source_sufficiency_status": "sufficient",
+          "required_fields": [
+            "workflow_key",
+            "consumer_key",
+            "source_v2_job_id"
+          ],
+          "required_host_preparation": [
+            "Call plan-task with saved_result planning context to resolve AOI source selection before launch."
+          ],
+          "downstream_launch_contract": {
+            "method": "POST",
+            "endpoint": "/v1/orchestrator/plan-task",
+            "request_fields": {
+              "task_request.workflow_hint": "anxiety_of_influence_thematic_single_thinker",
+              "task_request.consumer_key": "the-critic",
+              "planning_context.context_mode": "saved_result",
+              "planning_context.source_v2_job_id": "stage5-aoi-blocked-source-20260324"
+            }
+          },
+          "rejected_candidates": [
+            {
+              "objective_key": "genealogical",
+              "rejection_reason": "not_selected",
+              "details": [
+                "source_mode 'saved_result' is incompatible",
+                "Genealogy routing is not compatible with saved_result source mode."
+              ]
+            }
+          ],
+          "trace": [
+            {
+              "stage": "task_normalization",
+              "details": {
+                "normalized_task_summary": "Show how Aaron Benanav's use of Otto Neurath's planning argument evolves across the corpus.",
+                "audience": null,
+                "desired_depth": null,
+                "style_expectations": null
+              }
+            },
+            {
+              "stage": "objective_candidate_scoring",
+              "details": {
+                "objective_hint": "influence_thematic",
+                "objective_hint_status": "provided_and_validated",
+                "workflow_hint": "anxiety_of_influence_thematic_single_thinker",
+                "workflow_hint_status": "accepted_as_consistent",
+                "candidates": [
+                  {
+                    "objective_key": "influence_thematic",
+                    "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                    "signal_score": 0,
+                    "positive_signals": [],
+                    "source_mode": "saved_result",
+                    "source_mode_compatible": true
+                  },
+                  {
+                    "objective_key": "genealogical",
+                    "workflow_key": "intellectual_genealogy",
+                    "signal_score": 0,
+                    "positive_signals": [],
+                    "source_mode": "saved_result",
+                    "source_mode_compatible": false
+                  }
+                ]
+              }
+            },
+            {
+              "stage": "source_sufficiency_evaluation",
+              "details": {
+                "selected_objective_key": "influence_thematic",
+                "selected_workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                "source_mode": "saved_result",
+                "source_sufficiency_status": "sufficient",
+                "sufficiency_reasons": []
+              }
+            },
+            {
+              "stage": "routing_decision",
+              "details": {
+                "routing_outcome": "aoi_transient_source_backed",
+                "routing_confidence": "high",
+                "launch_contract_kind": "planner.aoi_compose_handoff",
+                "selected_objective_key": "influence_thematic",
+                "selected_workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                "required_fields": [
+                  "workflow_key",
+                  "consumer_key",
+                  "source_v2_job_id"
+                ],
+                "required_host_preparation": [
+                  "Call plan-task with saved_result planning context to resolve AOI source selection before launch."
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "plan_task": [
+      {
+        "phase": "request",
+        "url": "http://127.0.0.1:8002/v1/orchestrator/plan-task",
+        "method": "POST",
+        "at": "2026-03-25T11:10:32.761Z",
+        "body": {
+          "task_request": {
+            "task": "Show how Aaron Benanav's use of Otto Neurath's planning argument evolves across the corpus.",
+            "consumer_key": "the-critic",
+            "workflow_hint": "anxiety_of_influence_thematic_single_thinker",
+            "objective_hint": "influence_thematic",
+            "source_constraints": {
+              "source_mode": "saved_result",
+              "selected_source_thinker_id": "otto_neurath",
+              "selected_source_thinker_name": "Otto Neurath",
+              "source_v2_job_id": "stage5-aoi-blocked-source-20260324"
+            }
+          },
+          "prior_routing_decision": {
+            "normalized_task_summary": "Show how Aaron Benanav's use of Otto Neurath's planning argument evolves across the corpus.",
+            "selected_objective_key": "influence_thematic",
+            "selected_workflow_key": "anxiety_of_influence_thematic_single_thinker",
+            "routing_outcome": "aoi_transient_source_backed",
+            "routing_confidence": "high",
+            "launch_contract_kind": "planner.aoi_compose_handoff",
+            "source_sufficiency_status": "sufficient",
+            "required_fields": [
+              "workflow_key",
+              "consumer_key",
+              "source_v2_job_id"
+            ],
+            "required_host_preparation": [
+              "Call plan-task with saved_result planning context to resolve AOI source selection before launch."
+            ],
+            "downstream_launch_contract": {
+              "method": "POST",
+              "endpoint": "/v1/orchestrator/plan-task",
+              "request_fields": {
+                "task_request.workflow_hint": "anxiety_of_influence_thematic_single_thinker",
+                "task_request.consumer_key": "the-critic",
+                "planning_context.context_mode": "saved_result",
+                "planning_context.source_v2_job_id": "stage5-aoi-blocked-source-20260324"
+              }
+            },
+            "rejected_candidates": [
+              {
+                "objective_key": "genealogical",
+                "rejection_reason": "not_selected",
+                "details": [
+                  "source_mode 'saved_result' is incompatible",
+                  "Genealogy routing is not compatible with saved_result source mode."
+                ]
+              }
+            ],
+            "trace": [
+              {
+                "stage": "task_normalization",
+                "details": {
+                  "normalized_task_summary": "Show how Aaron Benanav's use of Otto Neurath's planning argument evolves across the corpus.",
+                  "audience": null,
+                  "desired_depth": null,
+                  "style_expectations": null
+                }
+              },
+              {
+                "stage": "objective_candidate_scoring",
+                "details": {
+                  "objective_hint": "influence_thematic",
+                  "objective_hint_status": "provided_and_validated",
+                  "workflow_hint": "anxiety_of_influence_thematic_single_thinker",
+                  "workflow_hint_status": "accepted_as_consistent",
+                  "candidates": [
+                    {
+                      "objective_key": "influence_thematic",
+                      "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                      "signal_score": 0,
+                      "positive_signals": [],
+                      "source_mode": "saved_result",
+                      "source_mode_compatible": true
+                    },
+                    {
+                      "objective_key": "genealogical",
+                      "workflow_key": "intellectual_genealogy",
+                      "signal_score": 0,
+                      "positive_signals": [],
+                      "source_mode": "saved_result",
+                      "source_mode_compatible": false
+                    }
+                  ]
+                }
+              },
+              {
+                "stage": "source_sufficiency_evaluation",
+                "details": {
+                  "selected_objective_key": "influence_thematic",
+                  "selected_workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                  "source_mode": "saved_result",
+                  "source_sufficiency_status": "sufficient",
+                  "sufficiency_reasons": []
+                }
+              },
+              {
+                "stage": "routing_decision",
+                "details": {
+                  "routing_outcome": "aoi_transient_source_backed",
+                  "routing_confidence": "high",
+                  "launch_contract_kind": "planner.aoi_compose_handoff",
+                  "selected_objective_key": "influence_thematic",
+                  "selected_workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                  "required_fields": [
+                    "workflow_key",
+                    "consumer_key",
+                    "source_v2_job_id"
+                  ],
+                  "required_host_preparation": [
+                    "Call plan-task with saved_result planning context to resolve AOI source selection before launch."
+                  ]
+                }
+              }
+            ]
+          },
+          "planning_context": {
+            "context_mode": "saved_result",
+            "source_v2_job_id": "stage5-aoi-blocked-source-20260324",
+            "consumer_key": "the-critic"
+          }
+        }
+      },
+      {
+        "phase": "response",
+        "url": "http://127.0.0.1:8002/v1/orchestrator/plan-task",
+        "status": 200,
+        "at": "2026-03-25T11:10:32.781Z",
+        "latency_ms": 20,
+        "body": {
+          "normalized_task_summary": "Show how Aaron Benanav's use of Otto Neurath's planning argument evolves across the corpus.",
+          "routing_decision": {
+            "normalized_task_summary": "Show how Aaron Benanav's use of Otto Neurath's planning argument evolves across the corpus.",
+            "selected_objective_key": "influence_thematic",
+            "selected_workflow_key": "anxiety_of_influence_thematic_single_thinker",
+            "routing_outcome": "aoi_transient_source_backed",
+            "routing_confidence": "high",
+            "launch_contract_kind": "planner.aoi_compose_handoff",
+            "source_sufficiency_status": "sufficient",
+            "required_fields": [
+              "workflow_key",
+              "consumer_key",
+              "source_v2_job_id"
+            ],
+            "required_host_preparation": [
+              "Call plan-task with saved_result planning context to resolve AOI source selection before launch."
+            ],
+            "downstream_launch_contract": {
+              "method": "POST",
+              "endpoint": "/v1/orchestrator/plan-task",
+              "request_fields": {
+                "task_request.workflow_hint": "anxiety_of_influence_thematic_single_thinker",
+                "task_request.consumer_key": "the-critic",
+                "planning_context.context_mode": "saved_result",
+                "planning_context.source_v2_job_id": "stage5-aoi-blocked-source-20260324"
+              }
+            },
+            "rejected_candidates": [
+              {
+                "objective_key": "genealogical",
+                "rejection_reason": "not_selected",
+                "details": [
+                  "source_mode 'saved_result' is incompatible",
+                  "Genealogy routing is not compatible with saved_result source mode."
+                ]
+              }
+            ],
+            "trace": [
+              {
+                "stage": "task_normalization",
+                "details": {
+                  "normalized_task_summary": "Show how Aaron Benanav's use of Otto Neurath's planning argument evolves across the corpus.",
+                  "audience": null,
+                  "desired_depth": null,
+                  "style_expectations": null
+                }
+              },
+              {
+                "stage": "objective_candidate_scoring",
+                "details": {
+                  "objective_hint": "influence_thematic",
+                  "objective_hint_status": "provided_and_validated",
+                  "workflow_hint": "anxiety_of_influence_thematic_single_thinker",
+                  "workflow_hint_status": "accepted_as_consistent",
+                  "candidates": [
+                    {
+                      "objective_key": "influence_thematic",
+                      "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                      "signal_score": 0,
+                      "positive_signals": [],
+                      "source_mode": "saved_result",
+                      "source_mode_compatible": true
+                    },
+                    {
+                      "objective_key": "genealogical",
+                      "workflow_key": "intellectual_genealogy",
+                      "signal_score": 0,
+                      "positive_signals": [],
+                      "source_mode": "saved_result",
+                      "source_mode_compatible": false
+                    }
+                  ]
+                }
+              },
+              {
+                "stage": "source_sufficiency_evaluation",
+                "details": {
+                  "selected_objective_key": "influence_thematic",
+                  "selected_workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                  "source_mode": "saved_result",
+                  "source_sufficiency_status": "sufficient",
+                  "sufficiency_reasons": []
+                }
+              },
+              {
+                "stage": "routing_decision",
+                "details": {
+                  "routing_outcome": "aoi_transient_source_backed",
+                  "routing_confidence": "high",
+                  "launch_contract_kind": "planner.aoi_compose_handoff",
+                  "selected_objective_key": "influence_thematic",
+                  "selected_workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                  "required_fields": [
+                    "workflow_key",
+                    "consumer_key",
+                    "source_v2_job_id"
+                  ],
+                  "required_host_preparation": [
+                    "Call plan-task with saved_result planning context to resolve AOI source selection before launch."
+                  ]
+                }
+              }
+            ]
+          },
+          "planning_outcome_kind": "aoi_selection_blocked",
+          "planning_confidence": "high",
+          "hydration_status": "satisfied",
+          "required_hydration": [],
+          "required_host_preparation": [
+            "Call plan-task with saved_result planning context before launching planner-backed AOI compose."
+          ],
+          "downstream_readiness": "blocked_for_aoi_selection",
+          "downstream_followup_contract": {
+            "method": null,
+            "endpoint": null,
+            "blocked_reason_code": "no_usable_source_families",
+            "blocked_reason_detail": "plan-task could not resolve any AOI source material for source_v2_job_id 'stage5-aoi-blocked-source-20260324'.",
+            "expected_source_families": [
+              "thematic_synthesis",
+              "engagement_mapping",
+              "sin_findings",
+              "thematic_report"
+            ],
+            "available_source_families": [],
+            "expected_producer_engines": [
+              "aoi_engagement_mapping",
+              "aoi_sin_findings",
+              "aoi_thematic_report",
+              "aoi_thematic_synthesis"
+            ],
+            "allowed_profiles": [],
+            "blocked_profiles": {
+              "dossier": [
+                "thematic_synthesis (unavailable)",
+                "thematic_report (unavailable)"
+              ],
+              "comparison": [
+                "engagement_mapping (unavailable)",
+                "sin_findings (unavailable)",
+                "thematic_report (unavailable)"
+              ]
+            },
+            "request_fields": {
+              "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+              "consumer_key": "the-critic",
+              "source_v2_job_id": "stage5-aoi-blocked-source-20260324"
+            }
+          },
+          "hydrated_document_ids": {},
+          "workflow_execution_plan": null,
+          "aoi_composition_handoff_plan": null,
+          "aoi_selection_blocked_reason_code": "no_usable_source_families",
+          "aoi_selection_blocked_reason_detail": "plan-task could not resolve any AOI source material for source_v2_job_id 'stage5-aoi-blocked-source-20260324'.",
+          "rejected_planning_alternatives": [
+            {
+              "alternative_key": "genealogical",
+              "rejection_reason": "not_selected",
+              "details": [
+                "source_mode 'saved_result' is incompatible",
+                "Genealogy routing is not compatible with saved_result source mode."
+              ]
+            }
+          ],
+          "trace": [
+            {
+              "stage": "effective_task_request",
+              "details": {
+                "consumer_key": "the-critic",
+                "source_mode": "saved_result",
+                "context_mode": "saved_result"
+              }
+            },
+            {
+              "stage": "routing_reuse",
+              "details": {
+                "status": "provided_and_validated",
+                "reused_fields": [
+                  "selected_objective_key",
+                  "selected_workflow_key",
+                  "routing_outcome",
+                  "launch_contract_kind",
+                  "source_sufficiency_status"
+                ]
+              }
+            },
+            {
+              "stage": "source_catalog_resolution",
+              "details": {
+                "source_v2_job_id": "stage5-aoi-blocked-source-20260324",
+                "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                "objective_key": "influence_thematic",
+                "objective_source": "job_plan_data",
+                "plan_context_found": true,
+                "plan_context_source": "job_plan_data",
+                "selected_source_thinker_id": "otto_neurath",
+                "selected_source_thinker_name": "Otto Neurath",
+                "candidates": [
+                  {
+                    "source_family_key": "thematic_synthesis",
+                    "engine_key": "aoi_thematic_synthesis",
+                    "title": "Thematic Synthesis",
+                    "source_backend_kind": "artifact",
+                    "candidate_state": "unavailable",
+                    "provenance_pointer": {
+                      "job_id": "stage5-aoi-blocked-source-20260324",
+                      "engine_key": "aoi_thematic_synthesis"
+                    },
+                    "composition_role_hint": "synthesis_primary",
+                    "summary_metadata": {
+                      "payload_kind": "normalized_artifact"
+                    },
+                    "plan_context": {
+                      "plan_context_found": true,
+                      "plan_state": "not_declared",
+                      "objective_key": "influence_thematic",
+                      "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                      "selected_source_thinker_id": "otto_neurath",
+                      "selected_source_thinker_name": "Otto Neurath",
+                      "phase_matches": []
+                    },
+                    "resolution_note": "No normalized AOI artifact was found for this engine."
+                  },
+                  {
+                    "source_family_key": "engagement_mapping",
+                    "engine_key": "aoi_engagement_mapping",
+                    "title": "Engagement Mapping",
+                    "source_backend_kind": "artifact",
+                    "candidate_state": "unavailable",
+                    "provenance_pointer": {
+                      "job_id": "stage5-aoi-blocked-source-20260324",
+                      "engine_key": "aoi_engagement_mapping"
+                    },
+                    "composition_role_hint": "comparison_map",
+                    "summary_metadata": {
+                      "payload_kind": "normalized_artifact"
+                    },
+                    "plan_context": {
+                      "plan_context_found": true,
+                      "plan_state": "not_declared",
+                      "objective_key": "influence_thematic",
+                      "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                      "selected_source_thinker_id": "otto_neurath",
+                      "selected_source_thinker_name": "Otto Neurath",
+                      "phase_matches": []
+                    },
+                    "resolution_note": "No normalized AOI artifact was found for this engine."
+                  },
+                  {
+                    "source_family_key": "sin_findings",
+                    "engine_key": "aoi_sin_findings",
+                    "title": "Sin Findings",
+                    "source_backend_kind": "artifact",
+                    "candidate_state": "unavailable",
+                    "provenance_pointer": {
+                      "job_id": "stage5-aoi-blocked-source-20260324",
+                      "engine_key": "aoi_sin_findings"
+                    },
+                    "composition_role_hint": "findings_bank",
+                    "summary_metadata": {
+                      "payload_kind": "normalized_artifact"
+                    },
+                    "plan_context": {
+                      "plan_context_found": true,
+                      "plan_state": "not_declared",
+                      "objective_key": "influence_thematic",
+                      "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                      "selected_source_thinker_id": "otto_neurath",
+                      "selected_source_thinker_name": "Otto Neurath",
+                      "phase_matches": []
+                    },
+                    "resolution_note": "No normalized AOI artifact was found for this engine."
+                  },
+                  {
+                    "source_family_key": "thematic_report",
+                    "engine_key": "aoi_thematic_report",
+                    "title": "AOI Report",
+                    "source_backend_kind": "phase_output_metadata",
+                    "candidate_state": "unavailable",
+                    "provenance_pointer": {
+                      "job_id": "stage5-aoi-blocked-source-20260324",
+                      "engine_key": "aoi_thematic_report"
+                    },
+                    "composition_role_hint": "report_closeout",
+                    "summary_metadata": {
+                      "payload_kind": "report_sections"
+                    },
+                    "plan_context": {
+                      "plan_context_found": true,
+                      "plan_state": "not_declared",
+                      "objective_key": "influence_thematic",
+                      "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+                      "selected_source_thinker_id": "otto_neurath",
+                      "selected_source_thinker_name": "Otto Neurath",
+                      "phase_matches": []
+                    },
+                    "resolution_note": "No thematic report phase outputs were found."
+                  }
+                ]
+              }
+            },
+            {
+              "stage": "source_selection",
+              "details": {
+                "prompt_version": "aoi-selection-v1",
+                "model_used": "claude-sonnet-4-6",
+                "timeout_s": 45,
+                "retry_policy": {
+                  "max_retries": 0
+                },
+                "provider_outcome": "skipped_no_usable_source_families",
+                "validator_version": "aoi-selection-validator-v1",
+                "blocked_reason_code": "no_usable_source_families",
+                "blocked_reason_detail": "plan-task could not resolve any AOI source material for source_v2_job_id 'stage5-aoi-blocked-source-20260324'.",
+                "selected_sources": [],
+                "rejected_sources": [],
+                "selection_summary": "",
+                "resolved_intent_seed": ""
+              }
+            },
+            {
+              "stage": "planning_decision",
+              "details": {
+                "planning_outcome_kind": "aoi_selection_blocked",
+                "downstream_readiness": "blocked_for_aoi_selection",
+                "blocked_reason_code": "no_usable_source_families",
+                "blocked_reason_detail": "plan-task could not resolve any AOI source material for source_v2_job_id 'stage5-aoi-blocked-source-20260324'."
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "warm_snapshot": [],
+    "compose_from_selection": [],
+    "compose_from_source": []
+  },
+  "plan_outcome_kind": "aoi_selection_blocked",
+  "planner_banner": "Analyzer-v2 blocked planner-backed AOI selection (no_usable_source_families). plan-task could not resolve any AOI source material for source_v2_job_id 'stage5-aoi-blocked-source-20260324'.Dismiss",
+  "continue_visible": false,
+  "compose_from_selection_unused": true,
+  "compose_from_source_unused": true,
+  "page_errors": [],
+  "console_errors": [
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED"
+  ],
+  "artifact_paths": {
+    "har": "/home/evgeny/projects/analyzer-v2/communications/PROOF_stage5_aoi_selection_blocked_session_2026-03-25.har",
+    "json": "/home/evgeny/projects/analyzer-v2/communications/PROOF_stage5_aoi_selection_blocked_requests_2026-03-25.json",
+    "screenshot": "/home/evgeny/projects/analyzer-v2/communications/PROOF_stage5_aoi_selection_blocked_state_2026-03-25.png"
+  }
+}

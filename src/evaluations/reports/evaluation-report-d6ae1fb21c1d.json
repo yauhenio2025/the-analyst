@@ -1,0 +1,229 @@
+{
+  "evaluation_report_id": "evaluation-report-d6ae1fb21c1d",
+  "created_at": "2026-03-30T05:07:41.330378+00:00",
+  "evaluation_pack_key": "phase4_planner_to_presentation_governance_v1",
+  "case_key": "genealogy_direct_sections_compose_snapshot_march28",
+  "subject_kind": "planning_decision",
+  "subject_identity": "planning-decision-b1600d054991",
+  "workflow_key": "intellectual_genealogy",
+  "consumer_key": "the-critic",
+  "supporting_subjects": {
+    "source_v2_job_id": "proof-round4-adaptive-balance-final-1774012011"
+  },
+  "input_evidence_refs": [
+    {
+      "ref_key": "phase2_trace_multi_surface",
+      "source_kind": "frozen_artifact",
+      "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase2_host_neutral_transient_proof_trace_2026-03-28.json",
+      "expected_sha256": "af95f300d6393525e44d830fd24a0a9456cd2cd2b77bbaa36d68f77565eb5275",
+      "observed_sha256": "af95f300d6393525e44d830fd24a0a9456cd2cd2b77bbaa36d68f77565eb5275",
+      "note": null
+    },
+    {
+      "ref_key": "genealogy_planning_snapshot",
+      "source_kind": "frozen_artifact",
+      "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase_d_genealogy_direct_sections_planning_snapshot_2026-03-30.json",
+      "expected_sha256": "a3829761409372d2e1c0c7adb1dc9e4a3efbc04ee3ddf714da27ff10de4cbb24",
+      "observed_sha256": "a3829761409372d2e1c0c7adb1dc9e4a3efbc04ee3ddf714da27ff10de4cbb24",
+      "note": null
+    }
+  ],
+  "checks": [
+    {
+      "check_key": "handoff_contract_fidelity",
+      "label": "Planner handoff contract matches the declared composition surface",
+      "status": "pass",
+      "required": true,
+      "summary": "planning_outcome_kind=direct_sections_composition_handoff_plan downstream_readiness=ready_for_direct_sections_compose_handoff followup_endpoint=/v1/presenter/compose-from-intent",
+      "evidence_mode": "frozen_artifact",
+      "evidence_observed_at": "2026-03-30T05:07:41.331076+00:00",
+      "live_revalidation_performed": false,
+      "evidence_refs": [
+        {
+          "ref_key": "phase2_trace_multi_surface:planning_decision",
+          "source_kind": "frozen_artifact",
+          "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase2_host_neutral_transient_proof_trace_2026-03-28.json#planning_decision",
+          "expected_sha256": "af95f300d6393525e44d830fd24a0a9456cd2cd2b77bbaa36d68f77565eb5275",
+          "observed_sha256": "af95f300d6393525e44d830fd24a0a9456cd2cd2b77bbaa36d68f77565eb5275",
+          "note": "Multi-surface genealogy trace artifact supplying planning evidence."
+        }
+      ],
+      "observed_values": {
+        "planning_outcome_kind": "direct_sections_composition_handoff_plan",
+        "downstream_readiness": "ready_for_direct_sections_compose_handoff",
+        "downstream_followup_contract": {
+          "method": "POST",
+          "endpoint": "/v1/presenter/compose-from-intent",
+          "handoff_kind": "direct_sections",
+          "request_fields": {
+            "workflow_key": "intellectual_genealogy",
+            "consumer_key": "the-critic",
+            "user_intent": "Trace the genealogy and intellectual development visible in this saved result.",
+            "prose_sections": "<lower from direct_sections_composition_handoff_plan>"
+          }
+        },
+        "aoi_compose_entrypoint_kind": null,
+        "genealogy_handoff_kind": "direct_sections"
+      }
+    },
+    {
+      "check_key": "planner_presentation_agreement",
+      "label": "Planning truth, compose request, and served presentation agree for the declared case",
+      "status": "pass",
+      "required": true,
+      "summary": "planning_decision_id=planning-decision-b1600d054991 compose_binding_planning_decision_id=planning-decision-b1600d054991 presentation_workflow_key=intellectual_genealogy presentation_consumer_key=the-critic",
+      "evidence_mode": "frozen_artifact",
+      "evidence_observed_at": "2026-03-30T05:07:41.331076+00:00",
+      "live_revalidation_performed": false,
+      "evidence_refs": [
+        {
+          "ref_key": "phase2_trace_multi_surface:planning_decision",
+          "source_kind": "frozen_artifact",
+          "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase2_host_neutral_transient_proof_trace_2026-03-28.json#planning_decision",
+          "expected_sha256": "af95f300d6393525e44d830fd24a0a9456cd2cd2b77bbaa36d68f77565eb5275",
+          "observed_sha256": "af95f300d6393525e44d830fd24a0a9456cd2cd2b77bbaa36d68f77565eb5275",
+          "note": "Multi-surface genealogy trace artifact supplying planning evidence."
+        },
+        {
+          "ref_key": "phase2_trace_multi_surface:planning_snapshot",
+          "source_kind": "frozen_artifact",
+          "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase2_host_neutral_transient_proof_trace_2026-03-28.json#planning_snapshot",
+          "expected_sha256": "af95f300d6393525e44d830fd24a0a9456cd2cd2b77bbaa36d68f77565eb5275",
+          "observed_sha256": "af95f300d6393525e44d830fd24a0a9456cd2cd2b77bbaa36d68f77565eb5275",
+          "note": "Multi-surface genealogy trace artifact supplying embedded planning snapshot evidence."
+        },
+        {
+          "ref_key": "genealogy_planning_snapshot",
+          "source_kind": "frozen_artifact",
+          "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase_d_genealogy_direct_sections_planning_snapshot_2026-03-30.json",
+          "expected_sha256": "a3829761409372d2e1c0c7adb1dc9e4a3efbc04ee3ddf714da27ff10de4cbb24",
+          "observed_sha256": "a3829761409372d2e1c0c7adb1dc9e4a3efbc04ee3ddf714da27ff10de4cbb24",
+          "note": null
+        },
+        {
+          "ref_key": "phase2_trace_multi_surface:lowered_compose_request",
+          "source_kind": "frozen_artifact",
+          "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase2_host_neutral_transient_proof_trace_2026-03-28.json#lowered_compose_request",
+          "expected_sha256": "af95f300d6393525e44d830fd24a0a9456cd2cd2b77bbaa36d68f77565eb5275",
+          "observed_sha256": "af95f300d6393525e44d830fd24a0a9456cd2cd2b77bbaa36d68f77565eb5275",
+          "note": "Multi-surface genealogy trace artifact supplying lowered compose request evidence."
+        },
+        {
+          "ref_key": "phase2_trace_multi_surface:compose_response",
+          "source_kind": "frozen_artifact",
+          "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase2_host_neutral_transient_proof_trace_2026-03-28.json#compose_response",
+          "expected_sha256": "af95f300d6393525e44d830fd24a0a9456cd2cd2b77bbaa36d68f77565eb5275",
+          "observed_sha256": "af95f300d6393525e44d830fd24a0a9456cd2cd2b77bbaa36d68f77565eb5275",
+          "note": "Multi-surface genealogy trace artifact supplying compose response evidence."
+        }
+      ],
+      "observed_values": {
+        "snapshot_planning_decision_id": "planning-decision-b1600d054991",
+        "compose_binding_planning_decision_id": "planning-decision-b1600d054991",
+        "snapshot_workflow_key": "intellectual_genealogy",
+        "snapshot_consumer_key": "the-critic",
+        "snapshot_source_v2_job_id": "proof-round4-adaptive-balance-final-1774012011",
+        "compose_request_workflow_key": "intellectual_genealogy",
+        "compose_request_consumer_key": "the-critic",
+        "compose_request_source_v2_job_id": null,
+        "presentation_workflow_key": "intellectual_genealogy",
+        "presentation_consumer_key": "the-critic",
+        "selected_source_thinker_id": null,
+        "selected_source_thinker_name": null
+      }
+    },
+    {
+      "check_key": "presentation_contract_fidelity",
+      "label": "Compose response presentation contract matches the declared case",
+      "status": "pass",
+      "required": true,
+      "summary": "presentation_workflow_key=intellectual_genealogy presentation_consumer_key=the-critic resolver_version=compose-from-intent-v2 view_count=1 generated_view_definition_count=1",
+      "evidence_mode": "frozen_artifact",
+      "evidence_observed_at": "2026-03-30T05:07:41.331076+00:00",
+      "live_revalidation_performed": false,
+      "evidence_refs": [
+        {
+          "ref_key": "phase2_trace_multi_surface:compose_response",
+          "source_kind": "frozen_artifact",
+          "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase2_host_neutral_transient_proof_trace_2026-03-28.json#compose_response",
+          "expected_sha256": "af95f300d6393525e44d830fd24a0a9456cd2cd2b77bbaa36d68f77565eb5275",
+          "observed_sha256": "af95f300d6393525e44d830fd24a0a9456cd2cd2b77bbaa36d68f77565eb5275",
+          "note": "Multi-surface genealogy trace artifact supplying compose response evidence."
+        }
+      ],
+      "observed_values": {
+        "presentation_workflow_key": "intellectual_genealogy",
+        "presentation_consumer_key": "the-critic",
+        "resolver_version": "compose-from-intent-v2",
+        "presentation_view_count": 1,
+        "generated_view_definition_count": 1
+      }
+    },
+    {
+      "check_key": "composition_trace_integrity",
+      "label": "Compose trace includes the required stages for the declared composition surface",
+      "status": "pass",
+      "required": true,
+      "summary": "compose_trace_stages=['semantic_surface_matching', 'hierarchy_planning', 'page_plan', 'view_generation', 'transformation_execution', 'consumer_adaptation', 'contract_validation']",
+      "evidence_mode": "frozen_artifact",
+      "evidence_observed_at": "2026-03-30T05:07:41.331076+00:00",
+      "live_revalidation_performed": false,
+      "evidence_refs": [
+        {
+          "ref_key": "phase2_trace_multi_surface:compose_response",
+          "source_kind": "frozen_artifact",
+          "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase2_host_neutral_transient_proof_trace_2026-03-28.json#compose_response",
+          "expected_sha256": "af95f300d6393525e44d830fd24a0a9456cd2cd2b77bbaa36d68f77565eb5275",
+          "observed_sha256": "af95f300d6393525e44d830fd24a0a9456cd2cd2b77bbaa36d68f77565eb5275",
+          "note": "Multi-surface genealogy trace artifact supplying compose response evidence."
+        }
+      ],
+      "observed_values": {
+        "compose_trace_stages": [
+          "semantic_surface_matching",
+          "hierarchy_planning",
+          "page_plan",
+          "view_generation",
+          "transformation_execution",
+          "consumer_adaptation",
+          "contract_validation"
+        ]
+      }
+    }
+  ],
+  "dimension_summaries": [
+    {
+      "dimension_key": "handoff_contract_fidelity",
+      "status": "pass",
+      "summary": "planning_outcome_kind=direct_sections_composition_handoff_plan downstream_readiness=ready_for_direct_sections_compose_handoff followup_endpoint=/v1/presenter/compose-from-intent",
+      "supporting_checks": [
+        "handoff_contract_fidelity"
+      ]
+    },
+    {
+      "dimension_key": "planner_presentation_agreement",
+      "status": "pass",
+      "summary": "planning_decision_id=planning-decision-b1600d054991 compose_binding_planning_decision_id=planning-decision-b1600d054991 presentation_workflow_key=intellectual_genealogy presentation_consumer_key=the-critic",
+      "supporting_checks": [
+        "planner_presentation_agreement"
+      ]
+    },
+    {
+      "dimension_key": "presentation_contract_fidelity",
+      "status": "pass",
+      "summary": "presentation_workflow_key=intellectual_genealogy presentation_consumer_key=the-critic resolver_version=compose-from-intent-v2 view_count=1 generated_view_definition_count=1",
+      "supporting_checks": [
+        "presentation_contract_fidelity"
+      ]
+    },
+    {
+      "dimension_key": "composition_trace_integrity",
+      "status": "pass",
+      "summary": "compose_trace_stages=['semantic_surface_matching', 'hierarchy_planning', 'page_plan', 'view_generation', 'transformation_execution', 'consumer_adaptation', 'contract_validation']",
+      "supporting_checks": [
+        "composition_trace_integrity"
+      ]
+    }
+  ],
+  "overall_verdict": "pass"
+}

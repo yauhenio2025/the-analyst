@@ -1,0 +1,353 @@
+{
+  "evaluation_report_id": "evaluation-report-11065792d5e6",
+  "created_at": "2026-03-29T06:14:31.784953+00:00",
+  "evaluation_pack_key": "phase4_frozen_governance_v1",
+  "case_key": "aoi_exemplar_march27_execution_backed",
+  "subject_kind": "executor_job",
+  "subject_identity": "job-744edf255ad5",
+  "workflow_key": "anxiety_of_influence_thematic_single_thinker",
+  "consumer_key": "the-critic",
+  "supporting_subjects": {
+    "project_id": "round5-proof-dossier-final-1774100000",
+    "source_analysis_id": "gen-v2-554e681522b9"
+  },
+  "input_evidence_refs": [
+    {
+      "ref_key": "stage5_exemplar_eval_summary",
+      "source_kind": "frozen_artifact",
+      "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_stage5_aoi_exemplar_eval_summary_2026-03-25.json",
+      "expected_sha256": "7b6857dc6ef28c4e6efb6905ab095e5368c8d8607ea2383a26f90c7fbd6153d9",
+      "observed_sha256": "7b6857dc6ef28c4e6efb6905ab095e5368c8d8607ea2383a26f90c7fbd6153d9",
+      "note": null
+    },
+    {
+      "ref_key": "stage5_pack_rerun_summary",
+      "source_kind": "frozen_artifact",
+      "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_stage5_aoi_pack_rerun_summary_2026-03-25.json",
+      "expected_sha256": "f0db9d891ffd53aa37b3a94104efc861bf6f83ce710d5bec47904fa93cc1562c",
+      "observed_sha256": "f0db9d891ffd53aa37b3a94104efc861bf6f83ce710d5bec47904fa93cc1562c",
+      "note": null
+    },
+    {
+      "ref_key": "march27_ready_manifest",
+      "source_kind": "frozen_artifact",
+      "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase0_aoi_execution_backed_after_guard_recalibration_ready_manifest_2026-03-27.json",
+      "expected_sha256": "7083f17a6c24e65090b76abd0308d025686b5dffdde1d974ed475df71ce1aa0c",
+      "observed_sha256": "7083f17a6c24e65090b76abd0308d025686b5dffdde1d974ed475df71ce1aa0c",
+      "note": null
+    },
+    {
+      "ref_key": "march27_completed_boundary_core",
+      "source_kind": "frozen_artifact",
+      "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase0_aoi_execution_backed_after_guard_recalibration_completed_boundary_core_2026-03-27.json",
+      "expected_sha256": "d9fbe6dfe65c6c02e3edecd39b191c55db8ade6fb7484b3de811a0e79eb6f2ad",
+      "observed_sha256": "d9fbe6dfe65c6c02e3edecd39b191c55db8ade6fb7484b3de811a0e79eb6f2ad",
+      "note": null
+    },
+    {
+      "ref_key": "march27_requests",
+      "source_kind": "frozen_artifact",
+      "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase0_aoi_execution_backed_after_guard_recalibration_requests_2026-03-27.json",
+      "expected_sha256": "d3b784d1a6865e28eb8914fa30bd002824c249eaf7f660d78d4ad6f8ad056b50",
+      "observed_sha256": "d3b784d1a6865e28eb8914fa30bd002824c249eaf7f660d78d4ad6f8ad056b50",
+      "note": null
+    }
+  ],
+  "checks": [
+    {
+      "check_key": "executor_job_completed",
+      "label": "Executor job is completed under the AOI workflow",
+      "status": "pass",
+      "required": true,
+      "summary": "job status=completed workflow_key=anxiety_of_influence_thematic_single_thinker",
+      "evidence_mode": "executor_read_contract",
+      "evidence_observed_at": "2026-03-29T06:14:31.789774+00:00",
+      "live_revalidation_performed": true,
+      "evidence_refs": [
+        {
+          "ref_key": "executor_job_status",
+          "source_kind": "executor_read_contract",
+          "locator": "job_manager.get_job(job-744edf255ad5)",
+          "expected_sha256": null,
+          "observed_sha256": null,
+          "note": null
+        }
+      ],
+      "observed_values": {
+        "job_id": "job-744edf255ad5",
+        "status": "completed",
+        "workflow_key": "anxiety_of_influence_thematic_single_thinker"
+      }
+    },
+    {
+      "check_key": "result_manifest_ready",
+      "label": "AOI result manifest is ready and restorable",
+      "status": "pass",
+      "required": true,
+      "summary": "result_state=ready presentation_status=completed restore_available=True",
+      "evidence_mode": "inspection_route",
+      "evidence_observed_at": "2026-03-29T06:14:31.789774+00:00",
+      "live_revalidation_performed": true,
+      "evidence_refs": [
+        {
+          "ref_key": "result_manifest",
+          "source_kind": "inspection_route",
+          "locator": "build_result_manifest(job-744edf255ad5, consumer_key=the-critic)",
+          "expected_sha256": null,
+          "observed_sha256": null,
+          "note": null
+        }
+      ],
+      "observed_values": {
+        "job_id": "job-744edf255ad5",
+        "result_state": "ready",
+        "presentation_status": "completed",
+        "restore_available": true
+      }
+    },
+    {
+      "check_key": "source_backed_readiness_ready",
+      "label": "AOI source-backed readiness remains ready",
+      "status": "pass",
+      "required": true,
+      "summary": "readiness_status=ready selectors=['dossier', 'comparison']",
+      "evidence_mode": "inspection_route",
+      "evidence_observed_at": "2026-03-29T06:14:31.789774+00:00",
+      "live_revalidation_performed": true,
+      "evidence_refs": [
+        {
+          "ref_key": "source_backed_readiness",
+          "source_kind": "inspection_route",
+          "locator": "build_source_backed_readiness(job-744edf255ad5, consumer_key=the-critic)",
+          "expected_sha256": null,
+          "observed_sha256": null,
+          "note": null
+        }
+      ],
+      "observed_values": {
+        "job_id": "job-744edf255ad5",
+        "readiness_status": "ready",
+        "allowed_selectors": [
+          "dossier",
+          "comparison"
+        ]
+      }
+    },
+    {
+      "check_key": "stage5_seam_gate_pass",
+      "label": "Stage 5 frozen seam-gate evidence passes",
+      "status": "pass",
+      "required": true,
+      "summary": "Stage 5 exemplar and rerun summaries both report a passing seam gate for evolution_ready.",
+      "evidence_mode": "frozen_artifact",
+      "evidence_observed_at": "2026-03-29T06:14:31.789774+00:00",
+      "live_revalidation_performed": false,
+      "evidence_refs": [
+        {
+          "ref_key": "stage5_exemplar_eval_summary",
+          "source_kind": "frozen_artifact",
+          "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_stage5_aoi_exemplar_eval_summary_2026-03-25.json",
+          "expected_sha256": "7b6857dc6ef28c4e6efb6905ab095e5368c8d8607ea2383a26f90c7fbd6153d9",
+          "observed_sha256": "7b6857dc6ef28c4e6efb6905ab095e5368c8d8607ea2383a26f90c7fbd6153d9",
+          "note": null
+        },
+        {
+          "ref_key": "stage5_pack_rerun_summary",
+          "source_kind": "frozen_artifact",
+          "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_stage5_aoi_pack_rerun_summary_2026-03-25.json",
+          "expected_sha256": "f0db9d891ffd53aa37b3a94104efc861bf6f83ce710d5bec47904fa93cc1562c",
+          "observed_sha256": "f0db9d891ffd53aa37b3a94104efc861bf6f83ce710d5bec47904fa93cc1562c",
+          "note": null
+        }
+      ],
+      "observed_values": {
+        "stage5_exemplar_seam_gate_pass": true,
+        "stage5_pack_seam_gate_pass": true,
+        "evolution_ready_expectation_met": true
+      }
+    },
+    {
+      "check_key": "selection_fit_carried_forward",
+      "label": "Stage 5 carried-forward selection_fit dimension passes",
+      "status": "pass",
+      "required": true,
+      "summary": "selection_fit was carried forward from the frozen Stage 5 exemplar summary.",
+      "evidence_mode": "frozen_artifact",
+      "evidence_observed_at": "2026-03-29T06:14:31.789774+00:00",
+      "live_revalidation_performed": false,
+      "evidence_refs": [
+        {
+          "ref_key": "stage5_exemplar_eval_summary",
+          "source_kind": "frozen_artifact",
+          "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_stage5_aoi_exemplar_eval_summary_2026-03-25.json",
+          "expected_sha256": "7b6857dc6ef28c4e6efb6905ab095e5368c8d8607ea2383a26f90c7fbd6153d9",
+          "observed_sha256": "7b6857dc6ef28c4e6efb6905ab095e5368c8d8607ea2383a26f90c7fbd6153d9",
+          "note": null
+        }
+      ],
+      "observed_values": {
+        "selection_fit": true
+      }
+    },
+    {
+      "check_key": "rationale_clarity_carried_forward",
+      "label": "Stage 5 carried-forward rationale_clarity dimension passes",
+      "status": "pass",
+      "required": true,
+      "summary": "rationale_clarity was carried forward from the frozen Stage 5 exemplar summary.",
+      "evidence_mode": "frozen_artifact",
+      "evidence_observed_at": "2026-03-29T06:14:31.789774+00:00",
+      "live_revalidation_performed": false,
+      "evidence_refs": [
+        {
+          "ref_key": "stage5_exemplar_eval_summary",
+          "source_kind": "frozen_artifact",
+          "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_stage5_aoi_exemplar_eval_summary_2026-03-25.json",
+          "expected_sha256": "7b6857dc6ef28c4e6efb6905ab095e5368c8d8607ea2383a26f90c7fbd6153d9",
+          "observed_sha256": "7b6857dc6ef28c4e6efb6905ab095e5368c8d8607ea2383a26f90c7fbd6153d9",
+          "note": null
+        }
+      ],
+      "observed_values": {
+        "rationale_clarity": true
+      }
+    },
+    {
+      "check_key": "rendered_usefulness_carried_forward",
+      "label": "Stage 5 carried-forward rendered_usefulness dimension passes",
+      "status": "pass",
+      "required": true,
+      "summary": "rendered_usefulness was carried forward from the frozen Stage 5 exemplar summary.",
+      "evidence_mode": "frozen_artifact",
+      "evidence_observed_at": "2026-03-29T06:14:31.789774+00:00",
+      "live_revalidation_performed": false,
+      "evidence_refs": [
+        {
+          "ref_key": "stage5_exemplar_eval_summary",
+          "source_kind": "frozen_artifact",
+          "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_stage5_aoi_exemplar_eval_summary_2026-03-25.json",
+          "expected_sha256": "7b6857dc6ef28c4e6efb6905ab095e5368c8d8607ea2383a26f90c7fbd6153d9",
+          "observed_sha256": "7b6857dc6ef28c4e6efb6905ab095e5368c8d8607ea2383a26f90c7fbd6153d9",
+          "note": null
+        }
+      ],
+      "observed_values": {
+        "rendered_usefulness": true
+      }
+    },
+    {
+      "check_key": "aoi_browser_chain_success",
+      "label": "March 27 browser-chain proof preserves the planner-primary AOI path",
+      "status": "pass",
+      "required": true,
+      "summary": "The frozen March 27 request chain shows successful planner, plan-task, and compose-from-selection calls for the AOI exemplar.",
+      "evidence_mode": "frozen_artifact",
+      "evidence_observed_at": "2026-03-29T06:14:31.789774+00:00",
+      "live_revalidation_performed": false,
+      "evidence_refs": [
+        {
+          "ref_key": "march27_requests",
+          "source_kind": "frozen_artifact",
+          "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase0_aoi_execution_backed_after_guard_recalibration_requests_2026-03-27.json",
+          "expected_sha256": "d3b784d1a6865e28eb8914fa30bd002824c249eaf7f660d78d4ad6f8ad056b50",
+          "observed_sha256": "d3b784d1a6865e28eb8914fa30bd002824c249eaf7f660d78d4ad6f8ad056b50",
+          "note": null
+        }
+      ],
+      "observed_values": {
+        "success": true,
+        "source_v2_job_id": "job-744edf255ad5",
+        "planner_request_status": 200,
+        "plan_task_request_status": 200,
+        "compose_from_selection_status": 200
+      }
+    },
+    {
+      "check_key": "aoi_completed_boundary_core",
+      "label": "Completed-boundary core artifact validates the same AOI run",
+      "status": "pass",
+      "required": true,
+      "summary": "The frozen completed-boundary core artifact exits cleanly for the AOI exemplar job.",
+      "evidence_mode": "frozen_artifact",
+      "evidence_observed_at": "2026-03-29T06:14:31.789774+00:00",
+      "live_revalidation_performed": false,
+      "evidence_refs": [
+        {
+          "ref_key": "march27_completed_boundary_core",
+          "source_kind": "frozen_artifact",
+          "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase0_aoi_execution_backed_after_guard_recalibration_completed_boundary_core_2026-03-27.json",
+          "expected_sha256": "d9fbe6dfe65c6c02e3edecd39b191c55db8ade6fb7484b3de811a0e79eb6f2ad",
+          "observed_sha256": "d9fbe6dfe65c6c02e3edecd39b191c55db8ade6fb7484b3de811a0e79eb6f2ad",
+          "note": null
+        }
+      ],
+      "observed_values": {
+        "exit_code": 0,
+        "validated_run_job_id": "job-744edf255ad5"
+      }
+    },
+    {
+      "check_key": "aoi_ready_manifest_artifact",
+      "label": "March 27 ready-manifest artifact records ready/completed/restoreable truth",
+      "status": "pass",
+      "required": true,
+      "summary": "The frozen ready-manifest artifact records the AOI exemplar as ready and restoreable.",
+      "evidence_mode": "frozen_artifact",
+      "evidence_observed_at": "2026-03-29T06:14:31.789774+00:00",
+      "live_revalidation_performed": false,
+      "evidence_refs": [
+        {
+          "ref_key": "march27_ready_manifest",
+          "source_kind": "frozen_artifact",
+          "locator": "/home/evgeny/projects/analyzer-v2/communications/PROOF_phase0_aoi_execution_backed_after_guard_recalibration_ready_manifest_2026-03-27.json",
+          "expected_sha256": "7083f17a6c24e65090b76abd0308d025686b5dffdde1d974ed475df71ce1aa0c",
+          "observed_sha256": "7083f17a6c24e65090b76abd0308d025686b5dffdde1d974ed475df71ce1aa0c",
+          "note": null
+        }
+      ],
+      "observed_values": {
+        "job_id": "job-744edf255ad5",
+        "result_state": "ready",
+        "presentation_status": "completed",
+        "restore_available": true
+      }
+    }
+  ],
+  "dimension_summaries": [
+    {
+      "dimension_key": "selection_fit",
+      "status": "pass",
+      "summary": "selection_fit was carried forward from the frozen Stage 5 exemplar summary.",
+      "supporting_checks": [
+        "selection_fit_carried_forward"
+      ]
+    },
+    {
+      "dimension_key": "rationale_clarity",
+      "status": "pass",
+      "summary": "rationale_clarity was carried forward from the frozen Stage 5 exemplar summary.",
+      "supporting_checks": [
+        "rationale_clarity_carried_forward"
+      ]
+    },
+    {
+      "dimension_key": "rendered_usefulness",
+      "status": "pass",
+      "summary": "rendered_usefulness was carried forward from the frozen Stage 5 exemplar summary.",
+      "supporting_checks": [
+        "rendered_usefulness_carried_forward"
+      ]
+    },
+    {
+      "dimension_key": "operational_behavior",
+      "status": "pass",
+      "summary": "Operational behavior remains supported by the March 27 browser-chain and completed-boundary evidence.",
+      "supporting_checks": [
+        "aoi_browser_chain_success",
+        "aoi_completed_boundary_core",
+        "aoi_ready_manifest_artifact"
+      ]
+    }
+  ],
+  "overall_verdict": "pass"
+}

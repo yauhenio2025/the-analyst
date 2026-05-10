@@ -1,0 +1,118 @@
+{
+  "resolver_version": "compose-from-intent-v1",
+  "entries": [
+    {
+      "stage": "page_plan",
+      "details": {
+        "row_count": 3,
+        "rows": [
+          {
+            "section_index": 0,
+            "pattern_key": "card_grid_grouped",
+            "view_name": "Engagement Map",
+            "presentation_stance": "analytical",
+            "rationale": "The engagement mapping data is a typed, categorized collection of theme-level findings — exactly the shape card_grid_grouped is designed for. Each engagement record has a natural badge dimension (engagement_level or severity), a title (theme_name), and expandable prose (benanav_position, divergence_description, severity_rationale). Grouping by engagement_level immediately foregrounds the one fully-engaged theme against the partial uptakes, which is the key comparative signal. The user intent places this section first, and the card grid surfaces the map's structure at a glance before the reader descends into the sin findings."
+          },
+          {
+            "section_index": 1,
+            "pattern_key": "accordion_sections",
+            "view_name": "SIN Findings",
+            "presentation_stance": "investigative",
+            "rationale": "SIN findings have meaningfully different data shapes per entry — source/target quote pairs, discrepancy analysis, and implication text — and the four findings span three distinct sin types, making accordion_sections the natural fit for multi-faceted analytical output with heterogeneous detail structures. The collapsible format lets the critic scan all four findings by title and severity, then open only the ones demanding close reading. This supports the explanatory_narrative style school by sequencing evidence progressively rather than dumping it all at once."
+          },
+          {
+            "section_index": 2,
+            "pattern_key": "prose_narrative",
+            "view_name": "AOI Report Closeout",
+            "presentation_stance": "synthetic",
+            "rationale": "The AOI thematic report is fundamentally a written synthesis — its data shape is narrative prose with embedded lists that culminate in an interpretive statement about the distributed AOI pattern. prose_narrative is the correct pattern because the report_sections structure reads as a composed essay rather than a homogeneous data collection or a multi-faceted accordion. Placing it last honors the user intent ('ends with the report closeout') and the explanatory_narrative style school, where analysis builds toward a synthesizing conclusion rather than dispersing into further itemization."
+          }
+        ]
+      }
+    },
+    {
+      "stage": "view_generation",
+      "details": {
+        "views": [
+          {
+            "view_key": "compose_intent_01_aoi_engagement_mapping",
+            "pattern_key": "card_grid_grouped",
+            "renderer_type": "card_grid",
+            "engine_key": "aoi_engagement_mapping"
+          },
+          {
+            "view_key": "compose_intent_02_aoi_sin_findings",
+            "pattern_key": "accordion_sections",
+            "renderer_type": "accordion",
+            "engine_key": "aoi_sin_findings"
+          },
+          {
+            "view_key": "compose_intent_03_aoi_thematic_report",
+            "pattern_key": "prose_narrative",
+            "renderer_type": "prose",
+            "engine_key": "aoi_thematic_report"
+          }
+        ]
+      }
+    },
+    {
+      "stage": "transformation_execution",
+      "details": {
+        "views": [
+          {
+            "view_key": "compose_intent_01_aoi_engagement_mapping",
+            "engine_key": "aoi_engagement_mapping",
+            "renderer_type": "card_grid",
+            "extraction_source": "dynamic",
+            "template_key": null,
+            "cached": false
+          },
+          {
+            "view_key": "compose_intent_02_aoi_sin_findings",
+            "engine_key": "aoi_sin_findings",
+            "renderer_type": "accordion",
+            "extraction_source": "dynamic",
+            "template_key": null,
+            "cached": false
+          },
+          {
+            "view_key": "compose_intent_03_aoi_thematic_report",
+            "engine_key": "aoi_thematic_report",
+            "renderer_type": "prose",
+            "extraction_source": "passthrough",
+            "template_key": null
+          }
+        ]
+      }
+    },
+    {
+      "stage": "consumer_adaptation",
+      "details": {
+        "views": [
+          {
+            "view_key": "compose_intent_01_aoi_engagement_mapping",
+            "renderer_type": "card_grid",
+            "adapted": false
+          },
+          {
+            "view_key": "compose_intent_02_aoi_sin_findings",
+            "renderer_type": "accordion",
+            "adapted": false
+          },
+          {
+            "view_key": "compose_intent_03_aoi_thematic_report",
+            "renderer_type": "prose",
+            "adapted": false
+          }
+        ]
+      }
+    },
+    {
+      "stage": "contract_validation",
+      "details": {
+        "view_count": 3,
+        "issues": 0
+      }
+    }
+  ]
+}
