@@ -11,7 +11,7 @@ import re
 from typing import Any, Optional
 
 from src.executor.job_manager import get_job
-from src.orchestrator.planner import load_plan
+from src.executor.plan_context import load_effective_plan
 
 logger = logging.getLogger(__name__)
 
@@ -102,7 +102,7 @@ def load_prior_work_metadata(job_id: str) -> dict[str, dict[str, Any]]:
     if not job:
         return {}
 
-    plan = load_plan(job.get("plan_id", ""))
+    plan = load_effective_plan(job_id, job.get("plan_id", ""))
     if not plan or not getattr(plan, "prior_works", None):
         return {}
 
@@ -207,7 +207,7 @@ def try_split_collapsed_outputs(
     job = get_job(job_id)
     if not job:
         return None
-    plan = load_plan(job.get("plan_id", ""))
+    plan = load_effective_plan(job_id, job.get("plan_id", ""))
     if not plan or not hasattr(plan, "prior_works") or not plan.prior_works:
         return None
 

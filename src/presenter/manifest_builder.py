@@ -10,6 +10,10 @@ from typing import Any, Optional
 from src.consumers.registry import get_consumer_registry
 from src.renderers.registry import get_renderer_registry
 
+from .renderer_contract_enforcement import (
+    ServedIntent,
+    enforce_final_payload_contracts_or_raise,
+)
 from .scaffold_generator import resolve_scaffold_type
 from .schemas import EffectiveManifestView, EffectivePresentationManifest, ViewPayload
 from .view_hierarchy import is_chain_container_view, iter_active_child_views
@@ -150,6 +154,8 @@ def build_effective_manifest(
     job_id: str,
     plan_id: str,
     consumer_key: str,
+    served_intent: ServedIntent,
+    composition_mode: Optional[str] = None,
     thinker_name: str,
     strategy_summary: str,
     payloads: dict[str, ViewPayload],
@@ -199,6 +205,7 @@ def build_effective_manifest(
             structuring_policy=payload.structuring_policy,
             derivation_kind=payload.derivation_kind or _derive_derivation_kind(payload),
             legacy_visibility=payload.visibility,
+            first_hop_affordance=payload.first_hop_affordance,
         )
         manifest_views.append(manifest_view)
 
@@ -219,12 +226,22 @@ def build_effective_manifest(
         ):
             artifacts_ready = False
 
+    enforce_final_payload_contracts_or_raise(
+        ordered_payloads,
+        composition_mode=composition_mode,
+        served_intent=served_intent,
+        workflow_key=job.get("workflow_key", ""),
+        consumer_key=consumer_key,
+    )
+
     contract_manifest = {
         "consumer_key": consumer_key,
+        "composition_mode": composition_mode,
         "views": [_manifest_identity_row(view) for view in manifest_views],
     }
     content_manifest = {
         "consumer_key": consumer_key,
+        "composition_mode": composition_mode,
         "views": [
             {
                 "view_key": payload.view_key,
@@ -241,6 +258,7 @@ def build_effective_manifest(
         job_id=job_id,
         plan_id=plan_id,
         consumer_key=consumer_key,
+        composition_mode=composition_mode,
         presentation_contract_version=1,
         presentation_hash=_stable_fingerprint(contract_manifest),
         presentation_content_hash=_stable_fingerprint(content_manifest),
@@ -274,6 +292,11 @@ def _manifest_identity_row(view: EffectiveManifestView) -> dict[str, Any]:
         "scaffold_hosting_mode": view.scaffold_hosting_mode,
         "structuring_policy": view.structuring_policy,
         "derivation_kind": view.derivation_kind,
+        "first_hop_affordance": (
+            view.first_hop_affordance.model_dump(mode="json", exclude_none=True)
+            if view.first_hop_affordance is not None
+            else None
+        ),
     }
 
 

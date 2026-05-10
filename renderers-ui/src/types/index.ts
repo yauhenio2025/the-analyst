@@ -10,6 +10,8 @@ export interface RendererProps {
   data: unknown;
   /** Renderer-specific configuration from the view definition */
   config: Record<string, unknown>;
+  /** Optional additive reading scaffold shown alongside canonical data */
+  scaffold?: Record<string, unknown> | null;
   /** Children views (for container renderers like tabs) */
   children?: React.ReactNode;
 }

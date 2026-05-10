@@ -264,6 +264,7 @@
       "argument_architecture"
     ]
   },
+  "composition_role": null,
   "depth_levels": [
     {
       "description": "Quick structural read \u2014 chapter roles and most critical dependencies.",
@@ -333,7 +334,7 @@
       "typical_passes": 2
     },
     {
-      "description": "Exhaustive structural analysis \u2014 discovery, architecture, and confrontation.",
+      "description": "Exhaustive structural analysis \u2014 discovery, architecture, confrontation, and integration.",
       "key": "deep",
       "passes": [
         {
@@ -389,10 +390,37 @@
           "label": "Vulnerability Confrontation",
           "pass_number": 3,
           "stance": "confrontation"
+        },
+        {
+          "consumes_from": [
+            1,
+            2,
+            3
+          ],
+          "description": "Integrate discovery, architecture, and confrontation into comprehensive structural assessment.",
+          "focus_capabilities": [
+            "classify_chapter_roles",
+            "map_chapter_dependencies",
+            "track_concept_flow",
+            "assess_chapter_coupling",
+            "identify_structural_vulnerabilities",
+            "analyze_inter_part_dynamics"
+          ],
+          "focus_dimensions": [
+            "chapter_functional_role",
+            "chapter_dependencies",
+            "key_concepts_introduced",
+            "chapter_coupling",
+            "structural_vulnerabilities",
+            "inter_part_dynamics"
+          ],
+          "label": "Structural Integration",
+          "pass_number": 4,
+          "stance": "integration"
         }
       ],
       "suitable_for": "Complex monographs, texts with intricate chapter interdependencies.",
-      "typical_passes": 3
+      "typical_passes": 4
     }
   ],
   "engine_key": "chapter_role_analyzer",
@@ -452,8 +480,11 @@
   },
   "kind": "extraction",
   "legacy_engine_key": null,
+  "output_contract": null,
+  "output_mode": "prose",
   "paradigm_keys": [],
   "problematique": "In any extended work, chapters are functional units in an argumentative\nedifice. Each plays a specific role \u2014 establishing premises, advancing\nclaims, handling objections, synthesizing threads. Understanding these\nroles and dependencies is essential for any serious engagement with\nbook-length arguments.\n\nMost reading treats chapters as containers for content \u2014 \"Chapter 3 is\nabout X.\" But chapters are not containers; they are INSTRUMENTS. Chapter 3\ndoesn't just contain claims about X \u2014 it DOES something with those claims:\nestablishes a foundation for Chapter 4, handles an objection raised\nimplicitly in Chapter 2, provides the evidence needed for the conclusion\nin Chapter 7. The chapter's content matters less than its FUNCTION in the\noverall argumentative architecture.\n\nThis functional perspective reveals structural features invisible to\ncontent-level reading: which chapters are load-bearing (remove them and\nthe argument collapses), which are peripheral (they enrich but aren't\nessential), where tight coupling between chapters creates fragility, where\nloose coupling allows reordering. It also reveals vulnerabilities: missing\nbridges between chapters, circular dependencies, orphaned argumentative\nthreads that are introduced but never resolved.\n\nFor genealogical analysis specifically, chapter-level functional mapping\nis essential because intellectual influence often operates at the chapter\nlevel \u2014 an author might borrow a framework from one source for one chapter\nand a methodology from another source for a different chapter. Without\nunderstanding chapter functions, these differential debts remain invisible.\n",
+  "prompt_context_keys": [],
   "researcher_question": "What role does each chapter play in the overall argument, and how do chapters depend on and enable each other?",
   "version": 1
 }

@@ -99,10 +99,11 @@ export function resolveEnumColor(
 // - object → recursive render with indentation (with sub-renderer dispatch)
 // - primitive → inline display
 
-export function GenericSectionRenderer({ data, depth = 0, subRenderers }: {
+export function GenericSectionRenderer({ data, depth = 0, subRenderers, captureConfig }: {
   data: unknown;
   depth?: number;
   subRenderers?: Record<string, { renderer_type: string; config?: Record<string, unknown> }>;
+  captureConfig?: Record<string, unknown>;
 }) {
   const { getSemanticColor } = useDesignTokens();
 
@@ -194,7 +195,7 @@ export function GenericSectionRenderer({ data, depth = 0, subRenderers }: {
                   <div className="gen-field-label">
                     {key.replace(/_/g, ' ')}:
                   </div>
-                  <SubComp data={value} config={subHint.config || {}} />
+                  <SubComp data={value} config={{ ...(subHint.config || {}), ...(captureConfig || {}) }} />
                 </div>
               );
             }
@@ -207,11 +208,11 @@ export function GenericSectionRenderer({ data, depth = 0, subRenderers }: {
               </span>
               {typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean' ? (
                 <span className="gen-field-value-inline">
-                  <GenericSectionRenderer data={value} depth={depth + 1} />
+                  <GenericSectionRenderer data={value} depth={depth + 1} captureConfig={captureConfig} />
                 </span>
               ) : (
                 <div className="gen-field-value-block">
-                  <GenericSectionRenderer data={value} depth={depth + 1} />
+                  <GenericSectionRenderer data={value} depth={depth + 1} captureConfig={captureConfig} />
                 </div>
               )}
             </div>

@@ -32,8 +32,10 @@ import { EnableConditionsSubRenderer, ConstrainConditionsSubRenderer } from '../
 import { StyleOverrides, getSO } from '../types/styles';
 import { useDesignTokens } from '../tokens/DesignTokenContext';
 import type { SubRendererProps } from '../types';
-// CaptureSelection is passed via config._onCapture — no direct type import needed
-type CaptureSelection = Record<string, unknown>;
+import {
+  buildPackageCaptureSelectionBase,
+  resolvePackageCaptureBaseRuntime,
+} from '../utils/captureBase';
 
 // Re-export SubRendererProps for backward compat
 export type { SubRendererProps } from '../types';
@@ -533,13 +535,7 @@ function DefinitionList({ data, config }: SubRendererProps) {
   const { tokens } = useDesignTokens();
   const so = getSO(config);
 
-  // Capture mode support (threaded from AccordionRenderer)
-  const captureMode = config._captureMode as boolean | undefined;
-  const onCapture = config._onCapture as ((sel: CaptureSelection) => void) | undefined;
-  const captureJobId = config._captureJobId as string | undefined;
-  const captureViewKey = config._captureViewKey as string | undefined;
-  const captureSourceType = config._captureSourceType as string | undefined;
-  const captureEntityId = config._captureEntityId as string | undefined;
+  const captureRuntime = resolvePackageCaptureBaseRuntime(config);
   const parentSectionKey = config._parentSectionKey as string | undefined;
   const parentSectionTitle = config._parentSectionTitle as string | undefined;
 
@@ -667,24 +663,23 @@ function DefinitionList({ data, config }: SubRendererProps) {
                   </span>
                 )}
               </div>
-              {captureMode && onCapture && (
+              {captureRuntime && (
                 <button
                   title="Capture this item"
                   onClick={e => {
                     e.stopPropagation();
-                    onCapture({
-                      source_view_key: captureViewKey || '',
+                    captureRuntime.onCapture({
+                      ...buildPackageCaptureSelectionBase(captureRuntime, {
+                        titleSegments: parentSectionKey
+                          ? [parentSectionTitle || '', item.term]
+                          : [item.term],
+                      }),
                       source_section_key: parentSectionKey,
                       source_item_index: i,
                       source_renderer_type: 'definition_list',
                       content_type: 'item',
                       selected_text: `${item.term}: ${item.definition}`.slice(0, 500),
                       structured_data: data[i],
-                      context_title: parentSectionKey
-                        ? `${captureViewKey || 'Analysis'} > ${parentSectionTitle || ''} > ${item.term}`
-                        : `${captureViewKey || 'Analysis'} > ${item.term}`,
-                      source_type: (captureSourceType || 'analysis') as string,
-                      entity_id: captureEntityId || captureJobId || '',
                       depth_level: parentSectionKey ? 'L2_element' : 'L1_section',
                       parent_context: parentSectionKey ? {
                         section_key: parentSectionKey,
@@ -723,13 +718,7 @@ function MiniCardList({ data, config }: SubRendererProps) {
   const [hoveredIdx, setHoveredIdx] = React.useState<number | null>(null);
   const { tokens } = useDesignTokens();
 
-  // Capture mode support (threaded from AccordionRenderer)
-  const captureMode = config._captureMode as boolean | undefined;
-  const onCapture = config._onCapture as ((sel: CaptureSelection) => void) | undefined;
-  const captureJobId = config._captureJobId as string | undefined;
-  const captureViewKey = config._captureViewKey as string | undefined;
-  const captureSourceType = config._captureSourceType as string | undefined;
-  const captureEntityId = config._captureEntityId as string | undefined;
+  const captureRuntime = resolvePackageCaptureBaseRuntime(config);
   const parentSectionKey = config._parentSectionKey as string | undefined;
   const parentSectionTitle = config._parentSectionTitle as string | undefined;
 
@@ -870,23 +859,22 @@ function MiniCardList({ data, config }: SubRendererProps) {
               {badge}
             </span>
           )}
-          {captureMode && onCapture && (
+          {captureRuntime && (
             <button
               title="Capture this card"
               onClick={e => {
                 e.stopPropagation();
-                onCapture({
-                  source_view_key: captureViewKey || '',
+                captureRuntime.onCapture({
+                  ...buildPackageCaptureSelectionBase(captureRuntime, {
+                    titleSegments: parentSectionKey
+                      ? [parentSectionTitle || '', title || `Card ${idx + 1}`]
+                      : [title || `Card ${idx + 1}`],
+                  }),
                   source_item_index: idx,
                   source_renderer_type: 'mini_card_list',
                   content_type: 'card',
                   selected_text: `${title}: ${description}`.slice(0, 500),
                   structured_data: obj,
-                  context_title: parentSectionKey
-                    ? `${captureViewKey || 'Analysis'} > ${parentSectionTitle || ''} > ${title || `Card ${idx + 1}`}`
-                    : `${captureViewKey || 'Analysis'} > ${title || `Card ${idx + 1}`}`,
-                  source_type: (captureSourceType || 'analysis') as string,
-                  entity_id: captureEntityId || captureJobId || '',
                   depth_level: parentSectionKey ? 'L2_element' : 'L1_section',
                   parent_context: parentSectionKey ? {
                     section_key: parentSectionKey,
@@ -1375,13 +1363,7 @@ function ComparisonPanel({ data, config }: SubRendererProps) {
   if (!data || !Array.isArray(data)) return null;
   const so = getSO(config);
 
-  // Capture mode support (threaded from AccordionRenderer)
-  const captureMode = config._captureMode as boolean | undefined;
-  const onCapture = config._onCapture as ((sel: CaptureSelection) => void) | undefined;
-  const captureJobId = config._captureJobId as string | undefined;
-  const captureViewKey = config._captureViewKey as string | undefined;
-  const captureSourceType = config._captureSourceType as string | undefined;
-  const captureEntityId = config._captureEntityId as string | undefined;
+  const captureRuntime = resolvePackageCaptureBaseRuntime(config);
   const parentSectionKey = config._parentSectionKey as string | undefined;
   const parentSectionTitle = config._parentSectionTitle as string | undefined;
 
@@ -1455,7 +1437,7 @@ function ComparisonPanel({ data, config }: SubRendererProps) {
             boxShadow: 'var(--shadow-xs, 0 1px 2px rgba(0,0,0,0.04))',
           }}>
             {/* Header bar with other fields + capture button */}
-            {(otherFields.length > 0 || (captureMode && onCapture)) && (
+            {(otherFields.length > 0 || captureRuntime) && (
               <div style={{
                 padding: 'var(--space-xs, 0.375rem) var(--space-md, 0.75rem)',
                 backgroundColor: 'var(--color-surface-alt, #f8f9fa)',
@@ -1470,24 +1452,23 @@ function ComparisonPanel({ data, config }: SubRendererProps) {
                     <strong style={{ textTransform: 'capitalize' as const }}>{k.replace(/_/g, ' ')}</strong>: {String(v)}
                   </span>
                 ))}
-                {captureMode && onCapture && (
+                {captureRuntime && (
                   <button
                     title="Capture this comparison"
                     onClick={e => {
                       e.stopPropagation();
-                      onCapture({
-                        source_view_key: captureViewKey || '',
+                      captureRuntime.onCapture({
+                        ...buildPackageCaptureSelectionBase(captureRuntime, {
+                          titleSegments: parentSectionKey
+                            ? [parentSectionTitle || '', rowLabel]
+                            : [rowLabel],
+                        }),
                         source_section_key: parentSectionKey,
                         source_item_index: i,
                         source_renderer_type: 'comparison_panel',
                         content_type: 'item',
                         selected_text: `${leftLabel}: ${left || '—'} vs ${rightLabel}: ${right || '—'}`.slice(0, 500),
                         structured_data: obj,
-                        context_title: parentSectionKey
-                          ? `${captureViewKey || 'Analysis'} > ${parentSectionTitle || ''} > ${rowLabel}`
-                          : `${captureViewKey || 'Analysis'} > ${rowLabel}`,
-                        source_type: (captureSourceType || 'analysis') as string,
-                      entity_id: captureEntityId || captureJobId || '',
                         depth_level: parentSectionKey ? 'L2_element' : 'L1_section',
                         parent_context: parentSectionKey ? {
                           section_key: parentSectionKey,
@@ -1864,12 +1845,7 @@ function IntensityMatrix({ data, config }: SubRendererProps) {
   const [expandedIdx, setExpandedIdx] = React.useState<Set<number>>(new Set());
   const { tokens, getSemanticColor } = useDesignTokens();
 
-  const captureMode = config._captureMode as boolean | undefined;
-  const onCapture = config._onCapture as ((sel: CaptureSelection) => void) | undefined;
-  const captureJobId = config._captureJobId as string | undefined;
-  const captureViewKey = config._captureViewKey as string | undefined;
-  const captureSourceType = config._captureSourceType as string | undefined;
-  const captureEntityId = config._captureEntityId as string | undefined;
+  const captureRuntime = resolvePackageCaptureBaseRuntime(config);
   const parentSectionKey = config._parentSectionKey as string | undefined;
   const parentSectionTitle = config._parentSectionTitle as string | undefined;
 
@@ -2024,23 +2000,22 @@ function IntensityMatrix({ data, config }: SubRendererProps) {
                     {subtitle}
                   </span>
                 )}
-                {captureMode && onCapture && (
+                {captureRuntime && (
                   <button
                     title="Capture this item"
                     onClick={e => {
                       e.stopPropagation();
-                      onCapture({
-                        source_view_key: captureViewKey || '',
+                      captureRuntime.onCapture({
+                        ...buildPackageCaptureSelectionBase(captureRuntime, {
+                          titleSegments: parentSectionKey
+                            ? [parentSectionTitle || '', title]
+                            : [title],
+                        }),
                         source_item_index: origIdx,
                         source_renderer_type: 'intensity_matrix',
                         content_type: 'item',
                         selected_text: `${title} [${intensityVal}]: ${desc}`.slice(0, 500),
                         structured_data: obj,
-                        context_title: parentSectionKey
-                          ? `${captureViewKey || 'Analysis'} > ${parentSectionTitle || ''} > ${title}`
-                          : `${captureViewKey || 'Analysis'} > ${title}`,
-                        source_type: (captureSourceType || 'analysis') as string,
-                        entity_id: captureEntityId || captureJobId || '',
                         depth_level: parentSectionKey ? 'L2_element' : 'L1_section',
                         parent_context: parentSectionKey ? {
                           section_key: parentSectionKey,
@@ -2141,12 +2116,7 @@ function MoveRepertoire({ data, config }: SubRendererProps) {
   const [expandedDescs, setExpandedDescs] = React.useState<Set<string>>(new Set());
   const [initialized, setInitialized] = React.useState(false);
 
-  const captureMode = config._captureMode as boolean | undefined;
-  const onCapture = config._onCapture as ((sel: CaptureSelection) => void) | undefined;
-  const captureJobId = config._captureJobId as string | undefined;
-  const captureViewKey = config._captureViewKey as string | undefined;
-  const captureSourceType = config._captureSourceType as string | undefined;
-  const captureEntityId = config._captureEntityId as string | undefined;
+  const captureRuntime = resolvePackageCaptureBaseRuntime(config);
   const parentSectionKey = config._parentSectionKey as string | undefined;
   const parentSectionTitle = config._parentSectionTitle as string | undefined;
 
@@ -2291,23 +2261,22 @@ function MoveRepertoire({ data, config }: SubRendererProps) {
                             {badge}
                           </span>
                         )}
-                        {captureMode && onCapture && (
+                        {captureRuntime && (
                           <button
                             title="Capture this item"
                             onClick={e => {
                               e.stopPropagation();
-                              onCapture({
-                                source_view_key: captureViewKey || '',
+                              captureRuntime.onCapture({
+                                ...buildPackageCaptureSelectionBase(captureRuntime, {
+                                  titleSegments: parentSectionKey
+                                    ? [parentSectionTitle || '', groupName, title]
+                                    : [groupName, title],
+                                }),
                                 source_item_index: origIdx,
                                 source_renderer_type: 'move_repertoire',
                                 content_type: 'item',
                                 selected_text: `[${groupName}] ${title}: ${desc}`.slice(0, 500),
                                 structured_data: obj,
-                                context_title: parentSectionKey
-                                  ? `${captureViewKey || 'Analysis'} > ${parentSectionTitle || ''} > ${groupName} > ${title}`
-                                  : `${captureViewKey || 'Analysis'} > ${groupName} > ${title}`,
-                                source_type: (captureSourceType || 'analysis') as string,
-                                entity_id: captureEntityId || captureJobId || '',
                                 depth_level: 'L2_element',
                                 parent_context: parentSectionKey ? {
                                   section_key: parentSectionKey,
@@ -2376,12 +2345,7 @@ function DialecticalPair({ data, config }: SubRendererProps) {
   const [expandedLeft, setExpandedLeft] = React.useState<Set<number>>(new Set());
   const [expandedRight, setExpandedRight] = React.useState<Set<number>>(new Set());
 
-  const captureMode = config._captureMode as boolean | undefined;
-  const onCapture = config._onCapture as ((sel: CaptureSelection) => void) | undefined;
-  const captureJobId = config._captureJobId as string | undefined;
-  const captureViewKey = config._captureViewKey as string | undefined;
-  const captureSourceType = config._captureSourceType as string | undefined;
-  const captureEntityId = config._captureEntityId as string | undefined;
+  const captureRuntime = resolvePackageCaptureBaseRuntime(config);
   const parentSectionKey = config._parentSectionKey as string | undefined;
   const parentSectionTitle = config._parentSectionTitle as string | undefined;
 
@@ -2508,23 +2472,22 @@ function DialecticalPair({ data, config }: SubRendererProps) {
               }}>
                 {title}
               </span>
-              {captureMode && onCapture && (
+              {captureRuntime && (
                 <button
                   title={`Capture ${side} item`}
                   onClick={e => {
                     e.stopPropagation();
-                    onCapture({
-                      source_view_key: captureViewKey || '',
+                    captureRuntime.onCapture({
+                      ...buildPackageCaptureSelectionBase(captureRuntime, {
+                        titleSegments: parentSectionKey
+                          ? [parentSectionTitle || '', side === 'left' ? leftLabel : rightLabel, title]
+                          : [side === 'left' ? leftLabel : rightLabel, title],
+                      }),
                       source_item_index: idx,
                       source_renderer_type: 'dialectical_pair',
                       content_type: 'item',
                       selected_text: `[${side === 'left' ? leftLabel : rightLabel}] ${title}: ${desc}`.slice(0, 500),
                       structured_data: obj,
-                      context_title: parentSectionKey
-                        ? `${captureViewKey || 'Analysis'} > ${parentSectionTitle || ''} > ${side === 'left' ? leftLabel : rightLabel} > ${title}`
-                        : `${captureViewKey || 'Analysis'} > ${side === 'left' ? leftLabel : rightLabel} > ${title}`,
-                      source_type: (captureSourceType || 'analysis') as string,
-                      entity_id: captureEntityId || captureJobId || '',
                       depth_level: 'L2_element',
                       parent_context: parentSectionKey ? {
                         section_key: parentSectionKey,
@@ -2811,12 +2774,7 @@ function RichDescriptionList({ data, config }: SubRendererProps) {
   const [expandedIdx, setExpandedIdx] = React.useState<Set<number>>(new Set());
   const { tokens } = useDesignTokens();
 
-  const captureMode = config._captureMode as boolean | undefined;
-  const onCapture = config._onCapture as ((sel: CaptureSelection) => void) | undefined;
-  const captureJobId = config._captureJobId as string | undefined;
-  const captureViewKey = config._captureViewKey as string | undefined;
-  const captureSourceType = config._captureSourceType as string | undefined;
-  const captureEntityId = config._captureEntityId as string | undefined;
+  const captureRuntime = resolvePackageCaptureBaseRuntime(config);
   const parentSectionKey = config._parentSectionKey as string | undefined;
   const parentSectionTitle = config._parentSectionTitle as string | undefined;
 
@@ -2967,23 +2925,22 @@ function RichDescriptionList({ data, config }: SubRendererProps) {
                 </span>
 
                 {/* Capture button */}
-                {captureMode && onCapture && (
+                {captureRuntime && (
                   <button
                     title="Capture this item"
                     onClick={e => {
                       e.stopPropagation();
-                      onCapture({
-                        source_view_key: captureViewKey || '',
+                      captureRuntime.onCapture({
+                        ...buildPackageCaptureSelectionBase(captureRuntime, {
+                          titleSegments: parentSectionKey
+                            ? [parentSectionTitle || '', item.label]
+                            : [item.label],
+                        }),
                         source_item_index: idx,
                         source_renderer_type: 'rich_description_list',
                         content_type: 'item',
                         selected_text: `${item.label}: ${item.description}`.slice(0, 500),
                         structured_data: item.raw,
-                        context_title: parentSectionKey
-                          ? `${captureViewKey || 'Analysis'} > ${parentSectionTitle || ''} > ${item.label}`
-                          : `${captureViewKey || 'Analysis'} > ${item.label}`,
-                        source_type: (captureSourceType || 'analysis') as string,
-                        entity_id: captureEntityId || captureJobId || '',
                         depth_level: parentSectionKey ? 'L2_element' : 'L1_section',
                         parent_context: parentSectionKey ? {
                           section_key: parentSectionKey,
@@ -3064,12 +3021,7 @@ function PhaseTimeline({ data, config }: SubRendererProps) {
   const [expandedIdx, setExpandedIdx] = React.useState<Set<number>>(new Set());
   const { tokens } = useDesignTokens();
 
-  const captureMode = config._captureMode as boolean | undefined;
-  const onCapture = config._onCapture as ((sel: CaptureSelection) => void) | undefined;
-  const captureJobId = config._captureJobId as string | undefined;
-  const captureViewKey = config._captureViewKey as string | undefined;
-  const captureSourceType = config._captureSourceType as string | undefined;
-  const captureEntityId = config._captureEntityId as string | undefined;
+  const captureRuntime = resolvePackageCaptureBaseRuntime(config);
   const parentSectionKey = config._parentSectionKey as string | undefined;
   const parentSectionTitle = config._parentSectionTitle as string | undefined;
 
@@ -3236,23 +3188,22 @@ function PhaseTimeline({ data, config }: SubRendererProps) {
                 )}
 
                 {/* Capture button */}
-                {captureMode && onCapture && (
+                {captureRuntime && (
                   <button
                     title="Capture this phase"
                     onClick={e => {
                       e.stopPropagation();
-                      onCapture({
-                        source_view_key: captureViewKey || '',
+                      captureRuntime.onCapture({
+                        ...buildPackageCaptureSelectionBase(captureRuntime, {
+                          titleSegments: parentSectionKey
+                            ? [parentSectionTitle || '', `Phase: ${label}`]
+                            : [`Phase: ${label}`],
+                        }),
                         source_item_index: idx,
                         source_renderer_type: 'phase_timeline',
                         content_type: 'item',
                         selected_text: `[Phase ${idx + 1}] ${label}: ${desc}`.slice(0, 500),
                         structured_data: phase,
-                        context_title: parentSectionKey
-                          ? `${captureViewKey || 'Analysis'} > ${parentSectionTitle || ''} > Phase: ${label}`
-                          : `${captureViewKey || 'Analysis'} > Phase: ${label}`,
-                        source_type: (captureSourceType || 'analysis') as string,
-                        entity_id: captureEntityId || captureJobId || '',
                         depth_level: parentSectionKey ? 'L2_element' : 'L1_section',
                         parent_context: parentSectionKey ? {
                           section_key: parentSectionKey,

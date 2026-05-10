@@ -221,6 +221,21 @@ def run_engine_call(
             )
             effort = "low"
 
+    # Pre-provider fail-fast: reject prompts that will certainly exceed
+    # the 1M-token ceiling before making the backend call.  Uses a
+    # conservative 4-chars-per-token estimate.  The threshold is set at
+    # 975K to catch clearly impossible prompts (e.g. the pre-fix Phase 3.0
+    # at 1.04M tokens) while not blocking borderline inputs proven to
+    # succeed (e.g. Phase 1.0 at ~905K tokens completed on March 27).
+    estimated_tokens = total_input_chars // 4
+    if config.get("use_1m_context") and estimated_tokens >= 975_000:
+        raise RuntimeError(
+            f"[{label}] Prompt budget exceeded locally: "
+            f"~{estimated_tokens:,} estimated tokens "
+            f"({total_input_chars:,} chars) >= 975,000 limit. "
+            f"Aborting before provider call."
+        )
+
     logger.info(
         f"[{label}] Starting LLM call: model={config['model']}, "
         f"mode={'sync' if use_sync else 'streaming'}, "

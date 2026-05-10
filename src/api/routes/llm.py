@@ -11,6 +11,7 @@ from typing import Optional
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
+from src.engines.discovery import resolve_capability_definition
 from src.engines.registry import get_engine_registry
 from src.engines.schemas import EngineProfile
 from src.llm.client import get_anthropic_client, parse_llm_json_response
@@ -453,7 +454,7 @@ def _get_stance_registry() -> StanceRegistry:
 def _build_engine_context(engine_key: str) -> str:
     """Build rich context about an engine for LLM prompts."""
     engine_reg = get_engine_registry()
-    cap_def = engine_reg.get_capability_definition(engine_key)
+    cap_def = resolve_capability_definition(engine_reg, engine_key)
     if cap_def is None:
         raise HTTPException(status_code=404, detail=f"No capability definition for engine '{engine_key}'")
 
@@ -480,6 +481,16 @@ def _build_engine_context(engine_key: str) -> str:
         )
 
     return "\n".join(parts)
+
+
+def _canonicalize_capability_engine_key(engine_key: str) -> str:
+    cap_def = resolve_capability_definition(get_engine_registry(), engine_key)
+    if cap_def is None:
+        raise HTTPException(
+            status_code=404,
+            detail=f"No capability definition for engine '{engine_key}'",
+        )
+    return cap_def.engine_key
 
 
 def _build_stance_context(stance_key: str) -> str:
@@ -515,12 +526,13 @@ async def generate_operationalization(request: OpGenerateRequest) -> OpGenerateR
             detail="LLM service unavailable. Set ANTHROPIC_API_KEY environment variable.",
         )
 
-    engine_context = _build_engine_context(request.engine_key)
+    canonical_engine_key = _canonicalize_capability_engine_key(request.engine_key)
+    engine_context = _build_engine_context(canonical_engine_key)
     stance_context = _build_stance_context(request.stance_key)
 
     # Check if there's an existing operationalization for reference
     op_reg = get_operationalization_registry()
-    existing = op_reg.get_stance_for_engine(request.engine_key, request.stance_key)
+    existing = op_reg.get_stance_for_engine(canonical_engine_key, request.stance_key)
     existing_context = ""
     if existing:
         existing_context = (
@@ -575,7 +587,7 @@ Output ONLY valid JSON, no markdown code fences."""
         )
 
         return OpGenerateResponse(
-            engine_key=request.engine_key,
+            engine_key=canonical_engine_key,
             stance_key=request.stance_key,
             operationalization=op,
         )
@@ -605,12 +617,13 @@ async def generate_all_operationalizations(request: OpGenerateAllRequest) -> OpG
             detail="LLM service unavailable. Set ANTHROPIC_API_KEY environment variable.",
         )
 
+    canonical_engine_key = _canonicalize_capability_engine_key(request.engine_key)
     engine_reg = get_engine_registry()
-    cap_def = engine_reg.get_capability_definition(request.engine_key)
+    cap_def = resolve_capability_definition(engine_reg, canonical_engine_key)
     if cap_def is None:
         raise HTTPException(status_code=404, detail=f"No capability definition for engine '{request.engine_key}'")
 
-    engine_context = _build_engine_context(request.engine_key)
+    engine_context = _build_engine_context(canonical_engine_key)
 
     # Get stance keys to generate for
     stance_reg = _get_stance_registry()
@@ -676,7 +689,7 @@ Output ONLY valid JSON array, no markdown code fences."""
         ]
 
         return OpGenerateAllResponse(
-            engine_key=request.engine_key,
+            engine_key=canonical_engine_key,
             engine_name=cap_def.engine_name,
             operationalizations=ops,
         )
@@ -705,13 +718,14 @@ async def generate_depth_sequence(request: OpGenerateSequenceRequest) -> OpGener
             detail="LLM service unavailable. Set ANTHROPIC_API_KEY environment variable.",
         )
 
-    engine_context = _build_engine_context(request.engine_key)
+    canonical_engine_key = _canonicalize_capability_engine_key(request.engine_key)
+    engine_context = _build_engine_context(canonical_engine_key)
 
     # Get operationalizations for the stances
     op_reg = get_operationalization_registry()
     stance_details = []
     for i, sk in enumerate(request.stance_keys, 1):
-        stance_op = op_reg.get_stance_for_engine(request.engine_key, sk)
+        stance_op = op_reg.get_stance_for_engine(canonical_engine_key, sk)
         if stance_op:
             stance_details.append(
                 f"Pass {i}: **{sk}** — {stance_op.label}\n"
@@ -773,7 +787,7 @@ Output ONLY valid JSON array."""
         ]
 
         return OpGenerateSequenceResponse(
-            engine_key=request.engine_key,
+            engine_key=canonical_engine_key,
             depth_sequence=DepthSequence(
                 depth_key=request.depth_key,
                 passes=passes,

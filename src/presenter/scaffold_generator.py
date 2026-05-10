@@ -39,8 +39,14 @@ def generate_reading_scaffolds(
 ) -> ScaffoldGenerationResult:
     """Generate reading scaffolds for scaffold-worthy views in a job."""
     from .presentation_api import assemble_page
+    from .renderer_contract_enforcement import ServedIntent
 
-    page = assemble_page(job_id, consumer_key=consumer_key, slim=True)
+    page = assemble_page(
+        job_id,
+        consumer_key=consumer_key,
+        slim=True,
+        served_intent=ServedIntent.PAGE_SOURCE_FOR_SCAFFOLD_GENERATION,
+    )
     payload_by_key = flatten_payload_tree(page.views)
 
     details: list[ScaffoldArtifactDetail] = []

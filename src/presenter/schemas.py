@@ -6,9 +6,10 @@ These models bridge execution outputs and consumer rendering:
 - PagePresentation: Complete page payload for the consumer
 """
 
-from typing import Any, Optional
+from typing import Any, Literal, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
+from src.views.schemas import ViewDefinition
 
 
 # --- 3A: View Refinement ---
@@ -248,6 +249,7 @@ class ViewPayload(BaseModel):
     # Visibility
     visibility: str = "if_data_exists"
     position: float = 0
+    first_hop_affordance: Optional["FirstHopAffordance"] = None
 
     # Nested children
     children: list["ViewPayload"] = Field(default_factory=list)
@@ -264,6 +266,7 @@ class PagePresentation(BaseModel):
     job_id: str
     plan_id: str
     consumer_key: str = ""
+    composition_mode: Optional[str] = None
     presentation_version: int = 2
     presentation_contract_version: int = 1
     presentation_hash: str = ""
@@ -315,6 +318,7 @@ class EffectiveManifestView(BaseModel):
     structuring_policy: Optional[str] = None
     derivation_kind: Optional[str] = None
     legacy_visibility: Optional[str] = None
+    first_hop_affordance: Optional["FirstHopAffordance"] = None
 
 
 class EffectivePresentationManifest(BaseModel):
@@ -323,6 +327,7 @@ class EffectivePresentationManifest(BaseModel):
     job_id: str
     plan_id: str
     consumer_key: str
+    composition_mode: Optional[str] = None
     presentation_contract_version: int = 1
     presentation_hash: str = ""
     presentation_content_hash: str = ""
@@ -358,11 +363,21 @@ class IgnoredOverride(BaseModel):
     reason: str = ""
 
 
+class CompositionIssue(BaseModel):
+    """Validation issue surfaced by proof-mode runtime composition."""
+
+    view_key: str
+    field: str
+    message: str
+    reason: str = ""
+
+
 class DecisionTraceEntry(BaseModel):
     """A coarse semantic trace stage reconstructed from presenter inputs."""
 
     stage: str
     reason: str = ""
+    details: dict[str, Any] = Field(default_factory=dict)
     applied_changes: list[DecisionTraceChange] = Field(default_factory=list)
     ignored_changes: list[IgnoredOverride] = Field(default_factory=list)
     snapshot: list[EffectiveManifestView] = Field(default_factory=list)
@@ -374,6 +389,9 @@ class PresentationDecisionTrace(BaseModel):
     job_id: str
     plan_id: str
     consumer_key: str
+    composition_mode: Optional[str] = None
+    composition_status: str = "not_requested"
+    composition_issues: list[CompositionIssue] = Field(default_factory=list)
     manifest_schema_version: int = 1
     trace_schema_version: int = 1
     resolver_version: str = ""
@@ -586,5 +604,181 @@ class ComposeRequest(BaseModel):
     )
 
 
+class ComposeFromIntentSectionInput(BaseModel):
+    """One prose section supplied to the transient compose-from-intent route."""
+
+    engine_key: str
+    title: str
+    prose: str
+
+
+class ComposeFromIntentRequest(BaseModel):
+    """Input for POST /v1/presenter/compose-from-intent."""
+
+    workflow_key: str
+    consumer_key: str
+    user_intent: str
+    prose_sections: list[ComposeFromIntentSectionInput] = Field(default_factory=list)
+    style_school: Optional[str] = None
+    audience: Optional[str] = None
+
+
+ComposeFromSourceProfile = Literal["dossier", "comparison"]
+
+
+class AoiSelectedSourceInput(BaseModel):
+    """One planner-selected AOI source family for transient composition."""
+
+    source_family_key: str
+    selection_rank: int = Field(ge=1)
+    rationale: str
+
+    @field_validator("source_family_key", "rationale")
+    @classmethod
+    def _require_non_empty_text(cls, value: str) -> str:
+        normalized = value.strip()
+        if not normalized:
+            raise ValueError("AOI selected source fields must be non-empty")
+        return normalized
+
+
+class AoiRejectedSourceInput(BaseModel):
+    """One planner-rejected AOI source family with bounded rationale."""
+
+    source_family_key: str
+    rejection_reason: str
+
+    @field_validator("source_family_key", "rejection_reason")
+    @classmethod
+    def _require_non_empty_text(cls, value: str) -> str:
+        normalized = value.strip()
+        if not normalized:
+            raise ValueError("AOI rejected source fields must be non-empty")
+        return normalized
+
+
+class ComposeFromSourceRequest(BaseModel):
+    """Input for POST /v1/presenter/compose-from-source."""
+
+    workflow_key: str
+    consumer_key: str
+    source_v2_job_id: str
+    profile: ComposeFromSourceProfile
+    user_intent: Optional[str] = None
+    style_school: Optional[str] = None
+
+
+class ComposeFromSelectionRequest(BaseModel):
+    """Input for POST /v1/presenter/compose-from-selection."""
+
+    workflow_key: str
+    consumer_key: str
+    source_v2_job_id: str
+    selection: list[AoiSelectedSourceInput] = Field(default_factory=list, min_length=1)
+    user_intent: str
+    selection_summary: Optional[str] = None
+    legacy_profile_equivalent: Optional[ComposeFromSourceProfile] = None
+    style_school: Optional[str] = None
+
+
+class ComposeFromIntentTraceEntry(BaseModel):
+    """A coarse trace entry for the transient compose-from-intent pilot."""
+
+    stage: str
+    details: dict[str, Any] = Field(default_factory=dict)
+
+
+FirstHopDestination = Literal["arsenal", "research_todo"]
+TransientFirstHopDestination = FirstHopDestination
+
+
+class FirstHopAffordance(BaseModel):
+    """Analyzer-owned first-hop routing hints for shared presenter surfaces."""
+
+    capturable: bool
+    allowed_destinations: list[FirstHopDestination] = Field(default_factory=list)
+    specialized_family: Optional[str] = None
+
+
+TransientFirstHopAffordance = FirstHopAffordance
+
+
+class TransientIntentView(BaseModel):
+    """Non-job-backed render-ready view returned by compose-from-intent."""
+
+    view_key: str
+    view_name: str
+    description: str = ""
+    renderer_type: str
+    renderer_config: dict[str, Any] = Field(default_factory=dict)
+    presentation_stance: Optional[str] = None
+    rationale: str = ""
+    engine_key: Optional[str] = None
+    position: float = 0
+    visibility: str = "if_data_exists"
+    has_structured_data: bool = False
+    structured_data: Optional[Any] = None
+    items: Optional[list[dict[str, Any]]] = None
+    first_hop_affordance: Optional[FirstHopAffordance] = None
+    children: list["TransientIntentView"] = Field(default_factory=list)
+
+
+class TransientIntentPagePresentation(BaseModel):
+    """Transient, non-job-backed page presentation for compose-from-intent."""
+
+    workflow_key: str
+    consumer_key: str
+    presentation_contract_version: int = 1
+    presentation_hash: str = ""
+    presentation_content_hash: str = ""
+    resolver_version: str = ""
+    style_school: str = ""
+    views: list[TransientIntentView] = Field(default_factory=list)
+    view_count: int = 0
+
+
+class ComposeFromIntentTrace(BaseModel):
+    """Success-path trace for the transient compose-from-intent pilot."""
+
+    resolver_version: str = ""
+    entries: list[ComposeFromIntentTraceEntry] = Field(default_factory=list)
+
+
+class ComposeFromIntentResponse(BaseModel):
+    """Response for POST /v1/presenter/compose-from-intent."""
+
+    presentation: TransientIntentPagePresentation
+    generated_view_definitions: list[ViewDefinition] = Field(default_factory=list)
+    trace: ComposeFromIntentTrace
+    persistable_compose_request: Optional[ComposeFromIntentRequest] = None
+
+
+class ComposeSessionSaveRequest(BaseModel):
+    """Input for POST /v1/presenter/compose-sessions."""
+
+    compose_request: ComposeFromIntentRequest
+    compose_response: ComposeFromIntentResponse
+    planning_decision_id: Optional[str] = None
+    source_v2_job_id: Optional[str] = None
+
+
+class PersistedComposeSession(BaseModel):
+    """Analyzer-owned durable saved session for one transient compose result."""
+
+    session_id: str
+    saved_at: str
+    workflow_key: str
+    consumer_key: str
+    planning_decision_id: Optional[str] = None
+    source_v2_job_id: Optional[str] = None
+    presentation_hash: str
+    presentation_content_hash: str
+    resolver_version: str
+    compose_request: ComposeFromIntentRequest
+    compose_response: ComposeFromIntentResponse
+
+
 # Resolve forward reference
 ViewPayload.model_rebuild()
+EffectiveManifestView.model_rebuild()
+TransientIntentView.model_rebuild()

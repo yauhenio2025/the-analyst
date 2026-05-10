@@ -18,6 +18,7 @@ from typing import Any, Literal, Optional
 
 from pydantic import BaseModel, Field
 
+from .composition_roles import CompositionRole
 from .schemas import EngineCategory, EngineKind
 
 
@@ -350,6 +351,10 @@ class CapabilityEngineDefinition(BaseModel):
     function: Optional[str] = Field(
         default=None,
         description="Primary function/role of this engine (e.g., 'genealogy', 'logic', 'rhetoric')",
+    )
+    composition_role: Optional[CompositionRole] = Field(
+        default=None,
+        description="Optional presenter-facing semantic role for bounded composition surfaces.",
     )
     paradigm_keys: list[str] = Field(
         default_factory=list,

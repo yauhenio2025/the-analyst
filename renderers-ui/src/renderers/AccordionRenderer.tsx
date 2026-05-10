@@ -33,6 +33,7 @@ import { isRendererCompatible, SubRendererFallback, GenericSectionRenderer } fro
 import { ProvenanceSectionIcon } from '../provenance/ProvenanceSectionIcon';
 import { StyleOverrides } from '../types/styles';
 import { useDesignTokens } from '../tokens/DesignTokenContext';
+import { buildPackageCaptureSelectionBase, resolvePackageCaptureBaseRuntime } from '../utils/captureBase';
 // CSS: import '@caii/analysis-renderers/styles';
 
 interface SectionDef {
@@ -116,6 +117,7 @@ export function AccordionRenderer({ data, config }: RendererProps) {
     research_status: string | null;
     has_answer: boolean;
   }>> | undefined;
+  const captureRuntime = resolvePackageCaptureBaseRuntime(config);
 
   const provenanceEnabled = config._provenanceEnabled as boolean | undefined;
   const provenanceChildren = config._provenanceChildren as
@@ -361,22 +363,21 @@ export function AccordionRenderer({ data, config }: RendererProps) {
                 })()}
 
                 {/* Capture button — shown only in capture mode */}
-                {captureMode && onCapture && (
+                {captureRuntime && (
                   <button
                     className="section-capture-btn"
                     title="Capture this section"
                     onClick={e => {
                       e.stopPropagation();
-                      onCapture({
-                        source_view_key: captureViewKey || '',
+                      captureRuntime.onCapture({
+                        ...buildPackageCaptureSelectionBase(captureRuntime, {
+                          titleSegments: [section.title || section.key],
+                        }),
                         source_section_key: section.key,
                         source_renderer_type: 'accordion',
                         content_type: 'section',
                         selected_text: previewText || extractPreviewText(sectionData) || section.title || section.key,
                         structured_data: sectionData,
-                        context_title: `${captureViewKey || 'Analysis'} > ${section.title || section.key}`,
-                        source_type: (captureSourceType || 'analysis') as string,
-                        entity_id: captureEntityId || captureJobId || '',
                         depth_level: 'L1_section',
                       });
                     }}
@@ -519,6 +520,8 @@ export function AccordionRenderer({ data, config }: RendererProps) {
                         _onCapture: onCapture,
                         _captureJobId: captureJobId,
                         _captureViewKey: captureViewKey,
+                        _captureSourceType: captureSourceType,
+                        _captureEntityId: captureEntityId,
                         _parentSectionKey: section.key,
                         _parentSectionTitle: section.title,
                       };
@@ -553,7 +556,13 @@ export function AccordionRenderer({ data, config }: RendererProps) {
 
                         // nested_sections: pass sub_renderers to generic
                         if (hint.sub_renderers) {
-                          return <GenericSectionRenderer data={sectionData} subRenderers={hint.sub_renderers} />;
+                          return (
+                            <GenericSectionRenderer
+                              data={sectionData}
+                              subRenderers={hint.sub_renderers}
+                              captureConfig={captureForward}
+                            />
+                          );
                         }
                       }
 
@@ -567,7 +576,7 @@ export function AccordionRenderer({ data, config }: RendererProps) {
                       }
 
                       // Final fallback: generic renderer handles any data shape
-                      return <GenericSectionRenderer data={sectionData} />;
+                      return <GenericSectionRenderer data={sectionData} captureConfig={captureForward} />;
                     })()}
                   </div>
                 )}
@@ -606,4 +615,3 @@ export function AccordionRenderer({ data, config }: RendererProps) {
     </div>
   );
 }
-

@@ -6,7 +6,7 @@
  * - Sub-renderers (chip_grid, mini_card_list, distribution_summary, etc.)
  * - Cell renderers (template_card, default auto-classify, etc.)
  * - Design token system (DesignTokenProvider + useDesignTokens hook)
- * - Renderer registry (view_key → component resolution)
+ * - Default top-level renderer resolution for generic consumer shells
  *
  * CSS: import '@the-syllabus/analysis-renderers/styles' for all renderer styles.
  */
@@ -51,6 +51,11 @@ export { ProseRenderer, formatProse } from './renderers/ProseRenderer';
 export { TableRenderer } from './renderers/TableRenderer';
 export { StatSummaryRenderer } from './renderers/StatSummaryRenderer';
 export { RawJsonRenderer } from './renderers/RawJsonRenderer';
+export {
+  DEFAULT_TYPE_RENDERERS,
+  resolveDefaultRenderer,
+  hasDefaultRenderer,
+} from './registry';
 
 // ── Sub-Renderers ────────────────────────────────────────
 export {
@@ -80,6 +85,17 @@ export type { EvidenceTrailStep, EvidenceTrailItem } from './components/Evidence
 export { EnableConditionsSubRenderer, ConstrainConditionsSubRenderer } from './components/ConditionCards';
 export { ViewShell } from './components/ViewShell';
 export { ScaffoldIntroContent } from './components/ScaffoldIntroContent';
+export {
+  asBlocks,
+  asSectionIntros,
+  humanizeSurfaceType,
+  isNonEmptyString,
+} from './components/scaffoldUtils';
+export type {
+  ScaffoldBlock,
+  ScaffoldItem,
+  SectionIntro,
+} from './components/scaffoldUtils';
 
 // ── Hooks ────────────────────────────────────────────────
 export { useProseExtraction } from './hooks/useProseExtraction';

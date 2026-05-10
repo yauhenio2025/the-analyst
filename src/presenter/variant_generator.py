@@ -271,7 +271,14 @@ def generate_variant_set(
     style_school_str = style_school or ""
 
     # Load the base view
-    view_payload = assemble_single_view(job_id, view_key, consumer_key="the-critic")
+    from .renderer_contract_enforcement import ServedIntent
+
+    view_payload = assemble_single_view(
+        job_id,
+        view_key,
+        consumer_key="the-critic",
+        served_intent=ServedIntent.VIEW_SOURCE_FOR_VARIANT_GENERATION,
+    )
     if view_payload is None:
         raise ValueError(f"View not found: {view_key} for job {job_id}")
 

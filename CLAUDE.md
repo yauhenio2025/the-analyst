@@ -208,6 +208,17 @@ GET  /v1/executor/documents               # List documents
 GET  /v1/executor/documents/{doc_id}      # Retrieve document
 DELETE /v1/executor/documents/{doc_id}    # Delete document
 
+# Runs (Stage 4 unified run contract)
+GET  /v1/runs/by-job/{job_id}                        # Joined run detail: executor + preparation + result state (?consumer_key=)
+GET  /v1/runs/discovery                              # Batch run discovery (?project_id=&workflow_key=&consumer_key=&scope=active|recent|all&selected_source_thinker_id=&limit=)
+
+# Results (Stage 3 restore/discovery authority)
+GET  /v1/results/by-job/{job_id}                    # Consumer-facing result manifest
+GET  /v1/results/by-job/{job_id}/presentation       # Manifest + assembled presentation (read-only)
+POST /v1/results/by-job/{job_id}/refresh-presentation  # Refresh presentation without re-executing
+GET  /v1/results/discovery                           # Discover completed results (?project_id=&workflow_key=&consumer_key=&selected_source_thinker_id=&limit=)
+POST /v1/results/by-job/{job_id}/attach-project      # Attach project_id to external/imported job
+
 # Presenter
 POST /v1/presenter/refine-views          # Refine view recommendations
 POST /v1/presenter/prepare               # Run transformations

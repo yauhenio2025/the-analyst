@@ -9,16 +9,57 @@ and existing page views for position/structure context.
 
 import json
 import logging
+from types import SimpleNamespace
 from typing import Any, Optional
 
 from pydantic import BaseModel, Field
 
+from src.engines.discovery import resolve_capability_definition
 from src.engines.schemas import EngineDefinition
 from src.renderers.schemas import RendererDefinition
 from src.views.pattern_schemas import ViewPattern
 from src.views.schemas import ViewDefinition
 
 logger = logging.getLogger(__name__)
+
+
+def _build_capability_engine_proxy(engine_registry, engine_key: str):
+    capability = resolve_capability_definition(engine_registry, engine_key)
+    if capability is None:
+        return None
+
+    key_fields = {
+        dimension.key: dimension.description
+        for dimension in capability.analytical_dimensions[:12]
+    }
+    extraction = SimpleNamespace(
+        core_question=capability.researcher_question or capability.problematique,
+        key_fields=key_fields,
+        key_relationships=list((capability.composability.shares_with or {}).keys())[:8],
+        analysis_type=getattr(capability.kind, "value", str(capability.kind)),
+        id_field="item_id",
+    )
+    return SimpleNamespace(
+        engine_key=capability.engine_key,
+        engine_name=capability.engine_name,
+        description=capability.problematique,
+        extraction_focus=[dimension.key for dimension in capability.analytical_dimensions[:8]],
+        canonical_schema=capability.output_contract or {},
+        stage_context=SimpleNamespace(extraction=extraction),
+    )
+
+
+def _resolve_view_generation_engine(engine_registry, engine_key: str):
+    engine = engine_registry.get(engine_key)
+    capability_proxy = _build_capability_engine_proxy(engine_registry, engine_key)
+
+    # For legacy alias keys, prefer canonical capability metadata even if a
+    # same-key legacy JSON engine still exists in the registry.
+    if capability_proxy is not None and capability_proxy.engine_key != engine_key:
+        return capability_proxy
+    if engine is not None:
+        return engine
+    return capability_proxy
 
 
 class ViewGenerateRequest(BaseModel):
@@ -263,7 +304,7 @@ async def generate_view(
         )
 
     engine_registry = get_engine_registry()
-    engine = engine_registry.get(request.engine_key)
+    engine = _resolve_view_generation_engine(engine_registry, request.engine_key)
     if engine is None:
         raise ValueError(f"Engine '{request.engine_key}' not found")
 

@@ -13,12 +13,17 @@ from pydantic import BaseModel, Field
 
 from src.chains.registry import get_chain_registry
 from src.chains.schemas import BlendMode, EngineChainSpec
+from src.engines.discovery import (
+    engine_exists,
+    resolve_capability_definition,
+)
 from src.engines.registry import get_engine_registry
 from src.persistence.github_client import (
     CommitFile,
     GitHubPersistence,
     get_github_persistence,
 )
+from src.stages.capability_composer import compose_capability_prompt
 from src.stages.composer import StageComposer
 from src.workflows.description_generator import (
     generate_chain_description,
@@ -52,6 +57,46 @@ def get_composer() -> StageComposer:
 AudienceType = Literal["researcher", "analyst", "executive", "activist", "social_movements"]
 
 router = APIRouter(prefix="/workflows", tags=["workflows"])
+
+
+def _compose_preview_for_engine(
+    engine_key: str,
+    *,
+    audience: AudienceType,
+) -> dict[str, object]:
+    """Compose a single-string prompt preview for legacy or capability engines."""
+    engine_registry = get_engine_registry()
+    legacy_engine = engine_registry.get(engine_key)
+    if legacy_engine is not None:
+        composer = get_composer()
+        composed = composer.compose(
+            stage="extraction",
+            engine_key=engine_key,
+            stage_context=legacy_engine.stage_context,
+            audience=audience,
+            canonical_schema=legacy_engine.canonical_schema,
+        )
+        return {
+            "engine_key": engine_key,
+            "prompt_type": "extraction",
+            "prompt": composed.prompt,
+            "framework_used": composed.framework_used,
+        }
+
+    cap_def = resolve_capability_definition(engine_registry, engine_key)
+    if cap_def is not None:
+        prompt = compose_capability_prompt(cap_def=cap_def, depth="standard")
+        return {
+            "engine_key": cap_def.engine_key,
+            "prompt_type": "capability",
+            "prompt": prompt.prompt,
+            "framework_used": None,
+        }
+
+    return {
+        "engine_key": engine_key,
+        "error": f"Engine not found: {engine_key}",
+    }
 
 
 @router.get("", response_model=list[WorkflowSummary])
@@ -180,8 +225,7 @@ async def add_engine_to_phase(
         raise HTTPException(status_code=404, detail=f"Workflow not found: {workflow_key}")
 
     # Validate engine exists
-    engine = engine_registry.get(request.engine_key)
-    if engine is None:
+    if not engine_exists(engine_registry, request.engine_key):
         raise HTTPException(status_code=404, detail=f"Engine not found: {request.engine_key}")
 
     # Find the phase
@@ -507,37 +551,30 @@ async def get_workflow_phase_prompt(
                 detail=f"Chain not found: {phase_def.chain_key}",
             )
 
-        engine_registry = get_engine_registry()
-        composer = get_composer()
         engine_prompts = []
 
         for engine_key in chain.engine_keys:
-            engine = engine_registry.get(engine_key)
-            if engine is None:
-                engine_prompts.append({
-                    "engine_key": engine_key,
-                    "error": f"Engine not found: {engine_key}",
-                })
-                continue
-
             try:
-                composed = composer.compose(
-                    stage="extraction",
-                    engine_key=engine_key,
-                    stage_context=engine.stage_context,
-                    audience=audience,
-                    canonical_schema=engine.canonical_schema,
+                engine_prompts.append(
+                    _compose_preview_for_engine(engine_key, audience=audience)
                 )
-                engine_prompts.append({
-                    "engine_key": engine_key,
-                    "prompt": composed.prompt,
-                    "framework_used": composed.framework_used,
-                })
             except ValueError as e:
                 engine_prompts.append({
                     "engine_key": engine_key,
                     "error": f"Failed to compose prompt: {e}",
                 })
+
+        prompt_chunks: list[str] = []
+        for item in engine_prompts:
+            prompt = item.get("prompt")
+            if prompt:
+                prompt_chunks.append(
+                    f"[{item['engine_key']}]\n\n{prompt}"
+                )
+            elif item.get("error"):
+                prompt_chunks.append(
+                    f"[{item['engine_key']}]\n\nERROR: {item['error']}"
+                )
 
         return {
             "workflow_key": workflow_key,
@@ -546,6 +583,7 @@ async def get_workflow_phase_prompt(
             "chain_key": phase_def.chain_key,
             "engine_key": None,
             "prompt_type": "chain",
+            "prompt": "\n\n---\n\n".join(prompt_chunks),
             "blend_mode": chain.blend_mode.value,
             "engine_prompts": engine_prompts,
             "context_parameters": phase_def.context_parameters,
@@ -556,39 +594,32 @@ async def get_workflow_phase_prompt(
 
     # If phase has an engine_key, compose the engine's extraction prompt
     if phase_def.engine_key:
-        engine_registry = get_engine_registry()
-        engine = engine_registry.get(phase_def.engine_key)
-        if engine is None:
-            raise HTTPException(
-                status_code=404,
-                detail=f"Engine not found: {phase_def.engine_key}",
-            )
-
-        composer = get_composer()
         try:
-            composed = composer.compose(
-                stage="extraction",
-                engine_key=phase_def.engine_key,
-                stage_context=engine.stage_context,
+            preview = _compose_preview_for_engine(
+                phase_def.engine_key,
                 audience=audience,
-                canonical_schema=engine.canonical_schema,
             )
         except ValueError as e:
             raise HTTPException(
                 status_code=500,
                 detail=f"Failed to compose prompt: {e}",
             )
+        if "error" in preview:
+            raise HTTPException(
+                status_code=404,
+                detail=str(preview["error"]),
+            )
 
         return {
             "workflow_key": workflow_key,
             "phase_number": phase_number,
             "phase_name": phase_def.phase_name,
-            "engine_key": phase_def.engine_key,
-            "prompt_type": "extraction",
-            "prompt": composed.prompt,
+            "engine_key": preview["engine_key"],
+            "prompt_type": preview["prompt_type"],
+            "prompt": preview["prompt"],
             "context_parameters": phase_def.context_parameters,
             "audience": audience,
-            "framework_used": composed.framework_used,
+            "framework_used": preview["framework_used"],
         }
 
     # If phase has a custom prompt template, return it

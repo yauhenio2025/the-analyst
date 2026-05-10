@@ -12,6 +12,18 @@ from .composition_resolver import (
     resolve_effective_composition,
     resolve_effective_render_contract,
 )
+from .bounded_dynamic_composition import (
+    BoundedCompositionValidationError,
+    COMPOSITION_MODE_ADAPTIVE_AOI_THEME_SURFACE_V1,
+    COMPOSITION_MODE_ADAPTIVE_AOI_THEME_REPORT_SUITE_V1,
+    COMPOSITION_MODE_ADAPTIVE_GENEALOGY_RELATIONSHIP_CONDITIONS_V1,
+    COMPOSITION_MODE_ADAPTIVE_RELATIONSHIP_SURFACE_V1,
+    COMPOSITION_MODE_DECLARATIVE_GENEALOGY_RELATIONSHIP_CONDITIONS_SUITE_V1,
+    COMPOSITION_MODE_DECLARATIVE_RELATIONSHIP_SURFACE_V1,
+    get_runtime_composition_stage_name,
+    inspect_runtime_composition,
+    validate_requested_composition_mode,
+)
 from .manifest_builder import (
     RESOLVER_VERSION,
     TRACE_SCHEMA_VERSION,
@@ -22,7 +34,13 @@ from .manifest_builder import (
     normalize_selection_priority,
     normalize_structuring_policy,
 )
-from .presentation_api import build_presentation_manifest, _get_recommendations, _resolve_workflow_key
+from .renderer_contract_enforcement import ServedIntent
+from .presentation_api import (
+    _get_recommendations,
+    _prepare_page_payloads,
+    _resolve_workflow_key,
+    build_presentation_manifest,
+)
 from .recommendation_defaults import get_default_recommendations_for_workflow
 from .schemas import (
     DecisionTraceChange,
@@ -38,6 +56,7 @@ def build_presentation_trace(
     job_id: str,
     *,
     consumer_key: str,
+    composition_mode: Optional[str] = None,
 ) -> PresentationDecisionTrace:
     """Build a versioned read-only decision trace for a job + consumer."""
 
@@ -47,8 +66,58 @@ def build_presentation_trace(
 
     plan = load_plan(job["plan_id"])
     workflow_key = _resolve_workflow_key(job, plan)
-    final_manifest = build_presentation_manifest(job_id, consumer_key=consumer_key, slim=True)
-    final_view_keys = [view.view_key for view in final_manifest.views]
+    validate_requested_composition_mode(
+        workflow_key=workflow_key,
+        composition_mode=composition_mode,
+    )
+    authored_manifest = build_presentation_manifest(
+        job_id,
+        consumer_key=consumer_key,
+        slim=True,
+        served_intent=ServedIntent.MANIFEST_INSPECTION_FOR_TRACE,
+    )
+    final_manifest = authored_manifest
+    composition_status = "not_requested"
+    composition_issues = []
+    composition_details: dict[str, Any] = {}
+    if composition_mode:
+        try:
+            final_manifest = build_presentation_manifest(
+                job_id,
+                consumer_key=consumer_key,
+                slim=True,
+                composition_mode=composition_mode,
+                served_intent=ServedIntent.MANIFEST_INSPECTION_FOR_TRACE,
+            )
+            composition_status = "applied"
+        except BoundedCompositionValidationError as error:
+            composition_status = "invalid"
+            composition_issues = [issue.model_copy(deep=True) for issue in error.issues]
+            final_manifest = authored_manifest
+        if composition_mode in {
+            COMPOSITION_MODE_ADAPTIVE_AOI_THEME_SURFACE_V1,
+            COMPOSITION_MODE_ADAPTIVE_RELATIONSHIP_SURFACE_V1,
+            COMPOSITION_MODE_DECLARATIVE_RELATIONSHIP_SURFACE_V1,
+            COMPOSITION_MODE_ADAPTIVE_GENEALOGY_RELATIONSHIP_CONDITIONS_V1,
+            COMPOSITION_MODE_DECLARATIVE_GENEALOGY_RELATIONSHIP_CONDITIONS_SUITE_V1,
+            COMPOSITION_MODE_ADAPTIVE_AOI_THEME_REPORT_SUITE_V1,
+        }:
+            try:
+                page_inputs = _prepare_page_payloads(
+                    job_id,
+                    consumer_key=consumer_key,
+                    slim=True,
+                    read_only=True,
+                )
+                composition_details = inspect_runtime_composition(
+                    payloads=page_inputs["payloads"],
+                    workflow_key=workflow_key,
+                    composition_mode=composition_mode,
+                ) or {}
+            except BoundedCompositionValidationError:
+                composition_details = {}
+
+    authored_view_keys = [view.view_key for view in authored_manifest.views]
     view_registry = get_view_registry()
 
     baseline_recs = _rec_by_key(
@@ -68,59 +137,59 @@ def build_presentation_trace(
             consumer_key=consumer_key,
         )
     )
-    final_manifest_by_key = {view.view_key: view for view in final_manifest.views}
+    authored_manifest_by_key = {view.view_key: view for view in authored_manifest.views}
 
     authored_snapshot, authored_ignored, authored_reasons = _build_stage_snapshot(
         job_id=job_id,
-        final_view_keys=final_view_keys,
+        final_view_keys=authored_view_keys,
         view_registry=view_registry,
         stage="authored_default",
         consumer_key=consumer_key,
         recs_by_key=baseline_recs,
-        final_manifest_by_key=final_manifest_by_key,
+        final_manifest_by_key=authored_manifest_by_key,
         include_selected_variants=False,
     )
     planner_snapshot, planner_ignored, planner_reasons = _build_stage_snapshot(
         job_id=job_id,
-        final_view_keys=final_view_keys,
+        final_view_keys=authored_view_keys,
         view_registry=view_registry,
         stage="planner_recommendation",
         consumer_key=consumer_key,
         recs_by_key=planner_recs,
-        final_manifest_by_key=final_manifest_by_key,
+        final_manifest_by_key=authored_manifest_by_key,
         include_selected_variants=False,
     )
     refinement_snapshot, refinement_ignored, refinement_reasons = _build_stage_snapshot(
         job_id=job_id,
-        final_view_keys=final_view_keys,
+        final_view_keys=authored_view_keys,
         view_registry=view_registry,
         stage="stored_refinement",
         consumer_key=consumer_key,
         recs_by_key=final_recs,
-        final_manifest_by_key=final_manifest_by_key,
+        final_manifest_by_key=authored_manifest_by_key,
         include_selected_variants=False,
     )
     deterministic_snapshot, deterministic_ignored, deterministic_reasons = _build_stage_snapshot(
         job_id=job_id,
-        final_view_keys=final_view_keys,
+        final_view_keys=authored_view_keys,
         view_registry=view_registry,
         stage="deterministic_contract_resolution",
         consumer_key=consumer_key,
         recs_by_key=final_recs,
-        final_manifest_by_key=final_manifest_by_key,
+        final_manifest_by_key=authored_manifest_by_key,
         include_selected_variants=True,
     )
     scaffold_snapshot, scaffold_ignored, scaffold_reasons = _build_stage_snapshot(
         job_id=job_id,
-        final_view_keys=final_view_keys,
+        final_view_keys=authored_view_keys,
         view_registry=view_registry,
         stage="semantic_scaffold_resolution",
         consumer_key=consumer_key,
         recs_by_key=final_recs,
-        final_manifest_by_key=final_manifest_by_key,
+        final_manifest_by_key=authored_manifest_by_key,
         include_selected_variants=True,
     )
-    final_snapshot = [view.model_copy(deep=True) for view in final_manifest.views]
+    authored_final_snapshot = [view.model_copy(deep=True) for view in authored_manifest.views]
     final_ignored = _collect_capability_adaptation_ignored(
         deterministic_snapshot=deterministic_snapshot,
         consumer_key=consumer_key,
@@ -135,7 +204,7 @@ def build_presentation_trace(
         (
             "consumer_capability_adaptation",
             "Consumer capability adaptation and scaffold hosting resolved",
-            final_snapshot,
+            authored_final_snapshot,
             final_ignored,
             {},
         ),
@@ -155,10 +224,85 @@ def build_presentation_trace(
         )
         previous_snapshot = snapshot
 
+    if composition_mode:
+        composed_snapshot = [view.model_copy(deep=True) for view in final_manifest.views]
+        stage_name = get_runtime_composition_stage_name(composition_mode)
+        if stage_name == "adaptive_surface_suite_selection":
+            stage_reason = (
+                "Adaptive surface suite selection applied."
+                if composition_status == "applied"
+                else "Adaptive surface suite selection failed validation; authored pre-composition manifest retained."
+            )
+        elif stage_name == "adaptive_surface_selection":
+            stage_reason = (
+                "Adaptive surface selection applied."
+                if composition_status == "applied"
+                else "Adaptive surface selection failed validation; authored pre-composition manifest retained."
+            )
+        else:
+            stage_reason = (
+                "Proof-mode bounded dynamic composition applied."
+                if composition_status == "applied"
+                else "Proof-mode bounded dynamic composition failed validation; authored pre-composition manifest retained."
+            )
+        if composition_details.get("surface_decisions") and composition_status == "applied":
+            selected_families = ", ".join(
+                f"{decision.get('target_surface')}={decision.get('selected_family')}"
+                for decision in composition_details.get("surface_decisions", [])
+                if isinstance(decision, dict)
+            )
+            if selected_families:
+                stage_reason = f"Adaptive surface suite selected runtime families: {selected_families}."
+        elif composition_details.get("surface_decisions") and composition_status != "applied":
+            selected_families = ", ".join(
+                f"{decision.get('target_surface')}={decision.get('selected_family')}"
+                for decision in composition_details.get("surface_decisions", [])
+                if isinstance(decision, dict)
+            )
+            if selected_families:
+                stage_reason = (
+                    f"Adaptive surface suite selected runtime families ({selected_families}) but failed validation; "
+                    "authored pre-composition manifest retained."
+                )
+        elif composition_details.get("selected_family") and composition_status == "applied":
+            stage_reason = (
+                f"Adaptive surface family '{composition_details['selected_family']}' selected and applied."
+            )
+        elif composition_details.get("selected_family") and composition_status != "applied":
+            stage_reason = (
+                f"Adaptive surface family '{composition_details['selected_family']}' selected but failed validation; "
+                "authored pre-composition manifest retained."
+            )
+        entries.append(
+            DecisionTraceEntry(
+                stage=stage_name,
+                reason=stage_reason,
+                details=composition_details,
+                applied_changes=(
+                    _diff_snapshots(previous_snapshot, composed_snapshot, {})
+                    if composition_status == "applied"
+                    else []
+                ),
+                ignored_changes=[
+                    IgnoredOverride(
+                        view_key=issue.view_key,
+                        field=issue.field,
+                        value=None,
+                        reason=issue.reason or issue.message,
+                    )
+                    for issue in composition_issues
+                ],
+                snapshot=composed_snapshot,
+            )
+        )
+
     return PresentationDecisionTrace(
         job_id=job_id,
         plan_id=job["plan_id"],
         consumer_key=consumer_key,
+        composition_mode=composition_mode,
+        composition_status=composition_status,
+        composition_issues=composition_issues,
         manifest_schema_version=final_manifest.manifest_schema_version,
         trace_schema_version=TRACE_SCHEMA_VERSION,
         resolver_version=RESOLVER_VERSION,
@@ -397,6 +541,7 @@ def _diff_snapshots(
         "renderer_type",
         "renderer_config",
         "presentation_stance",
+        "first_hop_affordance",
         "selection_priority",
         "navigation_state",
         "promoted_to_top_level",

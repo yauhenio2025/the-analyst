@@ -5,14 +5,17 @@ renderer's input_data_schema before caching (bridge) and before serving
 (assembly). Default mode is WARN — never blocks the pipeline.
 """
 
+import json
 import logging
 from dataclasses import dataclass, field
 from enum import Enum
+from pathlib import Path
 from typing import Any, Optional
 
 from jsonschema import Draft7Validator, ValidationError
 
 from src.renderers.registry import get_renderer_registry
+from src.renderers.schemas import RendererDefinition
 
 logger = logging.getLogger(__name__)
 
@@ -250,3 +253,36 @@ def validate_all_schemas() -> dict[str, Any]:
         results[key] = entry
 
     return results
+
+
+def validate_renderer_registry_artifacts(
+    definitions_dir: Optional[Path] = None,
+) -> dict[str, Any]:
+    """Fail-loud preflight check for repo-tracked renderer definitions."""
+    if definitions_dir is None:
+        definitions_dir = Path(__file__).parent / "definitions"
+
+    issues: list[dict[str, str]] = []
+    validated_keys: list[str] = []
+
+    for json_file in sorted(definitions_dir.glob("*.json")):
+        try:
+            with open(json_file, "r", encoding="utf-8") as handle:
+                payload = json.load(handle)
+            renderer = RendererDefinition.model_validate(payload)
+            validated_keys.append(renderer.renderer_key)
+        except Exception as exc:
+            issues.append(
+                {
+                    "file": json_file.name,
+                    "message": str(exc),
+                }
+            )
+
+    return {
+        "valid": not issues,
+        "definitions_dir": str(definitions_dir),
+        "count": len(validated_keys),
+        "renderer_keys": validated_keys,
+        "issues": issues,
+    }

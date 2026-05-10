@@ -247,6 +247,7 @@
       "conditions_of_possibility_analyzer"
     ]
   },
+  "composition_role": null,
   "depth_levels": [
     {
       "description": "Map semantic fields for the 3-5 most significant concepts with basic relationship types and note the most obvious concept clusters",
@@ -486,11 +487,14 @@
   },
   "kind": "primitive",
   "legacy_engine_key": "concept_semantic_constellation",
+  "output_contract": null,
+  "output_mode": "prose",
   "paradigm_keys": [
     "marxist",
     "brandomian"
   ],
   "problematique": "A concept is never an island. Every significant term exists within\na semantic field -- a constellation of related terms, near-synonyms,\nantonyms, boundary cases, and usage patterns that together constitute\nits meaning. To understand what an author means by \"power\" you must\nalso understand what they mean by \"authority\", \"influence\", \"force\",\n\"domination\", \"hegemony\" -- and crucially, where they draw the\nboundaries between these terms. The semantic constellation IS the\nmeaning; the isolated definition is a shadow of it.\n\nThis engine maps those constellations. For each significant concept\nin a work, it asks: What is the full semantic field? What terms\ncluster together, and what keeps them distinct? Where are the\nboundaries fuzzy, and where are they sharp? How does the author's\nusage pattern differ from standard usage in their field? What\nconnotations attach to terms that do silent argumentative work?\n\nFor genealogical analysis, semantic constellations are diagnostic.\nAn author's semantic field for a concept reveals their intellectual\nformation more reliably than their explicit definitions. When an\neconomist uses \"efficiency\" surrounded by terms like \"allocation\",\n\"equilibrium\", and \"optimality\", that is a different concept from\na political theorist's \"efficiency\" surrounded by \"governance\",\n\"legitimacy\", and \"accountability\" -- even if both authors would\noffer similar dictionary definitions. The constellation tells you\nwhere the concept LIVES in the author's thinking.\n\nAs the SECOND engine in the target profiling chain, this engine\ntakes the vocabulary extracted by conceptual_framework_extraction\nand deepens it: from a list of significant terms to a map of\nsemantic relationships between them. It transforms a flat vocabulary\ninventory into a structured semantic landscape that reveals how\nconcepts relate, cluster, and define each other through their\ndifferences. This landscape then feeds the inferential commitment\nmapper, which asks what logical commitments these semantic\nrelationships encode.\n",
+  "prompt_context_keys": [],
   "researcher_question": "What is the full semantic field of this concept?",
   "version": 1
 }

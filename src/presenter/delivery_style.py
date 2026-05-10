@@ -88,10 +88,16 @@ def seed_polish_cache_for_page(
     force: bool = False,
 ) -> dict[str, Any]:
     from .presentation_api import assemble_page
+    from .renderer_contract_enforcement import ServedIntent
     from .presentation_api import _resolve_workflow_key
     from src.executor.job_manager import get_job
 
-    page = assemble_page(job_id, consumer_key=consumer_key, slim=True)
+    page = assemble_page(
+        job_id,
+        consumer_key=consumer_key,
+        slim=True,
+        served_intent=ServedIntent.PAGE_SOURCE_FOR_DELIVERY_STYLE,
+    )
     job = get_job(job_id)
     workflow_key = _resolve_workflow_key(job) if job is not None else ""
     root_view_key = page.views[0].view_key if page.views else ""
@@ -130,6 +136,7 @@ def seed_polish_cache_for_views(
     force: bool = False,
 ) -> dict[str, Any]:
     from .presentation_api import assemble_single_view
+    from .renderer_contract_enforcement import ServedIntent
 
     polished = 0
     cached_hits = 0
@@ -137,7 +144,12 @@ def seed_polish_cache_for_views(
     resolved_schools: list[str] = []
 
     for view_key in view_keys:
-        payload = assemble_single_view(job_id, view_key, consumer_key=consumer_key)
+        payload = assemble_single_view(
+            job_id,
+            view_key,
+            consumer_key=consumer_key,
+            served_intent=ServedIntent.VIEW_SOURCE_FOR_DELIVERY_STYLE,
+        )
         if payload is None:
             failed += 1
             continue

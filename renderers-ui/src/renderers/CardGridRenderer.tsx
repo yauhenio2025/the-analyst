@@ -26,8 +26,8 @@ import { cellRenderers, DefaultCardCell } from '../cells';
 import { useDesignTokens } from '../tokens/DesignTokenContext';
 import { useProseExtraction } from '../hooks/useProseExtraction';
 import { StyleOverrides, getSO } from '../types/styles';
-type CaptureSelection = Record<string, unknown>;
 import { DistributionSummary } from '../sub-renderers/SubRenderers';
+import { buildPackageCaptureSelectionBase, resolvePackageCaptureBaseRuntime } from '../utils/captureBase';
 
 // ── Content length estimation ─────────────────────────────
 
@@ -521,28 +521,27 @@ function CardWrapper({
     : { ...baseCardStyle, ...so?.card };
 
   // Capture button (rendered outside JSX to avoid TS2746)
-  const captureBtn = config._captureMode && config._onCapture ? (
+  const captureRuntime = resolvePackageCaptureBaseRuntime(config);
+  const captureBtn = captureRuntime ? (
     <button
       key="capture-btn"
       title="Capture this card"
       onClick={e => {
         e.stopPropagation();
-        const onCap = config._onCapture as (sel: CaptureSelection) => void;
         const title = String(item.title || item.name || item.id || '');
         const parentSectionKey = config._parentSectionKey as string | undefined;
         const parentSectionTitle = config._parentSectionTitle as string | undefined;
-        onCap({
-          source_view_key: String(config._captureViewKey || ''),
+        captureRuntime.onCapture({
+          ...buildPackageCaptureSelectionBase(captureRuntime, {
+            titleSegments: parentSectionKey
+              ? [parentSectionTitle || '', title]
+              : [title],
+          }),
           source_item_index: undefined,
           source_renderer_type: 'card_grid',
           content_type: 'card',
           selected_text: (item.summary || item.analysis || item.description || JSON.stringify(item)).toString().slice(0, 500),
           structured_data: item,
-          context_title: parentSectionKey
-            ? `${config._captureViewKey || 'Analysis'} > ${parentSectionTitle || ''} > ${title}`
-            : `${config._captureViewKey || 'Analysis'} > ${title}`,
-          source_type: ((config._captureSourceType as string) || 'analysis') as string,
-          entity_id: String(config._captureEntityId || config._captureJobId || ''),
           depth_level: parentSectionKey ? 'L2_element' : 'L1_section',
           parent_context: parentSectionKey ? {
             section_key: parentSectionKey,

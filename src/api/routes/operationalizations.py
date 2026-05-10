@@ -10,6 +10,7 @@ from typing import Optional
 from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel, Field
 
+from src.engines.discovery import resolve_capability_definition
 from src.operationalizations.registry import get_operationalization_registry
 from src.operationalizations.schemas import (
     CoverageMatrix,
@@ -34,6 +35,23 @@ def _get_registry():
     return get_operationalization_registry()
 
 
+def _canonicalize_engine_key(engine_key: str) -> str:
+    cap_def = resolve_capability_definition(get_engine_registry(), engine_key)
+    return cap_def.engine_key if cap_def is not None else engine_key
+
+
+def _get_operationalization_or_404(engine_key: str) -> tuple[str, EngineOperationalization]:
+    reg = _get_registry()
+    canonical_key = _canonicalize_engine_key(engine_key)
+    op = reg.get(canonical_key)
+    if op is None:
+        raise HTTPException(
+            status_code=404,
+            detail=f"No operationalization for engine '{engine_key}'",
+        )
+    return canonical_key, op
+
+
 # ── List / Coverage ─────────────────────────────────────────────────────
 
 @router.get("/", response_model=list[OperationalizationSummary])
@@ -55,20 +73,21 @@ async def get_coverage():
 @router.get("/{engine_key}", response_model=EngineOperationalization)
 async def get_operationalization(engine_key: str):
     """Get the full operationalization for an engine."""
-    reg = _get_registry()
-    op = reg.get(engine_key)
-    if op is None:
-        raise HTTPException(status_code=404, detail=f"No operationalization for engine '{engine_key}'")
+    _, op = _get_operationalization_or_404(engine_key)
     return op
 
 
 @router.put("/{engine_key}", response_model=EngineOperationalization)
 async def update_operationalization(engine_key: str, body: EngineOperationalization):
     """Update the full operationalization for an engine."""
+    canonical_key = _canonicalize_engine_key(engine_key)
+    if body.engine_key != canonical_key:
+        raise HTTPException(
+            status_code=400,
+            detail="engine_key in body must match canonical engine key",
+        )
     reg = _get_registry()
-    if body.engine_key != engine_key:
-        raise HTTPException(status_code=400, detail="engine_key in body must match URL")
-    success = reg.save(engine_key, body)
+    success = reg.save(canonical_key, body)
     if not success:
         raise HTTPException(status_code=500, detail="Failed to save operationalization")
     return body
@@ -79,18 +98,16 @@ async def update_operationalization(engine_key: str, body: EngineOperationalizat
 @router.get("/{engine_key}/stances", response_model=list[StanceOperationalization])
 async def list_stance_ops(engine_key: str):
     """List all stance operationalizations for an engine."""
-    reg = _get_registry()
-    op = reg.get(engine_key)
-    if op is None:
-        raise HTTPException(status_code=404, detail=f"No operationalization for engine '{engine_key}'")
+    _, op = _get_operationalization_or_404(engine_key)
     return op.stance_operationalizations
 
 
 @router.get("/{engine_key}/stances/{stance_key}", response_model=StanceOperationalization)
 async def get_stance_op(engine_key: str, stance_key: str):
     """Get a specific stance operationalization for an engine."""
+    canonical_key, _ = _get_operationalization_or_404(engine_key)
     reg = _get_registry()
-    stance_op = reg.get_stance_for_engine(engine_key, stance_key)
+    stance_op = reg.get_stance_for_engine(canonical_key, stance_key)
     if stance_op is None:
         raise HTTPException(
             status_code=404,
@@ -106,10 +123,8 @@ async def update_stance_op(
     body: StanceOperationalization,
 ):
     """Update a specific stance operationalization for an engine."""
+    canonical_key, op = _get_operationalization_or_404(engine_key)
     reg = _get_registry()
-    op = reg.get(engine_key)
-    if op is None:
-        raise HTTPException(status_code=404, detail=f"No operationalization for engine '{engine_key}'")
 
     if body.stance_key != stance_key:
         raise HTTPException(status_code=400, detail="stance_key in body must match URL")
@@ -125,7 +140,7 @@ async def update_stance_op(
     if not found:
         op.stance_operationalizations.append(body)
 
-    reg.save(engine_key, op)
+    reg.save(canonical_key, op)
     return body
 
 
@@ -134,8 +149,9 @@ async def update_stance_op(
 @router.get("/{engine_key}/depths/{depth_key}", response_model=DepthSequence)
 async def get_depth_sequence(engine_key: str, depth_key: str):
     """Get the depth sequence for a specific depth level."""
+    canonical_key, _ = _get_operationalization_or_404(engine_key)
     reg = _get_registry()
-    seq = reg.get_depth_sequence(engine_key, depth_key)
+    seq = reg.get_depth_sequence(canonical_key, depth_key)
     if seq is None:
         raise HTTPException(
             status_code=404,
@@ -151,10 +167,8 @@ async def update_depth_sequence(
     body: DepthSequence,
 ):
     """Update the depth sequence for a specific depth level."""
+    canonical_key, op = _get_operationalization_or_404(engine_key)
     reg = _get_registry()
-    op = reg.get(engine_key)
-    if op is None:
-        raise HTTPException(status_code=404, detail=f"No operationalization for engine '{engine_key}'")
 
     if body.depth_key != depth_key:
         raise HTTPException(status_code=400, detail="depth_key in body must match URL")
@@ -170,7 +184,7 @@ async def update_depth_sequence(
     if not found:
         op.depth_sequences.append(body)
 
-    reg.save(engine_key, op)
+    reg.save(canonical_key, op)
     return body
 
 
@@ -189,10 +203,8 @@ async def compose_preview(engine_key: str, body: ComposePreviewRequest):
     This builds a PassDefinition from the operationalization layer and
     composes the prompt as it would be at runtime.
     """
+    canonical_key, op = _get_operationalization_or_404(engine_key)
     op_reg = _get_registry()
-    op = op_reg.get(engine_key)
-    if op is None:
-        raise HTTPException(status_code=404, detail=f"No operationalization for engine '{engine_key}'")
 
     # Get the depth sequence
     depth_seq = op.get_depth_sequence(body.depth_key)
@@ -225,7 +237,7 @@ async def compose_preview(engine_key: str, body: ComposePreviewRequest):
 
     # Get engine capability definition
     engine_reg = get_engine_registry()
-    cap_def = engine_reg.get_capability_definition(engine_key)
+    cap_def = resolve_capability_definition(engine_reg, engine_key)
     if cap_def is None:
         raise HTTPException(status_code=404, detail=f"No capability definition for engine '{engine_key}'")
 

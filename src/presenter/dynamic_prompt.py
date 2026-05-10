@@ -14,6 +14,8 @@ import json
 import logging
 from typing import Any, Optional
 
+from src.engines.discovery import resolve_capability_definition
+
 logger = logging.getLogger(__name__)
 
 
@@ -68,14 +70,43 @@ def _build_engine_context(engine_key: str) -> dict[str, Any]:
     """Extract relevant metadata from an engine definition."""
     try:
         from src.engines.registry import get_engine_registry
-        engine = get_engine_registry().get(engine_key)
+        registry = get_engine_registry()
+        engine = registry.get(engine_key)
+        capability = resolve_capability_definition(registry, engine_key)
     except Exception as e:
         logger.warning(f"[dynamic-prompt] Failed to load engine '{engine_key}': {e}")
         return {"engine_key": engine_key, "available": False}
 
-    if engine is None:
+    if engine is None and capability is None:
         logger.warning(f"[dynamic-prompt] Engine not found: {engine_key}")
         return {"engine_key": engine_key, "available": False}
+
+    use_capability_metadata = capability is not None and (
+        engine is None or capability.engine_key != engine_key
+    )
+
+    if use_capability_metadata and capability is not None:
+        analytical_dimensions = capability.analytical_dimensions or []
+        output_contract = capability.output_contract or {}
+        schema_str = json.dumps(output_contract, indent=2, default=str)
+        if len(schema_str) > 3000:
+            schema_str = schema_str[:3000] + "\n  ... (truncated)"
+        return {
+            "engine_key": engine_key,
+            "available": True,
+            "engine_name": capability.engine_name,
+            "description": capability.problematique,
+            "extraction_focus": [dimension.key for dimension in analytical_dimensions[:8]],
+            "canonical_schema_text": schema_str,
+            "core_question": capability.researcher_question,
+            "key_fields": {
+                dimension.key: dimension.description
+                for dimension in analytical_dimensions[:10]
+            },
+            "key_relationships": list((capability.composability.shares_with or {}).keys())[:8],
+            "id_field": "item_id",
+            "analysis_type": getattr(capability.kind, "value", str(capability.kind)),
+        }
 
     context: dict[str, Any] = {
         "engine_key": engine_key,

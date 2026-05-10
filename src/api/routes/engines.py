@@ -10,6 +10,10 @@ from typing import Literal, Optional
 
 from fastapi import APIRouter, HTTPException, Query
 
+from src.engines.discovery import (
+    list_discoverable_engines,
+    resolve_capability_definition,
+)
 from src.engines.registry import get_engine_registry
 from src.engines.schemas import (
     EngineCategory,
@@ -71,64 +75,43 @@ async def list_engines(
 ) -> list[EngineSummary]:
     """List all engines with optional filtering."""
     registry = get_engine_registry()
+    discoverable = list_discoverable_engines(registry)
 
-    if search:
-        engines = registry.search(search)
-    elif category:
-        engines = registry.list_by_category(category)
-    elif paradigm:
-        engines = registry.list_by_paradigm(paradigm)
-    else:
-        engines = registry.list_all()
-
-    # Apply app filter if specified
+    if category:
+        discoverable = [e for e in discoverable if e.summary.category == category]
+    if paradigm:
+        discoverable = [
+            e for e in discoverable if paradigm in e.summary.paradigm_keys
+        ]
     if app:
-        engines = [e for e in engines if app in e.apps]
-
-    # Build function lookup from capability definitions (YAML) since function
-    # is primarily defined there, not in JSON engine definitions
-    cap_function_map: dict[str, str] = {}
-    for cap_def in registry.list_capability_definitions():
-        if cap_def.function:
-            cap_function_map[cap_def.engine_key] = cap_def.function
-
-    def resolve_function(e: EngineDefinition) -> Optional[str]:
-        """Get function from engine itself or its capability definition."""
-        return e.function or cap_function_map.get(e.engine_key)
-
-    # Apply function filter if specified
+        discoverable = [e for e in discoverable if app in e.summary.apps]
     if function:
-        engines = [e for e in engines if resolve_function(e) == function]
+        discoverable = [e for e in discoverable if e.summary.function == function]
+    if search:
+        query = search.lower()
+        discoverable = [
+            e
+            for e in discoverable
+            if query in e.summary.engine_key.lower()
+            or query in e.summary.engine_name.lower()
+            or query in e.summary.description.lower()
+        ]
 
-    return [
-        EngineSummary(
-            engine_key=e.engine_key,
-            engine_name=e.engine_name,
-            description=e.description,
-            category=e.category,
-            kind=e.kind,
-            version=e.version,
-            paradigm_keys=e.paradigm_keys,
-            has_profile=e.engine_profile is not None,
-            apps=e.apps,
-            function=resolve_function(e),
-        )
-        for e in engines
-    ]
+    return [e.summary for e in discoverable]
 
 
 @router.get("/keys", response_model=list[str])
 async def list_engine_keys() -> list[str]:
     """List all engine keys."""
     registry = get_engine_registry()
-    return registry.list_keys()
+    return [engine.summary.engine_key for engine in list_discoverable_engines(registry)]
 
 
 @router.get("/count")
 async def get_engine_count() -> dict[str, int]:
     """Get total number of engines."""
     registry = get_engine_registry()
-    return {"count": registry.count()}
+    return {"count": len(list_discoverable_engines(registry))}
 
 
 @router.get("/apps", response_model=list[str])
@@ -136,8 +119,8 @@ async def list_apps() -> list[str]:
     """List all unique app tags used across engines."""
     registry = get_engine_registry()
     apps = set()
-    for engine in registry.list_all():
-        apps.update(engine.apps)
+    for engine in list_discoverable_engines(registry):
+        apps.update(engine.summary.apps)
     return sorted(apps)
 
 
@@ -146,14 +129,9 @@ async def list_functions() -> list[str]:
     """List all unique function tags used across engines."""
     registry = get_engine_registry()
     functions = set()
-    # Check JSON engines
-    for engine in registry.list_all():
-        if engine.function:
-            functions.add(engine.function)
-    # Check capability engines (YAML) - function is primarily defined here
-    for cap_engine in registry.list_capability_definitions():
-        if cap_engine.function:
-            functions.add(cap_engine.function)
+    for engine in list_discoverable_engines(registry):
+        if engine.summary.function:
+            functions.add(engine.summary.function)
     return sorted(functions)
 
 
@@ -162,8 +140,8 @@ async def list_categories() -> dict[str, dict[str, int]]:
     """Get engine counts by category."""
     registry = get_engine_registry()
     counts: dict[str, int] = {}
-    for engine in registry.list_all():
-        cat = engine.category.value
+    for engine in list_discoverable_engines(registry):
+        cat = engine.summary.category.value
         counts[cat] = counts.get(cat, 0) + 1
     return {"categories": counts}
 
@@ -174,28 +152,10 @@ async def list_engines_by_category(
 ) -> list[EngineSummary]:
     """List engines in a specific category."""
     registry = get_engine_registry()
-    engines = registry.list_by_category(category)
-
-    # Build function lookup from capability definitions
-    cap_function_map: dict[str, str] = {}
-    for cap_def in registry.list_capability_definitions():
-        if cap_def.function:
-            cap_function_map[cap_def.engine_key] = cap_def.function
-
     return [
-        EngineSummary(
-            engine_key=e.engine_key,
-            engine_name=e.engine_name,
-            description=e.description,
-            category=e.category,
-            kind=e.kind,
-            version=e.version,
-            paradigm_keys=e.paradigm_keys,
-            has_profile=e.engine_profile is not None,
-            apps=e.apps,
-            function=e.function or cap_function_map.get(e.engine_key),
-        )
-        for e in engines
+        engine.summary
+        for engine in list_discoverable_engines(registry)
+        if engine.summary.category == category
     ]
 
 
@@ -222,6 +182,16 @@ async def get_engine(engine_key: str) -> EngineDefinition:
     registry = get_engine_registry()
     engine = registry.get(engine_key)
     if engine is None:
+        cap_def = resolve_capability_definition(registry, engine_key)
+        if cap_def is not None:
+            raise HTTPException(
+                status_code=404,
+                detail=(
+                    f"Engine not found: {engine_key}. "
+                    f"This engine has a capability definition but no legacy detail. "
+                    f"Use /v1/engines/{cap_def.engine_key}/capability-definition."
+                ),
+            )
         raise HTTPException(
             status_code=404,
             detail=f"Engine not found: {engine_key}",
@@ -539,7 +509,7 @@ async def get_capability_definition(engine_key: str) -> CapabilityEngineDefiniti
     not HOW it formats output.
     """
     registry = get_engine_registry()
-    cap_def = registry.get_capability_definition(engine_key)
+    cap_def = resolve_capability_definition(registry, engine_key)
     if cap_def is None:
         raise HTTPException(
             status_code=404,
@@ -561,7 +531,7 @@ async def get_capability_history(
     YAML files against stored snapshots on startup/reload.
     """
     registry = get_engine_registry()
-    cap_def = registry.get_capability_definition(engine_key)
+    cap_def = resolve_capability_definition(registry, engine_key)
     if cap_def is None:
         raise HTTPException(
             status_code=404,
@@ -570,9 +540,9 @@ async def get_capability_history(
 
     from src.engines.history_tracker import load_history
 
-    history = load_history(engine_key)
+    history = load_history(cap_def.engine_key)
     return {
-        "engine_key": engine_key,
+        "engine_key": cap_def.engine_key,
         "entry_count": len(history.entries),
         "entries": [e.model_dump(mode="json") for e in history.entries[:limit]],
     }
@@ -601,7 +571,7 @@ async def get_capability_prompt(
     is saved as plain text and structured data is extracted at presentation time.
     """
     registry = get_engine_registry()
-    cap_def = registry.get_capability_definition(engine_key)
+    cap_def = resolve_capability_definition(registry, engine_key)
     if cap_def is None:
         raise HTTPException(
             status_code=404,
@@ -644,7 +614,7 @@ async def get_pass_prompts(
     via the whole-engine capability-prompt endpoint.
     """
     registry = get_engine_registry()
-    cap_def = registry.get_capability_definition(engine_key)
+    cap_def = resolve_capability_definition(registry, engine_key)
     if cap_def is None:
         raise HTTPException(
             status_code=404,
@@ -672,7 +642,7 @@ async def get_single_pass_prompt(
     prompt generation when you want to supply shared_context separately.
     """
     registry = get_engine_registry()
-    cap_def = registry.get_capability_definition(engine_key)
+    cap_def = resolve_capability_definition(registry, engine_key)
     if cap_def is None:
         raise HTTPException(
             status_code=404,

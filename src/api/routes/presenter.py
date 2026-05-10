@@ -11,14 +11,27 @@ Endpoints:
 
 import asyncio
 import logging
+from typing import Any
 
 from fastapi import APIRouter, HTTPException
+from pydantic import ValidationError
 
+from src.presenter.bounded_dynamic_composition import (
+    BoundedCompositionValidationError,
+    InvalidCompositionModeError,
+)
+from src.presenter.renderer_contract_enforcement import ServedIntent
 from src.presenter.schemas import (
+    ComposeSessionSaveRequest,
+    ComposeFromIntentRequest,
+    ComposeFromIntentResponse,
+    ComposeFromSelectionRequest,
+    ComposeFromSourceRequest,
     ComposeRequest,
     EffectivePresentationManifest,
     EnsurePresentationRequest,
     PagePresentation,
+    PersistedComposeSession,
     PolishRequest,
     PresentationDecisionTrace,
     PrepareRequest,
@@ -30,6 +43,13 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/presenter", tags=["presenter"])
 DEFAULT_CONSUMER_KEY = "the-critic"
+
+
+def _composition_error_detail(error: BoundedCompositionValidationError) -> dict[str, object]:
+    return {
+        "detail": str(error),
+        "issues": [issue.model_dump() for issue in error.issues],
+    }
 
 
 @router.post("/refine-views")
@@ -133,6 +153,7 @@ async def get_page_presentation(
     job_id: str,
     slim: bool = False,
     consumer_key: str = DEFAULT_CONSUMER_KEY,
+    composition_mode: str | None = None,
 ):
     """Get complete page presentation for a job.
 
@@ -148,8 +169,20 @@ async def get_page_presentation(
     from src.presenter.presentation_api import assemble_page
 
     try:
-        result = assemble_page(job_id, consumer_key=consumer_key, slim=slim)
+        result = assemble_page(
+            job_id,
+            consumer_key=consumer_key,
+            slim=slim,
+            composition_mode=composition_mode,
+            served_intent=ServedIntent.FULL_PAGE_PRESENTATION_SERVED,
+        )
         return result.model_dump()
+    except InvalidCompositionModeError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except HTTPException:
+        raise
+    except BoundedCompositionValidationError as e:
+        raise HTTPException(status_code=409, detail=_composition_error_detail(e))
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
     except Exception as e:
@@ -162,18 +195,29 @@ async def get_single_view(
     job_id: str,
     view_key: str,
     consumer_key: str = DEFAULT_CONSUMER_KEY,
+    composition_mode: str | None = None,
 ):
     """Get a single view's data (for lazy loading on-demand views)."""
     from src.presenter.presentation_api import assemble_single_view
 
     try:
-        result = assemble_single_view(job_id, view_key, consumer_key=consumer_key)
+        result = assemble_single_view(
+            job_id,
+            view_key,
+            consumer_key=consumer_key,
+            composition_mode=composition_mode,
+            served_intent=ServedIntent.SINGLE_VIEW_PRESENTATION_SERVED,
+        )
         if result is None:
             raise HTTPException(
                 status_code=404,
                 detail=f"View not found: {view_key}",
             )
         return result.model_dump()
+    except InvalidCompositionModeError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except BoundedCompositionValidationError as e:
+        raise HTTPException(status_code=409, detail=_composition_error_detail(e))
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
     except HTTPException:
@@ -209,6 +253,7 @@ async def get_presentation_manifest(
     job_id: str,
     consumer_key: str = DEFAULT_CONSUMER_KEY,
     slim: bool = True,
+    composition_mode: str | None = None,
 ):
     """Get the data-light effective presentation manifest for a job + consumer."""
     from src.presenter.presentation_api import build_presentation_manifest
@@ -218,7 +263,13 @@ async def get_presentation_manifest(
             job_id,
             consumer_key=consumer_key,
             slim=slim,
+            composition_mode=composition_mode,
+            served_intent=ServedIntent.EFFECTIVE_MANIFEST_SERVED,
         )
+    except InvalidCompositionModeError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except BoundedCompositionValidationError as e:
+        raise HTTPException(status_code=409, detail=_composition_error_detail(e))
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
     except Exception as e:
@@ -230,12 +281,19 @@ async def get_presentation_manifest(
 async def get_presentation_trace(
     job_id: str,
     consumer_key: str = DEFAULT_CONSUMER_KEY,
+    composition_mode: str | None = None,
 ):
     """Get the reconstructed decision trace for a job + consumer."""
     from src.presenter.decision_trace import build_presentation_trace
 
     try:
-        return build_presentation_trace(job_id, consumer_key=consumer_key)
+        return build_presentation_trace(
+            job_id,
+            consumer_key=consumer_key,
+            composition_mode=composition_mode,
+        )
+    except InvalidCompositionModeError as e:
+        raise HTTPException(status_code=400, detail=str(e))
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
     except Exception as e:
@@ -281,7 +339,11 @@ async def compose_presentation(request: ComposeRequest):
         )
 
         # Step 3: Assemble page
-        page = assemble_page(request.job_id, consumer_key=request.consumer_key)
+        page = assemble_page(
+            request.job_id,
+            consumer_key=request.consumer_key,
+            served_intent=ServedIntent.FULL_PAGE_PRESENTATION_SERVED,
+        )
 
         # Step 4: Auto-polish views (if requested)
         if request.auto_polish:
@@ -309,11 +371,168 @@ async def compose_presentation(request: ComposeRequest):
 
         return page.model_dump()
 
+    except BoundedCompositionValidationError as e:
+        raise HTTPException(status_code=409, detail=_composition_error_detail(e))
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
     except Exception as e:
         logger.error(f"Compose failed: {e}", exc_info=True)
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/compose-from-intent", response_model=ComposeFromIntentResponse)
+async def compose_from_intent_endpoint(payload: dict[str, Any]):
+    """Compose a transient AOI page directly from intent + prose."""
+    from src.presenter.compose_from_intent import (
+        ComposeFromIntentClientError,
+        ComposeFromIntentDependencyUnavailable,
+        ComposeFromIntentUpstreamError,
+        compose_from_intent,
+    )
+
+    try:
+        request = ComposeFromIntentRequest.model_validate(payload)
+    except ValidationError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+
+    try:
+        return await asyncio.to_thread(compose_from_intent, request)
+    except ComposeFromIntentClientError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+    except ComposeFromIntentDependencyUnavailable as exc:
+        raise HTTPException(status_code=503, detail=str(exc))
+    except ComposeFromIntentUpstreamError as exc:
+        raise HTTPException(status_code=502, detail=str(exc))
+    except BoundedCompositionValidationError as exc:
+        raise HTTPException(status_code=409, detail=_composition_error_detail(exc))
+    except Exception as exc:
+        logger.error(f"Compose-from-intent failed: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
+@router.post("/compose-from-source", response_model=ComposeFromIntentResponse)
+async def compose_from_source_endpoint(payload: dict[str, Any]):
+    """Compose a transient AOI page from a saved AOI v2 result."""
+    from src.presenter.compose_from_intent import (
+        ComposeFromIntentClientError,
+        ComposeFromIntentDependencyUnavailable,
+        ComposeFromIntentUpstreamError,
+        ComposeFromSourceResolutionError,
+        compose_from_source,
+    )
+
+    try:
+        request = ComposeFromSourceRequest.model_validate(payload)
+    except ValidationError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+
+    try:
+        return await asyncio.to_thread(compose_from_source, request)
+    except ComposeFromIntentClientError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+    except ComposeFromSourceResolutionError as exc:
+        raise HTTPException(status_code=409, detail=str(exc))
+    except ComposeFromIntentDependencyUnavailable as exc:
+        raise HTTPException(status_code=503, detail=str(exc))
+    except ComposeFromIntentUpstreamError as exc:
+        raise HTTPException(status_code=502, detail=str(exc))
+    except BoundedCompositionValidationError as exc:
+        raise HTTPException(status_code=409, detail=_composition_error_detail(exc))
+    except Exception as exc:
+        logger.error(f"Compose-from-source failed: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
+@router.post("/compose-from-selection", response_model=ComposeFromIntentResponse)
+async def compose_from_selection_endpoint(payload: dict[str, Any]):
+    """Compose a transient AOI page from a planner-selected AOI source set."""
+    from src.presenter.compose_from_intent import (
+        ComposeFromIntentClientError,
+        ComposeFromIntentDependencyUnavailable,
+        ComposeFromIntentUpstreamError,
+        ComposeFromSourceResolutionError,
+        compose_from_selection,
+    )
+
+    try:
+        request = ComposeFromSelectionRequest.model_validate(payload)
+    except ValidationError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+
+    try:
+        return await asyncio.to_thread(compose_from_selection, request)
+    except ComposeFromIntentClientError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+    except ComposeFromSourceResolutionError as exc:
+        raise HTTPException(status_code=409, detail=str(exc))
+    except ComposeFromIntentDependencyUnavailable as exc:
+        raise HTTPException(status_code=503, detail=str(exc))
+    except ComposeFromIntentUpstreamError as exc:
+        raise HTTPException(status_code=502, detail=str(exc))
+    except BoundedCompositionValidationError as exc:
+        raise HTTPException(status_code=409, detail=_composition_error_detail(exc))
+    except Exception as exc:
+        logger.error(f"Compose-from-selection failed: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
+@router.post("/compose-sessions", response_model=PersistedComposeSession)
+async def save_compose_session_endpoint(payload: dict[str, Any]):
+    """Persist one explicitly saved transient compose session."""
+    from src.presenter.compose_session_store import (
+        ComposeSessionValidationError,
+        save_compose_session,
+    )
+
+    try:
+        request = ComposeSessionSaveRequest.model_validate(payload)
+    except ValidationError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+
+    try:
+        return await asyncio.to_thread(
+            save_compose_session,
+            compose_request=request.compose_request,
+            compose_response=request.compose_response,
+            planning_decision_id=request.planning_decision_id,
+            source_v2_job_id=request.source_v2_job_id,
+        )
+    except ComposeSessionValidationError as exc:
+        raise HTTPException(status_code=409, detail=str(exc))
+    except Exception as exc:
+        logger.error(f"Compose-session save failed: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
+@router.get("/compose-sessions/{session_id}", response_model=PersistedComposeSession)
+async def get_compose_session_endpoint(
+    session_id: str,
+    consumer_key: str = DEFAULT_CONSUMER_KEY,
+):
+    """Fetch one saved transient compose session by id."""
+    from src.presenter.compose_session_store import load_compose_session
+
+    try:
+        session = await asyncio.to_thread(load_compose_session, session_id)
+        if session is None:
+            raise HTTPException(
+                status_code=404,
+                detail=f"Compose session '{session_id}' not found",
+            )
+        if session.consumer_key != consumer_key:
+            raise HTTPException(
+                status_code=409,
+                detail=(
+                    f"Compose session '{session_id}' belongs to consumer_key='{session.consumer_key}', "
+                    f"not '{consumer_key}'"
+                ),
+            )
+        return session
+    except HTTPException:
+        raise
+    except Exception as exc:
+        logger.error(f"Compose-session fetch failed: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(exc))
 
 
 @router.post("/polish")
@@ -334,6 +553,7 @@ async def polish_view_endpoint(request: PolishRequest):
             request.job_id,
             request.view_key,
             consumer_key=request.consumer_key,
+            served_intent=ServedIntent.VIEW_SOURCE_FOR_POLISH,
         )
         if payload is None:
             raise HTTPException(
@@ -426,6 +646,7 @@ async def polish_section_endpoint(request: SectionPolishRequest):
             request.job_id,
             request.view_key,
             consumer_key=request.consumer_key,
+            served_intent=ServedIntent.VIEW_SOURCE_FOR_POLISH,
         )
         if payload is None:
             raise HTTPException(

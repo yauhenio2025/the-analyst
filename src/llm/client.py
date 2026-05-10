@@ -28,7 +28,7 @@ EXTRACTION_MODEL_FALLBACK = "claude-sonnet-4-6"
 GENERATION_MODEL = "claude-sonnet-4-6"
 
 
-def get_anthropic_client(read_timeout_s: float = 300.0):
+def get_anthropic_client(read_timeout_s: float = 300.0, max_retries: Optional[int] = None):
     """Get Anthropic client if API key is available.
 
     Configured with HTTP timeouts to prevent infinite hangs on dead sockets.
@@ -41,15 +41,19 @@ def get_anthropic_client(read_timeout_s: float = 300.0):
         import httpx
         import anthropic
 
-        return anthropic.Anthropic(
-            api_key=api_key,
-            timeout=httpx.Timeout(
+        client_kwargs: dict[str, Any] = {
+            "api_key": api_key,
+            "timeout": httpx.Timeout(
                 connect=60.0,
                 read=read_timeout_s,
                 write=60.0,
                 pool=60.0,
             ),
-        )
+        }
+        if max_retries is not None:
+            client_kwargs["max_retries"] = max_retries
+
+        return anthropic.Anthropic(**client_kwargs)
     except ImportError:
         logger.warning("anthropic library not installed")
         return None

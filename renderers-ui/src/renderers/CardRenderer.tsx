@@ -28,6 +28,7 @@ import { RendererProps } from '../types';
 import { useProseExtraction } from '../hooks/useProseExtraction';
 import { resolveSubRenderer, autoDetectSubRenderer } from '../sub-renderers/SubRenderers';
 import { isRendererCompatible, SubRendererFallback, GenericSectionRenderer } from '../dispatch/SubRendererDispatch';
+import { buildPackageCaptureSelectionBase, resolvePackageCaptureBaseRuntime } from '../utils/captureBase';
 // CSS: import '@caii/analysis-renderers/styles'; // shared CSS classes (gen-subsection-heading, gen-keyword-tag, etc.)
 
 interface SubsectionDef {
@@ -146,15 +147,15 @@ export function CardRenderer({ data, config }: RendererProps) {
     sub_renderers?: Record<string, { renderer_type: string; config?: Record<string, unknown> }>;
   }> | undefined;
 
-  // Capture mode
-  const captureMode = config._captureMode as boolean | undefined;
-  const onCapture = config._onCapture as
-    | ((sel: Record<string, unknown>) => void)
-    | undefined;
-  const captureJobId = config._captureJobId as string | undefined;
-  const captureViewKey = config._captureViewKey as string | undefined;
-  const captureSourceType = config._captureSourceType as string | undefined;
-  const captureEntityId = config._captureEntityId as string | undefined;
+  const captureRuntime = resolvePackageCaptureBaseRuntime(config);
+  const captureForwardConfig = captureRuntime ? {
+    _captureMode: config._captureMode,
+    _onCapture: config._onCapture,
+    _captureJobId: config._captureJobId,
+    _captureViewKey: config._captureViewKey,
+    _captureSourceType: config._captureSourceType,
+    _captureEntityId: config._captureEntityId,
+  } : undefined;
 
   const subsections: SubsectionDef[] = useMemo(() => {
     if (!rawSubsections) return [];
@@ -271,15 +272,19 @@ export function CardRenderer({ data, config }: RendererProps) {
                     {String(relType).replace(/_/g, ' ')}
                   </span>
                 ) : null}
-                {captureMode && onCapture && (
+                {captureRuntime && (
                   <button
                     title="Capture this card"
                     onClick={e => {
                       e.stopPropagation();
                       const parentSectionKey = config._parentSectionKey as string | undefined;
                       const parentSectionTitle = config._parentSectionTitle as string | undefined;
-                      onCapture({
-                        source_view_key: captureViewKey || '',
+                      captureRuntime.onCapture({
+                        ...buildPackageCaptureSelectionBase(captureRuntime, {
+                          titleSegments: parentSectionKey
+                            ? [parentSectionTitle || '', title]
+                            : [title],
+                        }),
                         source_item_index: idx,
                         source_renderer_type: 'card',
                         content_type: 'card',
@@ -287,11 +292,6 @@ export function CardRenderer({ data, config }: RendererProps) {
                           ? (item.summary || item.analysis || JSON.stringify(item)).toString().slice(0, 500)
                           : String(item).slice(0, 500),
                         structured_data: item,
-                        context_title: parentSectionKey
-                          ? `${captureViewKey || 'Analysis'} > ${parentSectionTitle || ''} > ${title}`
-                          : `${captureViewKey || 'Analysis'} > ${title}`,
-                        source_type: (captureSourceType || 'analysis') as string,
-                        entity_id: captureEntityId || captureJobId || '',
                         depth_level: parentSectionKey ? 'L2_element' : 'L1_section',
                         parent_context: parentSectionKey ? {
                           section_key: parentSectionKey,
@@ -345,10 +345,18 @@ export function CardRenderer({ data, config }: RendererProps) {
                               3. Auto-detect from data shape
                               4. GenericSectionRenderer as final fallback */}
                           {(() => {
+                            const subsectionCaptureForward = captureForwardConfig ? {
+                              ...captureForwardConfig,
+                              _parentSectionKey: sub.key,
+                              _parentSectionTitle: sub.title,
+                            } : undefined;
                             const hint = sectionRenderers?.[sub.key];
                             if (hint) {
                               const SectionRenderer = resolveSubRenderer(hint.renderer_type);
-                              const subConfig = { ...(hint.config || {}) };
+                              const subConfig = {
+                                ...(hint.config || {}),
+                                ...(subsectionCaptureForward || {}),
+                              };
 
                               if (SectionRenderer) {
                                 if (!isRendererCompatible(hint.renderer_type, sectionData, hint.config)) {
@@ -369,7 +377,13 @@ export function CardRenderer({ data, config }: RendererProps) {
 
                               // nested_sections: pass sub_renderers to GenericSectionRenderer
                               if (hint.sub_renderers) {
-                                return <GenericSectionRenderer data={sectionData} subRenderers={hint.sub_renderers} />;
+                                return (
+                                  <GenericSectionRenderer
+                                    data={sectionData}
+                                    subRenderers={hint.sub_renderers}
+                                    captureConfig={subsectionCaptureForward}
+                                  />
+                                );
                               }
                             }
 
@@ -378,12 +392,12 @@ export function CardRenderer({ data, config }: RendererProps) {
                             if (autoRenderer) {
                               const AutoComp = resolveSubRenderer(autoRenderer);
                               if (AutoComp) {
-                                return <AutoComp data={sectionData} config={{}} />;
+                                return <AutoComp data={sectionData} config={subsectionCaptureForward || {}} />;
                               }
                             }
 
                             // Final fallback: GenericSectionRenderer handles any data shape
-                            return <GenericSectionRenderer data={sectionData} />;
+                            return <GenericSectionRenderer data={sectionData} captureConfig={subsectionCaptureForward} />;
                           })()}
                         </div>
                       );

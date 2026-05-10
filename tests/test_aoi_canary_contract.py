@@ -8,6 +8,24 @@ from src.views.registry import get_view_registry
 
 ROOT = Path(__file__).resolve().parents[1]
 CONSUMER_PATH = ROOT / "src" / "consumers" / "definitions" / "aoi-canary.json"
+PHASE_E_TRANSIENT_PROOF_PATH = (
+    ROOT / "communications" / "PROOF_phase_e_transient_second_consumer_aoi_canary_source_selection_2026-03-30.json"
+)
+PHASE_E_SOURCE_PROFILE_TRANSIENT_PROOF_PATH = (
+    ROOT
+    / "communications"
+    / "PROOF_phase_e_transient_second_consumer_aoi_canary_source_profile_dossier_2026-03-31.json"
+)
+PHASE_E_SOURCE_PROFILE_COMPARISON_TRANSIENT_PROOF_PATH = (
+    ROOT
+    / "communications"
+    / "PROOF_phase_e_transient_second_consumer_aoi_canary_source_profile_comparison_2026-03-31.json"
+)
+PHASE_E_GENEALOGY_DIRECT_SECTIONS_TRANSIENT_PROOF_PATH = (
+    ROOT
+    / "communications"
+    / "PROOF_phase_e_transient_second_consumer_aoi_canary_genealogy_direct_sections_2026-03-31.json"
+)
 
 EXPECTED_VIEW_RENDERERS = {
     "aoi_thematic_analysis": "tab",
@@ -39,6 +57,22 @@ EXPECTED_THEME_DEFAULT_SUB_RENDERERS = {
 def _supported_contracts() -> set[str]:
     consumer = json.loads(CONSUMER_PATH.read_text(encoding="utf-8"))
     return set(consumer["supported_renderers"]) | set(consumer["supported_sub_renderers"])
+
+
+def _load_phase_e_transient_proof() -> dict[str, object]:
+    return json.loads(PHASE_E_TRANSIENT_PROOF_PATH.read_text(encoding="utf-8"))
+
+
+def _load_phase_e_source_profile_transient_proof() -> dict[str, object]:
+    return json.loads(PHASE_E_SOURCE_PROFILE_TRANSIENT_PROOF_PATH.read_text(encoding="utf-8"))
+
+
+def _load_phase_e_source_profile_comparison_transient_proof() -> dict[str, object]:
+    return json.loads(PHASE_E_SOURCE_PROFILE_COMPARISON_TRANSIENT_PROOF_PATH.read_text(encoding="utf-8"))
+
+
+def _load_phase_e_genealogy_direct_sections_transient_proof() -> dict[str, object]:
+    return json.loads(PHASE_E_GENEALOGY_DIRECT_SECTIONS_TRANSIENT_PROOF_PATH.read_text(encoding="utf-8"))
 
 
 def test_aoi_canary_supports_pinned_neurath_aoi_surface_without_raw_json_adaptation():
@@ -91,3 +125,114 @@ def test_aoi_canary_supports_pinned_neurath_aoi_surface_without_raw_json_adaptat
         }
         assert actual_sections == EXPECTED_REPORT_SECTION_RENDERERS
         assert set(actual_sections.values()) <= supported
+
+
+def test_aoi_canary_transient_source_selection_proof_stays_within_bounded_raw_json_fallback():
+    proof = _load_phase_e_transient_proof()
+    response = proof["response_json"]
+    presentation = response["presentation"]
+    root_view = presentation["views"][0]
+    leaf_views = root_view["children"]
+    raw_json_leaf_keys = [
+        view["view_key"]
+        for view in leaf_views
+        if not view.get("children") and view.get("renderer_type") == "raw_json"
+    ]
+
+    assert proof["consumer_key"] == "aoi-canary"
+    assert proof["request_json"]["consumer_key"] == "aoi-canary"
+    assert proof["consumer_adaptation_truth"]["root_renderer_type"] == "tab"
+    assert root_view["renderer_type"] == "tab"
+    assert raw_json_leaf_keys == ["compose_intent_04_aoi_thematic_report"]
+    assert proof["consumer_adaptation_truth"]["raw_json_leaf_count"] == 1
+    assert proof["consumer_adaptation_truth"]["raw_json_leaf_keys"] == raw_json_leaf_keys
+    adapted_views = [
+        entry["view_key"]
+        for entry in proof["consumer_adaptation_truth"]["adaptation_details"]
+        if entry["adapted"]
+    ]
+    assert adapted_views == ["compose_intent_04_aoi_thematic_report"]
+
+
+def test_aoi_canary_transient_source_profile_dossier_proof_stays_within_bounded_raw_json_fallback():
+    proof = _load_phase_e_source_profile_transient_proof()
+    response = proof["response_json"]
+    presentation = response["presentation"]
+    root_view = presentation["views"][0]
+    leaf_views = root_view["children"]
+    raw_json_leaf_keys = [
+        view["view_key"]
+        for view in leaf_views
+        if not view.get("children") and view.get("renderer_type") == "raw_json"
+    ]
+
+    assert proof["consumer_key"] == "aoi-canary"
+    assert proof["route_family"] == "source_profile"
+    assert proof["profile"] == "dossier"
+    assert proof["source_v2_job_id"] == "job-744edf255ad5"
+    assert proof["request_json"]["consumer_key"] == "aoi-canary"
+    assert proof["request_json"]["profile"] == "dossier"
+    assert proof["request_json"]["source_v2_job_id"] == "job-744edf255ad5"
+    assert proof["consumer_adaptation_truth"]["root_renderer_type"] == "tab"
+    assert root_view["renderer_type"] == "tab"
+    assert raw_json_leaf_keys == ["compose_intent_02_aoi_thematic_report"]
+    assert proof["consumer_adaptation_truth"]["raw_json_leaf_count"] == 1
+    assert proof["consumer_adaptation_truth"]["raw_json_leaf_keys"] == raw_json_leaf_keys
+    adapted_views = [
+        entry["view_key"]
+        for entry in proof["consumer_adaptation_truth"]["adaptation_details"]
+        if entry["adapted"]
+    ]
+    assert adapted_views == ["compose_intent_02_aoi_thematic_report"]
+
+
+def test_aoi_canary_transient_source_profile_comparison_proof_stays_within_bounded_raw_json_fallback():
+    proof = _load_phase_e_source_profile_comparison_transient_proof()
+    response = proof["response_json"]
+    presentation = response["presentation"]
+    root_view = presentation["views"][0]
+    leaf_views = root_view["children"]
+    raw_json_leaf_keys = [
+        view["view_key"]
+        for view in leaf_views
+        if not view.get("children") and view.get("renderer_type") == "raw_json"
+    ]
+
+    assert proof["consumer_key"] == "aoi-canary"
+    assert proof["route_family"] == "source_profile"
+    assert proof["profile"] == "comparison"
+    assert proof["source_v2_job_id"] == "job-744edf255ad5"
+    assert proof["request_json"]["consumer_key"] == "aoi-canary"
+    assert proof["request_json"]["profile"] == "comparison"
+    assert proof["request_json"]["source_v2_job_id"] == "job-744edf255ad5"
+    assert proof["consumer_adaptation_truth"]["root_renderer_type"] == "tab"
+    assert root_view["renderer_type"] == "tab"
+    assert raw_json_leaf_keys == ["compose_intent_03_aoi_thematic_report"]
+    assert proof["consumer_adaptation_truth"]["raw_json_leaf_count"] == 1
+    assert proof["consumer_adaptation_truth"]["raw_json_leaf_keys"] == raw_json_leaf_keys
+    adapted_views = [
+        entry["view_key"]
+        for entry in proof["consumer_adaptation_truth"]["adaptation_details"]
+        if entry["adapted"]
+    ]
+    assert adapted_views == ["compose_intent_03_aoi_thematic_report"]
+
+
+def test_aoi_canary_transient_genealogy_direct_sections_proof_preserves_non_aoi_root_truth():
+    proof = _load_phase_e_genealogy_direct_sections_transient_proof()
+    response = proof["response_json"]
+    presentation = response["presentation"]
+    root_view = presentation["views"][0]
+
+    assert proof["consumer_key"] == "aoi-canary"
+    assert proof["route_family"] == "direct_sections"
+    assert proof["workflow_key"] == "intellectual_genealogy"
+    assert proof["request_json"]["consumer_key"] == "aoi-canary"
+    assert proof["request_json"]["workflow_key"] == "intellectual_genealogy"
+    assert proof["consumer_adaptation_truth"]["expected_root_renderer"] == "card_grid"
+    assert proof["consumer_adaptation_truth"]["observed_root_renderer"] == "card_grid"
+    assert proof["consumer_adaptation_truth"]["root_renderer_matches"] is True
+    assert root_view["renderer_type"] == "card_grid"
+    assert proof["consumer_adaptation_truth"]["expected_raw_json_view_keys"] == []
+    assert proof["consumer_adaptation_truth"]["observed_raw_json_view_keys"] == []
+    assert proof["consumer_adaptation_truth"]["raw_json_set_matches"] is True

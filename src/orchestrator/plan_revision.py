@@ -13,6 +13,7 @@ import json
 import logging
 import os
 import time
+from collections.abc import Mapping
 from datetime import datetime, timezone
 from typing import Optional
 
@@ -23,6 +24,44 @@ logger = logging.getLogger(__name__)
 # Retry settings for LLM calls
 REVISION_MAX_RETRIES = 5
 REVISION_RETRY_DELAYS = [30, 60, 90, 120, 180]  # seconds
+
+
+def _normalize_revision_phase_chapter_targets(phase: object) -> object:
+    if not isinstance(phase, dict):
+        return phase
+
+    raw_targets = phase.get("chapter_targets")
+    if not raw_targets:
+        return phase
+
+    normalized_phase = dict(phase)
+
+    if isinstance(raw_targets, list):
+        normalized_items: list[dict[str, object]] = []
+        for entry in raw_targets:
+            if isinstance(entry, Mapping):
+                normalized_items.append(dict(entry))
+            elif isinstance(entry, str):
+                chapter_id = entry.strip()
+                if chapter_id:
+                    normalized_items.append({"chapter_id": chapter_id})
+        normalized_phase["chapter_targets"] = normalized_items or None
+        return normalized_phase
+
+    if isinstance(raw_targets, Mapping):
+        normalized_phase["chapter_targets"] = None
+        logger.warning(
+            "Ignoring unsupported revision chapter_targets mapping payload: %r",
+            raw_targets,
+        )
+        return normalized_phase
+
+    normalized_phase["chapter_targets"] = None
+    logger.warning(
+        "Ignoring unsupported revision chapter_targets payload: %r",
+        raw_targets,
+    )
+    return normalized_phase
 
 
 class PlanRevisionEntry(BaseModel):
@@ -468,7 +507,10 @@ def apply_revision_to_plan(
         The modified plan_dict
     """
     revision_entry = revision_result["revision"]
-    revised_phases = revision_result["revised_phases"]
+    revised_phases = [
+        _normalize_revision_phase_chapter_targets(phase)
+        for phase in revision_result["revised_phases"]
+    ]
 
     # For mid-course: keep completed phases, replace remaining
     if revision_entry.get("revision_type") == "mid_course":

@@ -289,6 +289,7 @@
       "inferential_commitment_mapper"
     ]
   },
+  "composition_role": null,
   "depth_levels": [
     {
       "description": "Identify shared concepts, note obvious vocabulary changes, and list dominant evolution types",
@@ -507,6 +508,8 @@
   },
   "kind": "synthesis",
   "legacy_engine_key": "concept_evolution",
+  "output_contract": null,
+  "output_mode": "prose",
   "paradigm_keys": [
     "brandomian",
     "hegelian_critical",
@@ -514,6 +517,7 @@
     "genealogical"
   ],
   "problematique": "How do key terms and concepts evolve between an author's prior work\nand their current work? When the same word appears in two texts\nseparated by years, it rarely means the same thing. Concepts are\nliving entities: they are born, mutate, merge, split, and sometimes\ndie -- replaced by successors that carry traces of their ancestors.\n\nThis engine performs multi-dimensional comparison between a prior work\nand the current work's profile (established in Pass 1). It does not\nmerely track whether a concept appears in both places. It asks: has\nthe VOCABULARY shifted -- are the same terms used, or have new terms\nreplaced old ones? Has the METHODOLOGY changed -- does the author\nargue for the same ideas using different evidence or analytical moves?\nHave the METAPHORS evolved -- are the same images deployed, or have\nthey been abandoned for new ones? Has the FRAMING changed -- was\nsomething once tentative now presented as axiomatic?\n\nThese four dimensions -- vocabulary, methodology, metaphor, framing --\nconstitute the engine's analytical lens. Each dimension can reveal\ngenealogical connections invisible to the others. Two works may share\nno vocabulary but identical methodological signatures (foundational\ninfluence). A concept may retain its name but undergo complete metaphor\nreplacement (deep reconceptualization masked by terminological continuity).\n\nThis is the FIRST engine in the prior work scanning chain (Pass 2).\nIt runs once per prior work, producing per-work dimensional comparisons\nthat feed into concept_appropriation_tracker and downstream synthesis.\n",
+  "prompt_context_keys": [],
   "researcher_question": "How do key terms transform across this collection?",
   "version": 2
 }

@@ -8,6 +8,8 @@ that enumerates engines by name and count, preserving a human-written base summa
 import logging
 from typing import TYPE_CHECKING
 
+from src.engines.discovery import resolve_engine_display_name
+
 if TYPE_CHECKING:
     from src.chains.schemas import EngineChainSpec
     from src.engines.registry import EngineRegistry
@@ -18,11 +20,7 @@ logger = logging.getLogger(__name__)
 
 def _get_engine_display_name(engine_key: str, engine_registry: "EngineRegistry") -> str:
     """Get human-readable engine name from registry, falling back to key."""
-    engine = engine_registry.get(engine_key)
-    if engine:
-        return engine.engine_name
-    # Fallback: convert snake_case to Title Case
-    return engine_key.replace("_", " ").title()
+    return resolve_engine_display_name(engine_registry, engine_key)
 
 
 def generate_chain_description(
