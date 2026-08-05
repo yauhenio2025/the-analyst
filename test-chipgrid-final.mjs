@@ -10,7 +10,7 @@ const page = await browser.newPage({ viewport: { width: 1920, height: 1080 } });
 try {
   // Step 1: Verify analyzer-v2 has chip_grid
   console.log('Step 1: Checking analyzer-v2 view definition...');
-  const viewResp = await fetch('https://analyzer-v2.onrender.com/v1/views/genealogy_target_profile');
+  const viewResp = await fetch('https://analyzer-v2-3blo.onrender.com/v1/views/genealogy_target_profile');
   const viewData = await viewResp.json();
   const fwRenderer = viewData.renderer_config.section_renderers.conceptual_framework.sub_renderers.frameworks;
   console.log(`  frameworks renderer_type: ${fwRenderer.renderer_type}`);

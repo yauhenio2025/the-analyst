@@ -236,7 +236,7 @@ POST /v1/presenter/polish-section        # Per-section polish with user feedback
 - Change history: `docs/CHANGELOG.md` (read on demand)
 
 ## Deployment
-- **Live URL**: https://analyzer-v2.onrender.com
+- **Live URL**: https://analyzer-v2-3blo.onrender.com (migrated 2026-08-05 from CAII Render account to gsi/yauhenimaro account; old analyzer-v2.onrender.com is gone)
 - **GitHub**: https://github.com/yauhenio2025/analyzer-v2
 - **Auto-deploy**: Push to `master` triggers automatic deployment
 

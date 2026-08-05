@@ -212,7 +212,7 @@ async function test() {
       try {
         // Check what the v2 presentation contains
         // The presentation API returns view payloads with data
-        const res = await fetch('https://analyzer-v2.onrender.com/v1/executor/jobs/7d32be316d06/results');
+        const res = await fetch('https://analyzer-v2-3blo.onrender.com/v1/executor/jobs/7d32be316d06/results');
         const data = await res.json();
         return { available: true, phases: data.length || Object.keys(data).length, sample: JSON.stringify(data).substring(0, 500) };
       } catch (e) {

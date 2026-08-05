@@ -42,7 +42,7 @@ async function run() {
     // Fetch the view definition directly from the API
     const viewDefResponse = await page.evaluate(async () => {
       try {
-        const resp = await fetch('https://analyzer-v2.onrender.com/v1/views/genealogy_conditions');
+        const resp = await fetch('https://analyzer-v2-3blo.onrender.com/v1/views/genealogy_conditions');
         const data = await resp.json();
         return { status: resp.status, data };
       } catch (e) {
@@ -57,7 +57,7 @@ async function run() {
     console.log('\n=== Step 5: Check composed views ===');
     const composedResp = await page.evaluate(async () => {
       try {
-        const resp = await fetch('https://analyzer-v2.onrender.com/v1/views/compose/the-critic/genealogy');
+        const resp = await fetch('https://analyzer-v2-3blo.onrender.com/v1/views/compose/the-critic/genealogy');
         const data = await resp.json();
         return data;
       } catch (e) {

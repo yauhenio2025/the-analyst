@@ -195,7 +195,7 @@ async function test() {
     const presentationCheck = await page.evaluate(async () => {
       // Try the compose endpoint to see what renderer_config is returned
       try {
-        const resp = await fetch('https://analyzer-v2.onrender.com/v1/views/genealogy_target_profile');
+        const resp = await fetch('https://analyzer-v2-3blo.onrender.com/v1/views/genealogy_target_profile');
         const viewDef = await resp.json();
         return {
           api_available: true,

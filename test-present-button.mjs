@@ -86,7 +86,7 @@ async function main() {
 
             // Direct approach: Fetch from analyzer-v2 and set React state
             try {
-                const pageResp = await fetch('https://analyzer-v2.onrender.com/v1/presenter/page/job-7d32be316d06', {
+                const pageResp = await fetch('https://analyzer-v2-3blo.onrender.com/v1/presenter/page/job-7d32be316d06', {
                     signal: AbortSignal.timeout(120000),
                 });
                 if (!pageResp.ok) {
@@ -113,7 +113,7 @@ async function main() {
         console.log('  Injecting presentation into React state...');
         const injectResult = await page.evaluate(async () => {
             // Fetch the full presentation
-            const pageResp = await fetch('https://analyzer-v2.onrender.com/v1/presenter/page/job-7d32be316d06', {
+            const pageResp = await fetch('https://analyzer-v2-3blo.onrender.com/v1/presenter/page/job-7d32be316d06', {
                 signal: AbortSignal.timeout(120000),
             });
             if (!pageResp.ok) return { error: 'Failed to fetch presentation' };
