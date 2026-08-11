@@ -973,6 +973,7 @@ def assemble_page(
         job_id=job_id,
         plan_id=page_inputs["plan_id"],
         consumer_key=consumer_key,
+        composition_mode=composition_mode,
         presentation_version=2,
         presentation_contract_version=manifest.presentation_contract_version,
         presentation_hash=manifest.presentation_hash,

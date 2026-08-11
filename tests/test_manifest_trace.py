@@ -635,6 +635,7 @@ def test_aoi_live_controls_keep_served_outputs_identical_with_and_without_render
     assert _normalize_root_metadata(baseline_page.model_dump()) == _normalize_root_metadata(
         enforced_page.model_dump()
     )
+    assert enforced_page.composition_mode == COMPOSITION_MODE_ADAPTIVE_AOI_THEME_REPORT_SUITE_V1
     assert _normalize_round6_manifest_control(
         saved_round6_trace["final_manifest"]
     ) == _normalize_round6_manifest_control(
