@@ -36,6 +36,7 @@ from src.orchestrator.visualization import assemble_pipeline_visualization
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/orchestrator", tags=["orchestrator"])
+ORCHESTRATOR_PRESENTATION_CONSUMER_KEY = "the-critic"
 
 
 def _validate_selected_models(planning_model: Optional[str], execution_model: Optional[str]) -> None:
@@ -509,7 +510,13 @@ async def get_analysis(job_id: str):
     if status == "completed":
         try:
             from src.presenter.presentation_api import assemble_page
-            page = assemble_page(job_id)
+            from src.presenter.renderer_contract_enforcement import ServedIntent
+
+            page = assemble_page(
+                job_id,
+                consumer_key=ORCHESTRATOR_PRESENTATION_CONSUMER_KEY,
+                served_intent=ServedIntent.PAGE_PREVIEW_FOR_ORCHESTRATOR_STATUS,
+            )
             return {
                 "job_id": job_id,
                 "plan_id": job.get("plan_id", ""),
@@ -542,7 +549,13 @@ async def get_analysis(job_id: str):
 
     try:
         from src.presenter.presentation_api import assemble_page
-        page = assemble_page(job_id)
+        from src.presenter.renderer_contract_enforcement import ServedIntent
+
+        page = assemble_page(
+            job_id,
+            consumer_key=ORCHESTRATOR_PRESENTATION_CONSUMER_KEY,
+            served_intent=ServedIntent.PAGE_PREVIEW_FOR_ORCHESTRATOR_STATUS,
+        )
         result["presentation"] = page.model_dump()
     except Exception:
         result["presentation"] = None
