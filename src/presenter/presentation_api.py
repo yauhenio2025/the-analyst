@@ -27,6 +27,7 @@ from src.transformations.registry import get_transformation_registry
 from src.views.registry import get_view_registry
 
 from .artifact_store import load_presentation_artifact_batch
+from .bounded_dynamic_composition import apply_bounded_dynamic_composition
 from .composition_resolver import find_applicable_template, resolve_effective_render_contract
 from .delivery_style import apply_cached_polish_to_views, resolve_page_style_school
 from .manifest_builder import (
@@ -42,6 +43,7 @@ from .manifest_builder import (
     normalize_structuring_policy,
 )
 from .recommendation_defaults import get_default_recommendations_for_workflow
+from .renderer_contract_enforcement import ServedIntent
 from .scaffold_generator import (
     READING_SCAFFOLD_ARTIFACT_KIND,
     READING_SCAFFOLD_ARTIFACT_VERSION,
@@ -787,6 +789,7 @@ def _prepare_page_payloads(
     *,
     consumer_key: str,
     slim: bool = False,
+    read_only: bool = False,
 ) -> dict[str, Any]:
     """Build the render tree inputs shared by /page and /status."""
 
@@ -809,16 +812,58 @@ def _prepare_page_payloads(
     )
 
 
+def _apply_requested_runtime_composition(
+    page_inputs: dict[str, Any],
+    *,
+    consumer_key: str,
+    composition_mode: Optional[str],
+) -> None:
+    """Apply a requested bounded composition and rebuild the served view tree."""
+
+    payloads = page_inputs["payloads"]
+    workflow_key = page_inputs.get("workflow_key") or _resolve_workflow_key(
+        page_inputs["job"],
+        page_inputs.get("plan"),
+    )
+    composition_applied = apply_bounded_dynamic_composition(
+        payloads=payloads,
+        workflow_key=workflow_key,
+        consumer_key=consumer_key,
+        composition_mode=composition_mode,
+    )
+    if not composition_applied:
+        return
+
+    # The authored tree was assembled before runtime composition. Rebuild it
+    # from the authoritative flat payload map so replacements and generated
+    # parents are what the consumer actually receives.
+    for payload in payloads.values():
+        payload.children = []
+    page_inputs["top_level"] = _build_view_tree(payloads, page_inputs["view_registry"])
+
+
 def build_presentation_manifest(
     job_id: str,
     *,
     consumer_key: str,
     slim: bool = False,
     read_only: bool = False,
+    composition_mode: Optional[str] = None,
+    served_intent: ServedIntent = ServedIntent.EFFECTIVE_MANIFEST_SERVED,
 ) -> EffectivePresentationManifest:
     """Build the single consumer-scoped effective manifest for a page."""
 
-    page_inputs = _prepare_page_payloads(job_id, consumer_key=consumer_key, slim=slim)
+    page_inputs = _prepare_page_payloads(
+        job_id,
+        consumer_key=consumer_key,
+        slim=slim,
+        read_only=read_only,
+    )
+    _apply_requested_runtime_composition(
+        page_inputs,
+        consumer_key=consumer_key,
+        composition_mode=composition_mode,
+    )
     top_level = page_inputs["top_level"]
     workflow_key = page_inputs.get("workflow_key") or _resolve_workflow_key(
         page_inputs["job"],
@@ -829,6 +874,8 @@ def build_presentation_manifest(
         job_id=job_id,
         plan_id=page_inputs["plan_id"],
         consumer_key=consumer_key,
+        served_intent=served_intent,
+        composition_mode=composition_mode,
         thinker_name=page_inputs["thinker_name"],
         strategy_summary=page_inputs["strategy_summary"],
         payloads=page_inputs["payloads"],
@@ -855,6 +902,8 @@ def assemble_page(
     consumer_key: str,
     slim: bool = False,
     read_only: bool = False,
+    composition_mode: Optional[str] = None,
+    served_intent: ServedIntent = ServedIntent.FULL_PAGE_PRESENTATION_SERVED,
 ) -> PagePresentation:
     """Assemble a complete page presentation for a job.
 
@@ -870,7 +919,17 @@ def assemble_page(
     from ~1MB to ~10KB. Use the /view/{job_id}/{view_key} endpoint
     to lazy-load prose for individual views.
     """
-    page_inputs = _prepare_page_payloads(job_id, consumer_key=consumer_key, slim=slim)
+    page_inputs = _prepare_page_payloads(
+        job_id,
+        consumer_key=consumer_key,
+        slim=slim,
+        read_only=read_only,
+    )
+    _apply_requested_runtime_composition(
+        page_inputs,
+        consumer_key=consumer_key,
+        composition_mode=composition_mode,
+    )
     payloads = page_inputs["payloads"]
     top_level = page_inputs["top_level"]
     workflow_key = page_inputs.get("workflow_key") or _resolve_workflow_key(
@@ -883,6 +942,8 @@ def assemble_page(
         job_id=job_id,
         plan_id=page_inputs["plan_id"],
         consumer_key=consumer_key,
+        served_intent=served_intent,
+        composition_mode=composition_mode,
         thinker_name=page_inputs["thinker_name"],
         strategy_summary=page_inputs["strategy_summary"],
         payloads=payloads,
@@ -933,11 +994,50 @@ def assemble_page(
     )
 
 
-def assemble_single_view(job_id: str, view_key: str, *, consumer_key: str) -> Optional[ViewPayload]:
+def assemble_single_view(
+    job_id: str,
+    view_key: str,
+    *,
+    consumer_key: str,
+    composition_mode: Optional[str] = None,
+    served_intent: ServedIntent = ServedIntent.SINGLE_VIEW_PRESENTATION_SERVED,
+) -> Optional[ViewPayload]:
     """Assemble a single view payload (for lazy loading on-demand views)."""
     job = get_job(job_id)
     if job is None:
         raise ValueError(f"Job not found: {job_id}")
+
+    # Runtime composition needs the complete authored payload field before a
+    # requested subtree can be selected and checked at the shared manifest seam.
+    if composition_mode:
+        page_inputs = _prepare_page_payloads(
+            job_id,
+            consumer_key=consumer_key,
+        )
+        _apply_requested_runtime_composition(
+            page_inputs,
+            consumer_key=consumer_key,
+            composition_mode=composition_mode,
+        )
+        payload = page_inputs["payloads"].get(view_key)
+        if payload is None:
+            return None
+
+        single_payloads = _collect_payload_subtree(payload)
+        _attach_reading_scaffolds(job_id, single_payloads)
+        build_effective_manifest(
+            job_id=job_id,
+            plan_id=page_inputs["plan_id"],
+            consumer_key=consumer_key,
+            served_intent=served_intent,
+            composition_mode=composition_mode,
+            thinker_name=page_inputs["thinker_name"],
+            strategy_summary=page_inputs["strategy_summary"],
+            payloads=single_payloads,
+            all_outputs=page_inputs["all_outputs"],
+            job=page_inputs["job"],
+        )
+        return payload
 
     # Resolve workflow_key dynamically from job record
     workflow_key = _resolve_workflow_key(job)
@@ -994,6 +1094,8 @@ def assemble_single_view(job_id: str, view_key: str, *, consumer_key: str) -> Op
         job_id=job_id,
         plan_id=job["plan_id"],
         consumer_key=consumer_key,
+        served_intent=served_intent,
+        composition_mode=composition_mode,
         thinker_name="",
         strategy_summary="",
         payloads=single_payloads,
@@ -1002,6 +1104,22 @@ def assemble_single_view(job_id: str, view_key: str, *, consumer_key: str) -> Op
     )
 
     return payload
+
+
+def _collect_payload_subtree(payload: ViewPayload) -> dict[str, ViewPayload]:
+    """Collect one requested payload and its nested children by view key."""
+
+    collected: dict[str, ViewPayload] = {}
+
+    def _collect(node: ViewPayload) -> None:
+        if node.view_key in collected:
+            return
+        collected[node.view_key] = node
+        for child in node.children:
+            _collect(child)
+
+    _collect(payload)
+    return collected
 
 
 def get_presentation_status(job_id: str, *, consumer_key: str) -> dict:
@@ -1016,6 +1134,7 @@ def get_presentation_status(job_id: str, *, consumer_key: str) -> dict:
         job_id=job_id,
         plan_id=page_inputs["plan_id"],
         consumer_key=consumer_key,
+        served_intent=ServedIntent.MANIFEST_INSPECTION_FOR_STATUS,
         thinker_name=page_inputs["thinker_name"],
         strategy_summary=page_inputs["strategy_summary"],
         payloads=page_inputs["payloads"],

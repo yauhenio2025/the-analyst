@@ -421,6 +421,16 @@ def _normalize_root_metadata(payload: dict[str, object]) -> dict[str, object]:
     return normalized
 
 
+def _normalize_round6_manifest_control(payload: dict[str, object]) -> dict[str, object]:
+    """Ignore fields added after the frozen round-6 proof was recorded."""
+
+    normalized = _normalize_root_metadata(payload)
+    for view in normalized.get("views", []):
+        if isinstance(view, dict):
+            view.pop("first_hop_affordance", None)
+    return normalized
+
+
 def test_effective_manifest_hash_includes_consumer_key():
     payload = _base_payload()
     payloads = {payload.view_key: payload}
@@ -625,7 +635,9 @@ def test_aoi_live_controls_keep_served_outputs_identical_with_and_without_render
     assert _normalize_root_metadata(baseline_page.model_dump()) == _normalize_root_metadata(
         enforced_page.model_dump()
     )
-    assert _normalize_root_metadata(saved_round6_trace["final_manifest"]) == _normalize_root_metadata(
+    assert _normalize_round6_manifest_control(
+        saved_round6_trace["final_manifest"]
+    ) == _normalize_round6_manifest_control(
         enforced_manifest.model_dump()
     )
 
