@@ -93,7 +93,14 @@ export interface Api {
 
 const live: Api = {
   exemplars: () => request<unknown>('/v1/dossier/exemplars').then((d) => unwrap<Exemplar>(d, 'exemplars')),
-  listJobs: () => request<unknown>('/v1/dossier/jobs').then((d) => unwrap<JobListEntry>(d, 'jobs')),
+  listJobs: () => request<unknown>('/v1/dossier/jobs').then((d) =>
+    unwrap<JobListEntry>(d, 'jobs').map((e) => {
+      const anyE = e as unknown as Record<string, unknown>
+      if (!anyE.totals || typeof anyE.totals !== 'object') {
+        anyE.totals = { cost_usd: Number(anyE.cost_usd ?? 0) || 0, calls: Number(anyE.calls ?? 0) || 0 }
+      }
+      return anyE as unknown as JobListEntry
+    })),
   createJob: (req) => request<CreateJobResponse>('/v1/dossier/jobs',
     { method: 'POST', body: JSON.stringify(req) }),
   getJob: (id) => request<DossierJob>(`/v1/dossier/jobs/${id}`).then(normalizeJob),

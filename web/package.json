@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "dev:mock": "VITE_MOCK=1 vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && cp dist/index.html dist/404.html",
     "build:mock": "VITE_MOCK=1 tsc -b && VITE_MOCK=1 vite build",
     "preview": "vite preview"
   },
