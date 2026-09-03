@@ -5,6 +5,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Added (2026-09-03, afternoon — per-package notes in communications/changes/)
+- Brief v2: deliverable-first options, recommendation, three entry lanes, `GET /v1/dossier/catalog` ([brief-v2.md](../communications/changes/brief-v2.md))
+- Figures as labelled analytical diagrams: v1 FORMAT_ENFORCEMENT/GLOBAL_PROHIBITIONS ported to `src/display/enforcement.py`, FigureSpec planner, vision check + one revision ([diagrams.md](../communications/changes/diagrams.md))
+- Concretization passes: spine → exhibits from the spine → compose with `[[table:key]]`/`[[figure:key]]` at the pointer and frames last → cross-check judge + findings ledger ([concretize.md](../communications/changes/concretize.md))
+- Plates (report-as-diagram, 4K): `src/dossier/plates.py`, `dossier_plates` table, `/v1/dossier/jobs/{id}/plates`, desk gallery `/d/:id/plates`; wired as run step 8 when `output.plates > 0`, appendix in the composed dossier ([plates.md](../communications/changes/plates.md))
+- Uploads: `POST /v1/dossier/uploads` (pdf/md/txt → headed bundle; Haiku bibliographic pass) + desk "Upload files" tab; exemplars stored in the executor DB
+
 ### Added (2026-09-03 — brief v2, deliverable-first; details in communications/changes/brief-v2.md)
 - **Brief v2**: each option is a deliverable — what you get, what you will understand, what you will be able to do (each promise pointing at the T1/§5/F1 that keeps it), `not_for`, shape with row units and figure formats, evidence base, its own priced path, `best_when` — plus a `recommendation` with a reason the reader would accept. Nine prompt rules checked by code with one repair round (`src/dossier/brief.py`); `BriefOption` v2 with derived `telling`/`engines`/`output_shape` so plan/tables/figures/compose read unchanged (`src/dossier/schemas.py`).
 - **Three entry lanes**: `entry = use | chosen | material` on `POST /v1/dossier/jobs` (+ `use_frame`, `path`); lane 3 executes `recommendation.option_key` and records why; lane 2 runs the brief in translate mode and the plan honours the fixed path exactly (`src/dossier/plan.py:fixed_path`, `src/dossier/runner.py`).

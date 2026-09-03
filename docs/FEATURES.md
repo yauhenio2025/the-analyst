@@ -1413,3 +1413,10 @@ Ten advanced engines with deep theoretical foundations, cross-referencing ID sys
 - **Description**: Deliverable cards (promises with T1/§5/F1 chips, NOT FOR always visible, shape/evidence disclosures, how-line with edit, recommended reason), the purpose-first catalog picker, the Library's use box (intent + use chips + occasion/who reads/decision), lane radio and advanced fold; `?mock=1` replays a v2 brief
 - **Entry Points**: `web/src/components/DeliverableCard.tsx`, `web/src/components/CatalogPicker.tsx`, `web/src/steps/BriefStep.tsx`, `web/src/pages/Library.tsx`, `web/src/lib/api.ts` (`normalizeBriefOption`, `catalog`), `web/mock/brief.json`, `web/mock/catalog.json`
 - **Added**: 2026-09-03
+
+
+### Dossier pipeline v2 (2026-09-03)
+- **Status**: Active
+- **Description**: reconnaissance → brief v2 → plan → analysis → spine → tables → figures (diagrams) → plates → compose → cross-check → receipts; every pass recorded, skip law throughout
+- **Entry Points**: `src/dossier/runner.py` (STEPS dispatch), `src/dossier/spine.py`, `src/dossier/crosscheck.py`, `src/dossier/plates.py`, `src/dossier/brief.py`, `src/workflows/definitions/dossier_standard.json` (11 phases)
+- **Added**: 2026-09-03
