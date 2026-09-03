@@ -153,9 +153,12 @@ GET  /v1/figures/{figure_id}
 - `feat/images` MERGED into master: `src/images/*`, `/v1/figures/*`, tests (31 pass), samples in `communications/changes/images-samples/`. Providers live-tested: gemini_pro ($0.13, 33 s), seedream_5_pro ($0.06, 66 s), gemini_flash, qwen_image_2_pro.
 - Exemplars staged (NOT in git): five-paper fashion bundle + Kering study, see the-analyst-project memory; the dossier agent also keeps a copy under `data/exemplars/` in its worktree.
 
+### MERGED into master since the handoff was first written
+- `feat/events` (a75cf78) and `feat/dossier` (0aa3818) are merged; conflicts in src/llm/{backends,client}.py resolved toward `sdk_timeout()`; 57 tests pass (`tests/test_events_store.py test_images_storage.py test_figure_prompts.py test_sources_split.py test_dossier_tables_wall.py`). The dossier agent may push more commits to `feat/dossier` (timings) — `git merge origin/feat/dossier` again.
+
 ### In flight at handoff (branches, merge in this order)
-1. `feat/events` (worktree `~/projects/the-analyst-wt/events`): run_events table + `src/events/{store,schemas,pricing,context,narrator}.py`, hooks in engine_runner/chain_runner/workflow_runner, `/v1/events/{job}`, `/summary`, `/stream` (SSE) + executor aliases. Sample run job-plan-d87b85c590db; transcript `communications/changes/events-sample.jsonl`.
-2. `feat/dossier` (worktree `.../dossier`): `src/dossier/*`, `src/sources/*`, `/v1/dossier/*`, workflow `dossier_standard`. First full run on the bundle: reconnaissance 158 s/$0.38 (29/35 claims verified), brief 43 s/$0.05 (autopilot chose "Where Your Sustainability Claims Will Be Challenged"), then plan → executor analysis → tables → figures → compose.
+1. `feat/events` — MERGED. (worktree `~/projects/the-analyst-wt/events`): run_events table + `src/events/{store,schemas,pricing,context,narrator}.py`, hooks in engine_runner/chain_runner/workflow_runner, `/v1/events/{job}`, `/summary`, `/stream` (SSE) + executor aliases. Sample run job-plan-d87b85c590db; transcript `communications/changes/events-sample.jsonl`.
+2. `feat/dossier` — MERGED (re-merge for late commits). (worktree `.../dossier`): `src/dossier/*`, `src/sources/*`, `/v1/dossier/*`, workflow `dossier_standard`. First full run on the bundle: reconnaissance 158 s/$0.38 (29/35 claims verified), brief 43 s/$0.05 (autopilot chose "Where Your Sustainability Claims Will Be Challenged"), then plan → executor analysis → tables → figures → compose.
 3. `feat/web` (worktree `.../web`): `web/` Vite+React front end (Library, 4 steps, /console/:id), mock mode `VITE_MOCK=1`, screenshots in `web/docs/screens/`.
 4. analyzer-mgmt `feat/the-analyst-console` (push to origin analyzer-mgmt; merging to master auto-deploys the live console — verify first).
 
