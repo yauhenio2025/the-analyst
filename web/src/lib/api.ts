@@ -50,8 +50,28 @@ function unwrap<T>(d: unknown, key: string): T[] {
   const v = (d as Record<string, unknown> | null)?.[key]
   return Array.isArray(v) ? (v as T[]) : []
 }
+function normalizeExemplar(e: Record<string, unknown>): Record<string, unknown> {
+  return {
+    ...e,
+    key: (e.key ?? e.name) as string,
+    name: (e.name ?? e.key) as string,
+    n_docs: Number(e.n_docs ?? e.document_count ?? 1) || 1,
+    chars: Number(e.chars ?? e.char_count ?? 0) || 0,
+    title: (e.title ?? e.name ?? e.key) as string,
+    description: (e.description ?? '') as string,
+  }
+}
 function normalizeJob(j: DossierJob): DossierJob {
   const anyJ = j as unknown as Record<string, unknown>
+  if (Array.isArray(anyJ.sources)) {
+    anyJ.sources = (anyJ.sources as Record<string, unknown>[]).map((s) => ({ ...s, key: s.key ?? s.name, name: s.name ?? s.key }))
+  }
+  if (!anyJ.title) {
+    const docs = anyJ.documents as Record<string, unknown>[] | undefined
+    const srcs = anyJ.sources as Record<string, unknown>[] | undefined
+    anyJ.title = (docs?.[0]?.title as string) || (srcs?.[0]?.title as string) || (srcs?.[0]?.name as string) || (anyJ.id as string)
+    if (docs && docs.length > 1) anyJ.title = `${anyJ.title} (+${docs.length - 1} more)`
+  }
   for (const k of ['profiles', 'sections', 'tables', 'figures', 'receipts', 'notes', 'documents', 'sources']) {
     if (!Array.isArray(anyJ[k])) anyJ[k] = []
   }
@@ -92,7 +112,7 @@ export interface Api {
 }
 
 const live: Api = {
-  exemplars: () => request<unknown>('/v1/dossier/exemplars').then((d) => unwrap<Exemplar>(d, 'exemplars')),
+  exemplars: () => request<unknown>('/v1/dossier/exemplars').then((d) => unwrap<Record<string, unknown>>(d, 'exemplars').map(normalizeExemplar) as unknown as Exemplar[]),
   listJobs: () => request<unknown>('/v1/dossier/jobs').then((d) =>
     unwrap<JobListEntry>(d, 'jobs').map((e) => {
       const anyE = e as unknown as Record<string, unknown>
@@ -101,8 +121,13 @@ const live: Api = {
       }
       return anyE as unknown as JobListEntry
     })),
-  createJob: (req) => request<CreateJobResponse>('/v1/dossier/jobs',
-    { method: 'POST', body: JSON.stringify(req) }),
+  createJob: (req) => {
+    const anyReq = req as unknown as Record<string, unknown>
+    const sources = (anyReq.sources as Record<string, unknown>[] | undefined)?.map((s) =>
+      s.kind === 'exemplar' ? { ...s, name: s.name ?? s.key } : s)
+    return request<CreateJobResponse>('/v1/dossier/jobs',
+      { method: 'POST', body: JSON.stringify({ ...anyReq, sources }) })
+  },
   getJob: (id) => request<DossierJob>(`/v1/dossier/jobs/${id}`).then(normalizeJob),
   getBrief: (id) => request<Brief>(`/v1/dossier/jobs/${id}/brief`),
   chooseBrief: (id, option_key, overrides) => request<DossierJob>(
