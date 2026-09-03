@@ -197,6 +197,33 @@ def call_text(
                 max_tokens=max_tokens, effort=effort, tool=None)
 
 
+def unstringify(value: Any, schema: Optional[dict]) -> Any:
+    """Answer-repair law: a tool input whose array/object field arrived as a JSON string is unpacked in code.
+
+    Walks the value alongside the schema; a string where the schema expects an
+    array/object (or that merely looks like JSON) is parsed. Shape only — the
+    content is never altered.
+    """
+    schema = schema or {}
+    stype = schema.get("type")
+    if isinstance(value, str):
+        looks_json = value.lstrip()[:1] in ("[", "{")
+        if stype in ("array", "object") or (looks_json and stype in (None, "string") and "anyOf" in schema) or (looks_json and stype is None):
+            try:
+                value = parse_llm_json_response(value)
+            except Exception:
+                return value
+        else:
+            return value
+    if isinstance(value, dict):
+        props = schema.get("properties") or {}
+        return {k: unstringify(v, props.get(k)) for k, v in value.items()}
+    if isinstance(value, list):
+        items = schema.get("items") if isinstance(schema.get("items"), dict) else None
+        return [unstringify(v, items) for v in value]
+    return value
+
+
 def call_json(
     job_id: str, step: str, *, label: str, system: str, user: str,
     tool_name: str, schema: dict, model_cls: Optional[Type[BaseModel]] = None,
@@ -215,6 +242,13 @@ def call_json(
         raw, meta = _run(job_id, step, label=label if attempt == 0 else f"{label} (repair {attempt})",
                          system=system, user=user_msg, model=model or DEFAULT_MODEL,
                          max_tokens=max_tokens, effort=None, tool=tool)
+        try:
+            repaired = unstringify(raw, schema)
+            if repaired != raw:
+                events.emit(job_id, "note", phase=step, detail=f"{label}: unpacked JSON-encoded string fields in the tool answer (shape repair, content untouched)")
+                raw = repaired
+        except Exception as exc:  # repair never blocks
+            logger.debug(f"unstringify failed: {exc}")
         if model_cls is None:
             return raw, meta
         try:
