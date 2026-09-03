@@ -35,7 +35,7 @@ export function RunRail({ job, events, compact = false, model }: {
               {(active || (!compact && s.state === 'done' && s.narration)) && (s.narration || s.detail) && (
                 <div className={`runrail-narration${active ? ' live' : ''}`} aria-live={active ? 'polite' : undefined}>
                   {s.narration && <p className="narration-line">{s.narration}</p>}
-                  {active && s.detail && <p className="machine runrail-detail">{s.detail}</p>}
+                  {active && s.detail && s.detail !== s.narration && <p className="machine runrail-detail">{s.detail}</p>}
                   {active && s.lastCall && (
                     <p className="machine runrail-detail">
                       {s.lastCall.kind === 'call_started' ? 'calling' : s.lastCall.kind === 'call_failed' ? 'refused' : 'returned'} · {s.lastCall.model ?? '—'}

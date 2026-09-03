@@ -75,6 +75,31 @@ function normalizeJob(j: DossierJob): DossierJob {
   for (const k of ['profiles', 'sections', 'tables', 'figures', 'receipts', 'notes', 'documents', 'sources']) {
     if (!Array.isArray(anyJ[k])) anyJ[k] = []
   }
+  // The composer returns {title, subtitle, executive_summary[], sections[{number, heading, paragraphs[]}], conclusion[]};
+  // pages expect DossierSection[] with {key, title, md}.
+  const comp = anyJ.sections as unknown
+  if (comp && !Array.isArray(comp) && typeof comp === 'object') {
+    const c = comp as Record<string, unknown>
+    const out: Record<string, unknown>[] = []
+    const asMd = (v: unknown) => Array.isArray(v) ? (v as unknown[]).map(String).join('\n\n') : (typeof v === 'string' ? v : '')
+    if (Array.isArray(c.executive_summary) && (c.executive_summary as unknown[]).length) out.push({ key: 'summary', title: 'Summary', md: asMd(c.executive_summary) })
+    for (const sec of (Array.isArray(c.sections) ? (c.sections as Record<string, unknown>[]) : [])) {
+      out.push({ key: `s${sec.number ?? out.length + 1}`, title: String(sec.heading ?? `Section ${sec.number ?? ''}`), md: asMd(sec.paragraphs),
+                 number: sec.number, table_keys: sec.table_keys ?? [], figure_keys: sec.figure_keys ?? [] })
+    }
+    if (Array.isArray(c.conclusion) && (c.conclusion as unknown[]).length) out.push({ key: 'conclusion', title: 'Conclusion', md: asMd(c.conclusion) })
+    anyJ.sections = out
+    anyJ.composition = { title: c.title, subtitle: c.subtitle, claims_unanchored: c.claims_unanchored }
+    if (!anyJ.title && c.title) anyJ.title = c.title
+  }
+  // paths must be URLs; the backend records filesystem paths, so keep only /v1/... or absolute http(s)
+  if (anyJ.paths && typeof anyJ.paths === 'object') {
+    const cleaned: Record<string, string> = {}
+    for (const [k, v] of Object.entries(anyJ.paths as Record<string, unknown>)) {
+      if (typeof v === 'string' && (/^https?:/.test(v) || v.startsWith('/v1/'))) cleaned[k] = v
+    }
+    anyJ.paths = cleaned
+  }
   const t = (anyJ.totals ?? {}) as Record<string, unknown>
   if (typeof t.calls !== 'number') {
     t.calls = (Number(t.llm_calls ?? 0) || 0) + (Number(t.image_calls ?? 0) || 0)
@@ -82,6 +107,8 @@ function normalizeJob(j: DossierJob): DossierJob {
   if (typeof t.cost_usd !== 'number') t.cost_usd = Number(t.cost_usd ?? 0) || 0
   anyJ.totals = t
   if (!anyJ.paths || typeof anyJ.paths !== 'object') anyJ.paths = {}
+  const compTitle = (anyJ.composition as Record<string, unknown> | undefined)?.title
+  if (compTitle) anyJ.title = compTitle
   return anyJ as unknown as DossierJob
 }
 
@@ -134,7 +161,9 @@ const live: Api = {
     `/v1/dossier/jobs/${id}/brief`,
     { method: 'POST', body: JSON.stringify({ option_key, overrides: overrides ?? {} }) }).then(normalizeJob),
   getReceipts: (id) => request<unknown>(`/v1/dossier/jobs/${id}/receipts`).then((d) => unwrap<Receipt>(d, 'receipts')),
-  getDossierHtml: (id) => requestText(`/v1/dossier/jobs/${id}/dossier.html`),
+  getDossierHtml: (id) => requestText(`/v1/dossier/jobs/${id}/dossier.html`).then((html) =>
+    // figures and downloads inside the composed page are API-relative; the desk is another origin
+    html.replace(/(src|href)="\/v1\//g, `$1="${API_BASE}/v1/`)),
   downloadUrl: (job, kind) => {
     const p = job.paths?.[kind]
     if (p && /^https?:/.test(p)) return p
