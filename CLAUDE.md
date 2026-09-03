@@ -1,4 +1,4 @@
-# Analyzer v2 - Pure Definitions Service
+# The Analyst (formerly Analyzer v2) — multi-phase meaning-making service
 
 > Lightweight service serving analytical definitions without execution logic
 
@@ -236,9 +236,10 @@ POST /v1/presenter/polish-section        # Per-section polish with user feedback
 - Change history: `docs/CHANGELOG.md` (read on demand)
 
 ## Deployment
-- **Live URL**: https://analyzer-v2-3blo.onrender.com (migrated 2026-08-05 from CAII Render account to gsi/yauhenimaro account; old analyzer-v2.onrender.com is gone)
-- **GitHub**: https://github.com/yauhenio2025/analyzer-v2
-- **Auto-deploy**: Push to `master` triggers automatic deployment
+- **Live URL**: https://the-analyst.onrender.com (CAII workspace, created 2026-09-03). Repo: https://github.com/yauhenio2025/the-analyst (forked from analyzer-v2 @4d7bb5b).
+- **DO NOT TOUCH** the gsi workspace (client production): analyzer-43fk, visualizer-alu5, analyzer-v2-3blo (pinned to branch `client-frozen-2026-09-03`).
+- **Auto-deploy**: push to `master` deploys the-analyst on CAII.
+- **Implementation plan**: `communications/IMPLEMENTATION_TRACKER.md` — READ FIRST. Bugs: `communications/BUG_TRACKING.md`.
 
 ## Implementation Roadmap (See docs/CURRENT-TASKS.md for details)
 

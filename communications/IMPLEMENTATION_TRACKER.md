@@ -1,0 +1,137 @@
+# The Analyst — Implementation Tracker
+
+> Written 2026-09-03 (geekom-mini session). Demo to Kering executives is 2026-09-04.
+> This file moves to `the-analyst/communications/IMPLEMENTATION_TRACKER.md` once the repo exists.
+> Study reports backing every claim here: `scratchpad/study/{oaas-vision,analyzer-v2,analyzer-mgmt,client-production,veo2,image-models,ganrl-dossiefier-critic,oaas-code}.md`.
+
+## 0. Ground truth (verified 2026-09-03)
+
+| Thing | Where | State |
+|---|---|---|
+| Client production | Render `gsi` (`tea-d7skqqegvqtc739qibbg`) | `analyzer-43fk`, `analyzer-worker`, `visualizer-alu5`, `analyzer-v2-3blo` (auto-deploys analyzer-v2 `master`, live 4d7bb5b). FROZEN. |
+| Analyzer v1 → v2 dependency | `analyzer/src/core/extraction.py:68-118`, `curation.py:111-190`, `src/clients/analyzer_v2.py` | v2 prompts are priority 1 (31K-char composed prompt vs 3K hardcoded). 24h TTL, `None` on error. 17 production engines + `marxist` primer. |
+| Client's real usage | gsi `analyzer-db` | 4,827 jobs; mostly `stakeholder_power_interest`, `argument_architecture` as `integrated_report`; `inferential_commitment_mapper` only 27×. Images = `gemini-3-pro-image-preview` 4K via `src/renderers/gemini_image.py:2439`. |
+| analyzer-mgmt | Render `caii`, `analyzer-mgmt-frontend` (Next.js) + `analyzer-mgmt-api` | Frontend built with dead default `https://analyzer-v2.onrender.com` (`frontend/src/lib/api.ts:83-84`); `NEXT_PUBLIC_ANALYZER_V2_URL` never set. 17 sidebar pages + Jobs hit v2 directly; 7 hit mgmt-api. |
+| analyzer-v2 engines | `src/engines/definitions/*.json` (203) vs `src/engines/capability_definitions/*.yaml` (28) | Executor runs YAML engines only (`chain_runner.py:176-178` skips missing). `concept_analysis_12_phase`: 9/12 engines missing. |
+| Runnable workflows | `src/workflows/definitions/` (10) | End-to-end: `intellectual_genealogy` (5 phases, 11 engines, ~30 calls, ~1h/book), `anxiety_of_influence_thematic_single_thinker`, `concept_inferential_single_concept` (Brandomian, 4 phases). |
+| Under-the-hood data | `/v1/orchestrator/plans/{id}` (rationale, alternatives, decision_trace), `/v1/orchestrator/plans/{id}/pipeline-visualization`, `/v1/executor/jobs/{id}/results`, `/phases/{n}`, `phase_outputs` table | Exists. No per-call event log, no SSE, no console page. |
+| Image adapter | `veo2/engine/images.py:45-289` | `generate(provider_key, prompt, *, aspect_ratio, reference_images) -> (bytes, cost)`; Gemini `gemini-3-pro-image`, Seedream `doubao-seedream-5-0-pro-260628`, Qwen `qwen-image-2.0[-pro]`. Keys on this machine: `GOOGLE_VEO_API_KEY`/`GEMINI_API_KEY`, `ARK_API_KEY`, `DASHSCOPE_API_KEY`. |
+| Per-image pipeline | `analyzer/src/renderers/gemini_image.py:1753-2549` | scene prose → declutter → style guide/format enforcement → 4K → Claude-vision compliance → R2. |
+| Front-end template | `veo2/web/` (`App.tsx`, `router.ts`, `tokens.css`, `steps/*`), `veo2/engine/{ops.py,receipts.py,api.py:5171 SSE}` | Four steps + Library + rooms; ops append `op_events`, SSE `watchOperation`; receipts hash payload/prompt/tool/result/cost. |
+| Live phase tree UI | `the-critic/webapp/src/components/PipelineVisualization.tsx`, `components/provenance/*`, `hooks/useBoundedV2Workspace.ts` | phases→chains→engines→passes with live pips, per-pass LLM-call cards, provenance badges. |
+| Sources | stacks `POST /api/export` (uids or `view=<id>` search) → text with per-paper headers; virtual views = "bundles" | Bundles in stacks ≈ cross-entity queries in the referee (`backend/app/routers/cross_entity_triage.py`, `cross_query_studies.py`). Both resolve to a set of papers. |
+| Kering material | `oaas/communications/kering/*`, `oaas/frontend/public/{kering-backstage,kering-fourthfield,practice}.html` (all live on oaas-frontend.onrender.com) | Pitch: "follow the meaning", backstage only, no theory vocabulary for designers, do-not-say card. |
+
+## 1. Decisions (owner) — pending as of writing
+
+1. Create private GitHub repo `yauhenio2025/the-analyst` (fork of analyzer-v2 with history) + CAII services `the-analyst` (web, starter), `the-analyst-db` (Postgres basic-256mb), `the-analyst-web` (static site). ≈ $20/mo.
+2. Freeze gsi: push branch `client-frozen-2026-09-03` (= 4d7bb5b) to analyzer-v2; pin `analyzer-v2-3blo` to it (Render dashboard → Settings → Branch, or REST `PATCH /v1/services/srv-d9ph2gdbedkc73c3967g {"branch": ...}` with an API key).
+3. Product working name (default: "The Analyst").
+4. Exemplar inputs (default: `oaas/communications/kering/KERING_STUDY_2026-07-19.md` + one fashion-theory article).
+
+## 2. Architecture (target)
+
+```
+the-analyst/                      (fork of analyzer-v2 @4d7bb5b; prune later)
+├── src/
+│   ├── events/                   NEW  per-call event ledger + SSE
+│   │   ├── schemas.py            RunEvent{job_id, seq, ts, kind, phase, chain, engine, pass, stance, work_key,
+│   │   │                                  model, input_chars, output_chars, input_tokens, output_tokens, cost_usd,
+│   │   │                                  prompt_hash, prompt_excerpt, output_excerpt, detail, narrator}
+│   │   ├── store.py              table run_events (Postgres/SQLite via executor/db.py); append(), list(job, after_seq)
+│   │   ├── narrator.py           Haiku one-liner "what this step is doing and why" from plan rationale + phase spec
+│   │   └── sse.py                GET /v1/executor/jobs/{id}/events (SSE, replay from ?after=)
+│   ├── images/                   NEW  lifted from veo2/engine/images.py + analyzer gemini_image.py prompt logic
+│   │   ├── providers.py          PROVIDERS registry (gemini_pro, gemini_flash, seedream_5_pro, qwen_image_2_pro)
+│   │   ├── adapter.py            ImageProvider.generate(prompt, size, aspect, refs, style) -> ImageResult; edit()
+│   │   ├── figure_prompts.py     scene prose → declutter → style directive → NO-TEXT closer (lifted templates)
+│   │   ├── compliance.py         Claude-vision check (lift analyzer gemini_image.py:1604)
+│   │   └── storage.py            local disk + Render persistent disk or R2 (env-gated); serves /v1/figures/{id}
+│   ├── sources/                  NEW  input adapters
+│   │   ├── schemas.py            SourceSpec = {kind: paste|upload|stacks_view|stacks_uids|referee_query|url, ...}
+│   │   ├── stacks.py             POST {STACKS_URL}/api/export (uids | view) → split by per-paper header → documents
+│   │   ├── referee.py            STUB: cross-entity query → paper list → stacks export / fetch
+│   │   └── resolve.py            SourceSpec → list[Document] (uses executor/document_store)
+│   ├── dossier/                  NEW  the meaning-making workflow ("document(s) → text + tables + figures")
+│   │   ├── schemas.py            DossierJob, Brief, BriefOption, DossierPlan, Section, Table{caption, columns,
+│   │   │                           rows[{cells[{value, anchor{doc, quote}}]}]}, Figure{caption, prompt, provider, url}
+│   │   ├── reconnaissance.py     step 1: Sonnet → DocumentProfile (genre, claims, entities, candidate engines/angles)
+│   │   ├── brief.py              step 2: Sonnet → 3 tellings/angles (cards) + audience + output shape defaults
+│   │   ├── plan.py               step 3: orchestrator adaptive_planner over EXECUTABLE engines only, depth simple|medium|advanced
+│   │   ├── analysis.py           step 4: executor job (workflow_runner) — passes, context_broker chaining
+│   │   ├── tables.py             step 5: Haiku/Sonnet JSON tables with verbatim anchors; shape walls
+│   │   ├── figures.py            step 6-7: figure plan (2-3) → images/adapter → compliance → storage
+│   │   ├── compose.py            step 8: sections + tables + figures → HTML (Jinja) → PDF (weasyprint) → MD
+│   │   ├── runner.py             DossierRunner: threads, op_events → events/store, resumable from stored params
+│   │   └── receipts.py           lifted veo2/engine/receipts.py: payload/prompt/tool hash, cost, verbatim result
+│   ├── api/routes/
+│   │   ├── dossier.py            NEW  POST /v1/dossier/jobs {sources, brief_choice?, options}; GET /{id}; GET /{id}/brief;
+│   │   │                              POST /{id}/brief {choice}; GET /{id}/events (SSE); GET /{id}/dossier.{html,pdf,md}
+│   │   ├── figures.py            NEW  GET /v1/figures/{id}
+│   │   └── (existing 27 route families untouched — mgmt console depends on them)
+│   └── workflows/definitions/dossier_standard.json   NEW  8-phase workflow (functions + engine phases)
+├── web/                          NEW  front end (veo2 shell)
+│   ├── src/App.tsx, router.ts, tokens.css   copied from veo2/web/src, restyled dark editorial (Kering Backstage register)
+│   ├── src/pages/Library.tsx     slate: dossiers Today/Week/Earlier + paste-and-go autopilot box
+│   ├── src/steps/SourcesStep.tsx  1 · Your documents (paste / upload / stacks view picker / referee query stub)
+│   ├── src/steps/BriefStep.tsx    2 · The brief (3 telling cards from LLM + audience + output shape + depth + spend cap; OutcomeButton)
+│   ├── src/steps/DraftStep.tsx    3 · The draft (SSE narrated waiting → master-detail: sections, tables, figures; regenerate/sharpen per item)
+│   ├── src/steps/DossierStep.tsx  4 · Your dossier (rendered HTML, downloads PDF/MD, receipts, "open console")
+│   ├── src/pages/Console.tsx      /console/{job}: phase tree (lift the-critic PipelineVisualization), per-pass prompt|output,
+│   │                              tokens/cost/duration, planner rationale + alternatives, narrator line per step, receipts ledger
+│   └── src/lib/api.ts, sse.ts
+├── communications/IMPLEMENTATION_TRACKER.md (this file), BUG_TRACKING.md
+└── docs/FEATURES.md, CHANGELOG.md
+```
+
+analyzer-mgmt (CAII, separate repo):
+- Set `NEXT_PUBLIC_ANALYZER_V2_URL=https://the-analyst-<slug>.onrender.com` on `analyzer-mgmt-frontend`; change default in `frontend/src/lib/api.ts:84` and the 5 page-level re-declarations; commit `render.yaml`.
+- Cherry-pick `c365b2c` (Plans → Jobs tab, `annotated_prose`) with client-side `plan_id` filter (executor list ignores `plan_id`, `src/api/routes/executor.py:188`).
+- Add `pages/jobs/index.tsx` (Runs) + sidebar entry; add `pages/jobs/[id]/console.tsx` = same Console component as `web/` (shared package or copied).
+
+## 3. Phases
+
+### P0 — demo-critical (today)
+| # | Task | Files | Verify |
+|---|---|---|---|
+| P0.1 | Freeze gsi | analyzer-v2 branch `client-frozen-2026-09-03`; Render branch pin | `get_service srv-d9ph2gdbedkc73c3967g` shows branch; `curl analyzer-v2-3blo/v1/engines/argument_architecture/extraction-prompt` length unchanged (23,906 chars) |
+| P0.2 | the-analyst repo + CAII deploy | fork; `render.yaml` (web + db); env: `ANTHROPIC_API_KEY`, `GEMINI_API_KEY`, `ARK_API_KEY`, `DASHSCOPE_API_KEY`, `DATABASE_URL`, `STACKS_URL` | `GET /v1/engines` = 207; `GET /v1/workflows` = 10; a `concept_inferential_single_concept` job completes |
+| P0.3 | Events ledger + SSE | `src/events/*`; hook `engine_runner.run_engine_call` and `chain_runner._run_engine_passes` to append before/after each call; `workflow_runner` phase start/end | `curl -N /v1/executor/jobs/{id}/events` streams during a run; replay works |
+| P0.4 | Image adapter | `src/images/*` | `python -m src.images.adapter --provider gemini_pro "..."` writes PNG; cost recorded |
+| P0.5 | Dossier workflow v0 | `src/dossier/*`, `dossier_standard.json`, `api/routes/dossier.py` | Kering study → brief (3 cards) → 2 engine passes → 2 tables → 2 figures → HTML+PDF in < 12 min at "medium" |
+| P0.6 | mgmt repoint + Runs + Console | analyzer-mgmt frontend as above | Engines page loads; Runs lists v3 jobs; Console shows phase tree + pass prompt/output live |
+| P0.7 | web/ front end | `web/*` | Playwright: paste → brief → draft (SSE narration) → dossier download; console link |
+| P0.8 | Exemplars | 2-3 finished dossier jobs + 1 genealogy-style multi-phase job on v3 db | Library shows them; console replays |
+
+### P1 — this week
+- Stacks picker in SourcesStep (`GET /api/views`, `POST /api/export view=`), referee cross-entity query adapter, gs_revamp v2 fetch adapter, archivist.
+- Wirecut handoff: "Make a video of this dossier" → `POST veo2/api/...` with composed narrative (video as one more output form).
+- Depth modes on engines (simple/medium/advanced) with LLM routing; per-run spend cap + OutcomeButton pricing.
+- Meta-analysis export back to stacks (MD with per-paper anchors).
+
+### P2 — consolidation
+- Engine hygiene: LLM-generate YAML capability definitions for the 9 missing concept-chain engines and the 17 client engines from their JSON definitions; consolidate clusters (concept micro-engines 39→~12, `*_advanced` ×10, metaphor ×5, genealogy_pass ×8).
+- Prune v3 of v1 stage prompts, the-critic-specific composition stack, unmounted evaluations router; fix the 8 failing test imports.
+- mgmt sidebar regroup (Story / Methodology / Presentation / Catalog / Admin) + executive mode; retire mgmt-api (move Paradigms/Rhetoric/Grids into v3).
+- Blind-spot declarations + two-witness verification (lift `oaas/spine/{registry,verification,tray}.py`).
+
+## 4. API contracts (new)
+
+```
+POST /v1/dossier/jobs
+  {sources: [{kind:"paste", title, text} | {kind:"stacks_view", view_id} | {kind:"stacks_uids", uids:[...]}],
+   intent?: string, audience?: "executive"|"researcher"|"analyst", depth?: "simple"|"medium"|"advanced",
+   output?: {text:true, tables:true, figures: 0-4, video:false}, spend_cap_usd?: number, autopilot?: bool}
+  → {job_id, status:"reconnaissance", console_url}
+GET  /v1/dossier/jobs/{id}         → DossierJob (status, step, brief?, plan?, sections?, tables?, figures?, receipts_total)
+GET  /v1/dossier/jobs/{id}/brief   → {options:[{key,title,angle,engines[],why,est_cost_usd,est_minutes}], defaults}
+POST /v1/dossier/jobs/{id}/brief   {option_key, overrides?} → resumes at plan
+GET  /v1/dossier/jobs/{id}/events  → SSE RunEvent stream (also /v1/executor/jobs/{id}/events for analysis sub-job)
+GET  /v1/dossier/jobs/{id}/dossier.html|pdf|md
+GET  /v1/figures/{figure_id}
+```
+
+## 5. Do-not-break checklist (re-verify before every deploy)
+- Never push to analyzer-v2 `master`. gsi services untouched. New services carry their own DB, keys, `API_KEYS` consumer id.
+- `curl https://analyzer-v2-3blo.onrender.com/v1/engines/inferential_commitment_mapper/extraction-prompt | wc -c` = 31,437 before/after.
+- MCP tool names/params in `visualizer/mcp_server/mcp_server.py` unchanged (we do not touch visualizer).
