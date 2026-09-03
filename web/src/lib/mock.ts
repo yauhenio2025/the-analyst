@@ -26,7 +26,12 @@ import fig1Url from '../../mock/figures/fig-1.svg'
 import fig2Url from '../../mock/figures/fig-2.svg'
 import { CROSSCHECK, EXTRA_EVENTS, FINDINGS, SPINE, type ScriptEvent } from './mock_concretize'
 
-const SCRIPT = ([...(eventsJson as ScriptEvent[]), ...EXTRA_EVENTS]).sort((a, b) => (a.stage === b.stage ? a.at_ms - b.at_ms : a.stage < b.stage ? -1 : 1))
+const SCRIPT = ([...(eventsJson as ScriptEvent[]), ...EXTRA_EVENTS])
+  .map((e) => e.kind === 'job_finished'
+    // the two added passes change the totals the delivery line quotes
+    ? { ...e, detail: '17 calls · $1.74 · 12m 08s', narrator: 'Delivered. Seventeen model calls, a dollar seventy-four, twelve minutes — every one of them on the record, including the spine it was written against and the cross-check that read it whole.' }
+    : e)
+  .sort((a, b) => (a.stage === b.stage ? a.at_ms - b.at_ms : a.stage < b.stage ? -1 : 1))
 const A = SCRIPT.filter((e) => e.stage === 'A')
 const B = SCRIPT.filter((e) => e.stage === 'B')
 const A_END = Math.max(...A.map((e) => e.at_ms))
