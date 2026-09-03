@@ -42,6 +42,29 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   return res.json() as Promise<T>
 }
 
+/* The backend wraps lists ({jobs:[…]}, {exemplars:[…]}, {receipts:[…]}) and
+   leaves not-yet-produced job fields null; normalize here so pages can
+   assume arrays. */
+function unwrap<T>(d: unknown, key: string): T[] {
+  if (Array.isArray(d)) return d as T[]
+  const v = (d as Record<string, unknown> | null)?.[key]
+  return Array.isArray(v) ? (v as T[]) : []
+}
+function normalizeJob(j: DossierJob): DossierJob {
+  const anyJ = j as unknown as Record<string, unknown>
+  for (const k of ['profiles', 'sections', 'tables', 'figures', 'receipts', 'notes', 'documents', 'sources']) {
+    if (!Array.isArray(anyJ[k])) anyJ[k] = []
+  }
+  const t = (anyJ.totals ?? {}) as Record<string, unknown>
+  if (typeof t.calls !== 'number') {
+    t.calls = (Number(t.llm_calls ?? 0) || 0) + (Number(t.image_calls ?? 0) || 0)
+  }
+  if (typeof t.cost_usd !== 'number') t.cost_usd = Number(t.cost_usd ?? 0) || 0
+  anyJ.totals = t
+  if (!anyJ.paths || typeof anyJ.paths !== 'object') anyJ.paths = {}
+  return anyJ as unknown as DossierJob
+}
+
 async function requestText(path: string): Promise<string> {
   const res = await fetch(`${API_BASE}${path}`)
   if (!res.ok) throw new ApiError(res.status, await res.text().catch(() => ''), path)
@@ -69,16 +92,16 @@ export interface Api {
 }
 
 const live: Api = {
-  exemplars: () => request<Exemplar[]>('/v1/dossier/exemplars'),
-  listJobs: () => request<JobListEntry[]>('/v1/dossier/jobs'),
+  exemplars: () => request<unknown>('/v1/dossier/exemplars').then((d) => unwrap<Exemplar>(d, 'exemplars')),
+  listJobs: () => request<unknown>('/v1/dossier/jobs').then((d) => unwrap<JobListEntry>(d, 'jobs')),
   createJob: (req) => request<CreateJobResponse>('/v1/dossier/jobs',
     { method: 'POST', body: JSON.stringify(req) }),
-  getJob: (id) => request<DossierJob>(`/v1/dossier/jobs/${id}`),
+  getJob: (id) => request<DossierJob>(`/v1/dossier/jobs/${id}`).then(normalizeJob),
   getBrief: (id) => request<Brief>(`/v1/dossier/jobs/${id}/brief`),
   chooseBrief: (id, option_key, overrides) => request<DossierJob>(
     `/v1/dossier/jobs/${id}/brief`,
-    { method: 'POST', body: JSON.stringify({ option_key, overrides: overrides ?? {} }) }),
-  getReceipts: (id) => request<Receipt[]>(`/v1/dossier/jobs/${id}/receipts`),
+    { method: 'POST', body: JSON.stringify({ option_key, overrides: overrides ?? {} }) }).then(normalizeJob),
+  getReceipts: (id) => request<unknown>(`/v1/dossier/jobs/${id}/receipts`).then((d) => unwrap<Receipt>(d, 'receipts')),
   getDossierHtml: (id) => requestText(`/v1/dossier/jobs/${id}/dossier.html`),
   downloadUrl: (job, kind) => {
     const p = job.paths?.[kind]
@@ -86,7 +109,7 @@ const live: Api = {
     if (p && p.startsWith('/')) return `${API_BASE}${p}`
     return `${API_BASE}/v1/dossier/jobs/${job.id}/dossier.${kind}`
   },
-  events: (jobId, afterSeq) => request<RunEvent[]>(`/v1/events/${jobId}?after=${afterSeq}`),
+  events: (jobId, afterSeq) => request<unknown>(`/v1/events/${jobId}?after=${afterSeq}`).then((d) => unwrap<RunEvent>(d, 'events')),
   watchEvents: (jobId, afterSeq, onEvent, onEnd) =>
     watchSse(`${API_BASE}/v1/events/${jobId}/stream?after=${afterSeq}`,
              (after) => live.events(jobId, after), afterSeq, onEvent, onEnd),
