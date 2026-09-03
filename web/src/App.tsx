@@ -16,6 +16,8 @@ import { consolePath, dossierPath, navigate, STEP_SLUGS, useRoute, type StepSlug
 import { statusLabel, usd } from './lib/format'
 import { statusRank, type DossierJob } from './types'
 
+const MASTER_URL = (import.meta.env.VITE_MASTER_URL as string | undefined) || 'https://analyzer-mgmt-frontend.onrender.com'
+
 const STEP_LABELS = ['1 · Your documents', '2 · The brief', '3 · The draft', '4 · Your dossier']
 
 function stepLine(job: DossierJob | null, i: number): string {
@@ -83,6 +85,7 @@ export default function App() {
             {route.kind === 'console' && <a href={dossierPath(route.id, 'draft')}>The dossier</a>}
             {route.kind === 'plates' && <a href={dossierPath(route.id, 'dossier')}>The dossier</a>}
             {route.kind === 'plates' && <a href={consolePath(route.id)}>Under the hood</a>}
+            <a href={`${MASTER_URL}/processes/dossier_standard`} target="_blank" rel="noreferrer" title="The Master: the registry of every engine, process and grammar this desk draws on">The method ↗</a>
           </span>
         </div>
         <div className="masthead-title">
