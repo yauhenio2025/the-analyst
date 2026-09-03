@@ -88,7 +88,7 @@ the-analyst/                      (fork of analyzer-v2 @4d7bb5b; prune later)
 ```
 
 analyzer-mgmt (CAII, separate repo):
-- Set `NEXT_PUBLIC_ANALYZER_V2_URL=https://the-analyst-<slug>.onrender.com` on `analyzer-mgmt-frontend`; change default in `frontend/src/lib/api.ts:84` and the 5 page-level re-declarations; commit `render.yaml`.
+- Set `NEXT_PUBLIC_ANALYZER_V2_URL=https://the-analyst-kcuc.onrender.com` on `analyzer-mgmt-frontend`; change default in `frontend/src/lib/api.ts:84` and the 5 page-level re-declarations; commit `render.yaml`.
 - Cherry-pick `c365b2c` (Plans → Jobs tab, `annotated_prose`) with client-side `plan_id` filter (executor list ignores `plan_id`, `src/api/routes/executor.py:188`).
 - Add `pages/jobs/index.tsx` (Runs) + sidebar entry; add `pages/jobs/[id]/console.tsx` = same Console component as `web/` (shared package or copied).
 
