@@ -51,7 +51,7 @@ MAX_PLATES = 3
 MIN_TEXT_ELEMENTS = 16                   # below this it is a figure, not a plate
 MAX_TEXT_ELEMENTS = 110
 MAX_TITLE_CHARS = 110
-MAX_LABEL_WORDS, MAX_LABEL_CHARS = 20, 140   # plate_a's items are full clauses
+MAX_LABEL_WORDS, MAX_LABEL_CHARS = 24, 170   # plate_a's items are full clauses; one line of a panel
 MAX_NOTE_WORDS, MAX_NOTE_CHARS = 24, 160
 MAX_CELL_WORDS, MAX_CELL_CHARS = 16, 110
 MIN_GROUNDED_FRACTION = 0.4              # plates paraphrase definitions; labels still use the material's words
@@ -915,6 +915,18 @@ def declutter_plate(canonical: dict[str, Any], family: str) -> tuple[dict[str, A
         return obj
 
     out = walk(canonical, None)
+    # dangling edges (an endpoint that names no node/quadrant/actor/event/station) are dropped, not re-asked
+    names = {_s(x).lower() for x in collect_plate_labels(out)}
+    for key in ("relations", "links", "shifts", "bridges"):
+        edges = out.get(key)
+        if isinstance(edges, list):
+            kept_edges = []
+            for ed in edges:
+                if isinstance(ed, dict) and (_s(ed.get("from")).lower() not in names or _s(ed.get("to")).lower() not in names):
+                    report["dropped"].append({"path": f".{key}", "label": f"{_s(ed.get('from'))} → {_s(ed.get('to'))} ({_s(ed.get('label'))})", "why": "dangling endpoint"})
+                    continue
+                kept_edges.append(ed)
+            out[key] = kept_edges
     # density ceiling: drop the smallest-size items from the longest lists until under the cap
     def lists_of_items(obj: Any, path: str = "") -> list[tuple[str, list]]:
         found = []
@@ -1119,7 +1131,7 @@ COMPLETE content model in its family's shape. The rules of the desk:
    plate is rejected. Respect the counts in the family's rule exactly (a longer list is cut to its largest items; a
    shorter one is rejected). Prefer the concrete — named actors, cases, terms, dates, amounts, exactly as the material writes
    them — over abstractions. Nothing invented, nothing vague.
-3. Labels are statements of at most 20 words (panel items, station claims and premises are full clauses; node titles,
+3. Labels are statements of at most 24 words (panel items, station claims and premises are full clauses; node titles,
    headers and badges are short); definitions and notes are one line (at most 24 words) and paraphrase what the
    material says about the item. Register cells at most 18 words. Titles at most 110 characters.
 4. Sizes, positions and strengths are NUMBERS between 0 and 1 in the `size`/`x`/`y`/`strength` keys — never inside a
@@ -1228,7 +1240,7 @@ def plan_plates(job: DossierJob, n: int = 2, audience: Optional[str] = None, per
             if errors:
                 rejected.append((spec, errors))
                 events.emit(job.id, "note", phase=STEP, detail=f"plate wall rejected `{spec.key}` ({spec.family}): " + " | ".join(errors[:3]),
-                            payload_json={"kind": "plate_rejected", "key": spec.key, "errors": errors, "grounding": grounding})
+                            payload_json={"kind": "plate_rejected", "key": spec.key, "errors": errors, "grounding": grounding, "spec": spec.model_dump()})
             else:
                 spec.style_school = choose_style_school(job, spec.visual_format)
                 used_families.add(spec.family)
@@ -1249,7 +1261,8 @@ def plan_plates(job: DossierJob, n: int = 2, audience: Optional[str] = None, per
         admit((raw2 or {}).get("plates", [])[:need])
         for spec, errors in rejected:
             events.emit(job.id, "note", phase=STEP, detail=f"plate_skipped `{spec.key}`: still rejected after repair — " + " | ".join(errors[:2]),
-                        payload_json={"kind": "plate_skipped", "key": spec.key, "reason": errors})
+                        payload_json={"kind": "plate_skipped", "key": spec.key, "reason": errors, "spec": spec.model_dump()})
+    plan_plates.last_rejected = [(s.model_dump(), e) for s, e in rejected]   # for the CLI's rejected.json
     return accepted[:n]
 
 
@@ -1612,7 +1625,7 @@ def _render_once(job_id: str, spec: PlateSpec, prompt: str, aspect: str, provide
 
 
 def render_plate(job: DossierJob, spec: PlateSpec, out_dir: Path, provider: Optional[str] = None,
-                 on_attempt: Optional[Callable[[dict[str, Any]], None]] = None) -> Plate:
+                 on_attempt: Optional[Callable[[dict[str, Any]], None]] = None, max_attempts: int = MAX_RENDER_ATTEMPTS) -> Plate:
     """spec → declutter → prompt → 4K render → check (tiles) → retry once → save. Returns the Plate record.
 
     Raises only when no image could be produced at all; the caller applies the skip law."""
@@ -1645,7 +1658,7 @@ def render_plate(job: DossierJob, spec: PlateSpec, out_dir: Path, provider: Opti
     label = f"plate {spec.key}"
     n_labels = len(collect_plate_labels(canonical))
 
-    for attempt in range(1, MAX_RENDER_ATTEMPTS + 1):
+    for attempt in range(1, max(1, int(max_attempts or 1)) + 1):
         prompt = build_plate_prompt(spec, revision_notes=revision or None)
         leaks = leak_scan(prompt_content_section(prompt))
         if leaks:  # the content block is clean by construction; this is the last wall before money is spent
@@ -1840,6 +1853,7 @@ def _main(argv: Optional[list[str]] = None) -> int:
     ap.add_argument("--specs", default=None, help="render these saved specs (JSON list) instead of planning")
     ap.add_argument("--only", default=None, help="render only this spec key")
     ap.add_argument("--persist", action="store_true", help="upsert each plate into dossier_plates under --job-id (the API and the desk then serve it)")
+    ap.add_argument("--max-attempts", type=int, default=MAX_RENDER_ATTEMPTS, help="render attempts per plate (1 = no revision pass)")
     ap.add_argument("-v", "--verbose", action="store_true")
     args = ap.parse_args(argv)
     logging.basicConfig(level=logging.INFO if args.verbose else logging.WARNING, format="%(asctime)s %(name)s %(levelname)s %(message)s")
@@ -1860,6 +1874,9 @@ def _main(argv: Optional[list[str]] = None) -> int:
                 s.style_school = choose_style_school(job, s.visual_format)
     else:
         specs = plan_plates(job, args.n, perspectives=args.perspective)
+        rejected = getattr(plan_plates, "last_rejected", [])
+        if rejected:
+            (out / "rejected.json").write_text(json.dumps(rejected, ensure_ascii=False, indent=2), "utf-8")
     if args.only:
         specs = [s for s in specs if s.key == args.only]
     (out / "specs.json").write_text(json.dumps([s.model_dump() for s in specs], ensure_ascii=False, indent=2), "utf-8")
@@ -1872,7 +1889,7 @@ def _main(argv: Optional[list[str]] = None) -> int:
     total = 0.0
     for s in specs:
         try:
-            plate = render_plate(job, s, out, args.provider)
+            plate = render_plate(job, s, out, args.provider, max_attempts=args.max_attempts)
         except Exception as exc:
             print(f"[{s.key}] FAILED: {exc}")
             continue

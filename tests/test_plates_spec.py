@@ -172,7 +172,7 @@ def test_ellipsis_and_over_long_strings_are_rejected():
     c["quadrants"][0]["items"][0]["label"] = "Sovereign capability through…"
     assert any("ellipsis" in e for e in validate_canonical("scorecard", c))
     c = scorecard_canonical()
-    c["quadrants"][0]["items"][0]["label"] = " ".join(["word"] * 21)
+    c["quadrants"][0]["items"][0]["label"] = " ".join(["word"] * 25)
     assert any("label too long" in e for e in validate_canonical("scorecard", c))
     c = scorecard_canonical()
     c["quadrants"][0]["items"][0]["note"] = " ".join(["word"] * 25)
@@ -256,6 +256,10 @@ def test_declutter_dedupes_trims_and_drops_lowest_size_beyond_cap():
     out, report = declutter_plate(c, "scorecard")
     assert report["deduped"] == 1 and report["trimmed"] == 1
     assert len(out["quadrants"][0]["items"]) == 4
+    fw = framework_canonical()
+    fw["relations"].append({"from": "National Security Framing", "to": "Nowhere Node", "label": "DANGLES"})
+    out, report = declutter_plate(fw, "framework_map")
+    assert len(out["relations"]) == 4 and report["dropped"][0]["why"] == "dangling endpoint"
     big = {"quadrants": [{"label": f"Q{i}", "tone": "gain", "items": [{"label": f"item {i} {j}", "size": j / 40} for j in range(40)]} for i in range(4)]}
     out, report = declutter_plate(big, "scorecard")
     assert len(collect_plate_labels(out)) <= PL.MAX_TEXT_ELEMENTS
