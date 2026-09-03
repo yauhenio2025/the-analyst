@@ -51,6 +51,20 @@ MIN_SALVAGEABLE_CHARS = 5000  # Minimum text chars to salvage on connection erro
 SYNC_HARD_TIMEOUT_SECONDS = int(os.environ.get("LLM_SYNC_HARD_TIMEOUT_SECONDS", "480"))
 
 
+def sdk_timeout(**kwargs):
+    """Build a timeout object of the flavour the installed anthropic SDK expects.
+
+    anthropic 1.x is built on httpx2 and rejects httpx.Timeout objects at request
+    time (surfacing as a bare "Connection error."); anthropic 0.x used httpx.
+    `anthropic.Timeout` is the SDK's own alias in both generations.
+    """
+    try:
+        from anthropic import Timeout
+    except ImportError:  # pragma: no cover — very old SDKs
+        from httpx import Timeout
+    return Timeout(**kwargs)
+
+
 def _execute_with_hard_timeout(
     fn: Callable[[], Any],
     *,
@@ -185,7 +199,7 @@ class AnthropicBackend:
         from anthropic import Anthropic
 
         client = Anthropic(
-            timeout=httpx.Timeout(
+            timeout=sdk_timeout(
                 connect=60.0,
                 read=1200.0,  # 20 min for large outputs
                 write=120.0,  # 2 min for large prompts
@@ -297,7 +311,7 @@ class AnthropicBackend:
         from anthropic import Anthropic
 
         client = Anthropic(
-            timeout=httpx.Timeout(
+            timeout=sdk_timeout(
                 connect=60.0,
                 read=300.0,  # 5 min max silence on socket
                 write=60.0,

@@ -125,9 +125,10 @@ def _get_client():
     try:
         import httpx
         import anthropic
+        from src.llm.backends import sdk_timeout
         return anthropic.Anthropic(
             api_key=api_key,
-            timeout=httpx.Timeout(
+            timeout=sdk_timeout(
                 connect=60.0,
                 read=300.0,   # 5 min max silence on socket
                 write=60.0,
@@ -289,8 +290,9 @@ def generate_plan(request: OrchestratorPlanRequest) -> WorkflowExecutionPlan:
     try:
         import httpx
         from anthropic import Anthropic
+        from src.llm.backends import sdk_timeout
         sync_client = Anthropic(
-            timeout=httpx.Timeout(connect=60.0, read=300.0, write=60.0, pool=60.0),
+            timeout=sdk_timeout(connect=60.0, read=300.0, write=60.0, pool=60.0),
         )
         response = sync_client.messages.create(
             model=model,
@@ -448,8 +450,9 @@ Return ONLY the JSON — no markdown fences, no explanation outside the JSON."""
     try:
         import httpx
         from anthropic import Anthropic
+        from src.llm.backends import sdk_timeout
         sync_client = Anthropic(
-            timeout=httpx.Timeout(connect=60.0, read=300.0, write=60.0, pool=60.0),
+            timeout=sdk_timeout(connect=60.0, read=300.0, write=60.0, pool=60.0),
         )
         response = sync_client.messages.create(
             model=model,

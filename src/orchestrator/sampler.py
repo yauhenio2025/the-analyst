@@ -164,8 +164,9 @@ Produce the JSON profile."""
     try:
         import httpx
         from anthropic import Anthropic
+        from src.llm.backends import sdk_timeout
         client = Anthropic(
-            timeout=httpx.Timeout(connect=30.0, read=120.0, write=30.0, pool=30.0),
+            timeout=sdk_timeout(connect=30.0, read=120.0, write=30.0, pool=30.0),
         )
         
         response = client.messages.create(
