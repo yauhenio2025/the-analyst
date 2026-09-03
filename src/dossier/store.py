@@ -24,7 +24,10 @@ JSON_COLUMNS = (
     "sources_json", "options_json", "profiles_json", "brief_json", "analysis_json",
     "tables_json", "figures_json", "sections_json", "receipts_json", "totals_json",
     "paths_json", "documents_json", "plan_json", "notes_json",
+    "spine_json", "findings_json", "crosscheck_json",
 )
+# Columns added after the table first shipped; `ensure_table` adds them to an existing DB (guarded).
+ADDED_COLUMNS = (("spine_json", "TEXT"), ("findings_json", "TEXT DEFAULT '[]'"), ("crosscheck_json", "TEXT"))
 
 DDL = """
 CREATE TABLE IF NOT EXISTS dossier_jobs (
@@ -50,7 +53,10 @@ CREATE TABLE IF NOT EXISTS dossier_jobs (
     totals_json TEXT DEFAULT '{}',
     error TEXT,
     paths_json TEXT DEFAULT '{}',
-    notes_json TEXT DEFAULT '[]'
+    notes_json TEXT DEFAULT '[]',
+    spine_json TEXT,
+    findings_json TEXT DEFAULT '[]',
+    crosscheck_json TEXT
 )
 """
 
@@ -64,8 +70,19 @@ def ensure_table() -> None:
             return
         init_db()
         execute(DDL)
+        _migrate_added_columns()
         _table_ready = True
         logger.info("dossier_jobs table ready")
+
+
+def _migrate_added_columns() -> None:
+    """ALTER TABLE … ADD COLUMN for columns the DDL gained later (SQLite has no IF NOT EXISTS for columns)."""
+    for col, decl in ADDED_COLUMNS:
+        try:
+            execute(f"ALTER TABLE dossier_jobs ADD COLUMN {col} {decl}")
+            logger.info(f"dossier_jobs: added column {col}")
+        except Exception as exc:  # already there (or a backend that refuses): the DDL path covers new DBs
+            logger.debug(f"dossier_jobs: column {col} not added ({exc})")
 
 
 def _jsonable(value: Any) -> Any:
@@ -117,6 +134,9 @@ def _row_to_job(row: dict) -> DossierJob:
         "tables": _loads(row.get("tables_json"), []),
         "figures": _loads(row.get("figures_json"), []),
         "sections": _loads(row.get("sections_json"), None),
+        "spine": _loads(row.get("spine_json"), None),
+        "findings": _loads(row.get("findings_json"), []),
+        "crosscheck": _loads(row.get("crosscheck_json"), None),
         "receipts": _loads(row.get("receipts_json"), []),
         "totals": _loads(row.get("totals_json"), {}),
         "error": row.get("error"),
@@ -205,6 +225,7 @@ COLUMN_FOR_FIELD = {
     "analysis_job_id": "analysis_job_id", "analysis": "analysis_json", "tables": "tables_json",
     "figures": "figures_json", "sections": "sections_json", "receipts": "receipts_json",
     "totals": "totals_json", "error": "error", "paths": "paths_json", "notes": "notes_json",
+    "spine": "spine_json", "findings": "findings_json", "crosscheck": "crosscheck_json",
 }
 
 
