@@ -1420,3 +1420,34 @@ Ten advanced engines with deep theoretical foundations, cross-referencing ID sys
 - **Description**: reconnaissance → brief v2 → plan → analysis → spine → tables → figures (diagrams) → plates → compose → cross-check → receipts; every pass recorded, skip law throughout
 - **Entry Points**: `src/dossier/runner.py` (STEPS dispatch), `src/dossier/spine.py`, `src/dossier/crosscheck.py`, `src/dossier/plates.py`, `src/dossier/brief.py`, `src/workflows/definitions/dossier_standard.json` (11 phases)
 - **Added**: 2026-09-03
+
+## The Master (method registry)
+
+### Engine families and estate fields
+- **Status**: Active
+- **Description**: Every engine carries `family` (10 values), `home_organ`, `runs_at`, `lineage_refs`, `status`, `sync`, `doctrine_files`; 11 estate categories; list filters by family and organ.
+- **Entry Points**:
+  - `src/engines/schemas.py` - `EngineFamily`, estate categories, `EngineDefinition`/`EngineSummary` fields
+  - `src/engines/discovery.py` - summaries carry the estate fields
+  - `src/api/routes/engines.py` - `?family=&organ=` filters; `/{key}/doctrine`; composed-prompt 404 for mirrored engines
+- **Added**: 2026-09-04
+
+### Organs
+- **Status**: Active
+- **Description**: The services of the estate by layer with role, contributions, families, counts, URLs, status, sync, dependencies and lineage.
+- **Entry Points**:
+  - `src/organs/schemas.py` - `OrganDefinition`, `OrganLayer`, `OrganStatus`
+  - `src/organs/registry.py` - `OrganRegistry` (`by_layer`)
+  - `src/organs/definitions/` - 15 JSON files
+  - `src/api/routes/organs.py` - `GET /v1/organs`, `/by-layer`, `/{key}`, `/{key}/engines`
+- **Added**: 2026-09-04
+
+### Registered estate methods and processes
+- **Status**: Active
+- **Description**: 65 mirrored/native engine definitions and 7 cross-organ process workflows generated from a table; doctrine files imported from organ repos and exported from the Analyst's desks.
+- **Entry Points**:
+  - `scripts/register_estate_engines.py` - the table and generator
+  - `scripts/import_doctrines.py` - Markdown doctrines from `lineage_refs`
+  - `scripts/export_native_doctrines.py` - desk system prompts to doctrine files
+  - `src/engines/doctrines/` - served text, hash-pinned
+- **Added**: 2026-09-04

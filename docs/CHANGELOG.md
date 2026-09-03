@@ -5,6 +5,15 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Added (2026-09-04, The Master)
+- Engine families and estate fields on engine definitions: `family`, `home_organ`, `runs_at`, `lineage_refs`, `status`, `sync`, `doctrine_files` ([src/engines/schemas.py](src/engines/schemas.py)); `?family=&organ=` filters on `GET /v1/engines` ([src/api/routes/engines.py](src/api/routes/engines.py)).
+- Organs entity: `src/organs/` with 15 definitions and `GET /v1/organs`, `/by-layer`, `/{key}`, `/{key}/engines` ([src/api/routes/organs.py](src/api/routes/organs.py)).
+- 65 registered estate methods (Wirecut, de-llm, the Referee, the Reporter, the Analyst's desks, imagination/governance) via [scripts/register_estate_engines.py](scripts/register_estate_engines.py); 7 cross-organ processes as workflows (`category: process|rendering`, `source_project`).
+- Doctrine endpoint `GET /v1/engines/{key}/doctrine` serving hash-pinned prompt files imported from the organ repos ([scripts/import_doctrines.py](scripts/import_doctrines.py)) and exported from the Analyst's own desks ([scripts/export_native_doctrines.py](scripts/export_native_doctrines.py)).
+- Desk masthead links every page to the Master's dossier process ([web/src/App.tsx](web/src/App.tsx)).
+- Design memo [communications/DESIGN_the_master.md](communications/DESIGN_the_master.md); demo script [communications/DEMO_SCRIPT_2026-09-04.md](communications/DEMO_SCRIPT_2026-09-04.md).
+
+
 ### Added (2026-09-03, afternoon — per-package notes in communications/changes/)
 - Brief v2: deliverable-first options, recommendation, three entry lanes, `GET /v1/dossier/catalog` ([brief-v2.md](../communications/changes/brief-v2.md))
 - Figures as labelled analytical diagrams: v1 FORMAT_ENFORCEMENT/GLOBAL_PROHIBITIONS ported to `src/display/enforcement.py`, FigureSpec planner, vision check + one revision ([diagrams.md](../communications/changes/diagrams.md))
