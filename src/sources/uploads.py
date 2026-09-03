@@ -58,6 +58,34 @@ def _title_from_text(text: str, fallback: str) -> str:
     return fallback
 
 
+def _llm_bibliographic(text: str) -> dict:
+    """Haiku reads the opening of the document and returns title/creators/year/publication.
+    Cheap (~3K tokens) and far more reliable than PDF metadata. Empty dict on any failure."""
+    import json
+    import os
+    if not os.environ.get("ANTHROPIC_API_KEY"):
+        return {}
+    try:
+        import anthropic
+        client = anthropic.Anthropic()
+        head = text[:6000]
+        msg = client.messages.create(
+            model="claude-haiku-4-5-20251001", max_tokens=300, temperature=0,
+            system="You extract bibliographic facts from the opening of an academic or professional document. "
+                   "Ignore repository cover pages (ResearchGate, SSRN, publisher banners) and running headers. "
+                   "Reply with ONLY a JSON object: {\"title\": str, \"creators\": str (\"Surname, Given; Surname, Given\"), "
+                   "\"year\": str (4 digits or \"\"), \"publication\": str (journal/book/venue or \"\")}. Use \"\" when unknown.",
+            messages=[{"role": "user", "content": head}],
+        )
+        raw = "".join(getattr(b, "text", "") for b in msg.content).strip()
+        raw = raw[raw.find("{"): raw.rfind("}") + 1]
+        out = json.loads(raw)
+        return {k: str(out.get(k) or "").strip() for k in ("title", "creators", "year", "publication")}
+    except Exception as exc:
+        logger.warning("bibliographic extraction skipped: %s", exc)
+        return {}
+
+
 def extract_document(filename: str, data: bytes) -> dict:
     ext = Path(filename).suffix.lower()
     if ext not in SUPPORTED:
@@ -70,9 +98,11 @@ def extract_document(filename: str, data: bytes) -> dict:
     text = _clean(raw)
     if len(text) < 200:
         raise ValueError(f"{filename}: too little extractable text ({len(text)} chars) — scanned PDF?")
-    title = (meta.get("title") or "")[:MAX_TITLE] or _title_from_text(text, stem)
+    bib = _llm_bibliographic(text)
+    title = (bib.get("title") or meta.get("title") or "")[:MAX_TITLE] or _title_from_text(text, stem)
     key = "up" + hashlib.sha256(data).hexdigest()[:8].upper()
-    return {"key": key, "title": title, "creators": meta.get("author") or "", "year": meta.get("year") or "",
+    return {"key": key, "title": title, "creators": bib.get("creators") or meta.get("author") or "",
+            "year": bib.get("year") or meta.get("year") or "", "publication": bib.get("publication") or "",
             "filename": filename, "char_count": len(text), "pages": meta.get("pages"), "text": text}
 
 
@@ -91,7 +121,8 @@ def build_bundle(files: list[tuple[str, bytes]], title: str = "") -> tuple[str, 
     def header(i, d):
         creators = d["creators"] or "Unknown"
         year = d["year"] or "n.d."
-        return f"===== [{i}/{n}] {creators} ({year}) — {d['title']} — uploaded file: {d['filename']} — [Upload · {d['key']}] ====="
+        pub = d.get("publication") or f"uploaded file: {d['filename']}"
+        return f"===== [{i}/{n}] {creators} ({year}) — {d['title']} — {pub} — [Upload · {d['key']}] ====="
     lines += [header(i, d) for i, d in enumerate(docs, 1)]
     lines.append("")
     for i, d in enumerate(docs, 1):
