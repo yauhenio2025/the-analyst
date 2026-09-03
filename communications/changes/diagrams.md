@@ -5,6 +5,17 @@ schemas in `src/dossier/schemas.py`, the diagram half of `src/images/figure_prom
 `src/images/compliance.py`, `tests/test_diagram_prompts.py`, `tests/test_figure_spec_validation.py`.
 Verified live 2026-09-03 on the owner's two dossier runs.
 
+## State — 2026-09-03 (WIP commit 0f80662 on feat/diagrams)
+
+**Done**: enforcement catalog (v1 port + 64 formats), FigureSpec contract, planner + wall, prompt builder,
+render → check → one revision, compose/template updates, 63 unit tests, CLI, samples with verdicts.
+**Sample verdicts**: 5/5 final renders pass the vision check (15/15, 19/19, 14/14, 22/22, 17/17 labels found;
+format ok; no prohibited elements) and my own eye; 2 first attempts were rejected and fixed by the revision pass.
+**Cost**: $1.47 images (11 renders) + ≈ $0.7 Sonnet planning/checking ≈ $2.2 total.
+**Remains**: two `tests/test_manifest_trace.py` cases fail on this branch and not on master (investigating —
+they parametrize on DB state); the bar-format numeric-cell wall rule is committed but not re-rendered;
+docs/CHANGELOG.md and docs/FEATURES.md entries are drafted below for the reconciler to fold in.
+
 ## The problem, and what changed
 
 The dossier's figure step produced metaphorical illustrations (a wooden table with manila folders and
