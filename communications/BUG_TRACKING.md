@@ -57,3 +57,13 @@ Problem classes, root causes, files fixed. See global rules.
 - `src/api/routes/dossier.py` (`choose_brief`) — `figures` is an explicit alias of `output.figures`; `path` is handled as its own override (resolved and stored on the option).
 
 **Pattern to Watch For**: generic key-merge loops over a model dump (`if k in data`) hide contract drift between client and server; unknown override keys should be either mapped explicitly or rejected with a 400, never dropped.
+
+## Hand-edited workflow JSON silently unloaded a workflow (2026-09-03)
+
+**Problem Class**: A definition file that fails Pydantic validation is skipped by the registry with only a log line; the API keeps serving (health showed workflows_loaded 11→10) and every run that references the workflow fails later with "Workflow not found: dossier_standard".
+
+**Root Cause**: a scripted edit assumed phases were keyed by `key`/`figures` text; it copied the Spine phase (whose description mentions figures) and wrote `depends_on_phases: [null]`.
+
+**Files Fixed**: `src/workflows/definitions/dossier_standard.json` (proper Plates phase 7.5 → `dossier_plates`), `tests/test_workflow_definitions_load.py` (every definition must validate and load; dossier_standard's 11 phases in order).
+
+**Pattern to Watch For**: after editing any `definitions/*.json`, run the loader test; watch `workflows_loaded` in `/health` after deploy; the executor error surfaces only at the analysis step of a live run.
