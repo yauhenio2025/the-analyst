@@ -61,7 +61,7 @@ received over SSE). See "Verification" at the end.
   - `src/events/hooks.py:427-511` - `call_started` / `call_finished` / `call_failed` (used by engine_runner; `call_failed` carries `attempt`, `will_retry`, `retry_delay_s`)
   - `src/executor/engine_runner.py:254-256` - reads the event context; `:272` call_started per attempt; `:314` call_finished; `:346` call_failed
   - `src/executor/chain_runner.py:118` - chain_started; `:182` context scope (job/phase/chain/work) around `_run_engine_passes`; `:217` chain_finished; `:388` per-pass scope (engine/pass_name/stance) around `run_engine_call_auto`; `:532` whole-engine scope; `:645` single-engine scope
-  - `src/executor/workflow_runner.py:144-145` - job context + job_started; `:324` phase_started (single); `:352` phase_started (parallel group); `:371,383,398,422,427` job_finished (cancelled/failed/completed/InterruptedError/exception); `:409-411` auto-presentation notes; `:582` phase_finished (in `_record_phase_result`)
+  - `src/executor/workflow_runner.py:144-145` - job context + job_started; `:324` phase_started (single); `:352` phase_started (parallel group); `:371,383,399,423,428` job_finished (cancelled/failed/completed/InterruptedError/exception); `:395` note before concept-artifact materialization; `:410-412` auto-presentation notes; `:583` phase_finished (in `_record_phase_result`)
   - `src/orchestrator/pipeline.py:188,209,232` - `note` events (documents stored, plan generation started, plan ready); `:283` job_failed when the pipeline fails before execution
 - **Dependencies**: Run-event ledger
 - **Added**: 2026-09-03
@@ -175,4 +175,28 @@ At `phase_started` (non-skipped phases) → `narrate_phase_async(...)`: cache hi
 
 ## Verification
 
-(see below — filled in after the sample run)
+Environment: shared venv (`anthropic 1.3.0`, `fastapi 0.141.1`, `pytest 9.1.1`), SQLite backend, `uvicorn src.api.main:app --port 8011`, keys from the worktree `.env`. Server was killed after the run.
+
+1. `python -m pytest tests/test_events_store.py -q` → **17 passed** (append/list/seq monotonic across 5 writer threads, never-raises on a broken DB path, cost estimation, excerpt truncation, `job_summary`, context scoping + thread isolation, hooks, narrator cache with a fake API, `/v1/events` JSON list/summary, SSE replay-from-`after` + close-after-terminal).
+2. `python -c "from src.api.main import app"` → OK; OpenAPI lists `/v1/events/{job_id}`, `/v1/events/{job_id}/summary`, `/v1/events/{job_id}/stream`, `/v1/executor/jobs/{job_id}/events`, `/events/summary`, `/events/stream`. CORS preflight from `http://localhost:5173` returns `access-control-allow-origin` (app-wide `allow_origins=["*"]`).
+3. Real job — `POST /v1/executor/documents/sync` (13,663-char excerpt, sections 2–5 of `oaas/communications/kering/KERING_STUDY_2026-07-19.md`) then `POST /v1/orchestrator/concept-analysis-by-ref` (`concept_name="cultural relevance"`, `analysis_mode="inferential"`, `depth_preference="standard"`) → **`job-plan-d87b85c590db`**. `curl -N /v1/events/job-plan-d87b85c590db/stream` (and the `/v1/executor/jobs/…/events/stream` alias) produced, in order:
+   - `#1 job_started` (workflow "Single-Concept Inferential Analysis", 1 phase, engines listed)
+   - `#2 phase_started` phase 1.0 "Inferential Commitment Mapping" (engine `inferential_commitment_mapper`, depth standard, no upstream phases)
+   - `#3 call_started` pass 1 (discovery) — `claude-sonnet-4-6`, prompt hash `747116f2…`, 3,005-char prompt excerpt
+   - `#4 narration` (2.1s after phase start, Haiku, not cached): *"This step examines your source documents to find all the hidden assumptions and logical chains connected to the idea of cultural relevance, so you understand what accepting that concept actually commits you to believe."*
+   - `#5 call_finished` pass 1 — 5,671→5,348 tokens, **$0.097233**, 125,069 ms, 25,732-char output (2,000-char excerpt)
+   - `#6/#7 call_started/finished` pass 2 (confrontation) — 11,075→5,818 tokens, $0.120495, 138,265 ms
+   - `#8 phase_finished` — 2 calls, 16,746→11,166 tokens, $0.217728, 264,078 ms, final-output excerpt
+   - `#9 job_finished` — same totals; `#10/#11 note` (auto-presentation started/finished)
+   - `: heartbeat` comments every 15 s while a call was in flight; the stream closed 5 s after the last event (`: closed … last_seq=11`), 368 s total.
+   - `GET /v1/events/job-plan-d87b85c590db/summary` → `status=completed, calls=2, input_tokens=16746, output_tokens=11166, cost_usd=0.217728, duration_ms=362142, phases=[{1.0 … narrator …}]`; the executor's own `GET /v1/executor/jobs/{id}` reports `total_llm_calls=2, 16746/11166` — identical token totals.
+   - Transcript: `communications/changes/events-sample.jsonl` (11 lines; every line re-validated as `RunEvent`).
+4. Failure/cancel path (first attempt, before the SDK fix): `job-plan-4d0f7adbf553` showed `call_started` → `call_failed` (`payload.attempt=1, will_retry=true, retry_delay_s=30, error="Connection error."`) → `call_started` (attempt 2) → … ; `POST /v1/executor/jobs/{id}/force-cancel` produced `job_failed` with `payload.status="cancelled"` and the stream closed 5 s later.
+5. Pre-existing test failures unrelated to this branch (verified identical with the unmodified files): `tests/test_llm_backends.py` (3× `AnthropicBackend._thinking_config` missing) and `tests/test_workflow_runner_auto_presentation.py` (imports `_resolve_auto_presentation_consumer_key`, which does not exist).
+
+## Left undone / notes for other agents
+- The 96 s between `phase_finished` and `job_finished` on concept workflows is `materialize_concept_translated_artifact` (no LLM calls through `run_engine_call`); a `note` event now marks its start (`workflow_runner.py:395`) but it emits nothing while running.
+- Nothing is emitted for LLM calls that bypass `engine_runner.run_engine_call` (planner, plan revision, presenter transformations, view refinement). Dossier/presenter agents should call `src.events.store.append_event(job_id, "call_finished", model=…, input_tokens=…, output_tokens=…, …)` (or `note`/`artifact`) themselves if they want those in the console.
+- No `artifact` events are produced yet by the executor; the kind is reserved for dossier tables/figures.
+- `EVENTS_NARRATOR=off` disables narration (useful for tests/CI); there is no per-job opt-out.
+- `requirements.txt` still says `anthropic>=0.42.0`; with the `sdk_timeout` fix both 0.x and 1.x work, but pinning a floor of `anthropic>=1.0` would make the Render build deterministic.

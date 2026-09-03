@@ -392,6 +392,7 @@ def execute_plan(
                         phase_statuses=phase_statuses,
                         total_phases=total_phases,
                     )
+                    _events_hooks.note(job_id, "All phases done; translating the analysis into the host's concept artifact before marking the job complete.", stage="concept_artifact_materialization")
                     materialize_concept_translated_artifact(job_id)
 
                 update_job_status(job_id, "completed")
