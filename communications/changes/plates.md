@@ -180,9 +180,49 @@ counted missing → the register contract now says *cells = columns − 1* and t
 truncation note (the two client bugs did not recur), but the row was not allowed to grow → the grammar now says
 "a row is as tall as its longest cell needs — never cut a cell short" and cells are capped at 16 words.
 
-### 2–3. `plate-samples/state/…` — job `dossier-dce25aeed631` (who wins when states back tech and defence, 5 papers, medium), n = 2
+### 2. `plate-samples/state/sovereign_investment_scorecard` — job `dossier-dce25aeed631` (who wins when states back tech and defence, 5 papers, medium)
 
-_(the two state plates are recorded below as they land)_
+Perspective "What governments promise versus what they deliver"; family **scorecard** (structured_diagram, 16:9),
+level 4. Four panels — GAINS: Named Corporate Winners (9 items), LOSSES: Community Promises vs. Documented Reality
+(6), NEUTRAL: Regulatory Instruments That Made Transfers Possible (5), LOSSES: Costs Left on Public Balance Sheet
+(5) — each item a full clause with a one-line source note; a check mark across the gains panel, a red X across
+the promises panel, two labelled link arrows; **55 strings**. Planned in two calls (a 112-char title and a
+26-word item were repaired). Rendered once at **5504×3072** in ≈ 90 s; check: format_ok ("2x2 grid of labelled
+panels with colour-coded header bands and stacked text items with arrow glyphs"), **52/55 strings found**, 1
+misspelling (undersved), 0 illegible, 0 leaked, 0 prohibited, density adequate, legible at 4K. After the
+manifest-aware rescoring (the two mark banners the checker filed as "extra text" are manifest strings): **ok**.
+
+**My verdict against plate_a: a plate I would show an executive, and a better plate_a than plate_a.** Same
+grammar — green/red header bands, ↑/↓/• glyphs, the translucent check and X, the labelled curved links between
+panels — with the source line under every item and no `[SIZE_GUIDE: 0.9]` anywhere. Flaws: the 9-item gains
+panel rendered 7 (Lockheed Martin/Raytheon, the AUKUS VC network and Andreessen Horowitz/Sequoia were dropped
+for room — eight is the ceiling, and the declutter now caps scorecard panels at 8); one item is cut at a dash
+("…via Microsoft 365 and Azure —"); one misspelling.
+
+### 3. `plate-samples/state/government_vocabulary_framework_map` — same job
+
+Perspective "How government vocabulary moves a deal from announcement to capture"; family **framework_map**
+(network_graph, 16:9), level 2. Three regions (STAGE 1 — FOUNDATION, STAGE 2 — RECLASSIFICATION, STAGE 3 —
+DEFENCE) of 4 / 5 / 4 nodes, each node a CAPS title with a one-line definition inside; 14 labelled relations
+(LICENSES, DESIGNATES, ENABLES, ACTIVATES, RECLASSIFIES INTO, JUSTIFIES, TRIGGERS, CONVERTS INTO, PERFORMS AS,
+DEMANDS, PROTECTS, LEGITIMISES, PAIRED WITH, ANCHORS); two bridges; two side boxes of six bullets ("EXECUTIVE
+SIGNALS: What Each Term Means in Practice", "DOCUMENTED CASES WHERE TERMS WERE DEPLOYED") — **62 strings**.
+Rendered once at **5504×3072**; check: format_ok ("labelled network relationship graph with tinted regional bands,
+rounded-rectangle nodes, and directed labelled arrows"), **59/62 strings found**, 0 leaked, 0 prohibited,
+density dense, legible at 4K; 1 misspelling (depondency; the checker's "DEMANES" entry named no manifest string
+and is dropped by the rescoring), 1 illegible, 3 missing. After rescoring: **ok**.
+
+**My verdict against plate_b: near executive-grade; one revision away.** The grammar is plate_b's, denser —
+dashed frames, tinted regions with subtitle lines, definitions inside every node, small-caps relation labels,
+both side boxes. Flaws a reader would notice: the "De-risking" node was dropped and "STRATEGIC PARTNERSHIP" is
+drawn twice in its place (the model filled a 2×2 slot); "DEMANES" for DEMANDS on one arrow; the second bridge
+label is missing. These are exactly what the revision pass is for — `revision_notes` would have said "render
+De-risking; spell DEMANDS; render the bridge label" — and the render was run at `--max-attempts 1` to stay
+within budget. Recorded as such rather than re-rendered.
+
+**Overall: 2 of 3 plates are ones I would show an executive as rendered (register, scorecard); the third would
+be after the revision the design already provides.** None leaked a token, none drew a metaphor, all three carry
+the analysis as one image.
 
 ### What the planning rounds taught (the wall's evolution, in the order the evidence arrived)
 
@@ -196,19 +236,26 @@ rule became: **a marginal overrun is repaired in code, never re-asked**.
 | state #2 | `USD 1.28 billion` flagged as a leaked decimal; 15–19-word statements | the leak class is `0.x` scores, not amounts | decimal rule narrowed to `0\.\d+`; labels are statements: 20 words |
 | state #3 | 22–23-word statements; one relation whose endpoint named no node | a plate line can run to ~24 words at 4K | labels 24 words / 170 chars; a dangling edge is dropped by the declutter, not re-asked; rejected specs are recorded (`rejected.json`, event payload) so a failed plan is never lost |
 | risk #2 | `80` in a bar cell | r3's bars print `78%` | (planner error, repaired by the re-ask as designed) |
+| state #4 | a 112-char title; a 26-word statement | a two-line title at 4K is fine | titles 120 chars (the 26-word statement was rightly re-asked) |
+| the renders | the checker filed the mark banners and its own commentary ("DEMANES (appears to be…)") as *extra text*, failing two good plates | — | one manifest-aware `rescore_verdict`: stripped commentary; a string that is or contains a manifest string is not invention; a near-match (difflib ≥ 0.8) is a misspelling; `check_plate` reuses it, and stored verdicts can be re-scored without a vision call |
+| the renders | a 9-item scorecard panel rendered 7; an 8-cell register row for 8 columns dropped a cell | plate_a holds 4–8 per panel; r1–r4 rows fill columns−1 cells | declutter caps scorecard panels at 8; register contract `cells = columns − 1` |
 
 ## Cost
 
 | item | calls | USD |
 |---|---|---|
-| risk register — planning (2 rounds × 2 calls, the first round under the too-strict wall) | 4 Sonnet | 0.56 |
-| risk register — render (1 attempt, 4K) + check (5 tiles) | 1 image + 1 vision | 0.29 |
+| risk register — planning (2 rounds × 2 calls; the first round under the too-strict wall) | 4 Sonnet | 0.56 |
+| risk register — render (1 attempt, 3584×4800) + check (5 tiles) | 1 image + 1 vision | 0.29 |
 | state — planning rounds #1–#3 under the evolving wall (all rejected) | 6 Sonnet | 0.98 |
-| state — planning round #4 (corrected wall) + two 4K renders + checks | see below | _(below)_ |
-| unit tests, mock desk, API proof | 0 | 0.00 |
+| state — planning round #4 under the corrected wall (1 repair) | 2 Sonnet | 0.33 |
+| state — two renders (1 attempt each, 5504×3072) + checks | 2 images + 2 vision | 0.58 |
+| unit tests, mock desk, API proof, rescoring | 0 | 0.00 |
+| **total** | 12 Sonnet, 3 images, 3 vision | **2.74** |
 
-Running total before the state renders: **$1.83**. The budget was $2.50; planning under the too-strict wall
-consumed what two revision passes should have had. The state renders run at `--max-attempts 1` to stay near it.
+Against the $2.50 budget: **$0.24 over**, all of it planning rounds spent while the wall was stricter than the
+register the owner pointed at (≈ $1.30 of the $1.87 planning bill produced no accepted spec). With the corrected
+wall a plan costs $0.16–0.33 and a plate $0.29 rendered and checked; the revision pass, when taken, adds $0.29.
+A three-plate run over a finished job should now cost ≈ $1.2–1.5.
 
 ## What to integrate into the run later (not done here — another agent owns runner/compose)
 
