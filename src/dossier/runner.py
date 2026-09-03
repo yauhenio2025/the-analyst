@@ -133,6 +133,13 @@ def _run(job_id: str) -> None:
             _running.discard(job_id)
 
 
+def ledger_line(job_id: str) -> str:
+    from src.dossier.findings import summary_line
+
+    fresh = get_job(job_id)
+    return summary_line(fresh.findings) if fresh else "?"
+
+
 def _persist_factory(job_id: str) -> Callable[..., None]:
     def persist(**fields) -> None:
         update_job(job_id, **fields)
@@ -192,17 +199,17 @@ def _run_step(job: DossierJob, step: str, docs) -> None:
     elif step == "tables":
         from src.dossier.tables import run_tables
 
-        tables = run_tables(job, docs)
+        tables = run_tables(job, docs, persist)
         job.tables = tables
         persist(tables=tables)
-        summary = f"{len(tables)} tables, {sum(len(t.rows) for t in tables)} verified rows"
+        summary = f"{len(tables)} tables, {sum(len(t.rows) for t in tables)} verified rows" + (f"; findings: {ledger_line(job_id)}" if job.spine else "")
     elif step == "figures":
         from src.dossier.figures import run_figures
 
-        figures = run_figures(job, docs)
+        figures = run_figures(job, docs, persist)
         job.figures = figures
         persist(figures=figures)
-        summary = ", ".join(f"{f.key}:{f.status}" for f in figures) or "none"
+        summary = ", ".join(f"{f.key}:{f.status}" + ("" if f.checked_ok is None else ("/ok" if f.checked_ok else "/flagged")) for f in figures) or "none"
     elif step == "compose":
         from src.dossier.compose import run_compose
 
