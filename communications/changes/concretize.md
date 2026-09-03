@@ -92,7 +92,85 @@ write premium. The live run below still paid it on reconnaissance (the fix lande
 
 ## Live run — `fashion_bundle.txt`, executive, medium, 2 figures, local server (SQLite)
 
-_(filled in below when the run finishes)_
+Job `dossier-59263a6a2227` (local, `data/dossiers/` — not committed). **Title:** "Three Structural Flaws That Will Outlast
+Every Sustainability Campaign". The material decided the brief ("Where Our Sustainability Claims Can Be Attacked",
+stress_test); the plan ran `argument_architecture@standard → inferential_commitment_mapper@standard` (4 passes).
+
+**How the run went, honestly.** The job ran once end to end and came back at $3.70 with the spine step recording
+`spine_unavailable: call_json() got an unexpected keyword argument 'cache'` — I had patched `llm.py` under the live
+server (no `--reload`) while `spine.py` was imported lazily, so the new spine met the old `call_json`. The skip law did
+exactly what it is for (legacy tables/figures/compose ran; cross-check ran clamps only), but the new passes were not
+exercised. Rather than re-buy the $2.3 analysis, I snapshotted that legacy output as a same-analysis baseline, restarted
+the server on the committed code, reset the job to `step=spine` and **resumed** — the checkpoint/resume design paid for
+itself. On the resume the first tables answer arrived as a JSON *string* with raw newlines in long cells; strict parsing
+refused it and the per-exhibit re-ask (a 107K-token cache read, $0.09) rescued all three tables; I cancelled before
+figures to fix the parser (`json.loads(strict=False)` first), restarted once more and resumed from `figures`.
+
+**Cost / time of the new passes (the resume):** 12 calls, **$1.76**, ≈ 10.5 min — spine $0.17 (2.0 min) · tables $0.56
+($0.47 + $0.09 re-ask on the cache; 2.9 min) · figure specs $0.11 + 2 renders $0.27 + 2 checks $0.02 (1.7 min) · draft
+body $0.50 + frames $0.03 + frames re-ask $0.02 (2.9 min) · cross-check $0.08 (1.0 min). The design's estimate was
+"≈ +$1.0, +5 min" on top of the old pipeline's tables/figures/compose; measured against the same-analysis legacy pass
+($1.30 for tables+figures+compose) the concretization passes cost **+$0.46 and +4.6 min**. Whole job as recorded:
+$5.46 / 29.0 min / 23 LLM + 4 image calls — of which $3.70 is the first (legacy) pass and the two restarts are mine.
+Baseline `live-dossier-be00c33e5180`: $2.22 / 27.4 min (its brief waited 15 min for a hand).
+
+**Before → after, the same analysis prose (legacy compose vs the passes):**
+
+| | legacy pass (same run, before the resume) | concretization passes |
+|---|---|---|
+| where exhibits sit | all 4 at SECTION END (§1 fig, §2 table+fig, §3 table) | all 5 at their pointer, mid-paragraph, prose continues after each |
+| section claims | none (sections re-derived from prose) | 5, one sentence each, in the spine's order; every table has `proves` |
+| tables | 2 (12 rows) | 3 (10 rows, 0 dropped), each commissioned by a claim; a 4th spec dropped by code as over budget |
+| figures | 2, ok | 2, ok (16/16 and 5/5 labels legible), each for a named section, captions carry no digits |
+| anchors | 12/12 | 16/16 verbatim, 0 fragments (the draft wall's fragment rule never had to fire) |
+| summary vs close | 0.00 overlap | 0.00 overlap; jobs declared and met ("the finding and the stakes" / "the decision rule and the go/no-go question") |
+| findings | 0 (clamps only, no spine) | 2 open from the judge, 3 dropped by the quote wall, 0 clamps |
+
+**Tokens at the pointer (dossier.md of the resumed job):**
+- §2: *"Table 1 maps those dependencies for each of our three principal pledges."* → **Table 1** → *"Reading across
+  each row, the pattern is the same: the public commitment sounds self-contained, but the unstated premise and the
+  supply-chain requirement it relies on are …"* — the prose argues from the rows it just showed.
+- §2: *"Figure 1 shows this relationship as a closed loop."* → **Figure 1** (linear_flowchart, 5/5 labels) → *"The
+  return arrow in the diagram is the problem no rewording can close: the fund's growth requires the problem's growth."*
+- §3: *"Figure 2 places our sustainability claims on two axes: how material or structural the claim is, and how
+  severe the challenge it will face."* → **Figure 2** → *"The upper-right quadrant — high challenge severity, material
+  and structural claims — is where our supply-chain commitments sit."*
+- §4: *"Table 2 maps each commitment against the two legitimacy criteria and records which exposure trigger …"* →
+  **Table 2** → *"The circularity fund was announced in July 2024, directly following IPO approval delays …"*
+- §5: *"Table 3 states those questions as pass/fail tests, with the remediation required when a claim fails."* →
+  **Table 3** → *"The tests are not interchangeable."*
+
+**Captions matching claims.** Figure 1's spine claim: *"… the circularity pledge contains a structural
+self-contradiction: the fund is financed by the same mechanism that generates the waste it claims to address"*;
+its caption: *"The return arrow shows where the circularity commitment funds itself through the same activity it claims
+to reduce"*; the check's `detected`: *"a vertical cascade flowchart with downward arrows and a feedback loop arrow;
+5/5 labels legible: €200M Circularity Fund, Unstated Premise, Supply-Chain Requirement …"*. No digit in either caption
+(the baseline's `ten_r_neoliberal_counter` table caption carried one).
+
+**Summary ≠ conclusion.** Summary opens *"Our three principal sustainability commitments — the circularity fund, the
+responsible sourcing mandate, and the evoluSHEIN roadmap — engage almost exclusively with the two least demanding
+elements of the 10-R framework …"*; the close opens *"Before any new sustainability claim is published, ask three
+questions in sequence. First: does the claim address an R-element above Recycle …"*. The frames wall refused the first
+frames for a number the body does not carry ("600,000"); the re-ask removed it ($0.018, cache read).
+
+**The cross-check (2 pictures shown as vision input).** Judge summary: *"The dossier is structurally sound and
+well-anchored — every major claim traces to a named source, the three-test decision rule is consistent across sections
+1–5 and the close, and both tables do the work the spine assigned them."* Two findings kept: a *Workers' Rights Pledge*
+point placed in the quadrant's Greenwashing-Risk corner with no sentence in §3 naming it (judge typed it
+`table_unreferenced` with cure `rerender_figure` — a kind/affordance mismatch the walls do not yet clamp, so nothing
+executed; zero-change gate recorded), and an `anchor_off_claim` in §4 (a Highfield & Miltner platform quote under a
+brand-legitimacy sentence; cure `reanchor_claim`). Three judge findings were dropped by the quote-on-page wall: two
+quoted diagram labels ("evoluSHEIN Roadmap ●") that the page text did not include — **fixed** in this branch (figure
+labels are on the page; marker glyphs stripped) — and one whose quote diverged from the close's wording after its first
+70 characters. `hangs_together: false` with two open items is the honest verdict; at medium depth nothing was safe to
+execute automatically (no caption digit, no unplaced exhibit, no failed picture check).
+
+**What the run says about the design.** The spine → exhibits → draft chain held without a single patch round on the
+draft: five sections, every exhibit placed once where the writer names it, sixteen anchors verbatim. The walls that
+fired were the frames' number wall (a real invention caught), the tables' per-exhibit re-ask (a shape failure, now
+parsed leniently), and the verdict's quote wall (which was too strict about pictures and is now right). The two open
+findings are exactly the Phase 2 work: a section rewrite that names the point the picture already shows, and a
+re-anchor — the work order (§C.5) is the next thing to build.
 
 ## Deviations from the design, and why
 
@@ -171,7 +249,7 @@ _(filled in below when the run finishes)_
 
 ### Cross-check and Findings Ledger (pass X)
 - **Status**: Active
-- **Entry Points**: `src/dossier/crosscheck.py:78-129` (system prompt) · `:134-152` `page_text` / `quote_on_page` ·
+- **Entry Points**: `src/dossier/crosscheck.py:78-129` (system prompt) · `:134-160` `page_text` / `quote_on_page` (figure labels count as on the page) ·
   `:238-290` `clamp_findings` · `:300-352` `validate_verdict` · `:369-382` `apply_fates` · `:392-465` `realize` ·
   `:482-540` `run_crosscheck` · `web/src/components/SpineView.tsx` (desk)
 - **Added**: 2026-09-03

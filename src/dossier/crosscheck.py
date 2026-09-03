@@ -147,12 +147,19 @@ def page_text(job: DossierJob) -> dict[str, str]:
         out[sec.section_key or f"s{sec.number}"] = normalize(" ".join(EXHIBIT_TOKEN.sub("", _CLAIM_MARK.sub("", p)) for p in sec.paragraphs) + " " + sec.heading)
     caps = [t.caption + " " + t.note + " " + " ".join(c.value for r in t.rows for c in r.cells) for t in job.tables]
     caps += [f.caption + " " + f.title for f in job.figures]
+    # a diagram's labels ARE on the page (in the picture): the judge may quote them
+    try:
+        from src.display.enforcement import collect_labels
+
+        caps += [" ".join(collect_labels(f.data)) for f in job.figures if f.data]
+    except Exception:
+        pass
     out["captions"] = normalize(" ".join(caps))
     return out
 
 
 def quote_on_page(quote: str, regions: dict[str, str], section_key: Optional[str]) -> bool:
-    q = normalize(quote)
+    q = normalize(re.sub(r"[●•◦▪■◆★→←↑↓]+", " ", quote or ""))
     if len(q) < 8:
         return False
     if section_key and section_key in regions and q in regions[section_key]:
