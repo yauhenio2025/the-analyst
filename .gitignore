@@ -64,3 +64,7 @@ data/exemplars/*
 *.db-shm
 *.db-wal
 src/executor/executor.db
+
+# front-end source dirs must not be caught by the Python lib/ rule
+!web/src/lib/
+!web/src/lib/**
