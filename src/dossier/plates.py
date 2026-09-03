@@ -1120,6 +1120,9 @@ it instead of the memo. It is a LABELLED ANALYTICAL DIAGRAM of enormous density 
 every gain and loss; a framework map whose nodes carry one-line definitions and whose arrows are labelled with the
 relation; a flow map whose stations, tributaries and locked-in branches are all named; a register whose rows are
 scored across typed columns — never an illustration, never a scene, never a metaphor.
+PREFER the diagrammatic families (framework map, flow map, power map, layer stack, argument tree, timeline of shifts,
+scorecard): the dossier's tables already carry the tabular reading, so a plate earns its place by showing STRUCTURE —
+nodes, relations, currents, levels — not another grid. Use the register only when the requester asks for one.
 
 You choose the PERSPECTIVES that each deserve a whole plate for this material, and for each you write the plate's
 COMPLETE content model in its family's shape. The rules of the desk:
@@ -1234,6 +1237,12 @@ def plan_plates(job: DossierJob, n: int = 2, audience: Optional[str] = None, per
             errors, grounding = validate_plate_spec(spec, material_norm)
             if not errors and spec.family in used_families:
                 errors.append(f"family {spec.family} is already used by another plate; choose a different family")
+            # The register is a table-plate. When the dossier already carries anchored tables, a plate must add a
+            # DIFFERENT reading — a map, a flow, a scorecard, a stack, a tree — unless the requester asked for a register.
+            if not errors and spec.family == "register" and len(getattr(job, "tables", None) or []) >= 2 \
+                    and not any("register" in (p or "").lower() for p in (perspectives or [])):
+                errors.append("the dossier already has anchored tables; a register plate would repeat them — choose a diagrammatic family "
+                              "(framework_map, flow_map, power_map, layer_stack, argument_tree, timeline_of_shifts, scorecard)")
             if not errors and n > 1 and spec.abstraction_level in used_levels:
                 errors.append(f"abstraction level {spec.abstraction_level} is already taken by another plate; choose a different level")
             spec.__dict__["_grounding"] = grounding
