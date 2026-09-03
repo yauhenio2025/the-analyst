@@ -51,7 +51,7 @@ MAX_PLATES = 3
 MIN_TEXT_ELEMENTS = 16                   # below this it is a figure, not a plate
 MAX_TEXT_ELEMENTS = 110
 MAX_TITLE_CHARS = 90
-MAX_LABEL_WORDS, MAX_LABEL_CHARS = 14, 100
+MAX_LABEL_WORDS, MAX_LABEL_CHARS = 14, 110
 MAX_NOTE_WORDS, MAX_NOTE_CHARS = 24, 160
 MAX_CELL_WORDS, MAX_CELL_CHARS = 18, 120
 MIN_GROUNDED_FRACTION = 0.4              # plates paraphrase definitions; labels still use the material's words
@@ -277,8 +277,8 @@ def _v_scorecard(d: dict, e: list[str]) -> None:
             if _s(q.get("tone")).lower() not in ("gain", "loss", "neutral"):
                 e.append(f"{w}.tone must be gain | loss | neutral")
             items = q.get("items")
-            if not isinstance(items, list) or not (2 <= len(items) <= 8):
-                e.append(f"{w}.items must list 2-8 items")
+            if not isinstance(items, list) or not (2 <= len(items) <= 10):
+                e.append(f"{w}.items must list 2-10 items")
             else:
                 for j, it in enumerate(items):
                     _lab(it, e, f"{w}.items[{j}]")
@@ -646,7 +646,7 @@ PLATE_FAMILIES: dict[str, dict[str, Any]] = {
         "template": {"quadrants": [{"label": "GAINS: …", "tone": "gain|loss|neutral", "items": [{"label": "…", "note?": "…", "size": 0.9}]}],
                      "marks?": [{"quadrant": "a quadrant label", "kind": "cross|check|arrow", "label?": "…"}],
                      "links?": [{"from": "quadrant label", "to": "quadrant label", "label": "…"}]},
-        "rule": "2-4 panels of 2-8 full-clause items; tone gain|loss|neutral; size numbers 0-1",
+        "rule": "2-4 panels of 2-10 full-clause items; tone gain|loss|neutral; size numbers 0-1",
         "validate": _v_scorecard, "render": _r_scorecard,
         "grammar": [
             "A GRID of large labelled PANELS filling the whole canvas (2x2 when four, side by side when two or three), separated by thick dividing lines",
@@ -833,11 +833,41 @@ def validate_canonical(family: str, canonical: Any) -> list[str]:
     return errors
 
 
+# Per-family list caps (the family rules); a longer list keeps its largest-size items and records the rest.
+_LIST_CAPS: dict[str, dict[str, int]] = {
+    "scorecard": {"items": 10, "quadrants": 4, "marks": 6, "links": 6},
+    "framework_map": {"nodes": 7, "regions": 3, "relations": 16, "bridges": 3, "side_boxes": 4, "items": 6},
+    "flow_map": {"stations": 9, "feeds": 4, "drains": 3, "branches": 4, "steps": 4},
+    "power_map": {"actors": 16, "relations": 12},
+    "timeline_of_shifts": {"events": 16, "periods": 6, "shifts": 6, "tracks": 4},
+    "register": {"rows": 12, "columns": 10, "legend": 12},
+    "layer_stack": {"layers": 7, "items": 6},
+    "argument_tree": {"premises": 6, "evidence": 4},
+}
+
+
 def declutter_plate(canonical: dict[str, Any], family: str) -> tuple[dict[str, Any], dict[str, Any]]:
-    """v1's declutter step, done in code: dedupe exact repeats, trim over-long notes to the cap, drop the
-    lowest-size items beyond the density ceiling. Records what it changed. Never invents."""
+    """v1's declutter step, done in code: dedupe exact repeats, trim over-long notes/cells to the cap, cut
+    lists to the family's caps (keeping the largest-size items) and drop the lowest-size items beyond the
+    density ceiling. Records what it changed. Never invents."""
     report: dict[str, Any] = {"deduped": 0, "trimmed": 0, "dropped": []}
     seen: set[str] = set()
+    caps = _LIST_CAPS.get(normalize_family(family) or "", {})
+
+    def cap_list(key: Optional[str], items: list, path: str) -> list:
+        cap = caps.get(key or "")
+        if not cap or len(items) <= cap:
+            return items
+        if all(isinstance(x, dict) for x in items):
+            order = sorted(range(len(items)), key=lambda i: -(float(items[i].get("size")) if items[i].get("size") is not None else 0.5))
+            keep = sorted(order[:cap])
+            for i in range(len(items)):
+                if i not in keep:
+                    report["dropped"].append({"path": f"{path}.{key}", "label": _s(items[i].get("label") or items[i].get("title"))})
+            return [items[i] for i in keep]
+        for x in items[cap:]:
+            report["dropped"].append({"path": f"{path}.{key}", "label": _s(x)})
+        return items[:cap]
 
     def trim(text: str, cap_w: int, cap_c: int) -> str:
         words = text.split()
@@ -861,6 +891,7 @@ def declutter_plate(canonical: dict[str, Any], family: str) -> tuple[dict[str, A
         if isinstance(obj, list):
             if key == "cells":
                 return [trim(v.strip(), MAX_CELL_WORDS, MAX_CELL_CHARS) if isinstance(v, str) else v for v in obj]
+            obj = cap_list(key, obj, "")
             kept = []
             for v in obj:
                 if isinstance(v, str) and key in ("items", "feeds", "drains", "evidence", "steps"):
@@ -1084,7 +1115,8 @@ COMPLETE content model in its family's shape. The rules of the desk:
    detailed comparisons; 4 evidential: cases, examples, instances; 5 granular: quotes, data points). Each plate claims
    a territory and lists what it leaves to the others.
 2. DENSITY. A plate carries 30-90 text elements. Fill every panel, region, station and row from the material; a thin
-   plate is rejected. Prefer the concrete — named actors, cases, terms, dates, amounts, exactly as the material writes
+   plate is rejected. Respect the counts in the family's rule exactly (a longer list is cut to its largest items; a
+   shorter one is rejected). Prefer the concrete — named actors, cases, terms, dates, amounts, exactly as the material writes
    them — over abstractions. Nothing invented, nothing vague.
 3. Labels are short (at most 14 words); definitions and notes are one line (at most 24 words) and paraphrase what the
    material says about the item. Register cells at most 18 words. Titles at most 90 characters.
