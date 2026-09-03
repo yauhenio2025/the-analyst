@@ -172,7 +172,7 @@ def test_ellipsis_and_over_long_strings_are_rejected():
     c["quadrants"][0]["items"][0]["label"] = "Sovereign capability through…"
     assert any("ellipsis" in e for e in validate_canonical("scorecard", c))
     c = scorecard_canonical()
-    c["quadrants"][0]["items"][0]["label"] = " ".join(["word"] * 15)
+    c["quadrants"][0]["items"][0]["label"] = " ".join(["word"] * 21)
     assert any("label too long" in e for e in validate_canonical("scorecard", c))
     c = scorecard_canonical()
     c["quadrants"][0]["items"][0]["note"] = " ".join(["word"] * 25)
@@ -184,7 +184,8 @@ def test_leak_scan_catches_the_three_client_bugs_and_spares_prose():
     assert leak_scan("closed... truncass to 100 chars")
     assert leak_scan("badge #1e40af") == ["#1e40af"]
     assert leak_scan("weight: 3") and leak_scan("0.85 confidence")
-    assert leak_scan("300 jobs over 10 years; €976 m; 12 FTE per centre; SeaMeWe-6 at $600M; 78% strong") == []
+    assert leak_scan("300 jobs over 10 years; €976 m; 12 FTE per centre; SeaMeWe-6 at $600M; 78% strong; €1.5 billion; 2.36 MP") == []
+    assert leak_scan("importance 0.75") == ["0.75"]
 
 
 def test_size_guides_are_numbers_extracted_and_never_rendered():
@@ -219,8 +220,8 @@ def test_wall_rejects_ungrounded_and_bad_meta():
             it["label"] = f"Quantum bagel harvest on Neptune {chr(65 + qi)}{chr(65 + j)}"
     errors, grounding = validate_plate_spec(s, MATERIAL)
     assert any("ungrounded" in e for e in errors) and grounding["fraction"] < 0.4
-    s = spec(title="x" * 91)
-    assert any("max 90" in e for e in validate_plate_spec(s, MATERIAL)[0])
+    s = spec(title="x" * 111)
+    assert any("max 110" in e for e in validate_plate_spec(s, MATERIAL)[0])
     s = spec(narrative="One sentence only")
     assert any("narrative must be 3-5" in e for e in validate_plate_spec(s, MATERIAL)[0])
     s = spec(abstraction_level=9)
