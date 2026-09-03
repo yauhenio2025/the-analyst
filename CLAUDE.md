@@ -236,7 +236,7 @@ POST /v1/presenter/polish-section        # Per-section polish with user feedback
 - Change history: `docs/CHANGELOG.md` (read on demand)
 
 ## Deployment
-- **Live URL**: https://the-analyst.onrender.com (CAII workspace, created 2026-09-03). Repo: https://github.com/yauhenio2025/the-analyst (forked from analyzer-v2 @4d7bb5b).
+- **Live URL**: https://the-analyst-kcuc.onrender.com (CAII workspace, created 2026-09-03). Repo: https://github.com/yauhenio2025/the-analyst (forked from analyzer-v2 @4d7bb5b).
 - **DO NOT TOUCH** the gsi workspace (client production): analyzer-43fk, visualizer-alu5, analyzer-v2-3blo (pinned to branch `client-frozen-2026-09-03`).
 - **Auto-deploy**: push to `master` deploys the-analyst on CAII.
 - **Implementation plan**: `communications/IMPLEMENTATION_TRACKER.md` — READ FIRST. Bugs: `communications/BUG_TRACKING.md`.

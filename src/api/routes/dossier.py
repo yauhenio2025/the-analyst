@@ -10,7 +10,7 @@ POST /v1/dossier/jobs/{id}/brief           choose an option → resumes at plan
 GET  /v1/dossier/jobs/{id}/events?after=   JSON poll of the event ledger (SSE lives with the events agent)
 GET  /v1/dossier/jobs/{id}/receipts
 GET  /v1/dossier/jobs/{id}/dossier.html|pdf|md
-GET  /v1/dossier/jobs/{id}/figures/{key}.png
+GET  /v1/dossier/jobs/{id}/figures/{filename}
 POST /v1/dossier/jobs/{id}/cancel
 POST /v1/dossier/jobs/{id}/resume
 GET  /v1/dossier/exemplars
@@ -178,14 +178,15 @@ def get_md(job_id: str):
     return PlainTextResponse(_file(job, "md").read_text(encoding="utf-8"), media_type="text/markdown")
 
 
-@router.get("/jobs/{job_id}/figures/{key}.png")
-def get_figure(job_id: str, key: str):
+@router.get("/jobs/{job_id}/figures/{filename}")
+def get_figure(job_id: str, filename: str):
     from src.dossier.common import job_dir
 
-    path = job_dir(job_id) / "figures" / f"{Path(key).name}.png"
+    path = job_dir(job_id) / "figures" / Path(filename).name
     if not path.exists():
         raise HTTPException(status_code=404, detail="figure not found")
-    return FileResponse(str(path), media_type="image/png")
+    media = {".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".webp": "image/webp"}.get(path.suffix.lower(), "image/png")
+    return FileResponse(str(path), media_type=media)
 
 
 @router.post("/jobs/{job_id}/cancel")

@@ -22,12 +22,15 @@
 | Sources | stacks `POST /api/export` (uids or `view=<id>` search) → text with per-paper headers; virtual views = "bundles" | Bundles in stacks ≈ cross-entity queries in the referee (`backend/app/routers/cross_entity_triage.py`, `cross_query_studies.py`). Both resolve to a set of papers. |
 | Kering material | `oaas/communications/kering/*`, `oaas/frontend/public/{kering-backstage,kering-fourthfield,practice}.html` (all live on oaas-frontend.onrender.com) | Pitch: "follow the meaning", backstage only, no theory vocabulary for designers, do-not-say card. |
 
-## 1. Decisions (owner) — pending as of writing
+## 1. Decisions (owner) — RESOLVED 2026-09-03
 
-1. Create private GitHub repo `yauhenio2025/the-analyst` (fork of analyzer-v2 with history) + CAII services `the-analyst` (web, starter), `the-analyst-db` (Postgres basic-256mb), `the-analyst-web` (static site). ≈ $20/mo.
-2. Freeze gsi: push branch `client-frozen-2026-09-03` (= 4d7bb5b) to analyzer-v2; pin `analyzer-v2-3blo` to it (Render dashboard → Settings → Branch, or REST `PATCH /v1/services/srv-d9ph2gdbedkc73c3967g {"branch": ...}` with an API key).
+1. DONE — name is **The Analyst**; repo https://github.com/yauhenio2025/the-analyst; Postgres `the-analyst-db` (dpg-dacfn3ijnfac73cddr2g-a) + web service on CAII via mcp__render (owner's personal Render key is gsi-only).
+   ORIGINAL: Create private GitHub repo `yauhenio2025/the-analyst` (fork of analyzer-v2 with history) + CAII services `the-analyst` (web, starter), `the-analyst-db` (Postgres basic-256mb), `the-analyst-web` (static site). ≈ $20/mo.
+2. DONE — branch pushed and `analyzer-v2-3blo` pinned via REST PATCH (200) on 2026-09-03.
+   ORIGINAL: Freeze gsi: push branch `client-frozen-2026-09-03` (= 4d7bb5b) to analyzer-v2; pin `analyzer-v2-3blo` to it (Render dashboard → Settings → Branch, or REST `PATCH /v1/services/srv-d9ph2gdbedkc73c3967g {"branch": ...}` with an API key).
 3. Product working name (default: "The Analyst").
-4. Exemplar inputs (default: `oaas/communications/kering/KERING_STUDY_2026-07-19.md` + one fashion-theory article).
+4. DONE — owner wants MULTIPLE inputs per run; exemplar = 5 fashion papers from the stacks (`scratchpad/exemplars/fashion_bundle.txt`, 355K chars): Dholakia & Ziliberberg 2024, Kuang et al. 2024, Özdil & Konuralp 2025, Nassar et al. 2021, Hewitt et al. 2024 — theme: how fashion brands legitimate themselves under sustainability and platform pressure. Bundles in the stacks ≈ cross-entity queries in the referee.
+   ORIGINAL: Exemplar inputs (default: `oaas/communications/kering/KERING_STUDY_2026-07-19.md` + one fashion-theory article).
 
 ## 2. Architecture (target)
 
@@ -85,7 +88,7 @@ the-analyst/                      (fork of analyzer-v2 @4d7bb5b; prune later)
 ```
 
 analyzer-mgmt (CAII, separate repo):
-- Set `NEXT_PUBLIC_ANALYZER_V2_URL=https://the-analyst-<slug>.onrender.com` on `analyzer-mgmt-frontend`; change default in `frontend/src/lib/api.ts:84` and the 5 page-level re-declarations; commit `render.yaml`.
+- Set `NEXT_PUBLIC_ANALYZER_V2_URL=https://the-analyst-kcuc.onrender.com` on `analyzer-mgmt-frontend`; change default in `frontend/src/lib/api.ts:84` and the 5 page-level re-declarations; commit `render.yaml`.
 - Cherry-pick `c365b2c` (Plans → Jobs tab, `annotated_prose`) with client-side `plan_id` filter (executor list ignores `plan_id`, `src/api/routes/executor.py:188`).
 - Add `pages/jobs/index.tsx` (Runs) + sidebar entry; add `pages/jobs/[id]/console.tsx` = same Console component as `web/` (shared package or copied).
 

@@ -7,7 +7,6 @@ continues (the skip law: optional passes never kill the run).
 """
 from __future__ import annotations
 
-import inspect
 import logging
 import time
 from pathlib import Path
@@ -45,8 +44,10 @@ def plan_figures(job: DossierJob, n: int) -> list[FigureBrief]:
 
     opt = chosen_option(job)
     ideas = " | ".join(opt.output_shape.figures) if opt and opt.output_shape.figures else "(none)"
+    regs = known_registers()
+    reg_line = f"Allowed registers: {', '.join(regs)}\n" if regs else ""
     user = (
-        f"Plan exactly {n} figure(s).\nANGLE: {opt.title if opt else job.options.intent}\n"
+        f"Plan exactly {n} figure(s).\n{reg_line}ANGLE: {opt.title if opt else job.options.intent}\n"
         f"AUDIENCE: {job.options.audience} — {AUDIENCE_REGISTER.get(job.options.audience, '')}\n"
         f"Figure ideas from the brief: {ideas}\n\nANALYSIS PROSE (abridged):\n{analysis_prose(job, 25_000)[:60_000]}\n\n"
         f"PROFILES (abridged):\n{compact_profiles(job.profiles)[:8000]}"
@@ -64,18 +65,6 @@ def plan_figures(job: DossierJob, n: int) -> list[FigureBrief]:
     return briefs
 
 
-def _call_flex(fn, *positional, **kwargs):
-    """Call fn with only the kwargs it accepts (the images API is being written concurrently)."""
-    try:
-        sig = inspect.signature(fn)
-        accepts_var = any(p.kind == inspect.Parameter.VAR_KEYWORD for p in sig.parameters.values())
-        if not accepts_var:
-            kwargs = {k: v for k, v in kwargs.items() if k in sig.parameters}
-    except (TypeError, ValueError):
-        pass
-    return fn(*positional, **kwargs)
-
-
 def _get(obj: Any, *names: str, default=None):
     for name in names:
         if isinstance(obj, dict) and name in obj and obj[name] is not None:
@@ -85,94 +74,105 @@ def _get(obj: Any, *names: str, default=None):
     return default
 
 
-def _generate_one(job: DossierJob, brief: FigureBrief, out_dir: Path, provider: Optional[str]) -> Figure:
-    fig = Figure(**brief.model_dump())
-    started = time.time()
+def known_registers() -> list[str]:
     try:
-        from src.images.adapter import generate_image  # type: ignore
-        try:
-            from src.images.adapter import generate_with_fallback  # type: ignore
-        except Exception:
-            generate_with_fallback = None  # type: ignore
-        try:
-            from src.images.figure_prompts import build_figure_prompt  # type: ignore
-        except Exception:
-            build_figure_prompt = None  # type: ignore
-        try:
-            from src.images.storage import save_figure  # type: ignore
-        except Exception:
-            save_figure = None  # type: ignore
-        try:
-            from src.images.compliance import check_figure  # type: ignore
-        except Exception:
-            check_figure = None  # type: ignore
-    except Exception as exc:
-        fig.status = "skipped"
-        fig.note = f"images modules unavailable: {exc}"
-        return fig
+        from src.images.figure_prompts import REGISTERS  # type: ignore
 
-    prompt = brief.scene
-    if build_figure_prompt is not None:
-        try:
-            built = _call_flex(build_figure_prompt, brief.scene, scene=brief.scene, caption=brief.caption,
-                               register=brief.visual_register, style=brief.visual_register, no_text=True)
-            prompt = str(_get(built, "prompt", "text", default=built) or brief.scene)
-        except Exception as exc:
-            events.emit(job.id, "note", phase=STEP, detail=f"{brief.key}: build_figure_prompt failed ({exc}); using the scene as prompt")
+        return sorted(REGISTERS)
+    except Exception:
+        return []
+
+
+def _coerce_register(value: str) -> str:
+    regs = known_registers()
+    if not regs:
+        return value
+    v = (value or "").strip().lower().replace(" ", "_")
+    if v in regs:
+        return v
+    for r in regs:
+        if r in v or v in r:
+            return r
+    try:
+        from src.images.figure_prompts import DEFAULT_REGISTER  # type: ignore
+
+        return DEFAULT_REGISTER
+    except Exception:
+        return regs[0]
+
+
+def _generate_one(job: DossierJob, brief: FigureBrief, out_dir: Path, provider: Optional[str]) -> Figure:
+    """One figure through the images contract: build prompt → generate (with fallback) → save → compliance."""
+    from src.images.adapter import generate_image, generate_with_fallback
+    from src.images.compliance import check_figure
+    from src.images.figure_prompts import build_figure_prompt
+    from src.images.storage import figure_url, save_figure
+
+    fig = Figure(**brief.model_dump())
+    register = _coerce_register(brief.visual_register)
+    fig.visual_register = register
+    try:
+        prompt = build_figure_prompt(brief.scene, register=register, caption=brief.caption, no_text=True, aspect="16:9")
+    except Exception as exc:
+        events.emit(job.id, "note", phase=STEP, detail=f"{brief.key}: build_figure_prompt failed ({exc}); using the scene as prompt")
+        prompt = brief.scene
     fig.prompt = prompt
 
-    events.emit(job.id, "call_started", phase=STEP, model=provider or "images.default", label=f"figure {brief.key}",
-                detail=f"rendering figure {brief.key} ({brief.visual_register})", prompt_excerpt=events.excerpt(prompt, 400))
-    gen = generate_with_fallback if generate_with_fallback is not None else generate_image
-    result = _call_flex(gen, prompt, prompt=prompt, provider=provider, size="2K", aspect="16:9", no_text=True)
+    label = f"figure {brief.key}"
+    events.emit(job.id, "call_started", phase=STEP, model=provider or "images.fallback_chain", label=label,
+                detail=f"rendering {brief.key} as {register} (2K, 16:9, no text)", prompt_excerpt=events.excerpt(prompt, 500))
+    started = time.time()
+    if provider:
+        result = generate_image(prompt, provider=provider, size="2K", aspect="16:9", no_text=True)
+    else:
+        result = generate_with_fallback(prompt, size="2K", aspect="16:9", no_text=True)
     duration_ms = int((time.time() - started) * 1000)
 
-    provider_used = str(_get(result, "provider", "provider_key", default=provider or "") or provider or "")
-    cost = float(_get(result, "cost_usd", "cost", default=0.0) or 0.0)
+    image_bytes: bytes = _get(result, "image_bytes", default=b"") or b""
+    mime = str(_get(result, "mime_type", default="image/png") or "image/png")
+    provider_used = str(_get(result, "provider", default=provider or "") or "")
+    model_used = str(_get(result, "model", default="") or "")
+    cost = float(_get(result, "cost_usd", default=0.0) or 0.0)
+    if not image_bytes:
+        raise RuntimeError("image provider returned no bytes")
+
+    compliance = None
+    try:
+        compliance = check_figure(image_bytes, f"{brief.caption}\nScene: {brief.scene}", no_text=True)
+    except Exception as exc:
+        compliance = {"ok": None, "checked": False, "issues": [f"check failed: {exc}"]}
+
+    meta = {"prompt": brief.scene, "prompt_sent": prompt, "provider": provider_used, "model": model_used,
+            "cost_usd": cost, "size": "2K", "aspect": "16:9", "caption": brief.caption, "register": register,
+            "scene": brief.scene, "compliance": compliance, "latency_ms": duration_ms, "dossier_job_id": job.id}
+    figure_id = None
+    try:
+        figure_id = save_figure(image_bytes, mime, job_id=job.id, name=brief.key, meta=meta)
+        fig.url = figure_url(figure_id)
+    except Exception as exc:
+        events.emit(job.id, "note", phase=STEP, detail=f"{brief.key}: save_figure failed ({exc}); keeping the local copy only")
+    ext = {"image/jpeg": "jpg", "image/webp": "webp"}.get(mime, "png")
+    local = out_dir / f"{brief.key}.{ext}"
+    local.write_bytes(image_bytes)
+    fig.figure_id = figure_id
+    fig.path = str(local)
+    fig.url = fig.url or f"/v1/dossier/jobs/{job.id}/figures/{local.name}"
     fig.provider = provider_used or None
     fig.cost_usd = cost
-    fig.figure_id = _get(result, "figure_id", "id")
-    fig.url = _get(result, "url")
-    fig.path = _get(result, "path")
-
-    image_bytes = _get(result, "bytes", "image_bytes", "data")
-    if isinstance(result, (bytes, bytearray)):
-        image_bytes = bytes(result)
-    if save_figure is not None and image_bytes:
-        try:
-            saved = _call_flex(save_figure, image_bytes, image_bytes=image_bytes, data=image_bytes, job_id=job.id,
-                               key=brief.key, figure_key=brief.key, caption=brief.caption, provider=provider_used, prompt=prompt)
-            fig.figure_id = _get(saved, "figure_id", "id", default=fig.figure_id)
-            fig.url = _get(saved, "url", default=fig.url)
-            fig.path = _get(saved, "path", default=fig.path)
-        except Exception as exc:
-            events.emit(job.id, "note", phase=STEP, detail=f"{brief.key}: save_figure failed ({exc}); saving locally")
-    local = out_dir / f"{brief.key}.png"
-    if image_bytes:
-        local.write_bytes(image_bytes)
-        fig.path = fig.path or str(local)
-    elif fig.path and Path(fig.path).exists():
-        local.write_bytes(Path(fig.path).read_bytes())
-    if not local.exists():
-        raise RuntimeError("image generation returned no bytes and no readable path")
-    fig.path = str(local)
-    if not fig.url:
-        fig.url = f"/v1/dossier/jobs/{job.id}/figures/{brief.key}.png"
-
-    if check_figure is not None:
-        try:
-            verdict = _call_flex(check_figure, str(local), path=str(local), image_path=str(local), image_bytes=local.read_bytes(),
-                                 prompt=prompt, caption=brief.caption, no_text=True)
-            fig.compliance = verdict if isinstance(verdict, dict) else {"verdict": str(_get(verdict, "verdict", "ok", default=verdict))}
-        except Exception as exc:
-            fig.compliance = {"error": str(exc)}
+    fig.compliance = compliance
     fig.status = "generated"
-    record(job.id, make_receipt(step=STEP, kind="image", model=provider_used or "image", label=f"figure {brief.key}",
+    if isinstance(compliance, dict) and compliance.get("checked") and compliance.get("ok") is False:
+        fig.note = "compliance: " + "; ".join(str(i) for i in compliance.get("issues", [])[:3])
+
+    record(job.id, make_receipt(step=STEP, kind="image", model=model_used or provider_used or "image", label=label,
                                 duration_ms=duration_ms, prompt_text=prompt, cost_usd=cost))
-    events.emit(job.id, "call_finished", phase=STEP, model=provider_used or "image", label=f"figure {brief.key}",
-                cost_usd=cost, duration_ms=duration_ms, detail=f"figure {brief.key} rendered by {provider_used or 'image provider'} (${cost:.3f})")
+    events.emit(job.id, "call_finished", phase=STEP, model=model_used or provider_used, label=label, cost_usd=cost,
+                duration_ms=duration_ms, detail=f"{brief.key} rendered by {provider_used} in {duration_ms/1000:.0f}s (${cost:.3f})"
+                + (f" — compliance issues: {fig.note}" if fig.note else ""),
+                payload_json={"figure_id": figure_id, "compliance": compliance})
     events.emit(job.id, "artifact", phase=STEP, detail=f"figure {brief.key}: {brief.caption[:120]}",
-                payload_json={"kind": "figure", "key": brief.key, "url": fig.url, "path": fig.path, "figure_id": fig.figure_id, "provider": provider_used})
+                payload_json={"kind": "figure", "key": brief.key, "url": fig.url, "path": fig.path,
+                              "figure_id": figure_id, "provider": provider_used, "cost_usd": cost})
     return fig
 
 

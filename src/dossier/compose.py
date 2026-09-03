@@ -230,7 +230,7 @@ def _table_ctx(t, index: int, footnote) -> dict:
 def _figure_ctx(f, index: int, figure_src: str) -> dict:
     src = None
     if f.status == "generated" and f.path:
-        src = figure_src.format(key=f.key)
+        src = figure_src.format(key=f.key, name=Path(f.path).name)
     return {"index": index, "key": f.key, "caption": f.caption, "src": src, "status": f.status, "note": f.note}
 
 
@@ -262,14 +262,14 @@ def _steps_ctx(job: DossierJob) -> list[dict]:
     return out
 
 
-def render_html(job: DossierJob, docs: list[Document], figure_src: str = "figures/{key}.png") -> str:
+def render_html(job: DossierJob, docs: list[Document], figure_src: str = "figures/{name}") -> str:
     env = Environment(loader=FileSystemLoader(str(TEMPLATES_DIR)), autoescape=select_autoescape(["html", "j2"]))
     tpl = env.get_template("dossier.html.j2")
     return tpl.render(**_render_context(job, docs, figure_src))
 
 
 def render_markdown(job: DossierJob, docs: list[Document]) -> str:
-    ctx = _render_context(job, docs, "figures/{key}.png")
+    ctx = _render_context(job, docs, "figures/{name}")
     s = ctx["s"]
     lines = [f"# {s['title']}", ""]
     if s["subtitle"]:
