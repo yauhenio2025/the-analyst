@@ -50,7 +50,7 @@ MAX_RENDER_ATTEMPTS = 2                  # first render + one revision (v1's ret
 MAX_PLATES = 3
 MIN_TEXT_ELEMENTS = 16                   # below this it is a figure, not a plate
 MAX_TEXT_ELEMENTS = 110
-MAX_TITLE_CHARS = 110
+MAX_TITLE_CHARS = 120   # two lines at 4K
 MAX_LABEL_WORDS, MAX_LABEL_CHARS = 24, 170   # plate_a's items are full clauses; one line of a panel
 MAX_NOTE_WORDS, MAX_NOTE_CHARS = 24, 160
 MAX_CELL_WORDS, MAX_CELL_CHARS = 16, 110
@@ -1133,7 +1133,7 @@ COMPLETE content model in its family's shape. The rules of the desk:
    them — over abstractions. Nothing invented, nothing vague.
 3. Labels are statements of at most 24 words (panel items, station claims and premises are full clauses; node titles,
    headers and badges are short); definitions and notes are one line (at most 24 words) and paraphrase what the
-   material says about the item. Register cells at most 18 words. Titles at most 110 characters.
+   material says about the item. Register cells at most 16 words. Titles at most 120 characters.
 4. Sizes, positions and strengths are NUMBERS between 0 and 1 in the `size`/`x`/`y`/`strength` keys — never inside a
    label. NEVER put numbers, scores, brackets, colour codes or instructions inside any printed string; never end a
    string with an ellipsis; never write snake_case in printed text.

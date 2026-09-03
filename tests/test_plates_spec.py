@@ -220,8 +220,8 @@ def test_wall_rejects_ungrounded_and_bad_meta():
             it["label"] = f"Quantum bagel harvest on Neptune {chr(65 + qi)}{chr(65 + j)}"
     errors, grounding = validate_plate_spec(s, MATERIAL)
     assert any("ungrounded" in e for e in errors) and grounding["fraction"] < 0.4
-    s = spec(title="x" * 111)
-    assert any("max 110" in e for e in validate_plate_spec(s, MATERIAL)[0])
+    s = spec(title="x" * 121)
+    assert any("max 120" in e for e in validate_plate_spec(s, MATERIAL)[0])
     s = spec(narrative="One sentence only")
     assert any("narrative must be 3-5" in e for e in validate_plate_spec(s, MATERIAL)[0])
     s = spec(abstraction_level=9)
