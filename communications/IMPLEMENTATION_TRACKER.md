@@ -138,3 +138,39 @@ GET  /v1/figures/{figure_id}
 - Never push to analyzer-v2 `master`. gsi services untouched. New services carry their own DB, keys, `API_KEYS` consumer id.
 - `curl https://analyzer-v2-3blo.onrender.com/v1/engines/inferential_commitment_mapper/extraction-prompt | wc -c` = 31,437 before/after.
 - MCP tool names/params in `visualizer/mcp_server/mcp_server.py` unchanged (we do not touch visualizer).
+
+---
+
+## 6. SESSION HANDOFF — 2026-09-03 (written mid-build; next session starts here)
+
+**Read also:** the memory files `render-workspaces-and-machines` and `the-analyst-project` (Claude memory), and `communications/changes/*.md` (per-agent change notes).
+
+### Done (verified)
+- gsi `analyzer-v2-3blo` pinned to branch `client-frozen-2026-09-03` (client production frozen). NEVER push to analyzer-v2 master.
+- Repo `yauhenio2025/the-analyst` (public for now — Render GitHub app on CAII only sees selected repos; add it in GitHub → Settings → Applications → Render, then flip back to private).
+- CAII services: web `the-analyst` https://the-analyst-kcuc.onrender.com (srv-dacfq315efls73e9hohg, auto-deploys master, env vars set incl. corrected ANTHROPIC_API_KEY, FIGURES_DIR, DOSSIER_DIR); Postgres `the-analyst-db` (dpg-dacfn3ijnfac73cddr2g-a) — **EXECUTOR_DATABASE_URL NOT YET SET** (need the Internal Database URL from the Render dashboard or a CAII workspace API key; until then SQLite on ephemeral disk → runs vanish on redeploy).
+- analyzer-mgmt-frontend (CAII) env `NEXT_PUBLIC_ANALYZER_V2_URL=https://the-analyst-kcuc.onrender.com` set and rebuilt → Engines page loads 207 engines (verified with Playwright). Its master still has the dead default in code; branch `feat/the-analyst-console` (in `~/projects/_study/analyzer-mgmt-master`) fixes the default and adds Runs + Run Console.
+- `feat/images` MERGED into master: `src/images/*`, `/v1/figures/*`, tests (31 pass), samples in `communications/changes/images-samples/`. Providers live-tested: gemini_pro ($0.13, 33 s), seedream_5_pro ($0.06, 66 s), gemini_flash, qwen_image_2_pro.
+- Exemplars staged (NOT in git): five-paper fashion bundle + Kering study, see the-analyst-project memory; the dossier agent also keeps a copy under `data/exemplars/` in its worktree.
+
+### In flight at handoff (branches, merge in this order)
+1. `feat/events` (worktree `~/projects/the-analyst-wt/events`): run_events table + `src/events/{store,schemas,pricing,context,narrator}.py`, hooks in engine_runner/chain_runner/workflow_runner, `/v1/events/{job}`, `/summary`, `/stream` (SSE) + executor aliases. Sample run job-plan-d87b85c590db; transcript `communications/changes/events-sample.jsonl`.
+2. `feat/dossier` (worktree `.../dossier`): `src/dossier/*`, `src/sources/*`, `/v1/dossier/*`, workflow `dossier_standard`. First full run on the bundle: reconnaissance 158 s/$0.38 (29/35 claims verified), brief 43 s/$0.05 (autopilot chose "Where Your Sustainability Claims Will Be Challenged"), then plan → executor analysis → tables → figures → compose.
+3. `feat/web` (worktree `.../web`): `web/` Vite+React front end (Library, 4 steps, /console/:id), mock mode `VITE_MOCK=1`, screenshots in `web/docs/screens/`.
+4. analyzer-mgmt `feat/the-analyst-console` (push to origin analyzer-mgmt; merging to master auto-deploys the live console — verify first).
+
+### Merge recipe
+```
+cd ~/projects/the-analyst && git fetch origin
+git merge --no-edit origin/feat/events && git merge --no-edit origin/feat/dossier && git merge --no-edit origin/feat/web
+# conflicts expected only in requirements.txt / src/api/main.py include lines — keep both
+source ~/projects/analyzer-v2/venv/bin/activate && pip install -r requirements.txt -q
+python -c "from src.api.main import app" && python -m pytest tests/test_events_store.py tests/test_images_storage.py tests/test_figure_prompts.py tests/test_sources_split.py tests/test_dossier_tables_wall.py -q
+git push origin master   # deploys the-analyst
+```
+Then: fold `communications/changes/*.md` into docs/CHANGELOG.md + docs/FEATURES.md; create the CAII static site for `web/` (mcp__render create_static_site: repo the-analyst, build `cd web && npm ci && npm run build`, publish `web/dist`, env VITE_API_BASE=https://the-analyst-kcuc.onrender.com); set EXECUTOR_DATABASE_URL; run the exemplar bundle at depth medium on the live service (pre-baked demo run) + the Kering study at depth simple (fast live run); merge the console branch and verify Runs/Console against a live job.
+
+### Demo checklist (2026-09-04)
+1. Library → exemplar bundle card → brief (3 angles) → draft waiting screen narrated live (fast run on the Kering study, depth simple) → dossier with tables + figures → PDF.
+2. Console (`/console/{job}` in the web app, or analyzer-mgmt Runs → Run Console) on the pre-baked medium run: phase tree, prompt|output per pass, cost meter, planner rationale, executive view.
+3. Wirecut first, then The Analyst: same four-step skeleton.
