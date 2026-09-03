@@ -434,3 +434,181 @@ def declutter_scene(
     except Exception as exc:  # noqa: BLE001 — declutter is best-effort by design
         logger.warning("declutter_failed", extra={"error": str(exc)[:300]})
         return scene
+
+
+# ---------------------------------------------------------------------------
+# Diagram prompts — The Analyst's figure step (labelled analytical diagrams)
+#
+# Assembled in analyzer v1's order (gemini_image.py render(): format enforcement
+# block → style guide directive → content → final layout reminder), with the
+# labelled data spelled out from the FigureSpec so the image model has nothing
+# to invent. `build_figure_prompt` above is the old scene/register register and
+# is NOT used by the dossier's figure step any more.
+# ---------------------------------------------------------------------------
+
+DIAGRAM_CLOSER = (
+    "A single clean diagram on a plain background — no scenery, no metaphors, "
+    "no photographs, no 3D objects."
+)
+
+DIAGRAM_TEXT_RULES = [
+    "Every label at least 14pt-equivalent; titles larger; nothing that needs zooming",
+    "High contrast with its background (≥ 4.5:1); dark on light OR light on dark",
+    "Each label on a clean area, never overlapping a line, an arrow or another label",
+    "Only the words in the CONTENT block and the TITLE — invent no other words, names, dates or numbers",
+    "Spell every label exactly as written; never abbreviate, never paraphrase, never garble",
+    "No underscores or snake_case in visible text; Title Case for labels",
+    "Never print raw decimals, weights or scores (0.85, 'weight: 3'); encode them visually (position, width, size)",
+    "No logos, bylines, source lines, credits, watermarks, dates or publication marks",
+    "No subtitle, no callout boxes, no 'insight' / 'conclusion' / 'key finding' notes, no explanatory sentences: "
+    "the ONLY text in the image is the title and the content labels",
+    "Never print coordinates, positions, percentages, widths or sizes next to items — placement instructions in "
+    "the content (left/right, top/bottom, thick/thin, large/small) are for you, not for the reader",
+]
+
+# Lines in a school's gemini_modifiers that would pull a diagram back toward illustration.
+_STYLE_LINE_DROP = ("metaphor", "dramatic", "lighting", "attribution", "social media", "byline",
+                    "source", "fill the frame", "logo", "line chart", "photograph", "hang on a wall",
+                    "headline", "annotation", "callout", "teaching", "how to read", "narrative", "subtitle",
+                    "insight", "call to action", "position", "urgency", "small multiples")
+
+
+def style_for_school(school: str | None) -> dict[str, Any]:
+    """Style dict (for build_style_override / build_style_closing) from a style school
+    in src/styles: palette, typography, register, filtered gemini_modifiers."""
+    if not school:
+        return {}
+    try:
+        from src.styles.registry import get_style_registry
+        from src.styles.schemas import StyleSchool
+
+        guide = get_style_registry().get_style(StyleSchool(str(school)))
+    except Exception as exc:  # unknown school or registry unavailable: no style, not a failure
+        logger.info("style_school_unavailable", extra={"school": school, "error": str(exc)[:200]})
+        return {}
+    if guide is None:
+        return {}
+    pal, typ = guide.color_palette, guide.typography
+    modifiers = [ln.strip() for ln in (guide.gemini_modifiers or "").splitlines()
+                 if ln.strip() and not any(w in ln.lower() for w in _STYLE_LINE_DROP)]
+    principles = [p for p in guide.layout_principles if not any(w in p.lower() for w in _STYLE_LINE_DROP)]
+    palette_desc = "\n".join(modifiers[:14])
+    series = list(pal.series_palette or []) or [c for c in (pal.primary, pal.accent, pal.accent_alt, pal.positive,
+                                                            pal.highlight, pal.secondary, pal.negative) if c]
+    palette_desc += ("\nCATEGORICAL COLORS (use these, in order, to color-code the diagram's groups, ribbons, "
+                     "boxes or series — a diagram must never be monochrome): " + ", ".join(series[:7]))
+    if principles:
+        palette_desc += "\nLayout principles: " + "; ".join(principles[:8])
+    layout_text = " ".join(guide.layout_principles).lower()
+    style: dict[str, Any] = {
+        "background": pal.background,
+        "primary_color": pal.primary,
+        "accent_color": pal.accent,
+        "secondary_accent": pal.secondary,
+        "text_color": pal.text,
+        "typography": (f"titles in {typ.title_font}; labels in {typ.primary_font}; "
+                       f"title weight {typ.title_weight}; every label >= 14pt equivalent"),
+        "register": f"{guide.name}: {guide.philosophy.split('.')[0].strip()}.",
+        "palette_description": palette_desc,
+        "no_shadows": "no shadows" in layout_text or "no 3d" in layout_text,
+        "no_gradients": "no gradients" in layout_text or "no shadows or gradients" in layout_text,
+        "forbidden": ["pictorial metaphors, scenery, objects or characters standing in for the data",
+                      "dramatic lighting, glows, lens effects, textures that reduce label contrast",
+                      "subtitles, callout boxes, 'insight'/'conclusion'/'pattern' notes, explanatory sentences — "
+                      "the only text is the title and the content labels"],
+        "school": str(school),
+    }
+    return style
+
+
+def _spec_dict(spec: Any) -> dict[str, Any]:
+    if hasattr(spec, "model_dump"):
+        return spec.model_dump()
+    if isinstance(spec, dict):
+        return spec
+    raise TypeError("spec must be a FigureSpec or a dict")
+
+
+def build_diagram_prompt(
+    spec: Any,
+    *,
+    style_school: str | None = None,
+    aspect: str | None = None,
+    revision_notes: list[str] | str | None = None,
+) -> str:
+    """Compose the prompt for one labelled analytical diagram from a FigureSpec (or dict).
+
+    Order (v1's): format enforcement block (must_have / must_not / GLOBAL_PROHIBITIONS /
+    legibility) → style-school directive (MANDATORY STYLE OVERRIDE) → the labelled data
+    spelled out + label manifest → title placement → text rules → aspect → revision
+    notes (retry) → closing sentence → style closing (recency).
+    """
+    from src.display.enforcement import (
+        aspect_for, collect_labels, enforcement_block, format_entry, normalize_format_key,
+        render_data, validate_data,
+    )
+
+    d = _spec_dict(spec)
+    fmt = normalize_format_key(str(d.get("visual_format") or ""))
+    if fmt is None:
+        raise ValueError(f"unknown visual_format {d.get('visual_format')!r}")
+    entry = format_entry(fmt)
+    title = str(d.get("title") or "").strip()
+    if not title:
+        raise ValueError("spec.title is required (it is rendered)")
+    data = d.get("data") or {}
+    errors = validate_data(fmt, data)
+    if errors:
+        raise ValueError("spec.data does not fit the format: " + "; ".join(errors[:5]))
+    labels = collect_labels(data)
+    aspect = aspect or d.get("aspect") or aspect_for(fmt)
+    school = style_school or d.get("style_school") or None
+    style = style_for_school(school)
+
+    parts: list[str] = [
+        f"Create a {entry['name'].upper()} — a single, clean, LABELLED ANALYTICAL DIAGRAM. Its title is: {title}",
+        "It is a data visualization of the CONTENT below, the kind a consulting deck or a newspaper graphics "
+        "desk would publish: flat shapes, lines, arrows and text. It is NOT a picture, a scene, an object or a metaphor.",
+        enforcement_block(fmt).strip(),
+        "",
+    ]
+    if style:
+        parts.append(build_style_override(style).rstrip())
+        parts.append(f"STYLE SCHOOL: {school} (the palette/typography above). Apply it to a DIAGRAM: colors on boxes, "
+                     "arrows, bands and labels — never as illustration.")
+        parts.append("")
+    parts.append("CONTENT TO RENDER (this is the ENTIRE content of the diagram — render every label exactly as "
+                 "written, spelled exactly, and invent no other words, names, numbers or dates):")
+    parts.append(render_data(fmt, data))
+    parts.append("")
+    parts.append(f"LABEL MANIFEST — each of these {len(labels)} strings must appear exactly once, legibly, spelled as written:")
+    parts.extend(f"  • {lab}" for lab in labels)
+    parts.append("")
+    parts.append(f"TITLE (render exactly this text once, at the top, larger than any other text, WITHOUT quotation "
+                 f"marks around it): {title}")
+    parts.append("Under the title: nothing. No subtitle, no byline, no source line, no logo, no watermark, no page furniture.")
+    caption = str(d.get("caption") or "").strip()
+    if caption:
+        parts.append(f"CONTEXT (do NOT render this): the caption printed under the figure will say — “{caption}”. "
+                     "Use it only to understand what the diagram must make visible.")
+    parts.append("")
+    parts.append("TEXT RULES:")
+    parts.extend(f"  ✓ {r}" for r in DIAGRAM_TEXT_RULES)
+    parts.append("")
+    parts.append(f"FRAME: compose for a {aspect} aspect ratio; the diagram fills the frame with even margins; "
+                 "nothing is cropped at the edges.")
+    notes = revision_notes
+    if isinstance(notes, str):
+        notes = [notes]
+    notes = [str(n).strip() for n in (notes or []) if str(n).strip()]
+    if notes:
+        parts.append("")
+        parts.append("REVISION NOTES from the reviewer of the previous attempt — fix ALL of these:")
+        parts.extend(f"  ! {n}" for n in notes)
+    parts.append("")
+    parts.append(DIAGRAM_CLOSER)
+    parts.append(f"FINAL REMINDER: LAYOUT IS MANDATORY. You MUST use the {entry['name'].upper()} layout as specified "
+                 "above. DO NOT substitute a generic network diagram, a freestyle chart or an illustration.")
+    if style:
+        parts.append(build_style_closing(style).rstrip())
+    return "\n".join(parts).strip() + "\n"

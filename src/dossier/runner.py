@@ -29,7 +29,7 @@ STEP_WHY = {
     "plan": "Turning the chosen angle into an ordered sequence of executable engines, so each phase feeds the next with context.",
     "analysis": "Running the engines through the executor: multi-pass analysis where every phase reads the previous phases' prose.",
     "tables": "Condensing the analysis into evidence tables whose every row is pinned to a verbatim passage.",
-    "figures": "Planning figures as depictable scenes and rendering them, so the dossier carries images that mean something.",
+    "figures": "Planning figures as labelled analytical diagrams — primitive, format, exact labels from the analysis — then rendering and checking them.",
     "compose": "Writing the dossier for the audience with footnoted anchors, then rendering HTML, PDF and Markdown.",
     "receipts": "Totalling every call so the cost and the method are on the record.",
 }

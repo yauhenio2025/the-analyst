@@ -1,0 +1,369 @@
+{
+  "spec": {
+    "key": "beneficiary_flow_web",
+    "primitive": "flow_transformation",
+    "visual_format": "sankey_diagram",
+    "title": "State Funds to Named Corporate Beneficiaries: Five Cases",
+    "data": {
+      "nodes": [
+        {
+          "label": "Government Announcement",
+          "stage": "source"
+        },
+        {
+          "label": "AUKUS / Australia",
+          "stage": "case"
+        },
+        {
+          "label": "Greece / Microsoft",
+          "stage": "case"
+        },
+        {
+          "label": "France / ASN",
+          "stage": "case"
+        },
+        {
+          "label": "Canada / BDC",
+          "stage": "case"
+        },
+        {
+          "label": "US / SeaMeWe-6",
+          "stage": "case"
+        },
+        {
+          "label": "Lockheed Martin",
+          "stage": "beneficiary"
+        },
+        {
+          "label": "Raytheon",
+          "stage": "beneficiary"
+        },
+        {
+          "label": "Hanwha Aerospace",
+          "stage": "beneficiary"
+        },
+        {
+          "label": "Andreessen Horowitz",
+          "stage": "beneficiary"
+        },
+        {
+          "label": "Microsoft",
+          "stage": "beneficiary"
+        },
+        {
+          "label": "ASN / Orange Marine",
+          "stage": "beneficiary"
+        },
+        {
+          "label": "BDC / Pension Funds",
+          "stage": "beneficiary"
+        },
+        {
+          "label": "SubCom",
+          "stage": "beneficiary"
+        },
+        {
+          "label": "HMN Tech excluded",
+          "stage": "beneficiary"
+        }
+      ],
+      "flows": [
+        {
+          "source": "Government Announcement",
+          "target": "AUKUS / Australia",
+          "weight": 5
+        },
+        {
+          "source": "Government Announcement",
+          "target": "Greece / Microsoft",
+          "weight": 3
+        },
+        {
+          "source": "Government Announcement",
+          "target": "France / ASN",
+          "weight": 3
+        },
+        {
+          "source": "Government Announcement",
+          "target": "Canada / BDC",
+          "weight": 2
+        },
+        {
+          "source": "Government Announcement",
+          "target": "US / SeaMeWe-6",
+          "weight": 3
+        },
+        {
+          "source": "AUKUS / Australia",
+          "target": "Lockheed Martin",
+          "weight": 3
+        },
+        {
+          "source": "AUKUS / Australia",
+          "target": "Raytheon",
+          "weight": 2
+        },
+        {
+          "source": "AUKUS / Australia",
+          "target": "Hanwha Aerospace",
+          "weight": 2
+        },
+        {
+          "source": "AUKUS / Australia",
+          "target": "Andreessen Horowitz",
+          "weight": 1
+        },
+        {
+          "source": "Greece / Microsoft",
+          "target": "Microsoft",
+          "weight": 3
+        },
+        {
+          "source": "France / ASN",
+          "target": "ASN / Orange Marine",
+          "weight": 3
+        },
+        {
+          "source": "Canada / BDC",
+          "target": "BDC / Pension Funds",
+          "weight": 2
+        },
+        {
+          "source": "US / SeaMeWe-6",
+          "target": "SubCom",
+          "weight": 3
+        },
+        {
+          "source": "US / SeaMeWe-6",
+          "target": "HMN Tech excluded",
+          "weight": 1
+        }
+      ]
+    },
+    "caption": "In every case a government announcement routes state-backed resources to a narrow set of named corporations; HMN Tech is the sole named loser, confirming the template selects as well as excludes.",
+    "why_this_format": "Sankey ribbons make the directional flow from announcement to named firm visible at a glance, and ribbon width signals relative scale of benefit — exactly the bundling-and-routing structure the analysis describes.",
+    "style_school": "explanatory_narrative",
+    "anchors": [
+      {
+        "label": "Lockheed Martin",
+        "quote": "Lockheed Martin and Raytheon as GWEO Enterprise partners",
+        "source": "analysis",
+        "verified": true
+      },
+      {
+        "label": "Andreessen Horowitz",
+        "quote": "Andreessen Horowitz",
+        "source": "table",
+        "verified": true
+      },
+      {
+        "label": "Microsoft",
+        "quote": "Microsoft (€976 m investment, vendor lock-in, proprietary ecosystem)",
+        "source": "table",
+        "verified": true
+      },
+      {
+        "label": "ASN / Orange Marine",
+        "quote": "ASN (acquired by state at €350 m); Orange Marine; French cable manufacturing monopoly",
+        "source": "table",
+        "verified": true
+      },
+      {
+        "label": "BDC / Pension Funds",
+        "quote": "Pension funds, corporations, high-net-worth individuals as dominant co-investors",
+        "source": "table",
+        "verified": true
+      },
+      {
+        "label": "SubCom",
+        "quote": "SubCom (US firm) wins contract via Export-Import Bank financing after HMN Tech excluded",
+        "source": "table",
+        "verified": true
+      },
+      {
+        "label": "HMN Tech excluded",
+        "quote": "HMN Tech added to Entity List; China built rival PEACE/EMA cables duplicating the route",
+        "source": "table",
+        "verified": true
+      }
+    ],
+    "scene": "",
+    "visual_register": "diagram"
+  },
+  "grounding": {
+    "checked": true,
+    "labels": 15,
+    "content_labels": 15,
+    "grounded": 15,
+    "ungrounded": [],
+    "anchors": 7,
+    "anchors_verified": 7,
+    "anchors_failed": [],
+    "fraction": 1.0
+  },
+  "compliance": {
+    "ok": true,
+    "format_ok": true,
+    "detected_format": "Sankey flow diagram with labeled ribbons",
+    "title_found": true,
+    "labels_found": [
+      "Government Announcement",
+      "AUKUS / Australia",
+      "Greece / Microsoft",
+      "France / ASN",
+      "Canada / BDC",
+      "US / SeaMeWe-6",
+      "Lockheed Martin",
+      "Raytheon",
+      "Hanwha Aerospace",
+      "Andreessen Horowitz",
+      "Microsoft",
+      "ASN / Orange Marine",
+      "BDC / Pension Funds",
+      "SubCom",
+      "HMN Tech excluded"
+    ],
+    "labels_missing": [],
+    "misspelled": [],
+    "illegible": [],
+    "prohibited_elements": [],
+    "extra_text": [],
+    "suggestion": null,
+    "confidence": "high",
+    "checked": true,
+    "model": "claude-sonnet-4-6",
+    "usage": {
+      "input_tokens": 2177,
+      "output_tokens": 244
+    },
+    "n_labels": 15,
+    "issues": []
+  },
+  "attempts": [
+    {
+      "n": 1,
+      "provider": "gemini_pro",
+      "model": "gemini-3-pro-image-preview",
+      "cost_usd": 0.134,
+      "latency_ms": 33190,
+      "figure_id": "sample3-state-beneficiary_flow_web-f185b0b9",
+      "path": "/tmp/claude-1000/-home-evgeny-projects-analyzer-v2/c3ccd66a-e026-4364-8160-b94fc72687a6/scratchpad/diag/state/r2/beneficiary_flow_web.jpg",
+      "prompt_chars": 12243,
+      "compliance": {
+        "ok": false,
+        "format_ok": true,
+        "detected_format": "Sankey flow diagram with flowing ribbons left to right",
+        "title_found": true,
+        "labels_found": [
+          "Government Announcement",
+          "AUKUS / Australia",
+          "France / ASN",
+          "Canada / BDC",
+          "US / SeaMeWe-6",
+          "Lockheed Martin",
+          "Raytheon",
+          "Hanwha Aerospace",
+          "Andreessen Horowitz",
+          "Microsoft",
+          "ASN / Orange Marine",
+          "BDC / Pension Funds",
+          "SubCom",
+          "HMN Tech excluded"
+        ],
+        "labels_missing": [
+          "Greece / Microsoft"
+        ],
+        "misspelled": [
+          {
+            "expected": "Greece / Microsoft",
+            "seen": "Greece (separate node) and Microsoft (separate node)"
+          },
+          {
+            "expected": "US / SeaMeWe-6",
+            "seen": "/SeaMeWe-6 (with US as separate label)"
+          }
+        ],
+        "illegible": [],
+        "prohibited_elements": [],
+        "extra_text": [
+          "Microsoft (appears as intermediate node label separately from Greece)"
+        ],
+        "suggestion": "Merge the Greece and Microsoft intermediate node labels into a single combined label 'Greece / Microsoft' to match the required label exactly, rather than showing them as separate text elements.",
+        "confidence": "high",
+        "checked": true,
+        "model": "claude-sonnet-4-6",
+        "usage": {
+          "input_tokens": 2177,
+          "output_tokens": 368
+        },
+        "n_labels": 15,
+        "issues": [
+          "1 label(s) missing: Greece / Microsoft",
+          "2 misspelled: Greece / Microsoft→Greece (separate node) and Microsoft (separate node); US / SeaMeWe-6→/SeaMeWe-6 (with US as separate label)",
+          "1 invented sentence(s): Microsoft (appears as intermediate node label separately fro"
+        ]
+      },
+      "revision_notes": [],
+      "kept": false
+    },
+    {
+      "n": 2,
+      "provider": "gemini_pro",
+      "model": "gemini-3-pro-image-preview",
+      "cost_usd": 0.134,
+      "latency_ms": 31743,
+      "figure_id": "sample3-state-beneficiary_flow_web-a2-25f6e37f",
+      "path": "/tmp/claude-1000/-home-evgeny-projects-analyzer-v2/c3ccd66a-e026-4364-8160-b94fc72687a6/scratchpad/diag/state/r2/beneficiary_flow_web.attempt2.jpg",
+      "prompt_chars": 12943,
+      "compliance": {
+        "ok": true,
+        "format_ok": true,
+        "detected_format": "Sankey flow diagram with labeled ribbons",
+        "title_found": true,
+        "labels_found": [
+          "Government Announcement",
+          "AUKUS / Australia",
+          "Greece / Microsoft",
+          "France / ASN",
+          "Canada / BDC",
+          "US / SeaMeWe-6",
+          "Lockheed Martin",
+          "Raytheon",
+          "Hanwha Aerospace",
+          "Andreessen Horowitz",
+          "Microsoft",
+          "ASN / Orange Marine",
+          "BDC / Pension Funds",
+          "SubCom",
+          "HMN Tech excluded"
+        ],
+        "labels_missing": [],
+        "misspelled": [],
+        "illegible": [],
+        "prohibited_elements": [],
+        "extra_text": [],
+        "suggestion": null,
+        "confidence": "high",
+        "checked": true,
+        "model": "claude-sonnet-4-6",
+        "usage": {
+          "input_tokens": 2177,
+          "output_tokens": 244
+        },
+        "n_labels": 15,
+        "issues": []
+      },
+      "revision_notes": [
+        "These labels were MISSING — render each of them: Greece / Microsoft",
+        "Spell exactly “Greece / Microsoft” (the previous image printed “Greece (separate node) and Microsoft (separate node)”)",
+        "Spell exactly “US / SeaMeWe-6” (the previous image printed “/SeaMeWe-6 (with US as separate label)”)",
+        "Remove invented text that is not in the content: Microsoft (appears as intermediate node label separately from Greece)",
+        "Merge the Greece and Microsoft intermediate node labels into a single combined label 'Greece / Microsoft' to match the required label exactly, rather than showing them as separate text elements."
+      ],
+      "kept": true
+    }
+  ],
+  "cost_usd": 0.268,
+  "provider": "gemini_pro",
+  "model": "gemini-3-pro-image-preview"
+}

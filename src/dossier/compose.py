@@ -210,7 +210,7 @@ def _render_context(job: DossierJob, docs: list[Document], figure_src: str) -> d
         "meta": {"date": datetime.utcnow().strftime("%d %B %Y"), "audience": job.options.audience,
                  "depth": job.options.depth, "job_id": job.id},
         "docs": [{"key": d.key, "label": d.label(), "publication": d.publication, "char_count": d.char_count} for d in docs],
-        "footnotes": footnotes, "steps": steps, "engines": engines,
+        "footnotes": footnotes, "steps": steps, "engines": engines, "figures_made": _figures_made_ctx(job),
         "strategy": job.plan.strategy_rationale if job.plan else "",
         "alternatives": job.plan.alternatives_considered if job.plan else [],
         "totals": totals, "walls": "; ".join(walls),
@@ -231,7 +231,32 @@ def _figure_ctx(f, index: int, figure_src: str) -> dict:
     src = None
     if f.status == "generated" and f.path:
         src = figure_src.format(key=f.key, name=Path(f.path).name)
-    return {"index": index, "key": f.key, "caption": f.caption, "src": src, "status": f.status, "note": f.note}
+    return {"index": index, "key": f.key, "caption": f.caption, "src": src, "status": f.status, "note": f.note,
+            "title": getattr(f, "title", "") or "", "visual_format": getattr(f, "visual_format", "") or "",
+            "primitive": getattr(f, "primitive", "") or "", "style_school": getattr(f, "style_school", "") or ""}
+
+
+def _figures_made_ctx(job: DossierJob) -> list[dict]:
+    """The 'How this was made' rows for figures: primitive, format, style, attempts, verdict."""
+    out = []
+    for f in job.figures:
+        v = getattr(f, "compliance", None) or {}
+        attempts = getattr(f, "attempts", None) or []
+        if v.get("checked"):
+            found = len(v.get("labels_found") or [])
+            n = v.get("n_labels") or (found + len(v.get("labels_missing") or []))
+            verdict = f"{'passed' if v.get('ok') else 'flagged'}: format {'ok' if v.get('format_ok') else 'wrong'}, {found}/{n} labels"
+            if v.get("prohibited_elements"):
+                verdict += ", prohibited elements"
+        elif f.status == "generated":
+            verdict = "not checked"
+        else:
+            verdict = f.status + (f": {f.note}" if f.note else "")
+        out.append({"key": f.key, "title": getattr(f, "title", "") or f.caption[:60], "primitive": getattr(f, "primitive", "") or "—",
+                    "visual_format": getattr(f, "visual_format", "") or "—", "style_school": getattr(f, "style_school", "") or "—",
+                    "attempts": len(attempts) or (1 if f.status == "generated" else 0), "verdict": verdict,
+                    "provider": getattr(f, "model", None) or f.provider or "—"})
+    return out
 
 
 def _steps_ctx(job: DossierJob) -> list[dict]:
@@ -240,7 +265,7 @@ def _steps_ctx(job: DossierJob) -> list[dict]:
              ("plan", "Turned the angle into an ordered engine sequence for the executor (depth policy enforced)."),
              ("analysis", "Ran the engines through the executor; each phase read the previous phases' prose."),
              ("tables", "Extracted evidence tables; every row verified against verbatim anchors."),
-             ("figures", "Planned figures as depictable scenes; rendered through the image pipeline."),
+             ("figures", "Planned figures as labelled analytical diagrams (primitive → format → data), rendered and checked against their labels."),
              ("compose", "Wrote the dossier in the audience's register with footnoted anchors; rendered HTML, PDF and Markdown."),
              ("receipts", "Totalled every model and image call.")]
     by_step: dict[str, dict] = {}
@@ -294,10 +319,11 @@ def render_markdown(job: DossierJob, docs: list[Document]) -> str:
                 lines += ["", f"*{t['note']}*"]
             lines.append("")
         for f in sec["figures"]:
+            head = f"**{f['title']}.** " if f.get("title") else ""
             if f["src"]:
-                lines += [f"![{f['caption']}]({f['src']})", "", f"*Figure {f['index']}. {f['caption']}*", ""]
+                lines += [f"![{f.get('title') or f['caption']}]({f['src']})", "", f"*Figure {f['index']}. {head}{f['caption']}*", ""]
             else:
-                lines += [f"*Figure {f['index']} ({f['status']}): {f['caption']}*", ""]
+                lines += [f"*Figure {f['index']} ({f['status']}): {head}{f['caption']}*", ""]
     if s["conclusion"]:
         lines += [f"## {len(s['sections']) + 1}. What this means", ""] + s["conclusion"] + [""]
     if ctx["footnotes"]:
@@ -317,6 +343,10 @@ def render_markdown(job: DossierJob, docs: list[Document]) -> str:
             lines.append(f"| {e['phase']} | {e['engine']} | {e['depth']} | {e['passes']} | {e['model']} | {e['why']} |")
         if ctx["strategy"]:
             lines += ["", f"*Strategy.* {ctx['strategy']}"]
+    if ctx.get("figures_made"):
+        lines += ["", "| Figure | Primitive | Format | Style | Attempts | Check |", "|---|---|---|---|---|---|"]
+        for fm in ctx["figures_made"]:
+            lines.append(f"| {fm['title']} | {fm['primitive']} | {fm['visual_format']} | {fm['style_school']} | {fm['attempts']} | {fm['verdict']} |")
     t = ctx["totals"]
     lines += ["", f"**Totals:** {t['llm_calls']} model calls, {t['input_tokens']:,} input tokens, {t['output_tokens']:,} output tokens, ${t['cost_usd']:.2f}, {t['minutes']} min."]
     if ctx["walls"]:
