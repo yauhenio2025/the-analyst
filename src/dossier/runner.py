@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 
 STATUS_FOR_STEP = {
     "reconnaissance": "reconnaissance", "brief": "reconnaissance", "plan": "planning", "analysis": "analysis",
-    "spine": "spine", "tables": "tables", "figures": "figures", "compose": "composing", "crosscheck": "crosscheck",
+    "spine": "spine", "tables": "tables", "figures": "figures", "plates": "plates", "compose": "composing", "crosscheck": "crosscheck",
     "receipts": "crosscheck",
 }
 STEP_WHY = {
@@ -32,6 +32,7 @@ STEP_WHY = {
     "spine": "Deciding what the dossier argues before a word is written: one claim per section, and the table or diagram each claim needs — so exhibits are commissioned by the argument, not by a dial.",
     "tables": "Building exactly the tables the spine commissioned, keyed to their sections, every row pinned to a verbatim passage.",
     "figures": "Drawing exactly the diagrams the spine commissioned — primitive, format, labels from the analysis — then rendering and checking each against its own spec.",
+    "plates": "Drawing the plates — one or two whole-page 4K diagrams, each a perspective that deserves to be read instead of the memo — planned from the spine and the analysis, rendered, and checked label by label.",
     "compose": "Writing the dossier with the finished exhibits on the desk, pointing at each table and diagram where the reader should look; the summary and the close written last against the assembled body.",
     "crosscheck": "Reading the dossier as one thing — do the pictures show what the text argues, do the rows match the claims, is anything asserted that nothing backs — and recording every finding with its cure.",
     "receipts": "Totalling every call so the cost and the method are on the record.",
@@ -210,6 +211,21 @@ def _run_step(job: DossierJob, step: str, docs) -> None:
         job.figures = figures
         persist(figures=figures)
         summary = ", ".join(f"{f.key}:{f.status}" + ("" if f.checked_ok is None else ("/ok" if f.checked_ok else "/flagged")) for f in figures) or "none"
+    elif step == "plates":
+        n_plates = int(getattr(getattr(job.options, "output", None), "plates", 0) or 0)
+        if n_plates <= 0:
+            summary = "no plates requested"
+        else:
+            try:
+                from src.dossier.plates import run_plates
+                from src.dossier.plate_store import upsert_plate
+            except ImportError as exc:
+                add_note(job_id, "plates_unavailable", str(exc))
+                summary = "plates not installed"
+            else:
+                job = get_job(job_id) or job
+                plates = run_plates(job, n_plates, persist=lambda p: upsert_plate(job_id, p))
+                summary = ", ".join(f"{p.key}:{p.status}" for p in plates) or "none"
     elif step == "compose":
         from src.dossier.compose import run_compose
 

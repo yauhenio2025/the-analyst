@@ -17,7 +17,7 @@ from src.sources.schemas import SourceSpec
 
 STATUSES = (
     "queued", "reconnaissance", "awaiting_brief", "planning", "analysis", "spine",
-    "tables", "figures", "composing", "crosscheck", "done", "failed", "cancelled",
+    "tables", "figures", "plates", "composing", "crosscheck", "done", "failed", "cancelled",
 )
 # The concretization passes (communications/DESIGN_concretization_passes.md §C):
 # spine (S) decides what the dossier argues before any exhibit exists; tables +
@@ -26,7 +26,7 @@ STATUSES = (
 # finished parts as one dossier and mints findings.
 STEPS = (
     "reconnaissance", "brief", "plan", "analysis", "spine", "tables", "figures",
-    "compose", "crosscheck", "receipts",
+    "plates", "compose", "crosscheck", "receipts",
 )
 AUDIENCES = ("executive", "researcher", "analyst")
 DEPTHS = ("simple", "medium", "advanced")
@@ -641,6 +641,7 @@ class OutputOptions(BaseModel):
     text: bool = True
     tables: bool = True
     figures: int = 2
+    plates: int = 0          # report-as-diagram 4K plates (0-3), drawn after the figures
     video: bool = False
 
 

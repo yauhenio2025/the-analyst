@@ -49,6 +49,7 @@ export interface OutputShape {
   text: boolean
   tables: boolean
   figures: number
+  plates?: number
   video: boolean
 }
 
@@ -77,7 +78,7 @@ export interface CreateJobResponse {
 
 export type DossierStatus =
   | 'queued' | 'reconnaissance' | 'awaiting_brief' | 'planning' | 'analysis' | 'spine'
-  | 'tables' | 'figures' | 'composing' | 'crosscheck' | 'done' | 'failed'
+  | 'tables' | 'figures' | 'plates' | 'composing' | 'crosscheck' | 'done' | 'failed'
 
 export const STATUS_ORDER: DossierStatus[] = [
   'queued', 'reconnaissance', 'awaiting_brief', 'planning', 'analysis', 'spine',

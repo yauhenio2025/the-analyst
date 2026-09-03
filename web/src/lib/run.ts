@@ -15,9 +15,10 @@ export const RAIL_STEPS: RailStep[] = [
   { n: 5, key: 'spine', label: 'Decide the argument' },
   { n: 6, key: 'tables', label: 'Build the tables' },
   { n: 7, key: 'figures', label: 'Draw the figures' },
-  { n: 8, key: 'composing', label: 'Write with the exhibits' },
-  { n: 9, key: 'crosscheck', label: 'Cross-check the whole' },
-  { n: 10, key: 'done', label: 'Delivered' },
+  { n: 8, key: 'plates', label: 'Draw the plates' },
+  { n: 9, key: 'composing', label: 'Write with the exhibits' },
+  { n: 10, key: 'crosscheck', label: 'Cross-check the whole' },
+  { n: 11, key: 'done', label: 'Delivered' },
 ]
 
 export type PipState = 'pending' | 'running' | 'done' | 'failed' | 'waiting'
@@ -27,7 +28,7 @@ const RAIL_KEYS = new Set<string>(RAIL_STEPS.map((s) => s.key))
 /** The backend's step names (src/dossier/schemas.STEPS) → the rail's status keys. */
 export const STEP_TO_RAIL: Record<string, DossierStatus> = {
   reconnaissance: 'reconnaissance', brief: 'awaiting_brief', plan: 'planning', analysis: 'analysis',
-  spine: 'spine', tables: 'tables', figures: 'figures', compose: 'composing', crosscheck: 'crosscheck', receipts: 'done',
+  spine: 'spine', tables: 'tables', figures: 'figures', plates: 'plates', compose: 'composing', crosscheck: 'crosscheck', receipts: 'done',
 }
 
 /** Which rail step an event belongs to. Dossier-level events carry the

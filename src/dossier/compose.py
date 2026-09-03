@@ -827,7 +827,16 @@ def _steps_ctx(job: DossierJob) -> list[dict]:
 def render_html(job: DossierJob, docs: list[Document], figure_src: str = "figures/{name}") -> str:
     env = Environment(loader=FileSystemLoader(str(TEMPLATES_DIR)), autoescape=select_autoescape(["html", "j2"]))
     tpl = env.get_template("dossier.html.j2")
-    return tpl.render(**_render_context(job, docs, figure_src))
+    ctx = _render_context(job, docs, figure_src)
+    try:
+        from src.dossier.plate_store import list_plates
+        from src.dossier.plates import render_appendix_html
+        plates = list_plates(job.id)
+        ctx["plates_appendix_html"] = render_appendix_html(plates, src_for=(lambda p: figure_src(p.figure_id) if (figure_src and p.figure_id) else p.url)) if plates else ""
+    except Exception as exc:  # plates are optional; the dossier never waits on them
+        logger.warning(f"plates appendix skipped: {exc}")
+        ctx["plates_appendix_html"] = ""
+    return tpl.render(**ctx)
 
 
 def _md_table(t: dict) -> list[str]:

@@ -50,6 +50,7 @@ export function Library() {
   // advanced
   const [depth, setDepth] = useState<Depth>('medium')
   const [figures, setFigures] = useState(2)
+  const [plates, setPlates] = useState(0)
   const [spendCap, setSpendCap] = useState('')
   const [imageProvider, setImageProvider] = useState('')
   const [busy, setBusy] = useState(false)
@@ -112,7 +113,7 @@ export function Library() {
       const res = await api.createJob({
         sources, audience, depth,
         intent: intent.trim() || undefined,
-        output: { text: true, tables: true, figures, video: false },
+        output: { text: true, tables: true, figures, plates, video: false },
         entry: lane, autopilot: lane === 'material',
         use_frame: useFrame,
         path: lane === 'chosen' ? { steps } : undefined,
@@ -261,7 +262,7 @@ export function Library() {
         )}
 
         <details className="advanced" data-advanced>
-          <summary className="eyebrow">advanced · depth preference, figures, spend cap, image provider</summary>
+          <summary className="eyebrow">advanced · depth preference, figures, plates, spend cap, image provider</summary>
           <div className="dials">
             <label className="field">
               <span className="field-label">Depth preference</span>
@@ -276,6 +277,12 @@ export function Library() {
               <span className="field-label">Figures</span>
               <select value={figures} onChange={(e) => setFigures(Number(e.target.value))} data-dial="figures">
                 {[0, 1, 2, 3, 4].map((n) => <option key={n} value={n}>{n === 0 ? 'None' : n}</option>)}
+              </select>
+            </label>
+            <label className="field">
+              <span className="field-label">Plates <span className="hint">whole-page 4K diagrams</span></span>
+              <select value={plates} onChange={(e) => setPlates(Number(e.target.value))} data-dial="plates">
+                {[0, 1, 2].map((n) => <option key={n} value={n}>{n === 0 ? 'None' : n}</option>)}
               </select>
             </label>
             <label className="field">
