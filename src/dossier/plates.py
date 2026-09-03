@@ -25,6 +25,7 @@ import json
 import logging
 import os
 import re
+import threading
 import time
 from datetime import datetime
 from io import BytesIO
@@ -1800,6 +1801,11 @@ def render_plate(job: DossierJob, spec: PlateSpec, out_dir: Path, provider: Opti
 # The batch (plan → render each → persist each) — the skip law throughout
 # ══════════════════════════════════════════════════════════════════════════
 
+# One 4K render (plus its vision check) at a time per process: two concurrent plate runs OOM-killed the 512 MB
+# instance on 2026-09-03 (exit 137). Plate runs from different jobs queue here instead of racing.
+_RENDER_GATE = threading.Semaphore(1)
+
+
 def run_plates(job: DossierJob, n: int = 2, perspectives: Optional[list[str]] = None, provider: Optional[str] = None,
                persist: Optional[Callable[[Plate], None]] = None, specs: Optional[list[PlateSpec]] = None) -> list[Plate]:
     """Plan N plates over a finished job and render them; `persist` is called after every plate (incremental)."""
@@ -1827,7 +1833,8 @@ def run_plates(job: DossierJob, n: int = 2, perspectives: Optional[list[str]] = 
             except Exception as exc:
                 logger.debug(f"persist planned plate failed: {exc}")
         try:
-            plate = render_plate(job, spec, out_dir, provider, on_attempt=None)
+            with _RENDER_GATE:
+                plate = render_plate(job, spec, out_dir, provider, on_attempt=None)
         except Exception as exc:
             logger.warning(f"plate {spec.key} failed: {exc}", exc_info=True)
             events.emit(job.id, "call_failed", phase=STEP, label=f"plate {spec.key}", detail=f"plate_failed {spec.key}: {exc}",
