@@ -260,3 +260,8 @@ Fast live run: same with kering_study.md at depth simple (about 6 min, about $1)
 - Wired: STEPS = … figures → **plates** → compose → crosscheck → receipts; `OutputOptions.plates` (0–2, default 0); Library dial; rail step 8 "Draw the plates"; `plates_appendix_html` included in the dossier template; workflow JSON 11 phases. 224 tests pass.
 - Live ten-phase verification run on the deployed stack: `dossier-0d3a0a532864` (state capitalism, use lane, chose "Which Partnership Offers to Treat as Risks") — in flight during the e55259e deploy; if it stalls, `POST /v1/dossier/jobs/dossier-0d3a0a532864/resume`.
 - NEXT: run one dossier with `output.plates=1` on the live stack for the demo shelf; Phase 2–3 of concretization; cross-check should also judge plates; the `?mock=1` fixtures for plates/spine exist.
+
+### 2026-09-03 15:50 UTC — incident: dossier_standard unloaded (fixed 2af91b3)
+- Cause: the plates-wiring commit's scripted JSON edit produced a phase with `depends_on_phases: [null]` → the registry skipped `dossier_standard` (health `workflows_loaded` 11→10) → every live run failed at analysis with "Workflow not found: dossier_standard". Jobs `dossier-0d3a0a532864` (verification) and `dossier-bdb59693892e` (Kering + plate) FAILED for this reason; ignore/delete them.
+- Fix: proper Plates phase 7.5 (`dossier_plates`, depends on 7.0), `tests/test_workflow_definitions_load.py` (all definitions must validate + load; 11 phases in order), BUG_TRACKING entry. Also: `POST /resume` ignores `from_step` (always resumes from the recorded step) — Phase 2 item.
+- After 2af91b3 is live: rerun Kering (material lane, medium, figures 1, plates 1) and state capitalism (use lane, medium, figures 2, plates 1) one at a time.
