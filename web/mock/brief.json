@@ -1,35 +1,176 @@
 {
+  "version": 2,
+  "entry": "use",
   "options": [
     {
+      "version": 2,
       "key": "fourth_field",
-      "title": "The fourth field",
-      "telling": "Open on the CEO's own sentence — client, product, money — and show, level by level, that nothing in ReconKering follows the meaning. Then hold Gucci's reset against the house's structure to show what a fourth field would have read before the move was made.",
-      "engines": ["argument_architecture", "conceptual_framework_extraction", "inferential_commitment_mapper"],
-      "why": "Both documents agree on the gap; this telling lets the briefing's evidence and the paper's structure carry each other, which is the strongest shape for an executive reader who already believes in AI.",
+      "title": "The half-sentence that opens the pitch",
+      "deliverable_kind": "briefing",
+      "deliverable": "A pre-meeting card: where de Meo's AI programme stops, the opening line in his own words, and the two things not to say.",
+      "use_kind": "prepare",
+      "you_will_understand": [
+        { "text": "what the stack already covers — Chief AI Officer, the Google partnership, Gucci as \"first laboratory\" — and the layer it lacks [doc_1]", "supported_by": [{ "kind": "table", "index": 1 }] },
+        { "text": "which of de Meo's quotes point at that layer (\"help the creative people get better, faster, stronger\") [doc_1]", "supported_by": [{ "kind": "table", "index": 2 }] },
+        { "text": "why product, CRM and finance tooling cannot close it — the fourth field the working paper describes [doc_2]", "supported_by": [{ "kind": "section", "index": 3 }] }
+      ],
+      "you_will_be_able_to": [
+        { "text": "open with de Meo's words on Wednesday 2026-07-22", "supported_by": [{ "kind": "section", "index": 3 }] },
+        { "text": "avoid the two misfires — platform logic against luxury singularity, front-facing AI after the Valentino ridicule", "supported_by": [{ "kind": "table", "index": 2 }] },
+        { "text": "position the offer above the stack, not beside it [doc_2]", "supported_by": [{ "kind": "section", "index": 5 }] }
+      ],
+      "questions_answered": ["What does the AI programme already cover?", "Which layer is missing?", "What has de Meo said that opens the door?", "What must not be said?"],
+      "not_for": ["Single-source memo — its facts are its own; no financial modelling.", "No view on competitors beyond the LVMH \"quiet tech\" line."],
+      "shape": {
+        "sections": [
+          { "heading": "What the stack already does", "answers": "What does the AI programme already cover?" },
+          { "heading": "The layer nobody is building", "answers": "Which layer is missing?" },
+          { "heading": "The opening line, in his words", "answers": "What has de Meo said that opens the door?" },
+          { "heading": "Two things not to say", "answers": "What must not be said?" },
+          { "heading": "Where the offer sits", "answers": "Which layer is missing?" }
+        ],
+        "tables": [
+          { "title": "The Kering AI stack, layer by layer", "row_unit": "one row per stack layer", "columns": ["Layer", "Who owns it", "What it reads", "What it cannot read"], "rows_expected": "5-6", "carried_by": ["doc_1"] },
+          { "title": "De Meo on the record", "row_unit": "one row per de Meo quote", "columns": ["Quote", "Date", "What it points at", "Use in the room"], "rows_expected": "6", "carried_by": ["doc_1"] }
+        ],
+        "figures": [
+          { "title": "The three fields and the fourth", "format": "stack", "scene": "four horizontal strata of a house cut like a geological section; the top three lit, the fourth in shadow with a single lamp beside it" }
+        ]
+      },
+      "evidence_base": {
+        "carrying_docs": [{ "doc_key": "doc_1", "carries": "the stack, the quotes, the Wednesday meeting" }, { "doc_key": "doc_2", "carries": "the fourth field and why tooling cannot reach it" }],
+        "thin_or_missing": ["no financials per house", "no view from inside Kering"]
+      },
+      "path": {
+        "steps": [
+          { "engine_key": "concept_centrality_mapper", "plain_name": "load-bearing ideas", "contributes": "ranks the ideas the pitch must rest on — meaning, coherence, the fourth field", "depth": "surface" },
+          { "engine_key": "argument_architecture", "plain_name": "claim scorecard", "contributes": "scores the briefing's claims about the stack so the opening line is one that holds", "depth": "surface" }
+        ],
+        "depth": "medium",
+        "primitives": ["prose", "anchored_tables", "figures"],
+        "chain_key": null
+      },
+      "best_when": "Pick this when the meeting is this week.",
+      "notes": [],
       "est_cost_usd": 1.42,
       "est_minutes": 9,
-      "output_shape": "executive memo · 5 sections · 2 tables · 2 figures"
+      "est_llm_calls": 6
     },
     {
+      "version": 2,
       "key": "coherence_ledger",
-      "title": "The coherence ledger",
-      "telling": "Read each announced reset — store network, leather-goods priority, see-now-buy-now — against five levels of the house and record which level it reinforces and which it strains. The dossier becomes a ledger the boardroom can reread after the half-year results.",
-      "engines": ["structural_pattern_detector", "dialectical_structure", "counterfactual_analyzer", "deep_summarization"],
-      "why": "Most rigorous, and the tables do the talking; costs more because every reset is read at every level and the counterfactual pass asks what the last such move did.",
+      "title": "Own the discourse or keep renting it",
+      "deliverable_kind": "decision_memo",
+      "deliverable": "A decision memo on Gucci's meaning: every announced reset read against five levels of the house, with the two courses and their preconditions.",
+      "use_kind": "decide",
+      "you_will_understand": [
+        { "text": "which level each reset — store network 600 → 450, leather-goods priority, see-now-buy-now — reinforces and which it strains [doc_1]", "supported_by": [{ "kind": "table", "index": 1 }] },
+        { "text": "the Q1 2026 filing's own phrase — \"low cultural relevance\" — and why it is not a product or CRM signal [doc_1]", "supported_by": [{ "kind": "section", "index": 2 }] },
+        { "text": "Demna's \"I want Gucci to be a feeling\" against where the feeling is currently made — Xiaohongshu, resale [doc_1]", "supported_by": [{ "kind": "table", "index": 2 }] }
+      ],
+      "you_will_be_able_to": [
+        { "text": "rule out the product, CRM and distribution diagnoses one by one [doc_1]", "supported_by": [{ "kind": "table", "index": 1 }] },
+        { "text": "name the actors and mechanisms taking value from Gucci's meaning today", "supported_by": [{ "kind": "table", "index": 2 }] },
+        { "text": "choose between the two courses — instrument the discourse or keep paying the platform tax — with their preconditions [doc_2]", "supported_by": [{ "kind": "section", "index": 6 }] }
+      ],
+      "questions_answered": ["Which resets strain the house?", "Why is \"low cultural relevance\" not a product problem?", "Who extracts value from Gucci's meaning?", "What would a fourth field have read before each move?"],
+      "not_for": ["No China market data beyond the memo; no platform economics.", "No revenue attribution per reset — the memo does not carry it."],
+      "shape": {
+        "sections": [
+          { "heading": "The resets, level by level", "answers": "Which resets strain the house?" },
+          { "heading": "The filing's own diagnosis", "answers": "Why is \"low cultural relevance\" not a product problem?" },
+          { "heading": "Where the feeling is made", "answers": "Who extracts value from Gucci's meaning?" },
+          { "heading": "What a fourth field would have read", "answers": "What would a fourth field have read before each move?" },
+          { "heading": "The last such move", "answers": "What would a fourth field have read before each move?" },
+          { "heading": "Two courses and their preconditions", "answers": "Which resets strain the house?" }
+        ],
+        "tables": [
+          { "title": "Each reset against five levels", "row_unit": "one row per reset × level", "columns": ["Reset", "Level", "Reinforces", "Strains", "Evidence"], "rows_expected": "12-15", "carried_by": ["doc_1", "doc_2"] },
+          { "title": "Who makes Gucci's meaning today", "row_unit": "one row per platform or actor", "columns": ["Actor", "Mechanism", "What it extracts", "Evidence"], "rows_expected": "4-5", "carried_by": ["doc_1"] },
+          { "title": "Diagnoses ruled out", "row_unit": "one row per diagnosis", "columns": ["Diagnosis", "Why it fails", "Evidence"], "rows_expected": "4", "carried_by": ["doc_1"] }
+        ],
+        "figures": [
+          { "title": "One reset read against five levels", "format": "before_after", "scene": "a store façade repeated five times down a page, each copy lit from a different height; the last copy shuttered" },
+          { "title": "Where the feeling is made", "format": "flow", "scene": "a river of small bright shapes flowing from a palace out into many hands on the shore" }
+        ]
+      },
+      "evidence_base": {
+        "carrying_docs": [{ "doc_key": "doc_1", "carries": "the resets, the filing, the Demna quote" }, { "doc_key": "doc_2", "carries": "the five levels and the fourth field" }],
+        "thin_or_missing": ["no platform economics", "no China consumer data"]
+      },
+      "path": {
+        "steps": [
+          { "engine_key": "structural_pattern_detector", "plain_name": "pattern map", "contributes": "finds the template each reset follows and where it departs", "depth": "surface" },
+          { "engine_key": "dialectical_structure", "plain_name": "contradiction map", "contributes": "maps what each reset cannot reconcile with the house's structure", "depth": "standard" },
+          { "engine_key": "counterfactual_analyzer", "plain_name": "what-if audit", "contributes": "asks what the last such move did, and whether the claim holds", "depth": "surface" },
+          { "engine_key": "deep_summarization", "plain_name": "reading guide", "contributes": "closes with one synthesis across the phases", "depth": "standard" }
+        ],
+        "depth": "advanced",
+        "primitives": ["prose", "anchored_tables", "figures"],
+        "chain_key": null
+      },
+      "best_when": "Pick this when the China question or a reset is on the board's agenda.",
+      "notes": [],
       "est_cost_usd": 2.15,
       "est_minutes": 14,
-      "output_shape": "analytical report · 6 sections · 3 tables · 2 figures"
+      "est_llm_calls": 10
     },
     {
+      "version": 2,
       "key": "on_the_record",
       "title": "What the CEO already said",
-      "telling": "Build the entire case from de Meo's dated, on-the-record statements and the group's own filings — nothing inferred, every line anchored — so the reader can check each sentence against its source in the room.",
-      "engines": ["argument_architecture", "epistemological_method_detector"],
-      "why": "Cheapest and safest for a careful counterpart in pre-results mode; thinner on the structural argument the working paper makes.",
+      "deliverable_kind": "case_file",
+      "deliverable": "A case file built only from de Meo's dated, on-the-record statements and the group's own filings — every line anchored.",
+      "use_kind": "argue",
+      "you_will_understand": [
+        { "text": "the 6 dated statements — from \"first laboratory\" to \"get better, faster, stronger\" — and what each commits Kering to [doc_1]", "supported_by": [{ "kind": "table", "index": 1 }] },
+        { "text": "which claims in the July 2026 briefing rest on his words and which on inference [doc_1]", "supported_by": [{ "kind": "table", "index": 2 }] },
+        { "text": "where the working paper's structural argument goes beyond the record [doc_2]", "supported_by": [{ "kind": "section", "index": 4 }] }
+      ],
+      "you_will_be_able_to": [
+        { "text": "check each sentence of the pitch against its source in the room [doc_1]", "supported_by": [{ "kind": "table", "index": 1 }] },
+        { "text": "defend the case to a careful counterpart in pre-results mode without one inferred line", "supported_by": [{ "kind": "table", "index": 2 }] }
+      ],
+      "questions_answered": ["What has de Meo said, when?", "Which claims are his and which are ours?", "Where does the structural argument outrun the record?"],
+      "not_for": ["Thinner on the structural argument the working paper makes; no view on the fourth field's mechanics."],
+      "shape": {
+        "sections": [
+          { "heading": "The record, dated", "answers": "What has de Meo said, when?" },
+          { "heading": "His claims and ours", "answers": "Which claims are his and which are ours?" },
+          { "heading": "What the filings add", "answers": "What has de Meo said, when?" },
+          { "heading": "Where the argument outruns the record", "answers": "Where does the structural argument outrun the record?" }
+        ],
+        "tables": [
+          { "title": "De Meo, on the record", "row_unit": "one row per dated statement", "columns": ["Date", "Statement", "Source", "Commits Kering to"], "rows_expected": "6", "carried_by": ["doc_1"] },
+          { "title": "Claim by claim: his or ours", "row_unit": "one row per claim in the briefing", "columns": ["Claim", "Rests on", "Anchor", "Strength"], "rows_expected": "8-10", "carried_by": ["doc_1", "doc_2"] }
+        ],
+        "figures": []
+      },
+      "evidence_base": {
+        "carrying_docs": [{ "doc_key": "doc_1", "carries": "every dated statement and filing" }],
+        "thin_or_missing": ["the working paper is argument, not record"]
+      },
+      "path": {
+        "steps": [
+          { "engine_key": "argument_architecture", "plain_name": "claim scorecard", "contributes": "scores every claim by what it rests on — his words, a filing, or inference", "depth": "surface" }
+        ],
+        "depth": "simple",
+        "primitives": ["prose", "anchored_tables"],
+        "chain_key": null
+      },
+      "best_when": "Pick this when the counterpart is careful and the results are not yet out.",
+      "notes": [],
       "est_cost_usd": 0.88,
       "est_minutes": 6,
-      "output_shape": "briefing note · 4 sections · 2 tables · 1 figure"
+      "est_llm_calls": 5
     }
   ],
-  "defaults": { "option_key": "fourth_field", "audience": "executive", "depth": "medium", "figures": 2 }
+  "recommendation": {
+    "option_key": "fourth_field",
+    "because": "the briefing [doc_1] carries the stack and de Meo's own words; it carries no financials, so the pre-meeting card is the deliverable it can keep honestly before Wednesday",
+    "runner_up": "on_the_record",
+    "runner_up_because": "cheapest and safest for a careful counterpart, but it leaves the fourth-field argument unmade"
+  },
+  "defaults": { "audience": "executive", "depth": "medium", "figures": 2 },
+  "notes": []
 }

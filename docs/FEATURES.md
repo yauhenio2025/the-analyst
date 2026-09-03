@@ -1395,8 +1395,21 @@ Ten advanced engines with deep theoretical foundations, cross-referencing ID sys
 - **Entry Points**: `src/dossier/runner.py`, `src/api/routes/dossier.py`, `src/workflows/definitions/dossier_standard.json`, `src/sources/stacks.py`
 - **Added**: 2026-09-03
 
+### Dossier brief v2 (deliverable-first)
+- **Status**: Active
+- **Description**: Step 2 offers three deliverables differing by USE — what you get / will understand / will be able to (promises verified against the shape's tables, sections, figures), `not_for`, evidence base, a priced path, `best_when` — and a recommendation with a corpus reason. Three lanes: tell me what you'll use it for (default) · I know the analysis I want (purpose-first catalog picker, translate mode, fixed path) · let the material decide (executes the recommendation). Nine prompt rules checked by code with one repair round; prices from each option's own path.
+- **Entry Points**: `src/dossier/brief.py` (prompt, schema, `check_brief`, `apply_code_fixes`, `run_brief`), `src/dossier/schemas.py` (`BriefOption` v2, `Recommendation`, `UseFrame`, `PathRequest`), `src/dossier/catalog.py` (`purpose_catalog`, vocabulary, `estimate_path`, `resolve_path_request`), `src/dossier/catalog_purpose.json`, `src/dossier/recipes.json`, `src/dossier/plan.py` (`fixed_path`, `fixed_phases`), `src/api/routes/dossier.py` (`validate_lane`, `GET /v1/dossier/catalog`, `choose_brief` with `overrides.path`), `tests/test_brief_v2_checks.py`
+- **Dependencies**: `src/audiences/definitions/executive.json` (vocabulary), the capability registry (`src/engines/registry.py`)
+- **Added**: 2026-09-03
+
 ### Web front end (the-analyst-desk)
 - **Status**: Active
 - **Description**: Library, four-step journey, live narrated draft, console; `?mock=1` replays a full job
 - **Entry Points**: `web/src/App.tsx`, `web/src/router.ts`, `web/src/lib/api.ts`, `web/src/pages/Console.tsx`
+- **Added**: 2026-09-03
+
+### Web · The brief v2 (deliverable cards + catalog picker + lanes)
+- **Status**: Active
+- **Description**: Deliverable cards (promises with T1/§5/F1 chips, NOT FOR always visible, shape/evidence disclosures, how-line with edit, recommended reason), the purpose-first catalog picker, the Library's use box (intent + use chips + occasion/who reads/decision), lane radio and advanced fold; `?mock=1` replays a v2 brief
+- **Entry Points**: `web/src/components/DeliverableCard.tsx`, `web/src/components/CatalogPicker.tsx`, `web/src/steps/BriefStep.tsx`, `web/src/pages/Library.tsx`, `web/src/lib/api.ts` (`normalizeBriefOption`, `catalog`), `web/mock/brief.json`, `web/mock/catalog.json`
 - **Added**: 2026-09-03

@@ -2,8 +2,8 @@
    (VITE_MOCK=1 at build time, or ?mock=1 / localStorage analyst.mock=1 at
    run time) swaps every call for the fixture replay in ./mock.ts. */
 import type {
-  Brief, CreateJobRequest, CreateJobResponse, DossierJob, Exemplar,
-  ExecutorJob, JobListEntry, OrchestratorPlan, Receipt, RunEvent,
+  Audience, Brief, BriefOption, BriefPromise, BriefShape, Catalog, CreateJobRequest, CreateJobResponse, Depth, DossierJob, Exemplar,
+  ExecutorJob, JobListEntry, OrchestratorPlan, Receipt, RunEvent, ShapeRef, StepDepth,
 } from '../types'
 
 export const API_BASE: string = (import.meta.env.VITE_API_BASE
@@ -66,40 +66,102 @@ function normalizeExemplar(e: Record<string, unknown>): Record<string, unknown> 
     description: (e.description ?? '') as string,
   }
 }
-/* Brief options: the backend sends engines as [{engine_key, why}], estimates as strings,
-   output_shape as an object; pages expect names, numbers and a one-line shape. */
-function normalizeBriefOption(o: Record<string, unknown>): Record<string, unknown> {
+/* Brief options — v2 (deliverable, promises with refs, shape, evidence, path) AND the old shape
+   (telling, engines as [{engine_key, why}] or names, string estimates, output_shape object).
+   Every option comes out with the v2 fields present (empty for v1) and the legacy views
+   (`engines` as names, `why`, one-line `output_shape`) that the older pages read. */
+const strList = (v: unknown): string[] => Array.isArray(v) ? v.map((x) => String(x ?? '')).filter(Boolean) : []
+const num = (v: unknown): number => Number(v ?? 0) || 0
+function normalizePromise(p: unknown): BriefPromise {
+  if (typeof p === 'string') return { text: p, supported_by: [] }
+  const anyP = (p && typeof p === 'object' ? p : {}) as Record<string, unknown>
+  const refs = Array.isArray(anyP.supported_by) ? (anyP.supported_by as unknown[]) : []
+  return {
+    text: String(anyP.text ?? ''),
+    supported_by: refs.map((r) => {
+      if (typeof r === 'string') {
+        const m = /^([§STF])\s*(\d+)$/i.exec(r.trim())
+        return m ? { kind: (m[1] === 'T' || m[1] === 't') ? 'table' : (m[1] === 'F' || m[1] === 'f') ? 'figure' : 'section', index: Number(m[2]) } as ShapeRef : null
+      }
+      const anyR = (r && typeof r === 'object' ? r : {}) as Record<string, unknown>
+      const kind = String(anyR.kind ?? 'section')
+      return { kind: (kind === 'table' || kind === 'figure' ? kind : 'section'), index: Math.max(1, num(anyR.index) || 1) } as ShapeRef
+    }).filter(Boolean) as ShapeRef[],
+    unsupported: Boolean(anyP.unsupported),
+  }
+}
+export function normalizeBriefOption(o: Record<string, unknown>): BriefOption {
+  const rawPath = (o.path && typeof o.path === 'object' ? o.path : {}) as Record<string, unknown>
+  const pathSteps = (Array.isArray(rawPath.steps) ? (rawPath.steps as Record<string, unknown>[]) : []).map((s) => ({
+    engine_key: String(s.engine_key ?? ''), plain_name: String(s.plain_name ?? ''), contributes: String(s.contributes ?? ''),
+    depth: (['surface', 'standard', 'deep'].includes(String(s.depth)) ? String(s.depth) : 'surface') as StepDepth,
+  })).filter((s) => s.engine_key)
   const rawEngines = Array.isArray(o.engines) ? (o.engines as unknown[]) : []
-  const engines = rawEngines.map((e) => typeof e === 'string' ? e : String((e as Record<string, unknown>)?.engine_key ?? (e as Record<string, unknown>)?.key ?? ''))
-    .filter(Boolean)
-  const whys = rawEngines.map((e) => (typeof e === 'object' && e ? (e as Record<string, unknown>).why : null)).filter(Boolean) as string[]
-  let shape: unknown = o.output_shape
-  if (shape && typeof shape === 'object') {
-    const sh = shape as Record<string, unknown>
+  const engineObjs = rawEngines.map((e) => typeof e === 'string' ? { engine_key: e, why: '' } : { engine_key: String((e as Record<string, unknown>)?.engine_key ?? (e as Record<string, unknown>)?.key ?? ''), why: String((e as Record<string, unknown>)?.why ?? '') })
+    .filter((e) => e.engine_key)
+  const engines = pathSteps.length ? pathSteps.map((s) => s.engine_key) : engineObjs.map((e) => e.engine_key)
+  const whys = pathSteps.length ? pathSteps.map((s) => s.contributes).filter(Boolean) : engineObjs.map((e) => e.why).filter(Boolean)
+  const rawShape = o.shape && typeof o.shape === 'object' ? (o.shape as Record<string, unknown>) : null
+  const shape: BriefShape | null = rawShape ? {
+    sections: (Array.isArray(rawShape.sections) ? rawShape.sections as unknown[] : []).map((s) => typeof s === 'string' ? { heading: s, answers: '' } : { heading: String((s as Record<string, unknown>).heading ?? ''), answers: String((s as Record<string, unknown>).answers ?? '') }),
+    tables: (Array.isArray(rawShape.tables) ? rawShape.tables as unknown[] : []).map((t) => typeof t === 'string' ? { title: t, row_unit: '', columns: [], rows_expected: '', carried_by: [] } : { title: String((t as Record<string, unknown>).title ?? ''), row_unit: String((t as Record<string, unknown>).row_unit ?? ''), columns: strList((t as Record<string, unknown>).columns), rows_expected: String((t as Record<string, unknown>).rows_expected ?? ''), carried_by: strList((t as Record<string, unknown>).carried_by) }),
+    figures: (Array.isArray(rawShape.figures) ? rawShape.figures as unknown[] : []).map((f) => typeof f === 'string' ? { title: f, format: 'scene', scene: '' } : { title: String((f as Record<string, unknown>).title ?? ''), format: String((f as Record<string, unknown>).format ?? 'scene'), scene: String((f as Record<string, unknown>).scene ?? '') }),
+  } : null
+  // one-line shape for the legacy card: from the v2 shape, or the v1 output_shape object / string
+  let line: string | undefined
+  const legacyShape = o.output_shape
+  if (shape) {
+    const parts = [] as string[]
+    if (shape.sections.length) parts.push(`${shape.sections.length} sections`)
+    if (shape.tables.length) parts.push(`${shape.tables.length} tables`)
+    if (shape.figures.length) parts.push(`${shape.figures.length} figures`)
+    line = parts.join(' · ')
+  } else if (legacyShape && typeof legacyShape === 'object') {
+    const sh = legacyShape as Record<string, unknown>
     const n = (v: unknown) => Array.isArray(v) ? v.length : (typeof v === 'number' ? v : 0)
     const parts = [] as string[]
     if (n(sh.sections)) parts.push(`${n(sh.sections)} sections`)
     if (n(sh.tables)) parts.push(`${n(sh.tables)} tables`)
     if (n(sh.figures)) parts.push(`${n(sh.figures)} figures`)
-    shape = parts.join(' · ')
-  }
+    line = parts.join(' · ')
+  } else if (typeof legacyShape === 'string') line = legacyShape
+  const rawEv = (o.evidence_base && typeof o.evidence_base === 'object' ? o.evidence_base : {}) as Record<string, unknown>
+  const version = num(o.version) || (shape ? 2 : 1)
+  const understand = Array.isArray(o.you_will_understand) ? (o.you_will_understand as unknown[]).map(normalizePromise) : []
+  const deliverable = String(o.deliverable ?? '')
+  const telling = typeof o.telling === 'string' && o.telling ? o.telling
+    : (deliverable ? `${deliverable.replace(/\.$/, '')}. ${understand.map((p) => p.text).join(' ')}` : String(o.telling ?? ''))
   return {
-    ...o,
-    engines,
-    why: (typeof o.why === 'string' && o.why) ? o.why : whys.join(' '),
-    est_cost_usd: Number(o.est_cost_usd ?? 0) || 0,
-    est_minutes: Number(o.est_minutes ?? 0) || 0,
-    est_llm_calls: Number(o.est_llm_calls ?? 0) || 0,
-    output_shape: typeof shape === 'string' ? shape : undefined,
-    telling: typeof o.telling === 'string' ? o.telling : String(o.telling ?? ''),
-    title: String(o.title ?? o.key ?? ''),
+    ...(o as object),
+    version, key: String(o.key ?? ''), title: String(o.title ?? o.key ?? ''),
+    deliverable_kind: String(o.deliverable_kind ?? ''), deliverable, use_kind: String(o.use_kind ?? '') as BriefOption['use_kind'],
+    you_will_understand: understand,
+    you_will_be_able_to: Array.isArray(o.you_will_be_able_to) ? (o.you_will_be_able_to as unknown[]).map(normalizePromise) : [],
+    questions_answered: strList(o.questions_answered), not_for: strList(o.not_for),
+    shape,
+    evidence_base: {
+      carrying_docs: (Array.isArray(rawEv.carrying_docs) ? rawEv.carrying_docs as unknown[] : []).map((d) => typeof d === 'string' ? { doc_key: d, carries: '' } : { doc_key: String((d as Record<string, unknown>).doc_key ?? ''), carries: String((d as Record<string, unknown>).carries ?? '') }),
+      thin_or_missing: strList(rawEv.thin_or_missing),
+    },
+    path: { steps: pathSteps.length ? pathSteps : engineObjs.map((e) => ({ engine_key: e.engine_key, plain_name: '', contributes: e.why, depth: 'surface' as StepDepth })),
+            depth: (['simple', 'medium', 'advanced'].includes(String(rawPath.depth)) ? String(rawPath.depth) : 'simple') as Depth,
+            primitives: strList(rawPath.primitives), chain_key: typeof rawPath.chain_key === 'string' ? rawPath.chain_key : null },
+    best_when: String(o.best_when ?? ''), alternative: Boolean(o.alternative), notes: strList(o.notes),
+    est_cost_usd: num(o.est_cost_usd), est_minutes: num(o.est_minutes), est_llm_calls: num(o.est_llm_calls),
+    telling, engines, why: (typeof o.why === 'string' && o.why) ? o.why : whys.join(' '), output_shape: line,
   }
 }
 function normalizeBrief(b: unknown): Brief {
   const anyB = (b && typeof b === 'object' ? b : {}) as Record<string, unknown>
   const options = Array.isArray(anyB.options) ? (anyB.options as Record<string, unknown>[]).map(normalizeBriefOption) : []
   const defaults = (anyB.defaults && typeof anyB.defaults === 'object' ? anyB.defaults : {}) as Record<string, unknown>
-  return { ...anyB, options, defaults } as unknown as Brief
+  const rawRec = anyB.recommendation && typeof anyB.recommendation === 'object' ? (anyB.recommendation as Record<string, unknown>) : null
+  const recommendation = rawRec && rawRec.option_key ? {
+    option_key: String(rawRec.option_key), because: String(rawRec.because ?? ''),
+    runner_up: typeof rawRec.runner_up === 'string' ? rawRec.runner_up : null, runner_up_because: typeof rawRec.runner_up_because === 'string' ? rawRec.runner_up_because : null,
+  } : (typeof defaults.option_key === 'string' ? { option_key: defaults.option_key, because: '', runner_up: null, runner_up_because: null } : null)
+  const entry = ['use', 'chosen', 'material'].includes(String(anyB.entry)) ? String(anyB.entry) as Brief['entry'] : 'use'
+  return { ...anyB, version: num(anyB.version) || (options.some((o) => o.version >= 2) ? 2 : 1), entry, options, recommendation, defaults, notes: strList(anyB.notes) } as unknown as Brief
 }
 
 function normalizeJob(j: DossierJob): DossierJob {
@@ -170,6 +232,8 @@ export interface Api {
   getJob(id: string): Promise<DossierJob>
   getBrief(id: string): Promise<Brief>
   chooseBrief(id: string, option_key: string, overrides?: Record<string, unknown>): Promise<DossierJob>
+  /** the purpose-first engine catalog (lane 2 picker); priced when the corpus size is known */
+  catalog(audience: Audience, corpusChars?: number | null, nDocs?: number | null): Promise<Catalog>
   getReceipts(id: string): Promise<Receipt[]>
   getDossierHtml(id: string): Promise<string>
   /** absolute URL for a download (pdf|md|html) */
@@ -214,6 +278,12 @@ const live: Api = {
   chooseBrief: (id, option_key, overrides) => request<DossierJob>(
     `/v1/dossier/jobs/${id}/brief`,
     { method: 'POST', body: JSON.stringify({ option_key, overrides: overrides ?? {} }) }).then(normalizeJob),
+  catalog: (audience, corpusChars, nDocs) => {
+    const q = new URLSearchParams({ audience })
+    if (corpusChars) q.set('corpus_chars', String(Math.round(corpusChars)))
+    if (nDocs) q.set('n_docs', String(nDocs))
+    return request<Catalog>(`/v1/dossier/catalog?${q.toString()}`)
+  },
   getReceipts: (id) => request<unknown>(`/v1/dossier/jobs/${id}/receipts`).then((d) => unwrap<Receipt>(d, 'receipts')),
   getDossierHtml: (id) => requestText(`/v1/dossier/jobs/${id}/dossier.html`).then((html) =>
     // figures and downloads inside the composed page are API-relative; the desk is another origin
@@ -308,6 +378,7 @@ export const api: Api = {
   getJob: (id) => getApi().then((a) => a.getJob(id)),
   getBrief: (id) => getApi().then((a) => a.getBrief(id)),
   chooseBrief: (id, k, o) => getApi().then((a) => a.chooseBrief(id, k, o)),
+  catalog: (aud, c, n) => getApi().then((a) => a.catalog(aud, c, n)),
   getReceipts: (id) => getApi().then((a) => a.getReceipts(id)),
   getDossierHtml: (id) => getApi().then((a) => a.getDossierHtml(id)),
   downloadUrl: (job, kind) => (impl ?? live).downloadUrl(job, kind),

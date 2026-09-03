@@ -46,3 +46,14 @@ Problem classes, root causes, files fixed. See global rules.
 **Files Fixed**: web/src/lib/api.ts (unwrap, normalizeJob, normalizeExemplar, getDossierHtml URL rewrite), web/src/components/RunRail.tsx, web/package.json (404.html SPA fallback).
 
 **Pattern to Watch For**: after any backend schema change, run one live job and open every desk page with Playwright; keep normalization in api.ts, never in pages. Generate web/mock fixtures from a real job JSON.
+
+## Override key silently ignored on the brief choice (2026-09-03)
+
+**Problem Class**: A request field accepted by the client contract but dropped by a generic "merge known keys" loop on the server — no error, no effect.
+
+**Root Cause**: `POST /v1/dossier/jobs/{id}/brief` merged `overrides` with `elif k in data: data[k] = v` over `DossierOptions.model_dump()`. The desk's figures dial sends `figures` at the top level; `figures` lives at `output.figures`, so the key was not in `data` and was discarded silently. The dial had never worked.
+
+**Files Fixed**:
+- `src/api/routes/dossier.py` (`choose_brief`) — `figures` is an explicit alias of `output.figures`; `path` is handled as its own override (resolved and stored on the option).
+
+**Pattern to Watch For**: generic key-merge loops over a model dump (`if k in data`) hide contract drift between client and server; unknown override keys should be either mapped explicitly or rejected with a 400, never dropped.

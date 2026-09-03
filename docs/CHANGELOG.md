@@ -5,6 +5,16 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Added (2026-09-03 — brief v2, deliverable-first; details in communications/changes/brief-v2.md)
+- **Brief v2**: each option is a deliverable — what you get, what you will understand, what you will be able to do (each promise pointing at the T1/§5/F1 that keeps it), `not_for`, shape with row units and figure formats, evidence base, its own priced path, `best_when` — plus a `recommendation` with a reason the reader would accept. Nine prompt rules checked by code with one repair round (`src/dossier/brief.py`); `BriefOption` v2 with derived `telling`/`engines`/`output_shape` so plan/tables/figures/compose read unchanged (`src/dossier/schemas.py`).
+- **Three entry lanes**: `entry = use | chosen | material` on `POST /v1/dossier/jobs` (+ `use_frame`, `path`); lane 3 executes `recommendation.option_key` and records why; lane 2 runs the brief in translate mode and the plan honours the fixed path exactly (`src/dossier/plan.py:fixed_path`, `src/dossier/runner.py`).
+- **Purpose-first engine catalog** `GET /v1/dossier/catalog` (`src/dossier/catalog.py`, `catalog_purpose.json`, `recipes.json`): 22 executable engines in four purpose groups with plain names, use-when/yields one-liners, row units, fit for this corpus, per-depth prices; seven recipes; the six excluded engines with reasons.
+- **Desk**: deliverable cards (`web/src/components/DeliverableCard.tsx`), the catalog picker (`web/src/components/CatalogPicker.tsx`), the brief step's two dials + "edit ▸" / "I know the analysis I want ▸" (`web/src/steps/BriefStep.tsx`), the Library's use box + lanes + advanced fold (`web/src/pages/Library.tsx`); v2 + v1 normalisation in `web/src/lib/api.ts`; mock fixtures `web/mock/brief.json`, `web/mock/catalog.json`.
+- Tests `tests/test_brief_v2_checks.py` (22, no network); three real sample briefs in `communications/changes/brief-v2-samples/`.
+
+### Fixed
+- `POST /v1/dossier/jobs/{id}/brief` ignored `overrides.figures` (the desk's figures dial had no effect) — now an alias of `output.figures` ([src/api/routes/dossier.py](../src/api/routes/dossier.py)).
+
 ### Added (2026-09-03 — The Analyst build; details per package in communications/changes/*.md)
 - Events ledger + live SSE: `src/events/` (store, schemas, pricing, context, narrator, hooks), routes `/v1/events/{job_id}`, `/summary`, `/stream` and executor aliases; hooks in engine_runner/chain_runner/workflow_runner ([events.md](../communications/changes/events.md))
 - Image generation package: `src/images/` (providers gemini_pro/gemini_flash/seedream_5_pro/qwen_image_2_pro, adapter, figure_prompts, compliance, storage) and `/v1/figures/*` ([images.md](../communications/changes/images.md))

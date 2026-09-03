@@ -157,9 +157,9 @@ def _run_step(job: DossierJob, step: str, docs) -> None:
         job.brief = brief
         fields = {"brief": brief}
         if job.options.autopilot and not job.chosen_option:
-            job.chosen_option = brief.options[0].key
+            job.chosen_option = brief.autopilot_key()  # the recommendation (brief v2), else option 1
             fields["chosen_option"] = job.chosen_option
-            events.emit(job_id, "note", phase=step, detail=f"autopilot: chose option 1 — {brief.options[0].title}")
+            events.emit(job_id, "note", phase=step, detail=brief.autopilot_reason(), payload_json={"kind": "material_decided", "option_key": job.chosen_option})
         persist(**fields)
         summary = " / ".join(o.title for o in brief.options)
     elif step == "plan":
