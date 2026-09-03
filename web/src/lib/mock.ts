@@ -24,11 +24,9 @@ import eventsJson from '../../mock/events.json'
 import dossierHtmlRaw from '../../mock/dossier.html?raw'
 import fig1Url from '../../mock/figures/fig-1.svg'
 import fig2Url from '../../mock/figures/fig-2.svg'
+import { CROSSCHECK, EXTRA_EVENTS, FINDINGS, SPINE, type ScriptEvent } from './mock_concretize'
 
-type Mirror = { phase: string; phase_number: number; kind?: string }
-type ScriptEvent = Partial<RunEvent> & { stage: 'A' | 'B'; at_ms: number; mirror?: Mirror }
-
-const SCRIPT = eventsJson as ScriptEvent[]
+const SCRIPT = ([...(eventsJson as ScriptEvent[]), ...EXTRA_EVENTS]).sort((a, b) => (a.stage === b.stage ? a.at_ms - b.at_ms : a.stage < b.stage ? -1 : 1))
 const A = SCRIPT.filter((e) => e.stage === 'A')
 const B = SCRIPT.filter((e) => e.stage === 'B')
 const A_END = Math.max(...A.map((e) => e.at_ms))
@@ -37,8 +35,8 @@ const BRIEF = briefJson as unknown as Brief
 const CATALOG = catalogJson as unknown as Catalog
 const PLAN = planJson as unknown as OrchestratorPlan
 const FIGURES: DossierFigure[] = [
-  { key: 'f1', caption: 'The three fields and the fourth', figure_id: 'fig-8a21c0', url: fig1Url, provider: 'gemini-3-pro-image', cost_usd: 0.12 },
-  { key: 'f2', caption: 'One reset read against five levels — store network 600 → 450', figure_id: 'fig-3d9b7e', url: fig2Url, provider: 'gemini-3-pro-image', cost_usd: 0.12 },
+  { key: 'f1', caption: 'The three fields and the fourth', figure_id: 'fig-8a21c0', url: fig1Url, provider: 'gemini-3-pro-image', cost_usd: 0.12, section_key: 'three_fields', checked_ok: true, detected: 'a layered stack; 7/7 labels legible' },
+  { key: 'f2', caption: 'A deep cut at a shallow level.', figure_id: 'fig-3d9b7e', url: fig2Url, provider: 'gemini-3-pro-image', cost_usd: 0.12, section_key: 'the_reset', checked_ok: true, detected: 'a quadrant chart; 9/9 labels legible' },
 ]
 
 interface Run {
@@ -201,6 +199,9 @@ function snapshot(run: Run): DossierJob {
     tables: (tablesJson as DossierJob['tables']).filter((t) => tableKeys.has(t.key)),
     figures: FIGURES.filter((f) => figureKeys.has(f.key)),
     sections: done ? (sectionsJson as DossierJob['sections']) : [],
+    spine: finished('spine') ? SPINE : null,
+    findings: finished('crosscheck') ? FINDINGS : [],
+    crosscheck: finished('crosscheck') ? CROSSCHECK : null,
     receipts: (receiptsJson as Receipt[]).slice(0, nCalls),
     totals: totalsOf(ev),
     paths: done ? { html: `/v1/dossier/jobs/${run.id}/dossier.html`, pdf: `/v1/dossier/jobs/${run.id}/dossier.pdf`, md: `/v1/dossier/jobs/${run.id}/dossier.md` } : {},

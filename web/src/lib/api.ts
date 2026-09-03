@@ -175,9 +175,11 @@ function normalizeJob(j: DossierJob): DossierJob {
     anyJ.title = (docs?.[0]?.title as string) || (srcs?.[0]?.title as string) || (srcs?.[0]?.name as string) || (anyJ.id as string)
     if (docs && docs.length > 1) anyJ.title = `${anyJ.title} (+${docs.length - 1} more)`
   }
-  for (const k of ['profiles', 'tables', 'figures', 'receipts', 'notes', 'documents', 'sources']) {
+  for (const k of ['profiles', 'tables', 'figures', 'receipts', 'notes', 'documents', 'sources', 'findings']) {
     if (!Array.isArray(anyJ[k])) anyJ[k] = []
   }
+  if (!anyJ.spine || typeof anyJ.spine !== 'object') anyJ.spine = null
+  if (!anyJ.crosscheck || typeof anyJ.crosscheck !== 'object') anyJ.crosscheck = null
   // The composer returns {title, subtitle, executive_summary[], sections[{number, heading, paragraphs[]}], conclusion[]};
   // pages expect DossierSection[] with {key, title, md}.
   const comp = anyJ.sections as unknown
@@ -187,8 +189,10 @@ function normalizeJob(j: DossierJob): DossierJob {
     const asMd = (v: unknown) => Array.isArray(v) ? (v as unknown[]).map(String).join('\n\n') : (typeof v === 'string' ? v : '')
     if (Array.isArray(c.executive_summary) && (c.executive_summary as unknown[]).length) out.push({ key: 'summary', title: 'Summary', md: asMd(c.executive_summary) })
     for (const sec of (Array.isArray(c.sections) ? (c.sections as Record<string, unknown>[]) : [])) {
-      out.push({ key: `s${sec.number ?? out.length + 1}`, title: String(sec.heading ?? `Section ${sec.number ?? ''}`), md: asMd(sec.paragraphs),
-                 number: sec.number, table_keys: sec.table_keys ?? [], figure_keys: sec.figure_keys ?? [] })
+      // exhibit tokens are placement marks for the renderer; the desk shows the prose and lists the exhibits beside it
+      const md = asMd(sec.paragraphs).replace(/\s*\[\[(table|figure):([a-z0-9_-]+)\]\]/gi, (_m, kind: string, key: string) => ` *[${kind} ${key} is placed here]*`)
+      out.push({ key: `s${sec.number ?? out.length + 1}`, title: String(sec.heading ?? `Section ${sec.number ?? ''}`), md,
+                 number: sec.number, section_key: sec.section_key ?? '', table_keys: sec.table_keys ?? [], figure_keys: sec.figure_keys ?? [] })
     }
     if (Array.isArray(c.conclusion) && (c.conclusion as unknown[]).length) out.push({ key: 'conclusion', title: 'Conclusion', md: asMd(c.conclusion) })
     anyJ.sections = out

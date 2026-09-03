@@ -43,11 +43,18 @@ export const STATUS_LABEL: Record<string, string> = {
   awaiting_brief: 'Brief ready — your choice',
   planning: 'Planning the analysis',
   analysis: 'Running the analysis',
+  spine: 'Deciding the argument',
   tables: 'Building the tables',
   figures: 'Drawing the figures',
-  composing: 'Composing the dossier',
+  composing: 'Writing with the exhibits',
+  crosscheck: 'Cross-checking the whole',
   done: 'Delivered',
   failed: 'Stopped',
+  /* the backend's step names, as the event ledger carries them in `phase` */
+  brief: 'The brief',
+  plan: 'Planning the analysis',
+  compose: 'Writing with the exhibits',
+  receipts: 'Receipts',
 }
 
 export const statusLabel = (s: string | undefined | null) =>

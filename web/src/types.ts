@@ -76,12 +76,12 @@ export interface CreateJobResponse {
 }
 
 export type DossierStatus =
-  | 'queued' | 'reconnaissance' | 'awaiting_brief' | 'planning' | 'analysis'
-  | 'tables' | 'figures' | 'composing' | 'done' | 'failed'
+  | 'queued' | 'reconnaissance' | 'awaiting_brief' | 'planning' | 'analysis' | 'spine'
+  | 'tables' | 'figures' | 'composing' | 'crosscheck' | 'done' | 'failed'
 
 export const STATUS_ORDER: DossierStatus[] = [
-  'queued', 'reconnaissance', 'awaiting_brief', 'planning', 'analysis',
-  'tables', 'figures', 'composing', 'done',
+  'queued', 'reconnaissance', 'awaiting_brief', 'planning', 'analysis', 'spine',
+  'tables', 'figures', 'composing', 'crosscheck', 'done',
 ]
 
 export function statusRank(s: DossierStatus | undefined | null): number {
@@ -218,6 +218,8 @@ export interface DossierTable {
   columns: string[]
   rows: TableRow[]
   note?: string | null
+  section_key?: string
+  proves?: string
 }
 
 export interface DossierFigure {
@@ -228,6 +230,12 @@ export interface DossierFigure {
   provider?: string
   cost_usd?: number
   prompt?: string
+  title?: string
+  visual_format?: string
+  section_key?: string
+  detected?: string
+  checked_ok?: boolean | null
+  status?: string
 }
 
 export interface DossierSection {
@@ -235,6 +243,72 @@ export interface DossierSection {
   title: string
   html?: string
   md?: string
+  section_key?: string
+}
+
+/* ── the concretization passes (communications/changes/concretize.md) ── */
+export interface SpineTableSpec { intent: string; row_unit: string; columns: string[]; carries_claims: string[] }
+export interface SpineFigureSpec { primitive: string; visual_format: string; picture_shows: string; caption_says: string; why_a_picture: string }
+export interface SpineSection {
+  key: string
+  heading: string
+  claim: string
+  reader_needs_next?: string
+  evidence_kind?: string
+  table?: SpineTableSpec | null
+  figure?: SpineFigureSpec | null
+  anchors_planned?: Anchor[]
+  feeds?: string[]
+}
+export interface CompositionRead {
+  plain_summary?: string
+  buried_crux?: string
+  readers?: { type: string; mode: string; wants: string }[]
+  strands?: { name: string; carried_by: string[]; accidental: boolean; note: string }[]
+  prose_to_table?: string[]
+  table_to_prose?: string[]
+  figures_earned?: string[]
+  figures_dropped?: string[]
+  cumulative_direction?: string
+  form_capacity?: string
+}
+export interface DossierSpine {
+  round: number
+  read?: CompositionRead
+  thesis: string
+  reader_question?: string
+  handle?: string
+  through_line?: string
+  summary_job: string
+  conclusion_job: string
+  sections: SpineSection[]
+  exhibits_budget?: { tables: number; figures: number }
+  notes?: string[]
+}
+export interface FindingFate { round: number; fate: string; rationale: string; by: string; ts?: string }
+export interface Finding {
+  id: string
+  kind: string
+  where: { section_key?: string | null; table_key?: string | null; figure_key?: string | null; paragraph_index?: number | null; anchor_n?: number | null }
+  quote?: string
+  note: string
+  affordance: string
+  realization?: string | null
+  recommended?: boolean
+  source: string
+  round?: number
+  status: string
+  fates: FindingFate[]
+}
+export interface CrossCheckVerdict {
+  round: number
+  hangs_together: boolean | null
+  summary: string
+  findings_minted: number
+  clamps: number
+  judged: boolean
+  what_changed?: string | null
+  realized: string[]
 }
 
 /* assumed shape — one row per model call */
@@ -270,6 +344,9 @@ export interface DossierJob {
   tables: DossierTable[]
   figures: DossierFigure[]
   sections: DossierSection[]
+  spine: DossierSpine | null
+  findings: Finding[]
+  crosscheck: CrossCheckVerdict | null
   receipts: Receipt[]
   totals: Totals
   paths: { html?: string; pdf?: string; md?: string }
