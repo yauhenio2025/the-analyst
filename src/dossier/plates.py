@@ -835,7 +835,7 @@ def validate_canonical(family: str, canonical: Any) -> list[str]:
 
 # Per-family list caps (the family rules); a longer list keeps its largest-size items and records the rest.
 _LIST_CAPS: dict[str, dict[str, int]] = {
-    "scorecard": {"items": 10, "quadrants": 4, "marks": 6, "links": 6},
+    "scorecard": {"items": 8, "quadrants": 4, "marks": 6, "links": 6},   # a 9-item panel rendered 7: eight is the ceiling at 4K
     "framework_map": {"nodes": 7, "regions": 3, "relations": 16, "bridges": 3, "side_boxes": 4, "items": 6},
     "flow_map": {"stations": 9, "feeds": 4, "drains": 3, "branches": 4, "steps": 4},
     "power_map": {"actors": 16, "relations": 12},
@@ -1533,20 +1533,30 @@ def check_plate(image_bytes: bytes, spec: PlateSpec, *, model: str = CHECK_MODEL
 
         found_norm = {_norm_label(x) for x in _strs("labels_found")}
         listed_missing = {_norm_label(x) for x in _strs("labels_missing")}
-        misspelled = [m for m in (v.get("misspelled") or []) if isinstance(m, dict) and m.get("expected")]
+        manifest_norm = {_norm_label(lab) for lab in labels}
+        # a misspelling must name a manifest string (the reviewer sometimes files its own commentary here)
+        misspelled = [m for m in (v.get("misspelled") or []) if isinstance(m, dict) and m.get("expected")
+                      and _norm_label(m["expected"]) in manifest_norm and _norm_label(m.get("seen", "")) != _norm_label(m["expected"])]
         misspelled_norm = {_norm_label(m["expected"]) for m in misspelled}
         illegible = _strs("illegible")
         illegible_norm = {_norm_label(x) for x in illegible}
         missing = [lab for lab in labels if _norm_label(lab) not in found_norm
                    and (_norm_label(lab) in listed_missing or (_norm_label(lab) not in misspelled_norm and _norm_label(lab) not in illegible_norm))]
-        leaked = _strs("leaked_tokens") + [t for t in _strs("extra_text") if leak_scan(t)]
+        # extra text: strip the reviewer's parenthetical commentary; a string that is (or contains) a manifest string is not invented
+        extra: list[str] = []
+        for t in _strs("extra_text"):
+            core = _norm_label(re.sub(r"\s*\((?:[^()]|\([^()]*\))*\)\s*$", "", t))
+            if not core or core in manifest_norm or any(lab in core or core in lab for lab in manifest_norm if len(lab) >= 12):
+                continue
+            extra.append(t)
+        leaked = _strs("leaked_tokens") + [t for t in extra if leak_scan(t)]
         result: dict[str, Any] = {
             "ok": None, "format_ok": bool(v.get("format_ok")), "detected_format": v.get("detected_format"),
             "title_found": bool(v.get("title_found")),
             "labels_found": [lab for lab in labels if _norm_label(lab) in found_norm],
             "labels_missing": missing, "misspelled": misspelled, "illegible": illegible,
             "prohibited_elements": _strs("prohibited_elements"), "leaked_tokens": sorted(set(leaked)),
-            "extra_text": _strs("extra_text"), "density": v.get("density"), "legible_at_4k": v.get("legible_at_4k"),
+            "extra_text": extra, "density": v.get("density"), "legible_at_4k": v.get("legible_at_4k"),
             "suggestion": v.get("suggestion") or None, "confidence": v.get("confidence") or "low",
             "checked": True, "model": model, "usage": usage, "n_labels": len(labels),
         }
@@ -1575,6 +1585,46 @@ def check_plate(image_bytes: bytes, spec: PlateSpec, *, model: str = CHECK_MODEL
         logger.error(f"plate check failed: {exc}")
         base["issues"] = [f"check error: {str(exc)[:200]}"]
         return base
+
+
+def rescore_verdict(verdict: dict[str, Any], labels: list[str]) -> dict[str, Any]:
+    """Re-apply the manifest-aware reconciliation and the acceptance rule to a stored verdict (no vision call):
+    extra text that is or contains a manifest string is not invented; a misspelling must name a manifest string."""
+    v = dict(verdict or {})
+    if not v.get("checked"):
+        return v
+    manifest_norm = {_norm_label(lab) for lab in labels}
+    extra: list[str] = []
+    for t in v.get("extra_text") or []:
+        core = _norm_label(re.sub(r"\s*\((?:[^()]|\([^()]*\))*\)\s*$", "", str(t)))
+        if not core or core in manifest_norm or any(lab in core or core in lab for lab in manifest_norm if len(lab) >= 12):
+            continue
+        extra.append(str(t))
+    v["extra_text"] = extra
+    v["misspelled"] = [m for m in (v.get("misspelled") or []) if isinstance(m, dict) and m.get("expected")
+                       and _norm_label(m["expected"]) in manifest_norm and _norm_label(m.get("seen", "")) != _norm_label(m["expected"])]
+    v["leaked_tokens"] = sorted(set([str(x) for x in (v.get("leaked_tokens") or []) if leak_scan(str(x))] + [t for t in extra if leak_scan(t)]))
+    v["ok"] = plate_verdict_ok(v, len(labels))
+    issues = []
+    if not v.get("format_ok"):
+        issues.append(f"wrong format: looks like {v.get('detected_format')}")
+    if v.get("prohibited_elements"):
+        issues.append("prohibited: " + "; ".join(v["prohibited_elements"][:3]))
+    if v.get("leaked_tokens"):
+        issues.append("leaked tokens: " + "; ".join(v["leaked_tokens"][:4]))
+    if str(v.get("density") or "").lower().startswith("sparse"):
+        issues.append("sparse: the plate is not dense enough")
+    if v.get("labels_missing"):
+        issues.append(f"{len(v['labels_missing'])} string(s) missing: " + "; ".join(v["labels_missing"][:4]))
+    if v.get("misspelled"):
+        issues.append(f"{len(v['misspelled'])} misspelled: " + "; ".join(f"{m['expected']}→{m.get('seen', '?')}" for m in v["misspelled"][:3]))
+    if v.get("illegible"):
+        issues.append(f"{len(v['illegible'])} illegible: " + "; ".join(v["illegible"][:3]))
+    inv = invented_sentences(v)
+    if inv:
+        issues.append(f"{len(inv)} invented sentence(s): " + "; ".join(t[:60] for t in inv[:2]))
+    v["issues"] = issues
+    return v
 
 
 def revision_notes(verdict: dict[str, Any]) -> list[str]:

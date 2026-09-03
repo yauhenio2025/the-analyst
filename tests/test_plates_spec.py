@@ -331,6 +331,21 @@ def test_plate_verdict_rules():
     assert not plate_verdict_ok({**base, "illegible": ["a", "b", "c"]}, 5)
 
 
+def test_rescore_verdict_is_manifest_aware():
+    from src.dossier.plates import rescore_verdict
+    labels = ["GAINS: Named Corporate Winners", "Beneficiary named before announcement lands in every case", "National Security", "DEMANDS"]
+    v = {"checked": True, "format_ok": True, "prohibited_elements": [], "leaked_tokens": [], "density": "dense", "labels_missing": [], "illegible": [],
+         "extra_text": ["BENEFICIARY NAMED BEFORE ANNOUNCEMENT LANDS IN EVERY CASE (appears as a banner inside the gains panel)",
+                        "DEMANES (appears to be a misspelling of DEMANDS used as an arrow label)", "a wholly invented sentence about nothing"],
+         "misspelled": [{"expected": "DEMANES", "seen": "DEMANES"}, {"expected": "National Security", "seen": "Natonal Security"}]}
+    r = rescore_verdict(v, labels)
+    assert r["extra_text"] == ["a wholly invented sentence about nothing"] and r["ok"] is False
+    assert r["misspelled"] == [{"expected": "National Security", "seen": "Natonal Security"}]
+    v["extra_text"] = v["extra_text"][:2]
+    assert rescore_verdict(v, labels)["ok"] is True
+    assert rescore_verdict({"checked": False}, labels) == {"checked": False}
+
+
 def test_revision_notes_name_leaks_and_sparseness():
     notes = revision_notes({"format_ok": True, "leaked_tokens": ["#1e40af"], "density": "sparse", "labels_missing": ["Raytheon Australia"],
                             "misspelled": [{"expected": "Lynas", "seen": "Lynus"}], "title_found": True, "legible_at_4k": False, "suggestion": "bigger"})
