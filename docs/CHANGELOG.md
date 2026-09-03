@@ -6,6 +6,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 ## [Unreleased]
 
 ### Added (2026-09-03 — The Analyst build; details per package in communications/changes/*.md)
+- Design memo for the deliverable-first brief (BriefOption v2, three entry lanes, purpose-first engine catalog, implementation map, three test briefs): [communications/DESIGN_brief_deliverables.md](../communications/DESIGN_brief_deliverables.md) — design only, no code changed
 - Events ledger + live SSE: `src/events/` (store, schemas, pricing, context, narrator, hooks), routes `/v1/events/{job_id}`, `/summary`, `/stream` and executor aliases; hooks in engine_runner/chain_runner/workflow_runner ([events.md](../communications/changes/events.md))
 - Image generation package: `src/images/` (providers gemini_pro/gemini_flash/seedream_5_pro/qwen_image_2_pro, adapter, figure_prompts, compliance, storage) and `/v1/figures/*` ([images.md](../communications/changes/images.md))
 - Dossier workflow (8 steps: reconnaissance → brief → plan → executor analysis → tables → figures → compose → receipts): `src/dossier/`, `src/sources/` (stacks export parsing), `/v1/dossier/*`, workflow `dossier_standard` ([dossier.md](../communications/changes/dossier.md))
