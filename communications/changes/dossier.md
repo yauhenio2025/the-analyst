@@ -70,8 +70,43 @@ No new Python packages: Jinja2, weasyprint, anthropic, httpx were already in `re
 Env: `ANTHROPIC_API_KEY`, `DOSSIER_MODEL` (default `claude-sonnet-4-6`), `DOSSIER_DIR`, `EXEMPLARS_DIR`,
 `STACKS_URL`, `DOSSIER_ANALYSIS_TIMEOUT_S` (default 5400), plus the images package's `FIGURES_DIR` and provider keys.
 
-## Timings / costs
-(filled in below after the verification runs)
+## Timings / costs (verified 2026-09-03, local, SQLite backend, claude-sonnet-4-6, exemplar = 5 papers / 349,233 chars ≈ 87.5K tokens)
+
+### Job 1 — `dossier-000b84458ab4`, depth **simple**, autopilot, figures=1 → **done**
+| step | what | calls | tokens in / out | cost | time |
+|---|---|---|---|---|---|
+| reconnaissance | 5 profiles, 29/35 key claims verified verbatim (6 dropped by the wall) | 1 | 87,514 / 7,799 | $0.38 | 159 s |
+| brief | 3 angles; autopilot chose `greenwashing_risk_audit` ("Where Your Sustainability Claims Will Be Challenged") | 1 | 8,528 / 1,891 | $0.05 | 44 s |
+| plan | `concept_centrality_mapper@surface` (1 pass), plan `plan-c18bfc7f3dd9`, rationale + 4 rejected alternatives | 1 | 7,030 / 1,633 | $0.05 | 38 s |
+| analysis | executor job `job-08b4d133d867`, phase 4.1, 1 pass, 32,593 chars of prose | 1 | ~89.7K / ~8K | $0.37 | 164 s |
+| tables | 3 tables, 16 rows, 0 rows dropped after one re-ask through the wall | 2 | — | $0.70 | 74 s |
+| figures | 1 figure `counter_narrative_ambush` via gemini_pro, id `dossier-000b84458ab4-counter_narrative_ambush-d73f896a` (compliance check flagged it, kept, noted) | 1 + 1 image | — | $0.16 | 52 s |
+| compose | 5 sections, 0 unfootnoted claims → dossier.html (39 KB), dossier.pdf (3.6 MB), dossier.md (30 KB) | 1 | — | $0.37 | 98 s |
+| receipts | totals | 0 | — | — | 1 s |
+| **total** | | **8 LLM + 1 image** | **499,410 / 29,179** | **$2.07** | **10.5 min of step time** (≈16 min wall-clock including two server restarts for the fixes below) |
+
+Outputs: `data/dossiers/dossier-000b84458ab4/{dossier.html,dossier.pdf,dossier.md,job.json,figures/counter_narrative_ambush.jpg}` (worktree, git-ignored).
+Served: `GET /v1/dossier/jobs/dossier-000b84458ab4/dossier.{html,pdf,md}`, `/receipts`, `/v1/figures/dossier-000b84458ab4-counter_narrative_ambush-d73f896a`.
+
+### Job 2 — `dossier-16f2f9a2d89f`, depth **medium**, autopilot, figures=2 → left in `analysis` (session ended)
+| step | what | cost | time |
+|---|---|---|---|
+| reconnaissance | ran twice (first answer had `profiles` as a JSON string → repaired by re-ask; the server restart lost that call; the re-run passed first time) | $0.74 | 134 s |
+| brief | 3 angles; chose `legitimacy_gap_diagnostic` ("Before You Commit: The Legitimacy Gap Diagnostic") | $0.06 | 56 s |
+| plan | `concept_centrality_mapper@surface` → `dialectical_structure@surface` (2 passes, chained by depends_on), plan `plan-9e713de434db` | $0.04 | 35 s |
+| analysis | executor job `job-d2c86dd4b6e0` running phase 4.1 when the session ended (≈3 min/pass expected → ~6 min) | — | — |
+| so far | 4 LLM calls, 189,899 / 17,457 tokens | **$0.83** | 3.7 min |
+
+Projected medium total: ≈ $2.9 and ≈ 14 min of step time (2 engine passes + tables + 2 figures + compose).
+To finish it: boot the server (the executor's startup recovery resumes `job-d2c86dd4b6e0` after its 5-min grace, or the
+dossier resume does it via `start_resume_thread`), then `POST /v1/dossier/jobs/dossier-16f2f9a2d89f/resume`.
+
+### Fixes made during verification (see `communications/BUG_TRACKING.md`)
+- `src/llm/backends.py`, `src/llm/client.py`: `httpx.Timeout` → `anthropic.Timeout` — the shared venv's `anthropic` 1.x
+  (httpx2) rejected every request with "Connection error"; the executor could not run a single engine pass before this.
+- `src/dossier/analysis.py`: a sub-job recorded `running` but not live in-process is resumed through the executor.
+- `src/dossier/llm.py`: stringified array/object tool fields are unpacked before validation (saves a $0.38 re-ask).
+- `src/dossier/store.py`: lists of Pydantic models were persisted as reprs; now dicts.
 
 ## Deviations from the contract
 - `FigureBrief.register` is stored as `visual_register` (Pydantic v2 warns that `register` shadows `ABCMeta.register`);
