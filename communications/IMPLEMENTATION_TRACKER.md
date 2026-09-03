@@ -214,3 +214,10 @@ Fast live run: same with kering_study.md at depth simple (about 6 min, about $1)
 - Deps added: pypdf, python-multipart.
 - DATA ISSUE (owner): stacks item em:WUPV36YG ("Fashionable altruism", Hewitt et al.) carries the wrong PDF — Highfield & Miltner 2023 "Platformed solidarity" (hashflags). The `fashion_bundle.txt` exemplar therefore has that paper as #5; the dossiers cite it. Fix the Zotero attachment and re-export.
 - Deploy lesson: Render QUEUES backend deploys (start can lag a push by minutes) and each one wipes SQLite; before seeding/running, confirm `list_deploys` shows the intended commit `live` (a marker exemplar that disappears is a reliable signal).
+
+### Infra wired (2026-09-03 08:55 UTC) — with the owner's CAII-workspace Render API key (in chat, not stored)
+- `EXECUTOR_DATABASE_URL` = internal URL of `the-analyst-db` set on the backend; Postgres verified locally for run_events / dossier_exemplars / dossier_jobs (external access needed a temporary ipAllowList entry for geekom-mini — REMOVE it when done: `PATCH /v1/postgres/dpg-dacfn3ijnfac73cddr2g-a {"ipAllowList":[]}`).
+- Build filters: backend `ignoredPaths: web/**, communications/**, docs/**, *.md`; desk `paths: web/**`. Front-end and docs pushes no longer redeploy (and no longer wipe) the backend. Jobs/exemplars now persist across backend deploys.
+- Brief page fix (2c6bb49): brief options normalized (engine objects → names, string estimates → numbers, output_shape → summary).
+- IN PROGRESS: `feat/diagrams` — figures rebuilt as labelled analytical diagrams (v1 process: primitive → visual format → FORMAT_ENFORCEMENT + GLOBAL_PROHIBITIONS + style school → Gemini Pro → Claude-vision compliance → one retry). Owner critique 2026-09-03: "not at all like what we used to generate in visualizer/analyzer v1 — DIAGRAMS, FLOWS, VENN DIAGRAMS".
+- Owner's first real run: `dossier-dce25aeed631` (5 uploaded PDFs on state capitalism) → "When Governments Say 'Strategic,' Follow the Money", 17 pages, $2.58; backup under data/dossiers/live-dossier-dce25aeed631/.
