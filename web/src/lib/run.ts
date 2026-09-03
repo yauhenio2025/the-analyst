@@ -12,21 +12,30 @@ export const RAIL_STEPS: RailStep[] = [
   { n: 2, key: 'awaiting_brief', label: 'The brief' },
   { n: 3, key: 'planning', label: 'Plan the analysis' },
   { n: 4, key: 'analysis', label: 'Run the analysis' },
-  { n: 5, key: 'tables', label: 'Build the tables' },
-  { n: 6, key: 'figures', label: 'Draw the figures' },
-  { n: 7, key: 'composing', label: 'Compose the dossier' },
-  { n: 8, key: 'done', label: 'Delivered' },
+  { n: 5, key: 'spine', label: 'Decide the argument' },
+  { n: 6, key: 'tables', label: 'Build the tables' },
+  { n: 7, key: 'figures', label: 'Draw the figures' },
+  { n: 8, key: 'composing', label: 'Write with the exhibits' },
+  { n: 9, key: 'crosscheck', label: 'Cross-check the whole' },
+  { n: 10, key: 'done', label: 'Delivered' },
 ]
 
 export type PipState = 'pending' | 'running' | 'done' | 'failed' | 'waiting'
 
 const RAIL_KEYS = new Set<string>(RAIL_STEPS.map((s) => s.key))
 
+/** The backend's step names (src/dossier/schemas.STEPS) → the rail's status keys. */
+export const STEP_TO_RAIL: Record<string, DossierStatus> = {
+  reconnaissance: 'reconnaissance', brief: 'awaiting_brief', plan: 'planning', analysis: 'analysis',
+  spine: 'spine', tables: 'tables', figures: 'figures', compose: 'composing', crosscheck: 'crosscheck', receipts: 'done',
+}
+
 /** Which rail step an event belongs to. Dossier-level events carry the
- * status name in `phase`; mirrored analysis sub-job events carry the
- * executor phase name — those fold into "Run the analysis". */
+ * step name (or the status name) in `phase`; mirrored analysis sub-job
+ * events carry the executor phase name — those fold into "Run the analysis". */
 export function stepOfEvent(e: RunEvent): DossierStatus | null {
   if (e.phase && RAIL_KEYS.has(e.phase)) return e.phase as DossierStatus
+  if (e.phase && STEP_TO_RAIL[e.phase]) return STEP_TO_RAIL[e.phase]
   if (e.kind === 'job_finished') return 'done'
   if (e.engine || e.chain || e.pass_name || e.phase) return 'analysis'
   return null

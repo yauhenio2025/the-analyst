@@ -1,4 +1,4 @@
-"""DossierRunner — the eight steps in a daemon thread, persisted after every step, resumable.
+"""DossierRunner — the ten steps in a daemon thread, persisted after every step, resumable.
 
 Lifted from veo2/engine/ops.py: params stored verbatim on the job so a restart
 can resume from the recorded step; every step emits phase_started /
@@ -21,16 +21,19 @@ logger = logging.getLogger(__name__)
 
 STATUS_FOR_STEP = {
     "reconnaissance": "reconnaissance", "brief": "reconnaissance", "plan": "planning", "analysis": "analysis",
-    "tables": "tables", "figures": "figures", "compose": "composing", "receipts": "composing",
+    "spine": "spine", "tables": "tables", "figures": "figures", "compose": "composing", "crosscheck": "crosscheck",
+    "receipts": "crosscheck",
 }
 STEP_WHY = {
     "reconnaissance": "Reading every document closely so the later steps work from what the material actually says, not from a summary.",
     "brief": "Proposing three genuinely different angles, each with its engines and cost, so the choice of dossier is explicit and cheap to change.",
     "plan": "Turning the chosen angle into an ordered sequence of executable engines, so each phase feeds the next with context.",
     "analysis": "Running the engines through the executor: multi-pass analysis where every phase reads the previous phases' prose.",
-    "tables": "Condensing the analysis into evidence tables whose every row is pinned to a verbatim passage.",
-    "figures": "Planning figures as labelled analytical diagrams — primitive, format, exact labels from the analysis — then rendering and checking them.",
-    "compose": "Writing the dossier for the audience with footnoted anchors, then rendering HTML, PDF and Markdown.",
+    "spine": "Deciding what the dossier argues before a word is written: one claim per section, and the table or diagram each claim needs — so exhibits are commissioned by the argument, not by a dial.",
+    "tables": "Building exactly the tables the spine commissioned, keyed to their sections, every row pinned to a verbatim passage.",
+    "figures": "Drawing exactly the diagrams the spine commissioned — primitive, format, labels from the analysis — then rendering and checking each against its own spec.",
+    "compose": "Writing the dossier with the finished exhibits on the desk, pointing at each table and diagram where the reader should look; the summary and the close written last against the assembled body.",
+    "crosscheck": "Reading the dossier as one thing — do the pictures show what the text argues, do the rows match the claims, is anything asserted that nothing backs — and recording every finding with its cure.",
     "receipts": "Totalling every call so the cost and the method are on the record.",
 }
 
@@ -130,6 +133,13 @@ def _run(job_id: str) -> None:
             _running.discard(job_id)
 
 
+def ledger_line(job_id: str) -> str:
+    from src.dossier.findings import summary_line
+
+    fresh = get_job(job_id)
+    return summary_line(fresh.findings) if fresh else "?"
+
+
 def _persist_factory(job_id: str) -> Callable[..., None]:
     def persist(**fields) -> None:
         update_job(job_id, **fields)
@@ -178,20 +188,28 @@ def _run_step(job: DossierJob, step: str, docs) -> None:
         job.analysis = analysis
         persist(analysis_job_id=sub_id, analysis=analysis)
         summary = f"executor job {sub_id}: {len(analysis)} phases"
+    elif step == "spine":
+        from src.dossier.spine import run_spine
+
+        spine = run_spine(job, docs)
+        job.spine = spine
+        persist(spine=spine)
+        summary = (f"{len(spine.sections)} sections, {len(spine.table_sections())} tables + {len(spine.figure_sections())} diagrams commissioned"
+                   if spine else "spine unavailable — legacy planning")
     elif step == "tables":
         from src.dossier.tables import run_tables
 
-        tables = run_tables(job, docs)
+        tables = run_tables(job, docs, persist)
         job.tables = tables
         persist(tables=tables)
-        summary = f"{len(tables)} tables, {sum(len(t.rows) for t in tables)} verified rows"
+        summary = f"{len(tables)} tables, {sum(len(t.rows) for t in tables)} verified rows" + (f"; findings: {ledger_line(job_id)}" if job.spine else "")
     elif step == "figures":
         from src.dossier.figures import run_figures
 
-        figures = run_figures(job, docs)
+        figures = run_figures(job, docs, persist)
         job.figures = figures
         persist(figures=figures)
-        summary = ", ".join(f"{f.key}:{f.status}" for f in figures) or "none"
+        summary = ", ".join(f"{f.key}:{f.status}" + ("" if f.checked_ok is None else ("/ok" if f.checked_ok else "/flagged")) for f in figures) or "none"
     elif step == "compose":
         from src.dossier.compose import run_compose
 
@@ -200,6 +218,17 @@ def _run_step(job: DossierJob, step: str, docs) -> None:
         job.paths = paths
         persist(paths=paths)
         summary = f"{len(sections.sections)} sections; files: {', '.join(paths.keys())}"
+    elif step == "crosscheck":
+        try:
+            from src.dossier.crosscheck import run_crosscheck
+        except ImportError as exc:  # the pass ships in a later milestone; the run never waits on it
+            add_note(job_id, "crosscheck_unavailable", str(exc))
+            summary = "cross-check not installed"
+        else:
+            job = get_job(job_id) or job
+            verdict = run_crosscheck(job, docs, persist)
+            summary = (f"{'hangs together' if verdict.hangs_together else 'findings recorded'}: {verdict.findings_minted} minted "
+                       f"({verdict.clamps} by code), {len(verdict.realized)} acted on") if verdict else "cross-check unavailable"
     elif step == "receipts":
         from src.dossier.store import compute_totals
 

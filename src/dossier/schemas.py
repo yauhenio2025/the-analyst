@@ -16,12 +16,17 @@ from pydantic import BaseModel, Field, model_validator
 from src.sources.schemas import SourceSpec
 
 STATUSES = (
-    "queued", "reconnaissance", "awaiting_brief", "planning", "analysis",
-    "tables", "figures", "composing", "done", "failed", "cancelled",
+    "queued", "reconnaissance", "awaiting_brief", "planning", "analysis", "spine",
+    "tables", "figures", "composing", "crosscheck", "done", "failed", "cancelled",
 )
+# The concretization passes (communications/DESIGN_concretization_passes.md §C):
+# spine (S) decides what the dossier argues before any exhibit exists; tables +
+# figures (E) build exactly what the spine commissioned; compose (D) writes with
+# the exhibits in hand and places them at the pointer; crosscheck (X) reads the
+# finished parts as one dossier and mints findings.
 STEPS = (
-    "reconnaissance", "brief", "plan", "analysis", "tables", "figures",
-    "compose", "receipts",
+    "reconnaissance", "brief", "plan", "analysis", "spine", "tables", "figures",
+    "compose", "crosscheck", "receipts",
 )
 AUDIENCES = ("executive", "researcher", "analyst")
 DEPTHS = ("simple", "medium", "advanced")
@@ -344,6 +349,9 @@ class Table(BaseModel):
     rows: list[Row] = Field(default_factory=list)
     note: str = ""
     rows_dropped: int = 0
+    # spine-driven exhibits (pass E): which section commissioned the table and what its rows prove
+    section_key: str = ""
+    proves: str = ""
 
 
 # ── Step 6: figures ─────────────────────────────────────────────────────
@@ -398,6 +406,13 @@ class Figure(FigureSpec):
     compliance: Optional[dict[str, Any]] = None
     attempts: list[dict[str, Any]] = Field(default_factory=list)
     grounding: Optional[dict[str, Any]] = None
+    # spine-driven exhibits (pass E): the commissioning section, the spec it was drawn from,
+    # what the picture ACTUALLY shows (from the check) and whether the check passed
+    section_key: str = ""
+    picture_shows: str = ""
+    caption_says: str = ""
+    detected: str = ""
+    checked_ok: Optional[bool] = None
 
 
 # ── Step 7: compose ─────────────────────────────────────────────────────
@@ -407,6 +422,14 @@ class Claim(BaseModel):
     anchor: Optional[Anchor] = None
 
 
+class ExhibitRef(BaseModel):
+    """The sentence that points the reader at an exhibit (\"As Table 2 shows …\"); `mismatch` when the
+    writer says the picture does not show what the section argues (the cross-check acts on it)."""
+    key: str
+    sentence: str = ""
+    mismatch: bool = False
+
+
 class Section(BaseModel):
     number: int = 0
     heading: str
@@ -414,6 +437,9 @@ class Section(BaseModel):
     claims: list[Claim] = Field(default_factory=list)
     table_keys: list[str] = Field(default_factory=list)
     figure_keys: list[str] = Field(default_factory=list)
+    # pass D: the spine section this proves; paragraphs carry [[table:key]] / [[figure:key]] tokens
+    section_key: str = ""
+    exhibit_refs: list[ExhibitRef] = Field(default_factory=list)
 
 
 class Sections(BaseModel):
@@ -423,7 +449,163 @@ class Sections(BaseModel):
     sections: list[Section] = Field(default_factory=list)
     conclusion: list[str] = Field(default_factory=list)
     claims_unanchored: int = 0
+    # frames written LAST against the assembled body, each to the job the spine declared
+    summary_job_met: str = ""
+    conclusion_job_met: str = ""
+    spine_round_consumed: int = 0
 
+
+
+# ── Pass S: the spine (what the dossier argues; one claim per section; the exhibits each claim needs) ──
+
+EVIDENCE_KINDS = ("case_comparison", "mechanism", "vocabulary", "cost_ledger", "chronology", "implication")
+
+
+class ReaderProfile(BaseModel):
+    type: str = ""                    # who reads it (from the audience register)
+    mode: str = ""                    # reads straight through | consults the summary | scans one table …
+    wants: str = ""                   # what they leave with
+
+
+class Strand(BaseModel):
+    name: str = ""
+    carried_by: list[str] = Field(default_factory=list)   # analysis phases / documents / cases that carry it
+    accidental: bool = False          # the same example used by two phases by chance
+    note: str = ""
+
+
+class CompositionRead(BaseModel):
+    """de-llm's composition read (STUDY_de-llm_longform §D.1 pass 1), declared before the spine is planned."""
+    plain_summary: str = ""           # what this dossier says, in at most four sentences
+    buried_crux: str = ""             # what the analysis carries but never states plainly, and where it hides
+    readers: list[ReaderProfile] = Field(default_factory=list)
+    strands: list[Strand] = Field(default_factory=list)
+    prose_to_table: list[str] = Field(default_factory=list)   # enumerations in the prose that a table shows better
+    table_to_prose: list[str] = Field(default_factory=list)   # table ideas that are really one sentence
+    figures_earned: list[str] = Field(default_factory=list)   # picture ideas that do a job prose cannot
+    figures_dropped: list[str] = Field(default_factory=list)  # picture ideas that are decoration, and why
+    cumulative_direction: str = ""    # which way the evidence pushes the reader, and whether that matches the brief
+    form_capacity: str = ""           # does the material fill a dossier, or is it two sections and a table
+
+
+class SpineTableSpec(BaseModel):
+    intent: str = ""                  # what rows × columns would PROVE the claim
+    row_unit: str = ""                # "one row = one case / one term / one actor"
+    columns: list[str] = Field(default_factory=list)      # 2-6
+    carries_claims: list[str] = Field(default_factory=list)  # the claims the rows must carry, in the reader's words
+
+
+class SpineFigureSpec(BaseModel):
+    primitive: str = ""               # one of the 12 analytical primitives (src/primitives)
+    visual_format: str = ""           # canonical format key (src/display/enforcement)
+    picture_shows: str = ""           # the structure a labelled diagram shows, in words
+    caption_says: str = ""            # <= 2 sentences; what the reader takes from it; NO digits
+    why_a_picture: str = ""           # why prose and tables cannot do this job
+
+
+class SpineSection(BaseModel):
+    key: str
+    heading: str = ""
+    claim: str = ""                   # ONE sentence this section proves
+    reader_needs_next: str = ""       # what the reader needs after this claim (the throw-forward)
+    evidence_kind: str = "mechanism"  # one of EVIDENCE_KINDS
+    table: Optional[SpineTableSpec] = None
+    figure: Optional[SpineFigureSpec] = None
+    anchors_planned: list[Anchor] = Field(default_factory=list)   # verified quotes this section leans on
+    feeds: list[str] = Field(default_factory=list)                # later section keys that build on this one
+
+
+class ExhibitsBudget(BaseModel):
+    tables: int = 0
+    figures: int = 0
+
+
+class DossierSpine(BaseModel):
+    round: int = 1                    # +1 on every redirect (arithmetic)
+    read: CompositionRead = Field(default_factory=CompositionRead)
+    thesis: str = ""                  # ONE sentence — the dossier's claim
+    reader_question: str = ""         # what this audience needs answered
+    handle: str = ""                  # the dossier in one line a reader can repeat
+    through_line: str = ""            # the object/example that returns
+    summary_job: str = ""             # what the summary does
+    conclusion_job: str = ""          # what the close does — a DIFFERENT job
+    sections: list[SpineSection] = Field(default_factory=list)
+    exhibits_budget: ExhibitsBudget = Field(default_factory=ExhibitsBudget)
+    notes: list[str] = Field(default_factory=list)   # what the walls changed, for the record
+
+    def section(self, key: str) -> Optional[SpineSection]:
+        for s in self.sections:
+            if s.key == key:
+                return s
+        return None
+
+    def table_sections(self) -> list[SpineSection]:
+        return [s for s in self.sections if s.table is not None]
+
+    def figure_sections(self) -> list[SpineSection]:
+        return [s for s in self.sections if s.figure is not None]
+
+
+# ── Pass X: findings (the target ledger) ───────────────────────────────
+
+FINDING_KINDS = (
+    "figure_depicts_other", "caption_restates_text", "caption_carries_number",
+    "table_rows_off_claim", "table_unreferenced", "exhibit_pointer_wrong",
+    "claim_unbacked", "anchor_fragment", "anchor_off_claim", "number_drift",
+    "section_off_spine", "redundant_summary_conclusion", "register_break",
+    "jargon_unglossed", "exhibit_missing_where_claim_needs_one",
+    # minted by code from the exhibit desks (pass E) — recorded facts, not impressions
+    "table_unavailable", "table_rows_dropped", "figure_unavailable", "exhibit_unpointed", "exhibit_unplaced",
+)
+AFFORDANCES = (
+    "revise_figure_spec", "rerender_figure", "drop_figure",
+    "rewrite_section", "rewrite_paragraph", "revise_table_rows", "add_table", "drop_table",
+    "reanchor_claim", "drop_anchor", "rewrite_caption", "merge_summary_conclusion", "none",
+)
+FATES = ("resolved", "persists", "regressed", "superseded", "executed", "skipped", "failed")
+
+
+class FindingWhere(BaseModel):
+    section_key: Optional[str] = None
+    table_key: Optional[str] = None
+    figure_key: Optional[str] = None
+    paragraph_index: Optional[int] = None
+    anchor_n: Optional[int] = None
+
+
+class Fate(BaseModel):
+    round: int = 1
+    fate: str = "persists"            # one of FATES
+    rationale: str = ""
+    by: str = "judge"                 # judge | code | operator
+    ts: str = Field(default_factory=_now)
+
+
+class Finding(BaseModel):
+    id: str
+    kind: str                         # one of FINDING_KINDS
+    where: FindingWhere = Field(default_factory=FindingWhere)
+    quote: str = ""                   # the offending words, verbatim from the page
+    note: str = ""                    # effect on the reader, then the cure — plain language
+    affordance: str = "none"          # one of AFFORDANCES
+    realization: Optional[str] = None # the drafted change
+    recommended: bool = True
+    source: str = "judge"             # judge | clamp | wall  (clamps and walls outrank the judge)
+    round: int = 1                    # cross-check round that minted it
+    status: str = "open"              # open | resolved | superseded
+    fates: list[Fate] = Field(default_factory=list)
+
+
+class CrossCheckVerdict(BaseModel):
+    round: int = 1
+    hangs_together: Optional[bool] = None
+    summary: str = ""
+    findings_minted: int = 0
+    clamps: int = 0
+    judged: bool = False              # False when the judge was unavailable (clamps still ran)
+    what_changed: Optional[str] = None
+    realized: list[str] = Field(default_factory=list)   # finding ids the automatic round acted on
+    ts: str = Field(default_factory=_now)
 
 # ── Step 8: receipts ────────────────────────────────────────────────────
 
@@ -511,9 +693,12 @@ class DossierJob(BaseModel):
     plan: Optional[DossierPlan] = None
     analysis_job_id: Optional[str] = None
     analysis: dict[str, Any] = Field(default_factory=dict, description="phase -> prose + pass metadata")
+    spine: Optional[DossierSpine] = None
     tables: list[Table] = Field(default_factory=list)
     figures: list[Figure] = Field(default_factory=list)
     sections: Optional[Sections] = None
+    findings: list[Finding] = Field(default_factory=list)
+    crosscheck: Optional[CrossCheckVerdict] = None
     receipts: list[Receipt] = Field(default_factory=list)
     totals: Totals = Field(default_factory=Totals)
     error: Optional[str] = None

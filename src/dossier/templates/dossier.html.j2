@@ -59,22 +59,23 @@
 {% for sec in s.sections %}
 <section>
   <h2><span class="num">{{ sec.number }}</span>{{ sec.heading }}</h2>
-  {% for para in sec.rendered_paragraphs %}<p>{{ para|safe }}</p>{% endfor %}
-  {% for t in sec.tables %}
-  <table>
-    <caption>Table {{ t.index }}. {{ t.caption }}</caption>
-    <thead><tr>{% for c in t.columns %}<th>{{ c }}</th>{% endfor %}</tr></thead>
+  {% for b in sec.blocks %}
+  {% if b.type == 'p' %}<p>{{ b.html|safe }}</p>
+  {% elif b.type == 'table' %}
+  <table id="table-{{ b.key }}">
+    <caption>Table {{ b.index }}. {{ b.caption }}</caption>
+    <thead><tr>{% for c in b.columns %}<th>{{ c }}</th>{% endfor %}</tr></thead>
     <tbody>
-    {% for r in t.rows %}<tr>{% for cell in r.cells %}<td>{{ cell.value }}{% if cell.fn %}<sup class="fn">{{ cell.fn }}</sup>{% endif %}</td>{% endfor %}</tr>{% endfor %}
+    {% for r in b.rows %}<tr>{% for cell in r.cells %}<td>{{ cell.value }}{% if cell.fn %}<sup class="fn">{{ cell.fn }}</sup>{% endif %}</td>{% endfor %}</tr>{% endfor %}
     </tbody>
   </table>
-  {% if t.note %}<p class="tnote">{{ t.note }}</p>{% endif %}
-  {% endfor %}
-  {% for f in sec.figures %}
-  <figure>
-    {% if f.src %}<img src="{{ f.src }}" alt="{{ f.caption }}">{% else %}<div class="placeholder">Figure not rendered ({{ f.status }}{% if f.note %}: {{ f.note }}{% endif %})</div>{% endif %}
-    <figcaption><span class="fnum">Figure {{ f.index }}</span>{% if f.title %}<strong>{{ f.title }}.</strong> {% endif %}{{ f.caption }}</figcaption>
+  {% if b.note %}<p class="tnote">{{ b.note }}</p>{% endif %}
+  {% else %}
+  <figure id="figure-{{ b.key }}">
+    {% if b.src %}<img src="{{ b.src }}" alt="{{ b.title or ('Figure ' ~ b.index) }}">{% else %}<div class="placeholder">Figure not rendered ({{ b.status }}{% if b.note %}: {{ b.note }}{% endif %})</div>{% endif %}
+    <figcaption><span class="fnum">Figure {{ b.index }}</span>{% if b.title %}<strong>{{ b.title }}.</strong> {% endif %}{{ b.caption }}</figcaption>
   </figure>
+  {% endif %}
   {% endfor %}
 </section>
 {% endfor %}
@@ -115,11 +116,24 @@
   {% if strategy %}<p><em>Strategy.</em> {{ strategy }}</p>{% endif %}
   {% if alternatives %}<p class="muted"><em>Considered and rejected:</em> {% for a in alternatives %}{{ a.engine_key }} ({{ a.why_not }}){% if not loop.last %}; {% endif %}{% endfor %}</p>{% endif %}
   {% endif %}
+  {% if spine %}
+  <h3>The spine (what the dossier argues)</h3>
+  <p><em>{{ spine.thesis }}</em></p>
+  <ol class="docs">{% for sec in spine.sections %}<li><strong>{{ sec.heading }}</strong> — {{ sec.claim }}{% if sec.table %} <span class="muted">(table)</span>{% endif %}{% if sec.figure %} <span class="muted">(diagram)</span>{% endif %}</li>{% endfor %}</ol>
+  <p class="muted">Summary's job: {{ spine.summary_job }} · Close's job: {{ spine.conclusion_job }}</p>
+  {% endif %}
   {% if figures_made %}
   <h3>Figures (labelled diagrams)</h3>
   <table>
     <thead><tr><th>Figure</th><th>Primitive</th><th>Format</th><th>Style</th><th>Attempts</th><th>Check</th></tr></thead>
     <tbody>{% for fm in figures_made %}<tr><td>{{ fm.title }}</td><td>{{ fm.primitive }}</td><td>{{ fm.visual_format }}</td><td>{{ fm.style_school }}</td><td>{{ fm.attempts }}</td><td>{{ fm.verdict }}</td></tr>{% endfor %}</tbody>
+  </table>
+  {% endif %}
+  {% if findings %}
+  <h3>Cross-check findings</h3>
+  <table>
+    <thead><tr><th>Finding</th><th>Where</th><th>Effect and cure</th><th>Affordance</th><th>Fate</th></tr></thead>
+    <tbody>{% for f in findings %}<tr><td>{{ f.kind }} <span class="muted">({{ f.source }})</span></td><td>{{ f.where }}</td><td>{{ f.note }}</td><td>{{ f.affordance }}</td><td>{{ f.fate }}</td></tr>{% endfor %}</tbody>
   </table>
   {% endif %}
   <h3>Totals</h3>

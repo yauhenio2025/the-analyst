@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { api } from '../lib/api'
 import { duration, timeShort, tokens, usd } from '../lib/format'
 import { Record } from '../components/Record'
-import { consolePath } from '../router'
+import { consolePath, dossierPath } from '../router'
 import type { DossierJob, Receipt } from '../types'
 
 export function DossierStep({ job }: { job: DossierJob }) {
@@ -43,6 +43,14 @@ export function DossierStep({ job }: { job: DossierJob }) {
         { num: duration(t.duration_ms), label: 'from first read to delivery' },
       ]} />
 
+      {(job.crosscheck || job.findings.length > 0) && (
+        <p className="hint crosscheck-line" data-crosscheck-line>
+          <span className={`chip chip-${job.crosscheck?.hangs_together ? 'ok' : 'wait'}`}>{job.crosscheck?.hangs_together ? 'hangs together' : `${job.findings.filter((f) => f.status === 'open').length} findings open`}</span>
+          {' '}{job.crosscheck?.summary ?? ''}{' '}
+          <a className="linkish" href={dossierPath(job.id, 'draft', '?item=findings')} data-open-findings>See the ledger →</a>
+          {job.spine && <>{' · '}<a className="linkish" href={dossierPath(job.id, 'draft', '?item=spine')} data-open-spine>The spine →</a></>}
+        </p>
+      )}
       <div className="actions downloads">
         <a className="primary" href={api.downloadUrl(job, 'pdf')} download={`${job.id}.pdf`} target="_blank" rel="noreferrer" data-download="pdf">Download PDF</a>
         <a className="secondary" href={api.downloadUrl(job, 'md')} download={`${job.id}.md`} target="_blank" rel="noreferrer" data-download="md">Markdown</a>

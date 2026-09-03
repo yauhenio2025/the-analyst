@@ -40,12 +40,12 @@ from src.display.enforcement import (
     primitive_keys,
     validate_data,
 )
-from src.dossier import events
+from src.dossier import events, findings as ledger
 from src.dossier.common import AUDIENCE_REGISTER, analysis_prose, compact_profiles, job_dir
 from src.dossier.llm import call_json
 from src.dossier.receipts import make_receipt, record
-from src.dossier.schemas import DossierJob, Figure, FigureAnchor, FigureSpec
-from src.dossier.walls import normalize
+from src.dossier.schemas import DossierJob, Figure, FigureAnchor, FigureSpec, Finding, SpineSection
+from src.dossier.walls import has_digit_run, normalize
 from src.sources.schemas import Document
 
 logger = logging.getLogger(__name__)
@@ -343,7 +343,193 @@ def plan_figures(job: DossierJob, n: int) -> list[FigureSpec]:
     return accepted[:n]
 
 
-# ── Render + check (independent of where the spec came from) ─────────────
+# ── Spec from the spine (pass E2): fill exactly the diagrams the spine commissioned ──
+
+SPINE_SYSTEM = SYSTEM + """
+
+THE SPINE HAS ALREADY DECIDED WHICH DIAGRAMS EXIST. For each commissioned section you receive its claim, the
+primitive, the format the structure editor chose, `picture_shows` (which named things appear in what relation),
+`caption_says` and why a picture is needed. You FILL each spec: keep the `section_key` and the primitive; keep the
+format unless the material cannot fit its data family (then choose another format the same primitive prefers and say
+why in `why_this_format`); write the diagram's complete labelled content so that it shows exactly what `picture_shows`
+says, with the material's own names; the caption is `caption_says` verbatim or tightened — never a number in it. Do
+not invent a diagram the spine did not commission; do not merge two specs."""
+
+
+def _spec_item_schema(section_keys: list[str]) -> dict:
+    item = json.loads(json.dumps(FIGURE_ITEM_SCHEMA))
+    item["required"] = ["section_key"] + item["required"]
+    item["properties"] = {"section_key": {"type": "string", "enum": section_keys, "description": "the commissioning spine section"}, **item["properties"]}
+    item["properties"]["caption"]["description"] = "caption_says verbatim or tightened; at most two sentences; NO digits"
+    return item
+
+
+def spec_figures_schema(section_keys: list[str]) -> dict:
+    return {"type": "object", "additionalProperties": False, "required": ["figures"],
+            "properties": {"figures": {"type": "array", "minItems": 1, "maxItems": max(1, len(section_keys)), "items": _spec_item_schema(section_keys)}}}
+
+
+def _spec_text(sections: list[SpineSection]) -> str:
+    parts = []
+    for sec in sections:
+        f = sec.figure
+        parts.append(f"### section_key: {sec.key} — “{sec.heading}”\n  claim: {sec.claim}\n  primitive: {f.primitive}\n  format chosen by the spine: {f.visual_format}\n"
+                     f"  picture_shows: {f.picture_shows}\n  caption_says: {f.caption_says}\n  why a picture: {f.why_a_picture}")
+    return "\n\n".join(parts)
+
+
+def _spec_user(job: DossierJob, sections: list[SpineSection], material: str,
+               replace: Optional[list[tuple[FigureSpec, list[str]]]] = None, keep: Optional[list[FigureSpec]] = None) -> tuple[str, str]:
+    """(cacheable prefix, uncached tail) for the spine-driven planner."""
+    engines = ", ".join(f"{p.engine_key}@{p.depth}" for p in job.plan.phases) if job.plan else "(none)"
+    rules = (
+        "LABEL RULES (the wall rejects violations): every string inside `data` is printed in the image — at most "
+        f"{MAX_LABEL_WORDS} words and {MAX_LABEL_CHARS} characters each; matrix cells 1-4 words; no sentences, no "
+        "parentheticals, no explanations (those belong in caption / why_this_format, never in data). Content labels "
+        "(actors, cases, terms, dates, amounts) use the material's own words exactly; structural labels (axis names, "
+        "quadrant names, column headers) may be yours. Aim for 8-20 labels per figure; 30 is the maximum. Titles at most "
+        f"{MAX_TITLE_CHARS} characters. Each anchor quote is copied character-for-character from the material.\n"
+    )
+    head = (f"Fill exactly {len(sections)} commissioned diagram spec(s).\n{rules}"
+            f"AUDIENCE: {job.options.audience} — {AUDIENCE_REGISTER.get(job.options.audience, '')}\n"
+            f"ENGINES that produced the analysis: {engines}\n\nCOMMISSIONED BY THE SPINE:\n{_spec_text(sections)}\n\n"
+            f"CATALOG:\n{catalog_text()}\n\nMATERIAL (the only ground for labels and anchors):\n{material}")
+    tail = ""
+    if replace:
+        kept = "; ".join(f"`{s.key}` ({s.visual_format})" for s in (keep or [])) or "(none)"
+        fixes = "\n".join(f"- section `{s.section_key or '?'}` `{s.key}` ({s.visual_format}): " + " | ".join(errs[:6]) for s, errs in replace)
+        tail = (f"---\nYOUR PREVIOUS ANSWER WAS PARTLY REJECTED BY THE WALL. Figures kept as they are: {kept}.\n"
+                f"Return ONLY {len(replace)} replacement figure(s) for the rejected section(s), fixing these errors "
+                f"(or choose a different format the primitive prefers if the material cannot fill this one):\n{fixes}")
+    return head, tail
+
+
+def validate_spine_spec(spec: FigureSpec, section: SpineSection, material_norm: str) -> tuple[list[str], dict[str, Any]]:
+    """The spec wall plus the spine's laws: primitive as commissioned, caption without digits, <= 2 sentences."""
+    errors, grounding = validate_spec(spec, material_norm)
+    if section.figure and spec.primitive != section.figure.primitive:
+        errors.append(f"primitive must stay {section.figure.primitive!r} as the spine commissioned (got {spec.primitive!r})")
+    if has_digit_run(spec.caption):
+        errors.append("caption carries a number — captions never carry numbers (use the spine's caption_says)")
+    from src.dossier.walls import sentence_count
+    if sentence_count(spec.caption) > 2:
+        errors.append("caption must be at most two sentences")
+    return errors, grounding
+
+
+def spec_figures(job: DossierJob) -> list[FigureSpec]:
+    """Exactly the spine's figure specs, filled and walled; rejected ones re-asked once. May return fewer."""
+    sections = job.spine.figure_sections()
+    by_key = {s.key: s for s in sections}
+    material = material_text(job)
+    material_norm = normalize(material)
+    head, _ = _spec_user(job, sections, material)
+    raw, _ = call_json(job.id, STEP, label=f"figure specs from the spine ({len(sections)})", system=SPINE_SYSTEM, user=head,
+                       tool_name="record_figure_plan", schema=spec_figures_schema([s.key for s in sections]), model_cls=None, max_tokens=12000, cache=True)
+    accepted: list[FigureSpec] = []
+    rejected: list[tuple[FigureSpec, list[str]]] = []
+    seen_formats: set[str] = set()
+    done_sections: set[str] = set()
+
+    def admit(items: list[dict[str, Any]]) -> None:
+        for i, item in enumerate(items, start=len(accepted) + len(rejected) + 1):
+            if not isinstance(item, dict):
+                continue
+            sk = str(item.get("section_key", "")).strip()
+            sec = by_key.get(sk)
+            try:
+                spec = _coerce_spec(item, i)
+            except Exception as exc:
+                logger.warning(f"figure spec unreadable: {exc}")
+                continue
+            spec.__dict__["_section_key"] = sk
+            if sec is None or sk in done_sections:
+                events.emit(job.id, "note", phase=STEP, detail=f"figure wall rejected `{spec.key}`: section_key {sk!r} " + ("was not commissioned" if sec is None else "already filled"),
+                            payload_json={"kind": "figure_rejected", "key": spec.key, "errors": ["section_key"]})
+                continue
+            errors, grounding = validate_spine_spec(spec, sec, material_norm)
+            if spec.visual_format in seen_formats and not errors:
+                errors.append(f"format {spec.visual_format} is already used by another figure; choose a different one the primitive prefers")
+            if errors:
+                rejected.append((spec, errors))
+                events.emit(job.id, "note", phase=STEP, detail=f"figure wall rejected `{spec.key}` for section {sk} ({spec.visual_format}): " + " | ".join(errors[:3]),
+                            payload_json={"kind": "figure_rejected", "key": spec.key, "section_key": sk, "errors": errors, "grounding": grounding})
+            else:
+                spec.style_school = choose_style_school(job, spec.visual_format)
+                seen_formats.add(spec.visual_format)
+                done_sections.add(sk)
+                accepted.append(spec)
+                events.emit(job.id, "note", phase=STEP,
+                            detail=f"figure wall passed `{spec.key}` for section {sk}: {spec.primitive} → {spec.visual_format}, {grounding.get('labels', 0)} labels, "
+                                   f"{grounding.get('grounded', 0)} grounded, {grounding.get('anchors_verified', 0)} anchors verified; style {spec.style_school}",
+                            payload_json={"kind": "figure_accepted", "key": spec.key, "section_key": sk, "grounding": grounding})
+            spec.__dict__["_grounding"] = grounding
+
+    admit((raw or {}).get("figures", [])[: len(sections) + 1])
+    if rejected:
+        need = [(sp, errs) for sp, errs in rejected if sp.__dict__.get("_section_key") not in done_sections]
+        for sp, _e in need:
+            sp.section_key = sp.__dict__.get("_section_key", "")
+        if need:
+            head2, tail2 = _spec_user(job, [by_key[sp.__dict__["_section_key"]] for sp, _ in need], material, replace=need, keep=accepted)
+            raw2, _ = call_json(job.id, STEP, label=f"figure spec repair ({len(need)})", system=SPINE_SYSTEM, user=head, user_tail=tail2,
+                                tool_name="record_figure_plan", schema=spec_figures_schema([sp.__dict__["_section_key"] for sp, _ in need]),
+                                model_cls=None, max_tokens=12000, cache=True)
+            rejected = []
+            admit((raw2 or {}).get("figures", [])[: len(need)])
+            for spec, errors in rejected:
+                events.emit(job.id, "note", phase=STEP, detail=f"figure_skipped `{spec.key}`: still rejected after repair — " + " | ".join(errors[:2]),
+                            payload_json={"kind": "figure_skipped", "key": spec.key, "section_key": spec.__dict__.get("_section_key"), "reason": errors})
+    # reading order = the spine's order
+    order = {s.key: i for i, s in enumerate(sections)}
+    accepted.sort(key=lambda sp: order.get(sp.__dict__.get("_section_key", ""), 99))
+    return accepted
+
+
+def detected_sentence(verdict: Optional[dict[str, Any]], spec: FigureSpec) -> str:
+    """What the picture ACTUALLY shows, from the check — the sentence the writer is handed."""
+    if not verdict or not verdict.get("checked"):
+        return f"unchecked: intended as a {spec.visual_format} titled “{spec.title}”"
+    fmt = verdict.get("detected_format") or spec.visual_format
+    found = verdict.get("labels_found") or []
+    n = verdict.get("n_labels") or (len(found) + len(verdict.get("labels_missing") or []))
+    bits = [f"a {fmt}" + ("" if verdict.get("format_ok") else f" (not the {spec.visual_format} that was asked for)"),
+            f"{len(found)}/{n} labels legible" + (": " + ", ".join(found[:14]) if found else "")]
+    if verdict.get("labels_missing"):
+        bits.append("missing: " + ", ".join(verdict["labels_missing"][:8]))
+    if verdict.get("prohibited_elements"):
+        bits.append("prohibited: " + "; ".join(verdict["prohibited_elements"][:3]))
+    if verdict.get("extra_text"):
+        bits.append("extra text: " + "; ".join(verdict["extra_text"][:3]))
+    return "; ".join(bits)
+
+
+def enrich_from_spine(fig: Figure, section: Optional[SpineSection]) -> Figure:
+    """Stamp the commissioning section's spec and the check's verdict on the record (no judgment)."""
+    if section is not None:
+        fig.section_key = section.key
+        if section.figure:
+            fig.picture_shows = section.figure.picture_shows
+            fig.caption_says = section.figure.caption_says
+    v = fig.compliance or {}
+    fig.detected = detected_sentence(v, fig)
+    fig.checked_ok = bool(v.get("ok")) if v.get("checked") else None
+    return fig
+
+
+def finding_for_figure(fig: Figure, section: Optional[SpineSection]) -> Optional[Finding]:
+    where = {"figure_key": fig.key, "section_key": fig.section_key or (section.key if section else None)}
+    if fig.status in ("failed", "skipped"):
+        return ledger.mint("figure_unavailable", where=where, source="wall", affordance="none",
+                           note=f"The diagram commissioned for this section could not be produced ({fig.status}: {fig.note or 'no reason recorded'}). The prose must carry what it was to show.",
+                           quote=fig.caption_says or fig.caption)
+    if fig.checked_ok is False:
+        v = fig.compliance or {}
+        issues = "; ".join(v.get("issues") or [])[:600]
+        return ledger.mint("figure_depicts_other", where=where, source="wall", affordance="rerender_figure",
+                           note=f"The check found the rendered diagram does not show what its spec says ({issues}). The reader would see something other than the section argues. Cure: redraw from the check's notes.",
+                           quote=fig.caption, realization=str(v.get("suggestion") or "") or None)
+    return None
 
 def _get(obj: Any, *names: str, default=None):
     for name in names:
@@ -403,9 +589,11 @@ def _revision_notes(verdict: dict[str, Any]) -> list[str]:
     return notes
 
 
-def render_figure(job: DossierJob, spec: FigureSpec, out_dir: Path, provider: Optional[str] = None) -> Figure:
+def render_figure(job: DossierJob, spec: FigureSpec, out_dir: Path, provider: Optional[str] = None,
+                  revision_notes: Optional[list[str]] = None) -> Figure:
     """spec → prompt → render → check → (retry once) → save. Returns the Figure record.
 
+    `revision_notes` (optional) ride the FIRST render too — the cross-check's words when it asks for a redraw.
     Raises only when no image could be produced at all; the caller applies the skip law.
     """
     from src.images.compliance import check_diagram
@@ -417,7 +605,7 @@ def render_figure(job: DossierJob, spec: FigureSpec, out_dir: Path, provider: Op
     grounding = spec.__dict__.get("_grounding")
     fig = Figure(**spec.model_dump(), aspect=aspect, grounding=grounding)
     attempts: list[dict[str, Any]] = []
-    revision: list[str] = []
+    revision: list[str] = list(revision_notes or [])
     label = f"figure {spec.key}"
 
     for attempt in range(1, MAX_RENDER_ATTEMPTS + 1):
@@ -517,18 +705,29 @@ def _persist_partial(job: DossierJob, figures: list[Figure]) -> None:
         logger.debug(f"partial figure persist skipped: {exc}")
 
 
-def run_figures(job: DossierJob, docs: list[Document]) -> list[Figure]:
+def run_figures(job: DossierJob, docs: list[Document], persist=None) -> list[Figure]:
     n = int(job.options.output.figures or 0)
     if n <= 0:
         events.emit(job.id, "note", phase=STEP, detail="figures_skipped: none requested")
         return []
+    spine_driven = job.spine is not None
+    if spine_driven and not job.spine.figure_sections():
+        events.emit(job.id, "note", phase=STEP, detail="figures_skipped: the spine commissioned no diagram")
+        return []
     try:
-        specs = plan_figures(job, n)
+        specs = spec_figures(job) if spine_driven else plan_figures(job, n)
     except Exception as exc:
         logger.warning(f"figure planning failed: {exc}", exc_info=True)
         events.emit(job.id, "note", phase=STEP, detail=f"figures_skipped: planning failed ({exc.__class__.__name__}: {exc})",
                     payload_json={"kind": "figures_skipped", "reason": str(exc)[:300]})
         return []
+    sections_by_key = {s.key: s for s in job.spine.figure_sections()} if spine_driven else {}
+    minted: list[Finding] = []
+    for sec in (job.spine.figure_sections() if spine_driven else []):
+        if sec.key not in {sp.__dict__.get("_section_key") for sp in specs}:
+            minted.append(ledger.mint("figure_unavailable", where={"section_key": sec.key}, source="wall", affordance="none",
+                                      note=f"The spine commissioned a {sec.figure.visual_format} for “{sec.heading}” ({sec.figure.picture_shows[:120]}); no spec passed the wall. The prose must carry what it was to show.",
+                                      quote=sec.figure.caption_says))
     events.emit(job.id, "artifact", phase=STEP, detail=f"figure plan: {len(specs)} diagram spec(s) — "
                 + ", ".join(f"{s.key}={s.visual_format}" for s in specs),
                 payload_json={"kind": "figure_plan", "figures": [s.model_dump() for s in specs]})
@@ -547,17 +746,37 @@ def run_figures(job: DossierJob, docs: list[Document]) -> list[Figure]:
                     payload_json={"kind": "figures_skipped", "reason": str(exc)})
     figures: list[Figure] = []
     for spec in specs:
+        section = sections_by_key.get(spec.__dict__.get("_section_key", ""))
         if not images_available:
-            figures.append(Figure(**spec.model_dump(), status="skipped", note="images modules not available"))
-            continue
-        try:
-            figures.append(render_figure(job, spec, out_dir, job.options.image_provider))
-        except Exception as exc:
-            logger.warning(f"figure {spec.key} failed: {exc}", exc_info=True)
-            events.emit(job.id, "call_failed", phase=STEP, label=f"figure {spec.key}", detail=f"figure_skipped {spec.key}: {exc}",
-                        payload_json={"kind": "figure_skipped", "key": spec.key, "reason": str(exc)[:300]})
-            figures.append(Figure(**spec.model_dump(), status="failed", note=str(exc)[:300]))
+            fig = Figure(**spec.model_dump(), status="skipped", note="images modules not available")
+        else:
+            try:
+                fig = render_figure(job, spec, out_dir, job.options.image_provider)
+            except Exception as exc:
+                logger.warning(f"figure {spec.key} failed: {exc}", exc_info=True)
+                events.emit(job.id, "call_failed", phase=STEP, label=f"figure {spec.key}", detail=f"figure_skipped {spec.key}: {exc}",
+                            payload_json={"kind": "figure_skipped", "key": spec.key, "reason": str(exc)[:300]})
+                fig = Figure(**spec.model_dump(), status="failed", note=str(exc)[:300])
+        fig = enrich_from_spine(fig, section)
+        finding = finding_for_figure(fig, section)
+        if finding is not None:
+            minted.append(finding)
+        figures.append(fig)
         _persist_partial(job, figures)
+    if spine_driven:
+        ledger.append(job, minted, persist)
+        bits = []
+        for f in figures:
+            sec = sections_by_key.get(f.section_key)
+            head = f"diagram for “{sec.heading[:40]}”" if sec else f"figure {f.key}"
+            if f.status != "generated":
+                bits.append(f"{head}: {f.status}")
+            elif f.checked_ok is None:
+                bits.append(f"{head}: drawn, not checked")
+            else:
+                bits.append(f"{head}: " + ("checked, passes" if f.checked_ok else "checked — " + "; ".join((f.compliance or {}).get("issues", [])[:2])))
+        narr = "Drawing the diagrams the argument asked for — " + "; ".join(bits) + "."
+        events.emit(job.id, "narration", phase=STEP, narrator=narr, detail=narr)
     return figures
 
 

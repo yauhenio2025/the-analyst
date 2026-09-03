@@ -8,11 +8,12 @@ import { CostMeter, RunRail } from '../components/RunRail'
 import { Md } from '../components/Md'
 import { TableView } from '../components/TableView'
 import { FigureView } from '../components/FigureView'
+import { FindingsView, SpineView } from '../components/SpineView'
 import { consolePath, dossierPath, navigate } from '../router'
 import type { DossierJob, RunEvent } from '../types'
 import { statusRank } from '../types'
 
-type Item = { id: string; kind: 'section' | 'table' | 'figure' | 'analysis'; label: string; sub?: string }
+type Item = { id: string; kind: 'section' | 'table' | 'figure' | 'analysis' | 'spine' | 'findings'; label: string; sub?: string }
 
 export function DraftStep({ job, events, item, onNext }: {
   job: DossierJob; events: RunEvent[]; item: string | null; onNext: () => void
@@ -22,7 +23,10 @@ export function DraftStep({ job, events, item, onNext }: {
   const items: Item[] = useMemo(() => [
     ...job.sections.map((s, i): Item => ({ id: `s:${s.key}`, kind: 'section', label: s.title, sub: `section ${i + 1}` })),
     ...job.tables.map((t, i): Item => ({ id: `t:${t.key}`, kind: 'table', label: t.caption, sub: `table ${i + 1} · ${t.rows.length} rows` })),
-    ...job.figures.map((f, i): Item => ({ id: `f:${f.key}`, kind: 'figure', label: f.caption, sub: `figure ${i + 1} · ${f.provider ?? 'image'}` })),
+    ...job.figures.map((f, i): Item => ({ id: `f:${f.key}`, kind: 'figure', label: f.title || f.caption, sub: `figure ${i + 1} · ${f.provider ?? 'image'}${f.checked_ok === true ? ' · checked' : f.checked_ok === false ? ' · flagged' : ''}` })),
+    ...(job.spine ? [{ id: 'spine', kind: 'spine' as const, label: 'The spine', sub: `${job.spine.sections.length} claims · ${job.spine.sections.filter((x) => x.table).length} tables · ${job.spine.sections.filter((x) => x.figure).length} diagrams` }] : []),
+    ...((job.findings.length || job.crosscheck) ? [{ id: 'findings', kind: 'findings' as const, label: 'Cross-check findings',
+        sub: job.crosscheck?.hangs_together ? 'hangs together' : `${job.findings.filter((f) => f.status === 'open').length} open · ${job.findings.filter((f) => f.status !== 'open').length} resolved` }] : []),
     ...Object.keys(job.analysis).map((k): Item => ({ id: `a:${k}`, kind: 'analysis', label: k, sub: 'analysis phase' })),
   ], [job])
   const [selected, setSelected] = useState<string | null>(item)
@@ -92,7 +96,7 @@ export function DraftStep({ job, events, item, onNext }: {
       <div className="master-detail">
         <nav className="index-rail" aria-label="Draft contents" data-draft-index>
           {(['section', 'table', 'figure', 'analysis'] as const).map((kind) => {
-            const rows = items.filter((i) => i.kind === kind)
+            const rows = kind === 'analysis' ? items.filter((i) => i.kind === 'spine' || i.kind === 'findings' || i.kind === 'analysis') : items.filter((i) => i.kind === kind)
             if (!rows.length) return null
             return (
               <div key={kind} className="index-group">
@@ -125,6 +129,8 @@ export function DraftStep({ job, events, item, onNext }: {
             const f = job.figures.find((x) => `f:${x.key}` === current.id)!
             return <FigureView figure={f} index={job.figures.indexOf(f) + 1} />
           })()}
+          {current?.kind === 'spine' && job.spine && <SpineView spine={job.spine} />}
+          {current?.kind === 'findings' && <FindingsView findings={job.findings} verdict={job.crosscheck} />}
           {current?.kind === 'analysis' && (
             <article className="section-view">
               <span className="eyebrow eyebrow-accent">analysis phase</span>

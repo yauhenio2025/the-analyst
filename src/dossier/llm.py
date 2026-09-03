@@ -27,6 +27,9 @@ STD_CONTEXT_TOKENS = 200_000
 ONE_M_THRESHOLD_TOKENS = 150_000  # per the contract: >150K tokens → 1M path
 MAX_ATTEMPTS = 3
 TRANSIENT_BACKOFF_S = (15, 45, 90)
+CACHE_MIN_CHARS = 8_000        # below this the prefix is not worth a cache write
+CACHE_READ_FACTOR = 0.1        # Anthropic prompt caching: reads at 10 % of the input price
+CACHE_WRITE_FACTOR = 1.25      # writes at 125 %
 
 
 class LLMError(RuntimeError):
@@ -73,14 +76,54 @@ def _create(client, *, use_1m: bool, **kwargs):
 
 
 def _usage(resp) -> tuple[int, int]:
+    inp, out, _, _ = _usage_full(resp)
+    return inp, out
+
+
+def _usage_full(resp) -> tuple[int, int, int, int]:
+    """(input_total, output, cache_read, cache_write) — the total includes the cached parts."""
     usage = getattr(resp, "usage", None)
     if usage is None:
-        return 0, 0
-    inp = int(getattr(usage, "input_tokens", 0) or 0)
-    inp += int(getattr(usage, "cache_read_input_tokens", 0) or 0)
-    inp += int(getattr(usage, "cache_creation_input_tokens", 0) or 0)
+        return 0, 0, 0, 0
+    fresh = int(getattr(usage, "input_tokens", 0) or 0)
+    read = int(getattr(usage, "cache_read_input_tokens", 0) or 0)
+    write = int(getattr(usage, "cache_creation_input_tokens", 0) or 0)
     out = int(getattr(usage, "output_tokens", 0) or 0)
-    return inp, out
+    return fresh + read + write, out, read, write
+
+
+def _cached_cost(model: str, input_total: int, output_tokens: int, cache_read: int, cache_write: int) -> Optional[float]:
+    """Cost with the caching discounts applied (None when the model is unpriced)."""
+    from src.dossier.receipts import llm_cost
+
+    full = llm_cost(model, input_total, output_tokens)
+    if full is None or not (cache_read or cache_write):
+        return full
+    per_in = (llm_cost(model, input_total, 0) or 0.0) / max(1, input_total)
+    fresh = input_total - cache_read - cache_write
+    return round(per_in * (fresh + cache_read * CACHE_READ_FACTOR + cache_write * CACHE_WRITE_FACTOR)
+                 + (llm_cost(model, 0, output_tokens) or 0.0), 6)
+
+
+def _user_content(user: str, user_tail: str, images: Optional[list[tuple[bytes, str]]], cache: bool = False) -> Any:
+    """The user turn as content blocks: the big prefix (cached when the caller expects to re-ask — a cache
+    write costs 1.25×, a read 0.1×, so only desks with a patch/re-ask round opt in), then images, then the
+    uncached tail (patch errors, re-ask feedback) so the retry hits the cache on the prefix."""
+    if not user_tail and not images and not cache:
+        return user
+    blocks: list[dict[str, Any]] = []
+    head: dict[str, Any] = {"type": "text", "text": user}
+    if cache and len(user) >= CACHE_MIN_CHARS:
+        head["cache_control"] = {"type": "ephemeral"}
+    blocks.append(head)
+    import base64
+
+    for data, mime in images or []:
+        blocks.append({"type": "image", "source": {"type": "base64", "media_type": mime or "image/jpeg",
+                                                   "data": base64.b64encode(data).decode("ascii")}})
+    if user_tail:
+        blocks.append({"type": "text", "text": user_tail})
+    return blocks
 
 
 def _run(
@@ -94,10 +137,17 @@ def _run(
     max_tokens: int,
     effort: Optional[str],
     tool: Optional[dict],
+    user_tail: str = "",
+    images: Optional[list[tuple[bytes, str]]] = None,
+    cache: bool = False,
 ) -> tuple[Any, dict]:
-    """One recorded call. Returns (parsed_or_text, meta)."""
+    """One recorded call. Returns (parsed_or_text, meta).
+
+    `user` is the (cacheable) prefix; `user_tail` rides after it uncached so a patch/re-ask
+    re-uses the prefix; `images` are (bytes, mime) blocks between the two (vision judges).
+    """
     client = _client()
-    est = estimate_tokens(system) + estimate_tokens(user)
+    est = estimate_tokens(system) + estimate_tokens(user) + estimate_tokens(user_tail) + 1_600 * len(images or [])
     use_1m = est > ONE_M_THRESHOLD_TOKENS
     if not use_1m:
         headroom = STD_CONTEXT_TOKENS - est - 2_000
@@ -107,7 +157,7 @@ def _run(
         "model": model,
         "max_tokens": max_tokens,
         "system": system,
-        "messages": [{"role": "user", "content": user}],
+        "messages": [{"role": "user", "content": _user_content(user, user_tail, images, cache)}],
     }
     if tool is not None:
         kwargs["tools"] = [tool]
@@ -116,11 +166,12 @@ def _run(
         kwargs["thinking"] = {"type": "adaptive"}
         kwargs["output_config"] = {"effort": effort}
 
-    prompt_text = system + "\n\n" + user
+    prompt_text = system + "\n\n" + user + ("\n\n" + user_tail if user_tail else "")
     seq = events.emit(
         job_id, "call_started", phase=step, model=model, label=label,
-        detail=f"{label}: ~{est:,} input tokens ({'1M' if use_1m else 'std'} context), max_tokens={max_tokens}",
-        prompt_excerpt=events.excerpt(user, 600), input_tokens=est,
+        detail=f"{label}: ~{est:,} input tokens ({'1M' if use_1m else 'std'} context), max_tokens={max_tokens}"
+               + (f", {len(images)} image(s)" if images else ""),
+        prompt_excerpt=events.excerpt((user_tail + "\n\n" if user_tail else "") + user, 600), input_tokens=est,
     )
     started = time.time()
     last_exc: Optional[Exception] = None
@@ -144,7 +195,7 @@ def _run(
         raise LLMError(f"{label}: {last_exc}")
 
     duration_ms = int((time.time() - started) * 1000)
-    input_tokens, output_tokens = _usage(resp)
+    input_tokens, output_tokens, cache_read, cache_write = _usage_full(resp)
     stop_reason = getattr(resp, "stop_reason", "")
 
     text_parts, tool_input = [], None
@@ -173,19 +224,22 @@ def _run(
         step=step, kind="llm", model=model, label=label,
         input_tokens=input_tokens, output_tokens=output_tokens, duration_ms=duration_ms,
         prompt_text=prompt_text, result_text=result_text,
+        cost_usd=_cached_cost(model, input_tokens, output_tokens, cache_read, cache_write),
     )
     record(job_id, receipt)
+    cache_note = f" (cache: {cache_read:,} read, {cache_write:,} written)" if (cache_read or cache_write) else ""
     events.emit(
         job_id, "call_finished", phase=step, model=model, label=label,
         input_tokens=input_tokens, output_tokens=output_tokens, cost_usd=receipt.cost_usd,
         duration_ms=duration_ms, output_excerpt=events.excerpt(result_text, 600),
-        detail=f"{label}: {input_tokens:,} in / {output_tokens:,} out, ${receipt.cost_usd:.3f}, {duration_ms/1000:.0f}s"
+        detail=f"{label}: {input_tokens:,} in / {output_tokens:,} out, ${receipt.cost_usd:.3f}, {duration_ms/1000:.0f}s{cache_note}"
         + (f" (stop={stop_reason})" if stop_reason and stop_reason != "end_turn" and stop_reason != "tool_use" else ""),
-        payload_json={"stop_reason": stop_reason, "attempt_seq": seq},
+        payload_json={"stop_reason": stop_reason, "attempt_seq": seq, "cache_read": cache_read, "cache_write": cache_write},
     )
     meta = {"model": model, "input_tokens": input_tokens, "output_tokens": output_tokens,
             "duration_ms": duration_ms, "cost_usd": receipt.cost_usd, "stop_reason": stop_reason,
-            "prompt_hash": receipt.prompt_hash, "result_hash": receipt.result_hash}
+            "prompt_hash": receipt.prompt_hash, "result_hash": receipt.result_hash,
+            "cache_read": cache_read, "cache_write": cache_write}
     return result_obj, meta
 
 
@@ -195,6 +249,25 @@ def call_text(
 ) -> tuple[str, dict]:
     return _run(job_id, step, label=label, system=system, user=user, model=model or DEFAULT_MODEL,
                 max_tokens=max_tokens, effort=effort, tool=None)
+
+
+def _parse_embedded_json(text: str) -> Any:
+    """A JSON array/object the model stringified. Raw control characters inside its string values (a
+    newline in a long cell) break strict parsing, so the lenient parser comes first, then the repairs."""
+    try:
+        return json.loads(text, strict=False)
+    except Exception:
+        pass
+    try:
+        return parse_llm_json_response(text)
+    except Exception:
+        pass
+    try:
+        from json_repair import repair_json  # type: ignore
+
+        return json.loads(repair_json(text), strict=False)
+    except Exception:
+        return None
 
 
 def unstringify(value: Any, schema: Optional[dict]) -> Any:
@@ -209,10 +282,10 @@ def unstringify(value: Any, schema: Optional[dict]) -> Any:
     if isinstance(value, str):
         looks_json = value.lstrip()[:1] in ("[", "{")
         if stype in ("array", "object") or (looks_json and stype in (None, "string") and "anyOf" in schema) or (looks_json and stype is None):
-            try:
-                value = parse_llm_json_response(value)
-            except Exception:
+            parsed = _parse_embedded_json(value)
+            if parsed is None:
                 return value
+            value = parsed
         else:
             return value
     if isinstance(value, dict):
@@ -229,19 +302,22 @@ def call_json(
     tool_name: str, schema: dict, model_cls: Optional[Type[BaseModel]] = None,
     tool_description: str = "Return the structured answer.",
     model: Optional[str] = None, max_tokens: int = 16000, repair_attempts: int = 1,
+    user_tail: str = "", images: Optional[list[tuple[bytes, str]]] = None, cache: bool = False,
 ) -> tuple[Any, dict]:
     """Forced-tool JSON call validated against `model_cls` (if given).
 
     On validation failure the errors are appended verbatim to the user message
-    and the call is re-asked once (the shape-retry law).
+    and the call is re-asked once (the shape-retry law). `user_tail` is the
+    uncached part of the request (feedback, patch instructions); `images` are
+    (bytes, mime) pairs shown to the model between prefix and tail.
     """
     tool = {"name": tool_name, "description": tool_description, "input_schema": schema}
-    user_msg = user
+    tail = user_tail
     last_errors = ""
     for attempt in range(repair_attempts + 1):
         raw, meta = _run(job_id, step, label=label if attempt == 0 else f"{label} (repair {attempt})",
-                         system=system, user=user_msg, model=model or DEFAULT_MODEL,
-                         max_tokens=max_tokens, effort=None, tool=tool)
+                         system=system, user=user, model=model or DEFAULT_MODEL,
+                         max_tokens=max_tokens, effort=None, tool=tool, user_tail=tail, images=images, cache=cache)
         try:
             repaired = unstringify(raw, schema)
             if repaired != raw:
@@ -257,8 +333,9 @@ def call_json(
             last_errors = str(exc)[:4000]
             logger.warning(f"[{label}] shape validation failed: {last_errors[:300]}")
             events.emit(job_id, "note", phase=step, detail=f"{label}: answer failed shape validation; re-asking with the errors")
-            user_msg = (
-                user + "\n\n---\nYOUR PREVIOUS ANSWER FAILED VALIDATION. Return the complete, corrected object. Errors:\n"
+            tail = (
+                (user_tail + "\n\n" if user_tail else "")
+                + "---\nYOUR PREVIOUS ANSWER FAILED VALIDATION. Return the complete, corrected object. Errors:\n"
                 + last_errors
             )
     raise LLMError(f"{label}: answer failed validation after repair: {last_errors[:500]}")
