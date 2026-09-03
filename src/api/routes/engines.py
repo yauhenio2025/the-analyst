@@ -72,6 +72,10 @@ async def list_engines(
     search: Optional[str] = Query(
         None, description="Search in name and description"
     ),
+    family: Optional[str] = Query(
+        None, description="Filter by family (analytical, storytelling, editing, restructuring, search, rendering, composition, quality, imagination, governance)"
+    ),
+    organ: Optional[str] = Query(None, description="Filter by home organ key"),
 ) -> list[EngineSummary]:
     """List all engines with optional filtering."""
     registry = get_engine_registry()
@@ -79,6 +83,10 @@ async def list_engines(
 
     if category:
         discoverable = [e for e in discoverable if e.summary.category == category]
+    if isinstance(family, str) and family:
+        discoverable = [e for e in discoverable if e.summary.family == family]
+    if isinstance(organ, str) and organ:
+        discoverable = [e for e in discoverable if e.summary.home_organ == organ]
     if paradigm:
         discoverable = [
             e for e in discoverable if paradigm in e.summary.paradigm_keys
@@ -222,6 +230,11 @@ async def get_extraction_prompt(
             status_code=404,
             detail=f"Engine not found: {engine_key}",
         )
+    if engine.sync in ("mirrored", "planned"):
+        raise HTTPException(
+            status_code=404,
+            detail=f"No composed prompt: '{engine_key}' lives in organ '{engine.home_organ}' and the registry mirrors its doctrine. Source: {engine.lineage_refs}",
+        )
 
     composer = get_composer()
     try:
@@ -262,6 +275,11 @@ async def get_curation_prompt(
         raise HTTPException(
             status_code=404,
             detail=f"Engine not found: {engine_key}",
+        )
+    if engine.sync in ("mirrored", "planned"):
+        raise HTTPException(
+            status_code=404,
+            detail=f"No composed prompt: '{engine_key}' lives in organ '{engine.home_organ}' and the registry mirrors its doctrine. Source: {engine.lineage_refs}",
         )
 
     composer = get_composer()
@@ -304,6 +322,11 @@ async def get_concretization_prompt(
         raise HTTPException(
             status_code=404,
             detail=f"Engine not found: {engine_key}",
+        )
+    if engine.sync in ("mirrored", "planned"):
+        raise HTTPException(
+            status_code=404,
+            detail=f"No composed prompt: '{engine_key}' lives in organ '{engine.home_organ}' and the registry mirrors its doctrine. Source: {engine.lineage_refs}",
         )
 
     if engine.stage_context.skip_concretization:

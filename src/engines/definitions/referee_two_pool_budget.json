@@ -1,0 +1,48 @@
+{
+  "engine_key": "referee_two_pool_budget",
+  "engine_name": "Two-pool budget",
+  "description": "The query budget is sovereign; cost, minutes and model calls are backstops sized above it. Lanes allocate from a program pool; the citation reserve is the one hard wall, resized to the declared walk program. Budget exhaustion is stamped mechanically; early finish must be earned.",
+  "version": 1,
+  "category": "search",
+  "kind": "primitive",
+  "family": "governance",
+  "reasoning_domain": "governance · gs-revamp",
+  "researcher_question": "How much may this run spend, and where is the wall?",
+  "stage_context": {
+    "extraction": {
+      "analysis_type": "Two-pool budget",
+      "analysis_type_plural": "Two-pool budgets",
+      "core_question": "How much may this run spend, and where is the wall?"
+    },
+    "curation": {
+      "item_type": "Two-pool budget",
+      "item_type_plural": "Two-pool budgets"
+    },
+    "concretization": {},
+    "skip_concretization": true
+  },
+  "canonical_schema": {},
+  "extraction_focus": [
+    "pools",
+    "allocations",
+    "backstops"
+  ],
+  "primary_output_modes": [
+    "budget"
+  ],
+  "paradigm_keys": [],
+  "added_date": "2026-09-04",
+  "source_file": "gs_revamp:src/gs_revamp/agent/budgeting.py:178",
+  "engine_profile": null,
+  "apps": [],
+  "function": null,
+  "home_organ": "gs-revamp",
+  "runs_at": "https://gs-revamp-v2-sg.onrender.com/v2/ui",
+  "lineage_refs": [
+    "gs_revamp:src/gs_revamp/agent/budgeting.py:178",
+    "gs_revamp:src/gs_revamp/agent/prompts.py:18",
+    "gs_revamp:CLAUDE.md"
+  ],
+  "status": "live",
+  "sync": "mirrored"
+}

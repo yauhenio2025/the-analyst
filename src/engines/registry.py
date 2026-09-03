@@ -95,6 +95,10 @@ class EngineRegistry:
                 kind=e.kind,
                 version=e.version,
                 paradigm_keys=e.paradigm_keys,
+                family=e.family,
+                home_organ=e.home_organ,
+                status=e.status,
+                sync=e.sync,
             )
             for e in self._engines.values()
         ]

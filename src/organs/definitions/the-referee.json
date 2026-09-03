@@ -1,0 +1,35 @@
+{
+  "organ_key": "the-referee",
+  "organ_name": "The Referee",
+  "tagline": "Scholarship: cross-entity queries over the catalogue, one button to a study",
+  "layer": "search",
+  "order": 1,
+  "status": "live",
+  "sync": "mirrored",
+  "role": "The Referee catalogues thinkers, journals and topics and answers cross-entity queries (a query resolves to a set of papers, the same shape as a bundle in the stacks). Its Study lane contract (compose a brief → POST a run → signed webhook back) is the button by which other organs are commissioned from inside a query.",
+  "contributes": [
+    "cross-entity query → paper set (the bundle shape)",
+    "the Study lane button contract (HMAC webhooks)",
+    "referee grounding and archive for the search loop"
+  ],
+  "families": [
+    "search"
+  ],
+  "counts": {},
+  "urls": {
+    "ui": "https://referee-ui.onrender.com",
+    "api": "https://referee-api.onrender.com",
+    "repo": "https://github.com/yauhenio2025/the-referee"
+  },
+  "depends_on": [
+    "gs-revamp",
+    "the-stacks"
+  ],
+  "feeds": [
+    "the-analyst",
+    "the-reporter"
+  ],
+  "lineage": [
+    "the-reporter/communications/STUDY_reader_referee_gsrevamp.md"
+  ]
+}

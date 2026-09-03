@@ -1,0 +1,67 @@
+{
+  "workflow_key": "analyst_figure_pipeline",
+  "workflow_name": "The Analyst: figure pipeline",
+  "description": "How one analytical diagram is made inside the dossier process: spec, primitive, format, enforcement, style, render, vision check, one revision. Diagrams, never illustrations.",
+  "category": "rendering",
+  "version": 1,
+  "phases": [
+    {
+      "phase_number": 1.0,
+      "phase_name": "Figure spec",
+      "phase_description": "The spine's commissioned exhibit becomes a FigureSpec: claim, data, primitive candidates.",
+      "engine_key": "analyst_figure_planner",
+      "depends_on_phases": []
+    },
+    {
+      "phase_number": 2.0,
+      "phase_name": "Primitive and format",
+      "phase_description": "One of twelve primitives; a visual format from the catalogue.",
+      "engine_key": null,
+      "depends_on_phases": [
+        1.0
+      ]
+    },
+    {
+      "phase_number": 3.0,
+      "phase_name": "Enforcement wall",
+      "phase_description": "v1's format enforcement and global prohibitions; duplicate formats rejected.",
+      "engine_key": null,
+      "depends_on_phases": [
+        2.0
+      ]
+    },
+    {
+      "phase_number": 4.0,
+      "phase_name": "Style school",
+      "phase_description": "One of six styles applied as a directive.",
+      "engine_key": null,
+      "depends_on_phases": [
+        3.0
+      ]
+    },
+    {
+      "phase_number": 5.0,
+      "phase_name": "Render",
+      "phase_description": "2K through the image fleet (Gemini 3 Pro Image by default).",
+      "engine_key": null,
+      "depends_on_phases": [
+        4.0
+      ]
+    },
+    {
+      "phase_number": 6.0,
+      "phase_name": "Vision check",
+      "phase_description": "Claude vision judges it as a diagram against the spec; one revision if it fails.",
+      "engine_key": "analyst_crosscheck",
+      "depends_on_phases": [
+        5.0
+      ]
+    }
+  ],
+  "required_inputs": [],
+  "optional_inputs": [],
+  "output_description": "A labelled analytical diagram with its spec and compliance record.",
+  "linked_transformation_keys": [],
+  "source_project": "the-analyst",
+  "target_page": "figures"
+}

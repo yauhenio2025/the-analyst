@@ -1,0 +1,67 @@
+{
+  "workflow_key": "analyst_plate_pipeline",
+  "workflow_name": "The Analyst: plate pipeline",
+  "description": "How a report-as-diagram plate is made: family, spec, v1's assembly order, 4K render behind a gate, tiled vision check, leak scan, appendix.",
+  "category": "rendering",
+  "version": 1,
+  "phases": [
+    {
+      "phase_number": 1.0,
+      "phase_name": "Plan plates",
+      "phase_description": "Families chosen from the dossier's spine and tables; registers refused when tables exist.",
+      "engine_key": "analyst_plate_planner",
+      "depends_on_phases": []
+    },
+    {
+      "phase_number": 2.0,
+      "phase_name": "Plate spec",
+      "phase_description": "Title, cells, currents, axes and legend written from the analysis, verbatim where anchored.",
+      "engine_key": null,
+      "depends_on_phases": [
+        1.0
+      ]
+    },
+    {
+      "phase_number": 3.0,
+      "phase_name": "Assembly order",
+      "phase_description": "v1's order: frame, spine, currents, branches, labels, legend.",
+      "engine_key": null,
+      "depends_on_phases": [
+        2.0
+      ]
+    },
+    {
+      "phase_number": 4.0,
+      "phase_name": "Render 4K",
+      "phase_description": "Behind a render gate (one at a time on the current plan).",
+      "engine_key": null,
+      "depends_on_phases": [
+        3.0
+      ]
+    },
+    {
+      "phase_number": 5.0,
+      "phase_name": "Tiled vision check and leak scan",
+      "phase_description": "Each tile read for compliance and text leaks; one revision.",
+      "engine_key": null,
+      "depends_on_phases": [
+        4.0
+      ]
+    },
+    {
+      "phase_number": 6.0,
+      "phase_name": "Appendix",
+      "phase_description": "Plates appended to the dossier with their specs.",
+      "engine_key": "analyst_compose",
+      "depends_on_phases": [
+        5.0
+      ]
+    }
+  ],
+  "required_inputs": [],
+  "optional_inputs": [],
+  "output_description": "4K plates with compliance records, shown on the desk's plates page.",
+  "linked_transformation_keys": [],
+  "source_project": "the-analyst",
+  "target_page": "plates"
+}

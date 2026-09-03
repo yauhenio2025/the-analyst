@@ -1,0 +1,49 @@
+{
+  "engine_key": "analyst_figure_planner",
+  "engine_name": "Figure planner",
+  "description": "Plans analytical diagrams, never illustrations: a FigureSpec chooses one of twelve primitives and a visual format, passes v1's format enforcement and global prohibitions, takes a style school, renders at 2K through the image fleet, is checked by Claude vision as a diagram, and is revised once.",
+  "version": 1,
+  "category": "visual",
+  "kind": "synthesis",
+  "family": "rendering",
+  "reasoning_domain": "rendering · the-analyst",
+  "researcher_question": "Which diagram makes this section's claim visible, and does the render obey the grammar?",
+  "stage_context": {
+    "extraction": {
+      "analysis_type": "Figure planner",
+      "analysis_type_plural": "Figure planners",
+      "core_question": "Which diagram makes this section's claim visible, and does the render obey the grammar?"
+    },
+    "curation": {
+      "item_type": "Figure planner",
+      "item_type_plural": "Figure planners"
+    },
+    "concretization": {},
+    "skip_concretization": true
+  },
+  "canonical_schema": {},
+  "extraction_focus": [
+    "primitive",
+    "format",
+    "style",
+    "compliance"
+  ],
+  "primary_output_modes": [
+    "figures"
+  ],
+  "paradigm_keys": [],
+  "added_date": "2026-09-04",
+  "source_file": "the-analyst:src/dossier/figures.py",
+  "engine_profile": null,
+  "apps": [],
+  "function": null,
+  "home_organ": "the-analyst",
+  "runs_at": "https://the-analyst-desk.onrender.com",
+  "lineage_refs": [
+    "the-analyst:src/dossier/figures.py",
+    "the-analyst:src/display/enforcement.py",
+    "the-analyst:src/images/adapter.py"
+  ],
+  "status": "live",
+  "sync": "native"
+}

@@ -1,0 +1,48 @@
+{
+  "engine_key": "analyst_receipts",
+  "engine_name": "Receipts",
+  "description": "Every step's prompt hash, model, tokens, cost and output excerpt in the run-events ledger, streamed live and narrated in one line each by a small model, so the process is visible while it runs and auditable after.",
+  "version": 1,
+  "category": "governance",
+  "kind": "primitive",
+  "family": "governance",
+  "reasoning_domain": "governance · the-analyst",
+  "researcher_question": "What did each step do, why, and what did it cost?",
+  "stage_context": {
+    "extraction": {
+      "analysis_type": "Receipts",
+      "analysis_type_plural": "Receiptss",
+      "core_question": "What did each step do, why, and what did it cost?"
+    },
+    "curation": {
+      "item_type": "Receipts",
+      "item_type_plural": "Receiptss"
+    },
+    "concretization": {},
+    "skip_concretization": true
+  },
+  "canonical_schema": {},
+  "extraction_focus": [
+    "events",
+    "costs",
+    "narration"
+  ],
+  "primary_output_modes": [
+    "receipts"
+  ],
+  "paradigm_keys": [],
+  "added_date": "2026-09-04",
+  "source_file": "the-analyst:src/events/store.py",
+  "engine_profile": null,
+  "apps": [],
+  "function": null,
+  "home_organ": "the-analyst",
+  "runs_at": "https://the-analyst-desk.onrender.com",
+  "lineage_refs": [
+    "the-analyst:src/events/store.py",
+    "the-analyst:src/events/narrator.py",
+    "the-analyst:src/dossier/receipts.py"
+  ],
+  "status": "live",
+  "sync": "native"
+}

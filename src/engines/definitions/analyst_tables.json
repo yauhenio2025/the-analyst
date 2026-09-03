@@ -1,0 +1,46 @@
+{
+  "engine_key": "analyst_tables",
+  "engine_name": "Anchored tables",
+  "description": "Tables whose every cell carries an anchor: the document and the verbatim quote it rests on. A wall rejects any row whose anchor cannot be found in the source.",
+  "version": 1,
+  "category": "composition",
+  "kind": "extraction",
+  "family": "composition",
+  "reasoning_domain": "composition · the-analyst",
+  "researcher_question": "What does the evidence say, cell by cell, and where exactly?",
+  "stage_context": {
+    "extraction": {
+      "analysis_type": "Anchored tables",
+      "analysis_type_plural": "Anchored tabless",
+      "core_question": "What does the evidence say, cell by cell, and where exactly?"
+    },
+    "curation": {
+      "item_type": "Anchored tables",
+      "item_type_plural": "Anchored tabless"
+    },
+    "concretization": {},
+    "skip_concretization": true
+  },
+  "canonical_schema": {},
+  "extraction_focus": [
+    "rows",
+    "anchors",
+    "quotes"
+  ],
+  "primary_output_modes": [
+    "tables"
+  ],
+  "paradigm_keys": [],
+  "added_date": "2026-09-04",
+  "source_file": "the-analyst:src/dossier/tables.py",
+  "engine_profile": null,
+  "apps": [],
+  "function": null,
+  "home_organ": "the-analyst",
+  "runs_at": "https://the-analyst-desk.onrender.com",
+  "lineage_refs": [
+    "the-analyst:src/dossier/tables.py"
+  ],
+  "status": "live",
+  "sync": "native"
+}

@@ -1,0 +1,49 @@
+{
+  "engine_key": "reporter_domain_search_loop",
+  "engine_name": "Domain search loop",
+  "description": "The Reporter's core, dictated 2026-09-03: a dynamic, LLM-driven, context-sensitive search inside chosen domains (site: FT, Economist, Bloomberg, NYT, WSJ). Discover the terms that represent the topic, try combinations, evaluate the results, harvest new terms from them, refine, inside a budget with a truth ledger. Lineage: the Referee's lanes and moves and web-saver's adaptive exhaustion.",
+  "version": 1,
+  "category": "search",
+  "kind": "synthesis",
+  "family": "search",
+  "reasoning_domain": "search · the-reporter",
+  "researcher_question": "What has the press said about this, and what words does it use to say it?",
+  "stage_context": {
+    "extraction": {
+      "analysis_type": "Domain search loop",
+      "analysis_type_plural": "Domain search loops",
+      "core_question": "What has the press said about this, and what words does it use to say it?"
+    },
+    "curation": {
+      "item_type": "Domain search loop",
+      "item_type_plural": "Domain search loops"
+    },
+    "concretization": {},
+    "skip_concretization": true
+  },
+  "canonical_schema": {},
+  "extraction_focus": [
+    "terms",
+    "queries",
+    "judged results",
+    "harvested terms"
+  ],
+  "primary_output_modes": [
+    "search program"
+  ],
+  "paradigm_keys": [],
+  "added_date": "2026-09-04",
+  "source_file": "the-reporter:BOOTSTRAP_PROMPT.md",
+  "engine_profile": null,
+  "apps": [],
+  "function": null,
+  "home_organ": "the-reporter",
+  "runs_at": null,
+  "lineage_refs": [
+    "the-reporter:BOOTSTRAP_PROMPT.md",
+    "the-reporter:communications/HUNCHES_AND_ARCHITECTURE.md",
+    "web-saver:web-app/adaptive_exhaustion.py:188"
+  ],
+  "status": "designed",
+  "sync": "planned"
+}

@@ -1,0 +1,47 @@
+{
+  "engine_key": "analyst_plate_planner",
+  "engine_name": "Plate planner",
+  "description": "Report-as-diagram plates in v1's families (scorecard, framework map, flow map, power map, timeline of shifts, register, layer stack, argument tree): a PlateSpec per plate, v1's assembly order, 4K render, tiled vision check, leak scan. Refuses a register when the tables already exist; prefers diagrammatic families.",
+  "version": 1,
+  "category": "visual",
+  "kind": "synthesis",
+  "family": "rendering",
+  "reasoning_domain": "rendering · the-analyst",
+  "researcher_question": "Which whole-report diagrams should this dossier carry?",
+  "stage_context": {
+    "extraction": {
+      "analysis_type": "Plate planner",
+      "analysis_type_plural": "Plate planners",
+      "core_question": "Which whole-report diagrams should this dossier carry?"
+    },
+    "curation": {
+      "item_type": "Plate planner",
+      "item_type_plural": "Plate planners"
+    },
+    "concretization": {},
+    "skip_concretization": true
+  },
+  "canonical_schema": {},
+  "extraction_focus": [
+    "family",
+    "spec",
+    "compliance"
+  ],
+  "primary_output_modes": [
+    "plates"
+  ],
+  "paradigm_keys": [],
+  "added_date": "2026-09-04",
+  "source_file": "the-analyst:src/dossier/plates.py",
+  "engine_profile": null,
+  "apps": [],
+  "function": null,
+  "home_organ": "the-analyst",
+  "runs_at": "https://the-analyst-desk.onrender.com",
+  "lineage_refs": [
+    "the-analyst:src/dossier/plates.py",
+    "the-analyst:src/dossier/plate_store.py"
+  ],
+  "status": "live",
+  "sync": "native"
+}

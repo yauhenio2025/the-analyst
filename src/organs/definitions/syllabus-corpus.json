@@ -1,0 +1,29 @@
+{
+  "organ_key": "syllabus-corpus",
+  "organ_name": "Syllabus corpus",
+  "tagline": "446K long-form articles, 2.9M chunks, pgvector, 1950s to 2026",
+  "layer": "sources",
+  "order": 4,
+  "status": "live",
+  "sync": "mirrored",
+  "workspace": "aws",
+  "role": "The Syllabus production Postgres holds 445,868 articles (NYRB, The Nation, New Yorker, LRB, Atlantic, FT, WSJ, Economist, Bloomberg…) chunked and embedded with jina-embeddings-v3. Read-only for us; semantic recall needs the same embedding model in the querying service. Historical depth is the differentiator: how an argument has been made since the 1960s.",
+  "contributes": [
+    "historical recall lane (decade-bucketed)"
+  ],
+  "families": [],
+  "counts": {
+    "articles": 445868,
+    "chunks": 2940000,
+    "publications": 24272
+  },
+  "urls": {},
+  "depends_on": [],
+  "feeds": [
+    "the-reporter"
+  ],
+  "lineage": [
+    "the-reporter/.secrets/SYLLABUS_EMBED_CORPUS_MEMO.md"
+  ],
+  "notes": "Credentials are secret and read-only; no URL by design."
+}

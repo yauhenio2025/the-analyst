@@ -1,0 +1,46 @@
+{
+  "engine_key": "referee_adjustment_repertoire",
+  "engine_name": "Adjustment repertoire",
+  "description": "The named moves the agent must declare after each evaluation: BROADEN, TIGHTEN, PRUNE, RE-WINDOW, GO DEEPER, ANCHOR, WALK CITATIONS, AUTHOR CORPUS, REWRITE LANE, ABANDON. Vary the shape of the query, not only its vocabulary.",
+  "version": 1,
+  "category": "search",
+  "kind": "primitive",
+  "family": "search",
+  "reasoning_domain": "search · gs-revamp",
+  "researcher_question": "Given what came back, what is the next move?",
+  "stage_context": {
+    "extraction": {
+      "analysis_type": "Adjustment repertoire",
+      "analysis_type_plural": "Adjustment repertoires",
+      "core_question": "Given what came back, what is the next move?"
+    },
+    "curation": {
+      "item_type": "Adjustment repertoire",
+      "item_type_plural": "Adjustment repertoires"
+    },
+    "concretization": {},
+    "skip_concretization": true
+  },
+  "canonical_schema": {},
+  "extraction_focus": [
+    "next_move",
+    "query deltas"
+  ],
+  "primary_output_modes": [
+    "move"
+  ],
+  "paradigm_keys": [],
+  "added_date": "2026-09-04",
+  "source_file": "gs_revamp:src/gs_revamp/agent/prompts.py:88",
+  "engine_profile": null,
+  "apps": [],
+  "function": null,
+  "home_organ": "gs-revamp",
+  "runs_at": "https://gs-revamp-v2-sg.onrender.com/v2/ui",
+  "lineage_refs": [
+    "gs_revamp:src/gs_revamp/agent/prompts.py:88",
+    "gs_revamp:src/gs_revamp/agent/tools.py:1132"
+  ],
+  "status": "live",
+  "sync": "mirrored"
+}

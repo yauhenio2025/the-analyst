@@ -1,0 +1,48 @@
+{
+  "engine_key": "dellm_coherence_audit",
+  "engine_name": "Coherence audit",
+  "description": "Whole-document findings across the audit categories, plus a strand audit (one strand read consecutively) and a reanchor sweep of every changed seam. Findings drive bounded per-section repairs and a re-audit until clean.",
+  "version": 1,
+  "category": "quality",
+  "kind": "extraction",
+  "family": "quality",
+  "reasoning_domain": "quality · de-llm",
+  "researcher_question": "Where does the regenerated document fail to cohere?",
+  "stage_context": {
+    "extraction": {
+      "analysis_type": "Coherence audit",
+      "analysis_type_plural": "Coherence audits",
+      "core_question": "Where does the regenerated document fail to cohere?"
+    },
+    "curation": {
+      "item_type": "Coherence audit",
+      "item_type_plural": "Coherence audits"
+    },
+    "concretization": {},
+    "skip_concretization": true
+  },
+  "canonical_schema": {},
+  "extraction_focus": [
+    "findings",
+    "categories",
+    "repairs"
+  ],
+  "primary_output_modes": [
+    "audit"
+  ],
+  "paradigm_keys": [],
+  "added_date": "2026-09-04",
+  "source_file": "de-llm:delm/longform/audit.py:71",
+  "engine_profile": null,
+  "apps": [],
+  "function": null,
+  "home_organ": "de-llm",
+  "runs_at": "https://dellmify.onrender.com/longform",
+  "lineage_refs": [
+    "de-llm:delm/longform/audit.py:71",
+    "de-llm:delm/longform/audit.py:185",
+    "de-llm:delm/longform/audit.py:1292"
+  ],
+  "status": "live",
+  "sync": "mirrored"
+}

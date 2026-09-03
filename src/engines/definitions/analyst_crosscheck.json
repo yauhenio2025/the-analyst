@@ -1,0 +1,45 @@
+{
+  "engine_key": "analyst_crosscheck",
+  "engine_name": "Cross-check",
+  "description": "A judge reads the finished dossier with the rendered diagrams as vision input, and code clamps check anchors and pointers; findings go to a ledger and one round of safe realizations is applied at medium depth and above.",
+  "version": 1,
+  "category": "quality",
+  "kind": "comparison",
+  "family": "quality",
+  "reasoning_domain": "quality · the-analyst",
+  "researcher_question": "Does the text say what the exhibits show, and do the anchors hold?",
+  "stage_context": {
+    "extraction": {
+      "analysis_type": "Cross-check",
+      "analysis_type_plural": "Cross-checks",
+      "core_question": "Does the text say what the exhibits show, and do the anchors hold?"
+    },
+    "curation": {
+      "item_type": "Cross-check",
+      "item_type_plural": "Cross-checks"
+    },
+    "concretization": {},
+    "skip_concretization": true
+  },
+  "canonical_schema": {},
+  "extraction_focus": [
+    "findings",
+    "realizations"
+  ],
+  "primary_output_modes": [
+    "findings ledger"
+  ],
+  "paradigm_keys": [],
+  "added_date": "2026-09-04",
+  "source_file": "the-analyst:src/dossier/crosscheck.py",
+  "engine_profile": null,
+  "apps": [],
+  "function": null,
+  "home_organ": "the-analyst",
+  "runs_at": "https://the-analyst-desk.onrender.com",
+  "lineage_refs": [
+    "the-analyst:src/dossier/crosscheck.py"
+  ],
+  "status": "live",
+  "sync": "native"
+}

@@ -1,0 +1,46 @@
+{
+  "engine_key": "referee_query_anatomy",
+  "engine_name": "Query anatomy",
+  "description": "Every search call declares its effectors as {kind, fragment, why} across sixteen kinds (quoted phrase, or-group, intitle, author anchor, source filter, year window, cited-by walk, language pivot, zero rescue, existence probe…) with typed term provenance. Anatomy-less searches are rejected and not budgeted.",
+  "version": 1,
+  "category": "search",
+  "kind": "primitive",
+  "family": "search",
+  "reasoning_domain": "search · gs-revamp",
+  "researcher_question": "What exactly is this query doing, and why each part?",
+  "stage_context": {
+    "extraction": {
+      "analysis_type": "Query anatomy",
+      "analysis_type_plural": "Query anatomys",
+      "core_question": "What exactly is this query doing, and why each part?"
+    },
+    "curation": {
+      "item_type": "Query anatomy",
+      "item_type_plural": "Query anatomys"
+    },
+    "concretization": {},
+    "skip_concretization": true
+  },
+  "canonical_schema": {},
+  "extraction_focus": [
+    "effectors",
+    "provenance"
+  ],
+  "primary_output_modes": [
+    "query record"
+  ],
+  "paradigm_keys": [],
+  "added_date": "2026-09-04",
+  "source_file": "gs_revamp:src/gs_revamp/agent/prompts.py:121",
+  "engine_profile": null,
+  "apps": [],
+  "function": null,
+  "home_organ": "gs-revamp",
+  "runs_at": "https://gs-revamp-v2-sg.onrender.com/v2/ui",
+  "lineage_refs": [
+    "gs_revamp:src/gs_revamp/agent/prompts.py:121",
+    "gs_revamp:communications/QUERY-CRAFT-DOCTRINE-MEMO.md"
+  ],
+  "status": "live",
+  "sync": "mirrored"
+}

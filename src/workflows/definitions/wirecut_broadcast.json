@@ -1,0 +1,108 @@
+{
+  "workflow_key": "wirecut_broadcast",
+  "workflow_name": "Wirecut: text to broadcast",
+  "description": "Runs in Wirecut (veo2), mirrored here. Multi-pass concretization from source to a narrated, subtitled film: each pass a named, priced, receipted call; the operator sovereign at every gate; coherence tiers off | look | iterate | studio decide how much of it runs.",
+  "category": "process",
+  "version": 1,
+  "phases": [
+    {
+      "phase_number": 1.0,
+      "phase_name": "Ingest and approach",
+      "phase_description": "File or URL to text and language; the twelve narrative approaches ranked against the source.",
+      "engine_key": "wirecut_narrative_approaches",
+      "depends_on_phases": []
+    },
+    {
+      "phase_number": 2.0,
+      "phase_name": "Spine",
+      "phase_description": "The arc in movements, motif, colour script, musical arc, hook, open loop.",
+      "engine_key": "wirecut_spine",
+      "depends_on_phases": [
+        1.0
+      ]
+    },
+    {
+      "phase_number": 3.0,
+      "phase_name": "Telling desk",
+      "phase_description": "Thirteen telling dials declared over the accepted spine.",
+      "engine_key": "wirecut_telling_desk",
+      "depends_on_phases": [
+        2.0
+      ]
+    },
+    {
+      "phase_number": 4.0,
+      "phase_name": "Script",
+      "phase_description": "Whole narration as one read; cut to length; red pen; adjudication when settings and material collide.",
+      "engine_key": "wirecut_screenwriter",
+      "depends_on_phases": [
+        3.0
+      ]
+    },
+    {
+      "phase_number": 5.0,
+      "phase_name": "Board, pacing, prompt bench",
+      "phase_description": "Per-clip prompts with source anchors; seams and breathers; every prompt read as a description and rewritten.",
+      "engine_key": "wirecut_storyboard",
+      "depends_on_phases": [
+        4.0
+      ]
+    },
+    {
+      "phase_number": 6.0,
+      "phase_name": "Grounding, text layer, casting, likeness",
+      "phase_description": "Clip verdicts against the source; typography per clip; voices and delivery; named people declared.",
+      "engine_key": "wirecut_grounding_review",
+      "depends_on_phases": [
+        5.0
+      ]
+    },
+    {
+      "phase_number": 7.0,
+      "phase_name": "Table read",
+      "phase_description": "A free read of every beat listened to before any footage is bought.",
+      "engine_key": "wirecut_scratch_vo",
+      "depends_on_phases": [
+        6.0
+      ]
+    },
+    {
+      "phase_number": 8.0,
+      "phase_name": "Render, arrival, dailies, iterate",
+      "phase_description": "Footage rendered and repaired; each take judged on arrival; the editor's call over the contact sheet; dispositions executed inside a cap.",
+      "engine_key": "wirecut_dailies",
+      "depends_on_phases": [
+        7.0
+      ]
+    },
+    {
+      "phase_number": 9.0,
+      "phase_name": "Music, assemble, sound check, seam ear",
+      "phase_description": "Music brief and sections; narrate, mix, subtitles, title card, stitch; the finished audio heard and adjusted.",
+      "engine_key": "wirecut_music_brief",
+      "depends_on_phases": [
+        8.0
+      ]
+    },
+    {
+      "phase_number": 10.0,
+      "phase_name": "Screening, work order, retrospective",
+      "phase_description": "Punch list and ship-ready gate; open targets realized; post-mortem over the film's record.",
+      "engine_key": "wirecut_screening",
+      "depends_on_phases": [
+        9.0
+      ]
+    }
+  ],
+  "required_inputs": [
+    "source text or file",
+    "preset",
+    "length",
+    "coherence tier"
+  ],
+  "optional_inputs": [],
+  "output_description": "One MP4 with SRT and clips, plus receipts for every pass.",
+  "linked_transformation_keys": [],
+  "source_project": "wirecut",
+  "target_page": ""
+}

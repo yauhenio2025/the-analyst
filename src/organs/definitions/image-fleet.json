@@ -1,0 +1,32 @@
+{
+  "organ_key": "image-fleet",
+  "organ_name": "Image fleet",
+  "tagline": "Gemini Pro, Gemini Flash, Seedream, Qwen behind one adapter",
+  "layer": "composition",
+  "order": 2,
+  "status": "live",
+  "sync": "native",
+  "role": "One adapter (lifted from Wirecut) fronts four image providers. The Analyst's figures render at 2K and its plates at 4K through Gemini 3 Pro Image ('Nano Banana Pro'), each checked by Claude vision against the diagram grammar and revised once.",
+  "contributes": [
+    "provider registry: gemini_pro, gemini_flash, seedream_5_pro, qwen_image_2_pro",
+    "generate(prompt, size, aspect, refs, style) → ImageResult"
+  ],
+  "families": [
+    "rendering"
+  ],
+  "counts": {
+    "providers": 4
+  },
+  "urls": {
+    "repo": "https://github.com/yauhenio2025/the-analyst"
+  },
+  "depends_on": [],
+  "feeds": [
+    "the-analyst",
+    "wirecut"
+  ],
+  "lineage": [
+    "the-analyst/src/images/providers.py",
+    "veo2/engine/images.py"
+  ]
+}

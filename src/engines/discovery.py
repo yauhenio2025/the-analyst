@@ -163,6 +163,10 @@ def build_engine_summary(
         category=category,
         kind=kind,
         version=version,
+        family=legacy_engine.family if legacy_engine else "analytical",
+        home_organ=legacy_engine.home_organ if legacy_engine else "the-analyst",
+        status=legacy_engine.status if legacy_engine else "live",
+        sync=legacy_engine.sync if legacy_engine else "native",
         paradigm_keys=_merge_list(
             legacy_engine.paradigm_keys if legacy_engine else [],
             capability_definition.paradigm_keys if capability_definition else [],

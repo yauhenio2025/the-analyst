@@ -1,0 +1,47 @@
+{
+  "engine_key": "referee_batch_judging",
+  "engine_name": "Batch judging",
+  "description": "A cheap seat disposes every returned paper as direct, adjacent, off-lane or garbage, with discovery value and seed suitability; batch verdict bands (more than two thirds, one third to two thirds, under one third) drive CONTINUE, FOCUS or ABANDON. Novelty signals (seen before, times seen, trend) read saturation.",
+  "version": 1,
+  "category": "search",
+  "kind": "comparison",
+  "family": "quality",
+  "reasoning_domain": "quality · gs-revamp",
+  "researcher_question": "How much of what came back is what we wanted, and is the well running dry?",
+  "stage_context": {
+    "extraction": {
+      "analysis_type": "Batch judging",
+      "analysis_type_plural": "Batch judgings",
+      "core_question": "How much of what came back is what we wanted, and is the well running dry?"
+    },
+    "curation": {
+      "item_type": "Batch judging",
+      "item_type_plural": "Batch judgings"
+    },
+    "concretization": {},
+    "skip_concretization": true
+  },
+  "canonical_schema": {},
+  "extraction_focus": [
+    "dispositions",
+    "discovery value",
+    "novelty"
+  ],
+  "primary_output_modes": [
+    "batch assessment"
+  ],
+  "paradigm_keys": [],
+  "added_date": "2026-09-04",
+  "source_file": "gs_revamp:src/gs_revamp/agent/tools.py:2948",
+  "engine_profile": null,
+  "apps": [],
+  "function": null,
+  "home_organ": "gs-revamp",
+  "runs_at": "https://gs-revamp-v2-sg.onrender.com/v2/ui",
+  "lineage_refs": [
+    "gs_revamp:src/gs_revamp/agent/tools.py:2948",
+    "gs_revamp:src/gs_revamp/agent/prompts.py:270"
+  ],
+  "status": "live",
+  "sync": "mirrored"
+}

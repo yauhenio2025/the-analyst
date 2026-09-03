@@ -1,0 +1,67 @@
+{
+  "workflow_key": "v1_image_pipeline",
+  "workflow_name": "Analyzer v1: per-image pipeline (frozen)",
+  "description": "The client's production pipeline for one image, frozen 2026-09-03: scene prose, declutter, style guide and format enforcement, 4K, Claude-vision compliance, storage. The Analyst's figure and plate pipelines descend from it.",
+  "category": "rendering",
+  "version": 1,
+  "phases": [
+    {
+      "phase_number": 1.0,
+      "phase_name": "Scene prose",
+      "phase_description": "The engine's curated findings written as a scene.",
+      "engine_key": null,
+      "depends_on_phases": []
+    },
+    {
+      "phase_number": 2.0,
+      "phase_name": "Declutter",
+      "phase_description": "The scene reduced to what the diagram must carry.",
+      "engine_key": null,
+      "depends_on_phases": [
+        1.0
+      ]
+    },
+    {
+      "phase_number": 3.0,
+      "phase_name": "Style guide and format enforcement",
+      "phase_description": "House style and the format's rules applied as prompt law.",
+      "engine_key": null,
+      "depends_on_phases": [
+        2.0
+      ]
+    },
+    {
+      "phase_number": 4.0,
+      "phase_name": "Render 4K",
+      "phase_description": "Gemini 3 Pro Image.",
+      "engine_key": null,
+      "depends_on_phases": [
+        3.0
+      ]
+    },
+    {
+      "phase_number": 5.0,
+      "phase_name": "Compliance",
+      "phase_description": "Claude vision checks the render against the enforcement.",
+      "engine_key": null,
+      "depends_on_phases": [
+        4.0
+      ]
+    },
+    {
+      "phase_number": 6.0,
+      "phase_name": "Store",
+      "phase_description": "R2 storage and the report assembled.",
+      "engine_key": null,
+      "depends_on_phases": [
+        5.0
+      ]
+    }
+  ],
+  "required_inputs": [],
+  "optional_inputs": [],
+  "output_description": "One 4K plate per engine run.",
+  "linked_transformation_keys": [],
+  "source_project": "analyzer-v1",
+  "target_page": "report"
+}

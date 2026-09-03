@@ -1,0 +1,36 @@
+{
+  "organ_key": "analyzer-v1",
+  "organ_name": "Analyzer v1 + Visualizer v1",
+  "tagline": "The client's production line: PDFs to report-as-diagram plates (frozen 2026-09-03)",
+  "layer": "consumers",
+  "order": 9,
+  "status": "frozen",
+  "sync": "mirrored",
+  "workspace": "gsi",
+  "role": "The first generation: Analyzer v1 runs 17 production engines through extraction → curation → concretization and renders scorecards, framework maps and river maps at 4K; the Visualizer is its MCP front end. Frozen on the client's Render workspace on 2026-09-03 (branch client-frozen-2026-09-03). Its diagram grammar (format enforcement, global prohibitions, the assembly order of a plate) was lifted into The Analyst's figure and plate pipelines.",
+  "contributes": [
+    "the diagram grammar: FORMAT_ENFORCEMENT + GLOBAL_PROHIBITIONS",
+    "plate families: scorecard, framework map, flow map, power map, timeline of shifts, register, layer stack, argument tree",
+    "the per-image pipeline: scene prose → declutter → style guide → 4K → vision compliance"
+  ],
+  "families": [
+    "rendering",
+    "analytical"
+  ],
+  "counts": {
+    "engines": 17,
+    "jobs": 4827
+  },
+  "urls": {
+    "ui": "https://visualizer-alu5.onrender.com",
+    "api": "https://analyzer-43fk.onrender.com",
+    "repo": "https://github.com/yauhenio2025/analyzer"
+  },
+  "depends_on": [],
+  "feeds": [],
+  "lineage": [
+    "analyzer/src/renderers/gemini_image.py",
+    "the-analyst/src/display/enforcement.py"
+  ],
+  "notes": "Do not touch: client production."
+}

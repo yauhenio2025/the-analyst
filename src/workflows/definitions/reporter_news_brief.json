@@ -1,0 +1,73 @@
+{
+  "workflow_key": "reporter_news_brief",
+  "workflow_name": "The Reporter: research question to news brief",
+  "description": "Planned (bootstrap written 2026-09-03). Free recall first, then the dynamic domain search loop, entitled fetch from a logged-in desktop, a headed bundle to The Analyst, and a brief in the library, commissioned by a button in the Referee.",
+  "category": "process",
+  "version": 1,
+  "phases": [
+    {
+      "phase_number": 1.0,
+      "phase_name": "Recall",
+      "phase_description": "The Reader's newsletters, the Syllabus corpus by decade, the Archivist's bodies.",
+      "engine_key": null,
+      "depends_on_phases": []
+    },
+    {
+      "phase_number": 2.0,
+      "phase_name": "Domain search loop",
+      "phase_description": "Term discovery, combinations, evaluation, harvest, refinement inside site: domains with a budget.",
+      "engine_key": "reporter_domain_search_loop",
+      "depends_on_phases": [
+        1.0
+      ]
+    },
+    {
+      "phase_number": 3.0,
+      "phase_name": "Entitled fetch",
+      "phase_description": "Full text through the desktop daemon ladder; teasers parked and named.",
+      "engine_key": null,
+      "depends_on_phases": [
+        2.0
+      ]
+    },
+    {
+      "phase_number": 4.0,
+      "phase_name": "Store and catalogue",
+      "phase_description": "Bodies and receipts stored; gaps recorded honestly.",
+      "engine_key": null,
+      "depends_on_phases": [
+        3.0
+      ]
+    },
+    {
+      "phase_number": 5.0,
+      "phase_name": "Analyst handoff",
+      "phase_description": "A headed bundle to The Analyst; a dossier with diagrams comes back.",
+      "engine_key": "analyst_brief",
+      "depends_on_phases": [
+        4.0
+      ]
+    },
+    {
+      "phase_number": 6.0,
+      "phase_name": "Brief library",
+      "phase_description": "The brief stored with its receipts and linked back to the Referee query.",
+      "engine_key": null,
+      "depends_on_phases": [
+        5.0
+      ]
+    }
+  ],
+  "required_inputs": [
+    "objective",
+    "papers",
+    "date window",
+    "sites",
+    "budgets"
+  ],
+  "optional_inputs": [],
+  "output_description": "A news brief with sources, gaps, analysis and diagrams.",
+  "linked_transformation_keys": [],
+  "source_project": "the-reporter",
+  "target_page": ""
+}

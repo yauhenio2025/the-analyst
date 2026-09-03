@@ -1,0 +1,48 @@
+{
+  "engine_key": "referee_query_eval",
+  "engine_name": "Query evaluation",
+  "description": "After each query: relevance, novelty, the next move, query deltas, harvested terms, the card verdict, escalation and seed status. An independent eval-substance verifier can bounce a thin evaluation and force a scoped redo.",
+  "version": 1,
+  "category": "search",
+  "kind": "synthesis",
+  "family": "search",
+  "reasoning_domain": "search · gs-revamp",
+  "researcher_question": "What did this query teach, and what follows from it?",
+  "stage_context": {
+    "extraction": {
+      "analysis_type": "Query evaluation",
+      "analysis_type_plural": "Query evaluations",
+      "core_question": "What did this query teach, and what follows from it?"
+    },
+    "curation": {
+      "item_type": "Query evaluation",
+      "item_type_plural": "Query evaluations"
+    },
+    "concretization": {},
+    "skip_concretization": true
+  },
+  "canonical_schema": {},
+  "extraction_focus": [
+    "relevance",
+    "novelty",
+    "next move",
+    "harvested terms"
+  ],
+  "primary_output_modes": [
+    "eval record"
+  ],
+  "paradigm_keys": [],
+  "added_date": "2026-09-04",
+  "source_file": "gs_revamp:src/gs_revamp/agent/tools.py:2657",
+  "engine_profile": null,
+  "apps": [],
+  "function": null,
+  "home_organ": "gs-revamp",
+  "runs_at": "https://gs-revamp-v2-sg.onrender.com/v2/ui",
+  "lineage_refs": [
+    "gs_revamp:src/gs_revamp/agent/tools.py:2657",
+    "gs_revamp:src/gs_revamp/agent/prompts.py:1148"
+  ],
+  "status": "live",
+  "sync": "mirrored"
+}

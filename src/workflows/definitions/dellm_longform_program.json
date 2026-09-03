@@ -1,0 +1,106 @@
+{
+  "workflow_key": "dellm_longform_program",
+  "workflow_name": "de-llm: long-form restructuring program",
+  "description": "Runs in de-llm, mirrored here. Essay- and report-scale re-imagining: diagnose the architecture, imagine rivals, let the author choose from a memo, regenerate section by section, audit cold, repair, finalize. The loop is fractal; the memo is the choice screen rendered as a document.",
+  "category": "process",
+  "version": 1,
+  "phases": [
+    {
+      "phase_number": 1.0,
+      "phase_name": "Ingest",
+      "phase_description": "Any file to canonical Markdown, block tree, heading tree, section partition.",
+      "engine_key": null,
+      "depends_on_phases": []
+    },
+    {
+      "phase_number": 2.0,
+      "phase_name": "Read and deep read",
+      "phase_description": "Summary, crux, contract, strands, genre; the twelve elements the document runs on.",
+      "engine_key": "dellm_whole_read",
+      "depends_on_phases": [
+        1.0
+      ]
+    },
+    {
+      "phase_number": 3.0,
+      "phase_name": "Cards and style sheet",
+      "phase_description": "One McPhee card per section; the manuscript's own conventions.",
+      "engine_key": "dellm_card_deck",
+      "depends_on_phases": [
+        2.0
+      ]
+    },
+    {
+      "phase_number": 4.0,
+      "phase_name": "Architecture",
+      "phase_description": "Diagnosis, trial leads, three to five candidate skeletons, ranked under the author's ambition.",
+      "engine_key": "dellm_architecture_candidates",
+      "depends_on_phases": [
+        3.0
+      ]
+    },
+    {
+      "phase_number": 5.0,
+      "phase_name": "Memo 1 and choice",
+      "phase_description": "The Restructuring Memo as a letter; the author chooses a shape (zero calls).",
+      "engine_key": "dellm_restructuring_memo",
+      "depends_on_phases": [
+        4.0
+      ]
+    },
+    {
+      "phase_number": 6.0,
+      "phase_name": "Plan, memo 2, approval",
+      "phase_description": "One directive per section; signed removals adopted or rejected explicitly (zero calls).",
+      "engine_key": "dellm_realization_plan",
+      "depends_on_phases": [
+        5.0
+      ]
+    },
+    {
+      "phase_number": 7.0,
+      "phase_name": "Generate",
+      "phase_description": "Desk rules chosen; strands drafted whole; sections written in the new order; frames; retitle.",
+      "engine_key": "dellm_section_rewrite",
+      "depends_on_phases": [
+        6.0
+      ]
+    },
+    {
+      "phase_number": 8.0,
+      "phase_name": "Assemble, screens, audit",
+      "phase_description": "Document assembled; mechanical screens; coherence, skeleton, strand, drift, deep-structure, independent reader, stance placement.",
+      "engine_key": "dellm_coherence_audit",
+      "depends_on_phases": [
+        7.0
+      ]
+    },
+    {
+      "phase_number": 9.0,
+      "phase_name": "Repair",
+      "phase_description": "Bounded per-section repairs, re-audit, loop until clean.",
+      "engine_key": "dellm_resolution",
+      "depends_on_phases": [
+        8.0
+      ]
+    },
+    {
+      "phase_number": 10.0,
+      "phase_name": "Finalize",
+      "phase_description": "Final document and the closing memo: what the article now runs on.",
+      "engine_key": "dellm_restructuring_memo",
+      "depends_on_phases": [
+        9.0
+      ]
+    }
+  ],
+  "required_inputs": [
+    "document",
+    "ambition: tidy | rebuild | open"
+  ],
+  "optional_inputs": [],
+  "output_description": "A restructured document (md, docx, pdf), the memos, the audit record, and per-finding resolutions.",
+  "linked_transformation_keys": [],
+  "source_project": "de-llm",
+  "target_page": ""
+}

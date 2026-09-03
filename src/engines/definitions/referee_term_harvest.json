@@ -1,0 +1,47 @@
+{
+  "engine_key": "referee_term_harvest",
+  "engine_name": "Term harvest",
+  "description": "Typed vocabulary by category, lane and status. Terms are harvested at every evaluation and must be deployed or waived; lanes the planner marks low-confidence get a pre-run web vocabulary harvest from an online model.",
+  "version": 1,
+  "category": "search",
+  "kind": "extraction",
+  "family": "search",
+  "reasoning_domain": "search · gs-revamp",
+  "researcher_question": "What words does this field use that we did not seed?",
+  "stage_context": {
+    "extraction": {
+      "analysis_type": "Term harvest",
+      "analysis_type_plural": "Term harvests",
+      "core_question": "What words does this field use that we did not seed?"
+    },
+    "curation": {
+      "item_type": "Term harvest",
+      "item_type_plural": "Term harvests"
+    },
+    "concretization": {},
+    "skip_concretization": true
+  },
+  "canonical_schema": {},
+  "extraction_focus": [
+    "harvested terms",
+    "categories",
+    "deployment"
+  ],
+  "primary_output_modes": [
+    "term pools"
+  ],
+  "paradigm_keys": [],
+  "added_date": "2026-09-04",
+  "source_file": "gs_revamp:src/gs_revamp/agent/prompts.py:2637",
+  "engine_profile": null,
+  "apps": [],
+  "function": null,
+  "home_organ": "gs-revamp",
+  "runs_at": "https://gs-revamp-v2-sg.onrender.com/v2/ui",
+  "lineage_refs": [
+    "gs_revamp:src/gs_revamp/agent/prompts.py:2637",
+    "gs_revamp:src/gs_revamp/agent/webvocab.py"
+  ],
+  "status": "live",
+  "sync": "mirrored"
+}

@@ -19,6 +19,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from src.api.routes import audiences, chains, consumers, display, engines, executor, feedback, functions, llm, meta, objectives, operationalizations, operations, orchestrator, paradigms, presenter, primitives, projects, renderers, results, runs, styles, sub_renderers, transformations, variants, view_patterns, views, workflows
 from src.api.routes import dossier as dossier_routes, figures as figures_routes
 from src.api.routes import events as events_routes
+from src.api.routes import organs as organs_routes
 from src.audiences.registry import get_audience_registry
 from src.chains.registry import get_chain_registry
 from src.engines.registry import get_engine_registry
@@ -268,6 +269,7 @@ app.include_router(views.router, prefix="/v1")
 app.include_router(renderers.router, prefix="/v1")
 app.include_router(sub_renderers.router, prefix="/v1")
 app.include_router(consumers.router, prefix="/v1")
+app.include_router(organs_routes.router, prefix="/v1")
 app.include_router(transformations.router, prefix="/v1")
 app.include_router(operations.router)
 app.include_router(operationalizations.router, prefix="/v1")

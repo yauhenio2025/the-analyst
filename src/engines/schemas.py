@@ -29,6 +29,27 @@ class EngineKind(str, Enum):
     COMPARISON = "comparison"
 
 
+class EngineFamily(str, Enum):
+    """Coarse family of a registered method — the Master's top-level grouping.
+
+    The registry began as analytical engines only ("that's why the whole thing is
+    called the analyzer", dictation 2026-07-10). The owner's 2026-09-04 direction:
+    storytelling, editing, restructuring, search and rendering methods register
+    here too, so every organ draws its methods from one brain.
+    """
+
+    ANALYTICAL = "analytical"        # reasoning over texts (the 14 categories below)
+    IMAGINATION = "imagination"      # generativity, alternatives, not-yet (dictation 2026-07-15)
+    SEARCH = "search"                # discovery loops: lanes, effectors, judging, budgets
+    STORYTELLING = "storytelling"    # spine, telling, script, narrative approaches
+    EDITING = "editing"              # line/paragraph/pacing work on an existing text
+    RESTRUCTURING = "restructuring"  # architecture, realization plans, section rewrites
+    RENDERING = "rendering"          # figures, plates, text layers, visual grammar
+    COMPOSITION = "composition"      # briefs, spines, tables, dossier assembly
+    QUALITY = "quality"              # audits, cold reads, screenings, cross-checks
+    GOVERNANCE = "governance"        # feedback engine, ledgers, meta-session
+
+
 class EngineCategory(str, Enum):
     """Semantic category for engine organization.
 
@@ -66,6 +87,19 @@ class EngineCategory(str, Enum):
 
     # Synthesis (construction operations)
     OUTLINE = "outline"  # Essay construction, talking points, outline management
+
+    # Estate categories (2026-09-04) — methods mirrored from the other organs
+    STORYTELLING = "storytelling"
+    EDITING = "editing"
+    RESTRUCTURING = "restructuring"
+    SEARCH = "search"
+    VISUAL = "visual"
+    AUDIO = "audio"
+    PLANNING = "planning"
+    QUALITY = "quality"
+    COMPOSITION = "composition"
+    IMAGINATION = "imagination"
+    GOVERNANCE = "governance"
 
 
 class EngineDefinition(BaseModel):
@@ -170,6 +204,31 @@ class EngineDefinition(BaseModel):
         examples=["genealogy", "logic", "rhetoric"],
     )
 
+    # ── Estate fields (2026-09-04): where a method lives and runs ──
+    family: EngineFamily = Field(
+        default=EngineFamily.ANALYTICAL,
+        description="Coarse family: analytical | imagination | search | storytelling | editing | restructuring | rendering | composition | quality | governance",
+    )
+    home_organ: str = Field(
+        default="the-analyst",
+        description="Organ key (see /v1/organs) whose code executes this method",
+    )
+    runs_at: Optional[str] = Field(
+        default=None, description="Live URL where the method can be exercised"
+    )
+    lineage_refs: list[str] = Field(
+        default_factory=list,
+        description="Repo paths of the prompt/doctrine/logic in the home organ (repo:path[:line])",
+    )
+    status: str = Field(
+        default="live",
+        description="live | pilot | designed | frozen — is the method exercised today?",
+    )
+    sync: str = Field(
+        default="native",
+        description="native (registry is the source of truth) | mirrored (home organ still holds the source; registry mirrors it) | planned",
+    )
+
     class Config:
         json_schema_extra = {
             "example": {
@@ -218,6 +277,10 @@ class EngineSummary(BaseModel):
     has_profile: bool = Field(default=False, description="Whether this engine has a rich profile")
     apps: list[str] = Field(default_factory=list, description="Apps that use this engine")
     function: Optional[str] = Field(default=None, description="Primary function/role of this engine")
+    family: EngineFamily = EngineFamily.ANALYTICAL
+    home_organ: str = "the-analyst"
+    status: str = "live"
+    sync: str = "native"
 
 
 class EnginePromptResponse(BaseModel):

@@ -1,0 +1,28 @@
+{
+  "organ_key": "the-stacks",
+  "organ_name": "The Stacks",
+  "tagline": "Zotero libraries as bundles: a virtual view exports a headed corpus",
+  "layer": "sources",
+  "order": 1,
+  "status": "local",
+  "sync": "mirrored",
+  "workspace": "local",
+  "role": "The stacks wrap the Zotero libraries. A virtual view is a bundle: POST /api/export returns every paper's text under a header '===== [n/N] Creator (Year) — Title — Publication — [Library · Key] =====', which is The Analyst's native multi-document input. Bundles in the stacks are the equivalent of cross-entity queries in the Referee. Runs on the desktop only.",
+  "contributes": [
+    "the headed bundle format (the estate's corpus shape)",
+    "bundles = named source sets"
+  ],
+  "families": [],
+  "counts": {},
+  "urls": {
+    "api": "http://localhost:8000/api/export"
+  },
+  "depends_on": [],
+  "feeds": [
+    "the-analyst",
+    "the-referee"
+  ],
+  "lineage": [
+    "the-analyst/src/sources/stacks.py"
+  ]
+}

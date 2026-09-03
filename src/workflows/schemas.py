@@ -23,6 +23,8 @@ class WorkflowCategory(str, Enum):
     ANALYSIS = "analysis"               # Multi-phase analytical workflows
     GENEALOGY = "genealogy"             # Intellectual genealogy / self-influence analysis
     DECISION_SUPPORT = "decision_support"  # Decision support system workflows
+    PROCESS = "process"                 # Cross-organ processes mirrored into the registry (2026-09-04)
+    RENDERING = "rendering"             # Figure/plate/visual pipelines
 
 
 class WorkflowPhase(BaseModel):

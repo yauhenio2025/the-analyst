@@ -1,0 +1,88 @@
+{
+  "workflow_key": "referee_search_loop",
+  "workflow_name": "The Referee: budgeted search loop",
+  "description": "Runs in gs_revamp, mirrored here. From objective to ranked slate and corpus: a planner slices the objective into lanes and cards, the operator approves, and an executor searches adaptively inside a sovereign query budget, declaring a named move and harvesting terms after every evaluation, then walks citations and must earn its finish.",
+  "category": "process",
+  "version": 1,
+  "phases": [
+    {
+      "phase_number": 1.0,
+      "phase_name": "Budgets",
+      "phase_description": "Query budget is law; cost, minutes and calls are backstops sized above it.",
+      "engine_key": "referee_two_pool_budget",
+      "depends_on_phases": []
+    },
+    {
+      "phase_number": 2.0,
+      "phase_name": "Plan",
+      "phase_description": "A slicing lens; lanes with term pools and cards; budget advisory; expected slate profile.",
+      "engine_key": "referee_slicing_lenses",
+      "depends_on_phases": [
+        1.0
+      ]
+    },
+    {
+      "phase_number": 3.0,
+      "phase_name": "Approval gate",
+      "phase_description": "The operator approves or requests lane edits.",
+      "engine_key": null,
+      "depends_on_phases": [
+        2.0
+      ]
+    },
+    {
+      "phase_number": 4.0,
+      "phase_name": "Vocabulary harvest",
+      "phase_description": "Low-confidence lanes get an online vocabulary harvest before the run.",
+      "engine_key": "referee_term_harvest",
+      "depends_on_phases": [
+        3.0
+      ]
+    },
+    {
+      "phase_number": 5.0,
+      "phase_name": "Execution loop",
+      "phase_description": "Search with declared anatomy; batch judging; evaluation with next move and harvested terms; slate and frontier maintenance.",
+      "engine_key": "referee_query_eval",
+      "depends_on_phases": [
+        4.0
+      ]
+    },
+    {
+      "phase_number": 6.0,
+      "phase_name": "Citation phase",
+      "phase_description": "Seeds admitted by the reverse citation test; methodical cited-by walks on the reserve.",
+      "engine_key": "referee_reverse_citation_test",
+      "depends_on_phases": [
+        5.0
+      ]
+    },
+    {
+      "phase_number": 7.0,
+      "phase_name": "Finish gate",
+      "phase_description": "Completion basis, expansion review, dispositions; the verifier can refuse; the tail director answers stalls.",
+      "engine_key": "referee_finish_gate",
+      "depends_on_phases": [
+        6.0
+      ]
+    },
+    {
+      "phase_number": 8.0,
+      "phase_name": "Post-run cascade",
+      "phase_description": "Assessment, merge, final order, editorial, synthesis, critic, corpus critic, author enrichment, export.",
+      "engine_key": "referee_truth_ledger",
+      "depends_on_phases": [
+        7.0
+      ]
+    }
+  ],
+  "required_inputs": [
+    "objective",
+    "query budget"
+  ],
+  "optional_inputs": [],
+  "output_description": "A ranked slate, a corpus, the truth ledger and the program frontier.",
+  "linked_transformation_keys": [],
+  "source_project": "gs-revamp",
+  "target_page": ""
+}

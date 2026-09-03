@@ -1,0 +1,46 @@
+{
+  "engine_key": "wirecut_grounding_review",
+  "engine_name": "Grounding review",
+  "description": "Clip by clip, verdicts of grounded or ungrounded against the source. Ungrounded clips go back to the board; the review reports, it never blocks.",
+  "version": 1,
+  "category": "quality",
+  "kind": "extraction",
+  "family": "quality",
+  "reasoning_domain": "quality · wirecut",
+  "researcher_question": "Which clips can the source actually vouch for?",
+  "stage_context": {
+    "extraction": {
+      "analysis_type": "Grounding review",
+      "analysis_type_plural": "Grounding reviews",
+      "core_question": "Which clips can the source actually vouch for?"
+    },
+    "curation": {
+      "item_type": "Grounding review",
+      "item_type_plural": "Grounding reviews"
+    },
+    "concretization": {},
+    "skip_concretization": true
+  },
+  "canonical_schema": {},
+  "extraction_focus": [
+    "per-clip verdicts",
+    "evidence"
+  ],
+  "primary_output_modes": [
+    "grounding ledger"
+  ],
+  "paradigm_keys": [],
+  "added_date": "2026-09-04",
+  "source_file": "veo2:engine/prompts/grounding_review.md",
+  "engine_profile": null,
+  "apps": [],
+  "function": null,
+  "home_organ": "wirecut",
+  "runs_at": "https://veo2-waum.onrender.com",
+  "lineage_refs": [
+    "veo2:engine/prompts/grounding_review.md",
+    "veo2:engine/storyboard.py:4132"
+  ],
+  "status": "live",
+  "sync": "mirrored"
+}

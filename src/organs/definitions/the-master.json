@@ -1,0 +1,54 @@
+{
+  "organ_key": "the-master",
+  "organ_name": "The Master",
+  "tagline": "The brain: every organ's methods, processes and grammars in one editable registry",
+  "layer": "governance",
+  "order": 1,
+  "status": "live",
+  "sync": "native",
+  "role": "The Master is the centralized repository of best practices dictated on 2026-07-10: 'relatively modular sets of reasoning capacities which describe at a very high level of abstraction the kinds of questions that are being asked, but also the sequence in which they are being asked', tapped by every service. It holds the engines (analytical and, from 2026-09-04, storytelling, editing, restructuring, search and rendering), the processes that sequence them, and the grammars of presentation. The console you are reading is its face; The Analyst API is its store. Editing a method here changes it for every organ that reads it from the registry.",
+  "contributes": [
+    "engine registry (all families)",
+    "workflows and chains",
+    "paradigms, stances, audiences",
+    "presentation grammar: renderers, sub-renderers, patterns, transformations, styles, primitives, display formats",
+    "organs map and processes"
+  ],
+  "families": [
+    "analytical",
+    "imagination",
+    "search",
+    "storytelling",
+    "editing",
+    "restructuring",
+    "rendering",
+    "composition",
+    "quality",
+    "governance"
+  ],
+  "counts": {},
+  "urls": {
+    "ui": "https://analyzer-mgmt-frontend.onrender.com",
+    "api": "https://the-analyst-kcuc.onrender.com/v1",
+    "repo": "https://github.com/yauhenio2025/analyzer-mgmt",
+    "registry_repo": "https://github.com/yauhenio2025/the-analyst"
+  },
+  "depends_on": [
+    "the-analyst"
+  ],
+  "feeds": [
+    "the-analyst",
+    "wirecut",
+    "de-llm",
+    "the-referee",
+    "the-reporter",
+    "the-critic"
+  ],
+  "lineage": [
+    "oaas/communications/dictations/DICTATION_2026-07-10_analyzer_VERBATIM.md",
+    "oaas/communications/dictations/DICTATION_2026-07-15_process_engines_VERBATIM.md",
+    "the-analyst/communications/MASTER_BIG_ROADMAP_MEMO_ANALYZER_V2_AS_THE_BRAIN_FOR_DYNAMIC_BESPOKE_ANALYTICAL_APPS.md",
+    "analyzer-mgmt/communications/DESIGN_the_master.md"
+  ],
+  "notes": "v0 (2026-09-04): reads live; edits persist for the life of a deploy (JSON on disk). Next: Postgres overlay so edits survive redeploys; doctrine endpoint so Wirecut/de-llm/Referee read their prompts from here."
+}
