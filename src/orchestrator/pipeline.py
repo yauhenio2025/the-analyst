@@ -27,6 +27,7 @@ from src.executor.job_manager import (
     update_job_status,
 )
 from src.executor.workflow_runner import execute_plan
+from src.events import hooks as _events_hooks
 from src.objectives.registry import get_objective, list_objectives
 from src.orchestrator.adaptive_planner import (
     generate_adaptive_plan,
@@ -184,6 +185,11 @@ def _pipeline_thread(job_id: str, request: AnalyzeRequest) -> None:
 
         document_ids = _upload_documents(request)
         logger.info(f"[Pipeline {job_id}] Uploaded {len(document_ids)} documents")
+        _events_hooks.note(
+            job_id,
+            f"Stored {len(document_ids)} document(s) for analysis: {', '.join(list(document_ids.keys())[:6])}.",
+            stage="documents_uploaded", document_ids=document_ids,
+        )
 
         # ── Stage 1.5: Store request snapshot for recovery ──
         # If the instance dies during plan generation (~2 min), the new
@@ -200,6 +206,14 @@ def _pipeline_thread(job_id: str, request: AnalyzeRequest) -> None:
             detail=f"{planning_model_name} analyzing thinker context and generating execution plan...",
         )
 
+        _events_hooks.note(
+            job_id,
+            f"Asking {planning_model_name} to design the analysis plan for "
+            f"'{request.target_work.title}' ({request.workflow_key or 'intellectual_genealogy'}).",
+            stage="plan_generation_started", planning_model=planning_model_name,
+            workflow_key=request.workflow_key or "intellectual_genealogy",
+            adaptive=bool(request.objective_key),
+        )
         if request.objective_key:
             # Adaptive mode: sample books → plan with objectives
             plan = _generate_adaptive(request, plan_request)
@@ -214,6 +228,14 @@ def _pipeline_thread(job_id: str, request: AnalyzeRequest) -> None:
         logger.info(
             f"[Pipeline {job_id}] Generated plan {plan.plan_id} — "
             f"{len(plan.phases)} phases, {plan.estimated_llm_calls} estimated calls"
+        )
+        _events_hooks.note(
+            job_id,
+            f"Plan {plan.plan_id} ready: {len(plan.phases)} phase(s), ~{plan.estimated_llm_calls} LLM calls. "
+            f"{(plan.strategy_summary or '')[:300]}",
+            stage="plan_generated", plan_id=plan.plan_id,
+            phases=[{"phase": p.phase_number, "phase_name": p.phase_name, "depth": p.depth, "skip": p.skip} for p in plan.phases],
+            estimated_llm_calls=plan.estimated_llm_calls, model_used=plan.model_used,
         )
 
         # ── Stage 2.5: Pre-execution plan revision ──
@@ -258,6 +280,7 @@ def _pipeline_thread(job_id: str, request: AnalyzeRequest) -> None:
     except Exception as e:
         logger.error(f"[Pipeline {job_id}] Pipeline failed: {e}", exc_info=True)
         update_job_status(job_id, "failed", error=str(e))
+        _events_hooks.job_finished(job_id, "failed", error=str(e))
 
 
 def _upload_documents(request: AnalyzeRequest) -> dict[str, str]:

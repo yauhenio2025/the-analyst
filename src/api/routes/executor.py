@@ -754,3 +754,44 @@ async def finalize_job(job_id: str):
     touch_project_activity_for_job(job_id)
 
     return {"job_id": job_id, "status": "completed"}
+
+
+# ============================================================
+# Run-event ledger aliases (thin delegations to src/api/routes/events.py)
+#   GET /v1/executor/jobs/{job_id}/events?after=&limit=
+#   GET /v1/executor/jobs/{job_id}/events/summary
+#   GET /v1/executor/jobs/{job_id}/events/stream?after=
+# ============================================================
+
+from fastapi import Query, Request  # noqa: E402
+from fastapi.responses import StreamingResponse  # noqa: E402
+
+from src.api.routes import events as _events_routes  # noqa: E402
+from src.events.schemas import JobSummary as _JobSummary, RunEvent as _RunEvent  # noqa: E402
+
+
+@router.get("/jobs/{job_id}/events", response_model=list[_RunEvent])
+async def job_events_alias(
+    job_id: str,
+    after: int = Query(0, ge=0),
+    limit: int = Query(1000, ge=1, le=10000),
+) -> list[_RunEvent]:
+    """Alias for GET /v1/events/{job_id}."""
+    return await _events_routes.get_events(job_id, after=after, limit=limit)
+
+
+@router.get("/jobs/{job_id}/events/summary", response_model=_JobSummary)
+async def job_events_summary_alias(job_id: str) -> _JobSummary:
+    """Alias for GET /v1/events/{job_id}/summary."""
+    return await _events_routes.get_summary(job_id)
+
+
+@router.get("/jobs/{job_id}/events/stream")
+async def job_events_stream_alias(
+    request: Request,
+    job_id: str,
+    after: int = Query(0, ge=0),
+    idle_timeout: float = Query(_events_routes.DEFAULT_IDLE_TIMEOUT_S, ge=5.0, le=86400.0),
+) -> StreamingResponse:
+    """Alias for GET /v1/events/{job_id}/stream (text/event-stream)."""
+    return _events_routes.stream_response(request, job_id, after=after, idle_timeout=idle_timeout)

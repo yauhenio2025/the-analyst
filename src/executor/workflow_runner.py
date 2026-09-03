@@ -38,6 +38,8 @@ from src.orchestrator.planner import load_plan
 from src.orchestrator.schemas import PhaseExecutionSpec, WorkflowExecutionPlan
 from src.workflows.registry import get_workflow_registry
 from src.workflows.schemas import WorkflowPhase
+from src.events import context as _events_context
+from src.events import hooks as _events_hooks
 
 logger = logging.getLogger(__name__)
 
@@ -137,6 +139,10 @@ def execute_plan(
 
         # Build the phase lookup: phase_number -> WorkflowPhase
         workflow_phases = {p.phase_number: p for p in workflow.phases}
+
+        # Run-event ledger: job-level context + job_started
+        _events_context.push(job_id=job_id)
+        _events_hooks.job_started(job_id, plan, workflow)
 
         # Apply execution_model to ALL phases. When the user explicitly
         # selects an execution model, it should override the planner's
@@ -315,6 +321,7 @@ def execute_plan(
                     total_phases=total_phases,
                 )
 
+                _events_hooks.phase_started(job_id, plan, wf_phase, plan_phase, workflow)
                 result = run_phase(
                     workflow_phase=wf_phase,
                     plan_phase=plan_phase,
@@ -341,6 +348,10 @@ def execute_plan(
                 )
             else:
                 # Multiple phases — run in parallel
+                for _pp in remaining_group:
+                    _events_hooks.phase_started(
+                        job_id, plan, workflow_phases.get(_pp.phase_number), _pp, workflow,
+                    )
                 _run_parallel_phases(
                     group=remaining_group,
                     workflow_phases=workflow_phases,
@@ -357,6 +368,7 @@ def execute_plan(
         # Final status
         if is_cancelled(job_id):
             update_job_status(job_id, "cancelled")
+            _events_hooks.job_finished(job_id, "cancelled")
         else:
             # Check if any phase failed
             failed_phases = [
@@ -368,6 +380,7 @@ def execute_plan(
                     job_id, "failed",
                     error=f"Phases {failed_phases} failed",
                 )
+                _events_hooks.job_finished(job_id, "failed", error=f"Phases {failed_phases} failed")
             else:
                 if plan.workflow_key in CONCEPT_WORKFLOW_KEYS:
                     update_job_progress(
@@ -379,9 +392,11 @@ def execute_plan(
                         phase_statuses=phase_statuses,
                         total_phases=total_phases,
                     )
+                    _events_hooks.note(job_id, "All phases done; translating the analysis into the host's concept artifact before marking the job complete.", stage="concept_artifact_materialization")
                     materialize_concept_translated_artifact(job_id)
 
                 update_job_status(job_id, "completed")
+                _events_hooks.job_finished(job_id, "completed")
 
                 # Touch project activity on completion
                 try:
@@ -392,7 +407,9 @@ def execute_plan(
 
                 # Auto-presentation: run view refinement + transformation bridge
                 # so PagePresentation is ready by the time the client polls
+                _events_hooks.note(job_id, "Analysis complete; preparing the presentation (view refinement + transformations) in the background.", stage="auto_presentation_started")
                 _run_auto_presentation(job_id, plan_id)
+                _events_hooks.note(job_id, "Presentation preparation finished.", stage="auto_presentation_finished")
 
         logger.info(
             f"Job {job_id} finished: "
@@ -403,10 +420,12 @@ def execute_plan(
     except InterruptedError:
         update_job_status(job_id, "cancelled")
         logger.info(f"Job {job_id} cancelled via InterruptedError")
+        _events_hooks.job_finished(job_id, "cancelled")
 
     except Exception as e:
         logger.error(f"Job {job_id} failed: {e}", exc_info=True)
         update_job_status(job_id, "failed", error=str(e))
+        _events_hooks.job_finished(job_id, "failed", error=str(e))
 
     finally:
         clear_cancellation(job_id)
@@ -561,6 +580,7 @@ def _record_phase_result(
         f"{result.total_tokens:,} tokens, {result.duration_ms:,}ms"
         + (f" — error: {result.error}" if result.error else "")
     )
+    _events_hooks.phase_finished(job_id, plan_phase, result)
 
 
 def _build_execution_order(
