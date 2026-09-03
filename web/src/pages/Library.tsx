@@ -1,15 +1,27 @@
 /* The library — your dossiers, grouped Today / This week / Earlier, and the
-   paste-and-go box above them: one paste (or an exemplar bundle), three
-   dials, one button that says what happens next. */
+   go box above them: one paste (or files, or an exemplar bundle), the use box
+   ("What will you use this dossier for?"), who it is written for, the lane
+   (propose deliverables · I'll pick the analysis · let the material decide),
+   an advanced fold, one button that says what happens next (design §C6). */
 import { Fragment, useEffect, useState } from 'react'
 import { api, type UploadedBundle, MOCK } from '../lib/api'
 import { dateShort, usd } from '../lib/format'
 import { dossierPath, navigate } from '../router'
 import { StatusChip } from '../components/StatusChip'
 import { OutcomeButton } from '../components/OutcomeButton'
-import type { Audience, Depth, Exemplar, JobListEntry, SourceSpec } from '../types'
+import { CatalogPicker, type PickedStep } from '../components/CatalogPicker'
+import { USE_KINDS, type Audience, type Catalog, type Depth, type Entry, type Exemplar, type JobListEntry, type SourceSpec, type UseKind } from '../types'
 
 const STEP_NAMES = ['', 'Your documents', 'The brief', 'The draft', 'Your dossier']
+
+const LANES: { key: Entry; label: string; hint: string; start: string; effect: string }[] = [
+  { key: 'use', label: 'Tell me what you’ll use it for', hint: 'the desk proposes three deliverables, one recommended', start: '· you’ll choose a deliverable',
+    effect: 'It reads the documents and proposes three deliverables — what you get, what you will understand, what you will be able to do. Nothing more is spent until you choose one.' },
+  { key: 'chosen', label: 'I know the analysis I want', hint: 'pick the engines from the purpose-first catalog', start: '· your path, then the brief',
+    effect: 'It reads the documents, then writes the one deliverable your path yields — and one alternative the desk would propose. You confirm before anything more is spent.' },
+  { key: 'material', label: 'Let the material decide', hint: 'the desk chooses and explains why', start: '· the desk chooses and explains',
+    effect: 'It reads, proposes three deliverables, picks the one the material carries best, records why, and writes straight through. You can stop it at any step.' },
+]
 
 export function Library() {
   const [entries, setEntries] = useState<JobListEntry[] | null>(null)
@@ -22,10 +34,24 @@ export function Library() {
   const [text, setText] = useState('')
   const [title, setTitle] = useState('')
   const [exemplar, setExemplar] = useState<string | null>(null)
+  // the use box
+  const [intent, setIntent] = useState('')
+  const [useKind, setUseKind] = useState<UseKind | null>(null)
+  const [occasion, setOccasion] = useState('')
+  const [whoReads, setWhoReads] = useState('')
+  const [decision, setDecision] = useState('')
+  // written for + lane
+  const [audience, setAudience] = useState<Audience>('executive')
+  const [lane, setLane] = useState<Entry>('use')
+  const [steps, setSteps] = useState<PickedStep[]>([])
+  const [catalog, setCatalog] = useState<Catalog | null>(null)
+  const [catalogKey, setCatalogKey] = useState('')
+  const [catalogError, setCatalogError] = useState<string | null>(null)
+  // advanced
   const [depth, setDepth] = useState<Depth>('medium')
   const [figures, setFigures] = useState(2)
-  const [audience, setAudience] = useState<Audience>('executive')
-  const [autopilot, setAutopilot] = useState(false)
+  const [spendCap, setSpendCap] = useState('')
+  const [imageProvider, setImageProvider] = useState('')
   const [busy, setBusy] = useState(false)
 
   useEffect(() => {
@@ -34,6 +60,18 @@ export function Library() {
       .catch(() => setExemplars([]))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  const chosenExemplar = exemplars.find((x) => x.key === exemplar)
+  const corpusChars = mode === 'paste' ? text.length : mode === 'upload' ? (uploaded?.chars ?? files.reduce((n, f) => n + f.size, 0)) : (chosenExemplar?.chars ?? 0)
+  const nDocs = mode === 'paste' ? 1 : mode === 'upload' ? (uploaded?.n_docs ?? Math.max(1, files.length)) : (chosenExemplar?.n_docs ?? 1)
+  useEffect(() => {
+    if (lane !== 'chosen') return
+    const key = `${audience}:${Math.round(corpusChars / 5000)}:${nDocs}`
+    if (key === catalogKey) return
+    setCatalogKey(key)
+    setCatalogError(null)
+    api.catalog(audience, corpusChars || null, nDocs).then(setCatalog).catch((e) => setCatalogError(String((e as Error).message ?? e)))
+  }, [lane, audience, corpusChars, nDocs, catalogKey])
 
   const todayStr = new Date().toDateString()
   const isToday = (e: JobListEntry) => new Date(e.created_at).toDateString() === todayStr
@@ -44,8 +82,9 @@ export function Library() {
     { label: 'Earlier', rows: entries.filter((e) => !isToday(e) && !isWeek(e)) },
   ]
 
-  const ready = mode === 'paste' ? text.trim().length >= 200 : mode === 'upload' ? (files.length > 0 || uploaded !== null) : exemplar !== null
-  const chosenExemplar = exemplars.find((x) => x.key === exemplar)
+  const sourceReady = mode === 'paste' ? text.trim().length >= 200 : mode === 'upload' ? (files.length > 0 || uploaded !== null) : exemplar !== null
+  const ready = sourceReady && (lane !== 'chosen' || steps.length > 0)
+  const laneDef = LANES.find((l) => l.key === lane)!
 
   const start = async () => {
     if (!ready || busy) return
@@ -67,10 +106,18 @@ export function Library() {
       } else {
         sources = [{ kind: 'exemplar', key: exemplar! }]
       }
+      const useFrame = (useKind || occasion.trim() || whoReads.trim() || decision.trim())
+        ? { use_kind: useKind, occasion: occasion.trim() || null, who_reads: whoReads.trim() || null, decision: decision.trim() || null } : null
+      const cap = Number(spendCap)
       const res = await api.createJob({
         sources, audience, depth,
+        intent: intent.trim() || undefined,
         output: { text: true, tables: true, figures, video: false },
-        autopilot,
+        entry: lane, autopilot: lane === 'material',
+        use_frame: useFrame,
+        path: lane === 'chosen' ? { steps } : undefined,
+        spend_cap_usd: spendCap && Number.isFinite(cap) && cap > 0 ? cap : undefined,
+        image_provider: imageProvider || undefined,
       })
       navigate(dossierPath(res.job_id, 'sources'))
     } catch (e) {
@@ -91,11 +138,11 @@ export function Library() {
         <div>
           <span className="eyebrow">The desk · <b>document in, dossier out</b></span>
           <h2 className="display">Give it the documents. It writes the dossier — text, tables, figures — and shows its work.</h2>
-          <p className="lede">Paste the text or pick a bundle. It reads first, then proposes three ways to tell it; you choose before anything more is spent. Every model call is recorded and priced.</p>
+          <p className="lede">Paste the text or pick a bundle, say what you will use the dossier for. It reads first, then proposes three deliverables — what you will understand and be able to do — and you choose before anything more is spent. Every model call is recorded and priced.</p>
         </div>
         <div className="quotecard">
-          <blockquote>The read is a reading, not a verdict.</blockquote>
-          <cite className="machine">the rule every dossier is written under — stated in the brief, checked on the console.</cite>
+          <blockquote>Focus on the deliverables and what they will change in your action.</blockquote>
+          <cite className="machine">the rule every brief is written under — stated on each card, checked by code.</cite>
         </div>
       </div>
 
@@ -161,21 +208,31 @@ export function Library() {
           </div>
         )}
 
-        <div className="dials">
+        <div className="usebox" data-usebox>
           <label className="field">
-            <span className="field-label">Depth</span>
-            <select value={depth} onChange={(e) => setDepth(e.target.value as Depth)} data-dial="depth">
-              <option value="simple">Simple — one pass, fast</option>
-              <option value="medium">Medium — two passes per engine</option>
-              <option value="advanced">Advanced — full passes, slow</option>
-            </select>
+            <span className="field-label">What will you use this dossier for? <span className="hint">the brief is written around it</span></span>
+            <textarea rows={2} value={intent} placeholder="e.g. Decide which sustainability claims go into the Q4 campaign — and where a journalist would attack them."
+                      onChange={(e) => setIntent(e.target.value)} data-intent />
           </label>
-          <label className="field">
-            <span className="field-label">Figures</span>
-            <select value={figures} onChange={(e) => setFigures(Number(e.target.value))} data-dial="figures">
-              {[0, 1, 2, 3, 4].map((n) => <option key={n} value={n}>{n === 0 ? 'None' : n}</option>)}
-            </select>
-          </label>
+          <div className="use-chips" role="radiogroup" aria-label="use">
+            {USE_KINDS.map((u) => (
+              <button key={u.key} type="button" role="radio" aria-checked={useKind === u.key} title={u.hint}
+                      className={`use-chip-btn${useKind === u.key ? ' on' : ''}`} onClick={() => setUseKind(useKind === u.key ? null : u.key)} data-use-kind={u.key}>{u.label}</button>
+            ))}
+          </div>
+          {useKind && (
+            <div className="dials use-details" data-use-details>
+              <label className="field"><span className="field-label">Occasion <span className="hint">optional</span></span>
+                <input value={occasion} placeholder="campaign planning, Q4" onChange={(e) => setOccasion(e.target.value)} /></label>
+              <label className="field"><span className="field-label">Who reads it <span className="hint">optional</span></span>
+                <input value={whoReads} placeholder="brand president + comms" onChange={(e) => setWhoReads(e.target.value)} /></label>
+              <label className="field"><span className="field-label">Decision due <span className="hint">optional</span></span>
+                <input value={decision} placeholder="which claims go into the Q4 campaign" onChange={(e) => setDecision(e.target.value)} /></label>
+            </div>
+          )}
+        </div>
+
+        <div className="dials lanebox">
           <label className="field">
             <span className="field-label">Written for</span>
             <select value={audience} onChange={(e) => setAudience(e.target.value as Audience)} data-dial="audience">
@@ -184,20 +241,62 @@ export function Library() {
               <option value="researcher">A researcher</option>
             </select>
           </label>
-          <label className="field toggle">
-            <span className="field-label">Autopilot</span>
-            <span className="toggle-row">
-              <input type="checkbox" checked={autopilot} onChange={(e) => setAutopilot(e.target.checked)} data-dial="autopilot" />
-              <span className="hint">{autopilot ? 'the desk chooses the brief and keeps going' : 'off — you choose the brief'}</span>
-            </span>
-          </label>
+          <div className="field lane-field">
+            <span className="field-label">How the brief is made</span>
+            <div className="lanes" role="radiogroup" data-lanes>
+              {LANES.map((l) => (
+                <label key={l.key} className={`lane${lane === l.key ? ' on' : ''}`} data-lane={l.key}>
+                  <input type="radio" name="lane" value={l.key} checked={lane === l.key} onChange={() => setLane(l.key)} />
+                  <span><b>{l.label}</b><span className="hint"> — {l.hint}</span></span>
+                </label>
+              ))}
+            </div>
+          </div>
         </div>
 
+        {lane === 'chosen' && (
+          <div className="gobox-picker" data-lane-picker>
+            <CatalogPicker catalog={catalog} loading={!catalog && !catalogError} error={catalogError} steps={steps} onChange={setSteps} />
+          </div>
+        )}
+
+        <details className="advanced" data-advanced>
+          <summary className="eyebrow">advanced · depth preference, figures, spend cap, image provider</summary>
+          <div className="dials">
+            <label className="field">
+              <span className="field-label">Depth preference</span>
+              <select value={depth} onChange={(e) => setDepth(e.target.value as Depth)} data-dial="depth">
+                <option value="simple">Simple — one pass, fast</option>
+                <option value="medium">Medium — two or three engines</option>
+                <option value="advanced">Advanced — full passes, slow</option>
+              </select>
+              <span className="hint">a preference; each card carries its own weight and price</span>
+            </label>
+            <label className="field">
+              <span className="field-label">Figures</span>
+              <select value={figures} onChange={(e) => setFigures(Number(e.target.value))} data-dial="figures">
+                {[0, 1, 2, 3, 4].map((n) => <option key={n} value={n}>{n === 0 ? 'None' : n}</option>)}
+              </select>
+            </label>
+            <label className="field">
+              <span className="field-label">Spend cap <span className="hint">USD, optional</span></span>
+              <input inputMode="decimal" value={spendCap} placeholder="none" onChange={(e) => setSpendCap(e.target.value)} data-dial="spend-cap" />
+            </label>
+            <label className="field">
+              <span className="field-label">Image provider <span className="hint">optional</span></span>
+              <select value={imageProvider} onChange={(e) => setImageProvider(e.target.value)} data-dial="image-provider">
+                <option value="">default</option>
+                <option value="gemini_pro">gemini_pro</option>
+                <option value="gemini_flash">gemini_flash</option>
+                <option value="seedream_5_pro">seedream_5_pro</option>
+                <option value="qwen_image_2_pro">qwen_image_2_pro</option>
+              </select>
+            </label>
+          </div>
+        </details>
+
         <div className="actions dock">
-          <OutcomeButton verb="Start" object={autopilot ? '· the desk chooses the brief' : "· you'll review the brief first"}
-                         disabled={!ready || busy} onClick={start} data-start
-                         effect={autopilot ? 'It reads, picks the recommended telling, and writes straight through. You can stop it at any step.'
-                           : 'It reads the documents and proposes three tellings. Nothing more is spent until you choose one.'} />
+          <OutcomeButton verb="Start" object={laneDef.start} disabled={!ready || busy} onClick={start} data-start effect={laneDef.effect} />
           {busy && <span className="machine">starting…</span>}
           {MOCK && <span className="chip chip-flat" title="Fixture replay — no server">mock</span>}
         </div>

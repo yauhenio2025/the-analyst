@@ -1,6 +1,7 @@
-/* The Analyst — API types. Mirrors communications/IMPLEMENTATION_TRACKER.md §4
-   and the W1 brief. Fields marked "assumed" are contract assumptions logged
-   in communications/changes/web.md. */
+/* The Analyst — API types. Mirrors communications/IMPLEMENTATION_TRACKER.md §4,
+   the W1 brief and the brief v2 contract (communications/changes/brief-v2.md).
+   Fields marked "assumed" are contract assumptions logged in
+   communications/changes/web.md. */
 
 export type SourceSpec =
   | { kind: 'paste'; title: string; text: string }
@@ -10,6 +11,39 @@ export type SourceSpec =
 
 export type Audience = 'executive' | 'researcher' | 'analyst'
 export type Depth = 'simple' | 'medium' | 'advanced'
+export type StepDepth = 'surface' | 'standard' | 'deep'
+
+/* brief v2 — the three lanes and the use register */
+export type Entry = 'use' | 'chosen' | 'material'
+export type UseKind = 'decide' | 'brief' | 'prepare' | 'stress_test' | 'compare' | 'watch' | 'learn' | 'argue'
+export const USE_KINDS: { key: UseKind; label: string; hint: string }[] = [
+  { key: 'decide', label: 'Decide something', hint: 'choose between courses of action; retire or advance something' },
+  { key: 'brief', label: 'Brief someone', hint: 'bring a board, a CEO, a committee up to speed for a meeting' },
+  { key: 'prepare', label: 'Prepare for a meeting or negotiation', hint: 'a negotiation, a pitch, a challenge, a hearing' },
+  { key: 'stress_test', label: 'Stress-test our position', hint: 'test our own claims before they are attacked' },
+  { key: 'compare', label: 'Compare cases', hint: 'set two or more cases side by side to choose' },
+  { key: 'watch', label: "Watch for what's coming", hint: 'what to monitor and the early signs to look for' },
+  { key: 'learn', label: 'Learn the field fast', hint: 'get up to speed on a set of papers' },
+  { key: 'argue', label: 'Build an argument', hint: 'build or defend a case with the strongest evidence' },
+]
+export const DELIVERABLE_LABEL: Record<string, string> = {
+  stress_test: 'stress test', decision_memo: 'decision memo', briefing: 'briefing', playbook: 'playbook',
+  comparison: 'comparison', watchlist: 'watch-list', reading_guide: 'reading guide', decoder: 'decoder',
+  risk_register: 'risk register', case_file: 'case file',
+}
+
+export interface UseFrame {
+  use_kind?: UseKind | null
+  occasion?: string | null
+  who_reads?: string | null
+  decision?: string | null
+}
+export interface PathStepRequest { engine_key: string; depth?: StepDepth }
+export interface PathRequest {
+  steps: PathStepRequest[]
+  chain_key?: string | null
+  depth?: Depth | null
+}
 
 export interface OutputShape {
   text: boolean
@@ -26,6 +60,9 @@ export interface DossierOptions {
   spend_cap_usd?: number
   autopilot?: boolean
   image_provider?: string
+  entry?: Entry
+  use_frame?: UseFrame | null
+  path?: PathRequest | null
 }
 
 export interface CreateJobRequest extends DossierOptions {
@@ -83,20 +120,93 @@ export interface DocProfile {
   key_claims: KeyClaim[]
 }
 
+/* ── brief v2: a deliverable, verified against its shape ── */
+export interface ShapeRef { kind: 'section' | 'table' | 'figure'; index: number }
+export interface BriefPromise { text: string; supported_by: ShapeRef[]; unsupported?: boolean }
+export interface SectionSpec { heading: string; answers: string }
+export interface TableSpec { title: string; row_unit: string; columns: string[]; rows_expected: string; carried_by: string[] }
+export interface FigureSpec { title: string; format: string; scene: string }
+export interface BriefShape { sections: SectionSpec[]; tables: TableSpec[]; figures: FigureSpec[] }
+export interface EvidenceBase { carrying_docs: { doc_key: string; carries: string }[]; thin_or_missing: string[] }
+export interface PathStep { engine_key: string; plain_name: string; contributes: string; depth: StepDepth }
+export interface BriefPath { steps: PathStep[]; depth: Depth; primitives?: string[]; chain_key?: string | null }
+
+export const refLabel = (r: ShapeRef) => `${r.kind === 'section' ? '§' : r.kind === 'table' ? 'T' : 'F'}${r.index}`
+
 export interface BriefOption {
+  version: number
   key: string
   title: string
+  deliverable_kind: string
+  deliverable: string
+  use_kind: UseKind | ''
+  you_will_understand: BriefPromise[]
+  you_will_be_able_to: BriefPromise[]
+  questions_answered: string[]
+  not_for: string[]
+  shape: BriefShape | null
+  evidence_base: EvidenceBase
+  path: BriefPath
+  best_when: string
+  alternative?: boolean
+  notes?: string[]
+  est_cost_usd: number
+  est_minutes: number
+  est_llm_calls?: number
+  /* legacy views (v1 cards and old consumers): the paragraph, engine names, a one-line shape */
   telling: string
   engines: string[]
   why: string
-  est_cost_usd: number
-  est_minutes: number
   output_shape?: string
 }
 
+export interface Recommendation {
+  option_key: string
+  because: string
+  runner_up?: string | null
+  runner_up_because?: string | null
+}
+
 export interface Brief {
+  version?: number
+  entry?: Entry
   options: BriefOption[]
+  recommendation?: Recommendation | null
   defaults?: { option_key?: string; audience?: Audience; depth?: Depth; figures?: number }
+  notes?: string[]
+}
+
+/* ── the purpose-first catalog (GET /v1/dossier/catalog) ── */
+export interface CatalogDepth { passes: number; est_cost_usd?: number; est_minutes?: number }
+export interface CatalogEngine {
+  engine_key: string
+  engine_name: string
+  plain_name: string
+  executive_name?: string
+  use_when: string
+  yields: string
+  row_unit: string
+  deliverable_kinds: string[]
+  pairs_with: string[]
+  depths: Record<string, CatalogDepth>
+  fit: 'ok' | 'conditional' | 'off' | 'not_for_dossier'
+  fit_note: string
+  category?: string
+}
+export interface CatalogGroup { key: string; title: string; purpose: string; engines: CatalogEngine[] }
+export interface CatalogRecipe {
+  key: string; title: string; use_when: string; yields: string; depth: Depth
+  steps: PathStep[]; est_cost_usd: number; est_minutes: number; est_llm_calls: number
+}
+export interface Catalog {
+  audience: Audience
+  corpus_chars?: number | null
+  n_docs?: number | null
+  groups: CatalogGroup[]
+  recipes: CatalogRecipe[]
+  excluded: { engine_key: string; why: string }[]
+  own_overhead: { est_cost_usd: number; est_minutes: number; calls: number; why?: string }
+  use_kinds?: string[]
 }
 
 export interface Anchor { doc_key: string; quote: string }
@@ -165,6 +275,7 @@ export interface DossierJob {
   paths: { html?: string; pdf?: string; md?: string }
   error?: string | null
   console_url?: string
+  documents?: { key: string; title: string; char_count?: number }[]
 }
 
 export interface Exemplar {

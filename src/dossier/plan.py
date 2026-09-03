@@ -14,7 +14,7 @@ from src.dossier import events
 from src.dossier.common import (DEPTH_POLICY, SYNTHESIS_ENGINES, catalog_text, compact_profiles, corpus_title,
                                 engine_catalog, estimate_engine_run, passes_for)
 from src.dossier.llm import call_json
-from src.dossier.schemas import BriefOption, DossierJob, DossierPlan, DossierPlanPhase
+from src.dossier.schemas import BriefOption, DossierJob, DossierPlan, DossierPlanPhase, Path
 from src.sources.schemas import Document
 
 logger = logging.getLogger(__name__)
@@ -99,6 +99,48 @@ def _enforce_policy(phases: list[DossierPlanPhase], depth: str, by_key: dict, fa
     return uniq
 
 
+def fixed_path(job: DossierJob, option: Optional[BriefOption], by_key: dict) -> Optional[Path]:
+    """The path the plan must honour exactly, or None for the legacy planner.
+
+    Lane 2 (`entry == "chosen"`): the requester's own path on the job options. Otherwise a v2 brief
+    option carries its own priced path (DESIGN_brief_deliverables §B2) — the card promised those steps
+    at that price, so the planner keeps them and writes only context_emphasis + rationale.
+    """
+    from src.dossier.catalog import resolve_path_request
+
+    if job.options.entry == "chosen" and job.options.path:
+        try:
+            return resolve_path_request(job.options.path, job.options.audience, by_key)
+        except ValueError as exc:
+            logger.warning(f"fixed path rejected ({exc}); falling back to the option's path")
+    if option is not None and option.version >= 2 and option.path.steps:
+        return option.path
+    return None
+
+
+def fixed_phases(path: Path, proposed: list[DossierPlanPhase], by_key: dict) -> list[DossierPlanPhase]:
+    """Exactly the fixed steps, in order, at their depths; context_emphasis/why taken from the model's matching phase."""
+    out = []
+    for i, s in enumerate(path.steps, start=1):
+        if s.engine_key not in by_key:
+            continue
+        match = next((p for p in proposed if p.engine_key == s.engine_key and p not in out), None)
+        ph = DossierPlanPhase(
+            phase_number=round(ANALYSIS_PHASE_BASE + len(out) / 10 + 0.1, 1), engine_key=s.engine_key,
+            engine_name=by_key[s.engine_key].get("engine_name", s.engine_key),
+            depth=s.depth if s.depth in ("surface", "standard", "deep") else "surface",
+            why=(match.why if match and match.why else (s.contributes or "from the chosen deliverable's path")),
+            context_emphasis=(match.context_emphasis if match else ""),
+        )
+        ph.passes = passes_for(by_key[s.engine_key], ph.depth)
+        out.append(ph)
+    if not out:
+        out = [DossierPlanPhase(phase_number=round(ANALYSIS_PHASE_BASE + 0.1, 1), engine_key="deep_summarization",
+                                engine_name=by_key.get("deep_summarization", {}).get("engine_name", "deep_summarization"),
+                                why="fallback: the fixed path named no executable engine", context_emphasis="", passes=1)]
+    return out
+
+
 def build_executor_plan(job: DossierJob, docs: list[Document], plan: DossierPlan, option: Optional[BriefOption]):
     from src.orchestrator.planner import _save_plan
     from src.orchestrator.schemas import PhaseExecutionSpec, TargetWork, WorkflowExecutionPlan
@@ -149,12 +191,20 @@ def run_plan(job: DossierJob, docs: list[Document]) -> DossierPlan:
     if option:
         option_text = (f"{option.title}\n{option.telling}\nEngines the brief suggested: "
                        + ", ".join(f"{e.engine_key} ({e.why})" for e in option.engines))
-    depth_rule = {
-        "simple": "exactly ONE engine at depth 'surface' (one pass).",
-        "medium": "TWO or THREE engines, each at depth 'surface', chained so each builds on the previous.",
-        "advanced": "THREE or FOUR engines at depth 'standard'; the LAST phase must be a synthesis engine "
-                    f"(one of {', '.join(SYNTHESIS_ENGINES)}) that integrates the prior phases.",
-    }[depth]
+    fixed = fixed_path(job, option, by_key)
+    if fixed is not None:
+        depth = fixed.depth
+        fixed_text = " → ".join(f"{s.engine_key}@{s.depth}" for s in fixed.steps)
+        depth_rule = (f"THE PATH IS FIXED: {fixed_text}. Return exactly these phases in this order with these depths — "
+                      "do not add, drop, reorder or re-depth any of them. Your job is the context_emphasis of each phase, "
+                      "the strategy rationale, and the alternatives you would have considered.")
+    else:
+        depth_rule = {
+            "simple": "exactly ONE engine at depth 'surface' (one pass).",
+            "medium": "TWO or THREE engines, each at depth 'surface', chained so each builds on the previous.",
+            "advanced": "THREE or FOUR engines at depth 'standard'; the LAST phase must be a synthesis engine "
+                        f"(one of {', '.join(SYNTHESIS_ENGINES)}) that integrates the prior phases.",
+        }[depth]
     user = (
         f"CHOSEN ANGLE:\n{option_text}\n\nDEPTH POLICY ({depth}): {depth_rule}\n"
         f"AUDIENCE: {job.options.audience}\nCORPUS: {len(docs)} documents, {corpus_chars:,} chars.\n\n"
@@ -162,7 +212,7 @@ def run_plan(job: DossierJob, docs: list[Document]) -> DossierPlan:
         f"EXECUTABLE ENGINES:\n{catalog_text(catalog, with_problematique=True)}\n\n"
         "Return the phases in run order with a context_emphasis for each, the strategy rationale, and 2-5 alternatives you rejected."
     )
-    raw, _ = call_json(job.id, STEP, label=f"plan: {depth} depth over the executable catalog", system=SYSTEM, user=user,
+    raw, _ = call_json(job.id, STEP, label=f"plan: {'fixed path' if fixed else depth + ' depth'} over the executable catalog", system=SYSTEM, user=user,
                        tool_name="record_plan", schema=PLAN_SCHEMA, model_cls=None, max_tokens=6000)
     raw = raw or {}
     phases = []
@@ -174,8 +224,11 @@ def run_plan(job: DossierJob, docs: list[Document]) -> DossierPlan:
         except Exception as exc:
             logger.warning(f"plan phase rejected: {exc}")
     rejected_unknown = [p.engine_key for p in phases if p.engine_key not in by_key]
-    fallback = [e.engine_key for e in option.engines] if option else []
-    phases = _enforce_policy(phases, depth, by_key, fallback)
+    if fixed is not None:
+        phases = fixed_phases(fixed, phases, by_key)
+    else:
+        fallback = [e.engine_key for e in option.engines] if option else []
+        phases = _enforce_policy(phases, depth, by_key, fallback)
     total_passes = sum(p.passes for p in phases)
     cost, minutes = estimate_engine_run(corpus_chars, total_passes)
     plan = DossierPlan(

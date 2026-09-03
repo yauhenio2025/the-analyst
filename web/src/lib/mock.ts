@@ -5,7 +5,7 @@
    to deliver (VITE_MOCK_SPEED scales it). Created jobs persist in
    sessionStorage so a reload re-attaches, like the real server. */
 import type {
-  Brief, CreateJobRequest, DossierFigure, DossierJob, DossierStatus, Exemplar,
+  Brief, Catalog, CreateJobRequest, DossierFigure, DossierJob, DossierStatus, Exemplar,
   ExecutorJob, JobListEntry, OrchestratorPlan, Receipt, RunEvent, SourceSpec,
   DossierOptions, Totals,
 } from '../types'
@@ -14,6 +14,7 @@ import type { Api } from './api'
 import exemplarsJson from '../../mock/exemplars.json'
 import profilesJson from '../../mock/profiles.json'
 import briefJson from '../../mock/brief.json'
+import catalogJson from '../../mock/catalog.json'
 import tablesJson from '../../mock/tables.json'
 import sectionsJson from '../../mock/sections.json'
 import receiptsJson from '../../mock/receipts.json'
@@ -32,7 +33,8 @@ const A = SCRIPT.filter((e) => e.stage === 'A')
 const B = SCRIPT.filter((e) => e.stage === 'B')
 const A_END = Math.max(...A.map((e) => e.at_ms))
 const SPEED = Number(import.meta.env.VITE_MOCK_SPEED ?? '1') || 1
-const BRIEF = briefJson as Brief
+const BRIEF = briefJson as unknown as Brief
+const CATALOG = catalogJson as unknown as Catalog
 const PLAN = planJson as unknown as OrchestratorPlan
 const FIGURES: DossierFigure[] = [
   { key: 'f1', caption: 'The three fields and the fourth', figure_id: 'fig-8a21c0', url: fig1Url, provider: 'gemini-3-pro-image', cost_usd: 0.12 },
@@ -65,7 +67,7 @@ function seed() {
     const done = j.outcome === 'done' || j.outcome === 'failed'
     runs.set(j.id, {
       id: j.id, title: j.title, sources: j.sources as SourceSpec[],
-      options: { audience: 'executive', depth: 'medium', output: { text: true, tables: true, figures: 2, video: false }, autopilot: false },
+      options: { audience: 'executive', depth: 'medium', output: { text: true, tables: true, figures: 2, video: false }, autopilot: false, entry: 'use' },
       created, aStart: created, bStart: done ? created + 90_000 : null,
       chosen: j.chosen, timeScale: 14,
       failAt: j.outcome === 'failed' ? 13_000 : undefined,
@@ -91,7 +93,7 @@ const scriptNow = (start: number, scale: number) => ((Date.now() - start) * SPEE
 /** Lazy state transitions that happen without a request (autopilot). */
 function tick(run: Run) {
   if (run.bStart === null && run.options.autopilot && scriptNow(run.aStart, run.timeScale) >= A_END) {
-    run.chosen = BRIEF.defaults?.option_key ?? BRIEF.options[0].key
+    run.chosen = BRIEF.recommendation?.option_key ?? BRIEF.defaults?.option_key ?? BRIEF.options[0].key
     run.bStart = wall(run.aStart, A_END, run.timeScale)
     persist()
   }
@@ -191,7 +193,7 @@ function snapshot(run: Run): DossierJob {
     created_at: new Date(run.created).toISOString(), title: run.title,
     sources: run.sources, options: run.options,
     profiles: finished('reconnaissance') ? (profilesJson as DossierJob['profiles']) : [],
-    brief: finished('awaiting_brief') ? BRIEF : null,
+    brief: finished('awaiting_brief') ? { ...BRIEF, entry: run.options.entry ?? 'use' } : null,
     chosen_option: run.chosen,
     plan_id: finished('planning') ? PLAN.plan_id : null,
     analysis_job_id: rank >= statusRank('analysis') ? `exec-${run.id}` : null,
@@ -255,20 +257,35 @@ export const mockApi: Api = {
       : first?.kind === 'exemplar' ? (exemplarsJson.find((e) => e.key === first.key)?.title ?? first.key)
       : 'Untitled dossier'
     const now = Date.now()
-    const { sources, ...options } = req
+    const { sources, ...rest } = req
+    const entry = rest.entry ?? (rest.autopilot ? 'material' : 'use')
+    const options: DossierOptions = { ...rest, entry, autopilot: entry === 'material' }
     runs.set(id, { id, title, sources, options, created: now, aStart: now, bStart: null, chosen: null, timeScale: 1 })
     persist()
     return delay({ job_id: id, status: 'reconnaissance' as DossierStatus, console_url: `/console/${id}` }, 300)
   },
   getJob: (id) => delay(snapshot(runOf(id))),
   getBrief: (id) => delay(snapshot(runOf(id)).brief ?? { options: [] }),
+  catalog: (audience, corpusChars) => {
+    // the fixture is priced for the Kering study (61,420 chars); rescale the per-depth estimates to the corpus asked for
+    const k = corpusChars && CATALOG.corpus_chars ? corpusChars / CATALOG.corpus_chars : 1
+    const scale = (v?: number) => (v === undefined ? undefined : Math.round(v * (0.25 + 0.75 * k) * 1000) / 1000)
+    return delay({
+      ...CATALOG, audience, corpus_chars: corpusChars ?? CATALOG.corpus_chars,
+      groups: CATALOG.groups.map((g) => ({ ...g, engines: g.engines.map((e) => ({ ...e, plain_name: audience === 'executive' ? e.plain_name : e.engine_name,
+        depths: Object.fromEntries(Object.entries(e.depths).map(([d, v]) => [d, { ...v, est_cost_usd: scale(v.est_cost_usd), est_minutes: scale(v.est_minutes) }])) })) })),
+      recipes: CATALOG.recipes.map((r) => ({ ...r, est_cost_usd: scale(r.est_cost_usd) ?? 0, est_minutes: scale(r.est_minutes) ?? 0 })),
+      own_overhead: { ...CATALOG.own_overhead, est_cost_usd: scale(CATALOG.own_overhead.est_cost_usd) ?? 0, est_minutes: scale(CATALOG.own_overhead.est_minutes) ?? 0 },
+    } as Catalog, 150)
+  },
   chooseBrief: (id, option_key, overrides) => {
     const run = runOf(id)
     run.chosen = option_key
     run.bStart = Date.now()
     if (overrides) {
-      const o = overrides as Partial<DossierOptions> & { figures?: number }
+      const o = overrides as Partial<DossierOptions> & { figures?: number; path?: { steps: { engine_key: string; depth?: string }[] } }
       run.options = { ...run.options, ...(o.audience ? { audience: o.audience } : {}), ...(o.depth ? { depth: o.depth } : {}),
+        ...(o.path ? { entry: 'chosen' as const, path: { steps: o.path.steps.map((s) => ({ engine_key: s.engine_key, depth: (s.depth ?? 'surface') as 'surface' | 'standard' | 'deep' })) } } : {}),
         output: { ...(run.options.output ?? { text: true, tables: true, figures: 2, video: false }),
           ...(o.figures !== undefined ? { figures: o.figures } : {}) } }
     }

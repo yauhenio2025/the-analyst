@@ -23,7 +23,7 @@ function stepLine(job: DossierJob | null, i: number): string {
     case 0: return job.profiles.length ? `${job.sources.length} ${job.sources.length === 1 ? 'source' : 'sources'} · ${job.profiles.length} profiled` : `${job.sources.length} ${job.sources.length === 1 ? 'source' : 'sources'}`
     case 1: {
       if (job.chosen_option && job.brief) return `chosen · ${job.brief.options.find((o) => o.key === job.chosen_option)?.title ?? job.chosen_option}`
-      if (job.brief) return `${job.brief.options.length} tellings · your choice`
+      if (job.brief) return `${job.brief.options.length} deliverables · ${job.brief.entry === 'material' ? 'the material decided' : 'your choice'}`
       return 'after reading'
     }
     case 2: {

@@ -1,0 +1,1062 @@
+{
+ "audience": "executive",
+ "corpus_chars": 61420,
+ "n_docs": 2,
+ "groups": [
+  {
+   "key": "test_position",
+   "title": "Test a position",
+   "purpose": "what can be attacked, what accepting it commits you to",
+   "engines": [
+    {
+     "engine_key": "argument_architecture",
+     "engine_name": "Argument Architecture Mapper",
+     "plain_name": "claim scorecard",
+     "executive_name": "claim scorecard",
+     "use_when": "know where an argument is strong and where it can be attacked — the hidden premises, the weak joints, who bears the burden of proof",
+     "yields": "claim-by-claim scorecard (claim · evidence · unstated premise · weak joint · attack)",
+     "row_unit": "one row per major claim",
+     "deliverable_kinds": [
+      "stress_test",
+      "briefing",
+      "case_file"
+     ],
+     "pairs_with": [
+      "inferential_commitment_mapper",
+      "epistemological_method_detector",
+      "dialectical_structure"
+     ],
+     "depths": {
+      "surface": {
+       "passes": 1,
+       "est_cost_usd": 0.154,
+       "est_minutes": 3.0
+      },
+      "standard": {
+       "passes": 2,
+       "est_cost_usd": 0.308,
+       "est_minutes": 6.1
+      },
+      "deep": {
+       "passes": 4,
+       "est_cost_usd": 0.616,
+       "est_minutes": 12.2
+      }
+     },
+     "fit": "ok",
+     "fit_note": "",
+     "category": "argument"
+    },
+    {
+     "engine_key": "inferential_commitment_mapper",
+     "engine_name": "Inferential Commitment Mapper",
+     "plain_name": "hidden-obligations map",
+     "executive_name": "hidden-obligations map",
+     "use_when": "know what you are really signing up for if you adopt a position, a framework, a pledge",
+     "yields": "ledger of explicit → implicit commitments, their conflicts, what depends on what, the practical \"so what\"",
+     "row_unit": "one row per commitment",
+     "deliverable_kinds": [
+      "stress_test",
+      "decision_memo",
+      "watchlist"
+     ],
+     "pairs_with": [
+      "argument_architecture",
+      "dialectical_structure",
+      "counterfactual_analyzer"
+     ],
+     "depths": {
+      "surface": {
+       "passes": 1,
+       "est_cost_usd": 0.154,
+       "est_minutes": 3.0
+      },
+      "standard": {
+       "passes": 2,
+       "est_cost_usd": 0.308,
+       "est_minutes": 6.1
+      },
+      "deep": {
+       "passes": 4,
+       "est_cost_usd": 0.616,
+       "est_minutes": 12.2
+      }
+     },
+     "fit": "ok",
+     "fit_note": "",
+     "category": "concepts"
+    },
+    {
+     "engine_key": "dialectical_structure",
+     "engine_name": "Dialectical Structure Mapper",
+     "plain_name": "contradiction map",
+     "executive_name": "contradiction map",
+     "use_when": "see the tensions a discourse cannot resolve, which side secretly depends on the other, and what it cannot think",
+     "yields": "map of tensions (tension · positions · what each excludes · how it plays out)",
+     "row_unit": "one row per tension",
+     "deliverable_kinds": [
+      "stress_test",
+      "briefing"
+     ],
+     "pairs_with": [
+      "inferential_commitment_mapper",
+      "argument_architecture"
+     ],
+     "depths": {
+      "surface": {
+       "passes": 1,
+       "est_cost_usd": 0.154,
+       "est_minutes": 3.0
+      },
+      "standard": {
+       "passes": 2,
+       "est_cost_usd": 0.308,
+       "est_minutes": 6.1
+      },
+      "deep": {
+       "passes": 4,
+       "est_cost_usd": 0.616,
+       "est_minutes": 12.2
+      }
+     },
+     "fit": "ok",
+     "fit_note": "",
+     "category": "argument"
+    },
+    {
+     "engine_key": "counterfactual_analyzer",
+     "engine_name": "Counterfactual Analyzer",
+     "plain_name": "what-if audit",
+     "executive_name": "what-if audit",
+     "use_when": "test claims that rest on \"had X not happened…\" — which what-ifs hold and which are rhetoric",
+     "yields": "audit of each counterfactual (the world it assumes · the causal chain · plausibility · abuse pattern)",
+     "row_unit": "one row per what-if claim",
+     "deliverable_kinds": [
+      "decision_memo",
+      "comparison",
+      "stress_test"
+     ],
+     "pairs_with": [
+      "comparative_reasoning_analyzer",
+      "inferential_commitment_mapper"
+     ],
+     "depths": {
+      "surface": {
+       "passes": 1,
+       "est_cost_usd": 0.154,
+       "est_minutes": 3.0
+      },
+      "standard": {
+       "passes": 2,
+       "est_cost_usd": 0.308,
+       "est_minutes": 6.1
+      },
+      "deep": {
+       "passes": 4,
+       "est_cost_usd": 0.616,
+       "est_minutes": 12.2
+      }
+     },
+     "fit": "ok",
+     "fit_note": "",
+     "category": "methodology"
+    },
+    {
+     "engine_key": "modal_reasoning_analyzer",
+     "engine_name": "Modal Reasoning Analyzer",
+     "plain_name": "certainty ledger",
+     "executive_name": "certainty ledger",
+     "use_when": "know which \"must / cannot / could\" claims are real necessities and which are emphasis",
+     "yields": "inventory of necessity/possibility claims with their backing and confusions",
+     "row_unit": "one row per must/could/can't claim",
+     "deliverable_kinds": [
+      "stress_test",
+      "briefing"
+     ],
+     "pairs_with": [
+      "argument_architecture"
+     ],
+     "depths": {
+      "surface": {
+       "passes": 1,
+       "est_cost_usd": 0.154,
+       "est_minutes": 3.0
+      },
+      "standard": {
+       "passes": 2,
+       "est_cost_usd": 0.308,
+       "est_minutes": 6.1
+      },
+      "deep": {
+       "passes": 4,
+       "est_cost_usd": 0.616,
+       "est_minutes": 12.2
+      }
+     },
+     "fit": "ok",
+     "fit_note": "",
+     "category": "argument"
+    }
+   ]
+  },
+  {
+   "key": "see_structure",
+   "title": "See the structure",
+   "purpose": "the template that repeats, the ideas that hold it up",
+   "engines": [
+    {
+     "engine_key": "structural_pattern_detector",
+     "engine_name": "Structural Pattern Detector",
+     "plain_name": "pattern map",
+     "executive_name": "pattern map",
+     "use_when": "have several cases or texts and need the one template that repeats across them (and where each case departs from it)",
+     "yields": "the template's stages with every case mapped onto them; departures flagged",
+     "row_unit": "one row per case × stage",
+     "deliverable_kinds": [
+      "playbook",
+      "risk_register",
+      "briefing"
+     ],
+     "pairs_with": [
+      "concept_taxonomy_argumentative_function",
+      "comparative_reasoning_analyzer"
+     ],
+     "depths": {
+      "surface": {
+       "passes": 1,
+       "est_cost_usd": 0.154,
+       "est_minutes": 3.0
+      },
+      "standard": {
+       "passes": 2,
+       "est_cost_usd": 0.308,
+       "est_minutes": 6.1
+      },
+      "deep": {
+       "passes": 4,
+       "est_cost_usd": 0.616,
+       "est_minutes": 12.2
+      }
+     },
+     "fit": "ok",
+     "fit_note": "",
+     "category": "concepts"
+    },
+    {
+     "engine_key": "concept_centrality_mapper",
+     "engine_name": "Concept Centrality Mapper",
+     "plain_name": "load-bearing ideas",
+     "executive_name": "load-bearing ideas",
+     "use_when": "know which ideas hold the whole thing up — remove it and the argument collapses",
+     "yields": "ranking of concepts by what depends on them; hub/bridge topology",
+     "row_unit": "one row per concept",
+     "deliverable_kinds": [
+      "briefing",
+      "decoder"
+     ],
+     "pairs_with": [
+      "concept_taxonomy_argumentative_function",
+      "conceptual_framework_extraction"
+     ],
+     "depths": {
+      "surface": {
+       "passes": 1,
+       "est_cost_usd": 0.154,
+       "est_minutes": 3.0
+      },
+      "standard": {
+       "passes": 2,
+       "est_cost_usd": 0.308,
+       "est_minutes": 6.1
+      },
+      "deep": {
+       "passes": 4,
+       "est_cost_usd": 0.616,
+       "est_minutes": 12.2
+      }
+     },
+     "fit": "ok",
+     "fit_note": "",
+     "category": "concepts"
+    },
+    {
+     "engine_key": "concept_taxonomy_argumentative_function",
+     "engine_name": "Concept Taxonomy: Argumentative Function",
+     "plain_name": "vocabulary decoder",
+     "executive_name": "vocabulary decoder",
+     "use_when": "know what job each key term is doing (foundation, defence, bridge, conclusion) and where the argument is thin",
+     "yields": "term-by-job table + vulnerability points",
+     "row_unit": "one row per key term",
+     "deliverable_kinds": [
+      "playbook",
+      "decoder"
+     ],
+     "pairs_with": [
+      "structural_pattern_detector",
+      "concept_centrality_mapper"
+     ],
+     "depths": {
+      "surface": {
+       "passes": 1,
+       "est_cost_usd": 0.154,
+       "est_minutes": 3.0
+      },
+      "standard": {
+       "passes": 2,
+       "est_cost_usd": 0.308,
+       "est_minutes": 6.1
+      },
+      "deep": {
+       "passes": 4,
+       "est_cost_usd": 0.616,
+       "est_minutes": 12.2
+      }
+     },
+     "fit": "ok",
+     "fit_note": "",
+     "category": "concepts"
+    },
+    {
+     "engine_key": "conceptual_framework_extraction",
+     "engine_name": "Conceptual Framework Extractor",
+     "plain_name": "lens inventory",
+     "executive_name": "lens inventory",
+     "use_when": "know which frameworks and lenses the material thinks with, and what each lets you see and not see",
+     "yields": "inventory of frameworks (where used · what it shows · what it hides · where it came from)",
+     "row_unit": "one row per framework",
+     "deliverable_kinds": [
+      "reading_guide",
+      "decoder"
+     ],
+     "pairs_with": [
+      "deep_summarization",
+      "concept_centrality_mapper"
+     ],
+     "depths": {
+      "surface": {
+       "passes": 1,
+       "est_cost_usd": 0.154,
+       "est_minutes": 3.0
+      },
+      "standard": {
+       "passes": 2,
+       "est_cost_usd": 0.308,
+       "est_minutes": 6.1
+      },
+      "deep": {
+       "passes": 3,
+       "est_cost_usd": 0.462,
+       "est_minutes": 9.1
+      }
+     },
+     "fit": "ok",
+     "fit_note": "",
+     "category": "concepts"
+    },
+    {
+     "engine_key": "comparative_reasoning_analyzer",
+     "engine_name": "Comparative Reasoning Analyzer",
+     "plain_name": "comparison audit",
+     "executive_name": "comparison audit",
+     "use_when": "the material argues by comparison (A vs B, typologies, scales) and you need to know whether the comparisons hold",
+     "yields": "audit of each comparison (what is transferred · where it breaks · would other criteria reverse it)",
+     "row_unit": "one row per comparison",
+     "deliverable_kinds": [
+      "comparison",
+      "decision_memo"
+     ],
+     "pairs_with": [
+      "counterfactual_analyzer",
+      "structural_pattern_detector"
+     ],
+     "depths": {
+      "surface": {
+       "passes": 1,
+       "est_cost_usd": 0.154,
+       "est_minutes": 3.0
+      },
+      "standard": {
+       "passes": 2,
+       "est_cost_usd": 0.308,
+       "est_minutes": 6.1
+      },
+      "deep": {
+       "passes": 4,
+       "est_cost_usd": 0.616,
+       "est_minutes": 12.2
+      }
+     },
+     "fit": "ok",
+     "fit_note": "",
+     "category": "argument"
+    },
+    {
+     "engine_key": "theory_construction_analyzer",
+     "engine_name": "Theory Construction Analyzer",
+     "plain_name": "theory build map",
+     "executive_name": "theory build map",
+     "use_when": "know how a theory was assembled — borrowed pieces, innovations, how it touches evidence",
+     "yields": "build map of the theoretical framework",
+     "row_unit": "one row per building block",
+     "deliverable_kinds": [
+      "reading_guide",
+      "case_file"
+     ],
+     "pairs_with": [
+      "conceptual_framework_extraction"
+     ],
+     "depths": {
+      "surface": {
+       "passes": 1,
+       "est_cost_usd": 0.154,
+       "est_minutes": 3.0
+      },
+      "standard": {
+       "passes": 2,
+       "est_cost_usd": 0.308,
+       "est_minutes": 6.1
+      },
+      "deep": {
+       "passes": 4,
+       "est_cost_usd": 0.616,
+       "est_minutes": 12.2
+      }
+     },
+     "fit": "ok",
+     "fit_note": "researcher/analyst-leaning",
+     "category": "methodology"
+    },
+    {
+     "engine_key": "specialized_reasoning_classifier",
+     "engine_name": "Specialized Reasoning Classifier",
+     "plain_name": "reasoning toolkit",
+     "executive_name": "reasoning toolkit",
+     "use_when": "know the kinds of reasoning a text relies on (probabilistic, strategic, normative…) and how rigorously",
+     "yields": "inventory of reasoning forms with rigor notes",
+     "row_unit": "one row per reasoning form",
+     "deliverable_kinds": [
+      "reading_guide"
+     ],
+     "pairs_with": [
+      "epistemological_method_detector"
+     ],
+     "depths": {
+      "surface": {
+       "passes": 1,
+       "est_cost_usd": 0.154,
+       "est_minutes": 3.0
+      },
+      "standard": {
+       "passes": 2,
+       "est_cost_usd": 0.308,
+       "est_minutes": 6.1
+      },
+      "deep": {
+       "passes": 4,
+       "est_cost_usd": 0.616,
+       "est_minutes": 12.2
+      }
+     },
+     "fit": "ok",
+     "fit_note": "researcher-leaning; rarely an executive deliverable",
+     "category": "argument"
+    }
+   ]
+  },
+  {
+   "key": "follow_words",
+   "title": "Follow the words",
+   "purpose": "how terms move, get captured, change meaning",
+   "engines": [
+    {
+     "engine_key": "concept_evolution",
+     "engine_name": "Concept Evolution Tracker",
+     "plain_name": "term trajectory",
+     "executive_name": "term trajectory",
+     "use_when": "the same term appears across documents or years and you need to know how its meaning shifted",
+     "yields": "trajectory table (term · meaning in A · meaning in B · what changed · what it now licenses)",
+     "row_unit": "one row per term × document",
+     "deliverable_kinds": [
+      "watchlist",
+      "decoder"
+     ],
+     "pairs_with": [
+      "concept_appropriation_tracker",
+      "inferential_commitment_mapper"
+     ],
+     "depths": {
+      "surface": {
+       "passes": 1,
+       "est_cost_usd": 0.154,
+       "est_minutes": 3.0
+      },
+      "standard": {
+       "passes": 2,
+       "est_cost_usd": 0.308,
+       "est_minutes": 6.1
+      },
+      "deep": {
+       "passes": 3,
+       "est_cost_usd": 0.462,
+       "est_minutes": 9.1
+      }
+     },
+     "fit": "ok",
+     "fit_note": "ok on corpora; designed for prior/current work of one author",
+     "category": "concepts"
+    },
+    {
+     "engine_key": "concept_appropriation_tracker",
+     "engine_name": "Concept Appropriation Tracker",
+     "plain_name": "capture register",
+     "executive_name": "capture register",
+     "use_when": "know who took a term and bent it to their purposes — co-optation, capture, borrowed authority",
+     "yields": "register of appropriations (term · origin · who uses it now · how it was bent · acknowledged?)",
+     "row_unit": "one row per term",
+     "deliverable_kinds": [
+      "decoder",
+      "playbook",
+      "decision_memo"
+     ],
+     "pairs_with": [
+      "concept_evolution",
+      "argument_architecture"
+     ],
+     "depths": {
+      "surface": {
+       "passes": 1,
+       "est_cost_usd": 0.154,
+       "est_minutes": 3.0
+      },
+      "standard": {
+       "passes": 2,
+       "est_cost_usd": 0.308,
+       "est_minutes": 6.1
+      },
+      "deep": {
+       "passes": 3,
+       "est_cost_usd": 0.462,
+       "est_minutes": 9.1
+      }
+     },
+     "fit": "ok",
+     "fit_note": "",
+     "category": "concepts"
+    },
+    {
+     "engine_key": "concept_semantic_constellation",
+     "engine_name": "Concept Semantic Constellation",
+     "plain_name": "word-field map",
+     "executive_name": "word-field map",
+     "use_when": "one concept is central and you need its whole neighbourhood — near-synonyms, opposites, boundary cases",
+     "yields": "field map for 3–5 concepts",
+     "row_unit": "one row per related term",
+     "deliverable_kinds": [
+      "decoder"
+     ],
+     "pairs_with": [
+      "concept_centrality_mapper"
+     ],
+     "depths": {
+      "surface": {
+       "passes": 1,
+       "est_cost_usd": 0.154,
+       "est_minutes": 3.0
+      },
+      "standard": {
+       "passes": 2,
+       "est_cost_usd": 0.308,
+       "est_minutes": 6.1
+      },
+      "deep": {
+       "passes": 4,
+       "est_cost_usd": 0.616,
+       "est_minutes": 12.2
+      }
+     },
+     "fit": "ok",
+     "fit_note": "",
+     "category": "concepts"
+    },
+    {
+     "engine_key": "concept_synthesis",
+     "engine_name": "Concept Synthesis",
+     "plain_name": "one picture of the ideas",
+     "executive_name": "one picture of the ideas",
+     "use_when": "you have per-document concept readings and need one cross-document picture with a verdict",
+     "yields": "unified concept picture + convergence/divergence + verdict",
+     "row_unit": "one row per concept",
+     "deliverable_kinds": [
+      "reading_guide"
+     ],
+     "pairs_with": [
+      "concept_centrality_mapper",
+      "conceptual_framework_extraction"
+     ],
+     "depths": {
+      "surface": {
+       "passes": 1,
+       "est_cost_usd": 0.154,
+       "est_minutes": 3.0
+      },
+      "standard": {
+       "passes": 2,
+       "est_cost_usd": 0.308,
+       "est_minutes": 6.1
+      },
+      "deep": {
+       "passes": 4,
+       "est_cost_usd": 0.616,
+       "est_minutes": 12.2
+      }
+     },
+     "fit": "conditional",
+     "fit_note": "only as the last step, after a concept engine has run",
+     "category": "concepts"
+    },
+    {
+     "engine_key": "evolution_tactics_detector",
+     "engine_name": "Evolution Tactics Detector",
+     "plain_name": "line-change tactics",
+     "executive_name": "line-change tactics",
+     "use_when": "an author or organisation changed its line and you need to see how the change was managed (silent revision, reframing, disavowal)",
+     "yields": "tactic catalogue with evidence",
+     "row_unit": "one row per tactic instance",
+     "deliverable_kinds": [
+      "watchlist",
+      "case_file"
+     ],
+     "pairs_with": [
+      "concept_evolution"
+     ],
+     "depths": {
+      "surface": {
+       "passes": 1,
+       "est_cost_usd": 0.154,
+       "est_minutes": 3.0
+      },
+      "standard": {
+       "passes": 2,
+       "est_cost_usd": 0.308,
+       "est_minutes": 6.1
+      },
+      "deep": {
+       "passes": 3,
+       "est_cost_usd": 0.462,
+       "est_minutes": 9.1
+      }
+     },
+     "fit": "off",
+     "fit_note": "presumes one author across time — this bundle has several authors",
+     "category": "rhetoric"
+    }
+   ]
+  },
+  {
+   "key": "read_properly",
+   "title": "Read it properly",
+   "purpose": "what a text argues, how it is built, what it hides",
+   "engines": [
+    {
+     "engine_key": "deep_summarization",
+     "engine_name": "Deep Summarization Engine",
+     "plain_name": "reading guide",
+     "executive_name": "reading guide",
+     "use_when": "know what each document actually argues, how, and what it foregrounds or suppresses — and, as a last pass, one synthesis across the phases",
+     "yields": "per-document argument map (thesis · moves · evidence · what is suppressed · key vocabulary)",
+     "row_unit": "one row per document",
+     "deliverable_kinds": [
+      "reading_guide",
+      "case_file",
+      "briefing"
+     ],
+     "pairs_with": [
+      "argument_architecture",
+      "conceptual_framework_extraction"
+     ],
+     "depths": {
+      "surface": {
+       "passes": 1,
+       "est_cost_usd": 0.154,
+       "est_minutes": 3.0
+      },
+      "standard": {
+       "passes": 2,
+       "est_cost_usd": 0.308,
+       "est_minutes": 6.1
+      },
+      "deep": {
+       "passes": 4,
+       "est_cost_usd": 0.616,
+       "est_minutes": 12.2
+      }
+     },
+     "fit": "ok",
+     "fit_note": "also the default synthesis engine",
+     "category": "outline"
+    },
+    {
+     "engine_key": "narrative_structure_analyzer",
+     "engine_name": "Narrative Structure Analyzer",
+     "plain_name": "story shape",
+     "executive_name": "story shape",
+     "use_when": "how the story is told matters — voice, arc, what the sequencing does to the reader",
+     "yields": "story-shape reading per document",
+     "row_unit": "one row per document",
+     "deliverable_kinds": [
+      "reading_guide",
+      "briefing"
+     ],
+     "pairs_with": [
+      "deep_summarization"
+     ],
+     "depths": {
+      "surface": {
+       "passes": 1,
+       "est_cost_usd": 0.154,
+       "est_minutes": 3.0
+      },
+      "standard": {
+       "passes": 2,
+       "est_cost_usd": 0.308,
+       "est_minutes": 6.1
+      },
+      "deep": {
+       "passes": 4,
+       "est_cost_usd": 0.616,
+       "est_minutes": 12.2
+      }
+     },
+     "fit": "ok",
+     "fit_note": "",
+     "category": "rhetoric"
+    },
+    {
+     "engine_key": "epistemological_method_detector",
+     "engine_name": "Epistemological Method Detector",
+     "plain_name": "how-they-know audit",
+     "executive_name": "how-they-know audit",
+     "use_when": "know how the authors claim to know what they claim — methods, standpoint, self-awareness — before you rely on them",
+     "yields": "credibility grounding per document",
+     "row_unit": "one row per document",
+     "deliverable_kinds": [
+      "case_file",
+      "reading_guide"
+     ],
+     "pairs_with": [
+      "argument_architecture"
+     ],
+     "depths": {
+      "surface": {
+       "passes": 1,
+       "est_cost_usd": 0.154,
+       "est_minutes": 3.0
+      },
+      "standard": {
+       "passes": 2,
+       "est_cost_usd": 0.308,
+       "est_minutes": 6.1
+      },
+      "deep": {
+       "passes": 4,
+       "est_cost_usd": 0.616,
+       "est_minutes": 12.2
+      }
+     },
+     "fit": "ok",
+     "fit_note": "analyst/researcher-leaning",
+     "category": "epistemology"
+    },
+    {
+     "engine_key": "conditions_of_possibility_analyzer",
+     "engine_name": "Conditions of Possibility Analyzer",
+     "plain_name": "what-had-to-be-true",
+     "executive_name": "what-had-to-be-true",
+     "use_when": "know what had to be in place for this argument or practice to emerge, and what it forecloses",
+     "yields": "enabling/constraining conditions + paths not taken",
+     "row_unit": "one row per condition",
+     "deliverable_kinds": [
+      "reading_guide",
+      "decision_memo"
+     ],
+     "pairs_with": [
+      "counterfactual_analyzer"
+     ],
+     "depths": {
+      "surface": {
+       "passes": 1,
+       "est_cost_usd": 0.154,
+       "est_minutes": 3.0
+      },
+      "standard": {
+       "passes": 2,
+       "est_cost_usd": 0.308,
+       "est_minutes": 6.1
+      },
+      "deep": {
+       "passes": 3,
+       "est_cost_usd": 0.462,
+       "est_minutes": 9.1
+      }
+     },
+     "fit": "conditional",
+     "fit_note": "usable at surface depth on a corpus; designed around an author's prior work; usable at surface on a corpus",
+     "category": "epistemology"
+    },
+    {
+     "engine_key": "chapter_role_analyzer",
+     "engine_name": "Chapter Role Analyzer",
+     "plain_name": "chapter map",
+     "executive_name": "chapter map",
+     "use_when": "a single long work (book, long report) needs a map of what each part does and depends on",
+     "yields": "chapter role map with dependencies and weak points",
+     "row_unit": "one row per chapter",
+     "deliverable_kinds": [
+      "reading_guide"
+     ],
+     "pairs_with": [
+      "deep_summarization"
+     ],
+     "depths": {
+      "surface": {
+       "passes": 1,
+       "est_cost_usd": 0.154,
+       "est_minutes": 3.0
+      },
+      "standard": {
+       "passes": 2,
+       "est_cost_usd": 0.308,
+       "est_minutes": 6.1
+      },
+      "deep": {
+       "passes": 4,
+       "est_cost_usd": 0.616,
+       "est_minutes": 12.2
+      }
+     },
+     "fit": "off",
+     "fit_note": "single long work only — this corpus has 2 documents",
+     "category": "argument"
+    }
+   ]
+  }
+ ],
+ "recipes": [
+  {
+   "key": "stress_test",
+   "title": "Stress test",
+   "use_when": "our position will be attacked",
+   "yields": "claim scorecard + hidden-obligations ledger",
+   "depth": "medium",
+   "steps": [
+    {
+     "engine_key": "argument_architecture",
+     "plain_name": "claim scorecard",
+     "contributes": "",
+     "depth": "surface"
+    },
+    {
+     "engine_key": "inferential_commitment_mapper",
+     "plain_name": "hidden-obligations map",
+     "contributes": "",
+     "depth": "surface"
+    }
+   ],
+   "est_cost_usd": 0.77,
+   "est_minutes": 17.2,
+   "est_llm_calls": 6
+  },
+  {
+   "key": "pattern_playbook",
+   "title": "Pattern & playbook",
+   "use_when": "several cases; need the template and the words that sell it",
+   "yields": "pattern map + vocabulary decoder",
+   "depth": "medium",
+   "steps": [
+    {
+     "engine_key": "structural_pattern_detector",
+     "plain_name": "pattern map",
+     "contributes": "",
+     "depth": "surface"
+    },
+    {
+     "engine_key": "concept_taxonomy_argumentative_function",
+     "plain_name": "vocabulary decoder",
+     "contributes": "",
+     "depth": "surface"
+    }
+   ],
+   "est_cost_usd": 0.77,
+   "est_minutes": 17.2,
+   "est_llm_calls": 6
+  },
+  {
+   "key": "two_case_comparison",
+   "title": "Two-case comparison",
+   "use_when": "choose between cases or learn from a contrast",
+   "yields": "comparison audit + what-if audit",
+   "depth": "medium",
+   "steps": [
+    {
+     "engine_key": "comparative_reasoning_analyzer",
+     "plain_name": "comparison audit",
+     "contributes": "",
+     "depth": "surface"
+    },
+    {
+     "engine_key": "counterfactual_analyzer",
+     "plain_name": "what-if audit",
+     "contributes": "",
+     "depth": "surface"
+    }
+   ],
+   "est_cost_usd": 0.77,
+   "est_minutes": 17.2,
+   "est_llm_calls": 6
+  },
+  {
+   "key": "vocabulary_decoder",
+   "title": "Vocabulary decoder",
+   "use_when": "terms are moving or being captured",
+   "yields": "trajectory table + capture register",
+   "depth": "medium",
+   "steps": [
+    {
+     "engine_key": "concept_evolution",
+     "plain_name": "term trajectory",
+     "contributes": "",
+     "depth": "surface"
+    },
+    {
+     "engine_key": "concept_appropriation_tracker",
+     "plain_name": "capture register",
+     "contributes": "",
+     "depth": "surface"
+    }
+   ],
+   "est_cost_usd": 0.77,
+   "est_minutes": 17.2,
+   "est_llm_calls": 6
+  },
+  {
+   "key": "reading_guide",
+   "title": "Reading guide",
+   "use_when": "new to the field; onboard a team",
+   "yields": "per-document argument maps",
+   "depth": "simple",
+   "steps": [
+    {
+     "engine_key": "deep_summarization",
+     "plain_name": "reading guide",
+     "contributes": "",
+     "depth": "surface"
+    }
+   ],
+   "est_cost_usd": 0.62,
+   "est_minutes": 14.1,
+   "est_llm_calls": 5
+  },
+  {
+   "key": "credibility_read",
+   "title": "Credibility read",
+   "use_when": "before relying on the sources",
+   "yields": "how-they-know audit + claim scorecard",
+   "depth": "medium",
+   "steps": [
+    {
+     "engine_key": "epistemological_method_detector",
+     "plain_name": "how-they-know audit",
+     "contributes": "",
+     "depth": "surface"
+    },
+    {
+     "engine_key": "argument_architecture",
+     "plain_name": "claim scorecard",
+     "contributes": "",
+     "depth": "surface"
+    }
+   ],
+   "est_cost_usd": 0.77,
+   "est_minutes": 17.2,
+   "est_llm_calls": 6
+  },
+  {
+   "key": "full_read",
+   "title": "Full read",
+   "use_when": "advanced depth; a report that will be reread",
+   "yields": "reading guide + scorecard + contradiction map + synthesis",
+   "depth": "advanced",
+   "steps": [
+    {
+     "engine_key": "deep_summarization",
+     "plain_name": "reading guide",
+     "contributes": "",
+     "depth": "surface"
+    },
+    {
+     "engine_key": "argument_architecture",
+     "plain_name": "claim scorecard",
+     "contributes": "",
+     "depth": "standard"
+    },
+    {
+     "engine_key": "dialectical_structure",
+     "plain_name": "contradiction map",
+     "contributes": "",
+     "depth": "standard"
+    },
+    {
+     "engine_key": "deep_summarization",
+     "plain_name": "reading guide",
+     "contributes": "",
+     "depth": "standard"
+    }
+   ],
+   "est_cost_usd": 1.54,
+   "est_minutes": 32.4,
+   "est_llm_calls": 11
+  }
+ ],
+ "excluded": [
+  {
+   "engine_key": "aoi_engagement_mapping",
+   "why": "presumes a selected source thinker and a subject author (Anxiety-of-Influence workflow)"
+  },
+  {
+   "engine_key": "aoi_sin_findings",
+   "why": "presumes a selected source thinker and a subject author (Anxiety-of-Influence workflow)"
+  },
+  {
+   "engine_key": "aoi_thematic_report",
+   "why": "presumes a selected source thinker and a subject author (Anxiety-of-Influence workflow)"
+  },
+  {
+   "engine_key": "aoi_thematic_synthesis",
+   "why": "presumes a selected source thinker and a subject author (Anxiety-of-Influence workflow); no such structure in a corpus dossier"
+  },
+  {
+   "engine_key": "genealogy_final_synthesis",
+   "why": "presumes an author's prior works discovered and classified upstream"
+  },
+  {
+   "engine_key": "genealogy_relationship_classification",
+   "why": "presumes an author's prior works discovered and classified upstream"
+  }
+ ],
+ "own_overhead": {
+  "est_cost_usd": 0.462,
+  "est_minutes": 11.1,
+  "calls": 4,
+  "why": "the dossier's own calls: plan, tables, figure plan, compose"
+ },
+ "use_kinds": [
+  "decide",
+  "brief",
+  "prepare",
+  "stress_test",
+  "compare",
+  "watch",
+  "learn",
+  "argue"
+ ]
+}
