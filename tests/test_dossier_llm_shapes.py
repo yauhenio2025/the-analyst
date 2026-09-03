@@ -28,3 +28,12 @@ def test_plain_strings_are_left_alone_and_nested_strings_unpacked():
 def test_inline_defs_resolves_refs():
     schema = _inline_defs({"type": "object", "properties": {"a": {"$ref": "#/$defs/X"}}, "$defs": {"X": {"type": "string"}}})
     assert schema["properties"]["a"] == {"type": "string"}
+
+
+def test_store_serializes_lists_of_models_as_dicts():
+    from src.dossier.schemas import Anchor, Cell, Row, Table
+    from src.dossier.store import _dumps
+
+    t = Table(key="k", caption="c", columns=["a"], rows=[Row(cells=[Cell(value="v", anchor=Anchor(doc_key="A", quote="q"))])])
+    parsed = json.loads(_dumps([t]))
+    assert parsed[0]["rows"][0]["cells"][0]["anchor"]["doc_key"] == "A"

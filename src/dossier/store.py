@@ -68,12 +68,21 @@ def ensure_table() -> None:
         logger.info("dossier_jobs table ready")
 
 
+def _jsonable(value: Any) -> Any:
+    """Pydantic models anywhere in the tree become dicts (a list of models used to be persisted as reprs)."""
+    if hasattr(value, "model_dump"):
+        return value.model_dump()
+    if isinstance(value, dict):
+        return {k: _jsonable(v) for k, v in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [_jsonable(v) for v in value]
+    return value
+
+
 def _dumps(value: Any) -> str:
     if value is None:
         return "null"
-    if hasattr(value, "model_dump"):
-        value = value.model_dump()
-    return json.dumps(value, ensure_ascii=False, default=str)
+    return json.dumps(_jsonable(value), ensure_ascii=False, default=str)
 
 
 def _loads(text: Any, default: Any) -> Any:
