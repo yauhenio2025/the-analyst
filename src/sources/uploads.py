@@ -70,7 +70,7 @@ def _llm_bibliographic(text: str) -> dict:
         client = anthropic.Anthropic()
         head = text[:6000]
         msg = client.messages.create(
-            model="claude-haiku-4-5-20251001", max_tokens=300, temperature=0,
+            model="claude-haiku-4-5-20251001", max_tokens=300,
             system="You extract bibliographic facts from the opening of an academic or professional document. "
                    "Ignore repository cover pages (ResearchGate, SSRN, publisher banners) and running headers. "
                    "Reply with ONLY a JSON object: {\"title\": str, \"creators\": str (\"Surname, Given; Surname, Given\"), "
