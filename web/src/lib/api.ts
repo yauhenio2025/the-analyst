@@ -72,7 +72,7 @@ function normalizeJob(j: DossierJob): DossierJob {
     anyJ.title = (docs?.[0]?.title as string) || (srcs?.[0]?.title as string) || (srcs?.[0]?.name as string) || (anyJ.id as string)
     if (docs && docs.length > 1) anyJ.title = `${anyJ.title} (+${docs.length - 1} more)`
   }
-  for (const k of ['profiles', 'sections', 'tables', 'figures', 'receipts', 'notes', 'documents', 'sources']) {
+  for (const k of ['profiles', 'tables', 'figures', 'receipts', 'notes', 'documents', 'sources']) {
     if (!Array.isArray(anyJ[k])) anyJ[k] = []
   }
   // The composer returns {title, subtitle, executive_summary[], sections[{number, heading, paragraphs[]}], conclusion[]};
@@ -92,6 +92,7 @@ function normalizeJob(j: DossierJob): DossierJob {
     anyJ.composition = { title: c.title, subtitle: c.subtitle, claims_unanchored: c.claims_unanchored }
     if (!anyJ.title && c.title) anyJ.title = c.title
   }
+  if (!Array.isArray(anyJ.sections)) anyJ.sections = []
   // paths must be URLs; the backend records filesystem paths, so keep only /v1/... or absolute http(s)
   if (anyJ.paths && typeof anyJ.paths === 'object') {
     const cleaned: Record<string, string> = {}

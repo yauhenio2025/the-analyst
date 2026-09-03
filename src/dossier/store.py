@@ -165,7 +165,7 @@ def list_jobs(limit: int = 50) -> list[DossierJobSummary]:
     ensure_table()
     rows = execute(
         "SELECT id, status, step, created_at, updated_at, options_json, documents_json, "
-        "chosen_option, totals_json, error, sections_json FROM dossier_jobs "
+        "chosen_option, totals_json, error, sections_json, brief_json FROM dossier_jobs "
         "ORDER BY created_at DESC LIMIT %s",
         (limit,),
         fetch="all",
@@ -177,6 +177,12 @@ def list_jobs(limit: int = 50) -> list[DossierJobSummary]:
         totals = _loads(row.get("totals_json"), {})
         sections = _loads(row.get("sections_json"), None) or {}
         title = sections.get("title") or ""
+        if not title and row.get("chosen_option"):
+            brief = _loads(row.get("brief_json"), None) or {}
+            for opt in brief.get("options") or []:
+                if isinstance(opt, dict) and opt.get("key") == row.get("chosen_option") and opt.get("title"):
+                    title = opt["title"]
+                    break
         if not title and documents:
             title = documents[0].get("title", "")
             if len(documents) > 1:
