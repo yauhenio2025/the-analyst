@@ -425,7 +425,7 @@ def spec_figures(job: DossierJob) -> list[FigureSpec]:
     material_norm = normalize(material)
     head, _ = _spec_user(job, sections, material)
     raw, _ = call_json(job.id, STEP, label=f"figure specs from the spine ({len(sections)})", system=SPINE_SYSTEM, user=head,
-                       tool_name="record_figure_plan", schema=spec_figures_schema([s.key for s in sections]), model_cls=None, max_tokens=12000)
+                       tool_name="record_figure_plan", schema=spec_figures_schema([s.key for s in sections]), model_cls=None, max_tokens=12000, cache=True)
     accepted: list[FigureSpec] = []
     rejected: list[tuple[FigureSpec, list[str]]] = []
     seen_formats: set[str] = set()
@@ -474,7 +474,7 @@ def spec_figures(job: DossierJob) -> list[FigureSpec]:
             head2, tail2 = _spec_user(job, [by_key[sp.__dict__["_section_key"]] for sp, _ in need], material, replace=need, keep=accepted)
             raw2, _ = call_json(job.id, STEP, label=f"figure spec repair ({len(need)})", system=SPINE_SYSTEM, user=head, user_tail=tail2,
                                 tool_name="record_figure_plan", schema=spec_figures_schema([sp.__dict__["_section_key"] for sp, _ in need]),
-                                model_cls=None, max_tokens=12000)
+                                model_cls=None, max_tokens=12000, cache=True)
             rejected = []
             admit((raw2 or {}).get("figures", [])[: len(need)])
             for spec, errors in rejected:

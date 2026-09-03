@@ -475,7 +475,7 @@ def write_body(job: DossierJob, docs: list[Document], persist=None) -> tuple[lis
     keys = [s.key for s in job.spine.sections]
     user = _draft_user(job, docs, nums)
     raw, _ = call_json(job.id, STEP, label=f"draft body ({len(keys)} sections, exhibits on the desk)", system=DRAFT_SYSTEM, user=user,
-                       tool_name="record_draft", schema=draft_schema(keys), model_cls=None, max_tokens=16000)
+                       tool_name="record_draft", schema=draft_schema(keys), model_cls=None, max_tokens=16000, cache=True)
     sections, anchor_errs = _coerce_body(raw, corpus)
     per, glob = validate_body(sections, job, material_norm, anchor_errs)
     events.emit(job.id, "note", phase=STEP, detail=f"draft wall: {len(sections)} sections, {len(per)} with errors" + (f"; whole: {' | '.join(glob)}" if glob else ""),
@@ -484,7 +484,7 @@ def write_body(job: DossierJob, docs: list[Document], persist=None) -> tuple[lis
         wanted = set(per.keys()) & set(keys)
         raw2, _ = call_json(job.id, STEP, label=f"draft patch ({len(wanted)} sections)", system=DRAFT_SYSTEM, user=user,
                             user_tail=_patch_tail({k: v for k, v in per.items() if k in wanted}, glob), tool_name="record_draft_patch",
-                            schema=draft_schema(sorted(wanted)), model_cls=None, max_tokens=12000)
+                            schema=draft_schema(sorted(wanted)), model_cls=None, max_tokens=12000, cache=True)
         patched, anchor_errs2 = _coerce_body(raw2, corpus)
         by_key = {s.section_key: s for s in patched if s.section_key in wanted}
         merged = [by_key.get(s.section_key, s) for s in sections]
@@ -560,13 +560,13 @@ def write_frames(job: DossierJob, sections: list[Section]) -> dict[str, Any]:
             f"THESIS: {sp.thesis}\nHANDLE: {sp.handle}\nREADER'S QUESTION: {sp.reader_question}\n"
             f"THE SUMMARY'S JOB: {sp.summary_job}\nTHE CLOSE'S JOB: {sp.conclusion_job}\n\nTHE ASSEMBLED BODY:\n\n{body}")
     raw, _ = call_json(job.id, STEP, label="frames: summary + close against the body", system=FRAMES_SYSTEM, user=user,
-                       tool_name="record_frames", schema=FRAMES_SCHEMA, model_cls=None, max_tokens=6000)
+                       tool_name="record_frames", schema=FRAMES_SCHEMA, model_cls=None, max_tokens=6000, cache=True)
     errs = validate_frames(raw, body_norm)
     if errs:
         events.emit(job.id, "note", phase=STEP, detail="frames wall: " + " | ".join(errs), payload_json={"kind": "frames_wall", "errors": errs})
         raw2, _ = call_json(job.id, STEP, label="frames (re-ask)", system=FRAMES_SYSTEM, user=user,
                             user_tail="---\nYOUR FRAMES FAILED THE WALL: " + " | ".join(errs) + "\nReturn the complete corrected frames.",
-                            tool_name="record_frames", schema=FRAMES_SCHEMA, model_cls=None, max_tokens=6000)
+                            tool_name="record_frames", schema=FRAMES_SCHEMA, model_cls=None, max_tokens=6000, cache=True)
         errs2 = validate_frames(raw2, body_norm)
         if len(errs2) <= len(errs):
             raw = raw2

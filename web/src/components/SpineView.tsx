@@ -21,7 +21,7 @@ export function SpineView({ spine }: { spine: DossierSpine }) {
             <p className="claim-text">{s.claim}</p>
             <span className="machine">
               {s.evidence_kind ? words(s.evidence_kind) : ''}
-              {s.table ? ` · table: one row = ${s.table.row_unit}` : ''}
+              {s.table ? ` · table: ${/^one row/i.test(s.table.row_unit) ? s.table.row_unit : `one row = ${s.table.row_unit}`}` : ''}
               {s.figure ? ` · diagram: ${words(s.figure.visual_format)}` : ''}
               {s.anchors_planned?.length ? ` · ${s.anchors_planned.length} anchors planned` : ''}
             </span>

@@ -424,7 +424,7 @@ def build_spine(job: DossierJob, docs: list[Document]) -> DossierSpine:
     corpus = NormalizedCorpus({d.key: d.text for d in docs}) if docs else None
     user = _user(job)
     raw, _ = call_json(job.id, STEP, label="composition read + spine", system=SYSTEM, user=user,
-                       tool_name="record_spine", schema=SPINE_SCHEMA, model_cls=None, max_tokens=14000)
+                       tool_name="record_spine", schema=SPINE_SCHEMA, model_cls=None, max_tokens=14000, cache=True)
     spine = coerce_spine(raw, budget)
     per, glob = validate_spine(spine, corpus)
     events.emit(job.id, "note", phase=STEP, detail=f"spine wall: {len(spine.sections)} sections, {len(per)} with errors"
@@ -433,7 +433,7 @@ def build_spine(job: DossierJob, docs: list[Document]) -> DossierSpine:
         wanted = set(per.keys()) or {s.key for s in spine.sections}
         raw2, _ = call_json(job.id, STEP, label=f"spine patch ({len(wanted)} sections)", system=SYSTEM, user=user,
                             user_tail=_patch_tail(per, glob), tool_name="record_spine_patch", schema=PATCH_SCHEMA,
-                            model_cls=None, max_tokens=8000)
+                            model_cls=None, max_tokens=8000, cache=True)
         patch = coerce_spine({"sections": (raw2 or {}).get("sections", []), "thesis": spine.thesis,
                               "summary_job": spine.summary_job, "conclusion_job": spine.conclusion_job}, budget)
         spine, unknown = _merge_patch(spine, patch, wanted)

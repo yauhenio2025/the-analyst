@@ -260,7 +260,7 @@ def run_spine_tables(job: DossierJob, docs: list[Document], persist=None) -> lis
     schema = spine_tables_schema(sorted(wanted), len(wanted))
     seen: set[str] = set()
     raw, _ = call_json(job.id, STEP, label=f"tables from the spine ({len(wanted)})", system=SPINE_SYSTEM, user=user,
-                       tool_name="record_tables", schema=schema, model_cls=None, max_tokens=12000)
+                       tool_name="record_tables", schema=schema, model_cls=None, max_tokens=12000, cache=True)
     accepted, failures, minted, rejects = _admit(job, raw, wanted, corpus, seen)
     missing = [s for s in specs if s.key not in accepted]
     if missing:
@@ -271,7 +271,7 @@ def run_spine_tables(job: DossierJob, docs: list[Document], persist=None) -> lis
         events.emit(job.id, "note", phase=STEP, detail=f"{len(missing)} commissioned table(s) fell short of the wall; re-asking once for " + ", ".join(s.key for s in missing))
         raw2, _ = call_json(job.id, STEP, label=f"tables re-ask ({len(missing)})", system=SPINE_SYSTEM, user=user, user_tail=tail,
                             tool_name="record_tables", schema=spine_tables_schema(sorted(s.key for s in missing), len(missing)),
-                            model_cls=None, max_tokens=12000)
+                            model_cls=None, max_tokens=12000, cache=True)
         more, _, minted2, rejects2 = _admit(job, raw2, {s.key for s in missing}, corpus, seen)
         accepted.update(more)
         minted.extend(minted2)

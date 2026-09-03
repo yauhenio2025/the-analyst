@@ -105,14 +105,15 @@ def _cached_cost(model: str, input_total: int, output_tokens: int, cache_read: i
                  + (llm_cost(model, 0, output_tokens) or 0.0), 6)
 
 
-def _user_content(user: str, user_tail: str, images: Optional[list[tuple[bytes, str]]]) -> Any:
-    """The user turn as content blocks: the big prefix (cached when large), then images, then the
-    uncached tail (patch errors, re-ask feedback) so a retry hits the cache on the prefix."""
-    if not user_tail and not images and len(user) < CACHE_MIN_CHARS:
+def _user_content(user: str, user_tail: str, images: Optional[list[tuple[bytes, str]]], cache: bool = False) -> Any:
+    """The user turn as content blocks: the big prefix (cached when the caller expects to re-ask — a cache
+    write costs 1.25×, a read 0.1×, so only desks with a patch/re-ask round opt in), then images, then the
+    uncached tail (patch errors, re-ask feedback) so the retry hits the cache on the prefix."""
+    if not user_tail and not images and not cache:
         return user
     blocks: list[dict[str, Any]] = []
     head: dict[str, Any] = {"type": "text", "text": user}
-    if len(user) >= CACHE_MIN_CHARS:
+    if cache and len(user) >= CACHE_MIN_CHARS:
         head["cache_control"] = {"type": "ephemeral"}
     blocks.append(head)
     import base64
@@ -138,6 +139,7 @@ def _run(
     tool: Optional[dict],
     user_tail: str = "",
     images: Optional[list[tuple[bytes, str]]] = None,
+    cache: bool = False,
 ) -> tuple[Any, dict]:
     """One recorded call. Returns (parsed_or_text, meta).
 
@@ -155,7 +157,7 @@ def _run(
         "model": model,
         "max_tokens": max_tokens,
         "system": system,
-        "messages": [{"role": "user", "content": _user_content(user, user_tail, images)}],
+        "messages": [{"role": "user", "content": _user_content(user, user_tail, images, cache)}],
     }
     if tool is not None:
         kwargs["tools"] = [tool]
@@ -281,7 +283,7 @@ def call_json(
     tool_name: str, schema: dict, model_cls: Optional[Type[BaseModel]] = None,
     tool_description: str = "Return the structured answer.",
     model: Optional[str] = None, max_tokens: int = 16000, repair_attempts: int = 1,
-    user_tail: str = "", images: Optional[list[tuple[bytes, str]]] = None,
+    user_tail: str = "", images: Optional[list[tuple[bytes, str]]] = None, cache: bool = False,
 ) -> tuple[Any, dict]:
     """Forced-tool JSON call validated against `model_cls` (if given).
 
@@ -296,7 +298,7 @@ def call_json(
     for attempt in range(repair_attempts + 1):
         raw, meta = _run(job_id, step, label=label if attempt == 0 else f"{label} (repair {attempt})",
                          system=system, user=user, model=model or DEFAULT_MODEL,
-                         max_tokens=max_tokens, effort=None, tool=tool, user_tail=tail, images=images)
+                         max_tokens=max_tokens, effort=None, tool=tool, user_tail=tail, images=images, cache=cache)
         try:
             repaired = unstringify(raw, schema)
             if repaired != raw:
