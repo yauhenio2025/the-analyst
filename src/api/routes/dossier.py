@@ -341,3 +341,108 @@ def resume(job_id: str):
         update_job(job_id, status=runner.STATUS_FOR_STEP.get(job.step, "queued"), error=None)
     started = runner.resume(job_id)
     return {"job_id": job_id, "status": job.status, "resumed": started, "from_step": job.step}
+
+
+# ── Plates (PLATES agent, V1) — a standalone capability over a finished job ─────────────────────────
+# POST /v1/dossier/jobs/{id}/plates {n?: 1-3, perspectives?: [...], provider?}   plan + render in a daemon thread; events under phase "plates"
+# GET  /v1/dossier/jobs/{id}/plates                                              {job_id, running, run, plates: [Plate…]}
+# GET  /v1/dossier/jobs/{id}/plates/{key}.jpg                                    the kept 4K render (jpg/png/webp by content)
+# DELETE /v1/dossier/jobs/{id}/plates                                            forget the plates (files stay on disk)
+
+class PlatesRequest(BaseModel):
+    n: Optional[int] = None
+    perspectives: Optional[list[str]] = None
+    provider: Optional[str] = None
+
+
+def _plates_thread(job_id: str, n: int, perspectives: Optional[list[str]], provider: Optional[str]) -> None:
+    import threading
+
+    from src.dossier import plate_store
+    from src.dossier.plates import run_plates
+
+    def _work() -> None:
+        try:
+            job = get_job(job_id)
+            if job is None:
+                return
+            run_plates(job, n, perspectives=perspectives, provider=provider, persist=lambda p: plate_store.upsert_plate(job_id, p))
+        except Exception as exc:  # the skip law: the thread never dies loudly
+            logger.warning(f"plates run failed for {job_id}: {exc}", exc_info=True)
+            dossier_events.emit(job_id, "call_failed", phase="plates", label="plates", detail=f"plates run failed: {exc}")
+        finally:
+            plate_store.mark_done(job_id)
+
+    threading.Thread(target=_work, name=f"plates-{job_id}", daemon=True).start()
+
+
+@router.post("/jobs/{job_id}/plates", status_code=202)
+def start_plates(job_id: str, req: Optional[PlatesRequest] = None):
+    from src.dossier import plate_store
+    from src.dossier.plates import MAX_PLATES
+
+    job = _load(job_id)
+    if not job.analysis:
+        raise HTTPException(status_code=409, detail=f"the job has no analysis prose yet (status={job.status}); plates need a finished analysis")
+    req = req or PlatesRequest()
+    perspectives = [str(p).strip() for p in (req.perspectives or []) if str(p).strip()][:MAX_PLATES] or None
+    n = len(perspectives) if perspectives else int(req.n or 2)
+    if not (1 <= n <= MAX_PLATES):
+        raise HTTPException(status_code=400, detail=f"n must be 1..{MAX_PLATES}")
+    if req.provider:
+        from src.images import providers as P
+        if req.provider not in P.PROVIDERS:
+            raise HTTPException(status_code=400, detail=f"unknown provider {req.provider!r}; known: {sorted(P.PROVIDERS)}")
+    if not plate_store.mark_running(job_id, n, perspectives):
+        raise HTTPException(status_code=409, detail="a plates run is already in flight for this job")
+    _plates_thread(job_id, n, perspectives, req.provider)
+    return {"job_id": job_id, "status": "started", "n": n, "perspectives": perspectives or [], "phase": "plates"}
+
+
+@router.get("/jobs/{job_id}/plates")
+def get_plates(job_id: str):
+    from src.dossier import plate_store
+
+    _load(job_id)
+    plates = plate_store.list_plates(job_id)
+    state = plate_store.run_state(job_id)
+    return {"job_id": job_id, "running": state is not None, "run": state,
+            "plates": [p.model_dump(exclude={"prompt"}) | {"prompt_chars": len(p.prompt or "")} for p in plates]}
+
+
+@router.delete("/jobs/{job_id}/plates")
+def delete_plates(job_id: str):
+    from src.dossier import plate_store
+
+    _load(job_id)
+    if plate_store.run_state(job_id) is not None:
+        raise HTTPException(status_code=409, detail="a plates run is in flight; wait for it to finish")
+    return {"job_id": job_id, "deleted": plate_store.delete_plates(job_id)}
+
+
+@router.get("/jobs/{job_id}/plates/{filename}")
+def get_plate_image(job_id: str, filename: str):
+    from src.dossier import plate_store
+    from src.dossier.common import job_dir
+
+    name = Path(filename).name
+    key = name.rsplit(".", 1)[0] if "." in name else name
+    candidates = [job_dir(job_id) / "plates" / name]
+    plate = plate_store.get_plate(job_id, key)
+    if plate and plate.path:
+        candidates.insert(0, Path(plate.path))
+    for ext in ("jpg", "png", "webp", "jpeg"):
+        candidates.append(job_dir(job_id) / "plates" / f"{key}.{ext}")
+    for path in candidates:
+        if path.exists() and path.is_file():
+            media = {".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".webp": "image/webp"}.get(path.suffix.lower(), "image/png")
+            return FileResponse(str(path), media_type=media, filename=f"{job_id}-{key}{path.suffix}",
+                                headers={"Cache-Control": "public, max-age=3600"})
+    if plate and plate.figure_id:
+        from src.images.storage import figure_mime, figure_path
+        try:
+            p = figure_path(plate.figure_id)
+            return FileResponse(str(p), media_type=figure_mime(plate.figure_id), filename=f"{job_id}-{key}{p.suffix}")
+        except (FileNotFoundError, ValueError):
+            pass
+    raise HTTPException(status_code=404, detail="plate not found")

@@ -5,8 +5,8 @@
    to deliver (VITE_MOCK_SPEED scales it). Created jobs persist in
    sessionStorage so a reload re-attaches, like the real server. */
 import type {
-  Brief, Catalog, CreateJobRequest, DossierFigure, DossierJob, DossierStatus, Exemplar,
-  ExecutorJob, JobListEntry, OrchestratorPlan, Receipt, RunEvent, SourceSpec,
+  Brief, Catalog, CreateJobRequest, DossierFigure, DossierJob, DossierPlate, DossierStatus, Exemplar,
+  ExecutorJob, JobListEntry, OrchestratorPlan, PlatesResponse, Receipt, RunEvent, SourceSpec,
   DossierOptions, Totals,
 } from '../types'
 import { statusRank } from '../types'
@@ -24,6 +24,27 @@ import eventsJson from '../../mock/events.json'
 import dossierHtmlRaw from '../../mock/dossier.html?raw'
 import fig1Url from '../../mock/figures/fig-1.svg'
 import fig2Url from '../../mock/figures/fig-2.svg'
+import plate1Url from '../../mock/plates/plate-1.svg'
+
+/* One fixture plate (a scorecard, plate_a's grammar). The seeded delivered job has it already; a
+   "make plates" request on any delivered job replays a run: planned for ~4 s, then generated. */
+const PLATE_1: DossierPlate = {
+  key: 'scorecard_of_shifts', family: 'scorecard', visual_format: 'structured_diagram',
+  perspective: 'Scorecard of the reset', title: 'The Kering Study and the Fourth Field: A Scorecard of Shifts',
+  narrative: 'Read the four panels as a ledger. The green panels list what the reset gained: heritage as an asset, creative direction as governance, a smaller retail estate, and a fourth field of cultural production. The red panels list what it cost and what it left unresolved. The cross marks the losses the reset absorbed on purpose; the arrow shows the tensions that survived into the fourth field.',
+  why_this_perspective: 'The material keeps scoring the reset as gains against losses; a scorecard shows both columns at once.',
+  claimed_territory: 'gains and losses of the reset, and the tensions that persist', excludes: ['the chronology of the reset', 'the field-by-field framework'],
+  abstraction_level: 3, aspect: '16:9', style_school: 'explanatory_narrative', status: 'generated',
+  url: plate1Url, figure_id: 'plate-8f21c0', provider: 'gemini_pro', model: 'gemini-3-pro-image-preview', width: 5504, height: 3072,
+  cost_usd: 0.27,
+  compliance: { checked: true, ok: true, format_ok: true, detected_format: '2x2 scorecard of labelled panels', title_found: true,
+    labels_found: new Array(26).fill('x'), labels_missing: [], illegible: [], leaked_tokens: [], prohibited_elements: [], extra_text: [],
+    density: 'dense', legible_at_4k: true, issues: [], confidence: 'high', n_labels: 26 },
+  attempts: [{ n: 1, provider: 'gemini_pro', model: 'gemini-3-pro-image-preview', cost_usd: 0.24, latency_ms: 96_000, width: 5504, height: 3072, kept: true }],
+  created_at: new Date().toISOString(),
+}
+const plateRuns = new Map<string, { started: number; n: number; perspectives: string[] }>()
+const platesOf = new Map<string, DossierPlate[]>([['dj-kering-fourth-field', [PLATE_1]]])
 
 type Mirror = { phase: string; phase_number: number; kind?: string }
 type ScriptEvent = Partial<RunEvent> & { stage: 'A' | 'B'; at_ms: number; mirror?: Mirror }
@@ -357,4 +378,33 @@ export const mockApi: Api = {
   },
   plan: () => delay(PLAN),
   pipelineVisualization: () => delay(PLAN as unknown as { phases: OrchestratorPlan['phases'] }),
+  getPlates: (jobId) => {
+    runOf(jobId)
+    const run = plateRuns.get(jobId)
+    let plates = platesOf.get(jobId) ?? []
+    let running = false
+    if (run) {
+      const t = ((Date.now() - run.started) * SPEED)
+      if (t < 4000) {
+        running = true
+        plates = [...plates, { ...PLATE_1, key: `${PLATE_1.key}_planned`, status: 'planned', url: null, figure_id: null, compliance: null, attempts: [], cost_usd: 0,
+          perspective: run.perspectives[0] ?? PLATE_1.perspective }]
+      } else {
+        platesOf.set(jobId, [...(platesOf.get(jobId) ?? []).filter((p) => p.key !== PLATE_1.key), { ...PLATE_1, perspective: run.perspectives[0] ?? PLATE_1.perspective, created_at: new Date().toISOString() }])
+        plateRuns.delete(jobId)
+        plates = platesOf.get(jobId) ?? []
+      }
+    }
+    const res: PlatesResponse = { job_id: jobId, running, run: run && running ? { started_at: new Date(run.started).toISOString(), n: run.n, perspectives: run.perspectives } : null, plates }
+    return delay(res, 80)
+  },
+  startPlates: (jobId, n, perspectives) => {
+    const job = snapshot(runOf(jobId))
+    if (job.status !== 'done') throw Object.assign(new Error('409 the job has no analysis prose yet'), { status: 409 })
+    if (plateRuns.has(jobId)) throw Object.assign(new Error('409 a plates run is already in flight for this job'), { status: 409 })
+    const p = (perspectives ?? []).filter(Boolean).slice(0, 3)
+    plateRuns.set(jobId, { started: Date.now(), n: p.length || n || 2, perspectives: p })
+    return delay({ job_id: jobId, status: 'started', n: p.length || n || 2, perspectives: p, phase: 'plates' }, 200)
+  },
+  plateImageUrl: (_jobId, plate) => plate.url ?? plate1Url,
 }

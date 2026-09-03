@@ -1,0 +1,19 @@
+{#- Plates appendix — a partial. The composer includes it with `plates` in context
+    (src.dossier.plates.appendix_context gives that list); it renders nothing when there are no plates.
+    Each plate is full-width: the 4K image, its title, the narrative the reader needs, and the record line. -#}
+{% if plates %}
+<section class="appendix plates" data-plates>
+  <h2>Plates</h2>
+  <p class="muted">Each plate is one dense diagram that carries a whole perspective on the material; read it instead of the section it condenses. Every string on a plate comes from the analysis, the tables or the sources; the plate was checked mechanically against its own manifest.</p>
+  {% for p in plates %}
+  <figure class="plate" data-plate="{{ p.key }}">
+    {% if p.src %}<img src="{{ p.src }}" alt="{{ p.title }}">{% else %}<div class="placeholder">Plate not rendered</div>{% endif %}
+    <figcaption>
+      <span class="fnum">Plate {{ p.index }}</span><strong>{{ p.title }}.</strong>
+      {% if p.narrative %}<span class="plate-narrative">{{ p.narrative }}</span>{% endif %}
+      <span class="muted plate-record">{{ p.perspective }} · {{ p.family|replace('_', ' ') }} ({{ p.visual_format|replace('_', ' ') }}) · level {{ p.level }}{% if p.width and p.height %} · {{ p.width }}×{{ p.height }}{% endif %} · {{ p.attempts }} attempt{{ 's' if p.attempts != 1 else '' }} · check: {{ p.check }}</span>
+    </figcaption>
+  </figure>
+  {% endfor %}
+</section>
+{% endif %}

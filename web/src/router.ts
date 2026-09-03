@@ -9,6 +9,7 @@ export const STEP_SLUGS: StepSlug[] = ['sources', 'brief', 'draft', 'dossier']
 export type Route =
   | { kind: 'library' }
   | { kind: 'dossier'; id: string; step: StepSlug; item: string | null }
+  | { kind: 'plates'; id: string }
   | { kind: 'console'; id: string; node: string | null; exec: boolean }
 
 export function parseRoute(url: string): Route {
@@ -16,6 +17,7 @@ export function parseRoute(url: string): Route {
   const parts = pathname.split('/').filter(Boolean)
   const q = new URLSearchParams(search ?? '')
   if (parts.length === 0) return { kind: 'library' }
+  if (parts[0] === 'd' && parts[1] && parts[2] === 'plates') return { kind: 'plates', id: parts[1] }
   if (parts[0] === 'd' && parts[1]) {
     const step = (STEP_SLUGS as string[]).includes(parts[2] ?? '')
       ? (parts[2] as StepSlug) : 'sources'
@@ -31,6 +33,7 @@ export function parseRoute(url: string): Route {
 export const dossierPath = (id: string, step: StepSlug, query = '') =>
   `/d/${id}/${step}${query}`
 export const consolePath = (id: string, query = '') => `/console/${id}${query}`
+export const platesPath = (id: string) => `/d/${id}/plates`
 
 type Listener = () => void
 const listeners = new Set<Listener>()
