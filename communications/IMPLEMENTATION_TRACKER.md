@@ -204,3 +204,7 @@ Re-upload exemplars after a backend redeploy (until Postgres is wired). Texts: s
 
 Pre-baked demo run: POST /v1/dossier/jobs with sources [{"kind":"exemplar","name":"fashion_bundle.txt"}], depth medium, audience executive, output.figures 2, autopilot true (about 14 min, about $3).
 Fast live run: same with kering_study.md at depth simple (about 6 min, about $1).
+
+### Demo runs (started 2026-09-03 06:44 UTC, live SQLite — do not push before the demo)
+- medium, fashion bundle, 2 figures: `dossier-03ad976936f0`
+- simple, Kering study, 1 figure: `dossier-10656694ada2`
