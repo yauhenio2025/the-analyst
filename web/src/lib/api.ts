@@ -66,6 +66,42 @@ function normalizeExemplar(e: Record<string, unknown>): Record<string, unknown> 
     description: (e.description ?? '') as string,
   }
 }
+/* Brief options: the backend sends engines as [{engine_key, why}], estimates as strings,
+   output_shape as an object; pages expect names, numbers and a one-line shape. */
+function normalizeBriefOption(o: Record<string, unknown>): Record<string, unknown> {
+  const rawEngines = Array.isArray(o.engines) ? (o.engines as unknown[]) : []
+  const engines = rawEngines.map((e) => typeof e === 'string' ? e : String((e as Record<string, unknown>)?.engine_key ?? (e as Record<string, unknown>)?.key ?? ''))
+    .filter(Boolean)
+  const whys = rawEngines.map((e) => (typeof e === 'object' && e ? (e as Record<string, unknown>).why : null)).filter(Boolean) as string[]
+  let shape: unknown = o.output_shape
+  if (shape && typeof shape === 'object') {
+    const sh = shape as Record<string, unknown>
+    const n = (v: unknown) => Array.isArray(v) ? v.length : (typeof v === 'number' ? v : 0)
+    const parts = [] as string[]
+    if (n(sh.sections)) parts.push(`${n(sh.sections)} sections`)
+    if (n(sh.tables)) parts.push(`${n(sh.tables)} tables`)
+    if (n(sh.figures)) parts.push(`${n(sh.figures)} figures`)
+    shape = parts.join(' · ')
+  }
+  return {
+    ...o,
+    engines,
+    why: (typeof o.why === 'string' && o.why) ? o.why : whys.join(' '),
+    est_cost_usd: Number(o.est_cost_usd ?? 0) || 0,
+    est_minutes: Number(o.est_minutes ?? 0) || 0,
+    est_llm_calls: Number(o.est_llm_calls ?? 0) || 0,
+    output_shape: typeof shape === 'string' ? shape : undefined,
+    telling: typeof o.telling === 'string' ? o.telling : String(o.telling ?? ''),
+    title: String(o.title ?? o.key ?? ''),
+  }
+}
+function normalizeBrief(b: unknown): Brief {
+  const anyB = (b && typeof b === 'object' ? b : {}) as Record<string, unknown>
+  const options = Array.isArray(anyB.options) ? (anyB.options as Record<string, unknown>[]).map(normalizeBriefOption) : []
+  const defaults = (anyB.defaults && typeof anyB.defaults === 'object' ? anyB.defaults : {}) as Record<string, unknown>
+  return { ...anyB, options, defaults } as unknown as Brief
+}
+
 function normalizeJob(j: DossierJob): DossierJob {
   const anyJ = j as unknown as Record<string, unknown>
   if (Array.isArray(anyJ.sources)) {
@@ -106,6 +142,7 @@ function normalizeJob(j: DossierJob): DossierJob {
     }
     anyJ.paths = cleaned
   }
+  if (anyJ.brief && typeof anyJ.brief === 'object') anyJ.brief = normalizeBrief(anyJ.brief)
   const t = (anyJ.totals ?? {}) as Record<string, unknown>
   if (typeof t.calls !== 'number') {
     t.calls = (Number(t.llm_calls ?? 0) || 0) + (Number(t.image_calls ?? 0) || 0)
@@ -173,7 +210,7 @@ const live: Api = {
       { method: 'POST', body: JSON.stringify({ ...anyReq, sources }) })
   },
   getJob: (id) => request<DossierJob>(`/v1/dossier/jobs/${id}`).then(normalizeJob),
-  getBrief: (id) => request<Brief>(`/v1/dossier/jobs/${id}/brief`),
+  getBrief: (id) => request<unknown>(`/v1/dossier/jobs/${id}/brief`).then(normalizeBrief),
   chooseBrief: (id, option_key, overrides) => request<DossierJob>(
     `/v1/dossier/jobs/${id}/brief`,
     { method: 'POST', body: JSON.stringify({ option_key, overrides: overrides ?? {} }) }).then(normalizeJob),
