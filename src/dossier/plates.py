@@ -53,7 +53,7 @@ MAX_TEXT_ELEMENTS = 110
 MAX_TITLE_CHARS = 110
 MAX_LABEL_WORDS, MAX_LABEL_CHARS = 20, 140   # plate_a's items are full clauses
 MAX_NOTE_WORDS, MAX_NOTE_CHARS = 24, 160
-MAX_CELL_WORDS, MAX_CELL_CHARS = 18, 120
+MAX_CELL_WORDS, MAX_CELL_CHARS = 16, 110
 MIN_GROUNDED_FRACTION = 0.4              # plates paraphrase definitions; labels still use the material's words
 MATERIAL_MAX_CHARS = 140_000
 CHECK_MODEL = "claude-sonnet-4-6"
@@ -530,10 +530,10 @@ def _v_register(d: dict, e: list[str]) -> None:
         w = f"canonical.rows[{i}]"
         _lab(r, e, w)
         cells = r.get("cells") if isinstance(r, dict) else None
-        if not isinstance(cells, list) or len(cells) != len(cols):
-            e.append(f"{w}.cells must have exactly {len(cols)} strings (one per column)")
+        if not isinstance(cells, list) or len(cells) != len(cols) - 1:
+            e.append(f"{w}.cells must have exactly {len(cols) - 1} strings — the row label fills the FIRST column, cells fill the remaining {len(cols) - 1}")
             continue
-        for j, (cell, k) in enumerate(zip(cells, kinds)):
+        for j, (cell, k) in enumerate(zip(cells, kinds[1:]), start=1):
             cell = _s(cell)
             if k == "badge" and len(cell.split()) > 3:
                 e.append(f"{w}.cells[{j}] is a badge: at most 3 words (got '{cell}')")
@@ -556,7 +556,7 @@ def _r_register(d: dict) -> list[str]:
     for r in d["rows"]:
         star = " ★ (starred row: warm tint, red star in the first cell)" if r.get("starred") else ""
         cells = []
-        for c, cell in zip(cols, r["cells"]):
+        for c, cell in zip(cols[1:], r["cells"]):
             k = _s(c.get("kind") or "text").lower()
             cell = _s(cell)
             if k == "badge":
@@ -569,7 +569,7 @@ def _r_register(d: dict) -> list[str]:
                 cells.append(f"numeral {cell}")
             else:
                 cells.append(cell)
-        out.append(f"  Row '{r['label']}'{star}: " + " | ".join(cells))
+        out.append(f"  Row — first column '{r['label']}'{star}; then: " + " | ".join(cells))
     if d.get("legend"):
         out.append("  Legend strip (bottom): " + "; ".join(f"{lg['badge']} = {lg['meaning']}" for lg in d["legend"]))
     return out
@@ -723,10 +723,10 @@ PLATE_FAMILIES: dict[str, dict[str, Any]] = {
     "register": {
         "name": "Register (a dense badge-and-glyph table — the client's argument-architecture grammar)", "format": "matrix", "aspect": "3:4",
         "perspective": "one row per item (argument, risk, case, actor) scored across typed columns — r1-r4's grammar",
-        "template": {"columns": [{"label": "…", "kind": "text|badge|glyph|number|bar"}],
-                     "rows": [{"label": "…", "starred?": True, "cells": ["one string per column"]}],
+        "template": {"columns": [{"label": "the row-label column", "kind": "text"}, {"label": "…", "kind": "text|badge|glyph|number|bar"}],
+                     "rows": [{"label": "fills the first column", "starred?": True, "cells": ["one string per REMAINING column (columns minus one)"]}],
                      "legend?": [{"badge": "HIGH", "meaning": "…", "tone?": "blue"}]},
-        "rule": "3-10 typed columns × 3-12 rows; badge cells ≤ 3 words; glyph cells one of serial|convergent|linked|divergent|circular|none; bar cells a percentage",
+        "rule": "3-10 typed columns × 3-12 rows; the row label IS the first column, so each row has columns-minus-one cells; text cells ≤ 16 words; badge cells ≤ 3 words; glyph cells one of serial|convergent|linked|divergent|circular|none; bar cells a percentage",
         "validate": _v_register, "render": _r_register,
         "grammar": [
             "A full-width TABLE with a dark navy header band and white capital column headers; alternating pale rows; column widths by content; the first column in bold",
@@ -734,7 +734,7 @@ PLATE_FAMILIES: dict[str, dict[str, Any]] = {
             "BADGE cells are rounded coloured pills with the badge word in white capitals — one consistent colour per badge word across the whole plate (blues for likelihood grades, green/rust/red/grey/purple for type and warrant families)",
             "GLYPH cells are circular icons with the arrow glyph (serial →→, convergent ⇒, linked ⊕, divergent ⇆, circular ↻) and the word beneath in small text",
             "NUMBER cells are large numerals; BAR cells are a segmented strength bar with the percentage printed beneath it",
-            "Text cells wrap in sentence case at a size that stays legible — NEVER shorten a cell with '…' and NEVER print a note about shortening",
+            "Text cells wrap in sentence case at a size that stays legible; a row is as tall as its longest cell needs — NEVER cut a cell short, NEVER shorten it with '…' and NEVER print a note about shortening",
             "A legend strip at the bottom explains the badges",
         ],
     },

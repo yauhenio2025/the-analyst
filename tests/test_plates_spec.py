@@ -111,11 +111,11 @@ def test_framework_shape_holds():
     ("power_map", {"x_axis": {"label": "P", "low": "l", "high": "h"}, "y_axis": {"label": "I", "low": "l", "high": "h"}, "actors": [{"label": "a", "x": 2, "y": 0.5}] * 5}, "x and y NUMBERS"),
     ("timeline_of_shifts", {"events": [{"label": "no date"}, {"date": "1", "label": "b"}, {"date": "2", "label": "c"}, {"date": "3", "label": "d"}, {"date": "4", "label": "e"}]}, "date is required"),
     ("register", {"columns": [{"label": "ID", "kind": "text"}, {"label": "Certainty", "kind": "badge"}, {"label": "S", "kind": "glyph"}],
-                  "rows": [{"label": "r", "cells": ["a", "HIGH LIKELY VERY MUCH", "serial"]}, {"label": "r2", "cells": ["a", "PROB", "serial"]}, {"label": "r3", "cells": ["a", "POSS", "serial"]}]}, "badge: at most 3 words"),
+                  "rows": [{"label": "r", "cells": ["HIGH LIKELY VERY MUCH", "serial"]}, {"label": "r2", "cells": ["PROB", "serial"]}, {"label": "r3", "cells": ["POSS", "serial"]}]}, "badge: at most 3 words"),
     ("register", {"columns": [{"label": "ID", "kind": "text"}, {"label": "C", "kind": "badge"}, {"label": "S", "kind": "glyph"}],
-                  "rows": [{"label": "r", "cells": ["a", "HIGH", "sideways"]}, {"label": "r2", "cells": ["a", "PROB", "serial"]}, {"label": "r3", "cells": ["a", "POSS", "serial"]}]}, "glyph: one of"),
+                  "rows": [{"label": "r", "cells": ["HIGH", "sideways"]}, {"label": "r2", "cells": ["PROB", "serial"]}, {"label": "r3", "cells": ["POSS", "serial"]}]}, "glyph: one of"),
     ("register", {"columns": [{"label": "ID", "kind": "text"}, {"label": "C", "kind": "badge"}, {"label": "S", "kind": "glyph"}],
-                  "rows": [{"label": "r", "cells": ["a", "HIGH"]}, {"label": "r2", "cells": ["a", "PROB", "serial"]}, {"label": "r3", "cells": ["a", "POSS", "serial"]}]}, "exactly 3 strings"),
+                  "rows": [{"label": "r", "cells": ["a", "HIGH", "serial"]}, {"label": "r2", "cells": ["PROB", "serial"]}, {"label": "r3", "cells": ["POSS", "serial"]}]}, "exactly 2 strings"),
     ("layer_stack", {"layers": [{"label": "a", "items": [{"label": "x"}]}, {"label": "b", "items": []}, {"label": "c", "items": [{"label": "y"}]}]}, "items must list 1-6"),
     ("argument_tree", {"claim": {"label": "c"}, "premises": [{"label": "p", "strength": 7}, {"label": "q"}]}, "strength must be a NUMBER"),
     ("nope", {"x": 1}, "not one of"),
@@ -243,8 +243,8 @@ def test_labels_walk_notes_cells_and_skip_controls():
     assert "LICENSES" in labels and "SAME PLAYBOOK, DIFFERENT SECTOR" in labels and "Investment screening" in labels
     assert "0.9" not in labels and "gain" not in labels
     assert "Corporate procurement presented as sovereign capability" not in content_labels(c)
-    reg = {"columns": [{"label": "ID", "kind": "text"}, {"label": "C", "kind": "badge"}], "rows": [{"label": "r", "starred": True, "cells": ["conclusion text", "HIGH"]}]}
-    assert collect_plate_labels(reg) == ["ID", "C", "r", "conclusion text", "HIGH"]
+    reg = {"columns": [{"label": "ID", "kind": "text"}, {"label": "C", "kind": "badge"}], "rows": [{"label": "r", "starred": True, "cells": ["HIGH"]}]}
+    assert collect_plate_labels(reg) == ["ID", "C", "r", "HIGH"]
 
 
 # ── declutter ────────────────────────────────────────────────────────────
@@ -293,7 +293,7 @@ def test_prompt_revision_notes_and_register_grammar():
                     narrative="Read down the rows. Each row is one argument. Badges grade certainty and type.",
                     canonical={"columns": [{"label": "ID", "kind": "text"}, {"label": "Certainty", "kind": "badge"}, {"label": "Structure", "kind": "glyph"},
                                            {"label": "Premises", "kind": "number"}, {"label": "Strength", "kind": "bar"}],
-                               "rows": [{"label": f"Argument {i}", "starred": i == 1, "cells": [f"Conclusion number {i} in full", "HIGH", "serial", "3", f"{70 + i}%"]} for i in range(1, 5)],
+                               "rows": [{"label": f"Argument {i}", "starred": i == 1, "cells": ["HIGH", "serial", "3", f"{70 + i}%"]} for i in range(1, 5)],
                                "legend": [{"badge": "HIGH", "meaning": "Highly likely"}]})
     errors, _ = validate_plate_spec(reg, "")
     assert errors == [], errors
