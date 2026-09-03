@@ -166,6 +166,13 @@ GET  /v1/figures/{figure_id}
 - `src/executor/executor.db` UNTRACKED (c519dc2): schema is created on boot; the dossier agent had committed its local job rows, which showed up as a stuck job on the live service. Live SQLite resets on every deploy until EXECUTOR_DATABASE_URL is set.
 - Live smoke (2026-09-03 05:20 UTC): `/v1/figures/providers` lists 4 providers; `/v1/dossier/*` and `/v1/events/*` routes served; `/v1/dossier/exemplars` is EMPTY on Render (exemplar texts are not in git — repo is public; next session: upload endpoint or private repo + commit `data/exemplars/`).
 
+### LIVE VERIFICATION (2026-09-03 06:20-06:35 UTC, after re-login)
+- Exemplars now live in the executor DB via `POST /v1/dossier/exemplars` (src/sources/exemplar_store.py). Uploaded `fashion_bundle.txt` (5 docs) and `kering_study.md`. **Wiped on every backend redeploy until EXECUTOR_DATABASE_URL is set** -> re-upload with the snippet in section 7.
+- LIVE RUN on the deployed stack: `dossier-9b0dc7a31701` from exemplar `fashion_bundle.txt`, depth simple, autopilot -> **done in 13m31s, $2.38, 9 LLM + 1 image call, 578K in / 34K out; brief chose "Where Your Sustainability Story Will Be Attacked"; 2 tables (8-row Legitimacy Attack Matrix), 1 Gemini figure, 5 sections + summary + conclusion, 13-page A4 PDF.** Outputs saved at `data/dossiers/live-dossier-9b0dc7a31701/` (git-ignored) - the pre-baked demo artefact if the live DB is lost.
+- Desk verified live with Playwright: Library shelf, draft waiting screen (rail 1-8, narration, live call, meter), dossier page (totals, downloads, inline HTML), console (phase tree, node detail, timeline). mgmt console Runs page lists dossier runs.
+- Client fixes shipped for real-vs-mock contract drift: wrapped lists, null fields, exemplar naming, job title, composed `sections` object -> list, API-absolute figure URLs in inline HTML, filesystem `paths` dropped, SPA 404 fallback, duplicate narration.
+- Known cosmetic: mgmt Runs page says "ledger not available" (probe logic); desk `?mock=1` still uses its own fixtures.
+
 ### FINAL STATE AT SESSION END (2026-09-03 ~05:50 UTC)
 - Desk static site LIVE at https://the-analyst-desk.onrender.com after fixing the `lib/` gitignore trap (cec64e1; see BUG_TRACKING). Not yet smoke-tested against real backend jobs — `?mock=1` replay verified by the web agent only.
 - ALL FOUR BRANCHES MERGED to the-analyst master (events, images, dossier, web) and pushed; 61 tests pass; analyzer-mgmt master = console branch, live.
@@ -188,3 +195,12 @@ Then: fold `communications/changes/*.md` into docs/CHANGELOG.md + docs/FEATURES.
 1. Library → exemplar bundle card → brief (3 angles) → draft waiting screen narrated live (fast run on the Kering study, depth simple) → dossier with tables + figures → PDF.
 2. Console (`/console/{job}` in the web app, or analyzer-mgmt Runs → Run Console) on the pre-baked medium run: phase tree, prompt|output per pass, cost meter, planner rationale, executive view.
 3. Wirecut first, then The Analyst: same four-step skeleton.
+
+## 7. Snippets
+
+Re-upload exemplars after a backend redeploy (until Postgres is wired). Texts: session scratchpad `exemplars/` or `~/projects/the-analyst-wt/dossier/data/exemplars/`.
+
+    python3 reupload_exemplars.py   # see scripts/reupload_exemplars.py (reads EXEMPLARS_SRC dir, posts fashion_bundle.txt + kering_study.md)
+
+Pre-baked demo run: POST /v1/dossier/jobs with sources [{"kind":"exemplar","name":"fashion_bundle.txt"}], depth medium, audience executive, output.figures 2, autopilot true (about 14 min, about $3).
+Fast live run: same with kering_study.md at depth simple (about 6 min, about $1).

@@ -36,3 +36,13 @@ Problem classes, root causes, files fixed. See global rules.
 - `web/src/lib/{api,format,hooks,mock,run}.ts` — committed (cec64e1)
 
 **Pattern to Watch For**: after merging a front-end branch, run `git status --short --ignored <dir> | grep '^!!'` before deploying; any `!!` under a source tree is a missing file.
+
+## Mock-contract drift between parallel agents (2026-09-03)
+
+**Problem Class**: Front end built against a written contract + mocks while the backend was built concurrently; field names and wrapping diverged ({jobs:[...]} vs array, name/document_count/char_count vs key/n_docs/chars, composed sections object vs list, filesystem paths, null-before-step fields).
+
+**Root Cause**: no shared fixture generated from the real API; each agent verified only against its own side.
+
+**Files Fixed**: web/src/lib/api.ts (unwrap, normalizeJob, normalizeExemplar, getDossierHtml URL rewrite), web/src/components/RunRail.tsx, web/package.json (404.html SPA fallback).
+
+**Pattern to Watch For**: after any backend schema change, run one live job and open every desk page with Playwright; keep normalization in api.ts, never in pages. Generate web/mock fixtures from a real job JSON.
