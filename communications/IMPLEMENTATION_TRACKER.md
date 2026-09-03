@@ -159,8 +159,12 @@ GET  /v1/figures/{figure_id}
 ### In flight at handoff (branches, merge in this order)
 1. `feat/events` — MERGED. (worktree `~/projects/the-analyst-wt/events`): run_events table + `src/events/{store,schemas,pricing,context,narrator}.py`, hooks in engine_runner/chain_runner/workflow_runner, `/v1/events/{job}`, `/summary`, `/stream` (SSE) + executor aliases. Sample run job-plan-d87b85c590db; transcript `communications/changes/events-sample.jsonl`.
 2. `feat/dossier` — MERGED (re-merge for late commits). (worktree `.../dossier`): `src/dossier/*`, `src/sources/*`, `/v1/dossier/*`, workflow `dossier_standard`. First full run on the bundle: reconnaissance 158 s/$0.38 (29/35 claims verified), brief 43 s/$0.05 (autopilot chose "Where Your Sustainability Claims Will Be Challenged"), then plan → executor analysis → tables → figures → compose.
-3. `feat/web` (worktree `.../web`): `web/` Vite+React front end (Library, 4 steps, /console/:id), mock mode `VITE_MOCK=1`, screenshots in `web/docs/screens/`.
+3. `feat/web` — MERGED (e3c891b). Static site **https://the-analyst-desk.onrender.com** (srv-dacg7u15efls73eb2b40, build `cd web && npm ci && npm run build`, publish `web/dist`, env VITE_API_BASE). Mock demo insurance: append `?mock=1` to any page. (worktree `.../web`): `web/` Vite+React front end (Library, 4 steps, /console/:id), mock mode `VITE_MOCK=1`, screenshots in `web/docs/screens/`.
 4. analyzer-mgmt `feat/the-analyst-console` (push to origin analyzer-mgmt; merging to master auto-deploys the live console — verify first).
+
+### Also done after handoff
+- `src/executor/executor.db` UNTRACKED (c519dc2): schema is created on boot; the dossier agent had committed its local job rows, which showed up as a stuck job on the live service. Live SQLite resets on every deploy until EXECUTOR_DATABASE_URL is set.
+- Live smoke (2026-09-03 05:20 UTC): `/v1/figures/providers` lists 4 providers; `/v1/dossier/*` and `/v1/events/*` routes served; `/v1/dossier/exemplars` is EMPTY on Render (exemplar texts are not in git — repo is public; next session: upload endpoint or private repo + commit `data/exemplars/`).
 
 ### Merge recipe
 ```
