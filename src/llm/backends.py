@@ -182,10 +182,11 @@ class AnthropicBackend:
         Timeout: 20 min read timeout handles up to ~50K output tokens at 42 tok/s.
         """
         import httpx
+        import anthropic
         from anthropic import Anthropic
 
         client = Anthropic(
-            timeout=httpx.Timeout(
+            timeout=anthropic.Timeout(
                 connect=60.0,
                 read=1200.0,  # 20 min for large outputs
                 write=120.0,  # 2 min for large prompts
@@ -294,10 +295,11 @@ class AnthropicBackend:
         partial output can be salvaged on connection errors.
         """
         import httpx
+        import anthropic
         from anthropic import Anthropic
 
         client = Anthropic(
-            timeout=httpx.Timeout(
+            timeout=anthropic.Timeout(
                 connect=60.0,
                 read=300.0,  # 5 min max silence on socket
                 write=60.0,
