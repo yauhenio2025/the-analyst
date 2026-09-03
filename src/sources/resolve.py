@@ -30,15 +30,28 @@ def _slug(text: str) -> str:
 
 
 def list_exemplars() -> list[dict]:
+    out: list[dict] = []
+    try:
+        from src.sources.exemplar_store import list_db_exemplars
+        for e in list_db_exemplars():
+            text = load_exemplar(e["name"])
+            docs = split_stacks_export(text) if looks_like_stacks_export(text) else []
+            e = dict(e)
+            e["documents"] = [d.meta() for d in docs][:20]
+            e["document_count"] = len(docs) or e.get("document_count") or 1
+            out.append(e)
+    except Exception as exc:  # the DB store is optional
+        logger.warning("exemplar db listing failed: %s", exc)
     if not EXEMPLARS_DIR.exists():
-        return []
-    out = []
+        return out
     for p in sorted(EXEMPLARS_DIR.iterdir()):
         if p.is_file() and p.suffix.lower() in (".txt", ".md") and p.name.lower() != "readme.md":
             text = p.read_text(encoding="utf-8", errors="replace")
             docs = split_stacks_export(text) if looks_like_stacks_export(text) else []
             out.append({
                 "name": p.name,
+                "title": p.stem.replace("_", " "),
+                "source": "folder",
                 "char_count": len(text),
                 "document_count": len(docs) or 1,
                 "documents": [d.meta() for d in docs][:20],
@@ -49,9 +62,16 @@ def list_exemplars() -> list[dict]:
 def load_exemplar(name: str) -> str:
     safe = Path(name).name
     path = EXEMPLARS_DIR / safe
-    if not path.exists() or not path.is_file():
-        raise FileNotFoundError(f"exemplar not found: {safe}")
-    return path.read_text(encoding="utf-8", errors="replace")
+    if path.exists() and path.is_file():
+        return path.read_text(encoding="utf-8", errors="replace")
+    try:
+        from src.sources.exemplar_store import get_db_exemplar
+        text = get_db_exemplar(safe)
+        if text is not None:
+            return text
+    except Exception as exc:
+        logger.warning("exemplar db lookup failed: %s", exc)
+    raise FileNotFoundError(f"exemplar not found: {safe}")
 
 
 def resolve_sources(specs: list[SourceSpec]) -> list[Document]:

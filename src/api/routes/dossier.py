@@ -20,6 +20,7 @@ from __future__ import annotations
 import logging
 from pathlib import Path
 
+from pydantic import BaseModel
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import FileResponse, HTMLResponse, PlainTextResponse
 
@@ -38,6 +39,33 @@ router = APIRouter(prefix="/v1/dossier", tags=["dossier"])
 def dossier_health():
     return {"ok": True, "component": "dossier", "status": "ready",
             "events_store": "fallback" if dossier_events.using_fallback() else "src.events.store"}
+
+
+class ExemplarUpload(BaseModel):
+    name: str
+    text: str
+    title: str = ""
+    description: str = ""
+    document_count: int = 1
+
+
+@router.post("/exemplars")
+def upload_exemplar(body: ExemplarUpload):
+    """Store an exemplar input in the executor DB (texts are not in git)."""
+    from src.sources.exemplar_store import upsert_exemplar
+    from src.sources.stacks import looks_like_stacks_export, split_stacks_export
+    if len(body.text.strip()) < 200:
+        raise HTTPException(status_code=400, detail="exemplar text too short")
+    n_docs = len(split_stacks_export(body.text)) if looks_like_stacks_export(body.text) else body.document_count
+    return upsert_exemplar(body.name, body.text, body.title, body.description, n_docs or 1)
+
+
+@router.delete("/exemplars/{name}")
+def remove_exemplar(name: str):
+    from src.sources.exemplar_store import delete_exemplar
+    if not delete_exemplar(name):
+        raise HTTPException(status_code=404, detail="exemplar not found")
+    return {"deleted": name}
 
 
 @router.get("/exemplars")
