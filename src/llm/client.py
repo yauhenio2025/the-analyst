@@ -40,10 +40,11 @@ def get_anthropic_client(read_timeout_s: float = 300.0, max_retries: Optional[in
     try:
         import httpx
         import anthropic
+        import anthropic
 
         client_kwargs: dict[str, Any] = {
             "api_key": api_key,
-            "timeout": httpx.Timeout(
+            "timeout": anthropic.Timeout(
                 connect=60.0,
                 read=read_timeout_s,
                 write=60.0,

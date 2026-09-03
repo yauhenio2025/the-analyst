@@ -58,6 +58,33 @@ def _start_sub_job(job: DossierJob, plan_id: str, document_ids: dict[str, str]) 
     return sub.job_id
 
 
+def _is_live(sub_job_id: str) -> bool:
+    """Is the executor job actually executing in THIS process (not just recorded 'running')?"""
+    try:
+        from src.executor.workflow_runner import _active_jobs, _active_jobs_lock
+
+        with _active_jobs_lock:
+            return sub_job_id in _active_jobs
+    except Exception:
+        return True  # cannot tell; assume live rather than double-start
+
+
+def _resume_sub_job(sub: dict) -> None:
+    """Resume an orphaned executor job via the executor's own resume path (completed passes are skipped)."""
+    from src.executor.db import _json_loads
+    from src.executor.workflow_runner import start_resume_thread
+
+    plan_data = sub.get("plan_data")
+    if isinstance(plan_data, str):
+        plan_data = _json_loads(plan_data)
+    document_ids = sub.get("document_ids")
+    if isinstance(document_ids, str):
+        document_ids = _json_loads(document_ids)
+    if not plan_data:
+        raise AnalysisFailed(f"executor job {sub.get('job_id')} has no plan_data to resume from")
+    start_resume_thread(sub["job_id"], plan_data, document_ids or None)
+
+
 def _mirror_events(job_id: str, sub_job_id: str, after_seq: int) -> int:
     for ev in events.list_events(sub_job_id, after_seq):
         seq = int(ev.get("seq", after_seq) or after_seq)
@@ -137,7 +164,13 @@ def run_analysis(job: DossierJob, docs: list[Document], *, cancel_check: Optiona
     if sub and sub.get("status") == "completed":
         events.emit(job.id, "note", phase=STEP, detail=f"reusing completed executor job {sub_job_id}")
     elif sub and sub.get("status") in ("pending", "running"):
-        events.emit(job.id, "note", phase=STEP, detail=f"re-attaching to running executor job {sub_job_id}")
+        if _is_live(sub_job_id):
+            events.emit(job.id, "note", phase=STEP, detail=f"re-attaching to running executor job {sub_job_id}")
+        else:
+            events.emit(job.id, "note", phase=STEP,
+                        detail=f"executor job {sub_job_id} is recorded running but not live in this process; resuming it through the executor (completed passes are kept)",
+                        payload_json={"source_job_id": sub_job_id, "kind": "sub_job_resumed"})
+            _resume_sub_job(sub)
     else:
         doc_id, title = _store_corpus(job, docs)
         document_ids = {"target": doc_id, title: doc_id}
