@@ -207,6 +207,37 @@ async def get_engine(engine_key: str) -> EngineDefinition:
     return engine
 
 
+@router.get("/{engine_key}/doctrine")
+async def get_engine_doctrine(engine_key: str) -> dict:
+    """The doctrine (prompt) text an engine runs on, hash-pinned, served from the registry.
+
+    For mirrored engines these are files imported from the home organ's repo
+    (scripts/import_doctrines.py). An organ that reads its prompt from here and
+    keeps the sha256 in its receipts has migrated to the Master (memo §4, Phase B).
+    """
+    from pathlib import Path
+
+    registry = get_engine_registry()
+    engine = registry.get(engine_key)
+    if engine is None:
+        raise HTTPException(status_code=404, detail=f"Engine not found: {engine_key}")
+    base = Path(__file__).resolve().parents[2] / "engines" / "doctrines" / engine_key
+    files = []
+    for meta in engine.doctrine_files:
+        path = base / str(meta.get("name", ""))
+        text = path.read_text(encoding="utf-8", errors="replace") if path.is_file() else None
+        files.append({**meta, "text": text})
+    return {
+        "engine_key": engine.engine_key,
+        "engine_name": engine.engine_name,
+        "home_organ": engine.home_organ,
+        "sync": engine.sync,
+        "lineage_refs": engine.lineage_refs,
+        "files": files,
+        "note": None if files else "No doctrine files imported for this engine yet; see lineage_refs for where its prompt lives.",
+    }
+
+
 @router.get("/{engine_key}/extraction-prompt", response_model=EnginePromptResponse)
 async def get_extraction_prompt(
     engine_key: str,

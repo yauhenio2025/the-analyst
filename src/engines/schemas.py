@@ -228,6 +228,10 @@ class EngineDefinition(BaseModel):
         default="native",
         description="native (registry is the source of truth) | mirrored (home organ still holds the source; registry mirrors it) | planned",
     )
+    doctrine_files: list[dict[str, Any]] = Field(
+        default_factory=list,
+        description="Doctrine/prompt files imported from the home organ (name, source_ref, sha256, chars); served by /v1/engines/{key}/doctrine",
+    )
 
     class Config:
         json_schema_extra = {

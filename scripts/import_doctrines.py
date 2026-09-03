@@ -1,0 +1,67 @@
+"""Import doctrine files for mirrored engines from the organs' repos (Phase B, step 1).
+
+For every engine definition whose lineage_refs name a Markdown file that exists
+under ~/projects/<repo>/<path>, copy it to src/engines/doctrines/<engine_key>/
+and record it in the definition's `doctrine_files` with a sha256. The Master
+then serves the text at GET /v1/engines/{key}/doctrine, hash-pinned, so an organ
+can read its prompt from the registry and keep the hash in its receipts.
+
+Idempotent. Never touches analytical engines (they have no lineage_refs).
+"""
+from __future__ import annotations
+
+import hashlib
+import json
+import os
+import shutil
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+DEFS = ROOT / "src" / "engines" / "definitions"
+DOCTRINES = ROOT / "src" / "engines" / "doctrines"
+PROJECTS = Path(os.environ.get("PROJECTS_DIR", str(Path.home() / "projects")))
+
+
+def resolve(ref: str) -> Path | None:
+    if ":" not in ref:
+        return None
+    repo, rest = ref.split(":", 1)
+    path = rest.split(":", 1)[0]  # drop :line
+    if not path.endswith(".md"):
+        return None
+    candidate = PROJECTS / repo / path
+    return candidate if candidate.is_file() else None
+
+
+def main() -> None:
+    imported = 0
+    for f in sorted(DEFS.glob("*.json")):
+        data = json.loads(f.read_text())
+        refs = data.get("lineage_refs") or []
+        if not refs:
+            continue
+        files = []
+        for ref in refs:
+            src = resolve(ref)
+            if src is None:
+                continue
+            dest_dir = DOCTRINES / data["engine_key"]
+            dest_dir.mkdir(parents=True, exist_ok=True)
+            dest = dest_dir / src.name
+            shutil.copyfile(src, dest)
+            text = dest.read_bytes()
+            files.append({
+                "name": src.name,
+                "source_ref": ref,
+                "sha256": hashlib.sha256(text).hexdigest(),
+                "chars": len(text.decode("utf-8", "replace")),
+            })
+            imported += 1
+        if files:
+            data["doctrine_files"] = files
+            f.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n")
+    print(f"imported {imported} doctrine files")
+
+
+if __name__ == "__main__":
+    main()
