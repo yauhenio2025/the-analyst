@@ -23,6 +23,8 @@ import time
 from typing import Any, Callable, Optional
 
 from src.llm.factory import get_backend
+from src.events import context as _events_context
+from src.events import hooks as _events_hooks
 
 logger = logging.getLogger(__name__)
 
@@ -248,6 +250,11 @@ def run_engine_call(
     backend = get_backend(config["model"])
     last_error = None
 
+    # Run-event ledger: only active when an executor job set the context.
+    _ev_ctx = _events_context.current()
+    _ev_job = _ev_ctx.get("job_id")
+    _ev_mode = "sync" if use_sync else "streaming"
+
     for attempt in range(MAX_RETRIES):
         if cancellation_check and cancellation_check():
             raise InterruptedError(f"[{label}] Cancelled before attempt {attempt + 1}")
@@ -259,6 +266,15 @@ def run_engine_call(
                 f"(previous error: {last_error})"
             )
             time.sleep(delay)
+
+        _ev_started = time.time()
+        if _ev_job:
+            _events_hooks.call_started(
+                _ev_job, _ev_ctx, model=config["model"], system_prompt=system_prompt,
+                user_message=user_message, attempt=attempt + 1, max_attempts=MAX_RETRIES,
+                label=label, effort=effort, mode=_ev_mode,
+                use_1m=bool(config.get("use_1m_context")), max_tokens=config["max_tokens"],
+            )
 
         try:
             if use_sync:
@@ -294,6 +310,16 @@ def run_engine_call(
                 result["partial"] = True
                 result["connection_error"] = result_obj.connection_error
 
+            if _ev_job:
+                _events_hooks.call_finished(
+                    _ev_job, _ev_ctx, model=result["model_used"] or config["model"],
+                    system_prompt=system_prompt, user_message=user_message,
+                    content=result["content"], input_tokens=result["input_tokens"],
+                    output_tokens=result["output_tokens"], thinking_tokens=result["thinking_tokens"],
+                    duration_ms=result["duration_ms"] or int((time.time() - _ev_started) * 1000),
+                    attempt=attempt + 1, label=label, partial=bool(result_obj.partial), effort=effort,
+                )
+
             logger.info(
                 f"[{label}] Completed: {result['input_tokens']}+{result['output_tokens']} tokens, "
                 f"{result['thinking_tokens']} thinking tokens, {result['duration_ms']}ms"
@@ -309,6 +335,22 @@ def run_engine_call(
 
             # Don't retry on certain errors
             error_str = str(e).lower()
+            if _ev_job:
+                _ev_fatal = (
+                    "invalid_api_key" in error_str or "authentication" in error_str
+                    or "context_length_exceeded" in error_str or "too many tokens" in error_str
+                    or "prompt is too long" in error_str
+                    or ("max_tokens" in error_str and "maximum allowed" in error_str)
+                )
+                _ev_will_retry = (attempt + 1 < MAX_RETRIES) and not _ev_fatal
+                _events_hooks.call_failed(
+                    _ev_job, _ev_ctx, model=config["model"], system_prompt=system_prompt,
+                    user_message=user_message, error=last_error,
+                    duration_ms=int((time.time() - _ev_started) * 1000),
+                    attempt=attempt + 1, max_attempts=MAX_RETRIES, will_retry=_ev_will_retry,
+                    retry_delay_s=RETRY_DELAYS[min(attempt, len(RETRY_DELAYS) - 1)] if _ev_will_retry else None,
+                    label=label,
+                )
             if "invalid_api_key" in error_str or "authentication" in error_str:
                 raise RuntimeError(f"[{label}] Authentication error (not retrying): {e}")
             if "context_length_exceeded" in error_str or "too many tokens" in error_str:

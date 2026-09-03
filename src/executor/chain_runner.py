@@ -29,6 +29,8 @@ from src.executor.context_broker import (
 )
 from src.executor.engine_runner import run_engine_call, run_engine_call_auto
 from src.executor.job_manager import update_job_tokens
+from src.events import context as _events_context
+from src.events import hooks as _events_hooks
 from src.executor.output_store import (
     get_completed_passes,
     load_engine_last_pass_content,
@@ -113,6 +115,9 @@ def run_chain(
         f"Starting chain '{chain_key}': {len(chain.engine_keys)} engines, "
         f"depth={depth}, work_key={work_key or 'N/A'}"
     )
+    _events_hooks.chain_started(
+        job_id, phase_number, chain_key, list(chain.engine_keys), work_key=work_key or None, depth=depth,
+    )
 
     engine_results: dict[str, list[EngineCallResult]] = {}
     previous_engine_output: Optional[str] = None
@@ -174,22 +179,26 @@ def run_chain(
             continue
 
         # Run multi-pass execution for this engine
-        pass_results = _run_engine_passes(
-            cap_def=cap_def,
-            document_text=document_text,
-            depth=engine_depth,
-            focus_dimensions=engine_focus_dims,
-            previous_engine_output=previous_engine_output,
-            upstream_context=upstream_context,
-            context_emphasis=context_emphasis,
-            engine_label=chain.engine_keys[engine_idx - 1] if engine_idx > 0 else None,
-            job_id=job_id,
-            phase_number=phase_number,
-            work_key=work_key,
-            model_hint=model_hint,
-            requires_full_documents=requires_full_documents,
-            cancellation_check=cancellation_check,
-        )
+        with _events_context.scope(
+            job_id=job_id, phase=_events_context.phase_key(phase_number),
+            chain=chain_key, work_key=work_key or None,
+        ):
+            pass_results = _run_engine_passes(
+                cap_def=cap_def,
+                document_text=document_text,
+                depth=engine_depth,
+                focus_dimensions=engine_focus_dims,
+                previous_engine_output=previous_engine_output,
+                upstream_context=upstream_context,
+                context_emphasis=context_emphasis,
+                engine_label=chain.engine_keys[engine_idx - 1] if engine_idx > 0 else None,
+                job_id=job_id,
+                phase_number=phase_number,
+                work_key=work_key,
+                model_hint=model_hint,
+                requires_full_documents=requires_full_documents,
+                cancellation_check=cancellation_check,
+            )
 
         engine_results[engine_key] = pass_results
 
@@ -204,6 +213,10 @@ def run_chain(
     logger.info(
         f"Chain '{chain_key}' completed: {len(engine_results)} engines, "
         f"{total_tokens:,} tokens, {duration_ms:,}ms"
+    )
+    _events_hooks.chain_finished(
+        job_id, phase_number, chain_key, list(engine_results.keys()),
+        total_tokens=total_tokens, duration_ms=duration_ms, work_key=work_key or None,
     )
 
     return {
@@ -372,16 +385,22 @@ def _run_engine_passes(
             label += f" | {work_key}"
 
         # Execute the LLM call (auto-chunks if user_message exceeds threshold)
-        result = run_engine_call_auto(
-            system_prompt=system_prompt,
-            user_message=user_message,
-            phase_number=phase_number,
-            model_hint=model_hint,
-            depth=depth,
-            requires_full_documents=requires_full_documents,
-            cancellation_check=cancellation_check,
-            label=label,
-        )
+        with _events_context.scope(
+            job_id=job_id, phase=_events_context.phase_key(phase_number),
+            engine=cap_def.engine_key,
+            pass_name=f"Pass {pass_prompt.pass_number}: {pass_prompt.pass_label}",
+            stance=pass_prompt.stance_key or None, work_key=work_key or None,
+        ):
+            result = run_engine_call_auto(
+                system_prompt=system_prompt,
+                user_message=user_message,
+                phase_number=phase_number,
+                model_hint=model_hint,
+                depth=depth,
+                requires_full_documents=requires_full_documents,
+                cancellation_check=cancellation_check,
+                label=label,
+            )
 
         # Build EngineCallResult
         engine_result = EngineCallResult(
@@ -510,16 +529,21 @@ def _run_single_engine_call(
     if work_key:
         label += f" | {work_key}"
 
-    result = run_engine_call_auto(
-        system_prompt=cap_prompt.prompt,
-        user_message=document_text,
-        phase_number=phase_number,
-        model_hint=model_hint,
-        depth=depth,
-        requires_full_documents=requires_full_documents,
-        cancellation_check=cancellation_check,
-        label=label,
-    )
+    with _events_context.scope(
+        job_id=job_id, phase=_events_context.phase_key(phase_number),
+        engine=cap_def.engine_key, pass_name="Pass 1: whole-engine", stance=None,
+        work_key=work_key or None,
+    ):
+        result = run_engine_call_auto(
+            system_prompt=cap_prompt.prompt,
+            user_message=document_text,
+            phase_number=phase_number,
+            model_hint=model_hint,
+            depth=depth,
+            requires_full_documents=requires_full_documents,
+            cancellation_check=cancellation_check,
+            label=label,
+        )
 
     engine_result = EngineCallResult(
         engine_key=cap_def.engine_key,
@@ -618,22 +642,26 @@ def run_single_engine(
     if progress_callback:
         progress_callback(f"Engine: {engine_key}")
 
-    pass_results = _run_engine_passes(
-        cap_def=cap_def,
-        document_text=document_text,
-        depth=depth,
-        focus_dimensions=focus_dimensions,
-        previous_engine_output=None,
-        upstream_context=upstream_context,
-        context_emphasis=context_emphasis,
-        engine_label=None,
-        job_id=job_id,
-        phase_number=phase_number,
-        work_key=work_key,
-        model_hint=model_hint,
-        requires_full_documents=requires_full_documents,
-        cancellation_check=cancellation_check,
-    )
+    with _events_context.scope(
+        job_id=job_id, phase=_events_context.phase_key(phase_number),
+        chain=None, work_key=work_key or None,
+    ):
+        pass_results = _run_engine_passes(
+            cap_def=cap_def,
+            document_text=document_text,
+            depth=depth,
+            focus_dimensions=focus_dimensions,
+            previous_engine_output=None,
+            upstream_context=upstream_context,
+            context_emphasis=context_emphasis,
+            engine_label=None,
+            job_id=job_id,
+            phase_number=phase_number,
+            work_key=work_key,
+            model_hint=model_hint,
+            requires_full_documents=requires_full_documents,
+            cancellation_check=cancellation_check,
+        )
 
     total_tokens = sum(r.input_tokens + r.output_tokens for r in pass_results)
     final_output = pass_results[-1].content if pass_results else ""
