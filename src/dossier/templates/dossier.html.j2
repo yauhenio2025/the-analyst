@@ -30,6 +30,7 @@
   figure img { width: 100%; display: block; border: 1px solid #d9d9d4; }
   figure .placeholder { border: 1px dashed #b9b9b4; padding: 34px 20px; text-align: center; color: #888; font: 10pt "Helvetica Neue", Arial, sans-serif; background: #fafaf7; }
   figcaption { font-size: 10pt; color: #333; margin-top: 7px; }
+  figcaption strong { font-weight: bold; }
   figcaption .fnum { font: 9pt "Helvetica Neue", Arial, sans-serif; letter-spacing: .08em; text-transform: uppercase; color: #6b6b66; margin-right: 8px; }
   .appendix { margin-top: 44px; border-top: 2px solid #1d1d1b; padding-top: 14px; font-size: 10pt; }
   .appendix h2 { border: 0; margin-top: 0; }
@@ -72,7 +73,7 @@
   {% for f in sec.figures %}
   <figure>
     {% if f.src %}<img src="{{ f.src }}" alt="{{ f.caption }}">{% else %}<div class="placeholder">Figure not rendered ({{ f.status }}{% if f.note %}: {{ f.note }}{% endif %})</div>{% endif %}
-    <figcaption><span class="fnum">Figure {{ f.index }}</span>{{ f.caption }}</figcaption>
+    <figcaption><span class="fnum">Figure {{ f.index }}</span>{% if f.title %}<strong>{{ f.title }}.</strong> {% endif %}{{ f.caption }}</figcaption>
   </figure>
   {% endfor %}
 </section>
@@ -113,6 +114,13 @@
   </table>
   {% if strategy %}<p><em>Strategy.</em> {{ strategy }}</p>{% endif %}
   {% if alternatives %}<p class="muted"><em>Considered and rejected:</em> {% for a in alternatives %}{{ a.engine_key }} ({{ a.why_not }}){% if not loop.last %}; {% endif %}{% endfor %}</p>{% endif %}
+  {% endif %}
+  {% if figures_made %}
+  <h3>Figures (labelled diagrams)</h3>
+  <table>
+    <thead><tr><th>Figure</th><th>Primitive</th><th>Format</th><th>Style</th><th>Attempts</th><th>Check</th></tr></thead>
+    <tbody>{% for fm in figures_made %}<tr><td>{{ fm.title }}</td><td>{{ fm.primitive }}</td><td>{{ fm.visual_format }}</td><td>{{ fm.style_school }}</td><td>{{ fm.attempts }}</td><td>{{ fm.verdict }}</td></tr>{% endfor %}</tbody>
+  </table>
   {% endif %}
   <h3>Totals</h3>
   <p>{{ totals.llm_calls }} model calls{% if totals.image_calls %} and {{ totals.image_calls }} image calls{% endif %} · {{ "{:,}".format(totals.input_tokens) }} input tokens · {{ "{:,}".format(totals.output_tokens) }} output tokens · ${{ "%.2f"|format(totals.cost_usd) }} · {{ totals.minutes }} min wall-clock.

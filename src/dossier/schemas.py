@@ -348,23 +348,56 @@ class Table(BaseModel):
 
 # ── Step 6: figures ─────────────────────────────────────────────────────
 
-class FigureBrief(BaseModel):
+class FigureAnchor(BaseModel):
+    """What grounds a rendered label: a verbatim phrase from the analysis, a table or a profile."""
+    label: str
+    quote: str = Field("", description="Verbatim phrase (<= 200 chars) from the analysis prose, a table cell or a profile")
+    source: str = Field("", description="analysis | table | profile | brief")
+    verified: bool = False
+
+
+class FigureSpec(BaseModel):
+    """A labelled analytical diagram, fully specified before rendering.
+
+    The spec is the boundary: whoever derives it (the figure planner today, the
+    section spine tomorrow) hands it to the same prompt → render → check pipeline.
+    """
     key: str
-    caption: str
-    scene: str = Field(..., description="A depictable scene, no text in the image")
-    visual_register: str = "editorial"
+    primitive: str = Field("", description="one of the 12 analytical primitives (src/primitives)")
+    visual_format: str = Field("", description="canonical format key from src/display/enforcement.py")
+    title: str = Field("", description="<= 70 chars; rendered at the top of the diagram")
+    data: dict[str, Any] = Field(default_factory=dict, description="labelled content in the format family's shape")
+    caption: str = Field("", description="the analytic point, one sentence")
+    why_this_format: str = ""
+    style_school: str = ""
+    anchors: list[FigureAnchor] = Field(default_factory=list)
+    # legacy (pre-diagram) fields, kept so old job records still load
+    scene: str = ""
+    visual_register: str = "diagram"
+
+    def labels(self) -> list[str]:
+        from src.display.enforcement import collect_labels
+
+        return collect_labels(self.data)
 
 
-class Figure(FigureBrief):
+FigureBrief = FigureSpec  # old name, kept for callers of the pre-diagram contract
+
+
+class Figure(FigureSpec):
     figure_id: Optional[str] = None
     url: Optional[str] = None
     path: Optional[str] = None
     provider: Optional[str] = None
+    model: Optional[str] = None
     prompt: Optional[str] = None
+    aspect: Optional[str] = None
     cost_usd: float = 0.0
     status: Literal["planned", "generated", "skipped", "failed"] = "planned"
     note: str = ""
     compliance: Optional[dict[str, Any]] = None
+    attempts: list[dict[str, Any]] = Field(default_factory=list)
+    grounding: Optional[dict[str, Any]] = None
 
 
 # ── Step 7: compose ─────────────────────────────────────────────────────
