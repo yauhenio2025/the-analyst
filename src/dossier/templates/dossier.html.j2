@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>{{ s.title }}</title>
+<style>
+  @page { size: A4; margin: 22mm 20mm 24mm 20mm; @bottom-center { content: counter(page); font: 9pt Georgia, serif; color: #777; } }
+  html { font-family: Georgia, "Source Serif Pro", "Times New Roman", serif; color: #1d1d1b; background: #fff; }
+  body { margin: 0 auto; max-width: 780px; padding: 32px 24px 64px; line-height: 1.55; font-size: 11.5pt; }
+  header.cover { border-bottom: 2px solid #1d1d1b; padding-bottom: 18px; margin-bottom: 28px; }
+  .kicker { font: 10pt/1.3 "Helvetica Neue", Arial, sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #6b6b66; margin: 0 0 10px; }
+  h1 { font-size: 26pt; line-height: 1.15; margin: 0 0 10px; font-weight: normal; }
+  .subtitle { font-size: 13pt; color: #444; margin: 0 0 14px; font-style: italic; }
+  .meta { font: 9.5pt/1.5 "Helvetica Neue", Arial, sans-serif; color: #6b6b66; }
+  h2 { font-size: 15pt; font-weight: normal; margin: 34px 0 10px; padding-top: 10px; border-top: 1px solid #d9d9d4; }
+  h2 .num { color: #9a9a94; margin-right: 10px; }
+  h3 { font-size: 12pt; margin: 22px 0 6px; font-weight: normal; font-style: italic; }
+  p { margin: 0 0 11px; text-align: justify; hyphens: auto; }
+  .summary { background: #f6f5f0; padding: 14px 18px; margin: 0 0 22px; border-left: 3px solid #1d1d1b; }
+  .summary p { text-align: left; }
+  sup.fn { font: 8pt "Helvetica Neue", Arial, sans-serif; color: #7a4a00; margin-left: 1px; }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0 6px; font-size: 10pt; page-break-inside: avoid; }
+  caption { caption-side: top; text-align: left; font: italic 10.5pt Georgia, serif; padding: 0 0 6px; color: #333; }
+  th, td { border-top: 1px solid #d9d9d4; padding: 6px 8px; vertical-align: top; text-align: left; }
+  th { font: 9pt "Helvetica Neue", Arial, sans-serif; letter-spacing: .06em; text-transform: uppercase; color: #6b6b66; border-top: 2px solid #1d1d1b; }
+  td:first-child { font-weight: bold; }
+  tbody tr:last-child td { border-bottom: 2px solid #1d1d1b; }
+  .tnote { font-size: 9.5pt; color: #555; margin: 4px 0 18px; }
+  figure { margin: 18px 0 22px; page-break-inside: avoid; }
+  figure img { width: 100%; display: block; border: 1px solid #d9d9d4; }
+  figure .placeholder { border: 1px dashed #b9b9b4; padding: 34px 20px; text-align: center; color: #888; font: 10pt "Helvetica Neue", Arial, sans-serif; background: #fafaf7; }
+  figcaption { font-size: 10pt; color: #333; margin-top: 7px; }
+  figcaption .fnum { font: 9pt "Helvetica Neue", Arial, sans-serif; letter-spacing: .08em; text-transform: uppercase; color: #6b6b66; margin-right: 8px; }
+  .appendix { margin-top: 44px; border-top: 2px solid #1d1d1b; padding-top: 14px; font-size: 10pt; }
+  .appendix h2 { border: 0; margin-top: 0; }
+  .appendix table { font-size: 9.5pt; }
+  ol.footnotes { font-size: 9.5pt; color: #333; padding-left: 20px; }
+  ol.footnotes li { margin-bottom: 5px; }
+  .docs li { margin-bottom: 4px; }
+  .muted { color: #777; }
+  @media print { body { padding: 0; max-width: none; } h2 { page-break-after: avoid; } }
+</style>
+</head>
+<body>
+<header class="cover">
+  <p class="kicker">The Analyst · Dossier</p>
+  <h1>{{ s.title }}</h1>
+  {% if s.subtitle %}<p class="subtitle">{{ s.subtitle }}</p>{% endif %}
+  <p class="meta">{{ meta.date }} · {{ meta.audience }} edition · {{ meta.depth }} depth · {{ docs|length }} source document{{ 's' if docs|length != 1 else '' }} · job {{ meta.job_id }}</p>
+</header>
+
+{% if s.executive_summary %}
+<section class="summary">
+  {% for p in s.executive_summary %}<p>{{ p }}</p>{% endfor %}
+</section>
+{% endif %}
+
+{% for sec in s.sections %}
+<section>
+  <h2><span class="num">{{ sec.number }}</span>{{ sec.heading }}</h2>
+  {% for para in sec.rendered_paragraphs %}<p>{{ para|safe }}</p>{% endfor %}
+  {% for t in sec.tables %}
+  <table>
+    <caption>Table {{ t.index }}. {{ t.caption }}</caption>
+    <thead><tr>{% for c in t.columns %}<th>{{ c }}</th>{% endfor %}</tr></thead>
+    <tbody>
+    {% for r in t.rows %}<tr>{% for cell in r.cells %}<td>{{ cell.value }}{% if cell.fn %}<sup class="fn">{{ cell.fn }}</sup>{% endif %}</td>{% endfor %}</tr>{% endfor %}
+    </tbody>
+  </table>
+  {% if t.note %}<p class="tnote">{{ t.note }}</p>{% endif %}
+  {% endfor %}
+  {% for f in sec.figures %}
+  <figure>
+    {% if f.src %}<img src="{{ f.src }}" alt="{{ f.caption }}">{% else %}<div class="placeholder">Figure not rendered ({{ f.status }}{% if f.note %}: {{ f.note }}{% endif %})</div>{% endif %}
+    <figcaption><span class="fnum">Figure {{ f.index }}</span>{{ f.caption }}</figcaption>
+  </figure>
+  {% endfor %}
+</section>
+{% endfor %}
+
+{% if s.conclusion %}
+<section>
+  <h2><span class="num">{{ s.sections|length + 1 }}</span>What this means</h2>
+  {% for p in s.conclusion %}<p>{{ p }}</p>{% endfor %}
+</section>
+{% endif %}
+
+{% if footnotes %}
+<section class="appendix">
+  <h2>Anchors</h2>
+  <p class="muted">Every numbered anchor is a verbatim passage from a source document, verified mechanically against the text.</p>
+  <ol class="footnotes">
+  {% for fn in footnotes %}<li id="fn{{ fn.n }}"><strong>{{ fn.doc_label }}</strong>: “{{ fn.quote }}”</li>{% endfor %}
+  </ol>
+</section>
+{% endif %}
+
+<section class="appendix">
+  <h2>How this was made</h2>
+  <p>This dossier was produced by a recorded, multi-step method. Each step reads the previous step's output; nothing here comes from a single prompt.</p>
+  <h3>Source documents</h3>
+  <ol class="docs">{% for d in docs %}<li>[{{ d.key }}] {{ d.label }}{% if d.publication %} — <em>{{ d.publication }}</em>{% endif %} <span class="muted">({{ "{:,}".format(d.char_count) }} chars)</span></li>{% endfor %}</ol>
+  <h3>Steps</h3>
+  <table>
+    <thead><tr><th>#</th><th>Step</th><th>What happened</th><th>Calls</th><th>Tokens in / out</th><th>Cost</th><th>Time</th></tr></thead>
+    <tbody>{% for st in steps %}<tr><td>{{ loop.index }}</td><td>{{ st.name }}</td><td>{{ st.what }}</td><td>{{ st.calls }}</td><td>{{ st.tokens }}</td><td>{{ st.cost }}</td><td>{{ st.time }}</td></tr>{% endfor %}</tbody>
+  </table>
+  {% if engines %}
+  <h3>Analysis engines (run through the executor)</h3>
+  <table>
+    <thead><tr><th>Phase</th><th>Engine</th><th>Depth</th><th>Passes</th><th>Model</th><th>Why</th></tr></thead>
+    <tbody>{% for e in engines %}<tr><td>{{ e.phase }}</td><td>{{ e.engine }}</td><td>{{ e.depth }}</td><td>{{ e.passes }}</td><td>{{ e.model }}</td><td>{{ e.why }}</td></tr>{% endfor %}</tbody>
+  </table>
+  {% if strategy %}<p><em>Strategy.</em> {{ strategy }}</p>{% endif %}
+  {% if alternatives %}<p class="muted"><em>Considered and rejected:</em> {% for a in alternatives %}{{ a.engine_key }} ({{ a.why_not }}){% if not loop.last %}; {% endif %}{% endfor %}</p>{% endif %}
+  {% endif %}
+  <h3>Totals</h3>
+  <p>{{ totals.llm_calls }} model calls{% if totals.image_calls %} and {{ totals.image_calls }} image calls{% endif %} · {{ "{:,}".format(totals.input_tokens) }} input tokens · {{ "{:,}".format(totals.output_tokens) }} output tokens · ${{ "%.2f"|format(totals.cost_usd) }} · {{ totals.minutes }} min wall-clock.
+  {% if walls %}<br>Walls: {{ walls }}{% endif %}</p>
+</section>
+</body>
+</html>
