@@ -24,3 +24,15 @@ Problem classes, root causes, files fixed. See global rules.
 - `src/dossier/analysis.py:_is_live` / `_resume_sub_job` — check `workflow_runner._active_jobs`; if the sub-job is not live, resume it via `start_resume_thread` (completed passes kept).
 
 **Pattern to Watch For**: any "re-attach to running job" logic must verify liveness in-process (or the job's heartbeat), never only the stored status.
+
+## Inherited gitignore swallows front-end source (2026-09-03)
+
+**Problem Class**: Repo-level ignore rules written for one language (Python `lib/`) silently exclude same-named directories in another toolchain, so a branch that builds locally fails on the deploy host with "Cannot find module".
+
+**Root Cause**: `.gitignore:13` (`lib/`) inherited from analyzer-v2; `web/src/lib/*.ts` never entered git on `feat/web`; Render build of `the-analyst-desk` failed with TS2307 on every `../lib/*` import. Same trap exists in analyzer-mgmt (`frontend/src/lib/`, force-added).
+
+**Files Fixed**:
+- `.gitignore` — added `!web/src/lib/` and `!web/src/lib/**`
+- `web/src/lib/{api,format,hooks,mock,run}.ts` — committed (cec64e1)
+
+**Pattern to Watch For**: after merging a front-end branch, run `git status --short --ignored <dir> | grep '^!!'` before deploying; any `!!` under a source tree is a missing file.

@@ -166,7 +166,8 @@ GET  /v1/figures/{figure_id}
 - `src/executor/executor.db` UNTRACKED (c519dc2): schema is created on boot; the dossier agent had committed its local job rows, which showed up as a stuck job on the live service. Live SQLite resets on every deploy until EXECUTOR_DATABASE_URL is set.
 - Live smoke (2026-09-03 05:20 UTC): `/v1/figures/providers` lists 4 providers; `/v1/dossier/*` and `/v1/events/*` routes served; `/v1/dossier/exemplars` is EMPTY on Render (exemplar texts are not in git — repo is public; next session: upload endpoint or private repo + commit `data/exemplars/`).
 
-### FINAL STATE AT SESSION END (2026-09-03 ~05:30 UTC)
+### FINAL STATE AT SESSION END (2026-09-03 ~05:50 UTC)
+- Desk static site LIVE at https://the-analyst-desk.onrender.com after fixing the `lib/` gitignore trap (cec64e1; see BUG_TRACKING). Not yet smoke-tested against real backend jobs — `?mock=1` replay verified by the web agent only.
 - ALL FOUR BRANCHES MERGED to the-analyst master (events, images, dossier, web) and pushed; 61 tests pass; analyzer-mgmt master = console branch, live.
 - First complete dossier run (local, simple depth): `dossier-000b84458ab4` — $2.07, 8 LLM + 1 image call, 3 tables/16 rows, 1 figure, 5 sections, PDF. Outputs preserved at `~/projects/the-analyst/data/dossiers/dossier-000b84458ab4/` (git-ignored) and the worktree's SQLite copy at `data/dossier-worktree-executor.db`.
 - Medium run `dossier-16f2f9a2d89f` left in `analysis` in the dossier worktree DB; resume: boot server in that worktree, `POST /v1/dossier/jobs/dossier-16f2f9a2d89f/resume`.
