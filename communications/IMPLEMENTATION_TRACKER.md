@@ -208,3 +208,9 @@ Fast live run: same with kering_study.md at depth simple (about 6 min, about $1)
 ### Demo runs (started 2026-09-03 06:44 UTC, live SQLite — do not push before the demo)
 - medium, fashion bundle, 2 figures: `dossier-3190021326bf`
 - simple, Kering study, 1 figure: `dossier-e004a67a75fe`
+
+### Upload files as a bundle (2026-09-03 07:25 UTC)
+- `POST /v1/dossier/uploads` (multipart `files[]`, optional `title`): pdf/md/txt -> text (pypdf) -> Haiku reads the opening page for title/creators/year/venue (`src/sources/uploads.py`) -> one bundle in the stacks-export header shape, stored in the exemplar store under `upload-<date>-<hash>.txt` -> job source `{"kind":"exemplar","name":...}`. Desk: "Upload files" tab in Library (`web/src/pages/Library.tsx`, `api.uploadBundle`).
+- Deps added: pypdf, python-multipart.
+- DATA ISSUE (owner): stacks item em:WUPV36YG ("Fashionable altruism", Hewitt et al.) carries the wrong PDF — Highfield & Miltner 2023 "Platformed solidarity" (hashflags). The `fashion_bundle.txt` exemplar therefore has that paper as #5; the dossiers cite it. Fix the Zotero attachment and re-export.
+- Deploy lesson: Render QUEUES backend deploys (start can lag a push by minutes) and each one wipes SQLite; before seeding/running, confirm `list_deploys` shows the intended commit `live` (a marker exemplar that disappears is a reliable signal).
