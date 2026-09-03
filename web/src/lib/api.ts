@@ -45,6 +45,11 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 /* The backend wraps lists ({jobs:[…]}, {exemplars:[…]}, {receipts:[…]}) and
    leaves not-yet-produced job fields null; normalize here so pages can
    assume arrays. */
+export interface UploadedBundle extends Exemplar {
+  name?: string
+  documents: { key: string; title: string; char_count: number; pages?: number | null; filename?: string }[]
+}
+
 function unwrap<T>(d: unknown, key: string): T[] {
   if (Array.isArray(d)) return d as T[]
   const v = (d as Record<string, unknown> | null)?.[key]
@@ -121,6 +126,8 @@ async function requestText(path: string): Promise<string> {
 
 export interface Api {
   exemplars(): Promise<Exemplar[]>
+  /** upload local files (pdf/md/txt) -> one bundle stored like an exemplar */
+  uploadBundle(files: File[], title?: string): Promise<UploadedBundle>
   listJobs(): Promise<JobListEntry[]>
   createJob(req: CreateJobRequest): Promise<CreateJobResponse>
   getJob(id: string): Promise<DossierJob>
@@ -141,6 +148,15 @@ export interface Api {
 
 const live: Api = {
   exemplars: () => request<unknown>('/v1/dossier/exemplars').then((d) => unwrap<Record<string, unknown>>(d, 'exemplars').map(normalizeExemplar) as unknown as Exemplar[]),
+  uploadBundle: async (files, title) => {
+    const fd = new FormData()
+    for (const f of files) fd.append('files', f, f.name)
+    if (title) fd.append('title', title)
+    const res = await fetch(`${API_BASE}/v1/dossier/uploads`, { method: 'POST', body: fd })
+    if (!res.ok) throw new ApiError(res.status, await res.text().catch(() => ''), '/v1/dossier/uploads')
+    const d = (await res.json()) as Record<string, unknown>
+    return { ...normalizeExemplar(d), documents: (d.documents as UploadedBundle['documents']) ?? [] } as UploadedBundle
+  },
   listJobs: () => request<unknown>('/v1/dossier/jobs').then((d) =>
     unwrap<JobListEntry>(d, 'jobs').map((e) => {
       const anyE = e as unknown as Record<string, unknown>
@@ -249,6 +265,7 @@ export function getApi(): Promise<Api> {
 /* Convenience: every call goes through getApi() so mock/live is one seam. */
 export const api: Api = {
   exemplars: () => getApi().then((a) => a.exemplars()),
+  uploadBundle: (f, t) => getApi().then((a) => a.uploadBundle(f, t)),
   listJobs: () => getApi().then((a) => a.listJobs()),
   createJob: (r) => getApi().then((a) => a.createJob(r)),
   getJob: (id) => getApi().then((a) => a.getJob(id)),

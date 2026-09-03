@@ -237,6 +237,11 @@ function md(job: DossierJob): string {
 
 export const mockApi: Api = {
   exemplars: () => delay(exemplarsJson as Exemplar[]),
+  uploadBundle: (files: File[], title?: string) => delay({
+    key: 'upload-mock', name: 'upload-mock', title: title || `${files[0]?.name ?? 'upload'}${files.length > 1 ? ` (+${files.length - 1} more)` : ''}`,
+    description: `uploaded bundle · ${files.length} file(s)`, n_docs: files.length, chars: files.reduce((n, f) => n + f.size, 0),
+    documents: files.map((f, i) => ({ key: `upM${i}`, title: f.name, char_count: f.size })),
+  } as never),
   listJobs: () => delay([...runs.values()]
     .sort((a, b) => b.created - a.created)
     .map((r): JobListEntry => {

@@ -361,3 +361,8 @@ button.secondary:hover:not(:disabled), a.secondary:hover { border-color: var(--a
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+/* upload tab */
+.upload-list { list-style: none; margin: 0.5rem 0 0; padding: 0; display: grid; gap: 0.25rem; }
+.upload-list li { display: flex; gap: 0.6rem; align-items: baseline; }
+[data-upload] input[type=file] { color: inherit; font: inherit; }

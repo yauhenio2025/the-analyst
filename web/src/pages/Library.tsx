@@ -2,7 +2,7 @@
    paste-and-go box above them: one paste (or an exemplar bundle), three
    dials, one button that says what happens next. */
 import { Fragment, useEffect, useState } from 'react'
-import { api, MOCK } from '../lib/api'
+import { api, type UploadedBundle, MOCK } from '../lib/api'
 import { dateShort, usd } from '../lib/format'
 import { dossierPath, navigate } from '../router'
 import { StatusChip } from '../components/StatusChip'
@@ -15,7 +15,10 @@ export function Library() {
   const [entries, setEntries] = useState<JobListEntry[] | null>(null)
   const [exemplars, setExemplars] = useState<Exemplar[]>([])
   const [error, setError] = useState<string | null>(null)
-  const [mode, setMode] = useState<'paste' | 'exemplar'>('paste')
+  const [mode, setMode] = useState<'paste' | 'exemplar' | 'upload'>('paste')
+  const [files, setFiles] = useState<File[]>([])
+  const [uploaded, setUploaded] = useState<UploadedBundle | null>(null)
+  const [uploading, setUploading] = useState(false)
   const [text, setText] = useState('')
   const [title, setTitle] = useState('')
   const [exemplar, setExemplar] = useState<string | null>(null)
@@ -41,17 +44,29 @@ export function Library() {
     { label: 'Earlier', rows: entries.filter((e) => !isToday(e) && !isWeek(e)) },
   ]
 
-  const ready = mode === 'paste' ? text.trim().length >= 200 : exemplar !== null
+  const ready = mode === 'paste' ? text.trim().length >= 200 : mode === 'upload' ? (files.length > 0 || uploaded !== null) : exemplar !== null
   const chosenExemplar = exemplars.find((x) => x.key === exemplar)
 
   const start = async () => {
     if (!ready || busy) return
     setBusy(true)
     setError(null)
-    const sources: SourceSpec[] = mode === 'paste'
-      ? [{ kind: 'paste', title: title.trim() || text.trim().split(/\n|(?<=[.!?])\s/)[0].slice(0, 80), text }]
-      : [{ kind: 'exemplar', key: exemplar! }]
+    let sources: SourceSpec[]
     try {
+      if (mode === 'paste') {
+        sources = [{ kind: 'paste', title: title.trim() || text.trim().split(/\n|(?<=[.!?])\s/)[0].slice(0, 80), text }]
+      } else if (mode === 'upload') {
+        let b = uploaded
+        if (!b) {
+          setUploading(true)
+          b = await api.uploadBundle(files, title.trim() || undefined)
+          setUploaded(b)
+          setUploading(false)
+        }
+        sources = [{ kind: 'exemplar', key: b.name ?? b.key }]
+      } else {
+        sources = [{ kind: 'exemplar', key: exemplar! }]
+      }
       const res = await api.createJob({
         sources, audience, depth,
         output: { text: true, tables: true, figures, video: false },
@@ -61,6 +76,7 @@ export function Library() {
     } catch (e) {
       setError(String((e as Error).message ?? e))
       setBusy(false)
+      setUploading(false)
     }
   }
 
@@ -86,10 +102,13 @@ export function Library() {
       <div className="panel gobox" data-gobox>
         <div className="gobox-tabs" role="tablist">
           <button role="tab" aria-selected={mode === 'paste'} className={`mode-btn${mode === 'paste' ? ' on' : ''}`} onClick={() => setMode('paste')}>Paste text</button>
+          <button role="tab" aria-selected={mode === 'upload'} className={`mode-btn${mode === 'upload' ? ' on' : ''}`} onClick={() => setMode('upload')}>Upload files</button>
           <button role="tab" aria-selected={mode === 'exemplar'} className={`mode-btn${mode === 'exemplar' ? ' on' : ''}`} onClick={() => setMode('exemplar')}>Use an exemplar bundle</button>
           <span className="mode-hint machine">{mode === 'paste'
             ? (text.trim().length < 200 ? `${text.trim().length} / 200 characters to start` : `${text.trim().length.toLocaleString()} characters`)
-            : chosenExemplar ? `${chosenExemplar.n_docs} documents · ${chosenExemplar.chars.toLocaleString()} characters` : 'pick a bundle'}</span>
+            : mode === 'upload'
+              ? (uploaded ? `${uploaded.n_docs} documents · ${uploaded.chars.toLocaleString()} characters` : files.length ? `${files.length} file${files.length === 1 ? '' : 's'} · ${(files.reduce((n, f) => n + f.size, 0) / 1024 / 1024).toFixed(1)} MB` : 'pick pdf, md or txt files')
+              : chosenExemplar ? `${chosenExemplar.n_docs} documents · ${chosenExemplar.chars.toLocaleString()} characters` : 'pick a bundle'}</span>
         </div>
 
         {mode === 'paste' ? (
@@ -103,6 +122,29 @@ export function Library() {
               <span className="field-label">Title <span className="hint">optional</span></span>
               <input value={title} placeholder="What should the library call it?" onChange={(e) => setTitle(e.target.value)} />
             </label>
+          </div>
+        ) : mode === 'upload' ? (
+          <div className="gobox-paste" data-upload>
+            <label className="field">
+              <span className="field-label">The files <span className="hint">pdf · md · txt — several make one bundle</span></span>
+              <input type="file" multiple accept=".pdf,.md,.markdown,.txt,.text,application/pdf,text/markdown,text/plain"
+                     onChange={(e) => { setFiles(Array.from(e.target.files ?? [])); setUploaded(null) }} data-files />
+            </label>
+            {files.length > 0 && (
+              <ul className="upload-list machine">
+                {files.map((f) => (
+                  <li key={f.name + f.size}>{f.name} <span className="hint">· {(f.size / 1024).toFixed(0)} KB</span>
+                    {uploaded?.documents.find((d) => d.filename === f.name) && <span className="chip-mini on">read · {uploaded.documents.find((d) => d.filename === f.name)!.char_count.toLocaleString()} chars</span>}
+                  </li>
+                ))}
+              </ul>
+            )}
+            <label className="field field-inline">
+              <span className="field-label">Bundle title <span className="hint">optional</span></span>
+              <input value={title} placeholder="What should the library call this bundle?" onChange={(e) => setTitle(e.target.value)} />
+            </label>
+            <p className="hint">The text is extracted on the server and kept as one bundle with a header per document — the same shape a stacks export has. Scanned PDFs without a text layer are refused.</p>
+            {uploading && <p className="hint">Reading the files…</p>}
           </div>
         ) : (
           <div className="choices" role="radiogroup" data-exemplars>

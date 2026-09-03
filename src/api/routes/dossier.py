@@ -21,7 +21,7 @@ import logging
 from pathlib import Path
 
 from pydantic import BaseModel
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 from fastapi.responses import FileResponse, HTMLResponse, PlainTextResponse
 
 from src.dossier import events as dossier_events
@@ -58,6 +58,27 @@ def upload_exemplar(body: ExemplarUpload):
         raise HTTPException(status_code=400, detail="exemplar text too short")
     n_docs = len(split_stacks_export(body.text)) if looks_like_stacks_export(body.text) else body.document_count
     return upsert_exemplar(body.name, body.text, body.title, body.description, n_docs or 1)
+
+
+@router.post("/uploads")
+async def upload_bundle(files: list[UploadFile] = File(...), title: str = Form("")):
+    """Several local files (PDF / MD / TXT) -> one bundle, stored like an exemplar."""
+    from src.sources.uploads import build_bundle
+    from src.sources.exemplar_store import upsert_exemplar
+    pairs = []
+    for f in files:
+        data = await f.read()
+        if not data:
+            continue
+        pairs.append((f.filename or "document", data))
+    if not pairs:
+        raise HTTPException(status_code=400, detail="no files received")
+    try:
+        name, text, meta = build_bundle(pairs, title)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+    rec = upsert_exemplar(name, text, meta["title"], f"uploaded bundle · {meta['document_count']} file(s)", meta["document_count"])
+    return rec | {"documents": meta["documents"], "source": "upload"}
 
 
 @router.delete("/exemplars/{name}")
