@@ -340,7 +340,7 @@ def test_rescore_verdict_is_manifest_aware():
          "misspelled": [{"expected": "DEMANES", "seen": "DEMANES"}, {"expected": "National Security", "seen": "Natonal Security"}]}
     r = rescore_verdict(v, labels)
     assert r["extra_text"] == ["a wholly invented sentence about nothing"] and r["ok"] is False
-    assert r["misspelled"] == [{"expected": "National Security", "seen": "Natonal Security"}]
+    assert r["misspelled"] == [{"expected": "National Security", "seen": "Natonal Security"}, {"expected": "DEMANDS", "seen": "DEMANES"}]
     v["extra_text"] = v["extra_text"][:2]
     assert rescore_verdict(v, labels)["ok"] is True
     assert rescore_verdict({"checked": False}, labels) == {"checked": False}
