@@ -251,6 +251,25 @@ def call_text(
                 max_tokens=max_tokens, effort=effort, tool=None)
 
 
+def _parse_embedded_json(text: str) -> Any:
+    """A JSON array/object the model stringified. Raw control characters inside its string values (a
+    newline in a long cell) break strict parsing, so the lenient parser comes first, then the repairs."""
+    try:
+        return json.loads(text, strict=False)
+    except Exception:
+        pass
+    try:
+        return parse_llm_json_response(text)
+    except Exception:
+        pass
+    try:
+        from json_repair import repair_json  # type: ignore
+
+        return json.loads(repair_json(text), strict=False)
+    except Exception:
+        return None
+
+
 def unstringify(value: Any, schema: Optional[dict]) -> Any:
     """Answer-repair law: a tool input whose array/object field arrived as a JSON string is unpacked in code.
 
@@ -263,10 +282,10 @@ def unstringify(value: Any, schema: Optional[dict]) -> Any:
     if isinstance(value, str):
         looks_json = value.lstrip()[:1] in ("[", "{")
         if stype in ("array", "object") or (looks_json and stype in (None, "string") and "anyOf" in schema) or (looks_json and stype is None):
-            try:
-                value = parse_llm_json_response(value)
-            except Exception:
+            parsed = _parse_embedded_json(value)
+            if parsed is None:
                 return value
+            value = parsed
         else:
             return value
     if isinstance(value, dict):
