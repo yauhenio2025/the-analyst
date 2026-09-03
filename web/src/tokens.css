@@ -1,0 +1,59 @@
+/* The Analyst — design tokens. The ONLY file with literal values.
+   Register: the Kering "Backstage" board room — near-black ground with a
+   green undertone, warm off-white serif display, mono small-caps labels,
+   gold hairlines. A sibling of Wirecut's desk, restyled for the house. */
+:root {
+  /* ground + surfaces */
+  --bg: #181b19;
+  --panel: #1f231f;
+  --panel-2: #242822;
+  --panel-3: #2a2f29;
+  --line: #383d36;
+  --line-soft: #2c302a;
+  /* ink */
+  --ink: #eae5d8;
+  --muted: #98948a;
+  --machine: #c9c2ad;
+  /* the one accent + two verdict inks */
+  --accent: #b3985f;
+  --accent-ink: #181b19;
+  --pos: #7d9a80;
+  --neg: #a85c48;
+  --warn: #c8a45a;
+  /* alphas, derived */
+  --accent-a12: color-mix(in srgb, var(--accent) 12%, transparent);
+  --accent-a25: color-mix(in srgb, var(--accent) 25%, transparent);
+  --accent-a50: color-mix(in srgb, var(--accent) 50%, transparent);
+  --pos-a12: color-mix(in srgb, var(--pos) 12%, transparent);
+  --neg-a12: color-mix(in srgb, var(--neg) 12%, transparent);
+  --ink-a06: color-mix(in srgb, var(--ink) 6%, transparent);
+  --ink-a10: color-mix(in srgb, var(--ink) 10%, transparent);
+  --bg-a85: color-mix(in srgb, var(--bg) 85%, transparent);
+  --hover: color-mix(in srgb, var(--ink) 4%, var(--panel));
+  --disabled-bg: #2a2d2a;
+  /* faces */
+  --serif: Georgia, 'Times New Roman', 'Songti SC', serif;
+  --sans: system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  --mono: 'SFMono-Regular', 'Cascadia Mono', 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
+  /* the type scale — seven sizes */
+  --t-wordmark: 21px;
+  --t-display: 30px;
+  --t-pull: 19px;
+  --t-body: 15px;
+  --t-ui: 13.5px;
+  --t-meta: 12px;
+  --t-kicker: 10.5px;
+  /* layout */
+  --page-desk: 1240px;
+  --gutter: 28px;
+  --measure: 66ch;
+  --rail: 280px;
+  /* spacing + radius (the house has no radius) */
+  --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 24px; --s6: 40px;
+  --r0: 0;
+  --r-pill: 999px;
+  /* motion + layers */
+  --ease: 160ms ease;
+  --z-sticky: 20;
+  --z-floating: 40;
+}

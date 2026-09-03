@@ -1,0 +1,113 @@
+{
+  "plan_id": "plan-7c2e91d4a0b3",
+  "workflow_key": "dossier_standard",
+  "thinker_name": "Kering study + the fourth field",
+  "strategy_summary": "Three engines in two phases: map the briefing's argument, extract the working paper's five-level framework, then map the inferential commitments that join them.",
+  "estimated_llm_calls": 4,
+  "depth_profile": "medium",
+  "total_phases": 2,
+  "decision_trace": {
+    "overall_strategy_rationale": "The two documents make one argument from two sides: the briefing supplies dated evidence about Kering and the CEO's own words; the working paper supplies the structure (five levels) the evidence should be read against. The chosen telling — the fourth field — needs the argument map first (what the briefing actually claims, and on what), then the framework extraction (the five levels, named precisely), and only then the inferential-commitment pass, which must see both to say what accepting the CEO's three-field sentence commits him to. Medium depth: one pass per engine, the commitment mapper at two passes because it consumes both prior outputs.",
+    "phase_decisions": [
+      {
+        "phase_name": "Map the argument and the framework",
+        "alternatives_considered": [
+          "structural_pattern_detector on both documents — rejected: it finds recurring patterns, not the briefing's specific claims",
+          "deep_summarization first — rejected: a summary would lose the dated anchors the tables need"
+        ]
+      },
+      {
+        "phase_name": "Map the commitments",
+        "alternatives_considered": [
+          "dialectical_structure — rejected: the documents agree, there is no thesis/antithesis to stage",
+          "counterfactual_analyzer — deferred to the 'coherence ledger' telling where each reset is read against its precedent"
+        ]
+      }
+    ]
+  },
+  "phases": [
+    {
+      "phase_number": 1,
+      "phase_name": "Map the argument and the framework",
+      "depth": "medium",
+      "rationale": "Two independent reads, run in parallel: the briefing's argument architecture and the working paper's conceptual framework.",
+      "model_hint": "sonnet",
+      "per_work": true,
+      "depends_on": [],
+      "skip": false,
+      "execution": {
+        "type": "chain",
+        "engines": [
+          {
+            "engine_key": "argument_architecture",
+            "engine_name": "Argument architecture",
+            "category": "argument",
+            "depth": "medium",
+            "passes": [
+              {
+                "pass_number": 1,
+                "stance_key": "analytical",
+                "stance_name": "Analytical",
+                "label": "Claims, warrants and the evidence each rests on"
+              },
+              {
+                "pass_number": 2,
+                "stance_key": "critical",
+                "stance_name": "Critical",
+                "label": "Where the briefing's warrants are inference rather than record"
+              }
+            ]
+          },
+          {
+            "engine_key": "conceptual_framework_extraction",
+            "engine_name": "Conceptual framework extraction",
+            "category": "concepts",
+            "depth": "medium",
+            "passes": [
+              {
+                "pass_number": 1,
+                "stance_key": "analytical",
+                "stance_name": "Analytical",
+                "label": "The five levels and the relations between them"
+              }
+            ]
+          }
+        ],
+        "chain_key": "argument_and_framework",
+        "chain_name": "Argument and framework",
+        "blend_mode": "sequential"
+      }
+    },
+    {
+      "phase_number": 2,
+      "phase_name": "Map the commitments",
+      "depth": "medium",
+      "rationale": "What accepting the three-field sentence commits the CEO to, read against the five levels.",
+      "model_hint": "sonnet",
+      "per_work": false,
+      "depends_on": [
+        1
+      ],
+      "skip": false,
+      "execution": {
+        "type": "engine",
+        "engines": [
+          {
+            "engine_key": "inferential_commitment_mapper",
+            "engine_name": "Inferential commitment mapper",
+            "category": "epistemology",
+            "depth": "medium",
+            "passes": [
+              {
+                "pass_number": 1,
+                "stance_key": "analytical",
+                "stance_name": "Analytical",
+                "label": "Commitments entailed by the three-field programme"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
