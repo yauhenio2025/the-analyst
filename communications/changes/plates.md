@@ -154,12 +154,61 @@ missing+misspelled+illegible ≤ max(2, 20 % of the strings). Fail-open without 
 
 ## Samples (real renders)
 
-_(filled in below as the renders land — plan, prompt, verdict and ≤ 600 KB copy of each plate under
-`communications/changes/plate-samples/`)_
+Each sample directory holds `specs.json` (the plan), `<key>.prompt.txt` (the exact prompt sent),
+`<key>.verdict.json` (spec, both attempts' verdicts, grounding, declutter report, cost) and `<key>.jpg` (a
+≤ 600 KB copy; the 4K original lives in `data/dossiers/<job>/plates/` where `GET /plates/<key>.jpg` serves it).
+
+### 1. `plate-samples/risk/partnership_risk_register` — job `dossier-afede514d4cf` (partnership risk register, 5 papers, advanced)
+
+Requested perspective: "a partnership risk register: one row per state-type partnership … scored across typed
+columns". Family **register** (matrix, 3:4), level 3; 8 typed columns (text ×5, badge ×2, bar) × 4 rows (2 starred),
+7 legend badges — **50 strings**; planned in two Sonnet calls (the first answer wrote `80` in a bar cell instead of
+`80%`; the repair fixed it). Rendered once by `gemini_pro` at **3584×4800** in 52 s; check: `ok`, format_ok
+("dense badge-and-glyph table / register with dark navy header band, alternating pale rows, coloured pill badges,
+and bar-glyph exposure scores"), **45/50 strings found**, 0 misspelled, 0 illegible, 0 leaked, 0 prohibited,
+density dense, legible at 4K.
+
+**My verdict against r1–r4: a plate I would show an executive.** It is the client register grammar realised —
+navy header, one colour per badge word across the whole plate (POLITICAL blue, FINANCIAL rust, INSTITUTIONAL grey,
+INDUSTRIAL purple; CONDITIONAL orange, CAUTION yellow, DECLINE red), segmented strength bars with the percentage,
+starred rows tinted warm, a legend strip; every cell is legible in the quarter tile. The narrative beside it is
+what an executive needs to read it. Two flaws, both traced to the contract and fixed in code the same hour:
+(a) the planner wrote 8 cells for 8 columns although the row label already fills the first column, so the model
+dropped one orphan cell per row — the four "Reversal constraint" explanations are the strings the check
+counted missing → the register contract now says *cells = columns − 1* and the validator enforces it;
+(b) four 16–18-word text cells are cut at the row boundary ("…liability across the entire") — no "…", no
+truncation note (the two client bugs did not recur), but the row was not allowed to grow → the grammar now says
+"a row is as tall as its longest cell needs — never cut a cell short" and cells are capped at 16 words.
+
+### 2–3. `plate-samples/state/…` — job `dossier-dce25aeed631` (who wins when states back tech and defence, 5 papers, medium), n = 2
+
+_(the two state plates are recorded below as they land)_
+
+### What the planning rounds taught (the wall's evolution, in the order the evidence arrived)
+
+The planner's answers were dense and grounded from the first call; every rejection was the wall being stricter
+than the register the owner pointed at. Each round cost ≈ $0.16–0.32 (23–31K input tokens, two calls), so the
+rule became: **a marginal overrun is repaired in code, never re-asked**.
+
+| round | what the wall rejected | what the v1 plates say | fix |
+|---|---|---|---|
+| state #1, risk #1 | a 14-word panel header (cap 12), a note of 163 chars (cap 160), a panel of 9 items (cap 8) | plate_a's items are 8–12-word clauses; its panels hold 4, the planner fills 6–9 | labels 14 words; notes and cells trimmed by the declutter before the wall; per-family list caps enforced by the declutter (keep the largest-size items, record the drops) |
+| state #2 | `USD 1.28 billion` flagged as a leaked decimal; 15–19-word statements | the leak class is `0.x` scores, not amounts | decimal rule narrowed to `0\.\d+`; labels are statements: 20 words |
+| state #3 | 22–23-word statements; one relation whose endpoint named no node | a plate line can run to ~24 words at 4K | labels 24 words / 170 chars; a dangling edge is dropped by the declutter, not re-asked; rejected specs are recorded (`rejected.json`, event payload) so a failed plan is never lost |
+| risk #2 | `80` in a bar cell | r3's bars print `78%` | (planner error, repaired by the re-ask as designed) |
 
 ## Cost
 
-_(filled in below)_
+| item | calls | USD |
+|---|---|---|
+| risk register — planning (2 rounds × 2 calls, the first round under the too-strict wall) | 4 Sonnet | 0.56 |
+| risk register — render (1 attempt, 4K) + check (5 tiles) | 1 image + 1 vision | 0.29 |
+| state — planning rounds #1–#3 under the evolving wall (all rejected) | 6 Sonnet | 0.98 |
+| state — planning round #4 (corrected wall) + two 4K renders + checks | see below | _(below)_ |
+| unit tests, mock desk, API proof | 0 | 0.00 |
+
+Running total before the state renders: **$1.83**. The budget was $2.50; planning under the too-strict wall
+consumed what two revision passes should have had. The state renders run at `--max-attempts 1` to stay near it.
 
 ## What to integrate into the run later (not done here — another agent owns runner/compose)
 
