@@ -555,7 +555,7 @@ FINDING_KINDS = (
     "section_off_spine", "redundant_summary_conclusion", "register_break",
     "jargon_unglossed", "exhibit_missing_where_claim_needs_one",
     # minted by code from the exhibit desks (pass E) — recorded facts, not impressions
-    "table_unavailable", "table_rows_dropped", "figure_unavailable", "exhibit_unpointed",
+    "table_unavailable", "table_rows_dropped", "figure_unavailable", "exhibit_unpointed", "exhibit_unplaced",
 )
 AFFORDANCES = (
     "revise_figure_spec", "rerender_figure", "drop_figure",

@@ -589,9 +589,11 @@ def _revision_notes(verdict: dict[str, Any]) -> list[str]:
     return notes
 
 
-def render_figure(job: DossierJob, spec: FigureSpec, out_dir: Path, provider: Optional[str] = None) -> Figure:
+def render_figure(job: DossierJob, spec: FigureSpec, out_dir: Path, provider: Optional[str] = None,
+                  revision_notes: Optional[list[str]] = None) -> Figure:
     """spec → prompt → render → check → (retry once) → save. Returns the Figure record.
 
+    `revision_notes` (optional) ride the FIRST render too — the cross-check's words when it asks for a redraw.
     Raises only when no image could be produced at all; the caller applies the skip law.
     """
     from src.images.compliance import check_diagram
@@ -603,7 +605,7 @@ def render_figure(job: DossierJob, spec: FigureSpec, out_dir: Path, provider: Op
     grounding = spec.__dict__.get("_grounding")
     fig = Figure(**spec.model_dump(), aspect=aspect, grounding=grounding)
     attempts: list[dict[str, Any]] = []
-    revision: list[str] = []
+    revision: list[str] = list(revision_notes or [])
     label = f"figure {spec.key}"
 
     for attempt in range(1, MAX_RENDER_ATTEMPTS + 1):
