@@ -2,8 +2,8 @@
    (VITE_MOCK=1 at build time, or ?mock=1 / localStorage analyst.mock=1 at
    run time) swaps every call for the fixture replay in ./mock.ts. */
 import type {
-  Audience, Brief, BriefOption, BriefPromise, BriefShape, Catalog, CreateJobRequest, CreateJobResponse, Depth, DossierJob, Exemplar,
-  ExecutorJob, JobListEntry, OrchestratorPlan, Receipt, RunEvent, ShapeRef, StepDepth,
+  Audience, Brief, BriefOption, BriefPromise, BriefShape, Catalog, CreateJobRequest, CreateJobResponse, Depth, DossierJob, DossierPlate, Exemplar,
+  ExecutorJob, JobListEntry, OrchestratorPlan, PlatesResponse, Receipt, RunEvent, ShapeRef, StartPlatesResponse, StepDepth,
 } from '../types'
 
 export const API_BASE: string = (import.meta.env.VITE_API_BASE
@@ -249,6 +249,12 @@ export interface Api {
   executorJob(id: string): Promise<ExecutorJob>
   plan(planId: string): Promise<OrchestratorPlan>
   pipelineVisualization(planId: string): Promise<{ phases: OrchestratorPlan['phases'] } & Record<string, unknown>>
+  /** plates: the job's plates and whether a run is in flight */
+  getPlates(jobId: string): Promise<PlatesResponse>
+  /** start a plates run (1-3 perspectives; named perspectives override n) */
+  startPlates(jobId: string, n?: number, perspectives?: string[]): Promise<StartPlatesResponse>
+  /** absolute URL of the kept 4K render */
+  plateImageUrl(jobId: string, plate: DossierPlate): string
 }
 
 const live: Api = {
@@ -305,6 +311,17 @@ const live: Api = {
   executorJob: (id) => request<ExecutorJob>(`/v1/executor/jobs/${id}`),
   plan: (planId) => request<OrchestratorPlan>(`/v1/orchestrator/plans/${planId}`),
   pipelineVisualization: (planId) => request(`/v1/orchestrator/plans/${planId}/pipeline-visualization`),
+  getPlates: (jobId) => request<PlatesResponse>(`/v1/dossier/jobs/${jobId}/plates`).then((d) => ({
+    ...d, running: Boolean(d.running), run: d.run ?? null, plates: Array.isArray(d.plates) ? d.plates : [],
+  })),
+  startPlates: (jobId, n, perspectives) => request<StartPlatesResponse>(`/v1/dossier/jobs/${jobId}/plates`,
+    { method: 'POST', body: JSON.stringify({ ...(n ? { n } : {}), ...(perspectives?.length ? { perspectives } : {}) }) }),
+  plateImageUrl: (jobId, plate) => {
+    const p = plate.url
+    if (p && /^https?:/.test(p)) return p
+    if (p && p.startsWith('/')) return `${API_BASE}${p}`
+    return `${API_BASE}/v1/dossier/jobs/${jobId}/plates/${plate.key}.jpg`
+  },
 }
 
 /* SSE with poll fallback (Wirecut's watchOperation pattern): the server
@@ -399,4 +416,7 @@ export const api: Api = {
   executorJob: (id) => getApi().then((a) => a.executorJob(id)),
   plan: (id) => getApi().then((a) => a.plan(id)),
   pipelineVisualization: (id) => getApi().then((a) => a.pipelineVisualization(id)),
+  getPlates: (id) => getApi().then((a) => a.getPlates(id)),
+  startPlates: (id, n, p) => getApi().then((a) => a.startPlates(id, n, p)),
+  plateImageUrl: (id, plate) => (impl ?? live).plateImageUrl(id, plate),
 }

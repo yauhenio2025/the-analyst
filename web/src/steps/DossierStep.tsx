@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { api } from '../lib/api'
 import { duration, timeShort, tokens, usd } from '../lib/format'
 import { Record } from '../components/Record'
-import { consolePath, dossierPath } from '../router'
+import { consolePath, dossierPath, platesPath } from '../router'
 import type { DossierJob, Receipt } from '../types'
 
 export function DossierStep({ job }: { job: DossierJob }) {
@@ -56,6 +56,7 @@ export function DossierStep({ job }: { job: DossierJob }) {
         <a className="secondary" href={api.downloadUrl(job, 'md')} download={`${job.id}.md`} target="_blank" rel="noreferrer" data-download="md">Markdown</a>
         <a className="secondary" href={api.downloadUrl(job, 'html')} download={`${job.id}.html`} target="_blank" rel="noreferrer" data-download="html">HTML</a>
         <a className="linkish" href={consolePath(job.id)} data-open-console>How this was made →</a>
+        <a className="linkish" href={platesPath(job.id)} data-open-plates>Plates — the analysis as one 4K diagram →</a>
       </div>
 
       <div className="dossier-frame panel" data-dossier-frame>

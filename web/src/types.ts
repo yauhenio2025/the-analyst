@@ -441,3 +441,69 @@ export interface OrchestratorPlan {
   }
   [k: string]: unknown
 }
+
+/* ── plates: one dense 4K diagram per perspective (communications/changes/plates.md) ── */
+export interface PlateCompliance {
+  checked: boolean
+  ok: boolean | null
+  format_ok?: boolean | null
+  detected_format?: string | null
+  title_found?: boolean | null
+  labels_found?: string[]
+  labels_missing?: string[]
+  misspelled?: { expected: string; seen?: string }[]
+  illegible?: string[]
+  prohibited_elements?: string[]
+  leaked_tokens?: string[]
+  extra_text?: string[]
+  density?: string | null
+  legible_at_4k?: boolean | null
+  issues?: string[]
+  suggestion?: string | null
+  confidence?: string
+  n_labels?: number
+}
+export interface PlateAttempt {
+  n: number
+  provider?: string
+  model?: string
+  cost_usd?: number
+  latency_ms?: number
+  width?: number | null
+  height?: number | null
+  kept?: boolean
+  compliance?: PlateCompliance | null
+  revision_notes?: string[]
+}
+export type PlateStatus = 'planned' | 'generated' | 'skipped' | 'failed'
+export interface DossierPlate {
+  key: string
+  family: string
+  visual_format: string
+  perspective: string
+  title: string
+  narrative: string
+  why_this_perspective?: string
+  claimed_territory?: string
+  excludes?: string[]
+  abstraction_level: number
+  aspect?: string
+  style_school?: string
+  status: PlateStatus
+  note?: string
+  url?: string | null
+  figure_id?: string | null
+  provider?: string | null
+  model?: string | null
+  width?: number | null
+  height?: number | null
+  cost_usd: number
+  compliance?: PlateCompliance | null
+  attempts: PlateAttempt[]
+  size_guides?: Record<string, number>
+  created_at?: string
+  prompt_chars?: number
+}
+export interface PlatesRun { started_at: string; n: number; perspectives: string[] }
+export interface PlatesResponse { job_id: string; running: boolean; run: PlatesRun | null; plates: DossierPlate[] }
+export interface StartPlatesResponse { job_id: string; status: string; n: number; perspectives: string[]; phase: string }

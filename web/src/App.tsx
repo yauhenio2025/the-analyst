@@ -7,6 +7,7 @@ import { api, MOCK } from './lib/api'
 import { useEvents, useJob } from './lib/hooks'
 import { Library } from './pages/Library'
 import { Console } from './pages/Console'
+import { Plates } from './pages/Plates'
 import { SourcesStep } from './steps/SourcesStep'
 import { BriefStep } from './steps/BriefStep'
 import { DraftStep } from './steps/DraftStep'
@@ -80,6 +81,8 @@ export default function App() {
             <a href="/" className={route.kind === 'library' ? 'on' : ''}>Library</a>
             {route.kind === 'dossier' && <a href={consolePath(route.id)}>Under the hood</a>}
             {route.kind === 'console' && <a href={dossierPath(route.id, 'draft')}>The dossier</a>}
+            {route.kind === 'plates' && <a href={dossierPath(route.id, 'dossier')}>The dossier</a>}
+            {route.kind === 'plates' && <a href={consolePath(route.id)}>Under the hood</a>}
           </span>
         </div>
         <div className="masthead-title">
@@ -136,6 +139,7 @@ export default function App() {
       )}
 
       {route.kind === 'console' && <Console id={route.id} node={route.node} exec={route.exec} />}
+      {route.kind === 'plates' && <Plates id={route.id} />}
 
       <footer className="foot">
         <span className="eyebrow">every visible fact is a recorded one · {MOCK ? 'fixture replay' : 'live api'}</span>
