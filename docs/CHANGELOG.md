@@ -5,6 +5,17 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Added (2026-09-03 — The Analyst build; details per package in communications/changes/*.md)
+- Events ledger + live SSE: `src/events/` (store, schemas, pricing, context, narrator, hooks), routes `/v1/events/{job_id}`, `/summary`, `/stream` and executor aliases; hooks in engine_runner/chain_runner/workflow_runner ([events.md](../communications/changes/events.md))
+- Image generation package: `src/images/` (providers gemini_pro/gemini_flash/seedream_5_pro/qwen_image_2_pro, adapter, figure_prompts, compliance, storage) and `/v1/figures/*` ([images.md](../communications/changes/images.md))
+- Dossier workflow (8 steps: reconnaissance → brief → plan → executor analysis → tables → figures → compose → receipts): `src/dossier/`, `src/sources/` (stacks export parsing), `/v1/dossier/*`, workflow `dossier_standard` ([dossier.md](../communications/changes/dossier.md))
+- Web front end `web/` (Vite+React; Library, four steps, live run rail, console, mock replay) ([web.md](../communications/changes/web.md))
+
+### Changed
+- Anthropic client timeouts use `src/llm/backends.sdk_timeout()` (anthropic 0.x and 1.x); `src/executor/executor.db` is no longer tracked (schema created on boot).
+- Service renamed The Analyst; deployed on CAII (see CLAUDE.md).
+
+
 ### Added
 - **Stage 4 unified run contract** — Consumer-facing `/v1/runs/*` read-only route family that joins executor state, presenter preparation state, and result-boundary state into one run summary/detail contract. `GET /v1/runs/by-job/{job_id}` returns full `RunDetail` with status, progress, preparation/result transition fields (`presentation_status`, `presentation_active`, `result_state`, `restore_available`, `restore_reason`), and control capability flags. `GET /v1/runs/discovery` supports `scope=active|recent|all` with batch-loaded preparation/result state (no per-job fanout), project_id/workflow_key/selected_source_thinker_id filters. Progress payload includes phase-native fields plus pass-compatibility aliases (`current_pass`, `total_passes`, `current_pass_name`). Discovery does not assemble pages. `RunLinks` provides `result_url` and `presentation_url`. ([`src/analysis_products/run_contract.py`](src/analysis_products/run_contract.py), [`src/analysis_products/schemas.py`](src/analysis_products/schemas.py), [`src/api/routes/runs.py`](src/api/routes/runs.py), [`tests/test_run_contract.py`](tests/test_run_contract.py))
 

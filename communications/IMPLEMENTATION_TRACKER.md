@@ -166,6 +166,12 @@ GET  /v1/figures/{figure_id}
 - `src/executor/executor.db` UNTRACKED (c519dc2): schema is created on boot; the dossier agent had committed its local job rows, which showed up as a stuck job on the live service. Live SQLite resets on every deploy until EXECUTOR_DATABASE_URL is set.
 - Live smoke (2026-09-03 05:20 UTC): `/v1/figures/providers` lists 4 providers; `/v1/dossier/*` and `/v1/events/*` routes served; `/v1/dossier/exemplars` is EMPTY on Render (exemplar texts are not in git — repo is public; next session: upload endpoint or private repo + commit `data/exemplars/`).
 
+### FINAL STATE AT SESSION END (2026-09-03 ~05:30 UTC)
+- ALL FOUR BRANCHES MERGED to the-analyst master (events, images, dossier, web) and pushed; 61 tests pass; analyzer-mgmt master = console branch, live.
+- First complete dossier run (local, simple depth): `dossier-000b84458ab4` — $2.07, 8 LLM + 1 image call, 3 tables/16 rows, 1 figure, 5 sections, PDF. Outputs preserved at `~/projects/the-analyst/data/dossiers/dossier-000b84458ab4/` (git-ignored) and the worktree's SQLite copy at `data/dossier-worktree-executor.db`.
+- Medium run `dossier-16f2f9a2d89f` left in `analysis` in the dossier worktree DB; resume: boot server in that worktree, `POST /v1/dossier/jobs/dossier-16f2f9a2d89f/resume`.
+- NEXT SESSION, in order: (1) set EXECUTOR_DATABASE_URL on srv-dacfq315efls73e9hohg; (2) get exemplar texts onto the live service (upload endpoint or private repo + commit data/exemplars); (3) run the bundle at medium on the LIVE service (pre-baked demo) + Kering study at simple (live demo); (4) verify the desk (https://the-analyst-desk.onrender.com) and console (/jobs/{id}/console) against those live jobs incl. real SSE; (5) fix the compliance re-render loop and spend cap if time; (6) rehearse the demo checklist below.
+
 ### Merge recipe
 ```
 cd ~/projects/the-analyst && git fetch origin

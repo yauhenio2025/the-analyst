@@ -1373,3 +1373,30 @@ Ten advanced engines with deep theoretical foundations, cross-referencing ID sys
   - `GET /v1/styles/tokens/{school_key}/css` - Get tokens as CSS custom properties
 - **Dependencies**: token_schema, token_prompt, StyleRegistry, executor.db, llm.client, Anthropic SDK
 - **Added**: 2026-03-02
+
+
+## The Analyst additions (2026-09-03)
+
+### Run events ledger + SSE
+- **Status**: Active
+- **Description**: Per-call event log (phase/chain/engine/pass, tokens, cost, prompt/output excerpts, narration) streamed live
+- **Entry Points**: `src/events/store.py` (append_event/list_events/job_summary), `src/events/hooks.py`, `src/api/routes/events.py`
+- **Added**: 2026-09-03
+
+### Image generation (figures)
+- **Status**: Active
+- **Description**: Provider-agnostic image adapter (Gemini Nano Banana Pro/Flash, Seedream 5 Pro, Qwen-Image 2 Pro), figure prompts, vision compliance, storage
+- **Entry Points**: `src/images/adapter.py` (generate_image/generate_with_fallback), `src/images/providers.py`, `src/api/routes/figures.py`
+- **Added**: 2026-09-03
+
+### Dossier workflow
+- **Status**: Active
+- **Description**: Documents → 8 recorded steps → HTML/PDF/MD dossier with anchored tables and figures
+- **Entry Points**: `src/dossier/runner.py`, `src/api/routes/dossier.py`, `src/workflows/definitions/dossier_standard.json`, `src/sources/stacks.py`
+- **Added**: 2026-09-03
+
+### Web front end (the-analyst-desk)
+- **Status**: Active
+- **Description**: Library, four-step journey, live narrated draft, console; `?mock=1` replays a full job
+- **Entry Points**: `web/src/App.tsx`, `web/src/router.ts`, `web/src/lib/api.ts`, `web/src/pages/Console.tsx`
+- **Added**: 2026-09-03
