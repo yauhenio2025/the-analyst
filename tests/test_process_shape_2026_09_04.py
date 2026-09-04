@@ -118,6 +118,10 @@ def test_ledger_walls_verify_anchors_and_ids():
     # no bullet at all (DeepSeek on paper two, 23:14)
     bare = parse_rows('[F22] The typology would remain valid — dim: rivals — anchor: “The forms presented in Table 1 are ideal types” — confidence: medium')
     assert bare[0].id == "F22" and bare[0].anchor.startswith("The forms presented")
+    # a PDF's spaced hyphen ("cross- referenced") verifies against the closed form a model writes, and vice versa
+    pdf = SourceIndex({"d": "Data from interviews were cross-  referenced with other sources; a market- driven network."})
+    assert pdf.find("interviews were cross-referenced with other sources") == "d"
+    assert pdf.find("a market- driven network") == "d" and pdf.find("a market driven network") is None
 
 
 def _fake_call_factory(log):

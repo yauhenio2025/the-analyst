@@ -80,20 +80,32 @@ def ledger_rows(text: str) -> list[LedgerRow]:
     return parse_rows(ledger or text if not ledger else ledger)
 
 
+_SPACED_HYPHEN = re.compile(r"(\w)-\s+(\w)")
+
+
 class SourceIndex:
-    """Normalised documents for verbatim membership tests."""
+    """Normalised documents for verbatim membership tests.
+
+    Each document is indexed twice: as extracted, and with spaced hyphens closed ("market- driven" → "market-driven"),
+    because PDF text carries the former and a model naturally copies the latter (paper two, frontier run 23:26).
+    A quote verifies if it appears in either; the check stays a membership test, never a similarity score.
+    """
 
     def __init__(self, documents: dict[str, str]):
         self.norm = {k: normalize(v) for k, v in documents.items()}
+        self.norm_closed = {k: normalize(_SPACED_HYPHEN.sub(r"\1-\2", v)) for k, v in documents.items()}
+
+    def _has(self, doc_key: str, q: str) -> bool:
+        return q in self.norm[doc_key] or q in self.norm_closed[doc_key]
 
     def find(self, quote: str, prefer: str = "") -> Optional[str]:
         q = normalize(quote)
         if not q:
             return None
-        if prefer and prefer in self.norm and q in self.norm[prefer]:
+        if prefer and prefer in self.norm and self._has(prefer, q):
             return prefer
-        for k, t in self.norm.items():
-            if q in t:
+        for k in self.norm:
+            if self._has(k, q):
                 return k
         return None
 
