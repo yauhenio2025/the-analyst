@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import logging
 import os
+import re
 import time
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
@@ -30,7 +31,8 @@ from src.executor.ledger_walls import (
 )
 from src.operationalizations.schemas import ProcessDimension, ProcessSpec, ProcessStep
 from src.stages.process_composer import (
-    LEDGER_HEADING, ProcessPrompt, compose_extract_prompt, compose_synthesize_prompt, compose_verify_prompt,
+    LEDGER_HEADING, ProcessPrompt, compose_extract_prompt, compose_oneshot_prompt, compose_synthesize_prompt,
+    compose_verify_prompt,
 )
 
 logger = logging.getLogger(__name__)
@@ -372,3 +374,138 @@ def preview_prompts(cap_def: Any, spec: ProcessSpec, documents: dict[str, str]) 
         elif step.kind == "synthesize":
             out.append(compose_synthesize_prompt(cap_def, spec, step, documents, f"{LEDGER_HEADING}\n- [D1.F1] (verified rows)"))
     return out
+
+
+# ── read → check → apply (the default for a reading; frontier study 2026-09-05) ─────────────────
+#
+# One strong call writes the reading with its ledger; the mid-tier critic rules on every row against
+# the source; code applies the rulings to the ledger and leaves the prose alone: rejected rows move to
+# a receipt section, weakened rows take the critic's wording, added rows are appended with lineage.
+# The reading keeps the one call's coherence; the ledger becomes the checked contract the desks read.
+
+
+def apply_rulings(rows: list[LedgerRow], rulings: list[LedgerRow], index: SourceIndex) -> tuple[list[LedgerRow], list[LedgerRow], list[LedgerRow], dict]:
+    """(kept rows, rejected rows, unverified rows, report). Rows the critic did not mention are kept as confirmed."""
+    verify_rows(rulings, index)
+    by_id = {r.id: r for r in rulings}
+    kept, rejected, unverified = [], [], []
+    rep = {"in": len(rows), "confirmed": 0, "weakened": 0, "rejected": 0, "added": 0, "added_dropped": 0, "carried": 0, "unverified": 0}
+    next_n = max([int(m) for r in rows for m in [re.sub(r"^[A-Za-z.]*?(\d+)$", r"\1", r.id)] if m.isdigit()] or [0]) + 1
+    for r in rows:
+        v = by_id.get(r.id)
+        if v is None:
+            rep["carried"] += 1; r.status = r.status or "confirmed"; target = kept
+        elif v.status == "rejected":
+            rep["rejected"] += 1; r.text = v.text; target = rejected
+        elif v.status == "weakened":
+            rep["weakened"] += 1; target = kept
+            r.text, r.finding, r.anchor, r.anchor_verified, r.anchor_trimmed = v.text, v.finding, v.anchor, v.anchor_verified, v.anchor_trimmed
+            r.confidence, r.status = v.confidence or r.confidence, "weakened"
+        else:
+            rep["confirmed"] += 1; target = kept
+            if v.anchor_verified and not r.anchor_verified:   # the critic re-anchored a paraphrased quote
+                r.anchor, r.anchor_verified = v.anchor, True
+        if target is kept and not r.anchor_verified:
+            rep["unverified"] += 1; unverified.append(r)
+        else:
+            target.append(r)
+    for v in rulings:
+        if v.status == "added" and v.id not in {r.id for r in rows}:
+            if not v.anchor_verified:
+                rep["added_dropped"] += 1; continue
+            rep["added"] += 1
+            v.text = re.sub(r"\s*[—–-]{1,2}\s*status\s*:\s*added", "", v.text, flags=re.I) + f" — from: {v.id}"
+            v.id = f"F{next_n}"; next_n += 1; v.status = "added"; kept.append(v)
+    return kept, rejected, unverified, rep
+
+
+def assemble_checked_content(prose: str, ledger: str, kept: list[LedgerRow], rejected: list[LedgerRow], unverified: list[LedgerRow], rep: dict, critic: str) -> str:
+    """The reading's prose untouched, then the applied ledger, the reading's own counter-evidence and open
+    questions, and the receipt sections the desks skip."""
+    tail = ""
+    m = re.search(r"^\s{0,3}#{2,4}\s*(counter[- ]evidence|open questions)\b.*$", ledger, re.I | re.M)
+    if m:
+        tail = ledger[m.start():].strip()
+    parts = [prose.rstrip(), "", render_rows(kept)]
+    if tail:
+        parts += ["", tail]
+    if rejected:
+        parts += ["", "### Rejected by the critic", *(r.render() for r in rejected)]
+    if unverified:
+        parts += ["", "### Unverified anchors (kept for the reader, not citable by the desks)", *(r.render() for r in unverified)]
+    parts += ["", "### Check receipt", f"- critic: {critic}; rows in: {rep['in']}; confirmed {rep['confirmed']} (+{rep['carried']} unmentioned, kept); weakened {rep['weakened']}; rejected {rep['rejected']}; added {rep['added']} (dropped {rep['added_dropped']} whose anchors were not verbatim); unverified anchors {rep['unverified']}"]
+    return "\n".join(parts).rstrip() + "\n"
+
+
+def run_oneshot_checked(
+    cap_def: Any,
+    spec: ProcessSpec,
+    documents: dict[str, str],
+    *,
+    depth: str = "standard",
+    check: bool = True,
+    tier_overrides: Optional[dict[str, str]] = None,
+    model_hint: Optional[str] = None,
+    call_fn: Optional[CallFn] = None,
+    cancellation_check: Optional[Callable[[], bool]] = None,
+    on_call: Optional[Callable[[StepCall], None]] = None,
+    upstream_context: str = "",
+    reading: Optional[str] = None,
+) -> ProcessRunResult:
+    """One call on the strong tier (or a `reading` already on disk), then, if `check`, the critic on the mid tier
+    over its ledger and the rulings applied by code."""
+    call_fn = call_fn or _default_call
+    t0 = time.time()
+    result = ProcessRunResult(engine_key=cap_def.engine_key, process_key=spec.key)
+    index = SourceIndex(documents)
+    big = sum(len(v) for v in documents.values()) > 600_000
+    read_step = ProcessStep(key="read", kind="synthesize", model_tier="strong", is_final=True)
+    strong = resolve_step_model(read_step, spec, tier_overrides=tier_overrides, model_hint=model_hint)
+
+    def _record(sc: StepCall) -> None:
+        result.calls.append(sc)
+        if on_call:
+            try:
+                on_call(sc)
+            except Exception as exc:  # noqa: BLE001
+                logger.warning(f"on_call hook failed: {exc}")
+
+    if reading is None:
+        prompt = compose_oneshot_prompt(cap_def, spec, documents)
+        prompt.step_key = "read"
+        if upstream_context:
+            prompt.user = f"{upstream_context}\n\n=====\n\n{prompt.user}"
+        sc = _invoke(call_fn, prompt, strong, depth=depth, big=big, cancellation_check=cancellation_check)
+        reading = sc.content
+        prose0, ledger0 = split_ledger(reading)
+        rows0 = parse_rows(ledger0)
+        rep0 = verify_rows(rows0, index)
+        sc.wall = {**rep0.as_dict(), "has_ledger": bool(ledger0), "prose_chars": len(prose0)}
+        _record(sc)
+        result.final_content, result.final_model, result.final_wall = reading, sc.model_used, sc.wall
+    prose, ledger = split_ledger(reading)
+    rows = parse_rows(ledger)
+    verify_rows(rows, index)
+    if not check or not rows:
+        result.seconds = time.time() - t0
+        return result
+
+    verify_step = spec.get_step("verify") or ProcessStep(key="verify", kind="verify", model_tier="mid")
+    critic = resolve_step_model(verify_step, spec, tier_overrides=tier_overrides)
+    flagged = []
+    for r in rows:   # the wall's verdicts travel with the rows so the critic re-anchors paraphrased quotes
+        flagged.append(r.render() + ("" if r.anchor_verified else " — wall: anchor not verbatim in the source; re-anchor or reject"))
+    vprompt = compose_verify_prompt(cap_def, spec, verify_step, documents, LEDGER_HEADING + "\n" + "\n".join(flagged))
+    vprompt.step_key = "check"
+    vc = _invoke(call_fn, vprompt, critic, depth=depth, big=big, cancellation_check=cancellation_check)
+    rulings = parse_rows(_ledger_text(vc.content))
+    kept, rejected, unverified, rep = apply_rulings(rows, rulings, index)
+    final_rows = kept
+    rep_final = verify_rows(final_rows, index)
+    vc.wall = {**rep_final.as_dict(), **{f"check_{k}": v for k, v in rep.items()}}
+    _record(vc)
+    result.final_content = assemble_checked_content(prose, ledger, kept, rejected, unverified, rep, vc.model_used)
+    result.final_model = result.final_model or strong
+    result.final_wall = vc.wall
+    result.seconds = time.time() - t0
+    return result

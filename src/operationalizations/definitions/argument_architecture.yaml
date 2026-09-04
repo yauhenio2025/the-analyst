@@ -4,7 +4,16 @@ engine_name: Argument Architecture Mapper
 # (the frontier study's production control). This file holds the process shape (study 2026-09-04):
 # communications/study/REDESIGN_argument_architecture_2026-09-04.md
 stance_operationalizations: []
+# Frontier study 2026-09-05: surface = one call; standard = one call + the critic, rulings applied by code
+# (the default for a reading); deep = the full chain. The four-stance sequence in the capability YAML is
+# reference only (Fable refuses it on any material; it lost on every measure).
 depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
 - depth_key: dvs
   process: dvs
 process:
@@ -17,7 +26,7 @@ process:
   routing:
     cheap: openrouter/openai/gpt-5.6-luna
     mid: openrouter/deepseek/deepseek-v4-pro
-    strong: claude-sonnet-4-6
+    strong: openrouter/openai/gpt-5.6-sol      # the value pick on both engines (frontier 2026-09-05); the plan's model_hint overrides
   dimensions:
   - key: claims
     id_prefix: A1

@@ -40,8 +40,8 @@ def test_both_engines_hold_a_process_and_keep_their_stance_passes():
         doc_dims = [d for d in spec.dimensions if d.scope == "document"]
         assert 5 <= len(doc_dims) <= 6 and all(d.questions and d.method_card and d.answer_shape for d in doc_dims)
         assert any(d.scope == "corpus" for d in spec.dimensions)
-        assert op.process_for_depth("deep") is None
-        # the four-stance deep path is untouched (the study's production control)
+        assert op.process_for_depth("deep") is op.process           # deep runs the chain (frontier 2026-09-05)
+        # the four-stance passes stay composable for reference (the study's control), no longer a default
         assert len(compose_all_pass_prompts(_cap(key), depth="deep")) == 4
 
 
@@ -211,3 +211,94 @@ def test_chain_runner_dispatches_a_process_depth(monkeypatch):
     )
     assert seen == {"engine": "argument_architecture", "docs": ["w1"], "hint": "claude-fable-5-1"}
     assert len(out) == 1 and out[0].stance_key == "synthesize" and out[0].content.startswith("# reading")
+
+
+# ── read → check → apply (frontier study 2026-09-05) ─────────────────────
+
+def test_modes_per_depth_and_sol_as_the_strong_tier():
+    for key in ENGINES:
+        op = _op(key)
+        assert {d: op.mode_for_depth(d) for d in ("surface", "standard", "deep", "dvs")} == {"surface": "oneshot", "standard": "oneshot_checked", "deep": "dvs", "dvs": "dvs"}
+        assert op.process.routing["strong"] == "openrouter/openai/gpt-5.6-sol"
+        assert op.process_for_depth("standard") is None and op.process_for_depth("deep") is op.process
+
+
+def test_apply_rulings_keeps_weakens_rejects_and_adds():
+    from src.executor.process_runner import apply_rulings
+    idx = SourceIndex({"d": SOURCE})
+    rows = parse_rows("\n".join([
+        '- [F1] Kept as is — dim: givens — anchor: "constitutes a mutation of neoliberalism" — confidence: high',
+        '- [F2] To be weakened — dim: givens — anchor: "focuses exclusively on geopolitics" — confidence: high',
+        '- [F3] To be rejected — dim: givens — anchor: "fear of being \'wedged\' on defence" — confidence: medium',
+        '- [F4] Paraphrased quote, critic re-anchors it — dim: givens — anchor: "labour feared being wedged" — confidence: medium',
+        '- [F5] Unmentioned by the critic — dim: givens — anchor: "This is not to say that AUKUS" — confidence: low',
+    ]))
+    verify_rows(rows, idx)
+    rulings = parse_rows("\n".join([
+        '- [F1] Kept as is — dim: givens — anchor: "constitutes a mutation of neoliberalism" — status: confirmed — reason: ok — confidence: high',
+        '- [F2] Weaker wording — dim: givens — anchor: "focuses exclusively on geopolitics" — status: weakened — reason: narrower — confidence: medium',
+        '- [F3] To be rejected — dim: givens — anchor: "fear of being \'wedged\' on defence" — status: rejected — reason: about the authors — confidence: low',
+        '- [F4] Paraphrased quote, critic re-anchors it — dim: givens — anchor: "fear of being \'wedged\' on defence" — status: confirmed — reason: re-anchored — confidence: medium',
+        '- [V.F1] A miss — dim: visibility — anchor: "motivated by geopolitics, which in turn reshapes market mechanisms" — status: added — confidence: high',
+        '- [V.F2] A miss with a bad anchor — dim: visibility — anchor: "nowhere in this source at all" — status: added — confidence: high',
+    ]))
+    kept, rejected, unverified, rep = apply_rulings(rows, rulings, idx)
+    assert [r.id for r in kept] == ["F1", "F2", "F4", "F5", "F6"] and [r.id for r in rejected] == ["F3"] and unverified == []
+    assert kept[1].finding == "Weaker wording" and kept[1].status == "weakened"
+    assert kept[2].anchor_verified and kept[2].anchor.startswith("fear of being")        # re-anchored by the critic
+    assert kept[4].text.endswith("— from: V.F1") and "status: added" not in kept[4].text
+    assert rep == {"in": 5, "confirmed": 2, "weakened": 1, "rejected": 1, "added": 1, "added_dropped": 1, "carried": 1, "unverified": 0}
+
+
+def test_run_oneshot_checked_with_a_fake_model(monkeypatch):
+    from src.executor.process_runner import run_oneshot_checked
+    for tier in ("CHEAP", "MID", "STRONG"):
+        monkeypatch.delenv(f"PROCESS_ROUTING_{tier}", raising=False)
+    key = "conditions_of_possibility_analyzer"; cap, spec = _cap(key), _op(key).process
+    log = []
+    def fake(system, user, *, model_hint, label, **_):
+        log.append((label, model_hint))
+        if "| check" in label or "| verify" in label:
+            content = "\n".join([LEDGER_HEADING,
+                '- [F1] A given — dim: givens — anchor: "constitutes a mutation of neoliberalism" — status: confirmed — reason: ok — confidence: high',
+                '- [F2] Overreach — dim: givens — anchor: "focuses exclusively on geopolitics" — status: rejected — reason: about the authors — confidence: low',
+                '- [V.F1] A miss — dim: visibility — anchor: "fear of being \'wedged\' on defence" — status: added — confidence: high',
+                "### Must keep\n- V.F1: the mechanism"])
+        else:
+            content = ("# Reading\n\nThe text rests on a given [F1], and overreaches [F2].\n\n" + LEDGER_HEADING +
+                       '\n- [F1] A given — dim: givens — anchor: "constitutes a mutation of neoliberalism" — confidence: high'
+                       '\n- [F2] Overreach — dim: givens — anchor: "focuses exclusively on geopolitics" — confidence: low'
+                       "\n### Counter-evidence\n- none\n### Open questions\n- what the text cannot settle")
+        return {"content": content, "model_used": model_hint, "input_tokens": 1000, "output_tokens": 300, "duration_ms": 3, "retries": 0}
+    res = run_oneshot_checked(cap, spec, {"aukus": SOURCE}, call_fn=fake, tier_overrides={"strong": "openrouter/openai/gpt-5.6-sol", "mid": "openrouter/deepseek/deepseek-v4-pro"})
+    assert [c.step_key for c in res.calls] == ["read", "check"] and res.calls[0].model_used.endswith("gpt-5.6-sol") and res.calls[1].model_used.endswith("deepseek-v4-pro")
+    out = res.final_content
+    assert out.startswith("# Reading\n\nThe text rests on a given [F1], and overreaches [F2].")   # prose untouched
+    ledger = out.split(LEDGER_HEADING, 1)[1]
+    assert "- [F1] A given" in ledger and "- [F3] A miss" in ledger and "from: V.F1" in ledger
+    assert "### Rejected by the critic\n- [F2] Overreach" in ledger and "### Open questions\n- what the text cannot settle" in ledger
+    assert "### Check receipt" in ledger and res.final_wall["anchor_rate"] == 1.0 and res.final_wall["check_rejected"] == 1
+    # without the check: one call, the reading as written
+    res2 = run_oneshot_checked(cap, spec, {"aukus": SOURCE}, call_fn=fake, check=False, tier_overrides={"strong": "openrouter/openai/gpt-5.6-sol"})
+    assert [c.step_key for c in res2.calls] == ["read"] and "### Check receipt" not in res2.final_content
+
+
+def test_chain_runner_dispatches_oneshot_checked_at_standard_depth(monkeypatch):
+    import src.executor.chain_runner as cr
+    seen = {}
+    def fake_checked(cap_def, spec, documents, **kw):
+        seen["mode_check"] = kw.get("check"); seen["hint"] = kw.get("model_hint")
+        from src.executor.process_runner import ProcessRunResult, StepCall
+        sc = StepCall(step_key="read", kind="synthesize", model_used="m", content="# r\n\n" + LEDGER_HEADING + "\n- [F1] x — anchor: \"y\" — confidence: high")
+        kw["on_call"](sc)
+        return ProcessRunResult(engine_key=cap_def.engine_key, process_key=spec.key, calls=[sc], final_content=sc.content + "\n### Check receipt\n- ok", final_model="m")
+    monkeypatch.setattr("src.executor.process_runner.run_oneshot_checked", fake_checked)
+    monkeypatch.setattr(cr, "save_output", lambda **kw: "po-test")
+    monkeypatch.setattr(cr, "update_job_tokens", lambda *a, **kw: None)
+    out = cr._run_engine_passes(
+        cap_def=_cap("conditions_of_possibility_analyzer"), document_text="t", depth="standard", focus_dimensions=None,
+        previous_engine_output=None, upstream_context="", context_emphasis=None, engine_label=None,
+        job_id="job-test", phase_number=1.0, work_key="w1", model_hint=None, requires_full_documents=False, cancellation_check=None,
+    )
+    assert seen == {"mode_check": True, "hint": None}
+    assert [o.stance_key for o in out] == ["read", "checked"] and out[-1].content.endswith("### Check receipt\n- ok")

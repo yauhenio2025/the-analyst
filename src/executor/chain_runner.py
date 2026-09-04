@@ -254,6 +254,16 @@ def _run_engine_passes(
     # Process shape (study 2026-09-04): a depth key that names the engine's process runs
     # extract → verify → synthesize with per-step model routing instead of stance passes.
     _op = get_operationalization_registry().get(cap_def.engine_key)
+    _mode = _op.mode_for_depth(depth) if _op is not None else None
+    if _mode in ("oneshot", "oneshot_checked") and _op.process is not None:
+        return _run_engine_process(
+            cap_def=cap_def, spec=_op.process, document_text=document_text, depth=depth,
+            previous_engine_output=previous_engine_output, upstream_context=upstream_context,
+            context_emphasis=context_emphasis, engine_label=engine_label, job_id=job_id,
+            phase_number=phase_number, work_key=work_key, model_hint=model_hint,
+            requires_full_documents=requires_full_documents, cancellation_check=cancellation_check,
+            mode=_mode,
+        )
     _spec = _op.process_for_depth(depth) if _op is not None else None
     if _spec is not None:
         return _run_engine_process(
@@ -512,13 +522,15 @@ def _run_engine_process(
     model_hint: Optional[str],
     requires_full_documents: bool,
     cancellation_check: Optional[Callable[[], bool]],
+    mode: str = "dvs",
 ) -> list[EngineCallResult]:
-    """Run the engine's process (extract → verify → synthesize) and persist every call as a pass output.
+    """Run the engine's process and persist every call as a pass output. `mode` is `dvs` (the chain),
+    `oneshot` (one call) or `oneshot_checked` (one call, then the critic, rulings applied by code).
 
     The final synthesis is the last pass (what the desks read); the extraction and verification calls are
     saved before it as receipts, roles `extraction` and `verification`.
     """
-    from src.executor.process_runner import run_process
+    from src.executor.process_runner import run_oneshot_checked, run_process
 
     shared_parts = []
     if upstream_context:
@@ -535,6 +547,7 @@ def _run_engine_process(
     def _persist(sc):
         counter["n"] += 1
         role = {"extract": "extraction", "verify": "verification", "synthesize": "synthesis"}.get(sc.kind, sc.kind)
+        if sc.step_key == "check": role = "verification"
         save_output(
             job_id=job_id, phase_number=phase_number, engine_key=cap_def.engine_key, pass_number=counter["n"],
             content=sc.content, work_key=work_key, stance_key=f"{sc.step_key}:{sc.dimension_key}" if sc.dimension_key else sc.step_key,
@@ -553,11 +566,25 @@ def _run_engine_process(
 
     with _events_context.scope(job_id=job_id, phase=_events_context.phase_key(phase_number), engine=cap_def.engine_key,
                                pass_name=f"process {spec.key}", stance=None, work_key=work_key or None):
-        run = run_process(
-            cap_def, spec, {work_key or "document": document_text}, depth=depth, model_hint=model_hint,
-            cancellation_check=cancellation_check, on_call=_persist, upstream_context=upstream,
-        )
-    logger.info(f"{cap_def.engine_key} process {spec.key}: {len(run.calls)} calls, ${run.cost_usd}, {run.seconds:.0f}s, final anchor rate {run.final_wall.get('anchor_rate')}")
+        if mode in ("oneshot", "oneshot_checked"):
+            run = run_oneshot_checked(
+                cap_def, spec, {work_key or "document": document_text}, depth=depth, check=(mode == "oneshot_checked"),
+                model_hint=model_hint, cancellation_check=cancellation_check, on_call=_persist, upstream_context=upstream,
+            )
+            # the applied ledger is the engine's product: persisted as the last pass so the desks read it
+            if mode == "oneshot_checked" and results and run.final_content != results[-1].content:
+                counter["n"] += 1
+                save_output(job_id=job_id, phase_number=phase_number, engine_key=cap_def.engine_key, pass_number=counter["n"],
+                            content=run.final_content, work_key=work_key, stance_key="checked", role="synthesis",
+                            model_used=run.final_model, metadata={"process": spec.key, "mode": mode, "wall": run.final_wall})
+                results.append(EngineCallResult(engine_key=cap_def.engine_key, pass_number=counter["n"], stance_key="checked",
+                                                content=run.final_content, model_used=run.final_model))
+        else:
+            run = run_process(
+                cap_def, spec, {work_key or "document": document_text}, depth=depth, model_hint=model_hint,
+                cancellation_check=cancellation_check, on_call=_persist, upstream_context=upstream,
+            )
+    logger.info(f"{cap_def.engine_key} {mode} ({spec.key}): {len(run.calls)} calls, ${run.cost_usd}, {run.seconds:.0f}s, final anchor rate {run.final_wall.get('anchor_rate')}")
     return results
 
 

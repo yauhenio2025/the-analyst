@@ -99,13 +99,18 @@ stance_operationalizations:
   - map_enabling_conditions
   - detect_constraints
   - explore_counterfactuals
+# Frontier study 2026-09-05: surface = one call; standard = one call + the critic, rulings applied by code
+# (the default for a reading); deep = the full chain; the stance passes below stay for reference only
+# (Fable refuses them on any material; they lost on every measure).
 depth_sequences:
 - depth_key: surface
+  mode: oneshot
   passes:
   - pass_number: 1
     stance_key: discovery
     consumes_from: []
 - depth_key: standard
+  mode: oneshot_checked
   passes:
   - pass_number: 1
     stance_key: discovery
@@ -115,6 +120,7 @@ depth_sequences:
     consumes_from:
     - 1
 - depth_key: deep
+  mode: dvs
   passes:
   - pass_number: 1
     stance_key: discovery
@@ -147,7 +153,7 @@ process:
   routing:
     cheap: openrouter/openai/gpt-5.6-luna
     mid: openrouter/deepseek/deepseek-v4-pro
-    strong: claude-sonnet-4-6
+    strong: openrouter/openai/gpt-5.6-sol      # the value pick on both engines (frontier 2026-09-05); the plan's model_hint overrides
   dimensions:
   - key: givens
     id_prefix: D1

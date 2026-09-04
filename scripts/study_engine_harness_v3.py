@@ -101,6 +101,9 @@ def cond_b(cap, spec, model_id, source, label):
 def cond_cd(cap, spec, model_id, source, label, uniform: bool):
     tiers = {"cheap": model_id, "mid": model_id, "strong": model_id} if uniform else {"cheap": CHEAP, "mid": MID, "strong": model_id}
     run = run_process(cap, spec, {"doc": source}, tier_overrides=tiers)
+    steps_dir = OUT / "receipts" / (label.replace("v3 ", "") + ".steps"); steps_dir.mkdir(parents=True, exist_ok=True)
+    for i, c in enumerate(run.calls, 1):   # every step's text, so the critic's rulings can be read later (asked for on 2026-09-05)
+        (steps_dir / f"{i:02d}_{c.step_key}{('_' + c.dimension_key) if c.dimension_key else ''}.md").write_text(c.content, encoding="utf-8")
     return run.final_content, [c.as_receipt() for c in run.calls], run.receipts()
 
 

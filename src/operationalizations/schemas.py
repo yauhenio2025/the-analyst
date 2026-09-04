@@ -91,6 +91,14 @@ class DepthSequence(BaseModel):
         description="Key of the engine's process (see ProcessSpec) that runs at this depth instead of "
         "stance passes. When set, `passes` is ignored. Study 2026-09-04: extract → verify → synthesize.",
     )
+    mode: Optional[Literal["oneshot", "oneshot_checked", "dvs", "stances"]] = Field(
+        default=None,
+        description="How this depth executes (frontier study 2026-09-05): `oneshot` = one call with the process's "
+        "question sets and method cards on the strong tier; `oneshot_checked` = that call, then the mid-tier critic "
+        "over its findings, rulings applied to the ledger by code (the default for a reading); `dvs` = the full "
+        "extract → verify → synthesize chain (desk-facing, corpora); `stances` = the stance passes listed in `passes`. "
+        "When unset: `dvs` if `process` is set, else `stances`.",
+    )
 
 
 # ── The process shape (study 2026-09-04): extract → verify → synthesize ──────────────
@@ -195,12 +203,20 @@ class EngineOperationalization(BaseModel):
         description="The engine's extract → verify → synthesize process (study 2026-09-04); run by a depth sequence whose `process` names it",
     )
 
-    def process_for_depth(self, depth_key: str) -> Optional[ProcessSpec]:
-        """The process a depth key runs, or None when the depth runs stance passes."""
+    def mode_for_depth(self, depth_key: str) -> Optional[str]:
+        """`oneshot` | `oneshot_checked` | `dvs` | `stances`, or None when the depth is unknown."""
         seq = self.get_depth_sequence(depth_key)
-        if seq is None or not seq.process or self.process is None:
+        if seq is None:
             return None
-        return self.process if self.process.key == seq.process else None
+        if seq.mode:
+            return seq.mode if (seq.mode == "stances" or self.process is not None) else "stances"
+        if seq.process and self.process is not None and self.process.key == seq.process:
+            return "dvs"
+        return "stances" if seq.passes else None
+
+    def process_for_depth(self, depth_key: str) -> Optional[ProcessSpec]:
+        """The process a depth key runs as the full chain, or None otherwise."""
+        return self.process if self.mode_for_depth(depth_key) == "dvs" else None
 
     def get_stance_op(self, stance_key: str) -> StanceOperationalization | None:
         """Look up a stance operationalization by key."""
