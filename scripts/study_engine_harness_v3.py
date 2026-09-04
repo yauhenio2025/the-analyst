@@ -271,7 +271,7 @@ def dry_run(specs, sources, judges, orders, b_models):
 def rescan(manifest, sources):
     """Recompute every run's anchor rate with the current parser; drop runs whose critic output failed to parse
     (a verify call with zero rows means every extraction row was carried forward unjudged) so they rerun."""
-    keep = []
+    keep, dropped_keys = [], set()
     for m in manifest:
         m["anchor_rate"], m["ledger_rows"] = anchor_rate((OUT / m["file"]).read_text(), sources[m["paper"]])
         rec = OUT / "receipts" / f"{m['key']}.json"
@@ -279,12 +279,22 @@ def rescan(manifest, sources):
         if m["condition"] in ("c", "d") and rec.exists():
             calls = json.loads(rec.read_text()).get("calls", [])
             lost = any(c.get("kind") == "verify" and (c.get("wall") or {}).get("rows", 0) == 0 for c in calls)
-        if lost:
-            log(f"rescan: {m['key']} lost its critic (verify parsed 0 rows) — dropped, will rerun"); rec.rename(rec.with_suffix(".lost.json"))
+        incomplete = m["ledger_rows"] == 0   # every condition ends with a findings ledger; none means a truncated stream (Sol, 00:48)
+        if lost or incomplete:
+            why = "lost its critic (verify parsed 0 rows)" if lost else "has no findings ledger (truncated output)"
+            log(f"rescan: {m['key']} {why} — dropped, will rerun")
+            if rec.exists(): rec.rename(rec.with_suffix(".dropped.json"))
+            (OUT / m["file"]).rename((OUT / m["file"]).with_suffix(".dropped.md"))
+            dropped_keys.add(m["key"])
         else:
             keep.append(m)
     manifest[:] = keep; save_json(OUT / "manifest.json", manifest)
-    log(f"rescan: {len(keep)} runs kept; anchor rates recomputed")
+    if dropped_keys:   # their judgments go too, so the reruns are judged afresh
+        J = load_json(OUT / "judgments.json", {"rubric": {}, "pairwise": []})
+        J["rubric"] = {k: v for k, v in J["rubric"].items() if k.split(":", 1)[1] not in dropped_keys}
+        J["pairwise"] = [p for p in J["pairwise"] if p["A"] not in dropped_keys and p["B"] not in dropped_keys]
+        save_json(OUT / "judgments.json", J)
+    log(f"rescan: {len(keep)} runs kept, {len(dropped_keys)} dropped; anchor rates recomputed")
 
 
 def main():
