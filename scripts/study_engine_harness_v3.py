@@ -5,7 +5,7 @@ Conditions
   b  the fixed four-stance harness at deep depth (production control, unchanged)
   c  decompose-verify-synthesize with every step on the same model
   d  cheap read + strong write: extract on GPT-5.6 Luna, verify on DeepSeek V4 Pro, synthesize on the model
-Models: Fable 5.1, Sonnet 4.6 (control), GPT-5.6 Sol, Kimi K2.6, DeepSeek V4 Pro, GPT-5.6 Luna, DeepSeek V4 Flash.
+Models: Fable 5.1, Sonnet 4.6 (control), GPT-5.6 Sol, Kimi K3, DeepSeek V4 Pro, GPT-5.6 Luna, DeepSeek V4 Flash.
 Papers: AUKUS (Wijaya & Hayes 2025), subsea cables (Abels 2026). Engines: conditions_of_possibility_analyzer,
 argument_architecture. Judges: Sonnet 4.6 and GPT-5.6 Sol, blind, rubric + pairwise against the Fable
 one-shot (condition a) both orders. Recorded per run: tokens, cost, seconds, and the code-computed anchor
@@ -40,11 +40,12 @@ PAPERS = {"aukus": ROOT / "data/study/source_aukus.txt", "subsea": ROOT / "data/
 ENGINES = {"cop": "conditions_of_possibility_analyzer", "aa": "argument_architecture"}
 MODELS = {
     "fable": "claude-fable-5-1", "sonnet": "claude-sonnet-4-6", "sol": "openrouter/openai/gpt-5.6-sol",
-    "kimi": "openrouter/moonshotai/kimi-k2.6", "dspro": "openrouter/deepseek/deepseek-v4-pro",
+    "kimi3": "openrouter/moonshotai/kimi-k3", "dspro": "openrouter/deepseek/deepseek-v4-pro",
     "luna": "openrouter/openai/gpt-5.6-luna", "dsflash": "openrouter/deepseek/deepseek-v4-flash",
 }
 CHEAP, MID = MODELS["luna"], MODELS["dspro"]
-STRONG_FOR_D = ("fable", "sonnet", "sol", "kimi", "dspro")          # (d) synthesizes on these; reading is always luna + dspro
+STRONG_FOR_D = ("fable", "sonnet", "sol", "kimi3", "dspro")          # (d) synthesizes on these; reading is always luna + dspro
+LEGACY_MODELS = {"kimi": "openrouter/moonshotai/kimi-k2.6"}         # K2.6 ran once (22:30) and was replaced by K3 at the owner's ask; kept so its run stays readable
 JUDGES = {"sonnet": "claude-sonnet-4-6", "sol": "openrouter/openai/gpt-5.6-sol"}
 BASELINE = ("a", "fable")                                            # pairwise opponent: the Fable one-shot with the rewritten questions
 PRESETS = {
