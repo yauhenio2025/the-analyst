@@ -151,7 +151,7 @@ def test_concreteness_rejects_lines_true_of_any_corpus():
     assert is_concrete("2,000 new styles a day", DOC_KEYS, ENTITIES)
     assert is_concrete('the filing\'s own phrase — “low cultural relevance”', DOC_KEYS, ENTITIES)
     assert is_concrete("key terms — 'national security', 'modernisation' — and what they license", DOC_KEYS, ENTITIES)
-    assert not is_concrete("the programme's aims and the house's claims", DOC_KEYS, ENTITIES)  # apostrophes are not quotes
+    assert not is_concrete("the programme's aims and the board's claims", DOC_KEYS, ENTITIES)  # apostrophes are not quotes
     b = brief(option(able=[promise("decide which claims to advance and retire", "T1"), promise("brief comms [WUPV36YG]", "S4")]))
     rep = check_brief(b, ctx())
     assert any("not concrete" in i.message for i in rep.model_issues)

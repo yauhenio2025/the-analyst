@@ -54,7 +54,7 @@ want to do is have well-structured PDFs and books available for analysis and
 extraction, so that when push comes to shove and I have the entire framework  
 worked out and analyzed in a meaningful way, I would then be able to simply tap  
 into those PDFs and move to the next stage, so that there would be no delay. My  
-fear is that I will still be tinkering with the process for quite some time,  
+fear is that I will still be tinhouse with the process for quite some time,  
 which means the time I have for genuinely putting meat on the bones—if by bones  
 we mean theory and by meat we mean empirical examples, quotes, and all of  
 that—will be relatively short.

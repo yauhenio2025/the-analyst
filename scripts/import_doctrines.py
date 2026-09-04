@@ -13,13 +13,22 @@ from __future__ import annotations
 import hashlib
 import json
 import os
-import shutil
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFS = ROOT / "src" / "engines" / "definitions"
 DOCTRINES = ROOT / "src" / "engines" / "doctrines"
 PROJECTS = Path(os.environ.get("PROJECTS_DIR", str(Path.home() / "projects")))
+
+# Named third parties never travel into served doctrine text (owner, 2026-09-04). Applied to every imported file.
+SCRUB = [("de Meo's", "the CEO's"), ("De Meo's", "The CEO's"), ("de Meo", "the CEO"), ("De Meo", "The CEO"),
+         ("Kering's", "the house's"), ("Kering-type", "client-type"), ("Kering", "the house"), ("kering", "house")]
+
+
+def scrub(text: str) -> str:
+    for a, b in SCRUB:
+        text = text.replace(a, b)
+    return text
 
 
 def resolve(ref: str) -> Path | None:
@@ -48,7 +57,7 @@ def main() -> None:
             dest_dir = DOCTRINES / data["engine_key"]
             dest_dir.mkdir(parents=True, exist_ok=True)
             dest = dest_dir / src.name
-            shutil.copyfile(src, dest)
+            dest.write_text(scrub(src.read_text(encoding="utf-8", errors="replace")), encoding="utf-8")
             text = dest.read_bytes()
             files.append({
                 "name": src.name,

@@ -31,7 +31,7 @@ A **commissionable organ** that answers "what has the press said about X, and wh
 - Events: reuse The Analyst's `run_events` shape (seq, kind, phase, detail, narrator, cost) so one console can show both.
 - Analyst handoff: `POST /v1/dossier/exemplars {name: "brief-<id>.txt", text: <headed bundle>}` then `POST /v1/dossier/jobs {sources:[{kind:"exemplar",name}], entry:"use", intent:<objective>, audience, depth, output{figures:2}}`.
 
-## 5. Demo slice for the Kering-type audience
+## 5. Demo slice for the client-type audience
 Objective: "labour protest and AI — what the NYT, FT, Economist and Bloomberg have said, 2023–2026, against the 15 papers from the Referee." Show: (1) the button on the Referee query; (2) the Reporter's plan (angles, outlets, budgets); (3) recall counts per lane incl. decade buckets from the corpus; (4) fresh items with full text where entitled and parked teasers named; (5) The Analyst's dossier with a spectrum/flow diagram; (6) the brief in the library with receipts. Pre-bake one brief; run one live recall in the room.
 
 ## 6. Open questions for the owner
