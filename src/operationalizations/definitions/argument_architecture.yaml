@@ -1,0 +1,189 @@
+engine_key: argument_architecture
+engine_name: Argument Architecture Mapper
+# No stance operationalizations here: the four-stance `deep` sequence stays in the capability YAML
+# (the frontier study's production control). This file holds the process shape (study 2026-09-04):
+# communications/study/REDESIGN_argument_architecture_2026-09-04.md
+stance_operationalizations: []
+depth_sequences:
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: |-
+    An argument-architecture reading: what exactly is claimed, on what grounds, by what licence, and where
+    the whole thing rests. The unit is the inference; every inference is anchored to the sentences that
+    make it. Claims, grounds, suppressed premises and inferences carry stable ids (C1, G7, S3, I4) so the
+    desks can build tables from the rows.
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: claude-sonnet-4-6
+  dimensions:
+  - key: claims
+    id_prefix: A1
+    name: Claims and their strength
+    load_bearing: true
+    questions:
+    - 'What is the main claim in the text''s own words, and what is its operative verb? What type of claim is it (classificatory, causal, normative, methodological)?'
+    - 'Which sub-claims carry the empirical load, and how does each relate to the main claim (supports it, is it, is presupposed by it)?'
+    - 'Where does the stated strength change between abstract, introduction, body and conclusion? Quote both versions.'
+    - 'Which claims are disclaimed ("beyond the scope") and then made anyway, for instance through a quoted authority? Quote both.'
+    - 'Which hedges are present (anchored), and where would a careful author have hedged and did not?'
+    answer_shape: '[A1.F<n>] Claim C<k>: "<verbatim claim>" — dim: claims — type: classificatory|causal|normative|methodological — verb: <operative verb> — relation: <supports|is|presupposed-by C1> — anchor: "<verbatim>" — confidence: high|medium|low'
+    method_card: |-
+      Toulmin, the claim and its qualifiers. Do: write each claim in the text's words with a stable id
+      (C1 the main claim, C2, C2.1 …); name its type and its operative verb, because the verb sets the
+      standard the evidence must meet ("constitutes" needs more than "is accompanied by"); read the
+      qualifiers off the verbs and note where the strength drifts between the abstract and the body; catch
+      claims disclaimed and then made through someone else's mouth.
+    indicators:
+    - '"we argue", "constitutes", "is not simply", "marks", "we show"'
+    - '"beyond the scope of this paper" followed by a quoted verdict'
+    - '"probably", "in part", "to some extent" in the body where the abstract has none'
+  - key: skeleton
+    id_prefix: A2
+    name: Grounds, warrants, backing and the suppressed premises
+    load_bearing: true
+    questions:
+    - 'What evidence items are offered? List each as its own ground (G<n>) with its anchor and the claim(s) it is offered for.'
+    - 'For each major claim, what general rule would have to hold for these grounds to support it? State the strongest faithful warrant; is it stated (quote) or reconstructed?'
+    - 'What backing does the text give the warrant — a cited framework, prior work, a definition? Is the backing independent of the claim or circular?'
+    - 'Which premises does the inference need that the text does not state? For each: the gap it fills, how controversial it is, and whether the text''s own evidence cuts against it.'
+    - 'Which grounds are relevant to a weaker claim than the one they are offered for?'
+    answer_shape: '[A2.F<n>] G<k>: <evidence item> — dim: skeleton — anchor: "<verbatim>" — supports: C<k> — discriminates: yes|no — confidence: …   |   [A2.F<n>] Warrant for C<k>: <rule> — dim: skeleton — stated|reconstructed — backing: <what> — anchor: "<verbatim>" — confidence: …   |   [A2.F<n>] S<k>: <suppressed premise> — dim: skeleton — needed-for: C<k> from G<m> — controversy: low|medium|high — anchor: "<the sentence that makes the leap>" — counter-anchor: "<if the text cuts against it>" — confidence: …'
+    method_card: |-
+      Toulmin and Aristotle. Do: for each claim, list the grounds (one row per evidence item, with the
+      figure or fact in the anchor), then write the warrant as the general rule the text would accept, then
+      find the backing the text gives it and say whether it is independent of the claim; reconstruct each
+      enthymeme by supplying the premise that makes the argument strongest and faithful, then ask whether
+      that premise is acceptable and whether the text's own evidence contradicts it. Note the field: an
+      illustrative case study argues by example, so say what an example can and cannot establish.
+    indicators:
+    - 'a figure, a date, a contract, a statute offered as proof'
+    - '"this attests to", "what is discernible here", "it is striking"'
+    - 'an inferential leap; "therefore" without a rule'
+    - 'an appeal to what is "clear" or "well documented"'
+  - key: schemes
+    id_prefix: A3
+    name: Schemes and their critical questions, run against the text
+    load_bearing: true
+    questions:
+    - 'For each major inference, which scheme is it — sign, classification, cui bono / consequence, analogy, authority, cause, generalisation, genetic? Quote the sentence that makes the inference.'
+    - 'Run the scheme''s critical questions (the method card lists them) and answer each from the text — addressed (quote where) or unaddressed.'
+    - 'For sign and cause, does a rival hypothesis named in the text predict the same signs? Quote the rival and the sign.'
+    - 'For classification, is the category defined so that anything in the period falls under it? Quote the definition and the instances.'
+    - 'For authority, is the authority''s conclusion borrowed while its framework is rejected? Quote both.'
+    - 'For analogy, are the disanalogies stated? Quote them.'
+    answer_shape: '[A3.F<n>] I<k> (C<k> from G<m>…): scheme <name> — dim: schemes — critical question "<q>": addressed at "<anchor>" | unaddressed — anchor: "<the sentence that makes the inference>" — confidence: …'
+    method_card: |-
+      Walton. Do: match each inference to a scheme, then run THESE questions and record each answer with an
+      anchor or "unaddressed":
+      sign — is the sign reliable; could a rival cause produce it; does the text name such a rival?
+      classification — is the category defined; are the criteria met; would anything in the period fail them?
+      cui bono / consequence — did the beneficiary cause the policy or merely profit; is a mechanism traced?
+      analogy — what is the relevant similarity; are the disanalogies stated; does the conclusion outrun them?
+      authority — is the source expert in this field; is its framework accepted along with its conclusion; do other cited sources disagree?
+      cause — is there a mechanism; does the temporal order hold; are alternative causes the text names ruled out?
+      generalisation — how many cases; are they the same kind; are counter-cases in the text?
+      genetic — is the origin of a view relevant to its truth?
+    indicators:
+    - 'enumerated instances offered as proof'
+    - '"resembles", "similar", "as in the Cold War"'
+    - 'a quoted expert; "as X argues"'
+    - '"in response to", "following", "after"'
+  - key: dialectic
+    id_prefix: A4
+    name: The dialectic — targets, attacks, concessions, burden
+    questions:
+    - 'Which positions does the text attack? For each — the target as the text states it (quote), the attack type (rebut the claim, undercut the warrant, undermine the grounds, discredit the source), and whether the target as stated is a position anyone in the text''s references holds.'
+    - 'What does the text concede ("this is not to say", "only partially resembles") and what does each concession cost the main claim?'
+    - 'Who carries the burden for the main claim, and how does the text try to shift it — a label, a presumption in a single word ("underlying", "obscures"), an appeal to what is "discernible"?'
+    - 'What standard of proof does the text actually apply? Quote its evidential verbs.'
+    - 'Could the text''s own evidence have come out against its thesis? Quote the passage where a contrary outcome is also read as confirmation, if there is one.'
+    answer_shape: '[A4.F<n>] Attack on <target> ("<verbatim target>"): <type> — dim: dialectic — faithful: yes|no|partly — lands: yes|no — anchor: "<verbatim>" — confidence: …   |   [A4.F<n>] Burden: <who> — shifted-by: "<verbatim device>" — standard: <the text''s verbs> — falsifiable-by-own-evidence: yes|no — dim: dialectic — anchor: "<verbatim>" — confidence: …'
+    method_card: |-
+      van Eemeren and Grootendorst. Do: name the difference of opinion and the standpoints; for each attack,
+      check the freedom rule (no discrediting instead of arguing), the burden rule (the proponent defends
+      when asked), the standpoint rule (attack the position actually held; "not simply X" is a straw target
+      when no one held "simply X"), and the closure rule (a failed defence is conceded); price every
+      concession against the main claim; read the standard of proof off the text's own verbs, never off a
+      legal menu; ask whether the frame could lose on its own evidence.
+    indicators:
+    - 'a label in place of an argument ("fetishism", "insider baseball", "vague concepts")'
+    - '"not simply X", "stops short of", "omits"'
+    - '"this is not to say"; "admittedly"'
+    - 'success and failure both read as confirmation'
+  - key: omissions
+    id_prefix: A5
+    name: Omissions and the strongest form
+    questions:
+    - 'What comparison, counterfactual, proportion or mechanism would the main claim need, and does the text attempt it? Quote the closest it comes.'
+    - 'What does the text promise (abstract, introduction) and not deliver? Quote the promise and the nearest delivery.'
+    - 'What is the strongest claim the grounds actually support (the charitable reconstruction)? State it and the anchors it would rest on.'
+    - 'What single addition from the text''s own material — a case it has, a figure it cites, a rival it names — would most strengthen the argument?'
+    answer_shape: '[A5.F<n>] Omission: <what> — dim: omissions — promised-at: "<anchor>" — nearest-delivery: "<anchor>" — consequence-for: C<k> — confidence: …   |   [A5.F<n>] Strongest form: "<claim>" — dim: omissions — rests-on: G<m>, G<k> — gives-up: <what> — anchor: "<verbatim>" — confidence: …'
+    method_card: |-
+      Johnson and Blair, and charity. Do: for the lynchpin inference ask relevance (do the grounds bear on
+      THIS claim), sufficiency (enough for the strength claimed), acceptability (would a reader outside the
+      school grant the premises); list what the argument needs and lacks, quoting the promise and the
+      nearest delivery; then write the strongest claim the grounds do support and what it gives up.
+    indicators:
+    - '"winners and losers" promised, one loser named'
+    - '"we draw on archival sources" and the evidence is press releases'
+    - 'a counterfactual the text half-concedes ("also driven by")'
+  - key: exchange
+    id_prefix: X6
+    name: The exchange across the corpus
+    scope: corpus
+    questions:
+    - 'Which warrants do several documents use without stating? Anchor each in each document.'
+    - 'Where is one document''s evidence another document''s conclusion, cited as fact? Both anchors.'
+    - 'Who attacks whom across the documents, with what type, and does the attack address the claim the target actually made?'
+    - 'What do all the documents take for granted (the corpus''s suppressed premise)?'
+    answer_shape: '[X6.F<n>] <shared warrant | borrowed conclusion | attack> — dim: exchange — anchor: "<verbatim>" — doc: <A> — anchor-b: "<verbatim>" — doc-b: <B> — confidence: …'
+    method_card: |-
+      The debate map. Do: reconcile the claim inventories across documents first; then find the licences
+      several share, the conclusions that travel as facts, and the attacks that miss their target.
+    indicators:
+    - 'the same rule stated in two documents in different words'
+    - '"as X has shown" citing another document in the corpus'
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension
+    model_tier: cheap
+    output: ledger
+    max_rows: 18
+  - key: verify
+    kind: verify
+    consumes: [extract]
+    model_tier: mid
+    output: ledger
+    duties: [check_anchors_in_context, reject_summary, reconcile_ids, merge_duplicates, rerun_critical_questions, hunt_misses, name_must_keep]
+  - key: synthesize
+    kind: synthesize
+    consumes: [verify]
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: an argumentation theorist, an editor, or a reader who must decide whether the text proves what it says
+    tables: [claims, grounds, suppressed_premises]
+    brief: |-
+      1. The lynchpin: the inference on which the whole rests, named with its ids, and why it is the
+         lynchpin. Lead with it.
+      2. The claims and their strength: the main claim with its operative verb and type; the sub-claims
+         that carry the load; where the strength drifts; what is disclaimed and then made anyway.
+      3. The skeleton of the main claim: the grounds inventory; the warrant, stated or reconstructed; the
+         backing and whether it is circular; the qualifiers present and missing; the rebuttals acknowledged
+         and ignored.
+      4. The schemes and what their critical questions showed: for each major inference, the scheme and the
+         questions addressed and unaddressed, with the text's own rivals where they predict the same signs.
+      5. The suppressed premises, each with the gap it fills, its controversy, and the text's own evidence
+         that cuts against it.
+      6. The dialectic and the burden: the targets and whether they are faithfully stated; what the
+         concessions cost; how the burden is shifted; the standard the text applies; whether the frame can
+         lose.
+      7. The omissions and the strongest form: what the argument needs and lacks; the charitable
+         reconstruction and what it gives up.
+      8. The verdict: where the argument is strong, where it fails, ranked vulnerabilities, what would
+         defeat it, what would repair it from the text's own material.

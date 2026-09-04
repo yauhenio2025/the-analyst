@@ -17,6 +17,7 @@ from src.operationalizations.schemas import (
     DepthSequence,
     EngineOperationalization,
     OperationalizationSummary,
+    ProcessSpec,
     StanceOperationalization,
 )
 from src.stages.capability_composer import (
@@ -257,3 +258,49 @@ async def compose_preview(engine_key: str, body: ComposePreviewRequest):
         pass_def=pass_def,
         depth=body.depth_key,
     )
+
+
+# ── The process shape (study 2026-09-04) ─────────────────────────────────
+
+@router.get("/{engine_key}/process", response_model=ProcessSpec)
+async def get_process(engine_key: str):
+    """The engine's extract → verify → synthesize process, if it has one."""
+    _, op = _get_operationalization_or_404(engine_key)
+    if op.process is None:
+        raise HTTPException(status_code=404, detail=f"No process for engine '{engine_key}'")
+    return op.process
+
+
+class ProcessPreviewRequest(BaseModel):
+    document_text: str = Field("(document text)", description="Text to compose against (only its length matters for a preview)")
+    doc_key: str = "document"
+
+
+class ProcessPreviewPrompt(BaseModel):
+    step_key: str
+    kind: str
+    dimension_key: str = ""
+    model_tier: str
+    model: str
+    system: str
+    user_chars: int
+
+
+@router.post("/{engine_key}/process-preview", response_model=list[ProcessPreviewPrompt])
+async def preview_process(engine_key: str, req: ProcessPreviewRequest):
+    """Every prompt the process would send (no calls): extraction per dimension, verify, synthesize, with the routed model."""
+    from src.executor.process_runner import preview_prompts, resolve_step_model
+
+    canonical, op = _get_operationalization_or_404(engine_key)
+    if op.process is None:
+        raise HTTPException(status_code=404, detail=f"No process for engine '{engine_key}'")
+    cap_def = resolve_capability_definition(get_engine_registry(), canonical)
+    if cap_def is None:
+        raise HTTPException(status_code=404, detail=f"No capability definition for '{engine_key}'")
+    out = []
+    for pp in preview_prompts(cap_def, op.process, {req.doc_key: req.document_text}):
+        step = op.process.get_step(pp.step_key)
+        model = resolve_step_model(step, op.process) if step else ""
+        out.append(ProcessPreviewPrompt(step_key=pp.step_key, kind=pp.kind, dimension_key=pp.dimension_key,
+                                        model_tier=pp.model_tier, model=model, system=pp.system, user_chars=len(pp.user)))
+    return out

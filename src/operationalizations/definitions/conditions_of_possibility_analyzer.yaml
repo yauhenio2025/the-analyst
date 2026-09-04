@@ -134,3 +134,177 @@ depth_sequences:
     - 1
     - 2
     - 3
+- depth_key: dvs
+  process: dvs
+# ── The process shape (study 2026-09-04): extract → verify → synthesize ──────────────
+# Designed from the ideal output backwards: communications/study/REDESIGN_conditions_of_possibility_2026-09-04.md
+process:
+  key: dvs
+  description: |-
+    A conditions-of-possibility reading of the TEXT: what had to be already in place for this argument
+    to be sayable and received as a contribution, and what that scaffolding costs it. The text is the
+    archive. Nothing here licenses claims about the authors' motives, careers or knowledge.
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: claude-sonnet-4-6
+  dimensions:
+  - key: givens
+    id_prefix: D1
+    name: The givens (what the text presupposes)
+    load_bearing: true
+    questions:
+    - 'Which terms does the text use as if already defined, and where is the first sentence that relies on that definition doing work?'
+    - 'Which claims are stated in the abstract or introduction as findings before any evidence is given? Quote the verb ("constitutes", "we argue", "is not simply").'
+    - 'Which debates does the text treat as settled, signalled by a citation in place of an argument, "as X has shown", "it is well established", or a label in place of engagement?'
+    - 'What causal order does the text assume (what is "underlying", what is "surface", what "obscures" what) and where is that asserted rather than shown?'
+    - 'Which of these givens, if withdrawn, would collapse the argument into a position the text opposes?'
+    answer_shape: '[D1.F<n>] The text presupposes <premise> — dim: givens — anchor: "<the sentence that relies on it>" — depends: <what falls without it> — confidence: high|medium|low'
+    method_card: |-
+      Foucault, archaeology. Do: list what the text treats as sayable without argument; for each, find the
+      sentence that constitutes the object (what the text's key noun is made to name; who is authorised to
+      "observe"); note what an abstract in this venue must claim. A given is a premise the text needs and
+      does not argue in this text; it is not a weakness until you say what depends on it.
+    indicators:
+    - 'technical vocabulary used without definition'
+    - 'an argument that begins mid-conversation, presupposing a resolved debate'
+    - 'a citation where an argument would be'
+    - 'a methodological move executed as if naturalised ("we observe", "what is discernible")'
+    - 'a causal adverb doing ontological work ("underlying", "obscures", "constitutes")'
+  - key: inheritance
+    id_prefix: D2
+    name: The inheritance (declared and undeclared)
+    load_bearing: true
+    questions:
+    - 'Which prior works does the text say it extends, adopts, narrows, applies or corrects? Quote the sentence and name the relation.'
+    - 'Which works or schools does it dismiss, and by what device — a label, a single sentence, a group citation, "not simply"? Quote the device.'
+    - 'Which technical vocabulary appears without citation, and which tradition uses those words that way? Name the tradition; tag the row `provenance: hypothesis`; do not say the authors borrowed it knowingly.'
+    - 'Where does the reference list cite the same authors or their co-authors, and what does each such citation carry into this argument — a concept, a finding, a licence to dismiss?'
+    - 'Which frameworks from other fields shape the argument''s structure (an optimisation habit, a legal template, a geographical concept applied to a sector)? Anchor to the move in the text, not to anyone''s training.'
+    answer_shape: '[D2.F<n>] The text <extends|adopts|narrows|applies|dismisses|uses-without-citing> <work or tradition> for <what it carries> — dim: inheritance — anchor: "<verbatim>" — provenance: declared|hypothesis — confidence: high|medium|low'
+    method_card: |-
+      Skinner and Lovejoy. Do: for each dismissal, name the target as the text states it and the device that
+      does the dismissing, and say what the move accomplishes in this venue; isolate the conceptual building
+      blocks the argument runs on (the unit-ideas) and, for each used without citation, name the tradition
+      that uses it that way and the sentence where it works here; note when a unit-idea from another field
+      is made to carry a load it was not built for. Attribute nothing beyond the text's own vocabulary;
+      every claim about provenance is a hypothesis and is tagged as one.
+    indicators:
+    - '"Extending", "building on", "we adopt", "following"'
+    - '"not simply X"; a coined label doing the work of an argument'
+    - 'a term in scare quotes attributed to no one'
+    - 'a concept invoked with a citation but without its conditions'
+    - 'a reference-list cluster of the same names'
+  - key: apparatus
+    id_prefix: D3
+    name: The conditions in the text's own apparatus (material, discursive, institutional)
+    questions:
+    - 'What does the evidence consist of (kinds of source — press releases, legislation, news, interviews, datasets) and what date window does it fall in? What had to happen in the world for the argument to be makeable?'
+    - 'Which of the text''s own facts does the argument depend on most (the best fact), and does the text use it or leave it lying?'
+    - 'Whose vocabulary does the text borrow from the object it analyses (official terms in quotation marks) and does it mark the borrowing or adopt it?'
+    - 'What do the title, abstract, keywords, journal and section structure show about the audience assumed and the contribution claimed (first application, extension, correction)?'
+    - 'What does the text say about its own method, and what does the evidence actually consist of?'
+    answer_shape: '[D3.F<n>] The argument requires <condition> — dim: apparatus — anchor: "<verbatim>" — kind: material|discursive|institutional|methodological — confidence: high|medium|low'
+    method_card: |-
+      Foucault, the dispositif read off the page. Do: inventory the evidence by kind and date; find the
+      sentence that names the method and compare it with what the evidence is; list the official terms the
+      text quotes and whether it adopts them; read the front matter (title, abstract, keywords, venue,
+      section heads) as the text's statement of who it is for and what it claims to add. These are facts
+      about the text, not about the authors.
+    indicators:
+    - 'dates, document names, agency names in the evidence'
+    - '"archival sources", "secondary data", "we draw on"'
+    - 'official vocabulary in quotation marks'
+    - '"this paper moves beyond", "we advance the concept", "extending"'
+  - key: visibility
+    id_prefix: D4
+    name: Visibility (what the frame lets the text see, and what it cannot metabolise)
+    load_bearing: true
+    questions:
+    - 'What does the text find that a reader without its framework would not have looked for? Quote the finding.'
+    - 'Where does the text''s own evidence explain something by a mechanism the framework does not own (electoral, strategic, exogenous, accidental)? Quote it and say what the framework says instead.'
+    - 'Where does the text''s own definition or evidence run against its causal order (the thing that was supposed to be surface appears as motive)? Quote both sides.'
+    - 'What does the text explicitly bracket ("beyond our scope", "this is not to say", "only partially resembles") and what does each bracket protect?'
+    - 'Where does the text rename a familiar thing and what does the renaming gain?'
+    answer_shape: '[D4.F<n>] The frame <sees|cannot metabolise|brackets|renames> <what> — dim: visibility — anchor: "<verbatim>" — counter-anchor: "<verbatim, if the text has one>" — confidence: high|medium|low'
+    method_card: |-
+      Foucault, genealogy; Skinner, redescription. Do: find contingency presented as necessity ("constitutes",
+      "underlying") and then find where the text's own evidence gives another origin for the same thing;
+      treat every "obscures" as a claim to test against the text's own causal sentences; for each hedge or
+      bracket, say what it concedes and what it protects; for each renaming, name the familiar thing renamed
+      and what the redescription gains. Quote both sides of every tension.
+    indicators:
+    - 'a mechanism the frame does not own explaining a key case ("fear of being wedged", "in response to the war")'
+    - 'a definition that contradicts the frame''s ordering ("motivated by geopolitics")'
+    - '"this is not to say", "beyond the scope", "only partially"'
+    - 'a familiar policy given a new name'
+  - key: rivals
+    id_prefix: D5
+    name: Rivals and the counterfactual residue
+    questions:
+    - 'Which rival explanations does the text name — cited then set aside, or attacked? For each, what would it say about the same evidence?'
+    - 'What in the text''s own commitments rules each rival out? Quote the sentence that forbids it.'
+    - 'If the inherited framework were removed, which sections and claims survive unchanged, and which collapse? Name them; give the anchor of one survivor and one casualty.'
+    - 'What would the text have to add to hold its strongest claim against its strongest rival — a criterion, a test, a comparison it could have made from its own material?'
+    answer_shape: '[D5.F<n>] Rival <name>, available at "<anchor of citation or dismissal>", would read <evidence> as <reading>; the text forbids it by "<verbatim>" — dim: rivals — confidence: high|medium|low   |   [D5.F<n>] Survives|collapses without the frame: <section or claim> — dim: rivals — anchor: "<verbatim>" — confidence: …'
+    method_card: |-
+      The counterfactual, disciplined. Do: take the rivals from the text's own references and dismissals,
+      not from your preferences; for each, say what it would make of the same evidence and quote the
+      sentence in the text that forbids it; then subtract the inherited frame and sort the text's claims
+      into survivors and casualties, one anchor each. Do not estimate proportions you cannot anchor.
+    indicators:
+    - 'a rival cited in one clause and set aside in the next'
+    - '"only part of the story", "tells us little about"'
+    - 'empirical sections that would read the same under another frame'
+  - key: path_dependence
+    id_prefix: P6
+    name: Path dependence across the corpus
+    scope: corpus
+    questions:
+    - 'Which premises are argued in an earlier text and presupposed in a later one? Both anchors, with doc keys.'
+    - 'Which terms are defined once and later used undefined or renamed? Both anchors.'
+    - 'Which alternatives are considered in an earlier text and absent later?'
+    - 'How does the self-citation carry change across the texts — what each later text takes from each earlier one?'
+    answer_shape: '[P6.F<n>] <premise or term> argued|defined in <doc A> — anchor: "<verbatim>" — doc: <A> — presupposed|undefined|renamed in <doc B> — anchor-b: "<verbatim>" — doc-b: <B> — dim: path_dependence — confidence: …'
+    method_card: |-
+      Path dependence, evidenced twice. Do: for each premise or term, find where it was argued or defined
+      and where it became a given; measure nothing you cannot anchor in two documents.
+    indicators:
+    - '"as we have argued", "as shown in"'
+    - 'a term with a definition in one document and none in another'
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension
+    model_tier: cheap
+    output: ledger
+    max_rows: 16
+  - key: verify
+    kind: verify
+    consumes: [extract]
+    model_tier: mid
+    output: ledger
+    duties: [check_anchors_in_context, reject_biography, merge_duplicates, hunt_misses, name_must_keep]
+  - key: synthesize
+    kind: synthesize
+    consumes: [verify]
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: an expert reader (a historian of ideas, a political economist, an editor) who must decide what this text establishes and what it rests on
+    tables: [givens, inheritance, visibility]
+    brief: |-
+      1. The givens: the premise(s) the text needs and does not argue here, each with the sentence that
+         relies on it and what collapses without it. If there is one that everything hangs on, lead with it.
+      2. The inheritance: what the text declares it builds on, what it dismisses and by what device, and the
+         vocabulary it uses without citing, as provenance hypotheses; what the self-citation cluster carries.
+      3. The apparatus: what the evidence is and when it is from, what had to happen for the argument to be
+         makeable, whose vocabulary the text borrows from its object, what the front matter claims.
+      4. Visibility: the findings only this frame produces, quoted; and the text's own evidence that cuts
+         against the frame — mechanisms it does not own, a definition that inverts its causal order, the
+         brackets and what they protect, the renamings and what they gain.
+      5. Rivals and the residue: the rivals the text itself names, what each would say of the same evidence,
+         the sentence that forbids each; then the subtraction — what survives without the frame and what
+         collapses.
+      6. The judgment: enabling or constraining on balance, with the specific gain and the specific cost; the
+         one hole if there is one (say plainly if there are two); and the repair in the text's own vocabulary.

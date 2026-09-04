@@ -38,6 +38,7 @@ from src.executor.output_store import (
     save_output,
 )
 from src.executor.schemas import EngineCallResult
+from src.operationalizations.registry import get_operationalization_registry
 from src.stages.capability_composer import (
     compose_all_pass_prompts,
     compose_pass_prompt,
@@ -250,6 +251,19 @@ def _run_engine_passes(
     - Inner-pass context threading (via consumes_from)
     - Incremental output persistence
     """
+    # Process shape (study 2026-09-04): a depth key that names the engine's process runs
+    # extract → verify → synthesize with per-step model routing instead of stance passes.
+    _op = get_operationalization_registry().get(cap_def.engine_key)
+    _spec = _op.process_for_depth(depth) if _op is not None else None
+    if _spec is not None:
+        return _run_engine_process(
+            cap_def=cap_def, spec=_spec, document_text=document_text, depth=depth,
+            previous_engine_output=previous_engine_output, upstream_context=upstream_context,
+            context_emphasis=context_emphasis, engine_label=engine_label, job_id=job_id,
+            phase_number=phase_number, work_key=work_key, model_hint=model_hint,
+            requires_full_documents=requires_full_documents, cancellation_check=cancellation_check,
+        )
+
     # Get pass prompts from the capability composer
     # This checks the operationalization registry first, then falls back to inline passes
     pass_prompts = compose_all_pass_prompts(
@@ -480,6 +494,70 @@ def _run_engine_passes(
             f"{result['duration_ms']}ms"
         )
 
+    return results
+
+
+def _run_engine_process(
+    cap_def: Any,
+    spec: Any,
+    document_text: str,
+    depth: str,
+    previous_engine_output: Optional[str],
+    upstream_context: str,
+    context_emphasis: Optional[str],
+    engine_label: Optional[str],
+    job_id: str,
+    phase_number: float,
+    work_key: str,
+    model_hint: Optional[str],
+    requires_full_documents: bool,
+    cancellation_check: Optional[Callable[[], bool]],
+) -> list[EngineCallResult]:
+    """Run the engine's process (extract → verify → synthesize) and persist every call as a pass output.
+
+    The final synthesis is the last pass (what the desks read); the extraction and verification calls are
+    saved before it as receipts, roles `extraction` and `verification`.
+    """
+    from src.executor.process_runner import run_process
+
+    shared_parts = []
+    if upstream_context:
+        shared_parts.append(upstream_context)
+    if context_emphasis:
+        shared_parts.append(f"## Analytical Emphasis\n\n**{context_emphasis}**")
+    if previous_engine_output:
+        shared_parts.append(assemble_chain_context(previous_engine_output=previous_engine_output, engine_label=engine_label or "prior engine"))
+    upstream = "\n\n---\n\n".join(shared_parts)
+
+    results: list[EngineCallResult] = []
+    counter = {"n": 0}
+
+    def _persist(sc):
+        counter["n"] += 1
+        role = {"extract": "extraction", "verify": "verification", "synthesize": "synthesis"}.get(sc.kind, sc.kind)
+        save_output(
+            job_id=job_id, phase_number=phase_number, engine_key=cap_def.engine_key, pass_number=counter["n"],
+            content=sc.content, work_key=work_key, stance_key=f"{sc.step_key}:{sc.dimension_key}" if sc.dimension_key else sc.step_key,
+            role=role, model_used=sc.model_used, input_tokens=sc.input_tokens, output_tokens=sc.output_tokens,
+            metadata={"process": spec.key, "step": sc.step_key, "kind": sc.kind, "dimension": sc.dimension_key,
+                      "doc": sc.doc_key, "wall": sc.wall, "cost_usd": sc.cost_usd, "model_requested": sc.model_requested},
+        )
+        update_job_tokens(job_id, llm_calls=1, input_tokens=sc.input_tokens, output_tokens=sc.output_tokens)
+        results.append(EngineCallResult(
+            engine_key=cap_def.engine_key, pass_number=counter["n"], stance_key=sc.step_key, content=sc.content,
+            model_used=sc.model_used, input_tokens=sc.input_tokens, output_tokens=sc.output_tokens,
+            thinking_tokens=0, duration_ms=sc.duration_ms, retries=sc.retries,
+        ))
+        logger.info(f"  {cap_def.engine_key} {sc.step_key}{(' ' + sc.dimension_key) if sc.dimension_key else ''}: "
+                    f"{sc.model_used} {sc.input_tokens}+{sc.output_tokens} tokens, {sc.duration_ms}ms, wall={sc.wall.get('anchor_rate')}")
+
+    with _events_context.scope(job_id=job_id, phase=_events_context.phase_key(phase_number), engine=cap_def.engine_key,
+                               pass_name=f"process {spec.key}", stance=None, work_key=work_key or None):
+        run = run_process(
+            cap_def, spec, {work_key or "document": document_text}, depth=depth, model_hint=model_hint,
+            cancellation_check=cancellation_check, on_call=_persist, upstream_context=upstream,
+        )
+    logger.info(f"{cap_def.engine_key} process {spec.key}: {len(run.calls)} calls, ${run.cost_usd}, {run.seconds:.0f}s, final anchor rate {run.final_wall.get('anchor_rate')}")
     return results
 
 

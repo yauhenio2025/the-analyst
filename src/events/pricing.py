@@ -29,6 +29,19 @@ PRICING: dict[str, tuple[float, float]] = {
     "claude-opus-4-8": (5.00, 25.00),
     "claude-opus-5": (5.00, 25.00),
     "claude-sonnet-5": (2.00, 10.00),
+    "claude-fable-5-1": (10.00, 50.00),
+    "claude-fable-5.1": (10.00, 50.00),
+    "claude-fable-5": (10.00, 50.00),
+    # --- OpenRouter frontier models (study 2026-09-04; ids are the trailing segment of `openrouter/<vendor>/<model>`) ---
+    "gpt-5.6-sol": (2.00, 10.00),
+    "gpt-5.6-luna": (0.20, 1.20),
+    "gpt-5.6-terra": (2.00, 12.00),
+    "gpt-5.5": (5.00, 30.00),
+    "kimi-k2.6": (0.95, 4.00),
+    "kimi-k3": (3.00, 15.00),
+    "deepseek-v4-pro": (1.042, 2.085),
+    "deepseek-v4-flash": (0.089, 0.177),
+    "claude-sonnet-4.6": (3.00, 15.00),
     # --- Google Gemini (approximate list prices, standard context tier) ---
     "gemini-3.1-pro-preview": (2.00, 12.00),
     "gemini-3-pro-preview": (2.00, 12.00),
@@ -40,6 +53,7 @@ PRICING: dict[str, tuple[float, float]] = {
 # Family fallbacks used when an exact id is unknown (e.g. a new dated snapshot).
 _FAMILY_FALLBACKS: tuple[tuple[str, tuple[float, float]], ...] = (
     ("claude-opus-", (5.00, 25.00)),
+    ("claude-fable-", (10.00, 50.00)),
     ("claude-sonnet-5", (2.00, 10.00)),
     ("claude-sonnet-", (3.00, 15.00)),
     ("claude-haiku-", (1.00, 5.00)),

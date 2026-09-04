@@ -464,6 +464,24 @@
   - `POST /v1/views/patterns/reload` - Force reload
 - **Added**: 2026-02-23
 
+## Process Shape (extract → verify → synthesize)
+
+### Routed process per engine
+- **Status**: Active (study 2026-09-04; production default unchanged)
+- **Description**: An engine's method as three kinds of work with the findings ledger as the only hand-off: cheap-tier extraction per dimension (parallel, ledger only, anchors walled with one re-anchor round), a mid-tier critic that rules every row and hunts for misses, one strong-tier synthesis that cites rows by id. Per-step model routing: study overrides > `PROCESS_ROUTING_<TIER>` > step model > plan `model_hint` (strong tier) > the spec's routing > house default.
+- **Entry Points**:
+  - `src/operationalizations/schemas.py:96-168` - ProcessDimension, ProcessStep, ProcessSpec; `DepthSequence.process`; `EngineOperationalization.process_for_depth`
+  - `src/operationalizations/definitions/conditions_of_possibility_analyzer.yaml` - `process:` block (givens, inheritance, apparatus, visibility, rivals, path_dependence)
+  - `src/operationalizations/definitions/argument_architecture.yaml` - `process:` block (claims, skeleton, schemes, dialectic, omissions, exchange)
+  - `src/stages/process_composer.py:1-60` - laws and the ProcessPrompt; `compose_extract_prompt`, `compose_verify_prompt`, `compose_synthesize_prompt`, `compose_oneshot_prompt`
+  - `src/executor/ledger_walls.py` - `parse_rows`, `SourceIndex`, `verify_quote`, `verify_rows`, `check_citations`, `reanchor_request`
+  - `src/executor/process_runner.py` - `resolve_step_model`, `run_process`, `preview_prompts`, receipts
+  - `src/executor/chain_runner.py` - `_run_engine_passes` dispatch when the depth key names a process; `_run_engine_process`
+  - `src/api/routes/operationalizations.py` - `GET /{engine_key}/process`, `POST /{engine_key}/process-preview`
+  - `scripts/study_engine_harness_v3.py` - the frontier study (a/b/c/d × 7 models × 2 papers × 2 engines; two judges)
+- **Dependencies**: `src/dossier/walls.normalize`, `src/executor/context_broker.split_ledger`, `src/events/pricing`, OpenRouter key for the cheap and mid tiers
+- **Added**: 2026-09-04
+
 ## Analytical & Presentation Stances (Operations)
 
 ### Stances Library
