@@ -1476,3 +1476,15 @@ Ten advanced engines with deep theoretical foundations, cross-referencing ID sys
   - `src/api/routes/story.py` - `/v1/story/jobs…`, `/v1/story/handoff-schema`, `/v1/story/demands`
   - `communications/STORY_HANDOFF_SCHEMA.json`, `communications/BRIEF_WIRECUT_multisource_intake.md`
 - **Added**: 2026-09-04
+
+### Story desk pages (web)
+- **Status**: Active
+- **Description**: The desk's film lane: commission from sources or a dossier's documents, then six stations with live SSE state: sources (with the registry's demands), reading (profiles, elements, anchors), map (through-lines, coverage matrix, approaches, contradictions), brief (three deliverable-first cards, choose), spine (the current with tributaries, movements, devices), handoff (copy/download the contract).
+- **Entry Points**:
+  - `web/src/pages/Story.tsx` - shell, rail, ledger line, station routing
+  - `web/src/story/Story{Sources,Reading,Map,Brief,Spine,Handoff}.tsx` - the stations
+  - `web/src/lib/story.ts` - rail model, labels, element index
+  - `web/src/lib/api.ts` - story endpoints and `normalizeStoryJob`; `web/src/lib/hooks.ts` - `useStoryJob`
+  - `web/src/pages/Library.tsx` - "Make a film" lane and films shelf
+  - `web/src/router.ts` - `/s/:id[/station]`
+- **Added**: 2026-09-04
