@@ -67,3 +67,18 @@ Problem classes, root causes, files fixed. See global rules.
 **Files Fixed**: `src/workflows/definitions/dossier_standard.json` (proper Plates phase 7.5 → `dossier_plates`), `tests/test_workflow_definitions_load.py` (every definition must validate and load; dossier_standard's 11 phases in order).
 
 **Pattern to Watch For**: after editing any `definitions/*.json`, run the loader test; watch `workflows_loaded` in `/health` after deploy; the executor error surfaces only at the analysis step of a live run.
+
+## Rendered bytes lost on deploy (2026-09-04)
+
+**Problem Class**: Ephemeral-disk persistence. Outputs written only to the service filesystem on Render (figures, plates, dossier.html/md/pdf) vanish on every deploy; the job text survived because it was already in Postgres.
+
+**Root Cause**: `src/images/storage.py`, `src/dossier/plates.py` and `src/dossier/compose.py` wrote bytes to `FIGURES_DIR` / `DOSSIER_DIR` only. Three registry deploys on the morning of the demo erased both demo dossiers' plates and figures (plate routes returned 404; the desk showed broken images).
+
+**Files Fixed**:
+- `src/dossier/blob_store.py` - new `dossier_blobs` table (Postgres bytea / SQLite blob); `put_blob`, `get_blob`, `ensure_file`, `delete_blob`
+- `src/images/storage.py:94-175` - write-through in `save_figure`; `_restore_from_blob` used by `figure_path` / `figure_meta`; `delete_figure` removes the blob
+- `src/dossier/plates.py` (kept-plate write) and `src/dossier/compose.py:render_all` - write-through for plates and html/md/pdf
+- `src/api/routes/dossier.py` - `_file`, `get_figure`, `get_plate_image` restore from blobs; admin endpoints `PUT /v1/dossier/admin/blobs/{key}`, `PUT /v1/dossier/admin/jobs/{id}` (header `X-Admin-Token` = env `ADMIN_TOKEN`)
+- `scripts/rehydrate_blobs.py` - pushes `data/dossiers/live-*/` backups to the live service
+
+**Pattern to Watch For**: any `write_bytes` / `write_text` under `data/` on Render without a DB or object-store twin. The desk's mock fixtures and local runs hide this: it only shows after a deploy. Rule: bytes that a URL serves must have a durable twin.
