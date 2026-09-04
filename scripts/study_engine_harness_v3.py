@@ -196,7 +196,7 @@ def judge(manifest, sources, judges, orders):
 def report(manifest, J):
     lines = ["# Frontier study (2026-09-04): quality against cost and time", "", f"Runs: {len(manifest)}. Judges: {', '.join(JUDGES)}. Baseline for pairwise: Fable one-shot with the rewritten questions (condition a).", ""]
     for ek in ENGINES.values():
-        lines += [f"## {ek}", "", "| condition | model | paper | rubric mean (sonnet / sol) | halluc (10=none) | wins vs baseline | cost $ | seconds | calls | anchor rate | rows | chars |", "|---|---|---|---|---|---|---|---|---|---|---|---|"]
+        lines += [f"## {ek}", "", "| condition | model | ran on | paper | rubric mean (sonnet / sol) | halluc (10=none) | wins vs baseline | cost $ | seconds | calls | anchor rate | rows | chars |", "|---|---|---|---|---|---|---|---|---|---|---|---|---|"]
         for m in sorted([m for m in manifest if m["engine"] == ek], key=lambda m: (m["condition"], m["cost_usd"])):
             means, hall = [], []
             for jk in JUDGES:
@@ -205,7 +205,9 @@ def report(manifest, J):
                 means.append(f"{sum(vals)/len(vals):.1f}" if vals else "—"); hall.append(str(r.get("hallucination_risk")) if r else "—")
             pw = [p for p in J["pairwise"] if m["key"] in (p["A"], p["B"]) and p["engine"] == ek]
             wins = sum(1 for p in pw if p["winner"] == m["key"]); ties = sum(1 for p in pw if p["winner"] == "tie")
-            lines.append(f"| {m['condition']} | {m['model']} | {m['paper']} | {' / '.join(means)} | {' / '.join(hall)} | {wins}/{len(pw)}{(' (+' + str(ties) + ' tie)') if ties else ''} | {m['cost_usd']:.2f} | {m['seconds']:.0f} | {m['calls']} | {m['anchor_rate']:.0%} | {m['ledger_rows']} | {m['chars']:,} |")
+            used = [u.split("/")[-1] for u in m.get("models_used", [])]
+            ran_on = "as requested" if used == [m["model_id"].split("/")[-1]] else "**" + ", ".join(used) + "**"   # a refusal fallback shows here
+            lines.append(f"| {m['condition']} | {m['model']} | {ran_on} | {m['paper']} | {' / '.join(means)} | {' / '.join(hall)} | {wins}/{len(pw)}{(' (+' + str(ties) + ' tie)') if ties else ''} | {m['cost_usd']:.2f} | {m['seconds']:.0f} | {m['calls']} | {m['anchor_rate']:.0%} | {m['ledger_rows']} | {m['chars']:,} |")
         lines.append("")
         # the frontier: per condition, the cheapest run within 0.5 rubric points of the best mean
         scored = []
@@ -217,7 +219,9 @@ def report(manifest, J):
             near = sorted([(s, m) for s, m in scored if s >= best - 0.5], key=lambda x: x[1]["cost_usd"])
             lines += [f"Best mean rubric {best:.2f}. Within 0.5 of it, cheapest first: " + "; ".join(f"{m['condition']}/{m['model']}/{m['paper']} ({s:.2f}, ${m['cost_usd']:.2f}, {m['seconds']:.0f}s)" for s, m in near[:6]), ""]
     total = sum(m["cost_usd"] for m in manifest); jcost = sum(v.get("cost_usd", 0) for v in J["rubric"].values()) + sum(p.get("cost_usd", 0) for p in J["pairwise"])
-    lines += [f"Generation ${total:.2f}; judging ${jcost:.2f}; total ${total + jcost:.2f}.", ""]
+    lines += [f"Generation ${total:.2f}; judging ${jcost:.2f}; total ${total + jcost:.2f}.", "",
+              "A bold entry in `ran on` means the requested model refused and the runner fell back to the house model for that call; the row measures what ran, not what was asked. "
+              "Fable refused every four-stance pass on the AUKUS paper (22:41) while accepting the one-call prompt with the rewritten questions.", ""]
     (OUT / "FRONTIER.md").write_text("\n".join(lines)); log("wrote", OUT / "FRONTIER.md")
 
 
@@ -268,13 +272,16 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--preset", choices=list(PRESETS), default="lean"); ap.add_argument("--conditions"); ap.add_argument("--models"); ap.add_argument("--b-models", dest="b_models")
     ap.add_argument("--papers", default="aukus,subsea"); ap.add_argument("--engines", default="cop,aa"); ap.add_argument("--judges", default="sonnet,sol"); ap.add_argument("--orders", choices=["both", "split"])
+    ap.add_argument("--skip", default="c:fable:subsea", help="comma-separated cond:model[:paper] triples to leave out (default skips the Fable-everywhere chain on paper two: ~$7.6 a run, one per engine is enough for the frontier)")
     ap.add_argument("--dry-run", action="store_true"); ap.add_argument("--judge-only", action="store_true"); ap.add_argument("--no-judge", action="store_true"); ap.add_argument("--report", action="store_true"); ap.add_argument("--workers", type=int, default=4)
     a = ap.parse_args(); P = PRESETS[a.preset]
     conds = (a.conditions or P["conditions"]).split(","); models = (a.models or P["models"]).split(","); b_models = (a.b_models or P["b_models"]).split(","); orders = a.orders or P["orders"]
     papers = a.papers.split(","); engines = [ENGINES[e] for e in a.engines.split(",")]; judges = a.judges.split(",")
     sources = {p: PAPERS[p].read_text(encoding="utf-8", errors="replace") for p in papers}
+    skips = [tuple(x.split(":")) for x in a.skip.split(",") if x]
+    def _skipped(c, m, p): return any(sk[0] == c and sk[1] == m and (len(sk) < 3 or sk[2] == p) for sk in skips)
     specs = [(e, c, m, p) for e in engines for p in papers for c in conds for m in models
-             if not (c == "b" and m not in b_models) and not (c == "d" and m not in STRONG_FOR_D)]
+             if not (c == "b" and m not in b_models) and not (c == "d" and m not in STRONG_FOR_D) and not _skipped(c, m, p)]
     if a.dry_run: return dry_run(specs, sources, judges, orders, b_models)
     manifest = load_json(OUT / "manifest.json", [])
     if not a.judge_only:
