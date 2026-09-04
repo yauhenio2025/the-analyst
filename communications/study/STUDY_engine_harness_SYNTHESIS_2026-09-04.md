@@ -74,3 +74,42 @@ They differ on how much of the multi-pass structure survives: Fable keeps it for
 - Brief: `communications/study/STUDY_BRIEF_engine_harness_2026-09-04.md`; runners: `scripts/study_engine_harness.py` (part 1), `_part2.py` (superseded), `_part3.py` (Fable harness via the dossier caller, Sonnet judge), `_part4.py` (integration-only fairness check).
 - Evidence (untracked, on this machine): `data/study/manifest.json`, `SUMMARY.md`, `outputs/*.md`, `judgments.json`, `judgments_integration_only.json`, `source_aukus.txt`, run-events for jobs `study-fable`, `study-judge`.
 - Memos: `STUDY_engine_harness_fable_2026-09-04.md`, `STUDY_engine_harness_codex_2026-09-04.md`.
+
+
+## 7. Retest after the plumbing fixes (same evening)
+
+Fixed: pass descriptions carried; the final pass told it is the product; anchoring law and findings-ledger law on every pass; prior-pass context handed as ledgers plus capped prose; refusals surfaced with a Sonnet fallback (Fable refused pass 1 on both engines again, and the fallback fired both times); Fable-safe JSON. Every pass of every run now ends with a findings ledger. Judged on the final pass, against the same one-shots.
+
+| engine | model | final pass chars | passes | est. cost | time | spec / anchor / non-obv / coherence / useful / halluc |
+|---|---|---|---|---|---|---|
+| conditions_of_possibility | sonnet-4-6 | 28,040 | 4 | $0.75 | 613.4s | 9 / 8 / 9 / 8 / 6 / 7 |
+| conditions_of_possibility | fable-5-1 | 22,243 | 4 | $0.72 | 589.4s | 8 / 7 / 8 / 7 / 5 / 6 |
+| argument_architecture | sonnet-4-6 | 26,752 | 4 | $0.76 | 623.6s | 9 / 8 / 9 / 8 / 7 / 7 |
+| argument_architecture | fable-5-1 | 25,927 | 4 | $0.72 | 593.4s | 9 / 9 / 9 / 8 / 7 / 9 |
+
+| engine | model | A | B | winner | margin |
+|---|---|---|---|---|---|
+| conditions_of_possibility | sonnet-4-6 | harness_v2_final | oneshot | oneshot | clear |
+| conditions_of_possibility | sonnet-4-6 | oneshot | harness_v2_final | harness_v2_final | clear |
+| conditions_of_possibility | fable-5-1 | harness_v2_final | oneshot | oneshot | clear |
+| conditions_of_possibility | fable-5-1 | oneshot | harness_v2_final | oneshot | clear |
+| conditions_of_possibility | fable-5-1 | harness_v2_final | oneshot_questions | oneshot_questions | clear |
+| conditions_of_possibility | fable-5-1 | oneshot_questions | harness_v2_final | oneshot_questions | clear |
+| argument_architecture | sonnet-4-6 | harness_v2_final | oneshot | oneshot | clear |
+| argument_architecture | sonnet-4-6 | oneshot | harness_v2_final | harness_v2_final | clear |
+| argument_architecture | fable-5-1 | harness_v2_final | oneshot | oneshot | clear |
+| argument_architecture | fable-5-1 | oneshot | harness_v2_final | oneshot | slight |
+| argument_architecture | fable-5-1 | harness_v2_final | oneshot_questions | oneshot_questions | clear |
+| argument_architecture | fable-5-1 | oneshot_questions | harness_v2_final | oneshot_questions | clear |
+
+Reading of the retest:
+- **On Sonnet outputs the judge split 1-1 on both engines with "clear" both ways: a position effect, so a tie.** On Fable-written outputs the one-shot won both orders on both engines (one margin "slight"), and the one-shot carrying the probing questions won both orders on both engines.
+- The fixed harness's final pass is now a reader-facing document (22-28K chars, anchored, with a ledger), and its rubric scores are level with or above the pre-fix integration pass on anchoring and hallucination risk. But it does not beat a one-shot of 12-18K chars at a quarter of the cost and time on this material, and the judge's reasons repeat one line: the harness's reading of Conditions of Possibility "performs meta-commentary on the paper's intellectual genealogy as an abstract exercise" and makes claims about the authors' intentions the text does not support. That is the definition (Codex's point: the questions invite intellectual biography from one paper), not the plumbing.
+- The earlier 4/4 win for the pre-fix Conditions of Possibility integration pass did not survive the retest; on one document and one judge it should be read as variance until a fixed-versus-pre-fix comparison and a second document say otherwise. (The fixed-vs-pre-fix pairings are in `judgments_v2_fixed_vs_prefix.json`.)
+
+What this settles, and what it does not:
+- Settled: the plumbing was broken and is fixed; production prompts now carry the laws; refusals no longer masquerade as empties; every pass yields an anchored ledger the spine can cite. Retest runner: `scripts/study_engine_harness_v2.py`.
+- Settled: on this material, four passes do not buy a better final reading than one call with the probing questions. The cost of the harness is real (four calls, about ten minutes, roughly four times the tokens) and the benefit is not visible to this judge.
+- Not settled: whether a two-pass shape (one reading call with the questions, one critic/integration call fed by its ledger) beats the one-shot, which is what both readers proposed; whether the definitions, rewritten to stop inviting biography, change the result; and whether a second document and a second judge agree.
+
+**Recommendation, revised.** Make the one-shot-with-questions the default execution mode for every engine (it is the cheapest condition that matched or beat everything else), keep the anchoring and ledger laws on it, and offer a second pass (critic or integration, fed by the first pass's ledger) as the depth dial rather than four stances. Rewrite the two studied definitions so the questions ask about the text rather than the authors' biography. Then rerun this study on two documents with two judges. That is a week's work, most of it definitions, not code.
