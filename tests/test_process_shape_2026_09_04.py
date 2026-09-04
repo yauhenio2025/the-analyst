@@ -122,6 +122,10 @@ def test_ledger_walls_verify_anchors_and_ids():
     pdf = SourceIndex({"d": "Data from interviews were cross-  referenced with other sources; a market- driven network."})
     assert pdf.find("interviews were cross-referenced with other sources") == "d"
     assert pdf.find("a market- driven network") == "d" and pdf.find("a market driven network") is None
+    # no anchor field at all, but the finding quotes the claim verbatim (DeepSeek on the argument map, 23:56)
+    noslot = parse_rows('- [A1.F1] C1: "AUKUS is not simply a security partnership, but rather constitutes a mutation" — dim: claims — type: classificatory — verb: constitutes — confidence: high')
+    assert noslot[0].anchor.startswith("AUKUS is not simply") and noslot[0].confidence == "high"
+    assert parse_rows('- [A1.F2] C2: a "short" thing — dim: claims — confidence: low')[0].anchor == ""
 
 
 def _fake_call_factory(log):
