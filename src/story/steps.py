@@ -55,6 +55,12 @@ def run_reconnaissance(job: StoryJob, docs: list[Document]) -> list[StoryProfile
         profile.elements = kept
         profile.elements_dropped = dropped
         profiles.append(profile)
+        try:  # incremental persistence: a profile survives even if the next read fails
+            from .store import update_job
+
+            update_job(job.id, profiles=[p.model_dump() for p in profiles])
+        except Exception as exc:  # noqa: BLE001
+            logger.warning(f"profile persist failed: {exc}")
         by_kind = ", ".join(f"{k} {v}" for k, v in sorted(counters.items()))
         events.emit(job.id, "artifact", phase=STEP["recon"], detail=f"{doc.key}: {len(kept)} anchored elements ({by_kind}); wall dropped {dropped}",
                     payload_json={"kind": "story_profile", "doc_key": doc.key, "elements": len(kept), "dropped": dropped, "gaps": profile.gaps})
