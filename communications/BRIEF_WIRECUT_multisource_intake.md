@@ -18,7 +18,7 @@ Paste this into a fresh session in `~/projects/veo2`. Owner's ask: "we have mult
 6. **Receipts.** The film's receipts record the handoff's `story_job_id`, its doctrine hashes, and per clip the `doc_key` + quote.
 
 ## Test material
-- A real handoff will exist at `GET https://the-analyst-kcuc.onrender.com/v1/story/jobs/{id}/handoff` once the first story run finishes (the Analyst session will paste the id into `~/projects/the-analyst/communications/IMPLEMENTATION_TRACKER.md` §9). Until then, use `STORY_HANDOFF_EXAMPLE.json`.
+- A real handoff from the first run (five state-capitalism papers, 4 movements, 99-element ledger): `~/projects/the-analyst/communications/STORY_HANDOFF_REAL_story-3813ecd195ee.json`. A live one on the Analyst API is recorded in `IMPLEMENTATION_TRACKER.md` §9 as it lands (`GET https://the-analyst-kcuc.onrender.com/v1/story/jobs/{id}/handoff`; source texts at `.../sources/{doc_key}`). `STORY_HANDOFF_EXAMPLE.json` is the small hand-written illustration.
 - Verify with Playwright: a film started from a handoff shows its sources, its clips show their anchors, and the grounding review names the source per clip.
 
 ## Rules
