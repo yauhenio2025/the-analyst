@@ -12,7 +12,7 @@ Order: Wirecut first (their request), then The Analyst, then The Master. Every l
 2. **A parked brief** (any brief in the library with status brief): "nothing is spent before you choose. Each option says what you will understand and be able to do; the engines are the 'how' line."
 3. **The Kering dossier** https://the-analyst-desk.onrender.com/d/dossier-4c95b7a70a57 — read one section with its table (hover an anchor: the verbatim quote) and the citation-safety quadrant diagram.
 4. **Its plates** https://the-analyst-desk.onrender.com/d/dossier-4c95b7a70a57/plates — the pitch-survival register, the meaning-system lattice and the claim-to-collapse river; open the 4K.
-   (Your own five-PDF upload run is https://the-analyst-desk.onrender.com/d/dossier-dce25aeed631 — three inline diagrams; use it to show the Upload files lane.)
+   (Your own five-PDF upload run, "When Governments Say 'Strategic,' Follow the Money", is https://the-analyst-desk.onrender.com/d/dossier-dce25aeed631 — 7 sections, 2 tables, 3 inline diagrams, $2.58; use it to show the Upload files lane.)
 5. **The state-capitalism dossier plates** https://the-analyst-desk.onrender.com/d/dossier-43f34a0abe5c/plates — the deal-to-liability flow map and the leverage power map: "the whole report as one diagram, in the register of our earlier work."
 6. **The console of that run** https://the-analyst-desk.onrender.com/d/dossier-43f34a0abe5c/console — "this is why it is deep: eleven phases, each step narrated, each call receipted."
 
