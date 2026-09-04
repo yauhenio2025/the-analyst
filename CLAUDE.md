@@ -219,6 +219,14 @@ POST /v1/results/by-job/{job_id}/refresh-presentation  # Refresh presentation wi
 GET  /v1/results/discovery                           # Discover completed results (?project_id=&workflow_key=&consumer_key=&selected_source_thinker_id=&limit=)
 POST /v1/results/by-job/{job_id}/attach-project      # Attach project_id to external/imported job
 
+# Organs, doctrine, story desk (The Master, 2026-09-04)
+GET  /v1/organs · /v1/organs/by-layer · /v1/organs/{key} · /v1/organs/{key}/engines
+GET  /v1/engines?family=&organ=          # families: analytical, storytelling, editing, restructuring, search, rendering, composition, quality, imagination, governance
+GET  /v1/engines/{key}/doctrine          # hash-pinned prompt/doctrine files (mirrored organs + the Analyst's desks)
+POST /v1/story/jobs · GET /v1/story/jobs/{id} · GET|POST /v1/story/jobs/{id}/brief · GET /v1/story/jobs/{id}/handoff
+GET  /v1/story/handoff-schema · /v1/story/demands
+PUT  /v1/dossier/admin/blobs/{key} · /v1/dossier/admin/jobs/{id}   # re-hydration (X-Admin-Token)
+
 # Presenter
 POST /v1/presenter/refine-views          # Refine view recommendations
 POST /v1/presenter/prepare               # Run transformations

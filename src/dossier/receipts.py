@@ -93,6 +93,11 @@ def make_receipt(
 def record(job_id: str, receipt: Receipt) -> None:
     """Persist a receipt on the job (incremental — after every call)."""
     try:
+        if job_id.startswith("story-"):
+            from src.story.store import append_receipt as story_append
+
+            story_append(job_id, receipt)
+            return
         from src.dossier.store import append_receipt
 
         append_receipt(job_id, receipt)

@@ -20,6 +20,7 @@ from src.api.routes import audiences, chains, consumers, display, engines, execu
 from src.api.routes import dossier as dossier_routes, figures as figures_routes
 from src.api.routes import events as events_routes
 from src.api.routes import organs as organs_routes
+from src.api.routes import story as story_routes
 from src.audiences.registry import get_audience_registry
 from src.chains.registry import get_chain_registry
 from src.engines.registry import get_engine_registry
@@ -289,6 +290,7 @@ app.include_router(variants.router, prefix="/v1")
 app.include_router(dossier_routes.router)
 app.include_router(figures_routes.router)
 app.include_router(events_routes.router)
+app.include_router(story_routes.router)
 @app.get("/")
 async def root():
     """Root endpoint with API info."""

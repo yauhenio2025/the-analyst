@@ -1,0 +1,206 @@
+{
+  "version": "1.0",
+  "story_job_id": "story-example0001",
+  "created_at": "2026-09-04T09:30:00Z",
+  "intent": "show a luxury board what 'strategic' government offers cost the partner",
+  "audience": "executive",
+  "through_line": {
+    "key": "deal_to_liability",
+    "title": "Private deal to strategic liability",
+    "question": "Who pays when a private deal is relabelled strategic?",
+    "face_on_the_stake": "the partner firm that accepted the label",
+    "value_turn": {
+      "value": "autonomy",
+      "before": "a commercial contract it could exit",
+      "after": "a national commitment it cannot",
+      "turned_by": "the strategic label and the concessions it unlocked"
+    },
+    "antagonism": "the state's need for a durable partner against the firm's need for an exit",
+    "open_loop": "whether any of the five partners can still leave",
+    "verdict_possible": "reversal is foreclosed once concessions are locked in; the material supports this for four of five cases",
+    "carried_by": [
+      "doc-1",
+      "doc-2",
+      "doc-4"
+    ],
+    "not_carried_by": [
+      "doc-3"
+    ],
+    "element_ids": [
+      "doc-1:turn:1",
+      "doc-2:reveal:2",
+      "doc-4:face:1"
+    ],
+    "why": "three sources show the same sequence with named firms",
+    "single_source": false
+  },
+  "approach": {
+    "key": "the_case",
+    "rank": 1,
+    "why": "five named cases, one mechanism",
+    "carried_by": [
+      "doc-1",
+      "doc-2",
+      "doc-4"
+    ],
+    "must_cut": "the policy history in doc-3"
+  },
+  "spine": {
+    "through_line_key": "deal_to_liability",
+    "approach_key": "the_case",
+    "length_seconds": 120,
+    "movements": [
+      {
+        "n": 1,
+        "title": "The offer arrives",
+        "job": "hook and orientation: a deal that looks like any other",
+        "value_turn": {
+          "value": "autonomy",
+          "before": "free",
+          "after": "flattered",
+          "turned_by": "the label"
+        },
+        "sources": [
+          "doc-1"
+        ],
+        "element_ids": [
+          "doc-1:turn:1",
+          "doc-1:quotable:1"
+        ],
+        "entry_of": [
+          "doc-1"
+        ],
+        "narration_hint": "start on the €976 million number"
+      },
+      {
+        "n": 2,
+        "title": "The label",
+        "job": "the turn the partner does not see",
+        "value_turn": {
+          "value": "reversibility",
+          "before": "contractual",
+          "after": "political",
+          "turned_by": "public commitment"
+        },
+        "sources": [
+          "doc-1",
+          "doc-2"
+        ],
+        "element_ids": [
+          "doc-2:reveal:2"
+        ],
+        "entry_of": [
+          "doc-2"
+        ],
+        "narration_hint": ""
+      },
+      {
+        "n": 3,
+        "title": "Locked in",
+        "job": "the verdict",
+        "value_turn": {
+          "value": "exit",
+          "before": "possible",
+          "after": "foreclosed",
+          "turned_by": "concessions that cannot be walked back"
+        },
+        "sources": [
+          "doc-4"
+        ],
+        "element_ids": [
+          "doc-4:face:1"
+        ],
+        "entry_of": [
+          "doc-4"
+        ],
+        "narration_hint": "end on the open loop"
+      }
+    ],
+    "motif": {
+      "what": "the signature page",
+      "plant_movement": 1,
+      "payoff_movement": 3,
+      "element_ids": [
+        "doc-1:motif:1"
+      ]
+    },
+    "hook": {
+      "element_id": "doc-1:number:1",
+      "why": "the largest number in the corpus, stated by the state"
+    },
+    "open_loop": "can any partner still leave",
+    "colour_script": "warm to cold",
+    "musical_arc": "confident to still",
+    "verdict": "the label is the liability"
+  },
+  "ledger": [
+    {
+      "id": "doc-1:turn:1",
+      "kind": "turn",
+      "text": "A €976 million data-centre deal is signed under the recovery framework and immediately called pivotal to the country's future.",
+      "detail": {
+        "value": "autonomy",
+        "before": "a commercial deal",
+        "after": "a national project",
+        "turned_by": "the prime minister's framing"
+      },
+      "anchor": {
+        "doc_key": "doc-1",
+        "quote": "pivotal to guiding Greece into the 21st century",
+        "verified": true,
+        "trimmed": false
+      },
+      "intensity": 5,
+      "consumers": [
+        "wirecut_spine",
+        "wirecut_telling_desk"
+      ]
+    },
+    {
+      "id": "doc-1:number:1",
+      "kind": "number",
+      "text": "The deal is worth €976 million.",
+      "detail": {
+        "value": "976",
+        "unit": "million euro",
+        "of_what": "the data-centre investment"
+      },
+      "anchor": {
+        "doc_key": "doc-1",
+        "quote": "€976 million",
+        "verified": true,
+        "trimmed": false
+      },
+      "intensity": 5,
+      "consumers": [
+        "wirecut_screenwriter",
+        "wirecut_text_layer"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "doc_key": "doc-1",
+      "title": "Microsoft's Greek data centres",
+      "creators": "Papaevangelou; Siapera",
+      "year": "2024",
+      "publication": "",
+      "chars": 91000,
+      "sha256": "…",
+      "text_url": "/v1/story/jobs/story-example0001/sources/doc-1"
+    }
+  ],
+  "coverage": {
+    "doc-1": true,
+    "doc-2": true,
+    "doc-3": false,
+    "doc-4": true
+  },
+  "doctrines": {
+    "wirecut_spine/spine_doctrine.md": "dfff0697…"
+  },
+  "totals": {
+    "llm_calls": 8,
+    "cost_usd": 2.1
+  }
+}

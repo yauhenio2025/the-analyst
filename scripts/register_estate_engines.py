@@ -15,6 +15,8 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys
+sys.path.insert(0, str(ROOT))
 DEFS = ROOT / "src" / "engines" / "definitions"
 WF_DIR = ROOT / "src" / "workflows" / "definitions"
 
@@ -35,7 +37,10 @@ def stage_context(name: str, plural: str, question: str) -> dict:
 
 
 def E(key, name, family, category, kind, organ, runs_at, description, question, focus, outputs, lineage, *, status="live", sync="mirrored", grounding=None, version=1):
+    from src.story.demands import DEMANDS
+
     return dict(
+        source_demands=DEMANDS.get(key, []),
         engine_key=key, engine_name=name, description=description, version=version,
         category=category, kind=kind, family=family, reasoning_domain=f"{family} · {organ}",
         researcher_question=question,

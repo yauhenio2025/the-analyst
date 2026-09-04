@@ -1,0 +1,517 @@
+{
+  "$defs": {
+    "Anchor": {
+      "properties": {
+        "doc_key": {
+          "title": "Doc Key",
+          "type": "string"
+        },
+        "quote": {
+          "description": "Verbatim quote from the document, <= 200 chars",
+          "title": "Quote",
+          "type": "string"
+        },
+        "verified": {
+          "default": false,
+          "title": "Verified",
+          "type": "boolean"
+        },
+        "trimmed": {
+          "default": false,
+          "title": "Trimmed",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "doc_key",
+        "quote"
+      ],
+      "title": "Anchor",
+      "type": "object"
+    },
+    "ApproachRank": {
+      "properties": {
+        "key": {
+          "title": "Key",
+          "type": "string"
+        },
+        "rank": {
+          "default": 0,
+          "title": "Rank",
+          "type": "integer"
+        },
+        "why": {
+          "default": "",
+          "title": "Why",
+          "type": "string"
+        },
+        "carried_by": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Carried By",
+          "type": "array"
+        },
+        "must_cut": {
+          "default": "",
+          "title": "Must Cut",
+          "type": "string"
+        }
+      },
+      "required": [
+        "key"
+      ],
+      "title": "ApproachRank",
+      "type": "object"
+    },
+    "HandoffSource": {
+      "properties": {
+        "doc_key": {
+          "title": "Doc Key",
+          "type": "string"
+        },
+        "title": {
+          "default": "",
+          "title": "Title",
+          "type": "string"
+        },
+        "creators": {
+          "default": "",
+          "title": "Creators",
+          "type": "string"
+        },
+        "year": {
+          "default": "",
+          "title": "Year",
+          "type": "string"
+        },
+        "publication": {
+          "default": "",
+          "title": "Publication",
+          "type": "string"
+        },
+        "chars": {
+          "default": 0,
+          "title": "Chars",
+          "type": "integer"
+        },
+        "sha256": {
+          "default": "",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "text_url": {
+          "default": "",
+          "description": "GET this on The Analyst API for the full text",
+          "title": "Text Url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "doc_key"
+      ],
+      "title": "HandoffSource",
+      "type": "object"
+    },
+    "Hook": {
+      "properties": {
+        "element_id": {
+          "default": "",
+          "title": "Element Id",
+          "type": "string"
+        },
+        "why": {
+          "default": "",
+          "title": "Why",
+          "type": "string"
+        }
+      },
+      "title": "Hook",
+      "type": "object"
+    },
+    "Motif": {
+      "properties": {
+        "what": {
+          "default": "",
+          "title": "What",
+          "type": "string"
+        },
+        "plant_movement": {
+          "default": 1,
+          "title": "Plant Movement",
+          "type": "integer"
+        },
+        "payoff_movement": {
+          "default": 1,
+          "title": "Payoff Movement",
+          "type": "integer"
+        },
+        "element_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Element Ids",
+          "type": "array"
+        }
+      },
+      "title": "Motif",
+      "type": "object"
+    },
+    "Movement": {
+      "properties": {
+        "n": {
+          "title": "N",
+          "type": "integer"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "job": {
+          "default": "",
+          "description": "what this movement does for the film",
+          "title": "Job",
+          "type": "string"
+        },
+        "value_turn": {
+          "$ref": "#/$defs/ValueTurn"
+        },
+        "sources": {
+          "description": "doc_keys this movement draws on",
+          "items": {
+            "type": "string"
+          },
+          "title": "Sources",
+          "type": "array"
+        },
+        "element_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Element Ids",
+          "type": "array"
+        },
+        "entry_of": {
+          "description": "doc_keys that enter the film here",
+          "items": {
+            "type": "string"
+          },
+          "title": "Entry Of",
+          "type": "array"
+        },
+        "narration_hint": {
+          "default": "",
+          "title": "Narration Hint",
+          "type": "string"
+        }
+      },
+      "required": [
+        "n",
+        "title"
+      ],
+      "title": "Movement",
+      "type": "object"
+    },
+    "StoryElement": {
+      "description": "One anchored story element read from one source, typed by what the downstream passes asked for.",
+      "properties": {
+        "id": {
+          "default": "",
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "description": "one of question, face, turn, antagonism, reveal, motif, filmable, quotable, number",
+          "title": "Kind",
+          "type": "string"
+        },
+        "text": {
+          "description": "the element in one or two sentences, <= 240 chars",
+          "title": "Text",
+          "type": "string"
+        },
+        "detail": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "kind-specific fields: face {name, stake, choice, public}; turn {value, before, after, turned_by}; reveal {assumed, true}; filmable {what, visual_form}; number {value, unit, of_what}; motif {object, could_pay_off_as}",
+          "title": "Detail",
+          "type": "object"
+        },
+        "anchor": {
+          "$ref": "#/$defs/Anchor"
+        },
+        "intensity": {
+          "default": 3,
+          "description": "1 background \u2026 5 the strongest fact in the source",
+          "maximum": 5,
+          "minimum": 1,
+          "title": "Intensity",
+          "type": "integer"
+        },
+        "consumers": {
+          "description": "engine keys whose demand this element answers",
+          "items": {
+            "type": "string"
+          },
+          "title": "Consumers",
+          "type": "array"
+        }
+      },
+      "required": [
+        "kind",
+        "text",
+        "anchor"
+      ],
+      "title": "StoryElement",
+      "type": "object"
+    },
+    "StorySpine": {
+      "properties": {
+        "through_line_key": {
+          "title": "Through Line Key",
+          "type": "string"
+        },
+        "approach_key": {
+          "default": "",
+          "title": "Approach Key",
+          "type": "string"
+        },
+        "movements": {
+          "items": {
+            "$ref": "#/$defs/Movement"
+          },
+          "title": "Movements",
+          "type": "array"
+        },
+        "motif": {
+          "$ref": "#/$defs/Motif"
+        },
+        "hook": {
+          "$ref": "#/$defs/Hook"
+        },
+        "open_loop": {
+          "default": "",
+          "title": "Open Loop",
+          "type": "string"
+        },
+        "colour_script": {
+          "default": "",
+          "title": "Colour Script",
+          "type": "string"
+        },
+        "musical_arc": {
+          "default": "",
+          "title": "Musical Arc",
+          "type": "string"
+        },
+        "verdict": {
+          "default": "",
+          "title": "Verdict",
+          "type": "string"
+        },
+        "length_seconds": {
+          "default": 90,
+          "title": "Length Seconds",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "through_line_key"
+      ],
+      "title": "StorySpine",
+      "type": "object"
+    },
+    "ThroughLine": {
+      "properties": {
+        "key": {
+          "title": "Key",
+          "type": "string"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "question": {
+          "description": "the one question the film holds open",
+          "title": "Question",
+          "type": "string"
+        },
+        "face_on_the_stake": {
+          "default": "",
+          "title": "Face On The Stake",
+          "type": "string"
+        },
+        "value_turn": {
+          "$ref": "#/$defs/ValueTurn"
+        },
+        "antagonism": {
+          "default": "",
+          "title": "Antagonism",
+          "type": "string"
+        },
+        "open_loop": {
+          "default": "",
+          "title": "Open Loop",
+          "type": "string"
+        },
+        "verdict_possible": {
+          "default": "",
+          "description": "the verdict the material can actually support, or why none",
+          "title": "Verdict Possible",
+          "type": "string"
+        },
+        "carried_by": {
+          "description": "doc_keys that carry this line",
+          "items": {
+            "type": "string"
+          },
+          "title": "Carried By",
+          "type": "array"
+        },
+        "not_carried_by": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Not Carried By",
+          "type": "array"
+        },
+        "element_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Element Ids",
+          "type": "array"
+        },
+        "why": {
+          "default": "",
+          "title": "Why",
+          "type": "string"
+        },
+        "single_source": {
+          "default": false,
+          "title": "Single Source",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "key",
+        "title",
+        "question"
+      ],
+      "title": "ThroughLine",
+      "type": "object"
+    },
+    "ValueTurn": {
+      "properties": {
+        "value": {
+          "default": "",
+          "title": "Value",
+          "type": "string"
+        },
+        "before": {
+          "default": "",
+          "title": "Before",
+          "type": "string"
+        },
+        "after": {
+          "default": "",
+          "title": "After",
+          "type": "string"
+        },
+        "turned_by": {
+          "default": "",
+          "title": "Turned By",
+          "type": "string"
+        }
+      },
+      "title": "ValueTurn",
+      "type": "object"
+    }
+  },
+  "description": "The contract between the story desk (The Analyst) and Wirecut.",
+  "properties": {
+    "version": {
+      "default": "1.0",
+      "title": "Version",
+      "type": "string"
+    },
+    "story_job_id": {
+      "title": "Story Job Id",
+      "type": "string"
+    },
+    "created_at": {
+      "title": "Created At",
+      "type": "string"
+    },
+    "intent": {
+      "default": "",
+      "title": "Intent",
+      "type": "string"
+    },
+    "audience": {
+      "default": "",
+      "title": "Audience",
+      "type": "string"
+    },
+    "through_line": {
+      "$ref": "#/$defs/ThroughLine"
+    },
+    "approach": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ApproachRank"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "spine": {
+      "$ref": "#/$defs/StorySpine"
+    },
+    "ledger": {
+      "description": "every verified element of the sources the spine uses",
+      "items": {
+        "$ref": "#/$defs/StoryElement"
+      },
+      "title": "Ledger",
+      "type": "array"
+    },
+    "sources": {
+      "items": {
+        "$ref": "#/$defs/HandoffSource"
+      },
+      "title": "Sources",
+      "type": "array"
+    },
+    "coverage": {
+      "additionalProperties": {
+        "type": "boolean"
+      },
+      "description": "doc_key \u2192 carried by the chosen through-line",
+      "title": "Coverage",
+      "type": "object"
+    },
+    "doctrines": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "description": "registry doctrine files used \u2192 sha256",
+      "title": "Doctrines",
+      "type": "object"
+    },
+    "totals": {
+      "title": "Totals",
+      "type": "object"
+    }
+  },
+  "required": [
+    "story_job_id",
+    "through_line",
+    "spine"
+  ],
+  "title": "StoryHandoff",
+  "type": "object"
+}

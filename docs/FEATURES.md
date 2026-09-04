@@ -1462,3 +1462,17 @@ Ten advanced engines with deep theoretical foundations, cross-referencing ID sys
   - `src/api/routes/dossier.py` - `_file`, `get_figure`, `get_plate_image` restore; `PUT /v1/dossier/admin/blobs/{key}`, `PUT /v1/dossier/admin/jobs/{id}`, `GET /v1/dossier/admin/blobs`
   - `scripts/rehydrate_blobs.py` - push `data/dossiers/live-*/` backups to a live service
 - **Added**: 2026-09-04
+
+### Story desk (multi-source storytelling)
+- **Status**: Active
+- **Description**: Reads many sources against the demands the Wirecut passes declare in the registry, anchors every element, maps through-lines with a coverage matrix, ranks the twelve approaches under registry-served doctrine, writes a three-option deliverable-first brief, waits for a choice, writes the spine with sources as tributaries and serves the handoff contract.
+- **Entry Points**:
+  - `src/story/schemas.py` - `StoryElement`, `StoryProfile`, `StoryMap`, `ThroughLine`, `ApproachSlate`, `StoryBrief`, `StorySpine`, `StoryHandoff`, `StoryJob`
+  - `src/story/demands.py` - default demands; `registry_demands()`, `demand_block()`
+  - `src/story/prompts.py` - system prompts composed from demands and registry doctrines
+  - `src/story/steps.py` - `run_reconnaissance` (anchor wall), `run_map` (coverage), `run_approaches`, `run_brief`, `run_spine`, `build_handoff`
+  - `src/story/runner.py` - thread runner with the brief gate
+  - `src/story/store.py` - `story_jobs` table
+  - `src/api/routes/story.py` - `/v1/story/jobs…`, `/v1/story/handoff-schema`, `/v1/story/demands`
+  - `communications/STORY_HANDOFF_SCHEMA.json`, `communications/BRIEF_WIRECUT_multisource_intake.md`
+- **Added**: 2026-09-04
