@@ -19,6 +19,7 @@ from .schemas import (APPROACHES, APPROACH_WINDOWS, ApproachRank, ApproachSlate,
 
 logger = logging.getLogger(__name__)
 PER_DOC_MAX_CHARS = 700_000
+STEP = {"recon": "reconnaissance", "map": "map", "approaches": "approaches", "brief": "brief", "spine": "spine", "handoff": "handoff"}
 
 _QUOTES = "\"'\u2018\u2019\u201c\u201d\u00ab\u00bb"
 _DASHES = "-\u2010\u2011\u2012\u2013\u2014\u2015"
