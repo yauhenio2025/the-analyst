@@ -134,9 +134,47 @@ def save_figure(
     sidecar["meta"] = meta
 
     d = figures_dir()
+    sidecar_bytes = json.dumps(sidecar, indent=2, default=str).encode("utf-8")
     _write_atomic(d / f"{figure_id}.{ext}", image_bytes)
-    _write_atomic(d / f"{figure_id}.json", json.dumps(sidecar, indent=2, default=str).encode("utf-8"))
+    _write_atomic(d / f"{figure_id}.json", sidecar_bytes)
+    # Durable copy: the disk is wiped on every deploy (2026-09-04).
+    from src.dossier.blob_store import put_blob_safe
+
+    put_blob_safe(f"figure:{figure_id}", mime, image_bytes)
+    put_blob_safe(f"figure-meta:{figure_id}", "application/json", sidecar_bytes)
     return figure_id
+
+
+def _restore_from_blob(figure_id: str) -> bool:
+    """Bring a figure (and its sidecar) back to disk from the blob store."""
+    try:
+        from src.dossier.blob_store import get_blob
+    except Exception:  # noqa: BLE001
+        return False
+    try:
+        found = get_blob(f"figure:{figure_id}")
+    except Exception:  # noqa: BLE001
+        return False
+    if not found:
+        return False
+    mime, data = found
+    mime = sniff_mime_strict(data) or (mime if mime in _MIME_EXT else "image/png")
+    ext = _MIME_EXT[mime]
+    d = figures_dir()
+    _write_atomic(d / f"{figure_id}.{ext}", data)
+    try:
+        meta = get_blob(f"figure-meta:{figure_id}")
+    except Exception:  # noqa: BLE001
+        meta = None
+    if meta:
+        _write_atomic(d / f"{figure_id}.json", meta[1])
+    else:
+        width, height = image_dimensions(data)
+        sidecar = {"figure_id": figure_id, "mime_type": mime, "ext": ext, "bytes": len(data),
+                   "sha256": hashlib.sha256(data).hexdigest(), "width": width, "height": height,
+                   "url": figure_url(figure_id), "restored": True}
+        _write_atomic(d / f"{figure_id}.json", json.dumps(sidecar, indent=2).encode("utf-8"))
+    return True
 
 
 def figure_url(figure_id: str) -> str:
@@ -146,6 +184,8 @@ def figure_url(figure_id: str) -> str:
 def figure_meta(figure_id: str) -> dict[str, Any]:
     _validate_id(figure_id)
     p = figures_dir() / f"{figure_id}.json"
+    if not p.exists() and not _restore_from_blob(figure_id):
+        raise FileNotFoundError(figure_id)
     if not p.exists():
         raise FileNotFoundError(figure_id)
     return json.loads(p.read_text("utf-8"))
@@ -165,6 +205,11 @@ def figure_path(figure_id: str) -> Path:
         p = d / f"{figure_id}.{ext}"
         if p.exists():
             return p
+    if _restore_from_blob(figure_id):
+        for ext in ("png", "jpg", "jpeg", "webp"):
+            p = d / f"{figure_id}.{ext}"
+            if p.exists():
+                return p
     raise FileNotFoundError(figure_id)
 
 
@@ -191,6 +236,13 @@ def list_figures(job_id: str) -> list[dict[str, Any]]:
 
 
 def delete_figure(figure_id: str) -> bool:
+    try:
+        from src.dossier.blob_store import delete_blob
+
+        delete_blob(f"figure:{figure_id}")
+        delete_blob(f"figure-meta:{figure_id}")
+    except Exception:  # noqa: BLE001
+        pass
     _validate_id(figure_id)
     d = figures_dir()
     removed = False

@@ -286,10 +286,19 @@ def get_receipts(job_id: str):
 
 
 def _file(job: DossierJob, kind: str) -> Path:
+    from src.dossier import blob_store
+    from src.dossier.common import job_dir
+
     path = job.paths.get(kind)
-    if not path or not Path(path).exists():
-        raise HTTPException(status_code=404, detail=f"dossier.{kind} not available (status={job.status})")
-    return Path(path)
+    target = Path(path) if path else job_dir(job.id) / f"dossier.{kind}"
+    if not target.exists():
+        # The disk is wiped on deploy; the bytes live in the blob store (2026-09-04).
+        if not blob_store.ensure_file(target, f"dossier:{job.id}:{kind}"):
+            alt = job_dir(job.id) / f"dossier.{kind}"
+            if not blob_store.ensure_file(alt, f"dossier:{job.id}:{kind}"):
+                raise HTTPException(status_code=404, detail=f"dossier.{kind} not available (status={job.status})")
+            target = alt
+    return target
 
 
 @router.get("/jobs/{job_id}/dossier.html", response_class=HTMLResponse)
@@ -316,8 +325,22 @@ def get_md(job_id: str):
 def get_figure(job_id: str, filename: str):
     from src.dossier.common import job_dir
 
-    path = job_dir(job_id) / "figures" / Path(filename).name
+    name = Path(filename).name
+    path = job_dir(job_id) / "figures" / name
     if not path.exists():
+        # Restore through the figure store (blob-backed) using the job's figure record.
+        from src.images.storage import figure_mime, figure_path
+
+        job = get_job(job_id)
+        stem = name.rsplit(".", 1)[0]
+        for fig in (job.figures if job else []):
+            fig_name = Path(fig.path).name if fig.path else ""
+            if fig.figure_id and (fig_name == name or fig.key == stem):
+                try:
+                    p = figure_path(fig.figure_id)
+                    return FileResponse(str(p), media_type=figure_mime(fig.figure_id))
+                except (FileNotFoundError, ValueError):
+                    continue
         raise HTTPException(status_code=404, detail="figure not found")
     media = {".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".webp": "image/webp"}.get(path.suffix.lower(), "image/png")
     return FileResponse(str(path), media_type=media)
@@ -433,6 +456,12 @@ def get_plate_image(job_id: str, filename: str):
         candidates.insert(0, Path(plate.path))
     for ext in ("jpg", "png", "webp", "jpeg"):
         candidates.append(job_dir(job_id) / "plates" / f"{key}.{ext}")
+    if not any(c.exists() for c in candidates):
+        from src.dossier import blob_store
+
+        for c in candidates:
+            if blob_store.ensure_file(c, f"plate:{job_id}:{c.name}"):
+                break
     for path in candidates:
         if path.exists() and path.is_file():
             media = {".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".webp": "image/webp"}.get(path.suffix.lower(), "image/png")
@@ -446,3 +475,54 @@ def get_plate_image(job_id: str, filename: str):
         except (FileNotFoundError, ValueError):
             pass
     raise HTTPException(status_code=404, detail="plate not found")
+
+
+# ── Admin: re-hydrate durable bytes and job records (2026-09-04) ──────────────
+import os as _os
+
+from fastapi import Header, Request
+
+
+def _admin_guard(token: str | None) -> None:
+    expected = _os.environ.get("ADMIN_TOKEN")
+    if not expected or token != expected:
+        raise HTTPException(status_code=403, detail="admin token required")
+
+
+@router.put("/admin/blobs/{blob_key:path}")
+async def admin_put_blob(blob_key: str, request: Request, x_admin_token: str | None = Header(default=None)):
+    """Store raw bytes under a blob key (figure:<id> · figure-meta:<id> · plate:<job>:<file> · dossier:<job>:<kind>)."""
+    _admin_guard(x_admin_token)
+    from src.dossier import blob_store
+
+    data = await request.body()
+    if not data:
+        raise HTTPException(status_code=400, detail="empty body")
+    blob_store.put_blob(blob_key, request.headers.get("content-type", "application/octet-stream"), data)
+    return {"blob_key": blob_key, "size": len(data)}
+
+
+@router.get("/admin/blobs")
+def admin_list_blobs(prefix: str = "", x_admin_token: str | None = Header(default=None)):
+    _admin_guard(x_admin_token)
+    from src.dossier import blob_store
+
+    return blob_store.list_keys(prefix)
+
+
+@router.put("/admin/jobs/{job_id}")
+async def admin_put_job(job_id: str, request: Request, x_admin_token: str | None = Header(default=None)):
+    """Import (or replace) a dossier job record from its job.json backup."""
+    _admin_guard(x_admin_token)
+    from src.dossier import store as _store
+
+    payload = await request.json()
+    job = DossierJob.model_validate(payload)
+    if job.id != job_id:
+        raise HTTPException(status_code=400, detail="job id mismatch")
+    if _store.get_job(job_id) is None:
+        _store.create_job(job)
+    else:
+        fields = {k: v for k, v in job.model_dump().items() if k not in ("id", "created_at")}
+        _store.update_job(job_id, **fields)
+    return {"job_id": job_id, "status": job.status}

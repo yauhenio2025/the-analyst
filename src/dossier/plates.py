@@ -1774,6 +1774,12 @@ def render_plate(job: DossierJob, spec: PlateSpec, out_dir: Path, provider: Opti
     kept_path = Path(best["path"])
     final = out_dir / f"{spec.key}{kept_path.suffix}"
     final.write_bytes(kept_path.read_bytes())
+    try:
+        from src.dossier.blob_store import put_blob_safe
+
+        put_blob_safe(f"plate:{job.id}:{final.name}", {".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".webp": "image/webp"}.get(final.suffix.lower(), "image/png"), final.read_bytes())
+    except Exception as exc:  # noqa: BLE001
+        logger.warning(f"plate blob put failed: {exc}")
     plate.figure_id = best["figure_id"]
     plate.path = str(final)
     plate.url = f"/v1/dossier/jobs/{job.id}/plates/{spec.key}.jpg"

@@ -942,6 +942,14 @@ def render_all(job: DossierJob, docs: list[Document]) -> dict[str, str]:
         logger.warning(f"PDF render failed: {exc}", exc_info=True)
         events.emit(job.id, "note", phase=STEP, detail=f"pdf_skipped: {exc}")
     (out_dir / "job.json").write_text(json.dumps(job.model_dump(), ensure_ascii=False, indent=2, default=str), encoding="utf-8")
+    try:
+        from src.dossier.blob_store import put_blob_safe
+
+        for kind, mime in (("html", "text/html"), ("md", "text/markdown"), ("pdf", "application/pdf")):
+            if kind in paths:
+                put_blob_safe(f"dossier:{job.id}:{kind}", mime, Path(paths[kind]).read_bytes())
+    except Exception as exc:  # noqa: BLE001
+        logger.warning(f"dossier blob put failed: {exc}")
     return paths
 
 
