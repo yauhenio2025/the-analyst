@@ -16,7 +16,9 @@ from src.executor.context_broker import split_ledger
 
 # a row: "- [ID] …" with the id optionally bolded ("- **[ID]**", "- [**ID**]") or the bullet numbered ("1. [ID]")
 _ROW_RE = re.compile(r"^\s*(?:[-*]|\d+[.)])\s*(?:\*\*)?\[\s*(?:\*\*)?([A-Za-z][A-Za-z0-9]*(?:\.[A-Za-z0-9]+)*)(?:\*\*)?\s*\](?:\*\*)?\s*(.*)$")
-_ANCHOR_RE = re.compile(r"anchor\s*:\s*[\"“”']\s*(.*?)\s*[\"“”']\s*(?=(?:\s*[—–-]{1,2}\s*[a-z_\- ]{2,24}\s*:)|\s*$)", re.IGNORECASE | re.DOTALL)
+# the anchor is the text between paired quotes after `anchor:` (straight, curly or single), whatever follows
+# the closing quote (a page reference, a separator, nothing): DeepSeek writes `anchor: “…” (p. 110) — depends: …`
+_ANCHOR_RE = re.compile(r"(?<![\w-])anchor\s*:\s*(?:\"([^\"\n]*)\"|“([^”\n]*)”|'([^'\n]*)'|‘([^’\n]*)’)", re.IGNORECASE)
 _FIELD_RE = re.compile(r"(?:^|\s[—–]\s|\s-\s)\s*([a-z][a-z_ \-]{1,24}?)\s*:\s*", re.IGNORECASE)
 _CITED_RE = re.compile(r"\[([A-Za-z][A-Za-z0-9]*(?:\.[A-Za-z0-9]+)*)\]")
 _CONF_RE = re.compile(r"confidence\s*:\s*(high|medium|low)", re.IGNORECASE)
@@ -56,7 +58,7 @@ def parse_rows(ledger_text: str) -> list[LedgerRow]:
         rid, rest = m.group(1), m.group(2).strip()
         row = LedgerRow(id=rid, text=rest, raw=line)
         am = _ANCHOR_RE.search(rest)
-        row.anchor = am.group(1).strip() if am else ""
+        row.anchor = next((g for g in am.groups() if g is not None), "").strip() if am else ""
         # finding = text up to the first " — field:" separator
         head = re.split(r"\s[—–]\s(?=[a-z][a-z_ \-]{1,24}\s*:)", rest, maxsplit=1)[0]
         row.finding = head.strip()

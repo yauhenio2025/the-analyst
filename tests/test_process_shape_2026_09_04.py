@@ -112,6 +112,9 @@ def test_ledger_walls_verify_anchors_and_ids():
     # ids bolded or numbered the way Sonnet writes them (frontier run, 22:18) still parse
     bold = parse_rows('- **[F1]** A — dim: givens — anchor: "x" — confidence: high\n* [**F2**] B — anchor: "y"\n2. [F3] C — anchor: "z"')
     assert [r.id for r in bold] == ["F1", "F2", "F3"] and bold[0].finding == "A"
+    # curly quotes with a page reference after the closing quote (DeepSeek, frontier run 22:22); a counter-anchor is not the anchor
+    ds = parse_rows('* [D1.F1] X — dim: givens — anchor: “stops short of addressing structural forces” (p. 110) — depends: y — counter-anchor: "other" — confidence: high')
+    assert ds[0].anchor == "stops short of addressing structural forces" and ds[0].confidence == "high"
 
 
 def _fake_call_factory(log):
