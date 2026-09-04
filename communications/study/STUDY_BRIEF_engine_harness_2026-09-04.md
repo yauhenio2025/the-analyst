@@ -30,3 +30,7 @@ Two readers answer independently (a Claude Fable 5.1 agent and a Codex gpt-5.6 a
 
 ## Deliverable
 One memo, `communications/study/STUDY_engine_harness_<reader>_2026-09-04.md` (reader = fable | codex), under 2,500 words, with a verdict in the first paragraph. Cite output files and line numbers. Do not modify any code.
+
+## Two findings from running the study itself (evidence for question 5)
+- Claude Fable 5.1 rejects forced tool use (`tool_choice: tool|any`): every desk that uses `call_json` (the dossier's brief, spine, tables, figures, the story desk) cannot run on Fable as written. The judge in this study therefore reads Fable's plain text and parses JSON.
+- The executor's deep-depth path (`run_engine_call_auto`, thinking on, chunking router) returned an empty response from Fable five times in a row on pass 1 of both engines; the same prompts run through `run_engine_call` directly (see `data/study/manifest.json` notes for whether thinking had to be disabled). Sonnet 4.6 ran the same path without incident.
