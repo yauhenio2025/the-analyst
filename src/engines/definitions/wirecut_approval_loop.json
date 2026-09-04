@@ -1,0 +1,50 @@
+{
+  "source_demands": [],
+  "engine_key": "wirecut_approval_loop",
+  "engine_name": "Approval loop",
+  "description": "The 'approved' finish condition: after assembly, screen; while the punch list is non-empty and the film is not ship-ready, draft the work order, realize it, re-assemble and screen again; stop when the judge has no further comments or the cap or round limit is reached, and say which. Composes screening, work order, iterate and dailies; the new thing is the loop and its stopping rule.",
+  "version": 1,
+  "category": "quality",
+  "kind": "synthesis",
+  "family": "quality",
+  "reasoning_domain": "quality · wirecut",
+  "researcher_question": "Does the judge have anything left to say, and what did each round change?",
+  "stage_context": {
+    "extraction": {
+      "analysis_type": "Approval loop",
+      "analysis_type_plural": "Approval loops",
+      "core_question": "Does the judge have anything left to say, and what did each round change?"
+    },
+    "curation": {
+      "item_type": "Approval loop",
+      "item_type_plural": "Approval loops"
+    },
+    "concretization": {},
+    "skip_concretization": true
+  },
+  "canonical_schema": {},
+  "extraction_focus": [
+    "rounds",
+    "punch lists",
+    "realizations",
+    "stop reason"
+  ],
+  "primary_output_modes": [
+    "approved film"
+  ],
+  "paradigm_keys": [],
+  "added_date": "2026-09-04",
+  "source_file": "the-analyst:communications/BRIEF_WIRECUT_look_and_approval_2026-09-04.md",
+  "engine_profile": null,
+  "apps": [],
+  "function": null,
+  "home_organ": "wirecut",
+  "runs_at": "https://veo2-waum.onrender.com",
+  "lineage_refs": [
+    "the-analyst:communications/BRIEF_WIRECUT_look_and_approval_2026-09-04.md",
+    "veo2:engine/screening.py:1151",
+    "veo2:engine/workorder.py:188"
+  ],
+  "status": "designed",
+  "sync": "planned"
+}

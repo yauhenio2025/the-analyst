@@ -1,6 +1,7 @@
 """Story desk schemas: profiles, map, approaches, brief, spine, handoff, job."""
 from __future__ import annotations
 
+import json
 import uuid
 from datetime import datetime, timezone
 from typing import Any, Optional
@@ -19,6 +20,9 @@ APPROACH_WINDOWS: dict[str, tuple[int, int]] = {
     "the_timeline": (60, 600), "the_verdict": (45, 240), "open_question": (90, 600), "the_numbers": (45, 240),
     "the_correction": (45, 240), "the_object": (45, 300), "the_hindsight": (60, 300), "the_choice": (60, 240),
 }
+# Wirecut's sixteen looks, mirrored from its capability sheet (served as wirecut_storyboard/style_presets.json).
+STYLE_PRESETS: dict[str, str] = {p["key"]: p["description"] for p in json.loads((__import__("pathlib").Path(__file__).resolve().parents[1] / "engines" / "doctrines" / "wirecut_storyboard" / "style_presets.json").read_text())["presets"]}
+PHOTOREAL_PRESETS = ("documentary_calm", "news_urgent")
 STEPS = ("reconnaissance", "map", "approaches", "brief", "spine", "handoff")
 STATUS_FOR_STEP = {"reconnaissance": "reading", "map": "mapping", "approaches": "ranking", "brief": "briefing",
                    "spine": "spining", "handoff": "handing_off"}
@@ -119,6 +123,13 @@ class ApproachSlate(BaseModel):
     note: str = ""
 
 
+class Look(BaseModel):
+    """The visual form the film should take, chosen from Wirecut's presets, never defaulted."""
+    preset_key: str
+    why: str = ""
+    alternatives: list[str] = Field(default_factory=list, description="runner-up preset keys")
+
+
 class StoryOption(BaseModel):
     key: str
     title: str
@@ -134,6 +145,7 @@ class StoryOption(BaseModel):
     est_minutes: int = 0
     why: str = ""
     risks: list[str] = Field(default_factory=list)
+    look: Optional[Look] = None
 
 
 class StoryBrief(BaseModel):
@@ -176,6 +188,7 @@ class StorySpine(BaseModel):
     musical_arc: str = ""
     verdict: str = ""
     length_seconds: int = 90
+    look: Optional[Look] = None
 
 
 class HandoffSource(BaseModel):
@@ -200,6 +213,7 @@ class StoryHandoff(BaseModel):
     through_line: ThroughLine
     approach: Optional[ApproachRank] = None
     spine: StorySpine
+    look: Optional[Look] = Field(default=None, description="the recommended visual form (Wirecut preset key) and why; Wirecut adopts it on style_preset=auto")
     ledger: list[StoryElement] = Field(default_factory=list, description="every verified element of the sources the spine uses")
     sources: list[HandoffSource] = Field(default_factory=list, description="every source the desk read; `used` marks the ones the spine draws on")
     coverage: dict[str, bool] = Field(default_factory=dict, description="doc_key → carried by the chosen through-line (keys match sources[])")
