@@ -6,13 +6,14 @@
    and cost. Everything here is a recorded event or a stored plan. */
 import { useEffect, useMemo, useState } from 'react'
 import { api } from '../lib/api'
-import { useEvents, useJob } from '../lib/hooks'
+import { useEvents, useJob, useStoryJob } from '../lib/hooks'
+import { STORY_PHASE_LABEL, storyStatusLabel } from '../lib/story'
 import { activeNodeId, buildRail, buildTree, findNode, KIND_TONE, type TreeNode } from '../lib/run'
 import { duration, statusLabel, timeShort, tokens, usd } from '../lib/format'
 import { Pip, RunRail } from '../components/RunRail'
 import { StatusChip } from '../components/StatusChip'
 import { Record } from '../components/Record'
-import { consolePath, dossierPath, navigate } from '../router'
+import { consolePath, dossierPath, isStoryId, navigate, storyHome } from '../router'
 import type { DossierJob, ExecutorJob, OrchestratorPlan, RunEvent } from '../types'
 import { STATUS_LABEL } from '../lib/format'
 
@@ -102,20 +103,25 @@ function NodeDetail({ node, exec }: { node: TreeNode; exec: boolean }) {
 }
 
 export function Console({ id, node: nodeParam, exec }: { id: string; node: string | null; exec: boolean }) {
-  const { job, error } = useJob(id)
+  // A story job (story-…) has its own snapshot; a dossier or executor job answers on the dossier path.
+  const isStory = isStoryId(id)
+  const { job, error } = useJob(isStory ? null : id)
+  const { job: storyJob } = useStoryJob(isStory ? id : null)
   const isDossier = job !== null
   const [execJob, setExecJob] = useState<ExecutorJob | null>(null)
   const [plan, setPlan] = useState<OrchestratorPlan | null>(null)
-  const live = !job || (job.status !== 'done' && job.status !== 'failed')
+  const live = isStory
+    ? (!storyJob || !['done', 'failed', 'cancelled'].includes(storyJob.status))
+    : (!job || (job.status !== 'done' && job.status !== 'failed'))
   const events = useEvents(id, live)
   const subId = job?.analysis_job_id ?? null
   const subEvents = useEvents(subId, live)
 
   // Not a dossier job? Then it may be a bare executor job.
   useEffect(() => {
-    if (job || !error) return
+    if (job || !error || isStory) return
     api.executorJob(id).then(setExecJob).catch(() => setExecJob(null))
-  }, [id, job, error])
+  }, [id, job, error, isStory])
   useEffect(() => {
     if (!subId) return
     const t = window.setInterval(() => api.executorJob(subId).then(setExecJob).catch(() => {}), live ? 3000 : 3600e3)
@@ -135,10 +141,10 @@ export function Console({ id, node: nodeParam, exec }: { id: string; node: strin
   }, [events, subEvents])
 
   const phaseNames = useMemo(() => {
-    const m: Record<string, string> = { ...STATUS_LABEL, start: 'Started', other: 'Notes' }
+    const m: Record<string, string> = { ...STATUS_LABEL, ...(isStory ? STORY_PHASE_LABEL : {}), start: 'Started', other: 'Notes' }
     for (const p of plan?.phases ?? []) m[String(p.phase_number)] = p.phase_name
     return m
-  }, [plan])
+  }, [plan, isStory])
   const tree = useMemo(() => buildTree(events.length ? events : subEvents, (p) => phaseNames[p] ?? p), [events, subEvents, phaseNames])
   const subTree = useMemo(() => (events.length && subEvents.length) ? buildTree(subEvents, (p) => phaseNames[p] ?? p) : [], [events, subEvents, phaseNames])
   const allTree = useMemo(() => {
@@ -158,12 +164,12 @@ export function Console({ id, node: nodeParam, exec }: { id: string; node: strin
     ?? plan?.decision_trace?.phase_decisions?.flatMap((d) => (d.alternatives_considered ?? []).map((a) => d.phase_name ? `${d.phase_name}: ${a}` : a))
     ?? []
 
-  const totals = job?.totals ?? (execJob ? {
+  const totals = job?.totals ?? storyJob?.totals ?? (execJob ? {
     calls: execJob.total_llm_calls ?? 0, input_tokens: execJob.total_input_tokens ?? 0,
     output_tokens: execJob.total_output_tokens ?? 0, cost_usd: execJob.total_cost_estimate ?? 0, duration_ms: 0,
   } : null)
-  const status = job?.status ?? execJob?.status ?? null
-  const title = job?.title ?? (execJob ? `${execJob.workflow_key ?? 'workflow'} · ${execJob.job_id}` : id)
+  const status = job?.status ?? storyJob?.status ?? execJob?.status ?? null
+  const title = job?.title ?? storyJob?.title ?? (execJob ? `${execJob.workflow_key ?? 'workflow'} · ${execJob.job_id}` : id)
 
   const timeline: RunEvent[] = exec
     ? merged.filter((e) => e.narrator || e.kind === 'phase_started' || e.kind === 'phase_finished' || e.kind === 'job_finished' || e.kind === 'job_failed')
@@ -173,12 +179,13 @@ export function Console({ id, node: nodeParam, exec }: { id: string; node: strin
     <section className="console" data-console>
       <div className="console-head">
         <div>
-          <span className="eyebrow">under the hood · {isDossier ? 'dossier job' : execJob ? 'executor job' : 'job'} · <b>{id}</b></span>
+          <span className="eyebrow">under the hood · {isDossier ? 'dossier job' : isStory ? 'story job' : execJob ? 'executor job' : 'job'} · <b>{id}</b></span>
           <h2 className="display">{title}</h2>
           <div className="console-status">
-            <StatusChip status={status} label={status ? (isDossier ? statusLabel(status) : status) : 'loading'} />
+            <StatusChip status={status} label={status ? (isDossier ? statusLabel(status) : isStory ? storyStatusLabel(status) : status) : 'loading'} />
             {execJob && isDossier && <span className="machine">analysis sub-job · {execJob.job_id} · {execJob.status} · phase {execJob.progress?.current_phase ?? 0} of {execJob.progress?.total_phases ?? '—'}</span>}
             {isDossier && <a className="linkish" href={dossierPath(id, job.status === 'done' ? 'dossier' : 'draft')}>← back to the dossier</a>}
+            {isStory && <a className="linkish" href={storyHome(id)}>← back to the film</a>}
           </div>
         </div>
         <div className="console-tools">
@@ -187,7 +194,7 @@ export function Console({ id, node: nodeParam, exec }: { id: string; node: strin
         </div>
       </div>
 
-      {error && !execJob && <div className="error-box" title={error}>No dossier or executor job answers to “{id}”.</div>}
+      {error && !execJob && !isStory && <div className="error-box" title={error}>No dossier or executor job answers to “{id}”.</div>}
 
       {totals && (
         <Record tiles={[

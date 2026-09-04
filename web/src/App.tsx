@@ -8,11 +8,12 @@ import { useEvents, useJob } from './lib/hooks'
 import { Library } from './pages/Library'
 import { Console } from './pages/Console'
 import { Plates } from './pages/Plates'
+import { Story } from './pages/Story'
 import { SourcesStep } from './steps/SourcesStep'
 import { BriefStep } from './steps/BriefStep'
 import { DraftStep } from './steps/DraftStep'
 import { DossierStep } from './steps/DossierStep'
-import { consolePath, dossierPath, navigate, STEP_SLUGS, useRoute, type StepSlug } from './router'
+import { consolePath, dossierPath, isStoryId, libraryPath, navigate, STEP_SLUGS, storyHome, useRoute, type StepSlug } from './router'
 import { statusLabel, usd } from './lib/format'
 import { statusRank, type DossierJob } from './types'
 
@@ -72,25 +73,30 @@ export default function App() {
   }, [route, job, stepIndex])
 
   const doneIndex = job ? (job.status === 'done' ? 4 : job.chosen_option ? 2 : job.brief ? 1 : 0) : 0
+  // the story desk: its own routes, and the console of a story job
+  const filmRoute = route.kind === 'story' || (route.kind === 'console' && isStoryId(route.id)) || (route.kind === 'library' && route.desk === 'film')
 
   return (
     <div className="shell">
       <header className="masthead">
         <div className="masthead-eyebrow">
-          <span className="eyebrow">The Analyst · <b>document desk</b></span>
+          <span className="eyebrow">The Analyst · <b>{filmRoute ? 'story desk' : 'document desk'}</b></span>
           <span className="eyebrow masthead-right">
             {MOCK && <span className="chip chip-flat" title={`Fixture replay — no server. Remove ?mock=1 (or set analyst.mock=0) to use ${api ? 'the API' : ''}`}>mock</span>}
-            <a href="/" className={route.kind === 'library' ? 'on' : ''}>Library</a>
+            <a href={libraryPath(filmRoute ? 'film' : 'dossier')} className={route.kind === 'library' ? 'on' : ''}>Library</a>
             {route.kind === 'dossier' && <a href={consolePath(route.id)}>Under the hood</a>}
-            {route.kind === 'console' && <a href={dossierPath(route.id, 'draft')}>The dossier</a>}
+            {route.kind === 'story' && <a href={consolePath(route.id)}>Under the hood</a>}
+            {route.kind === 'console' && (isStoryId(route.id) ? <a href={storyHome(route.id)}>The film</a> : <a href={dossierPath(route.id, 'draft')}>The dossier</a>)}
             {route.kind === 'plates' && <a href={dossierPath(route.id, 'dossier')}>The dossier</a>}
             {route.kind === 'plates' && <a href={consolePath(route.id)}>Under the hood</a>}
-            <a href={`${MASTER_URL}/processes/dossier_standard`} target="_blank" rel="noreferrer" title="The Master: the registry of every engine, process and grammar this desk draws on">The method ↗</a>
+            <a href={filmRoute ? `${MASTER_URL}/engines/wirecut_spine` : `${MASTER_URL}/processes/dossier_standard`} target="_blank" rel="noreferrer" title="The Master: the registry of every engine, process and grammar this desk draws on">The method ↗</a>
           </span>
         </div>
         <div className="masthead-title">
           <h1><a href="/">The Analyst</a></h1>
-          <p className="thesis">Documents in. A dossier out — <em>text, tables, figures</em> — with every step on the record.</p>
+          {filmRoute
+            ? <p className="thesis">Many sources in. One film plan out — <em>for Wirecut</em> — with every step on the record.</p>
+            : <p className="thesis">Documents in. A dossier out — <em>text, tables, figures</em> — with every step on the record.</p>}
         </div>
       </header>
 
@@ -114,7 +120,8 @@ export default function App() {
         </nav>
       )}
 
-      {route.kind === 'library' && <Library />}
+      {route.kind === 'library' && <Library desk={route.desk} />}
+      {route.kind === 'story' && <Story id={route.id} step={route.step} element={route.element} />}
 
       {route.kind === 'dossier' && error && !job && (
         <div className="error-box" title={error}>This dossier could not be loaded. {error}</div>
