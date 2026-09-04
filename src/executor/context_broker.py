@@ -11,6 +11,7 @@ Ported from The Critic's context_broker.py with emphasis injection added.
 """
 
 import logging
+import re
 from typing import Optional
 
 from src.executor.output_store import load_outputs_for_context
@@ -109,14 +110,17 @@ LEDGER_HEADING = "## Findings ledger"
 MAX_PRIOR_PROSE_CHARS = 20_000
 
 
+_LEDGER_RE = re.compile(r"^\s{0,3}(?:#{1,4}\s*|\*\*)\s*findings ledger\b", re.IGNORECASE | re.MULTILINE)
+
+
 def split_ledger(text: str) -> tuple[str, str]:
-    """(prose, ledger) — the ledger is everything from the `## Findings ledger` heading on; empty when absent."""
+    """(prose, ledger) — the ledger is everything from the `## Findings ledger` heading on (any case, any heading level); empty when absent."""
     if not text:
         return "", ""
-    idx = text.find(LEDGER_HEADING)
-    if idx < 0:
+    m = _LEDGER_RE.search(text)
+    if not m:
         return text, ""
-    return text[:idx].rstrip(), text[idx:].strip()
+    return text[:m.start()].rstrip(), text[m.start():].strip()
 
 
 def assemble_inner_pass_context(

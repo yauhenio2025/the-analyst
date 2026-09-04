@@ -39,3 +39,9 @@ def test_prior_pass_context_keeps_ledgers_and_caps_prose():
 def test_refusal_is_its_own_error():
     err = ModelRefusal("label", "claude-fable-5-1")
     assert isinstance(err, RuntimeError) and err.model_id == "claude-fable-5-1" and "refus" in str(err)
+
+
+def test_ledger_heading_any_case_and_level():
+    for head in ("## Findings ledger", "## Findings Ledger", "### FINDINGS LEDGER", "**Findings ledger**"):
+        prose, ledger = split_ledger("prose\n\n" + head + "\n- [F1] a — anchor: \"q\" — confidence: high")
+        assert prose == "prose" and ledger.lower().startswith(head.lower()[:4])
