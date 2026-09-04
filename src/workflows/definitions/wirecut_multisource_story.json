@@ -1,0 +1,81 @@
+{
+  "workflow_key": "wirecut_multisource_story",
+  "workflow_name": "Wirecut: many sources, one film (planned)",
+  "description": "Designed 2026-09-04 (communications/DESIGN_multisource_storytelling.md). Before storytelling begins, every source is read against the demands of the passes downstream and mapped into candidate through-lines; the operator chooses from a deliverable-first brief; the spine then runs with sources as tributaries and the existing chain follows, each clip anchored to the specific source it draws on.",
+  "category": "process",
+  "version": 1,
+  "phases": [
+    {
+      "phase_number": 1.0,
+      "phase_name": "Ingest many",
+      "phase_description": "Uploads, stacks bundles or exemplars resolved into a headed corpus (the Analyst's source resolver).",
+      "engine_key": null,
+      "depends_on_phases": []
+    },
+    {
+      "phase_number": 2.0,
+      "phase_name": "Story reconnaissance",
+      "phase_description": "One story profile per document, fields = the downstream passes' demands, every element anchored; the anchor wall drops the rest.",
+      "engine_key": "story_reconnaissance",
+      "depends_on_phases": [
+        1.0
+      ]
+    },
+    {
+      "phase_number": 3.0,
+      "phase_name": "Story map",
+      "phase_description": "Recurrences, contradictions, timeline, candidate through-lines with tributaries, coverage matrix.",
+      "engine_key": "story_map",
+      "depends_on_phases": [
+        2.0
+      ]
+    },
+    {
+      "phase_number": 4.0,
+      "phase_name": "Approach slate",
+      "phase_description": "The twelve structures ranked against the map; per approach, which sources carry it and what must be cut.",
+      "engine_key": "wirecut_narrative_approaches",
+      "depends_on_phases": [
+        3.0
+      ]
+    },
+    {
+      "phase_number": 5.0,
+      "phase_name": "Brief",
+      "phase_description": "Three deliverable-first options; nothing rendered before the choice.",
+      "engine_key": "story_brief",
+      "depends_on_phases": [
+        4.0
+      ]
+    },
+    {
+      "phase_number": 6.0,
+      "phase_name": "Spine with tributaries",
+      "phase_description": "Movements assigned to sources; motif from the recurring elements; each source's entry point declared.",
+      "engine_key": "wirecut_spine",
+      "depends_on_phases": [
+        5.0
+      ]
+    },
+    {
+      "phase_number": 7.0,
+      "phase_name": "The chain",
+      "phase_description": "Telling desk to screening as today; grounding checks each clip against its own source; the screenwriter names the tributary of each beat; later passes harvest from the ledger before re-reading.",
+      "engine_key": "wirecut_grounding_review",
+      "depends_on_phases": [
+        6.0
+      ]
+    }
+  ],
+  "required_inputs": [
+    "sources (many)",
+    "preset",
+    "length",
+    "coherence tier"
+  ],
+  "optional_inputs": [],
+  "output_description": "A film with receipts naming which source each clip draws on, plus the story map and brief in the library.",
+  "linked_transformation_keys": [],
+  "source_project": "wirecut",
+  "target_page": ""
+}

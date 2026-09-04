@@ -358,6 +358,24 @@ ENGINES = [
       ["events", "costs", "narration"], ["receipts"],
       ["the-analyst:src/events/store.py", "the-analyst:src/events/narrator.py", "the-analyst:src/dossier/receipts.py"], sync="native"),
 
+
+    # ───────────────────────── Multi-source storytelling (designed 2026-09-04) ─────────────────────────
+    E("story_reconnaissance", "Story reconnaissance", "storytelling", "storytelling", "extraction", "wirecut", None,
+      "Reads each source of a many-source film against the demands of the passes downstream: the questions it raises, the faces with a stake and what they chose, the turns (a value before and after, and what turned it), antagonisms, reveals, motif candidates, filmable places, objects and numbers, quotable lines, intensity, and what the source cannot support. Every element carries a verbatim anchor; the anchor wall drops the rest. One call per document; the result is a queryable ledger, not a summary.",
+      "What in this document could a film be made of, and where exactly does it say so?",
+      ["questions", "faces and stakes", "turns", "antagonisms", "reveals", "motif candidates", "filmables", "quotables", "anchors", "gaps"], ["story profile"],
+      ["the-analyst:communications/DESIGN_multisource_storytelling.md", "the-analyst:src/dossier/reconnaissance.py", "veo2:communications/STORYTELLING_STUDY_2026-09-02/SYNTHESIS.md"], status="designed", sync="planned"),
+    E("story_map", "Story map", "storytelling", "storytelling", "comparison", "wirecut", None,
+      "Across the story profiles, not the documents: which faces, turns and objects recur; where sources contradict (antagonism the film can use) and where they corroborate; a timeline when the material is temporal; and candidate through-lines, each with its one question, face on the stake, the value that turns, the open loop, the sources that carry it and the sources that do not. A through-line is carried by at least two sources or is declared a single-source film with the rest as context. Emits a coverage matrix so a choice shows what it leaves out.",
+      "What one current runs through these sources, and which of them are its tributaries?",
+      ["recurrences", "contradictions", "timeline", "through-lines", "coverage matrix"], ["story map"],
+      ["the-analyst:communications/DESIGN_multisource_storytelling.md", "gs_revamp:src/gs_revamp/agent/prompts.py:2637"], status="designed", sync="planned"),
+    E("story_brief", "Story brief", "composition", "composition", "synthesis", "wirecut", None,
+      "Deliverable-first options for a many-source film, in the law of the Analyst's brief: three options, each stating what the viewer will understand and feel, the length, the through-line, the ranked approach, the sources used and the cost. Nothing is rendered before the operator chooses.",
+      "What film could this corpus become for this viewer, and what would each choice leave out?",
+      ["options", "through-line", "approach", "sources used", "cost"], ["brief"],
+      ["the-analyst:communications/DESIGN_multisource_storytelling.md", "the-analyst:src/dossier/brief.py", "the-analyst:communications/DESIGN_brief_deliverables.md"], status="designed", sync="planned"),
+
     # ───────────────────────── Imagination and governance (designed, from the July dictations) ─────────────────────────
     E("generativity_module", "Generativity module", "imagination", "imagination", "synthesis", "oaas", None,
       "Puts question clusters in tension and generates new questions not present in the corpus but extrapolatable from it, with Ernst Bloch's tendency, latency and not-yet as the instrument. Piloted 2026-07-15 over the megas; to be formalized as a registered engine.",
@@ -444,6 +462,16 @@ WORKFLOWS = [
        ("Analyst handoff", "A headed bundle to The Analyst; a dossier with diagrams comes back.", "analyst_brief"),
        ("Brief library", "The brief stored with its receipts and linked back to the Referee query.")],
       "A news brief with sources, gaps, analysis and diagrams.", inputs=["objective", "papers", "date window", "sites", "budgets"]),
+    W("wirecut_multisource_story", "Wirecut: many sources, one film (planned)", "process", "wirecut",
+      "Designed 2026-09-04 (communications/DESIGN_multisource_storytelling.md). Before storytelling begins, every source is read against the demands of the passes downstream and mapped into candidate through-lines; the operator chooses from a deliverable-first brief; the spine then runs with sources as tributaries and the existing chain follows, each clip anchored to the specific source it draws on.",
+      [("Ingest many", "Uploads, stacks bundles or exemplars resolved into a headed corpus (the Analyst's source resolver)."),
+       ("Story reconnaissance", "One story profile per document, fields = the downstream passes' demands, every element anchored; the anchor wall drops the rest.", "story_reconnaissance"),
+       ("Story map", "Recurrences, contradictions, timeline, candidate through-lines with tributaries, coverage matrix.", "story_map"),
+       ("Approach slate", "The twelve structures ranked against the map; per approach, which sources carry it and what must be cut.", "wirecut_narrative_approaches"),
+       ("Brief", "Three deliverable-first options; nothing rendered before the choice.", "story_brief"),
+       ("Spine with tributaries", "Movements assigned to sources; motif from the recurring elements; each source's entry point declared.", "wirecut_spine"),
+       ("The chain", "Telling desk to screening as today; grounding checks each clip against its own source; the screenwriter names the tributary of each beat; later passes harvest from the ledger before re-reading.", "wirecut_grounding_review")],
+      "A film with receipts naming which source each clip draws on, plus the story map and brief in the library.", inputs=["sources (many)", "preset", "length", "coherence tier"]),
     W("analyst_figure_pipeline", "The Analyst: figure pipeline", "rendering", "the-analyst",
       "How one analytical diagram is made inside the dossier process: spec, primitive, format, enforcement, style, render, vision check, one revision. Diagrams, never illustrations.",
       [("Figure spec", "The spine's commissioned exhibit becomes a FigureSpec: claim, data, primitive candidates.", "analyst_figure_planner"),
@@ -476,7 +504,15 @@ WORKFLOWS = [
 
 def main() -> None:
     for e in ENGINES:
-        (DEFS / f"{e['engine_key']}.json").write_text(json.dumps(e, indent=2, ensure_ascii=False) + "\n")
+        path = DEFS / f"{e['engine_key']}.json"
+        if path.exists():
+            try:
+                prev = json.loads(path.read_text())
+                if prev.get("doctrine_files"):
+                    e = {**e, "doctrine_files": prev["doctrine_files"]}
+            except Exception:  # noqa: BLE001
+                pass
+        path.write_text(json.dumps(e, indent=2, ensure_ascii=False) + "\n")
     for w in WORKFLOWS:
         (WF_DIR / f"{w["workflow_key"]}.json").write_text(json.dumps(w, indent=2, ensure_ascii=False) + "\n")
     print(f"wrote {len(ENGINES)} engine definitions and {len(WORKFLOWS)} workflows")
