@@ -1451,3 +1451,14 @@ Ten advanced engines with deep theoretical foundations, cross-referencing ID sys
   - `scripts/export_native_doctrines.py` - desk system prompts to doctrine files
   - `src/engines/doctrines/` - served text, hash-pinned
 - **Added**: 2026-09-04
+
+### Durable bytes (blob store)
+- **Status**: Active
+- **Description**: Figures, plates and dossier files are twinned in Postgres (`dossier_blobs`) and restored to disk on read, so deploys no longer erase rendered outputs; admin endpoints re-hydrate from local backups.
+- **Entry Points**:
+  - `src/dossier/blob_store.py` - `put_blob`, `get_blob`, `ensure_file`, `delete_blob`, `list_keys`
+  - `src/images/storage.py` - write-through in `save_figure`, `_restore_from_blob`
+  - `src/dossier/plates.py` / `src/dossier/compose.py` - write-through for the kept plate and html/md/pdf
+  - `src/api/routes/dossier.py` - `_file`, `get_figure`, `get_plate_image` restore; `PUT /v1/dossier/admin/blobs/{key}`, `PUT /v1/dossier/admin/jobs/{id}`, `GET /v1/dossier/admin/blobs`
+  - `scripts/rehydrate_blobs.py` - push `data/dossiers/live-*/` backups to a live service
+- **Added**: 2026-09-04
