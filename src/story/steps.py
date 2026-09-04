@@ -3,6 +3,8 @@ from __future__ import annotations
 
 import hashlib
 import logging
+import re
+import unicodedata
 from typing import Any
 
 from src.dossier import events
@@ -12,12 +14,63 @@ from src.sources.schemas import Document
 
 from . import prompts
 from .doctrine import doctrine
-from .schemas import (APPROACHES, ApproachRank, ApproachSlate, HandoffSource, StoryBrief, StoryElement, StoryHandoff,
+from .schemas import (APPROACHES, APPROACH_WINDOWS, ApproachRank, ApproachSlate, HandoffSource, StoryBrief, StoryElement, StoryHandoff,
                       StoryJob, StoryMap, StoryProfile, StorySpine, ThroughLine)
 
 logger = logging.getLogger(__name__)
 PER_DOC_MAX_CHARS = 700_000
-STEP = {"recon": "reconnaissance", "map": "map", "approaches": "approaches", "brief": "brief", "spine": "spine", "handoff": "handoff"}
+
+_QUOTES = "\"'\u2018\u2019\u201c\u201d\u00ab\u00bb"
+_DASHES = "-\u2010\u2011\u2012\u2013\u2014\u2015"
+
+
+def _fold(text: str) -> tuple[str, list[int]]:
+    """Lower-cased, NFKD-folded text (ligatures split, diacritics dropped) with a map back to raw offsets."""
+    out: list[str] = []
+    idx: list[int] = []
+    for i, ch in enumerate(text):
+        for c in unicodedata.normalize("NFKD", ch):
+            if unicodedata.combining(c):
+                continue
+            out.append(c.lower())
+            idx.append(i)
+    return "".join(out), idx
+
+
+def raw_verbatim(quote: str, raw_text: str) -> str | None:
+    """The quote as it stands in the RAW source text (byte-verbatim), or None.
+
+    The dossier wall verifies against a normalized text; Wirecut re-checks with
+    its own verbatim law (whitespace, hyphenation, dash/quote variants,
+    ligatures and diacritics folded) against the served text. This finds the
+    quote under the same folding and returns the raw substring, so what the
+    handoff carries is exactly what the source says.
+    """
+    q = (quote or "").strip()
+    if not q:
+        return None
+    fq, _ = _fold(q)
+    ft, idx = _fold(raw_text)
+    parts = []
+    for ch in fq:
+        if ch.isspace():
+            parts.append(r"\s+")
+        elif ch in _DASHES:
+            parts.append(f"[{re.escape(_DASHES)}]\\s*")
+        elif ch in _QUOTES:
+            parts.append(f"[{re.escape(_QUOTES)}]")
+        elif ch.isalnum():
+            parts.append(re.escape(ch) + r"(?:[-\u00ad]\s*)?")  # a word may be hyphenated across a line break
+        else:
+            parts.append(re.escape(ch) + r"\s*")
+    pattern = re.sub(r"(\\s\+)+", r"\\s+", "".join(parts))
+    try:
+        m = re.search(pattern, ft)
+    except re.error:
+        return None
+    if not m or m.end() <= m.start():
+        return None
+    return raw_text[idx[m.start()]: idx[m.end() - 1] + 1]
 
 
 def _doc_header(d: Document) -> str:
@@ -48,6 +101,10 @@ def run_reconnaissance(job: StoryJob, docs: list[Document]) -> list[StoryProfile
             a = verify_anchor(el.anchor, corpus)
             if a is None:
                 continue
+            raw = raw_verbatim(a.quote, doc.text)
+            if raw is None:  # verified under normalization but not byte-verbatim: Wirecut's law drops it, so do we
+                continue
+            a = a.model_copy(update={"quote": raw})
             n = counters.get(el.kind, 0) + 1
             counters[el.kind] = n
             kept.append(el.model_copy(update={"anchor": a, "id": f"{doc.key}:{el.kind}:{n}"}))
@@ -113,7 +170,9 @@ def _map_text(smap: StoryMap) -> str:
 
 # ── 3. approach slate ────────────────────────────────────────────────────────
 def run_approaches(job: StoryJob) -> ApproachSlate:
-    user = f"INTENT: {job.options.intent or 'not stated'}\nAUDIENCE: {job.options.audience}\n\nSTORY MAP\n{_map_text(job.map)}"
+    windows = "\n".join(f"- {k}: {lo}-{hi} s" for k, (lo, hi) in APPROACH_WINDOWS.items())
+    target = f"TARGET LENGTH: {job.options.length_seconds} s (an approach whose hard window does not hold it cannot rank first)" if job.options.length_seconds else "TARGET LENGTH: open"
+    user = f"INTENT: {job.options.intent or 'not stated'}\nAUDIENCE: {job.options.audience}\n{target}\nHARD LENGTH WINDOWS (Wirecut refuses a film outside its approach's window):\n{windows}\n\nSTORY MAP\n{_map_text(job.map)}"
     slate, _ = call_json(job.id, STEP["approaches"], label="approach slate", system=prompts.approaches_system(), user=user,
                          tool_name="record_approach_slate", schema=schema_of(ApproachSlate), model_cls=ApproachSlate, max_tokens=8000)
     slate.ranked = [r for r in slate.ranked if r.key in APPROACHES]
@@ -127,9 +186,10 @@ def run_approaches(job: StoryJob) -> ApproachSlate:
 
 # ── 4. deliverable-first brief ───────────────────────────────────────────────
 def run_brief(job: StoryJob) -> StoryBrief:
-    top = "\n".join(f"- {r.rank}. {r.key}: {r.why} (carried by {', '.join(r.carried_by)}; must cut: {r.must_cut})" for r in (job.approaches.ranked if job.approaches else [])[:6])
+    top = "\n".join(f"- {r.rank}. {r.key} (window {APPROACH_WINDOWS[r.key][0]}-{APPROACH_WINDOWS[r.key][1]} s): {r.why} (carried by {', '.join(r.carried_by)}; must cut: {r.must_cut})" for r in (job.approaches.ranked if job.approaches else [])[:6])
     length = f"requested length: {job.options.length_seconds}s" if job.options.length_seconds else "length: choose per option (45-240s)"
     user = (f"INTENT: {job.options.intent or 'not stated'}\nAUDIENCE: {job.options.audience}\n{length}\n\nSTORY MAP\n{_map_text(job.map)}\n\nAPPROACHES RANKED\n{top}\n\n"
+            "Each approach has a HARD length window (Wirecut refuses a film outside it): pair every option's length with an approach whose window holds it. "
             "Indicative cost rule for est_cost_usd: 3 + 0.6 per 10 seconds of film; est_minutes: 4 + length_seconds / 20.")
     brief, _ = call_json(job.id, STEP["brief"], label="story brief", system=prompts.brief_system(), user=user,
                          tool_name="record_story_brief", schema=schema_of(StoryBrief), model_cls=StoryBrief, max_tokens=8000)
@@ -142,6 +202,11 @@ def run_brief(job: StoryJob) -> StoryBrief:
             o.approach_key = job.approaches.ranked[0].key
         o.sources_used = [d for d in o.sources_used if d in doc_keys]
         o.sources_left_out = [d for d in doc_keys if d not in o.sources_used]
+        lo, hi = APPROACH_WINDOWS.get(o.approach_key, (45, 600))
+        if not lo <= o.length_seconds <= hi:
+            clamped = min(max(o.length_seconds, lo), hi)
+            o.risks.append(f"length moved from {o.length_seconds}s to {clamped}s: the {o.approach_key} approach's hard window is {lo}-{hi}s")
+            o.length_seconds = clamped
     if brief.recommendation not in {o.key for o in brief.options} and brief.options:
         brief.recommendation = brief.options[0].key
     events.emit(job.id, "artifact", phase=STEP["brief"], detail=f"{len(brief.options)} options; recommended {brief.recommendation}",
@@ -173,6 +238,10 @@ def run_spine(job: StoryJob) -> StorySpine:
     spine.through_line_key = tl.key
     spine.approach_key = spine.approach_key or option.approach_key
     spine.length_seconds = spine.length_seconds or option.length_seconds
+    lo, hi = APPROACH_WINDOWS.get(spine.approach_key, (45, 600))
+    if not lo <= spine.length_seconds <= hi:
+        events.emit(job.id, "note", phase=STEP["spine"], detail=f"length {spine.length_seconds}s outside the {spine.approach_key} window {lo}-{hi}s; clamped")
+        spine.length_seconds = min(max(spine.length_seconds, lo), hi)
     events.emit(job.id, "artifact", phase=STEP["spine"], detail=f"spine: {len(spine.movements)} movements over {len(used)} sources; motif '{spine.motif.what[:60]}'",
                 payload_json={"kind": "story_spine", "movements": [{"n": m.n, "title": m.title, "sources": m.sources} for m in spine.movements]})
     return spine
@@ -188,11 +257,9 @@ def build_handoff(job: StoryJob, docs: list[Document]) -> StoryHandoff:
     ledger = [el for p in job.profiles if p.doc_key in used for el in p.elements]
     sources = []
     for d in docs:
-        if d.key not in used:
-            continue
         sources.append(HandoffSource(doc_key=d.key, title=d.title, creators=d.creators, year=d.year, publication=d.publication,
                                      chars=d.char_count, sha256=hashlib.sha256(d.text.encode("utf-8")).hexdigest(),
-                                     text_url=f"/v1/story/jobs/{job.id}/sources/{d.key}"))
+                                     text_url=f"/v1/story/jobs/{job.id}/sources/{d.key}", used=(d.key in used)))
     approach = next((r for r in job.approaches.ranked if r.key == job.spine.approach_key), None) if job.approaches else None
     doctrines: dict[str, str] = {}
     for key, name in (("wirecut_spine", "spine_doctrine.md"), ("wirecut_telling_desk", "telling_desk.md"),
@@ -207,3 +274,21 @@ def build_handoff(job: StoryJob, docs: list[Document]) -> StoryHandoff:
     events.emit(job.id, "artifact", phase=STEP["handoff"], detail=f"handoff ready: {len(sources)} sources, {len(ledger)} anchored elements, {len(job.spine.movements)} movements",
                 payload_json={"kind": "story_handoff", "url": f"/v1/story/jobs/{job.id}/handoff"})
     return handoff
+
+
+def reverify_profiles(job: StoryJob, docs: list[Document]) -> tuple[list[StoryProfile], int]:
+    """Re-cut every anchor from the raw text (byte-verbatim); drop what cannot be found. Returns (profiles, dropped)."""
+    by_key = {d.key: d for d in docs}
+    dropped = 0
+    out = []
+    for p in job.profiles:
+        doc = by_key.get(p.doc_key)
+        kept = []
+        for el in p.elements:
+            raw = raw_verbatim(el.anchor.quote, doc.text) if doc else None
+            if raw is None:
+                dropped += 1
+                continue
+            kept.append(el.model_copy(update={"anchor": el.anchor.model_copy(update={"quote": raw, "verified": True})}))
+        out.append(p.model_copy(update={"elements": kept, "elements_dropped": p.elements_dropped + (len(p.elements) - len(kept))}))
+    return out, dropped

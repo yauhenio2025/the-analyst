@@ -48,18 +48,16 @@ strongest question; nothing is planned that the source cannot support.
   (the film's first minute must carry a feeling the documented events can
   produce). Alternate rungs across movements; never two scenic movements in
   a row.
-- **telling** — the film's plan for what the viewer knows, feels and wants,
-  declared in plain words and judged by every bench against the source (the
-  narrative doctrine, "The telling block", defines each field): the one
-  `question`; the `handle` (one sentence); `whose_film` (one name from the
-  source, on screen first — or "nobody — the system", stated); the `face`
-  on the stake and the `opposer` with their source anchors and decisions;
-  `disclosure`, `held`, `engine`, `set_up_beats`, `turn_prepared_by`; the
-  `centre` and its shape; the `reveals` in ascending order; `antagonism`;
-  the `ending_verdict` and the `controlling_idea` (value + cause, anchored);
-  the `charged_image` (the source's natural object, first appearance and
-  return); the narrator's `stance`. Write it as the film's editor would
-  brief a writer, not as a form filled in.
+- **telling** — NOT a field of this answer. The film's plan for what the
+  viewer knows, feels and wants (the narrative doctrine's "telling block":
+  the one question, the handle, whose film, the face and the opposer, the
+  disclosure, what is held, the engine, the centre, the reveals, the
+  antagonism, the ending verdict, the controlling idea, the charged image,
+  the stance) is declared by the TELLING DESK over your accepted spine, in
+  its own call, minutes after this one. Plan the spine so that a telling
+  can be declared over it — a movement per turn, a hero moment, a motif —
+  but do not write the telling block here; the `spine` tool has no such
+  field and the desk drops a stray one.
 - **motif** — ONE concrete image from the source: `image` (what it is),
   `plant` (where/how it first appears), `payoff` (its final, transformed
   return). The cheapest structure a film can own — choose something the video

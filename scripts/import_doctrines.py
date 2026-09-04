@@ -58,7 +58,10 @@ def main() -> None:
             })
             imported += 1
         if files:
-            data["doctrine_files"] = files
+            # preserve entries this importer does not produce (e.g. data files such as approach_windows.json)
+            names = {x["name"] for x in files}
+            keep = [x for x in data.get("doctrine_files", []) if x.get("name") not in names and not str(x.get("name", "")).endswith(".md")]
+            data["doctrine_files"] = files + keep
             f.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n")
     print(f"imported {imported} doctrine files")
 

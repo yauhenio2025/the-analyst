@@ -82,3 +82,14 @@ Problem classes, root causes, files fixed. See global rules.
 - `scripts/rehydrate_blobs.py` - pushes `data/dossiers/live-*/` backups to the live service
 
 **Pattern to Watch For**: any `write_bytes` / `write_text` under `data/` on Render without a DB or object-store twin. The desk's mock fixtures and local runs hide this: it only shows after a deploy. Rule: bytes that a URL serves must have a durable twin.
+
+## Anchor quotes verified but not verbatim (2026-09-04)
+
+**Problem Class**: Verification against a normalized copy, serving the un-normalized claim. The wall proved a quote existed under normalization (NFKC, quote folding, hyphen joins, whitespace) and then served the model's own text of the quote; a consumer with a stricter verbatim law (Wirecut) found 5 of 97 "verified" quotes absent.
+
+**Root Cause**: `src/dossier/walls.verify_anchor` returns the candidate quote, not the source's substring.
+
+**Files Fixed**:
+- `src/story/steps.py` - `raw_verbatim` (folded search with an offset map back to the raw text) applied after `verify_anchor` at reading time; `reverify_profiles` for existing jobs; `POST /v1/story/jobs/{id}/rebuild-handoff`
+
+**Pattern to Watch For**: any "verified: true" that does not carry the source's bytes. The dossier tables' anchors have the same shape; apply the same re-cut there when a consumer needs byte-verbatim quotes.

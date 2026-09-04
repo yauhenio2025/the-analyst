@@ -138,6 +138,24 @@ def handoff(job_id: str):
     return job.handoff
 
 
+@router.post("/jobs/{job_id}/rebuild-handoff", response_model=StoryHandoff)
+def rebuild_handoff(job_id: str):
+    """Re-verify every anchor byte-verbatim against the raw sources and rebuild the handoff (all sources listed, used flags, current doctrine hashes)."""
+    from src.story import steps
+
+    job = _load(job_id)
+    if job.spine is None:
+        raise HTTPException(status_code=409, detail="no spine yet")
+    docs = runner.load_documents(job)
+    profiles, dropped = steps.reverify_profiles(job, docs)
+    job = update_job(job_id, profiles=[p.model_dump() for p in profiles])
+    handoff = steps.build_handoff(job, docs)
+    update_job(job_id, handoff=handoff)
+    from src.dossier import events
+    events.emit(job_id, "note", phase="handoff", detail=f"handoff rebuilt: anchors re-cut byte-verbatim, {dropped} dropped")
+    return handoff
+
+
 @router.get("/jobs/{job_id}/sources/{doc_key}", response_class=PlainTextResponse)
 def source_text(job_id: str, doc_key: str):
     job = _load(job_id)

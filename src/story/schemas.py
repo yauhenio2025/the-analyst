@@ -12,6 +12,13 @@ from src.dossier.schemas import Anchor, Receipt, Totals
 ELEMENT_KINDS = ("question", "face", "turn", "antagonism", "reveal", "motif", "filmable", "quotable", "number")
 APPROACHES = ("helicopter_view", "one_scene_first", "the_case", "the_portrait", "the_timeline", "the_verdict",
               "open_question", "the_numbers", "the_correction", "the_object", "the_hindsight", "the_choice")
+# Hard length windows per approach, mirrored from Wirecut (veo2:engine/storyboard.py:723 APPROACH_WINDOWS).
+# Served by the registry as wirecut_narrative_approaches/approach_windows.json; the brief and the spine obey them.
+APPROACH_WINDOWS: dict[str, tuple[int, int]] = {
+    "helicopter_view": (60, 420), "one_scene_first": (90, 420), "the_case": (150, 600), "the_portrait": (90, 420),
+    "the_timeline": (60, 600), "the_verdict": (45, 240), "open_question": (90, 600), "the_numbers": (45, 240),
+    "the_correction": (45, 240), "the_object": (45, 300), "the_hindsight": (60, 300), "the_choice": (60, 240),
+}
 STEPS = ("reconnaissance", "map", "approaches", "brief", "spine", "handoff")
 STATUS_FOR_STEP = {"reconnaissance": "reading", "map": "mapping", "approaches": "ranking", "brief": "briefing",
                    "spine": "spining", "handoff": "handing_off"}
@@ -180,6 +187,7 @@ class HandoffSource(BaseModel):
     chars: int = 0
     sha256: str = ""
     text_url: str = Field(default="", description="GET this on The Analyst API for the full text")
+    used: bool = Field(default=True, description="False when the desk read it but the chosen through-line does not carry it")
 
 
 class StoryHandoff(BaseModel):
@@ -193,8 +201,8 @@ class StoryHandoff(BaseModel):
     approach: Optional[ApproachRank] = None
     spine: StorySpine
     ledger: list[StoryElement] = Field(default_factory=list, description="every verified element of the sources the spine uses")
-    sources: list[HandoffSource] = Field(default_factory=list)
-    coverage: dict[str, bool] = Field(default_factory=dict, description="doc_key → carried by the chosen through-line")
+    sources: list[HandoffSource] = Field(default_factory=list, description="every source the desk read; `used` marks the ones the spine draws on")
+    coverage: dict[str, bool] = Field(default_factory=dict, description="doc_key → carried by the chosen through-line (keys match sources[])")
     doctrines: dict[str, str] = Field(default_factory=dict, description="registry doctrine files used → sha256")
     totals: dict[str, Any] = Field(default_factory=dict)
 
