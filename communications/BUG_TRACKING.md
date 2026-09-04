@@ -93,3 +93,13 @@ Problem classes, root causes, files fixed. See global rules.
 - `src/story/steps.py` - `raw_verbatim` (folded search with an offset map back to the raw text) applied after `verify_anchor` at reading time; `reverify_profiles` for existing jobs; `POST /v1/story/jobs/{id}/rebuild-handoff`
 
 **Pattern to Watch For**: any "verified: true" that does not carry the source's bytes. The dossier tables' anchors have the same shape; apply the same re-cut there when a consumer needs byte-verbatim quotes.
+
+## Plate wall refusals that one repair cannot cure (2026-09-04)
+
+**Problem Class**: Shape validation stricter than the planner's habits, with a repair pass that re-asks for the whole spec instead of patching the named fields. A commission of two plates (scorecard, timeline_of_shifts) on `dossier-43f34a0abe5c` produced zero plates: `canonical.marks[2]` not `{quadrant, kind, label?}` for the scorecard; title 121 chars (max 120) and narrative sentence count for the timeline; both "still rejected after repair".
+
+**Root Cause**: `src/dossier/plates.py` plate wall + one whole-spec repair; the planner's scorecard marks and long titles recur; the repair does not trim titles mechanically before re-asking.
+
+**Files to Fix** (open): `src/dossier/plates.py` — trim titles to the limit and normalise scorecard marks in code before the wall (shape, not judgment), and make the repair field-scoped like the storyboard patch retry in Wirecut.
+
+**Pattern to Watch For**: a wall that refuses on arithmetic (length, enum, count) should fix the arithmetic itself; judgment repairs are for meaning. Families that passed today: register, flow_map, power_map, framework_map (Kering run), layer_stack (untested).
