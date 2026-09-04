@@ -2,8 +2,9 @@
    (VITE_MOCK=1 at build time, or ?mock=1 / localStorage analyst.mock=1 at
    run time) swaps every call for the fixture replay in ./mock.ts. */
 import type {
-  Audience, Brief, BriefOption, BriefPromise, BriefShape, Catalog, CreateJobRequest, CreateJobResponse, Depth, DossierJob, DossierPlate, Exemplar,
-  ExecutorJob, JobListEntry, OrchestratorPlan, PlatesResponse, Receipt, RunEvent, ShapeRef, StartPlatesResponse, StepDepth,
+  Audience, Brief, BriefOption, BriefPromise, BriefShape, Catalog, CreateJobRequest, CreateJobResponse, CreateStoryRequest, CreateStoryResponse,
+  Depth, DossierJob, DossierPlate, Exemplar, ExecutorJob, JobListEntry, OrchestratorPlan, PlatesResponse, Receipt, RunEvent, ShapeRef,
+  StartPlatesResponse, StepDepth, StoryDemand, StoryHandoff, StoryJob, StoryJobSummary, StoryStatus,
 } from '../types'
 
 export const API_BASE: string = (import.meta.env.VITE_API_BASE
@@ -221,6 +222,74 @@ function normalizeJob(j: DossierJob): DossierJob {
   return anyJ as unknown as DossierJob
 }
 
+/* The story job (src/story/schemas.StoryJob): every not-yet-produced product
+   is null and every list may be missing; normalize so pages assume arrays,
+   objects with arrays, and totals with `calls`. */
+const arr = (v: unknown): unknown[] => (Array.isArray(v) ? v : [])
+const obj = (v: unknown): Record<string, unknown> | null => (v && typeof v === 'object' && !Array.isArray(v) ? (v as Record<string, unknown>) : null)
+export function normalizeStoryJob(j: StoryJob): StoryJob {
+  const anyJ = j as unknown as Record<string, unknown>
+  for (const k of ['profiles', 'receipts', 'documents', 'sources', 'notes']) anyJ[k] = arr(anyJ[k])
+  for (const p of anyJ.profiles as Record<string, unknown>[]) {
+    p.elements = arr(p.elements)
+    p.gaps = arr(p.gaps)
+    p.elements_dropped = num(p.elements_dropped)
+    for (const el of p.elements as Record<string, unknown>[]) {
+      el.detail = obj(el.detail) ?? {}
+      el.consumers = strList(el.consumers)
+      el.anchor = obj(el.anchor) ?? { doc_key: p.doc_key, quote: '' }
+      el.intensity = Math.min(5, Math.max(1, num(el.intensity) || 3))
+    }
+  }
+  const m = obj(anyJ.map)
+  if (m) {
+    for (const k of ['recurrences', 'contradictions', 'timeline', 'through_lines']) m[k] = arr(m[k])
+    for (const t of m.through_lines as Record<string, unknown>[]) {
+      t.carried_by = strList(t.carried_by); t.not_carried_by = strList(t.not_carried_by); t.element_ids = strList(t.element_ids)
+      t.value_turn = obj(t.value_turn) ?? { value: '', before: '', after: '', turned_by: '' }
+    }
+    for (const c of m.contradictions as Record<string, unknown>[]) c.positions = arr(c.positions)
+    m.coverage = obj(m.coverage) ?? {}
+    anyJ.map = m
+  } else anyJ.map = null
+  const a = obj(anyJ.approaches)
+  if (a) { a.ranked = arr(a.ranked); for (const r of a.ranked as Record<string, unknown>[]) r.carried_by = strList(r.carried_by); anyJ.approaches = a } else anyJ.approaches = null
+  const b = obj(anyJ.brief)
+  if (b) {
+    b.options = arr(b.options)
+    for (const o of b.options as Record<string, unknown>[]) {
+      o.sources_used = strList(o.sources_used); o.sources_left_out = strList(o.sources_left_out); o.risks = strList(o.risks)
+      o.est_cost_usd = num(o.est_cost_usd); o.est_minutes = num(o.est_minutes); o.length_seconds = num(o.length_seconds)
+    }
+    b.recommendation = String(b.recommendation ?? ''); b.why = String(b.why ?? '')
+    anyJ.brief = b
+  } else anyJ.brief = null
+  const sp = obj(anyJ.spine)
+  if (sp) {
+    sp.movements = arr(sp.movements)
+    for (const mv of sp.movements as Record<string, unknown>[]) {
+      mv.sources = strList(mv.sources); mv.element_ids = strList(mv.element_ids); mv.entry_of = strList(mv.entry_of)
+      mv.value_turn = obj(mv.value_turn) ?? { value: '', before: '', after: '', turned_by: '' }
+    }
+    const motif = obj(sp.motif) ?? {}
+    sp.motif = { ...motif, element_ids: strList(motif.element_ids), plant_movement: num(motif.plant_movement) || 1, payoff_movement: num(motif.payoff_movement) || 1 }
+    sp.hook = obj(sp.hook) ?? { element_id: '', why: '' }
+    anyJ.spine = sp
+  } else anyJ.spine = null
+  const h = obj(anyJ.handoff)
+  if (h) { h.ledger = arr(h.ledger); h.sources = arr(h.sources); h.doctrines = obj(h.doctrines) ?? {}; h.coverage = obj(h.coverage) ?? {}; anyJ.handoff = h } else anyJ.handoff = null
+  if (!anyJ.chosen_option) anyJ.chosen_option = null
+  const docs = anyJ.documents as Record<string, unknown>[]
+  const opts = obj(anyJ.options) ?? {}
+  anyJ.options = { audience: 'executive', autopilot: false, ...opts }
+  anyJ.title = docs.length ? `${docs[0].title ?? docs[0].key}${docs.length > 1 ? ` (+${docs.length - 1} more)` : ''}` : String(anyJ.id)
+  const t = obj(anyJ.totals) ?? {}
+  if (typeof t.calls !== 'number') t.calls = num(t.llm_calls) + num(t.image_calls)
+  t.cost_usd = num(t.cost_usd); t.input_tokens = num(t.input_tokens); t.output_tokens = num(t.output_tokens); t.duration_ms = num(t.duration_ms)
+  anyJ.totals = t
+  return anyJ as unknown as StoryJob
+}
+
 async function requestText(path: string): Promise<string> {
   const res = await fetch(`${API_BASE}${path}`)
   if (!res.ok) throw new ApiError(res.status, await res.text().catch(() => ''), path)
@@ -255,6 +324,20 @@ export interface Api {
   startPlates(jobId: string, n?: number, perspectives?: string[]): Promise<StartPlatesResponse>
   /** absolute URL of the kept 4K render */
   plateImageUrl(jobId: string, plate: DossierPlate): string
+  /* ── the story desk: many sources → one film plan for Wirecut ── */
+  listStoryJobs(): Promise<StoryJobSummary[]>
+  createStoryJob(req: CreateStoryRequest): Promise<CreateStoryResponse>
+  getStoryJob(id: string): Promise<StoryJob>
+  chooseStoryBrief(id: string, option_key: string): Promise<{ job_id: string; status: StoryStatus; chosen_option: string }>
+  cancelStory(id: string): Promise<{ job_id: string; cancelled: boolean }>
+  resumeStory(id: string): Promise<{ job_id: string; started: boolean }>
+  /** what the downstream passes ask of every source — declared in the registry */
+  storyDemands(): Promise<StoryDemand[]>
+  storyHandoff(id: string): Promise<StoryHandoff>
+  /** absolute URL of the handoff JSON (the Wirecut contract) */
+  storyHandoffUrl(id: string): string
+  /** absolute URL of one source's full text */
+  storySourceUrl(id: string, docKey: string): string
 }
 
 const live: Api = {
@@ -322,6 +405,22 @@ const live: Api = {
     if (p && p.startsWith('/')) return `${API_BASE}${p}`
     return `${API_BASE}/v1/dossier/jobs/${jobId}/plates/${plate.key}.jpg`
   },
+  listStoryJobs: () => request<unknown>('/v1/story/jobs').then((d) => unwrap<StoryJobSummary>(d, 'jobs').map((e) => ({
+    ...e, n_documents: num(e.n_documents), n_elements: num(e.n_elements), cost_usd: num(e.cost_usd),
+  }))),
+  createStoryJob: (req) => {
+    const sources = (req.sources as unknown as Record<string, unknown>[]).map((s) =>
+      s.kind === 'exemplar' ? { ...s, name: s.name ?? s.key } : s)
+    return request<CreateStoryResponse>('/v1/story/jobs', { method: 'POST', body: JSON.stringify({ ...req, sources }) })
+  },
+  getStoryJob: (id) => request<StoryJob>(`/v1/story/jobs/${id}`).then(normalizeStoryJob),
+  chooseStoryBrief: (id, option_key) => request(`/v1/story/jobs/${id}/brief`, { method: 'POST', body: JSON.stringify({ option_key }) }),
+  cancelStory: (id) => request(`/v1/story/jobs/${id}/cancel`, { method: 'POST' }),
+  resumeStory: (id) => request(`/v1/story/jobs/${id}/resume`, { method: 'POST' }),
+  storyDemands: () => request<unknown>('/v1/story/demands').then((d) => unwrap<StoryDemand>(d, 'demands').map((x) => ({ ...x, demands: strList(x.demands) }))),
+  storyHandoff: (id) => request<StoryHandoff>(`/v1/story/jobs/${id}/handoff`),
+  storyHandoffUrl: (id) => `${API_BASE}/v1/story/jobs/${id}/handoff`,
+  storySourceUrl: (id, docKey) => `${API_BASE}/v1/story/jobs/${id}/sources/${encodeURIComponent(docKey)}`,
 }
 
 /* SSE with poll fallback (Wirecut's watchOperation pattern): the server
@@ -419,4 +518,14 @@ export const api: Api = {
   getPlates: (id) => getApi().then((a) => a.getPlates(id)),
   startPlates: (id, n, p) => getApi().then((a) => a.startPlates(id, n, p)),
   plateImageUrl: (id, plate) => (impl ?? live).plateImageUrl(id, plate),
+  listStoryJobs: () => getApi().then((a) => a.listStoryJobs()),
+  createStoryJob: (r) => getApi().then((a) => a.createStoryJob(r)),
+  getStoryJob: (id) => getApi().then((a) => a.getStoryJob(id)),
+  chooseStoryBrief: (id, k) => getApi().then((a) => a.chooseStoryBrief(id, k)),
+  cancelStory: (id) => getApi().then((a) => a.cancelStory(id)),
+  resumeStory: (id) => getApi().then((a) => a.resumeStory(id)),
+  storyDemands: () => getApi().then((a) => a.storyDemands()),
+  storyHandoff: (id) => getApi().then((a) => a.storyHandoff(id)),
+  storyHandoffUrl: (id) => (impl ?? live).storyHandoffUrl(id),
+  storySourceUrl: (id, k) => (impl ?? live).storySourceUrl(id, k),
 }

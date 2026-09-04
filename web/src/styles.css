@@ -496,3 +496,135 @@ button.secondary:hover:not(:disabled), a.secondary:hover { border-color: var(--a
 .plate-issues { color: var(--neg); font-size: var(--t-meta); }
 .plate-planned { border-style: dashed; color: var(--muted); }
 @media (max-width: 720px) { .plate-form { grid-template-columns: 1fr; } }
+
+/* ============ the story desk (many sources → one film plan for Wirecut) ============ */
+/* library: the two desks, the film box, the length dial */
+.desk-switch { display: flex; gap: 22px; align-items: baseline; padding: 6px 20px 0; border-bottom: 1px solid var(--line-soft); flex-wrap: wrap; }
+.desk-switch .mode-btn { text-decoration: none; display: inline-block; }
+.desk-switch .desk-hint { margin-left: auto; }
+.filmbox { padding: 18px 20px 6px; border-top: 1px solid var(--line-soft); }
+.filmbox textarea { min-height: 64px; }
+.filmbox .dials { margin-top: 4px; }
+.length-dial { display: flex; flex-wrap: wrap; gap: 6px; }
+.length-dial .use-chip-btn { min-width: 58px; justify-content: center; font-variant-numeric: tabular-nums; }
+.shelf-meta { font-family: var(--mono); font-size: var(--t-kicker); color: var(--muted); white-space: nowrap; }
+/* the rail: six stations must fit one line at desk width */
+.steps.story { gap: 22px; }
+.steps.story .step-tab small { max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* the rail: a failed station */
+.step-tab.failed { color: var(--neg); }
+.step-tab.failed::after { background: var(--neg); transform: scaleX(1); }
+/* the receipts line under the rail */
+.ledger-line { display: flex; gap: 16px; align-items: baseline; flex-wrap: wrap; border-bottom: 1px solid var(--line-soft); padding-bottom: 12px; margin: -22px 0 26px; }
+.ledger-line .narration-line { margin: 0; flex: 1 1 320px; font-size: 15px; min-width: 0; overflow-wrap: anywhere; }
+.ledger-line .narration-line.hint { font-style: italic; }
+.ledger-line .linkish { background: none; border: 0; border-bottom: 1px solid var(--accent-a50); padding: 0; cursor: pointer; font-family: var(--mono); font-size: var(--t-kicker); letter-spacing: .12em; text-transform: uppercase; }
+.ledger-line .linkish:disabled { opacity: .4; cursor: default; }
+/* sources: the demands aside */
+.demands-aside > .eyebrow { display: block; margin-bottom: 10px; }
+.demands { display: grid; gap: 12px; }
+.demand h4 { font-family: var(--serif); font-size: 15px; margin-bottom: 4px; }
+.demand ul { margin: 0; padding-left: 14px; font-size: var(--t-meta); color: var(--muted); display: grid; gap: 3px; line-height: 1.45; }
+.demands-cite { margin-top: 14px; }
+.story-sources .quotecard { margin-bottom: 22px; }
+/* reading: kind chips, intensity dots, elements */
+.kind-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 4px; }
+.kind-chip { display: inline-flex; align-items: baseline; font-family: var(--mono); font-size: var(--t-kicker); letter-spacing: .08em; text-transform: uppercase; color: var(--machine); border: 1px solid var(--line); padding: 2px 7px; white-space: nowrap; }
+.kind-chip b { color: var(--accent); font-weight: 600; margin-right: 5px; }
+.kind-chip.dropped { color: var(--muted); border-style: dashed; }
+.kind-chip.dropped b { color: var(--warn); }
+.dots { display: inline-flex; gap: 3px; align-items: center; }
+.dot { width: 6px; height: 6px; border-radius: 50%; border: 1px solid var(--accent-a50); background: transparent; }
+.dot.on { background: var(--accent); border-color: var(--accent); }
+.story-profile .strip { margin: 4px 0; }
+.story-profile .profile-thesis { margin: 10px 0 8px; }
+.elements-group { margin-top: 12px; }
+.elements-group > .block-label { margin-bottom: 4px; }
+.element { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2px; padding: 8px 4px; border-top: 1px solid var(--line-soft); transition: background var(--ease); }
+.element.hl { background: var(--accent-a12); outline: 1px solid var(--accent-a50); }
+.element-id { font-family: var(--mono); font-size: var(--t-kicker); letter-spacing: .06em; color: var(--muted); overflow-wrap: anywhere; }
+.element-body { min-width: 0; }
+.element-text { margin: 0 0 4px; font-size: var(--t-ui); line-height: 1.5; }
+.element-meta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 2px 0 6px; }
+.element-detail { margin: 0 0 6px; }
+.consumer { font-family: var(--mono); font-size: var(--t-kicker); letter-spacing: .04em; color: var(--muted); border: 1px solid var(--line-soft); padding: 0 5px; white-space: nowrap; }
+/* map: through-line cards, coverage, approaches, contradictions */
+.tl-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 14px; margin-bottom: 8px; }
+.tl-card { display: grid; gap: 6px; align-content: start; }
+.tl-card h4 { font-family: var(--serif); font-size: 20px; }
+.tl-card .strip { margin: 0; }
+.tl-card .eyebrow .chip { margin-left: 6px; vertical-align: middle; }
+.tl-q { font-family: var(--serif); font-style: italic; font-size: 16px; line-height: 1.5; margin: 0 0 4px; }
+.turn { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 3px 10px; font-size: var(--t-ui); line-height: 1.45; margin: 4px 0; }
+.turn .arrow, .device .arrow { color: var(--accent); }
+.turn-before { color: var(--muted); }
+.turn-after { color: var(--ink); }
+.desk-table.coverage { min-width: 0; }
+.desk-table.coverage th.c, .desk-table.coverage td.c { text-align: center; }
+.desk-table.coverage th.c { white-space: normal; max-width: 120px; }
+.cell-on, .cell-off { display: inline-block; width: 14px; height: 14px; vertical-align: middle; }
+.cell-on { background: var(--accent); }
+.cell-off { border: 1px solid var(--line); }
+.approaches { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.approach { display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 10px; border-bottom: 1px solid var(--line-soft); padding-bottom: 10px; }
+.approach-rank { font-family: var(--serif); color: var(--accent); font-size: 19px; }
+.approach-why { margin: 2px 0 4px; font-size: var(--t-ui); line-height: 1.5; }
+.approach .strip { margin: 0; }
+.must-cut { color: var(--warn); }
+.rec-what { font-family: var(--serif); font-size: 16px; }
+.contradictions { display: grid; gap: 12px; }
+.contradiction-head { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; flex-wrap: wrap; margin-bottom: 10px; }
+.contradiction-head h4 { font-family: var(--serif); font-size: 18px; }
+.positions { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+.position { border-left: 2px solid var(--line); padding-left: 12px; }
+.position .eyebrow { display: block; margin-bottom: 4px; }
+.position p { margin: 0; font-size: var(--t-ui); line-height: 1.5; }
+.desk-table.timeline-map { min-width: 520px; }
+/* brief: the law and the film cards */
+.eyebrow.law { color: var(--accent); }
+.film-options { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+.film-option { cursor: default; }
+.film-option .deliverable-line.feel { font-style: italic; }
+.film-option .deliverable-line.able { font-weight: 500; }
+.film-option .strip .chip { margin-right: 4px; vertical-align: middle; }
+.option-actions { margin-top: 8px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+/* spine: the current, the movements, the devices */
+.current-wrap { border: 1px solid var(--line); background: var(--panel); padding: 12px 16px 6px; margin-bottom: 18px; overflow-x: auto; }
+.current { display: block; width: 100%; height: auto; min-width: 560px; }
+.current-base { stroke: var(--line); stroke-width: 2; }
+.current-station { fill: var(--panel-2); stroke: var(--accent); stroke-width: 1.5; }
+.current-n { fill: var(--ink); font-family: var(--serif); font-size: 15px; }
+.current-trib { stroke: var(--accent-a50); stroke-width: 1.5; fill: none; }
+.current-trib-g:hover .current-trib { stroke: var(--accent); }
+.current-label { fill: var(--machine); font-family: var(--mono); font-size: 11px; letter-spacing: .04em; }
+.current-label.motif { fill: var(--pos); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; }
+.current-motif { stroke: var(--pos); stroke-width: 1.5; stroke-dasharray: 4 3; fill: none; }
+.stations { display: grid; gap: 10px; padding: 8px 0 8px; min-width: 560px; }
+.station { text-align: center; padding: 0 6px; min-width: 0; }
+.st-title { font-family: var(--serif); font-size: 15px; line-height: 1.3; }
+.st-job { font-size: var(--t-meta); color: var(--muted); line-height: 1.4; margin-top: 3px; }
+.movements { display: grid; gap: 14px; }
+.movement h4 { font-family: var(--serif); font-size: 21px; margin: 4px 0 6px; }
+.movement .strip { margin: 4px 0; }
+.movement .strip .chip { margin-right: 4px; vertical-align: middle; }
+.movement .quotecard { margin: 12px 0 2px; }
+.elchips { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
+.elchip { font-family: var(--mono); font-size: var(--t-kicker); letter-spacing: .04em; color: var(--machine); border: 1px solid var(--line); padding: 1px 6px; cursor: pointer; transition: border-color var(--ease), color var(--ease); }
+.elchip:hover, .elchip.on { border-color: var(--accent); color: var(--accent); }
+.elchip.missing { border-style: dashed; color: var(--muted); }
+.revealed { border-left: 2px solid var(--accent); padding-left: 12px; margin: 6px 0 10px; }
+.revealed .element { border-top: 0; padding-top: 0; }
+.devices { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; }
+.device > .eyebrow { display: block; margin-bottom: 8px; }
+.device .strip { margin: 4px 0; }
+/* handoff */
+.handoff-actions { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
+button.primary.ghost, button.primary.ghost:disabled { background: transparent; color: var(--muted); border: 1px dashed var(--line); cursor: not-allowed; }
+.desk-table.handoff-sources { min-width: 720px; }
+.desk-table.handoff-sources .hash, .desk-table.handoff-sources td:last-child { white-space: nowrap; }
+.story-handoff .more { margin-top: 18px; }
+.story-handoff .more .excerpt { margin-top: 10px; }
+.story-handoff .more pre { max-height: 480px; }
+@media (max-width: 980px) {
+  .tl-cards, .film-options, .devices { grid-template-columns: 1fr; }
+}

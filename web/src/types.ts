@@ -508,3 +508,184 @@ export interface DossierPlate {
 export interface PlatesRun { started_at: string; n: number; perspectives: string[] }
 export interface PlatesResponse { job_id: string; running: boolean; run: PlatesRun | null; plates: DossierPlate[] }
 export interface StartPlatesResponse { job_id: string; status: string; n: number; perspectives: string[]; phase: string }
+
+/* ── the story desk (src/story/schemas.py): many sources → one film plan for Wirecut ── */
+export type StoryStatus =
+  | 'queued' | 'reading' | 'mapping' | 'ranking' | 'briefing' | 'awaiting_brief' | 'spining' | 'handing_off'
+  | 'done' | 'failed' | 'cancelled'
+export type StoryStep = 'reconnaissance' | 'map' | 'approaches' | 'brief' | 'spine' | 'handoff'
+export const STORY_STATUS_ORDER: StoryStatus[] = [
+  'queued', 'reading', 'mapping', 'ranking', 'briefing', 'awaiting_brief', 'spining', 'handing_off', 'done',
+]
+export function storyRank(s: StoryStatus | string | null | undefined): number {
+  if (!s) return -1
+  return STORY_STATUS_ORDER.indexOf(s as StoryStatus)
+}
+export const ELEMENT_KINDS = ['question', 'face', 'turn', 'antagonism', 'reveal', 'motif', 'filmable', 'quotable', 'number'] as const
+export type ElementKind = typeof ELEMENT_KINDS[number]
+
+export interface StoryElement {
+  id: string
+  kind: string
+  text: string
+  detail: Record<string, string>
+  anchor: Anchor & { verified?: boolean; trimmed?: boolean }
+  intensity: number
+  consumers: string[]
+}
+export interface StoryProfile {
+  doc_key: string
+  title: string
+  genre?: string
+  one_line?: string
+  question: string
+  stance: string
+  elements: StoryElement[]
+  gaps: string[]
+  elements_dropped: number
+}
+export interface Recurrence { what: string; kind?: string; doc_keys: string[]; element_ids: string[] }
+export interface Position { doc_key: string; says: string }
+export interface Contradiction { about: string; positions: Position[]; usable_as: string }
+export interface TimelineEntry { when: string; what: string; doc_keys: string[] }
+export interface ValueTurn { value: string; before: string; after: string; turned_by: string }
+export interface ThroughLine {
+  key: string
+  title: string
+  question: string
+  face_on_the_stake: string
+  value_turn: ValueTurn
+  antagonism: string
+  open_loop: string
+  verdict_possible: string
+  carried_by: string[]
+  not_carried_by: string[]
+  element_ids: string[]
+  why: string
+  single_source: boolean
+}
+export interface StoryMap {
+  recurrences: Recurrence[]
+  contradictions: Contradiction[]
+  timeline: TimelineEntry[]
+  through_lines: ThroughLine[]
+  coverage: Record<string, Record<string, boolean>>
+}
+export interface ApproachRank { key: string; rank: number; why: string; carried_by: string[]; must_cut: string }
+export interface ApproachSlate { ranked: ApproachRank[]; note?: string }
+export interface StoryOption {
+  key: string
+  title: string
+  viewer_will_understand: string
+  viewer_will_feel: string
+  viewer_will_be_able_to: string
+  length_seconds: number
+  through_line_key: string
+  approach_key: string
+  sources_used: string[]
+  sources_left_out: string[]
+  est_cost_usd: number
+  est_minutes: number
+  why: string
+  risks: string[]
+}
+export interface StoryBrief { options: StoryOption[]; recommendation: string; why: string }
+export interface Movement {
+  n: number
+  title: string
+  job: string
+  value_turn: ValueTurn
+  sources: string[]
+  element_ids: string[]
+  entry_of: string[]
+  narration_hint: string
+}
+export interface Motif { what: string; plant_movement: number; payoff_movement: number; element_ids: string[] }
+export interface Hook { element_id: string; why: string }
+export interface StorySpine {
+  through_line_key: string
+  approach_key: string
+  movements: Movement[]
+  motif: Motif
+  hook: Hook
+  open_loop: string
+  colour_script: string
+  musical_arc: string
+  verdict: string
+  length_seconds: number
+}
+export interface HandoffSource {
+  doc_key: string; title: string; creators: string; year: string; publication: string; chars: number; sha256: string; text_url: string
+}
+export interface StoryHandoff {
+  version: string
+  story_job_id: string
+  created_at: string
+  intent: string
+  audience: string
+  through_line: ThroughLine
+  approach: ApproachRank | null
+  spine: StorySpine
+  ledger: StoryElement[]
+  sources: HandoffSource[]
+  coverage: Record<string, boolean>
+  doctrines: Record<string, string>
+  totals: Record<string, unknown>
+}
+export interface StoryDocument {
+  key: string; title: string; creators?: string; year?: string; publication?: string; library?: string; char_count?: number
+}
+export interface StoryOptions {
+  intent?: string | null
+  audience: string
+  preset?: string | null
+  length_seconds?: number | null
+  autopilot: boolean
+  from_job?: string | null
+}
+export interface StoryJob {
+  id: string
+  status: StoryStatus
+  step: StoryStep | ''
+  created_at: string
+  updated_at: string
+  sources: SourceSpec[]
+  documents: StoryDocument[]
+  options: StoryOptions
+  profiles: StoryProfile[]
+  map: StoryMap | null
+  approaches: ApproachSlate | null
+  brief: StoryBrief | null
+  chosen_option: string | null
+  spine: StorySpine | null
+  handoff: StoryHandoff | null
+  receipts: Receipt[]
+  totals: Totals
+  error?: string | null
+  notes: Record<string, unknown>[]
+  /** derived by the client: the first document's title (+ n more) */
+  title: string
+}
+export interface StoryJobSummary {
+  id: string
+  status: StoryStatus
+  step: StoryStep | ''
+  created_at: string
+  updated_at: string
+  n_documents: number
+  n_elements: number
+  intent?: string | null
+  chosen_option?: string | null
+  cost_usd: number
+}
+export interface StoryDemand { engine_key: string; engine_name: string; demands: string[] }
+export interface CreateStoryRequest {
+  sources: SourceSpec[]
+  from_job?: string
+  intent?: string
+  audience: string
+  length_seconds?: number
+  autopilot?: boolean
+}
+export interface CreateStoryResponse { job_id: string; status: StoryStatus; documents: StoryDocument[] }
+export const FILM_LENGTHS = [60, 90, 120, 180, 240] as const

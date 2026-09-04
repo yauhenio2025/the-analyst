@@ -4,7 +4,7 @@ import type { DossierStatus } from '../types'
 
 export function toneOf(status: DossierStatus | string | null | undefined): 'ok' | 'neg' | 'live' | 'wait' | 'flat' {
   if (status === 'done') return 'ok'
-  if (status === 'failed') return 'neg'
+  if (status === 'failed' || status === 'cancelled') return 'neg'
   if (status === 'awaiting_brief') return 'wait'
   if (status === 'queued') return 'flat'
   return 'live'

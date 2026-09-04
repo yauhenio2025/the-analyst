@@ -2,7 +2,7 @@
    (replayed from ?after=, then watched live). */
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { api } from './api'
-import type { DossierJob, RunEvent } from '../types'
+import type { DossierJob, RunEvent, StoryJob } from '../types'
 
 const TERMINAL = new Set(['done', 'failed'])
 
@@ -65,4 +65,36 @@ export function useEvents(id: string | null, live: boolean): RunEvent[] {
     return () => { cancelled = true; stop?.() }
   }, [id, live])
   return events
+}
+
+/* The story job snapshot — same rule as useJob: polled while it moves,
+   left alone once it is handed off, stopped or cancelled. */
+const STORY_TERMINAL = new Set(['done', 'failed', 'cancelled'])
+
+export function useStoryJob(id: string | null, pollMs = 2500) {
+  const [job, setJob] = useState<StoryJob | null>(null)
+  const [error, setError] = useState<string | null>(null)
+  const [tick, setTick] = useState(0)
+  const reload = useCallback(() => setTick((t) => t + 1), [])
+  useEffect(() => {
+    if (!id) { setJob(null); setError(null); return }
+    let cancelled = false
+    let timer: number | undefined
+    const load = async () => {
+      try {
+        const j = await api.getStoryJob(id)
+        if (cancelled) return
+        setJob(j)
+        setError(null)
+        if (!STORY_TERMINAL.has(j.status)) timer = window.setTimeout(load, pollMs)
+      } catch (e) {
+        if (cancelled) return
+        setError(String((e as Error).message ?? e))
+        timer = window.setTimeout(load, pollMs * 2)
+      }
+    }
+    void load()
+    return () => { cancelled = true; if (timer !== undefined) window.clearTimeout(timer) }
+  }, [id, pollMs, tick])
+  return { job, error, reload, setJob }
 }

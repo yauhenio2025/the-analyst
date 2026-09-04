@@ -413,4 +413,15 @@ export const mockApi: Api = {
     return delay({ job_id: jobId, status: 'started', n: p.length || n || 2, perspectives: p, phase: 'plates' }, 200)
   },
   plateImageUrl: (_jobId, plate) => plate.url ?? plate1Url,
+  /* the story desk has no fixture replay yet: the shelf is empty and every call says so */
+  listStoryJobs: () => delay([], 60),
+  createStoryJob: () => Promise.reject(new Error('The story desk has no fixture replay — remove ?mock=1 to use the API.')),
+  getStoryJob: (id) => Promise.reject(new Error(`404 /v1/story/jobs/${id} — the story desk has no fixture replay; remove ?mock=1 to use the API.`)),
+  chooseStoryBrief: () => Promise.reject(new Error('The story desk has no fixture replay.')),
+  cancelStory: () => Promise.reject(new Error('The story desk has no fixture replay.')),
+  resumeStory: () => Promise.reject(new Error('The story desk has no fixture replay.')),
+  storyDemands: () => delay([], 60),
+  storyHandoff: () => Promise.reject(new Error('The story desk has no fixture replay.')),
+  storyHandoffUrl: (id) => `/v1/story/jobs/${id}/handoff`,
+  storySourceUrl: (id, k) => `/v1/story/jobs/${id}/sources/${k}`,
 }
