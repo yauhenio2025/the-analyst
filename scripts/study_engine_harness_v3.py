@@ -205,8 +205,9 @@ def report(manifest, J):
                 means.append(f"{sum(vals)/len(vals):.1f}" if vals else "—"); hall.append(str(r.get("hallucination_risk")) if r else "—")
             pw = [p for p in J["pairwise"] if m["key"] in (p["A"], p["B"]) and p["engine"] == ek]
             wins = sum(1 for p in pw if p["winner"] == m["key"]); ties = sum(1 for p in pw if p["winner"] == "tie")
-            used = [u.split("/")[-1] for u in m.get("models_used", [])]
-            ran_on = "as requested" if used == [m["model_id"].split("/")[-1]] else "**" + ", ".join(used) + "**"   # a refusal fallback shows here
+            used = {u.split("/")[-1] for u in m.get("models_used", [])}
+            expected = {m["model_id"].split("/")[-1]} | ({CHEAP.split("/")[-1], MID.split("/")[-1]} if m["condition"] == "d" else set())
+            ran_on = "as requested" if used <= expected else "**" + ", ".join(sorted(used - expected)) + "**"   # a refusal fallback shows here
             lines.append(f"| {m['condition']} | {m['model']} | {ran_on} | {m['paper']} | {' / '.join(means)} | {' / '.join(hall)} | {wins}/{len(pw)}{(' (+' + str(ties) + ' tie)') if ties else ''} | {m['cost_usd']:.2f} | {m['seconds']:.0f} | {m['calls']} | {m['anchor_rate']:.0%} | {m['ledger_rows']} | {m['chars']:,} |")
         lines.append("")
         # the frontier: per condition, the cheapest run within 0.5 rubric points of the best mean

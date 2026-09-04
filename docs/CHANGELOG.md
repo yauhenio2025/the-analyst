@@ -5,6 +5,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Added (2026-09-05, night — the frontier study)
+- Frontier study run and synthesis: 91 runs, two judges, $87.41 ([communications/study/STUDY_frontier_SYNTHESIS_2026-09-05.md](../communications/study/STUDY_frontier_SYNTHESIS_2026-09-05.md), per-run table [STUDY_frontier_runs_2026-09-05.md](../communications/study/STUDY_frontier_runs_2026-09-05.md)); aggregates [scripts/study_frontier_analysis.py](../scripts/study_frontier_analysis.py); study runner gained `--skip`, `--rescan`, a "ran on" column and Kimi K3 ([scripts/study_engine_harness_v3.py](../scripts/study_engine_harness_v3.py)).
+
+### Fixed (2026-09-05)
+- Ledger walls accept bolded or numbered row ids, page references after the closing quote, rows without a bullet, a quote in the finding when no `anchor:` field is present, and PDF spaced hyphens in the source; each surfaced on live model output during the run ([src/executor/ledger_walls.py](../src/executor/ledger_walls.py), tests in [tests/test_process_shape_2026_09_04.py](../tests/test_process_shape_2026_09_04.py)).
+
 ### Added (2026-09-04, evening — the process shape from the engine redesign)
 - Design from the ideal output backwards for the two studied engines and the generalisation to one shape: [communications/study/REDESIGN_conditions_of_possibility_2026-09-04.md](../communications/study/REDESIGN_conditions_of_possibility_2026-09-04.md), [REDESIGN_argument_architecture_2026-09-04.md](../communications/study/REDESIGN_argument_architecture_2026-09-04.md), [REDESIGN_method_shape_2026-09-04.md](../communications/study/REDESIGN_method_shape_2026-09-04.md).
 - Process shape in the registry: `ProcessSpec` / `ProcessStep` / `ProcessDimension` on `EngineOperationalization`, `DepthSequence.process` ([src/operationalizations/schemas.py](../src/operationalizations/schemas.py)); text-facing dimension sets with method cards, per-step routing and depth key `dvs` for Conditions of Possibility and Argument Architecture ([src/operationalizations/definitions/](../src/operationalizations/definitions/)).
