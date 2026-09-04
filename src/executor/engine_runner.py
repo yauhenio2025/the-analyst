@@ -18,6 +18,7 @@ Ported from The Critic's `_call_claude_raw()` with plan-driven model selection.
 """
 
 import logging
+from src.llm.backends import ModelRefusal
 import os
 import time
 from typing import Any, Callable, Optional
@@ -89,6 +90,7 @@ PHASE_MODEL_DEFAULTS = {
 
 # Retry settings
 MAX_RETRIES = 5
+FALLBACK_MODEL = "claude-sonnet-4-6"  # the house model a refusal falls back to (study 2026-09-04)
 RETRY_DELAYS = [30, 60, 90, 120, 180]  # seconds
 
 # Document chunking for large inputs.
@@ -328,6 +330,26 @@ def run_engine_call(
 
         except InterruptedError:
             raise  # Don't retry cancellations
+
+        except ModelRefusal as e:
+            # Study 2026-09-04: a refusal is not an empty response and must never be retried five
+            # times on the same model. Fall back once to the house model; if that is what refused, raise.
+            logger.warning(f"[{label}] {e}")
+            if _ev_job:
+                _events_hooks.call_failed(
+                    _ev_job, _ev_ctx, model=config["model"], system_prompt=system_prompt,
+                    user_message=user_message, error=f"refusal by {e.model_id}",
+                    attempt=attempt + 1, max_attempts=MAX_RETRIES, will_retry=config["model"] != FALLBACK_MODEL,
+                )
+            if config["model"] != FALLBACK_MODEL:
+                logger.warning(f"[{label}] falling back to {FALLBACK_MODEL} after refusal by {e.model_id}")
+                return run_engine_call(
+                    system_prompt, user_message, phase_number=phase_number, model_hint=FALLBACK_MODEL,
+                    depth=depth, requires_full_documents=requires_full_documents,
+                    cancellation_check=cancellation_check, label=f"{label} (fallback after refusal)",
+                    force_no_thinking=force_no_thinking,
+                )
+            raise
 
         except Exception as e:
             last_error = str(e)

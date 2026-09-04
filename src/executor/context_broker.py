@@ -105,10 +105,25 @@ def assemble_phase_context(
     return context
 
 
+LEDGER_HEADING = "## Findings ledger"
+MAX_PRIOR_PROSE_CHARS = 20_000
+
+
+def split_ledger(text: str) -> tuple[str, str]:
+    """(prose, ledger) — the ledger is everything from the `## Findings ledger` heading on; empty when absent."""
+    if not text:
+        return "", ""
+    idx = text.find(LEDGER_HEADING)
+    if idx < 0:
+        return text, ""
+    return text[:idx].rstrip(), text[idx:].strip()
+
+
 def assemble_inner_pass_context(
     prior_pass_outputs: dict[int, str],
     consumes_from: list[int],
     pass_stances: Optional[dict[int, str]] = None,
+    max_prose_chars: int = MAX_PRIOR_PROSE_CHARS,
 ) -> str:
     """Assemble context from prior inner passes within an engine.
 
@@ -127,27 +142,28 @@ def assemble_inner_pass_context(
     if not consumes_from:
         return ""
 
-    blocks = []
-    for pass_num in sorted(consumes_from):
-        if pass_num not in prior_pass_outputs:
-            continue
-
-        content = prior_pass_outputs[pass_num]
-        stance_label = ""
-        if pass_stances and pass_num in pass_stances:
-            stance_label = f" ({pass_stances[pass_num]})"
-
-        block = (
-            f"## Output from Pass {pass_num}{stance_label}\n\n"
-            f"{content}"
-        )
-        blocks.append(block)
-
-    if not blocks:
+    # Study 2026-09-04: prior passes used to arrive whole (research diaries, 20-30K chars each).
+    # Now every consumed pass contributes its findings ledger in full and its prose only up to a cap,
+    # with the most recent pass's prose first. The ledger is the contract; the prose is the receipt.
+    consumed = [n for n in sorted(consumes_from) if n in prior_pass_outputs]
+    if not consumed:
         return ""
-
+    blocks = []
+    latest = consumed[-1]
+    for pass_num in consumed:
+        stance_label = f" ({pass_stances[pass_num]})" if pass_stances and pass_num in pass_stances else ""
+        prose, ledger = split_ledger(prior_pass_outputs[pass_num])
+        parts = [f"## Pass {pass_num}{stance_label}"]
+        if ledger:
+            parts.append(ledger)
+        budget = max_prose_chars if pass_num == latest else max_prose_chars // 3
+        if prose:
+            excerpt = prose if len(prose) <= budget else prose[:budget] + "\n\n[… earlier pass prose truncated; its ledger above is complete …]"
+            parts.append(("### Reasoning (excerpt)\n\n" if ledger else "") + excerpt)
+        blocks.append("\n\n".join(parts))
     return (
         "## Shared Context from Prior Passes\n\n"
+        "Read the ledgers first; they are what the earlier passes established, anchored. The prose is their reasoning.\n\n"
         + "\n\n---\n\n".join(blocks)
     )
 

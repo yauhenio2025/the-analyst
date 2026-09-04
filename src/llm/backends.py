@@ -30,6 +30,14 @@ from typing import Any, Callable, Optional, Protocol, runtime_checkable
 logger = logging.getLogger(__name__)
 
 
+class ModelRefusal(RuntimeError):
+    """The model declined to answer (stop_reason == "refusal"). Not a transient error: never retried on the same model."""
+
+    def __init__(self, label: str, model_id: str):
+        super().__init__(f"[{label}] {model_id} refused (stop_reason=refusal)")
+        self.model_id = model_id
+
+
 @dataclass
 class LLMCallResult:
     """Normalized response from any LLM backend."""
@@ -274,8 +282,10 @@ class AnthropicBackend:
             elif hasattr(block, "text"):
                 raw_text += block.text
 
+        if getattr(response, "stop_reason", None) == "refusal":
+            raise ModelRefusal(label, self._model_id)
         if not raw_text.strip():
-            raise RuntimeError(f"[{label}] Empty response from {self._model_id}")
+            raise RuntimeError(f"[{label}] Empty response from {self._model_id} (stop_reason={getattr(response, 'stop_reason', None)})")
 
         logger.info(
             f"[{label}] Sync completed: {response.usage.input_tokens}+"
@@ -425,6 +435,7 @@ class AnthropicBackend:
 
                     # Stream completed — get final message
                     response = stream.get_final_message()
+                    final_stop_reason = getattr(response, "stop_reason", None)
 
                     final_text = ""
                     final_thinking = ""
@@ -482,8 +493,10 @@ class AnthropicBackend:
 
         duration_ms = int((time.time() - start_time) * 1000)
 
+        if locals().get("final_stop_reason") == "refusal":
+            raise ModelRefusal(label, self._model_id)
         if not raw_text.strip():
-            raise RuntimeError(f"[{label}] Empty response from {self._model_id}")
+            raise RuntimeError(f"[{label}] Empty response from {self._model_id} (stop_reason={locals().get('final_stop_reason')})")
 
         return LLMCallResult(
             content=raw_text.strip(),

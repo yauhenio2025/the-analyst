@@ -198,6 +198,13 @@ def _run(
     input_tokens, output_tokens, cache_read, cache_write = _usage_full(resp)
     stop_reason = getattr(resp, "stop_reason", "")
 
+    if stop_reason == "refusal":
+        events.emit(job_id, "call_refused", phase=step, model=model, label=label, input_tokens=input_tokens,
+                    detail=f"{label}: {model} refused (stop_reason=refusal); {'falling back to ' + DEFAULT_MODEL if model != DEFAULT_MODEL else 'no fallback'}")
+        from src.llm.backends import ModelRefusal
+
+        raise ModelRefusal(label, model)
+
     text_parts, tool_input = [], None
     for block in getattr(resp, "content", []) or []:
         btype = getattr(block, "type", "")
@@ -243,12 +250,39 @@ def _run(
     return result_obj, meta
 
 
+def _with_refusal_fallback(fn, model: Optional[str], **kw):
+    """Run fn(model=...); on a refusal by a non-house model, run once more on the house model."""
+    from src.llm.backends import ModelRefusal
+
+    chosen = model or DEFAULT_MODEL
+    try:
+        return fn(model=chosen, **kw)
+    except ModelRefusal:
+        if chosen == DEFAULT_MODEL:
+            raise
+        return fn(model=DEFAULT_MODEL, **kw)
+
+
+def _needs_text_json(model: str) -> bool:
+    """Models that reject forced tool_choice (Claude Fable 5.1) answer JSON as text instead."""
+    return "fable" in (model or "")
+
+
+def _json_via_text(job_id: str, step: str, *, label: str, system: str, user: str, tool_name: str, schema: dict,
+                   model: str, max_tokens: int, user_tail: str, images, cache: bool) -> tuple[Any, dict]:
+    sysm = (system + "\n\nAnswer with ONE JSON object only, no prose before or after, matching this JSON schema exactly:\n"
+            + json.dumps(schema, ensure_ascii=False)[:12000])
+    raw, meta = _run(job_id, step, label=label, system=sysm, user=user, model=model, max_tokens=max_tokens,
+                     effort=None, tool=None, user_tail=user_tail, images=images, cache=cache)
+    return parse_llm_json_response(raw), meta
+
+
 def call_text(
     job_id: str, step: str, *, label: str, system: str, user: str,
     model: Optional[str] = None, max_tokens: int = 16000, effort: Optional[str] = None,
 ) -> tuple[str, dict]:
-    return _run(job_id, step, label=label, system=system, user=user, model=model or DEFAULT_MODEL,
-                max_tokens=max_tokens, effort=effort, tool=None)
+    return _with_refusal_fallback(lambda model, **kw: _run(job_id, step, label=label, system=system, user=user, model=model,
+                max_tokens=max_tokens, effort=effort, tool=None), model)
 
 
 def _parse_embedded_json(text: str) -> Any:
@@ -314,10 +348,16 @@ def call_json(
     tool = {"name": tool_name, "description": tool_description, "input_schema": schema}
     tail = user_tail
     last_errors = ""
+    chosen_model = model or DEFAULT_MODEL
     for attempt in range(repair_attempts + 1):
-        raw, meta = _run(job_id, step, label=label if attempt == 0 else f"{label} (repair {attempt})",
-                         system=system, user=user, model=model or DEFAULT_MODEL,
-                         max_tokens=max_tokens, effort=None, tool=tool, user_tail=tail, images=images, cache=cache)
+        def _attempt(model, **_):
+            if _needs_text_json(model):
+                return _json_via_text(job_id, step, label=label if attempt == 0 else f"{label} (repair {attempt})", system=system, user=user,
+                                      tool_name=tool_name, schema=schema, model=model, max_tokens=max_tokens, user_tail=tail, images=images, cache=cache)
+            return _run(job_id, step, label=label if attempt == 0 else f"{label} (repair {attempt})",
+                        system=system, user=user, model=model,
+                        max_tokens=max_tokens, effort=None, tool=tool, user_tail=tail, images=images, cache=cache)
+        raw, meta = _with_refusal_fallback(_attempt, chosen_model)
         try:
             repaired = unstringify(raw, schema)
             if repaired != raw:

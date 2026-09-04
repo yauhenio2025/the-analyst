@@ -74,6 +74,8 @@ class PassPrompt(BaseModel):
     focus_dimensions: list[str] = Field(default_factory=list)
     consumes_from: list[int] = Field(default_factory=list)
     has_shared_context: bool = False
+    description: str = ""
+    is_final: bool = False
 
 
 def compose_capability_prompt(
@@ -136,6 +138,7 @@ def compose_pass_prompt(
     pass_def: PassDefinition,
     depth: str = "standard",
     shared_context: Optional[str] = None,
+    is_final: bool = False,
 ) -> PassPrompt:
     """Compose a per-pass prompt using analytical stances.
 
@@ -187,7 +190,7 @@ def compose_pass_prompt(
         sections.append(_compose_shared_context(shared_context))
 
     # ── 6. Pass-specific instructions ─────────────────────────
-    sections.append(_compose_pass_instructions(cap_def, pass_def, depth))
+    sections.append(_compose_pass_instructions(cap_def, pass_def, depth, is_final=is_final))
 
     prompt = "\n\n".join(sections)
 
@@ -203,6 +206,8 @@ def compose_pass_prompt(
         focus_dimensions=pass_def.focus_dimensions,
         consumes_from=pass_def.consumes_from,
         has_shared_context=shared_context is not None,
+        description=pass_def.description or "",
+        is_final=is_final,
     )
 
 
@@ -233,12 +238,13 @@ def compose_all_pass_prompts(
                 f"{len(pass_defs)} passes"
             )
             prompts = []
-            for pass_def in pass_defs:
+            for i, pass_def in enumerate(pass_defs):
                 prompt = compose_pass_prompt(
                     cap_def=cap_def,
                     pass_def=pass_def,
                     depth=depth,
                     shared_context=None,
+                    is_final=(i == len(pass_defs) - 1),
                 )
                 prompts.append(prompt)
             return prompts
@@ -258,12 +264,14 @@ def compose_all_pass_prompts(
         return []
 
     prompts = []
-    for pass_def in sorted(depth_level.passes, key=lambda p: p.pass_number):
+    ordered = sorted(depth_level.passes, key=lambda p: p.pass_number)
+    for i, pass_def in enumerate(ordered):
         prompt = compose_pass_prompt(
             cap_def=cap_def,
             pass_def=pass_def,
             depth=depth,
             shared_context=None,  # No context in preview mode
+            is_final=(i == len(ordered) - 1),
         )
         prompts.append(prompt)
 
@@ -324,10 +332,28 @@ def _compose_stance_section(name: str, stance_text: str, cognitive_mode: str) ->
     ])
 
 
+ANCHORING_LAW = (
+    "**Anchoring law**: every substantive claim about the text rests on a short verbatim quote "
+    "from it (at most 200 characters, copied exactly, in quotation marks). A claim you cannot "
+    "anchor is a hypothesis: mark it as one. Do not invent citations, dates, names or numbers "
+    "that are not in the text."
+)
+
+LEDGER_LAW = (
+    "**Findings ledger**: end your output with a section headed exactly `## Findings ledger` "
+    "listing 5 to 15 findings, one per line, in this form: "
+    "`- [F<n>] <the finding in one sentence> — anchor: \"<verbatim quote>\" — confidence: high|medium|low`. "
+    "Then a `### Counter-evidence` list (what in the text cuts against your findings, anchored) and an "
+    "`### Open questions` list (what the text cannot settle). The ledger is what later passes and desks "
+    "read first; the prose above it is the reasoning."
+)
+
+
 def _compose_pass_instructions(
     cap_def: CapabilityEngineDefinition,
     pass_def: PassDefinition,
     depth: str,
+    is_final: bool = False,
 ) -> str:
     """Compose pass-specific output instructions."""
     if getattr(cap_def, "output_mode", "prose") == "json":
@@ -353,16 +379,34 @@ def _compose_pass_instructions(
     lines = [
         f"## Pass {pass_def.pass_number}: {pass_def.label}",
         "",
-        pass_def.description.strip(),
-        "",
-        "Write thorough **analytical prose**. Your output will be read by "
-        "the next analytical pass, which will build directly on your "
-        "observations, reasoning, and tentative connections.",
+        (pass_def.description or "").strip(),
         "",
     ]
+    if is_final:
+        lines.extend([
+            "This is the engine's FINAL pass. Its output is the engine's product: it is read by the "
+            "dossier's desks (spine, tables, figures) and by an expert reader, not by another pass. "
+            "Write one coherent reading, not a hand-off: no sections addressed to downstream engines, "
+            "no summaries of what earlier passes did, no repetition of their material except where the "
+            "reading needs it. Say what is true of THIS text, in the order a reader needs it.",
+            "",
+        ])
+    else:
+        lines.extend([
+            "Write thorough **analytical prose**. Your output will be read by "
+            "the next analytical pass, which will build directly on your "
+            "observations, reasoning, and tentative connections.",
+            "",
+        ])
+    lines.extend([
+        ANCHORING_LAW,
+        "",
+        LEDGER_LAW,
+        "",
+    ])
 
-    # If this pass feeds downstream, note it
-    if cap_def.composability.shares_with:
+    # If this pass feeds downstream, note it (never on the final pass: it writes for the reader)
+    if cap_def.composability.shares_with and not is_final:
         # Only include shares relevant to this pass's dimensions
         relevant_shares = {
             k: v for k, v in cap_def.composability.shares_with.items()

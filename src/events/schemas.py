@@ -24,6 +24,7 @@ EVENT_KINDS: tuple[str, ...] = (
     "call_started",
     "call_finished",
     "call_failed",
+    "call_refused",
     "narration",
     "artifact",
     "note",

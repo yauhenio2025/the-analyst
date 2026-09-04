@@ -360,7 +360,7 @@ def _run_engine_passes(
             pass_number=pass_prompt.pass_number,
             label=pass_prompt.pass_label,
             stance=pass_prompt.stance_key,
-            description="",  # Will use the original prompt structure
+            description=getattr(pass_prompt, "description", "") or "",  # the operationalization's own words, once lost here (study 2026-09-04)
             focus_dimensions=pass_prompt.focus_dimensions,
             consumes_from=pass_prompt.consumes_from,
         )
@@ -370,6 +370,7 @@ def _run_engine_passes(
             pass_def=pass_def,
             depth=depth,
             shared_context=full_shared_context,
+            is_final=(pass_prompt.pass_number == max(pp.pass_number for pp in pass_prompts)),
         )
 
         system_prompt = recomposed.prompt
