@@ -115,6 +115,9 @@ def test_ledger_walls_verify_anchors_and_ids():
     # curly quotes with a page reference after the closing quote (DeepSeek, frontier run 22:22); a counter-anchor is not the anchor
     ds = parse_rows('* [D1.F1] X — dim: givens — anchor: “stops short of addressing structural forces” (p. 110) — depends: y — counter-anchor: "other" — confidence: high')
     assert ds[0].anchor == "stops short of addressing structural forces" and ds[0].confidence == "high"
+    # no bullet at all (DeepSeek on paper two, 23:14)
+    bare = parse_rows('[F22] The typology would remain valid — dim: rivals — anchor: “The forms presented in Table 1 are ideal types” — confidence: medium')
+    assert bare[0].id == "F22" and bare[0].anchor.startswith("The forms presented")
 
 
 def _fake_call_factory(log):

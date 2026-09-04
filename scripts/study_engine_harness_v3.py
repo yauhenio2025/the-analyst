@@ -268,11 +268,31 @@ def dry_run(specs, sources, judges, orders, b_models):
     print("Assumed output tokens per call:", OUT_TOKENS, "— real costs are recorded from usage; Fable priced $10/$50 per M.")
 
 
+def rescan(manifest, sources):
+    """Recompute every run's anchor rate with the current parser; drop runs whose critic output failed to parse
+    (a verify call with zero rows means every extraction row was carried forward unjudged) so they rerun."""
+    keep = []
+    for m in manifest:
+        m["anchor_rate"], m["ledger_rows"] = anchor_rate((OUT / m["file"]).read_text(), sources[m["paper"]])
+        rec = OUT / "receipts" / f"{m['key']}.json"
+        lost = False
+        if m["condition"] in ("c", "d") and rec.exists():
+            calls = json.loads(rec.read_text()).get("calls", [])
+            lost = any(c.get("kind") == "verify" and (c.get("wall") or {}).get("rows", 0) == 0 for c in calls)
+        if lost:
+            log(f"rescan: {m['key']} lost its critic (verify parsed 0 rows) — dropped, will rerun"); rec.rename(rec.with_suffix(".lost.json"))
+        else:
+            keep.append(m)
+    manifest[:] = keep; save_json(OUT / "manifest.json", manifest)
+    log(f"rescan: {len(keep)} runs kept; anchor rates recomputed")
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--preset", choices=list(PRESETS), default="lean"); ap.add_argument("--conditions"); ap.add_argument("--models"); ap.add_argument("--b-models", dest="b_models")
     ap.add_argument("--papers", default="aukus,subsea"); ap.add_argument("--engines", default="cop,aa"); ap.add_argument("--judges", default="sonnet,sol"); ap.add_argument("--orders", choices=["both", "split"])
     ap.add_argument("--skip", default="c:fable:subsea", help="comma-separated cond:model[:paper] triples to leave out (default skips the Fable-everywhere chain on paper two: ~$7.6 a run, one per engine is enough for the frontier)")
+    ap.add_argument("--rescan", action="store_true", help="recompute anchor rates with the current parser and drop runs whose critic output failed to parse, then continue")
     ap.add_argument("--dry-run", action="store_true"); ap.add_argument("--judge-only", action="store_true"); ap.add_argument("--no-judge", action="store_true"); ap.add_argument("--report", action="store_true"); ap.add_argument("--workers", type=int, default=4)
     a = ap.parse_args(); P = PRESETS[a.preset]
     conds = (a.conditions or P["conditions"]).split(","); models = (a.models or P["models"]).split(","); b_models = (a.b_models or P["b_models"]).split(","); orders = a.orders or P["orders"]
@@ -284,6 +304,7 @@ def main():
              if not (c == "b" and m not in b_models) and not (c == "d" and m not in STRONG_FOR_D) and not _skipped(c, m, p)]
     if a.dry_run: return dry_run(specs, sources, judges, orders, b_models)
     manifest = load_json(OUT / "manifest.json", [])
+    if a.rescan: rescan(manifest, sources)
     if not a.judge_only:
         log(f"generating {len(specs)} runs on {a.workers} workers")
         with ThreadPoolExecutor(max_workers=a.workers) as pool:

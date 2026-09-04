@@ -15,7 +15,8 @@ from src.dossier.walls import MAX_QUOTE_CHARS, MIN_TRIMMED_CHARS, MIN_TRIMMED_WO
 from src.executor.context_broker import split_ledger
 
 # a row: "- [ID] …" with the id optionally bolded ("- **[ID]**", "- [**ID**]") or the bullet numbered ("1. [ID]")
-_ROW_RE = re.compile(r"^\s*(?:[-*]|\d+[.)])\s*(?:\*\*)?\[\s*(?:\*\*)?([A-Za-z][A-Za-z0-9]*(?:\.[A-Za-z0-9]+)*)(?:\*\*)?\s*\](?:\*\*)?\s*(.*)$")
+# … and the bullet itself is optional: DeepSeek writes bare "[F22] …" lines (frontier run, 23:14)
+_ROW_RE = re.compile(r"^\s*(?:(?:[-*]|\d+[.)])\s*)?(?:\*\*)?\[\s*(?:\*\*)?([A-Za-z][A-Za-z0-9]*(?:\.[A-Za-z0-9]+)*)(?:\*\*)?\s*\](?:\*\*)?\s*(.*)$")
 # the anchor is the text between paired quotes after `anchor:` (straight, curly or single), whatever follows
 # the closing quote (a page reference, a separator, nothing): DeepSeek writes `anchor: “…” (p. 110) — depends: …`
 _ANCHOR_RE = re.compile(r"(?<![\w-])anchor\s*:\s*(?:\"([^\"\n]*)\"|“([^”\n]*)”|'([^'\n]*)'|‘([^’\n]*)’)", re.IGNORECASE)
