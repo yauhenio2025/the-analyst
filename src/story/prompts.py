@@ -3,7 +3,15 @@ from __future__ import annotations
 
 from .demands import demand_block
 from .doctrine import doctrine
-from .schemas import APPROACHES, ELEMENT_KINDS
+from .schemas import APPROACHES, ELEMENT_KINDS, PHOTOREAL_PRESETS, STYLE_PRESETS
+
+
+def look_block() -> str:
+    lines = ["THE LOOK (Wirecut's presets; choose one per option, never the default). The owner's standing preference: animated and",
+             "illustrated forms over photorealistic footage, unless the material is itself footage-shaped (an event with real faces the audience must see).",
+             "Photorealistic presets are " + ", ".join(PHOTOREAL_PRESETS) + "; prefer the others. Name the runner-up in alternatives."]
+    lines += [f"- {k}: {v[:220]}" for k, v in STYLE_PRESETS.items()]
+    return "\n".join(lines)
 
 TWELVE_LAWS = """The twelve laws the film will be held to (Wirecut's storytelling study):
 one question; need-to-know release; oscillate on the ladder of abstraction; every movement turns a value;
@@ -70,9 +78,12 @@ def brief_system() -> str:
 rendered. Write exactly THREE options for a film from these sources. Each option is deliverable-first: say what the
 viewer will understand, what the viewer will feel, and what the viewer will be able to do afterwards; then the length
 in seconds, the through-line key, the approach key, the sources used and the sources left out, an indicative cost
-and minutes, why this option, and its risks (what the material cannot support). Options must differ in through-line
-or approach, not in wording. Recommend one and say why in one sentence. No theory vocabulary; the reader is an
-executive who will watch the film."""
+and minutes, why this option, and its risks (what the material cannot support), and the LOOK: which of Wirecut's
+presets the film should be made in and why (look.preset_key, look.why, look.alternatives). Options must differ in
+through-line or approach, not in wording. Recommend one and say why in one sentence. No theory vocabulary; the reader
+is an executive who will watch the film.
+
+""" + look_block()
 
 
 def spine_system() -> str:
@@ -81,7 +92,10 @@ def spine_system() -> str:
     return f"""You are writing the spine of a many-source film: the plan before the script. The through-line is chosen.
 Sources are tributaries: assign every movement the sources it draws on, name the movement where each source enters
 the film, and cite the element ids each movement rests on (the ledger is the only material; nothing outside it).
-The motif must come from a recurring element; the hook must be a single element of intensity 5.
+The motif must come from a recurring element; the hook must be a single element of intensity 5. Carry the chosen
+option's look (look.preset_key, look.why) into the spine, adjusting only if the movements demand it, and say why.
+
+{look_block()}
 
 --- Spine doctrine (served by the registry) ---
 {sd}

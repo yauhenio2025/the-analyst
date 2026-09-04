@@ -14,7 +14,7 @@ from src.sources.schemas import Document
 
 from . import prompts
 from .doctrine import doctrine
-from .schemas import (APPROACHES, APPROACH_WINDOWS, ApproachRank, ApproachSlate, HandoffSource, StoryBrief, StoryElement, StoryHandoff,
+from .schemas import (APPROACHES, APPROACH_WINDOWS, STYLE_PRESETS, ApproachRank, Look, ApproachSlate, HandoffSource, StoryBrief, StoryElement, StoryHandoff,
                       StoryJob, StoryMap, StoryProfile, StorySpine, ThroughLine)
 
 logger = logging.getLogger(__name__)
@@ -185,6 +185,17 @@ def run_approaches(job: StoryJob) -> ApproachSlate:
     return slate
 
 
+def _valid_look(look, fallback_key: str = "editorial_illustration"):
+    """Shape only: an unknown preset key falls back to an illustrated one; judgment stays the model's."""
+    if look is None:
+        return Look(preset_key=fallback_key, why="no look chosen by the desk; illustrated fallback per the owner's preference")
+    if look.preset_key not in STYLE_PRESETS:
+        look.why = f"'{look.preset_key}' is not a Wirecut preset; {look.why}"
+        look.preset_key = fallback_key
+    look.alternatives = [a for a in look.alternatives if a in STYLE_PRESETS and a != look.preset_key][:3]
+    return look
+
+
 # ── 4. deliverable-first brief ───────────────────────────────────────────────
 def run_brief(job: StoryJob) -> StoryBrief:
     top = "\n".join(f"- {r.rank}. {r.key} (window {APPROACH_WINDOWS[r.key][0]}-{APPROACH_WINDOWS[r.key][1]} s): {r.why} (carried by {', '.join(r.carried_by)}; must cut: {r.must_cut})" for r in (job.approaches.ranked if job.approaches else [])[:6])
@@ -203,6 +214,7 @@ def run_brief(job: StoryJob) -> StoryBrief:
             o.approach_key = job.approaches.ranked[0].key
         o.sources_used = [d for d in o.sources_used if d in doc_keys]
         o.sources_left_out = [d for d in doc_keys if d not in o.sources_used]
+        o.look = _valid_look(o.look)
         lo, hi = APPROACH_WINDOWS.get(o.approach_key, (45, 600))
         if not lo <= o.length_seconds <= hi:
             clamped = min(max(o.length_seconds, lo), hi)
@@ -237,6 +249,7 @@ def run_spine(job: StoryJob) -> StorySpine:
         strongest = max((el for p in ledger for el in p.elements), key=lambda e: e.intensity, default=None)
         spine.hook.element_id = strongest.id if strongest else ""
     spine.through_line_key = tl.key
+    spine.look = _valid_look(spine.look or option.look)
     spine.approach_key = spine.approach_key or option.approach_key
     spine.length_seconds = spine.length_seconds or option.length_seconds
     lo, hi = APPROACH_WINDOWS.get(spine.approach_key, (45, 600))
@@ -269,7 +282,7 @@ def build_handoff(job: StoryJob, docs: list[Document]) -> StoryHandoff:
         if sha:
             doctrines[f"{key}/{name}"] = sha
     handoff = StoryHandoff(story_job_id=job.id, intent=job.options.intent or "", audience=job.options.audience, through_line=tl,
-                           approach=approach, spine=job.spine, ledger=ledger, sources=sources,
+                           approach=approach, spine=job.spine, look=job.spine.look or (option.look if option else None), ledger=ledger, sources=sources,
                            coverage={d.key: (d.key in tl.carried_by) for d in docs}, doctrines=doctrines,
                            totals=job.totals.model_dump())
     events.emit(job.id, "artifact", phase=STEP["handoff"], detail=f"handoff ready: {len(sources)} sources, {len(ledger)} anchored elements, {len(job.spine.movements)} movements",
