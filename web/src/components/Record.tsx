@@ -1,4 +1,4 @@
-/* The "on the record" strip — Kering's fact tiles: a serif number, a small
+/* The "on the record" strip — the house's fact tiles: a serif number, a small
    label beneath. Every number rendered here is a recorded fact. */
 export interface RecordTile { num: string; label: string; title?: string }
 

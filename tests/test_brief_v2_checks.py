@@ -21,7 +21,7 @@ FAKE = {
               "concept_evolution", "epistemological_method_detector")
 }
 DOC_KEYS = {"U3PWD6J3", "SG4IGV3Y", "WUPV36YG", "XDYU5FSQ", "CW9WK9KL"}
-ENTITIES = {"shein", "kering", "gucci", "de meo"}
+ENTITIES = {"shein", "house", "gucci", "the ceo"}
 
 
 def ctx(**kw) -> CheckContext:
@@ -320,18 +320,18 @@ def test_plan_honours_a_fixed_path_exactly():
 
 
 def test_bare_string_promises_are_coerced_not_rejected():
-    """The Kering sample's first answer gave promises as strings: a shape-only coercion saves the $0.10 re-ask;
+    """The the house sample's first answer gave promises as strings: a shape-only coercion saves the $0.10 re-ask;
     the refs check then sends the missing supported_by to the single repair round."""
-    o = option(understand=["Why de Meo's 'follow the creatives' line is the pitch's entry point [kering_study_md]"] * 3,
-               able=["decide the opening line [kering_study_md]", "avoid the two misfires [kering_study_md]"])
-    o["evidence_base"]["carrying_docs"] = ["kering_study_md"]
+    o = option(understand=["Why the CEO's 'follow the creatives' line is the pitch's entry point [house_study_md]"] * 3,
+               able=["decide the opening line [house_study_md]", "avoid the two misfires [house_study_md]"])
+    o["evidence_base"]["carrying_docs"] = ["house_study_md"]
     o["shape"]["sections"] = ["What the stack does", "The layer nobody builds", "The opening line"]
     o["path"]["steps"] = ["argument_architecture"]
     bo = BriefOption.model_validate(o)
-    assert bo.you_will_understand[0].supported_by == [] and bo.you_will_understand[0].text.startswith("Why de Meo")
-    assert bo.evidence_base.carrying_docs[0].doc_key == "kering_study_md"
+    assert bo.you_will_understand[0].supported_by == [] and bo.you_will_understand[0].text.startswith("Why the CEO")
+    assert bo.evidence_base.carrying_docs[0].doc_key == "house_study_md"
     assert bo.shape.sections[1].heading == "The layer nobody builds" and bo.path.steps[0].engine_key == "argument_architecture"
-    rep = check_brief(Brief(options=[bo]), ctx(doc_keys={"kering_study_md"}))
+    rep = check_brief(Brief(options=[bo]), ctx(doc_keys={"house_study_md"}))
     assert any("no supported_by" in i.message for i in rep.model_issues)
 
 

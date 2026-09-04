@@ -528,7 +528,7 @@ async def admin_put_job(job_id: str, request: Request, x_admin_token: str | None
     return {"job_id": job_id, "status": job.status}
 
 
-# ── Admin: scan and purge by term (2026-09-04, "cleanse the app of Kering / de Meo") ─────────────
+# ── Admin: scan and purge by term (2026-09-04: remove everything mentioning named third parties) ─────────────
 def _text_has(text: str, terms: list[str]) -> list[str]:
     low = (text or "").lower()
     return [t for t in terms if t.lower() in low]

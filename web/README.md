@@ -2,7 +2,7 @@
 
 The front end for The Analyst: documents in → a dossier (text, tables, figures) out, with every model call on the record. Four numbered steps (Your documents · The brief · The draft · Your dossier), a library, and an "under the hood" console per job.
 
-Vite + React 18 + TypeScript. No UI framework, no router library — `src/router.ts` treats the URL as truth. Styling is plain CSS on tokens (`src/tokens.css`), in the dark editorial register of the Kering "Backstage" prototype.
+Vite + React 18 + TypeScript. No UI framework, no router library — `src/router.ts` treats the URL as truth. Styling is plain CSS on tokens (`src/tokens.css`), in the dark editorial register of the the house "Backstage" prototype.
 
 ## Run
 

@@ -10,7 +10,6 @@ SRC = os.path.expanduser(os.environ.get("EXEMPLARS_SRC", "data/exemplars"))
 ITEMS = [
     ("fashion_bundle.txt", "Fashion under sustainability and platform pressure — 5 papers",
      "Dholakia & Ziliberberg 2024; Kuang et al. 2024; Özdil & Konuralp 2025; Nassar et al. 2021; Hewitt et al. 2024 (stacks export)"),
-    ("kering_study.md", "Kering on the public record (study, 2026-07-19)", "Owner's verified study of Kering/de Meo statements"),
 ]
 for name, title, desc in ITEMS:
     path = os.path.join(SRC, name)

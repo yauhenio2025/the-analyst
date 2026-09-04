@@ -1,5 +1,5 @@
 /* Mock fixtures for the concretization passes (spine → cross-check), spliced into
-   the Kering replay by ./mock.ts: two more stage-B phases on the rail, the spine
+   the the house replay by ./mock.ts: two more stage-B phases on the rail, the spine
    the desk planned against, and the findings ledger with fates. */
 import type { CrossCheckVerdict, DossierSpine, Finding, RunEvent } from '../types'
 
@@ -9,7 +9,7 @@ export type ScriptEvent = Partial<RunEvent> & { stage: 'A' | 'B'; at_ms: number;
 export const SPINE: DossierSpine = {
   round: 1,
   read: {
-    plain_summary: 'Kering has said its AI programme has three fields — client, product, money. Read against the five levels a move can be read on, the three sit at or below the product; the fourth field, the house codes, is the one nobody has named. The dossier says: pitch above the stack, on the fourth field, before Wednesday.',
+    plain_summary: 'the house has said its AI programme has three fields — client, product, money. Read against the five levels a move can be read on, the three sit at or below the product; the fourth field, the house codes, is the one nobody has named. The dossier says: pitch above the stack, on the fourth field, before Wednesday.',
     buried_crux: 'The commitments phase carries the decision the reader needs but never states it: accepting the three-field sentence commits the CEO to a stack he does not own. It hides in phase 2, pass 3.',
     readers: [{ type: 'the CEO\'s chief of staff', mode: 'reads the summary and one table', wants: 'the sentence to say on Wednesday and what it commits us to' }],
     strands: [{ name: 'the three-field sentence', carried_by: ['4.1', 'table t1'], accidental: false, note: 'returns in every section' }],
@@ -20,17 +20,17 @@ export const SPINE: DossierSpine = {
     cumulative_direction: 'toward the fourth field; the counter-evidence (the programme is real and funded) needs its own bounded paragraph in section 2',
     form_capacity: 'five sections and two tables; not more',
   },
-  thesis: 'Kering\'s AI programme is real but sits below the house codes, and the fourth field is where a house is won or lost.',
+  thesis: 'the house\'s AI programme is real but sits below the house codes, and the fourth field is where a house is won or lost.',
   reader_question: 'What do I say on Wednesday, and what does it commit us to?',
   handle: 'Pitch above the stack.',
   through_line: 'the three-field sentence from the Capital Markets Day',
   summary_job: 'the finding and what it commits the house to',
   conclusion_job: 'the one sentence for Wednesday and the question to ask after it',
   sections: [
-    { key: 'where_the_house_stands', heading: 'Where the house stands', claim: 'Kering enters the meeting at the low point of its cycle with a new external CEO who names his turnarounds.', reader_needs_next: 'what the CEO has already said about AI', evidence_kind: 'chronology', table: { intent: 'the situation on the record', row_unit: 'one row = one dated fact', columns: ['Fact', 'Date', 'Source'], carries_claims: ['low point', 'external CEO'] }, figure: null, anchors_planned: [{ doc_key: 'kering', quote: 'over-distribution and low cultural relevance' }], feeds: ['three_fields'] },
-    { key: 'three_fields', heading: 'Three fields, and the missing fourth', claim: 'The three fields the CEO named all sit at or below the product level, leaving the house codes unaddressed.', reader_needs_next: 'why the fourth field is where a house is won', evidence_kind: 'mechanism', table: null, figure: { primitive: 'layering', visual_format: 'conceptual_layers', picture_shows: 'five levels stacked, the three fields shaded at the bottom two, the fourth field empty', caption_says: 'The programme is real; it lives below the codes.', why_a_picture: 'the reader must see the gap in the stack' }, anchors_planned: [{ doc_key: 'kering', quote: 'follow the client, follow the product, follow the money' }], feeds: ['the_reset'] },
+    { key: 'where_the_house_stands', heading: 'Where the house stands', claim: 'the house enters the meeting at the low point of its cycle with a new external CEO who names his turnarounds.', reader_needs_next: 'what the CEO has already said about AI', evidence_kind: 'chronology', table: { intent: 'the situation on the record', row_unit: 'one row = one dated fact', columns: ['Fact', 'Date', 'Source'], carries_claims: ['low point', 'external CEO'] }, figure: null, anchors_planned: [{ doc_key: 'house', quote: 'over-distribution and low cultural relevance' }], feeds: ['three_fields'] },
+    { key: 'three_fields', heading: 'Three fields, and the missing fourth', claim: 'The three fields the CEO named all sit at or below the product level, leaving the house codes unaddressed.', reader_needs_next: 'why the fourth field is where a house is won', evidence_kind: 'mechanism', table: null, figure: { primitive: 'layering', visual_format: 'conceptual_layers', picture_shows: 'five levels stacked, the three fields shaded at the bottom two, the fourth field empty', caption_says: 'The programme is real; it lives below the codes.', why_a_picture: 'the reader must see the gap in the stack' }, anchors_planned: [{ doc_key: 'house', quote: 'follow the client, follow the product, follow the money' }], feeds: ['the_reset'] },
     { key: 'the_reset', heading: 'One reset, read against five levels', claim: 'The store-network reset from 600 to 450 is a product-level move dressed as a house-level one.', reader_needs_next: 'where the framing could misfire', evidence_kind: 'case_comparison', table: { intent: 'the reset scored on each level', row_unit: 'one row = one level', columns: ['Level', 'What the reset does', 'What it leaves'], carries_claims: ['product-level move'] }, figure: { primitive: 'comparative_positioning', visual_format: 'quadrant_chart', picture_shows: 'the reset placed against scope and depth', caption_says: 'A deep cut at a shallow level.', why_a_picture: 'a position is seen, not read' }, anchors_planned: [{ doc_key: 'paper', quote: 'a reading, not a verdict' }], feeds: ['misfire'] },
-    { key: 'misfire', heading: 'Where the framing could misfire', claim: 'Saying "use AI" to a marketing-native CEO in pre-results mode reads as a vendor pitch.', reader_needs_next: 'the sentence to say instead', evidence_kind: 'implication', table: null, figure: null, anchors_planned: [{ doc_key: 'kering', quote: 'ReconKering' }], feeds: ['wednesday'] },
+    { key: 'misfire', heading: 'Where the framing could misfire', claim: 'Saying "use AI" to a marketing-native CEO in pre-results mode reads as a vendor pitch.', reader_needs_next: 'the sentence to say instead', evidence_kind: 'implication', table: null, figure: null, anchors_planned: [{ doc_key: 'house', quote: 'Reconthe house' }], feeds: ['wednesday'] },
     { key: 'wednesday', heading: 'The sentence for Wednesday', claim: 'The pitch that lands is the fourth field named in the CEO\'s own vocabulary, with one house code as the proof.', reader_needs_next: 'nothing — this is the decision', evidence_kind: 'implication', table: null, figure: null, anchors_planned: [{ doc_key: 'paper', quote: 'house codes' }], feeds: [] },
   ],
   exhibits_budget: { tables: 3, figures: 2 },
@@ -56,8 +56,8 @@ export const EXTRA_EVENTS: ScriptEvent[] = [
   { stage: 'B', at_ms: 22460, kind: 'call_started', phase: 'spine', model: 'claude-sonnet-4-6', detail: 'composition read + spine: ~38,000 input tokens (std context)', input_tokens: 38000,
     prompt_excerpt: 'ANGLE (the chosen deliverable): The fourth field\nAUDIENCE: executive …\nEXHIBITS BUDGET (ceiling): 3 tables, 2 diagrams.' },
   { stage: 'B', at_ms: 22540, kind: 'call_finished', phase: 'spine', model: 'claude-sonnet-4-6', input_tokens: 38210, output_tokens: 2840, cost_usd: 0.157, duration_ms: 58000,
-    detail: 'composition read + spine: 38,210 in / 2,840 out, $0.157, 58s', output_excerpt: '{"read": {"plain_summary": "Kering has said its AI programme has three fields …' },
-  { stage: 'B', at_ms: 22560, kind: 'artifact', phase: 'spine', detail: 'spine: Kering\'s AI programme is real but sits below the house codes, and the fourth field is where a house is won or lost.',
+    detail: 'composition read + spine: 38,210 in / 2,840 out, $0.157, 58s', output_excerpt: '{"read": {"plain_summary": "the house has said its AI programme has three fields …' },
+  { stage: 'B', at_ms: 22560, kind: 'artifact', phase: 'spine', detail: 'spine: the house\'s AI programme is real but sits below the house codes, and the fourth field is where a house is won or lost.',
     payload_json: '{"kind":"spine","sections":5,"tables":2,"figures":1}' },
   { stage: 'B', at_ms: 22580, kind: 'phase_finished', phase: 'spine', duration_ms: 160000, detail: 'spine done in 160s — 5 sections, 2 tables + 1 diagram commissioned' },
   { stage: 'B', at_ms: 45420, kind: 'phase_started', phase: 'crosscheck', detail: 'Reading the dossier as one thing — do the pictures show what the text argues, do the rows match the claims, is anything asserted that nothing backs.',

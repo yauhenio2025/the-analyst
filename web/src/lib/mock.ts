@@ -1,4 +1,4 @@
-/* Mock mode — replays one realistic dossier job (the Kering study) from
+/* Mock mode — replays one realistic dossier job (the the house study) from
    fixtures in web/mock/. Stage A (reading + brief) runs on creation; stage B
    (plan → analysis → tables → figures → compose) runs after the brief is
    chosen. Time is real: a fresh job takes ~8 s to reach the brief and ~46 s
@@ -31,7 +31,7 @@ import plate1Url from '../../mock/plates/plate-1.svg'
    "make plates" request on any delivered job replays a run: planned for ~4 s, then generated. */
 const PLATE_1: DossierPlate = {
   key: 'scorecard_of_shifts', family: 'scorecard', visual_format: 'structured_diagram',
-  perspective: 'Scorecard of the reset', title: 'The Kering Study and the Fourth Field: A Scorecard of Shifts',
+  perspective: 'Scorecard of the reset', title: 'The the house Study and the Fourth Field: A Scorecard of Shifts',
   narrative: 'Read the four panels as a ledger. The green panels list what the reset gained: heritage as an asset, creative direction as governance, a smaller retail estate, and a fourth field of cultural production. The red panels list what it cost and what it left unresolved. The cross marks the losses the reset absorbed on purpose; the arrow shows the tensions that survived into the fourth field.',
   why_this_perspective: 'The material keeps scoring the reset as gains against losses; a scorecard shows both columns at once.',
   claimed_territory: 'gains and losses of the reset, and the tensions that persist', excludes: ['the chronology of the reset', 'the field-by-field framework'],
@@ -45,7 +45,7 @@ const PLATE_1: DossierPlate = {
   created_at: new Date().toISOString(),
 }
 const plateRuns = new Map<string, { started: number; n: number; perspectives: string[] }>()
-const platesOf = new Map<string, DossierPlate[]>([['dj-kering-fourth-field', [PLATE_1]]])
+const platesOf = new Map<string, DossierPlate[]>([['dj-house-fourth-field', [PLATE_1]]])
 
 const SCRIPT = ([...(eventsJson as ScriptEvent[]), ...EXTRA_EVENTS])
   .map((e) => e.kind === 'job_finished'
@@ -294,7 +294,7 @@ export const mockApi: Api = {
   getJob: (id) => delay(snapshot(runOf(id))),
   getBrief: (id) => delay(snapshot(runOf(id)).brief ?? { options: [] }),
   catalog: (audience, corpusChars) => {
-    // the fixture is priced for the Kering study (61,420 chars); rescale the per-depth estimates to the corpus asked for
+    // the fixture is priced for the the house study (61,420 chars); rescale the per-depth estimates to the corpus asked for
     const k = corpusChars && CATALOG.corpus_chars ? corpusChars / CATALOG.corpus_chars : 1
     const scale = (v?: number) => (v === undefined ? undefined : Math.round(v * (0.25 + 0.75 * k) * 1000) / 1000)
     return delay({
@@ -323,8 +323,8 @@ export const mockApi: Api = {
   getDossierHtml: (id) => {
     const job = snapshot(runOf(id))
     return delay(dossierHtmlRaw.replace('__FIG1__', fig1Url).replace('__FIG2__', fig2Url)
-      .replace('Kering study + the fourth field — dossier', `${job.title} — dossier`)
-      .replace('<h1>Kering study + the fourth field</h1>', `<h1>${job.title}</h1>`))
+      .replace('the house study + the fourth field — dossier', `${job.title} — dossier`)
+      .replace('<h1>the house study + the fourth field</h1>', `<h1>${job.title}</h1>`))
   },
   downloadUrl: (job, kind) => {
     if (kind === 'md') return `data:text/markdown;charset=utf-8,${encodeURIComponent(md(job))}`

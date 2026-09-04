@@ -6,7 +6,7 @@ data/ is touched, and writes the brief + the checks' notes + the call cost to
 communications/changes/brief-v2-samples/<name>.json.
 
     set -a; source .env; set +a
-    python scripts/brief_v2_sample.py [fashion|kering|state_capitalism ...] [--data-dir DIR] [--entry use|material|chosen]
+    python scripts/brief_v2_sample.py [fashion|house|state_capitalism ...] [--data-dir DIR] [--entry use|material|chosen]
 """
 from __future__ import annotations
 
@@ -22,7 +22,7 @@ sys.path.insert(0, str(ROOT))
 
 SAMPLES = {
     "fashion": "live-dossier-be00c33e5180",
-    "kering": "live-dossier-5cdf8f1a470f",
+    "house": "live-dossier-5cdf8f1a470f",
     "state_capitalism": "live-dossier-dce25aeed631",
 }
 

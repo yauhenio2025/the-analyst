@@ -286,7 +286,7 @@ def is_concrete(text: str, doc_keys: set[str], entities: set[str]) -> bool:
         return True
     if re.search(r"[“\"][^”\"]{4,}[”\"]", text):
         return True
-    # a single-quoted verbatim phrase ('national security'); apostrophes (de Meo's) do not open a quote
+    # a single-quoted verbatim phrase ('national security'); apostrophes (the CEO's) do not open a quote
     if re.search(r"(?:^|[\s(\[—–-])'[^']{4,}'(?=$|[\s.,;:)\]—–-])", text):
         return True
     low = text.lower()

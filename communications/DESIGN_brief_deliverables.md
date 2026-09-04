@@ -6,7 +6,7 @@
 
 **The owner's words (2026-09-03):** "For the initial options that you present on how to structure the brief — look at the front end of the visualizer: there we assume the competent user who knows what kind of analysis they want. For some cases that would be the case. Sometimes the nature of the material will suggest what engines to use. Sometimes we want to use multiple ones. But when you present options and different ways to do it, make it really clear what are the possible uses of it, so the user figures out: 'I'm going to use this report to understand this and this' — and based on that they understand which option to choose. You have to understand what each path will allow them to understand and to do. Focus on the deliverables and what it will change in their action, more than anything else."
 
-Sources read for this design: `src/dossier/brief.py`, `schemas.py`, `plan.py`, `common.py`, `runner.py`, `tables.py`/`figures.py`/`compose.py` (how the chosen option flows downstream), `src/api/routes/dossier.py`, `web/src/steps/BriefStep.tsx`, `pages/Library.tsx`, `lib/api.ts`, `types.ts`, `web/mock/brief.json`; the real briefs of `live-dossier-dce25aeed631` (state-capitalism bundle, no intent), `live-dossier-be00c33e5180` (fashion bundle) and `live-dossier-10656694ada2` (Kering study); the visualizer front end and MCP (`/home/evgeny/projects/_study/visualizer-master`: `app.py` picker markup, `mcp_server/mcp_server.py` tool docstrings, `docs/IMPLEMENTATION_PLAN_INTENT_BASED_ANALYSIS.md`, `docs/TEXTUAL_OUTPUT_TYPES.md`); the 28 capability YAMLs in `src/engines/capability_definitions/`; `src/audiences/definitions/*.json`; the OAAS vision notes (§D, §H); veo2's telling cards (`web/src/steps/LookStep.tsx`, `web/src/i18n.tsx`, `engine/telling.py`).
+Sources read for this design: `src/dossier/brief.py`, `schemas.py`, `plan.py`, `common.py`, `runner.py`, `tables.py`/`figures.py`/`compose.py` (how the chosen option flows downstream), `src/api/routes/dossier.py`, `web/src/steps/BriefStep.tsx`, `pages/Library.tsx`, `lib/api.ts`, `types.ts`, `web/mock/brief.json`; the real briefs of `live-dossier-dce25aeed631` (state-capitalism bundle, no intent), `live-dossier-be00c33e5180` (fashion bundle) and `live-dossier-10656694ada2` (the house study); the visualizer front end and MCP (`/home/evgeny/projects/_study/visualizer-master`: `app.py` picker markup, `mcp_server/mcp_server.py` tool docstrings, `docs/IMPLEMENTATION_PLAN_INTENT_BASED_ANALYSIS.md`, `docs/TEXTUAL_OUTPUT_TYPES.md`); the 28 capability YAMLs in `src/engines/capability_definitions/`; `src/audiences/definitions/*.json`; the OAAS vision notes (§D, §H); veo2's telling cards (`web/src/steps/LookStep.tsx`, `web/src/i18n.tsx`, `engine/telling.py`).
 
 ---
 
@@ -22,7 +22,7 @@ Consequence: the three options always differ by **topic**, never by **use**. Liv
 |---|---|---|---|
 | state-capitalism (`dce25aeed631`, intent = none) | "Who Actually Benefits When States Back Tech and Defence" | "When Countries Can Say No to Great Powers—and When They Cannot" | "Investment Screening Is the New Tariff—What Luxury Must Know" |
 | fashion (`be00c33e5180`) | "Where Your Sustainability Claims Will Break Under Scrutiny" | "How Platform Fast Fashion Undermines Your Ethical Supply Story" | "The Civic Commitment Trap: When Values Campaigns Turn Against You" |
-| Kering (`10656694ada2`) | "The One Gap in Kering's AI Stack" | "Four Handovers, Zero Continuity Instrument" | "Gucci's China Problem Is Not a Product Problem" |
+| the house (`10656694ada2`) | "The One Gap in the house's AI Stack" | "Four Handovers, Zero Continuity Instrument" | "Gucci's China Problem Is Not a Product Problem" |
 
 A reader who needs to *brief a board*, *prepare a negotiation*, or *decide whether to sign a partnership* gets no purchase on this split. The options are three essays, not three instruments.
 
@@ -30,7 +30,7 @@ A reader who needs to *brief a board*, *prepare a negotiation*, or *decide wheth
 
 - **Absent / rhetorical.** State-capitalism option 1 ends: *"asks executives of a luxury house: when governments come to you with 'strategic partnership' language, what are they actually asking you to absorb on behalf of others?"* — a question is not an action. Option 3 ends: *"tells executives where the next boundary moves are likely to land"* — five academic papers (2020–2024) periodise; they do not forecast. That promise cannot be kept and the composed dossier did not keep it.
 - **Unsupported by the corpus.** Fashion option 1 promises: *"Together the documents let executives see, claim by claim, which of their current positions are coherent and which are one investigative article away from collapse."* The corpus contains no house positions at all. The delivered "Claim-by-Claim Stress Test" table has **4 rows of claim *types*** (`Claim type | What legitimacy requires | Illegitimacy trigger | Opportunism trigger | Survival condition`), not claims. Option 2 likewise promises *"a concrete gap analysis: what the house's current supplier code and ESG reporting actually cover"* — no supplier code is in the documents. Nothing in the option says so. There is no `not_for`.
-- **Closest to right.** The Kering option 1 comes nearest to a deliverable: *"so an executive walking into Wednesday's meeting knows the precise half-sentence that opens the pitch and the two things not to say."* This is the register the whole card should be in — and it is buried at the end of a 150-word paragraph.
+- **Closest to right.** The the house option 1 comes nearest to a deliverable: *"so an executive walking into Wednesday's meeting knows the precise half-sentence that opens the pitch and the two things not to say."* This is the register the whole card should be in — and it is buried at the end of a 150-word paragraph.
 
 ### A3. The "understand / do" content exists — but hidden in `output_shape.sections`
 
@@ -532,7 +532,7 @@ Files, in order: `src/dossier/brief.py` → `src/dossier/schemas.py` → `src/do
 
 ### E2. Test briefs — expected option texts (abridged cards; the shape lines are the verification targets)
 
-Prices are illustrative from `estimate_engine_run` on the real corpus sizes (fashion 349K chars; Kering ≈ 60K; state-capitalism 270K); the point is that they differ.
+Prices are illustrative from `estimate_engine_run` on the real corpus sizes (fashion 349K chars; the house ≈ 60K; state-capitalism 270K); the point is that they differ.
 
 #### E2.1 Fashion bundle (5 papers; intent "How do fashion brands legitimate themselves under sustainability and platform pressure, and where will a house's claims be challenged?"; executive)
 
@@ -559,14 +559,14 @@ Able to: onboard a team in an hour (§1–§5); choose which paper to send to wh
 Not for: no recommendation about the house; no ranking of risks.
 Shape: 5 sections; T1 one row per paper (5) · T2 one row per term (8); no figure. How: reading guide · surface · 1 pass. ≈ $1.10 · ~10 min. Best when you are new to the topic or building a team.
 
-#### E2.2 Kering study (1 document; intent "Read Kering's public record for where its meaning system is under strain and what a strategy decision should watch"; executive; simple)
+#### E2.2 the house study (1 document; intent "Read the house's public record for where its meaning system is under strain and what a strategy decision should watch"; executive; simple)
 
 **A · prepare · "The half-sentence that opens the pitch"** — recommended.
-Deliverable: *A pre-meeting card: where de Meo's AI programme stops, the opening line in his own words, and the two things not to say.*
-Understand: (1) what the stack already covers — Chief AI Officer, Google partnership, Gucci as "first laboratory" — and the layer it lacks; (2) which of de Meo's quotes point at that layer ("help the creative people get better, faster, stronger"); (3) why product, CRM and finance tooling cannot close it.
-Able to: open with de Meo's words (§3); avoid the two misfires — platform logic against luxury singularity, front-facing AI after the Valentino ridicule (T2); position the offer above the stack, not beside it (§5).
+Deliverable: *A pre-meeting card: where the CEO's AI programme stops, the opening line in his own words, and the two things not to say.*
+Understand: (1) what the stack already covers — Chief AI Officer, Google partnership, Gucci as "first laboratory" — and the layer it lacks; (2) which of the CEO's quotes point at that layer ("help the creative people get better, faster, stronger"); (3) why product, CRM and finance tooling cannot close it.
+Able to: open with the CEO's words (§3); avoid the two misfires — platform logic against luxury singularity, front-facing AI after the Valentino ridicule (T2); position the offer above the stack, not beside it (§5).
 Not for: single-source memo — its facts are its own; no financial modelling; no view on competitors beyond the LVMH "quiet tech" line.
-Shape: 5 sections; T1 one row per stack layer (5–6) · T2 one row per de Meo quote (6); F1 stack. How: load-bearing ideas · surface · 1 pass. ≈ $0.45 · ~6 min. Best when the meeting is this week.
+Shape: 5 sections; T1 one row per stack layer (5–6) · T2 one row per the CEO quote (6); F1 stack. How: load-bearing ideas · surface · 1 pass. ≈ $0.45 · ~6 min. Best when the meeting is this week.
 
 **B · argue · "Four handovers, no bridge"**
 Deliverable: *A risk register of four creative-director handovers in 18 months, in operational-risk language, for a board conversation.*
