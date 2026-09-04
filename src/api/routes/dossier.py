@@ -526,3 +526,129 @@ async def admin_put_job(job_id: str, request: Request, x_admin_token: str | None
         fields = {k: v for k, v in job.model_dump().items() if k not in ("id", "created_at")}
         _store.update_job(job_id, **fields)
     return {"job_id": job_id, "status": job.status}
+
+
+# ── Admin: scan and purge by term (2026-09-04, "cleanse the app of Kering / de Meo") ─────────────
+def _text_has(text: str, terms: list[str]) -> list[str]:
+    low = (text or "").lower()
+    return [t for t in terms if t.lower() in low]
+
+
+@router.get("/admin/scan")
+def admin_scan(terms: str, x_admin_token: str | None = Header(default=None)):
+    """Everything in the app that mentions any of the comma-separated terms: dossier jobs (record + plates), story jobs, exemplars, stored documents."""
+    import json as _json
+
+    _admin_guard(x_admin_token)
+    from src.dossier import plate_store
+    from src.dossier.store import list_jobs as _list
+    from src.executor.document_store import get_document_text, list_documents
+    from src.sources.exemplar_store import get_db_exemplar, list_db_exemplars
+    from src.story.store import get_job as get_story, list_jobs as list_story
+
+    words = [t.strip() for t in terms.split(",") if t.strip()]
+    out: dict = {"terms": words, "dossier_jobs": [], "story_jobs": [], "exemplars": [], "documents": []}
+    for summary in _list(limit=500):
+        job = get_job(summary.id)
+        if job is None:
+            continue
+        blob = _json.dumps(job.model_dump(), ensure_ascii=False, default=str)
+        hits = _text_has(blob, words)
+        plates = plate_store.list_plates(summary.id)
+        phits = _text_has(_json.dumps([p.model_dump() for p in plates], ensure_ascii=False, default=str), words)
+        doc_titles = [d.get("title", "") for d in job.documents]
+        if hits or phits:
+            out["dossier_jobs"].append({"id": summary.id, "status": job.status, "hits": sorted(set(hits + phits)), "count": sum(blob.lower().count(w.lower()) for w in words),
+                                       "documents": doc_titles, "plates": [p.key for p in plates], "analysis_job_id": job.analysis_job_id})
+    for s in list_story(limit=500):
+        job = get_story(s.id)
+        if job is None:
+            continue
+        blob = _json.dumps(job.model_dump(), ensure_ascii=False, default=str)
+        hits = _text_has(blob, words)
+        if hits:
+            out["story_jobs"].append({"id": s.id, "status": job.status, "hits": hits, "count": sum(blob.lower().count(w.lower()) for w in words)})
+    for ex in list_db_exemplars():
+        text = get_db_exemplar(ex.get("name", "")) or ""
+        hits = _text_has(text + " " + _json.dumps(ex, default=str), words)
+        if hits:
+            out["exemplars"].append({"name": ex.get("name"), "hits": hits, "count": sum(text.lower().count(w.lower()) for w in words)})
+    for d in list_documents():
+        text = get_document_text(d.get("id") or d.get("doc_id") or "") or ""
+        hits = _text_has(text + " " + str(d.get("title", "")), words)
+        if hits:
+            out["documents"].append({"id": d.get("id") or d.get("doc_id"), "title": d.get("title"), "role": d.get("role"), "hits": hits, "count": sum(text.lower().count(w.lower()) for w in words)})
+    return out
+
+
+def _purge_dossier_job(job_id: str) -> dict:
+    from src.dossier import blob_store, plate_store
+    from src.executor.db import execute
+    from src.executor.document_store import delete_document
+
+    job = get_job(job_id)
+    if job is None:
+        return {"id": job_id, "deleted": False}
+    removed: dict = {"id": job_id, "plates": plate_store.delete_plates(job_id), "documents": 0, "executor_job": False, "blobs": 0, "events": 0}
+    for d in job.documents:
+        if d.get("executor_doc_id"):
+            try:
+                removed["documents"] += int(bool(delete_document(d["executor_doc_id"])))
+            except Exception:  # noqa: BLE001
+                pass
+    if job.analysis_job_id:
+        try:
+            from src.executor.job_manager import delete_job as delete_exec_job
+            removed["executor_job"] = bool(delete_exec_job(job.analysis_job_id))
+        except Exception:  # noqa: BLE001
+            removed["executor_job"] = False
+    for prefix in (f"dossier:{job_id}:", f"plate:{job_id}:", f"figure:{job_id}-", f"figure-meta:{job_id}-"):
+        for row in blob_store.list_keys(prefix):
+            blob_store.delete_blob(row["blob_key"])
+            removed["blobs"] += 1
+    try:
+        n = execute("SELECT COUNT(*) AS n FROM run_events WHERE job_id = %s", (job_id,), fetch="one") or {}
+        execute("DELETE FROM run_events WHERE job_id = %s", (job_id,))
+        removed["events"] = int(n.get("n") or 0)
+    except Exception:  # noqa: BLE001
+        pass
+    execute("DELETE FROM dossier_jobs WHERE id = %s", (job_id,))
+    removed["deleted"] = True
+    return removed
+
+
+@router.delete("/admin/jobs/{job_id}")
+def admin_purge_job(job_id: str, x_admin_token: str | None = Header(default=None)):
+    """Delete a dossier job and everything it owns: plates, blobs, events, the executor sub-run, its stored source documents."""
+    _admin_guard(x_admin_token)
+    return _purge_dossier_job(job_id)
+
+
+@router.delete("/admin/story-jobs/{job_id}")
+def admin_purge_story_job(job_id: str, x_admin_token: str | None = Header(default=None)):
+    _admin_guard(x_admin_token)
+    from src.executor.db import execute
+    from src.executor.document_store import delete_document
+    from src.story.store import get_job as get_story
+
+    job = get_story(job_id)
+    if job is None:
+        raise HTTPException(status_code=404, detail="story job not found")
+    docs = 0
+    for d in job.documents:
+        if d.get("executor_doc_id"):
+            try:
+                docs += int(bool(delete_document(d["executor_doc_id"])))
+            except Exception:  # noqa: BLE001
+                pass
+    execute("DELETE FROM run_events WHERE job_id = %s", (job_id,))
+    execute("DELETE FROM story_jobs WHERE id = %s", (job_id,))
+    return {"id": job_id, "deleted": True, "documents": docs}
+
+
+@router.delete("/admin/documents/{doc_id}")
+def admin_purge_document(doc_id: str, x_admin_token: str | None = Header(default=None)):
+    _admin_guard(x_admin_token)
+    from src.executor.document_store import delete_document
+
+    return {"id": doc_id, "deleted": bool(delete_document(doc_id))}
