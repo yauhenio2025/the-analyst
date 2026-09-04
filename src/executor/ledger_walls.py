@@ -14,7 +14,8 @@ from typing import Iterable, Optional
 from src.dossier.walls import MAX_QUOTE_CHARS, MIN_TRIMMED_CHARS, MIN_TRIMMED_WORDS, normalize
 from src.executor.context_broker import split_ledger
 
-_ROW_RE = re.compile(r"^\s*[-*]\s*\[([A-Za-z][A-Za-z0-9]*(?:\.[A-Za-z0-9]+)*)\]\s*(.*)$")
+# a row: "- [ID] …" with the id optionally bolded ("- **[ID]**", "- [**ID**]") or the bullet numbered ("1. [ID]")
+_ROW_RE = re.compile(r"^\s*(?:[-*]|\d+[.)])\s*(?:\*\*)?\[\s*(?:\*\*)?([A-Za-z][A-Za-z0-9]*(?:\.[A-Za-z0-9]+)*)(?:\*\*)?\s*\](?:\*\*)?\s*(.*)$")
 _ANCHOR_RE = re.compile(r"anchor\s*:\s*[\"“”']\s*(.*?)\s*[\"“”']\s*(?=(?:\s*[—–-]{1,2}\s*[a-z_\- ]{2,24}\s*:)|\s*$)", re.IGNORECASE | re.DOTALL)
 _FIELD_RE = re.compile(r"(?:^|\s[—–]\s|\s-\s)\s*([a-z][a-z_ \-]{1,24}?)\s*:\s*", re.IGNORECASE)
 _CITED_RE = re.compile(r"\[([A-Za-z][A-Za-z0-9]*(?:\.[A-Za-z0-9]+)*)\]")

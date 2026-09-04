@@ -109,6 +109,9 @@ def test_ledger_walls_verify_anchors_and_ids():
     assert rows[2].anchor_trimmed and rows[2].anchor.endswith("on defence")
     assert check_citations("as [D1.F1] and [D1.F9] show, see [V.F2]", {"D1.F1"}, also_ok={"V.F2"}) == ["D1.F9"]
     assert render_rows(rows[:1]).startswith(LEDGER_HEADING + "\n- [D1.F1]")
+    # ids bolded or numbered the way Sonnet writes them (frontier run, 22:18) still parse
+    bold = parse_rows('- **[F1]** A — dim: givens — anchor: "x" — confidence: high\n* [**F2**] B — anchor: "y"\n2. [F3] C — anchor: "z"')
+    assert [r.id for r in bold] == ["F1", "F2", "F3"] and bold[0].finding == "A"
 
 
 def _fake_call_factory(log):
