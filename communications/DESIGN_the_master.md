@@ -1,5 +1,7 @@
 # The Master — design memo (2026-09-04)
 
+> Renamed **The Mastermind** on 2026-09-04 (owner), with its own service: https://the-mastermind.onrender.com. The text below keeps the working name it was written under.
+
 > Owner's ask, morning of the Kering meeting: fold the engine catalogue into a place where clients can see "how the entire workflow is structured… the multiple steps and procedures and operations involved", and set up "the master… where we keep track of all of the processes and all of the engines and all of the big brain operations… a repository of best practices and methods… the central place to which all of those engines connect to get their methods from." Constraints he added: do not scratch what exists; give it an evolutionary door; storytelling, editing, restructuring and search engines must live there just like analysis; preserve The Analyst's running workflows; make it clear we improve processes centrally "without needing to go and edit individual services."
 
 ## 1. The decision: evolve the console into The Master, keep The Analyst API as its store

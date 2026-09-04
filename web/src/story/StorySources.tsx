@@ -8,7 +8,7 @@ import { docHandle, seconds, storyStatusLabel, type StoryRailModel } from '../li
 import { storyPath } from '../router'
 import type { StoryDemand, StoryJob } from '../types'
 
-const MASTER_URL = (import.meta.env.VITE_MASTER_URL as string | undefined) || 'https://analyzer-mgmt-frontend.onrender.com'
+const MASTER_URL = (import.meta.env.VITE_MASTER_URL as string | undefined) || 'https://the-mastermind.onrender.com'
 
 export function StorySources({ job, rail }: { job: StoryJob; rail: StoryRailModel }) {
   const [demands, setDemands] = useState<StoryDemand[] | null>(null)
@@ -92,7 +92,7 @@ export function StorySources({ job, rail }: { job: StoryJob; rail: StoryRailMode
               {demands.length === 0 && <p className="hint">No demands declared.</p>}
             </div>
           )}
-          <p className="machine demands-cite">declared in the registry; edit them in <a className="linkish" href={`${MASTER_URL}/engines/wirecut_spine`} target="_blank" rel="noreferrer">the Master ↗</a></p>
+          <p className="machine demands-cite">declared in the registry; edit them in <a className="linkish" href={`${MASTER_URL}/engines/wirecut_spine`} target="_blank" rel="noreferrer">the Mastermind ↗</a></p>
         </aside>
       </div>
 

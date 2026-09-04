@@ -219,7 +219,7 @@ POST /v1/results/by-job/{job_id}/refresh-presentation  # Refresh presentation wi
 GET  /v1/results/discovery                           # Discover completed results (?project_id=&workflow_key=&consumer_key=&selected_source_thinker_id=&limit=)
 POST /v1/results/by-job/{job_id}/attach-project      # Attach project_id to external/imported job
 
-# Organs, doctrine, story desk (The Master, 2026-09-04)
+# Organs, doctrine, story desk (The Mastermind, 2026-09-04)
 GET  /v1/organs · /v1/organs/by-layer · /v1/organs/{key} · /v1/organs/{key}/engines
 GET  /v1/engines?family=&organ=          # families: analytical, storytelling, editing, restructuring, search, rendering, composition, quality, imagination, governance
 GET  /v1/engines/{key}/doctrine          # hash-pinned prompt/doctrine files (mirrored organs + the Analyst's desks)

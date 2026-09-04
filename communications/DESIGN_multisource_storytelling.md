@@ -1,6 +1,6 @@
 # Multi-source storytelling — design (2026-09-04)
 
-> Owner: "the assumption is that we are using just one file to render video… we have multiple input files, and before we start storytelling we add a step where we read each of them with LLMs, and only after we read them we come up with common themes and narrative… not in a banal way, but in a serious way that would respect the main principles of storytelling and what we actually need to deliver at the end. What we are searching for has to be dependent on the rest of our process." To be built around the Master, not inside Wirecut alone. Not urgent.
+> Owner: "the assumption is that we are using just one file to render video… we have multiple input files, and before we start storytelling we add a step where we read each of them with LLMs, and only after we read them we come up with common themes and narrative… not in a banal way, but in a serious way that would respect the main principles of storytelling and what we actually need to deliver at the end. What we are searching for has to be dependent on the rest of our process." To be built around the Mastermind, not inside Wirecut alone. Not urgent.
 
 ## 1. The principle: read against demands, not for themes
 
@@ -15,7 +15,7 @@ A theme hunt over many documents produces a keyword cloud. A film needs somethin
 | Grounding review (`wirecut_grounding_review`) | a verbatim anchor (document, quote) on every element above |
 | Pacing, music | the intensity of each element; where the material itself breathes |
 
-So the reading pass is defined by the *union of the demands declared by the passes that follow it*. That is the sense in which "what we search for depends on the rest of the process", and it is why the pass belongs in the Master: the demands are fields on registered engines, editable in one place; change what the telling desk asks for and the reading changes, without touching Wirecut.
+So the reading pass is defined by the *union of the demands declared by the passes that follow it*. That is the sense in which "what we search for depends on the rest of the process", and it is why the pass belongs in the Mastermind: the demands are fields on registered engines, editable in one place; change what the telling desk asks for and the reading changes, without touching Wirecut.
 
 ## 2. The process (registered as `wirecut_multisource_story`, planned)
 
@@ -37,14 +37,14 @@ So the reading pass is defined by the *union of the demands declared by the pass
 |---|---|
 | Multi-input resolver, headed bundle | The Analyst `src/sources/` |
 | Per-document reconnaissance pattern, anchor wall, brief v2 lanes | The Analyst `src/dossier/{reconnaissance,walls,brief}.py` |
-| Twelve laws, telling dials, approaches, spine, grounding review | Wirecut `engine/prompts/*.md` (served by the Master's doctrine endpoint) |
+| Twelve laws, telling dials, approaches, spine, grounding review | Wirecut `engine/prompts/*.md` (served by the Mastermind's doctrine endpoint) |
 | Term-harvest / ledger pattern | The Referee |
 
 New: `story_reconnaissance`, `story_map`, `story_brief` engines (designed, registered today), the StoryProfile and StoryMap schemas, the coverage matrix, the demand fields on downstream engines (`source_demands`, to be added to the engine record), and Wirecut's "corpus" input (a job holds many sources; clips anchor to one).
 
 ## 4. Where it runs
 
-Two options, decided later. (a) Wirecut gains a "corpus" ingest and calls the Master for the reading and mapping engines' doctrine (Phase B of the Master memo). (b) The Analyst runs steps 1–5 as a dossier-shaped job whose deliverable is a story brief and hands the chosen spine to Wirecut as a single structured input. (b) needs no Wirecut change beyond accepting a spine, and gives the story brief a library page; it is the faster first version.
+Two options, decided later. (a) Wirecut gains a "corpus" ingest and calls the Mastermind for the reading and mapping engines' doctrine (Phase B of the Mastermind memo). (b) The Analyst runs steps 1–5 as a dossier-shaped job whose deliverable is a story brief and hands the chosen spine to Wirecut as a single structured input. (b) needs no Wirecut change beyond accepting a spine, and gives the story brief a library page; it is the faster first version.
 
 ## 5. LLM-first ledger
 

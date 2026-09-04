@@ -6,7 +6,7 @@ Paste this into a fresh session in `~/projects/veo2`. Owner's ask: "we have mult
 - Design memo: `~/projects/the-analyst/communications/DESIGN_multisource_storytelling.md` (read first).
 - The contract: `~/projects/the-analyst/communications/STORY_HANDOFF_SCHEMA.json` (JSON schema of `StoryHandoff`) and `STORY_HANDOFF_EXAMPLE.json`. Live: `GET https://the-analyst-kcuc.onrender.com/v1/story/handoff-schema`.
 - The story desk API on The Analyst: `POST /v1/story/jobs {sources | from_job, intent, audience, length_seconds}` → reads every source against the demands the downstream Wirecut passes declare in the registry, maps through-lines with tributaries, writes a deliverable-first brief, waits for a choice (`POST /v1/story/jobs/{id}/brief {option_key}`), writes the spine with sources as tributaries, and serves `GET /v1/story/jobs/{id}/handoff`. Full source text: `GET /v1/story/jobs/{id}/sources/{doc_key}`. Events: `GET /v1/events/{id}/stream` (SSE).
-- The demands themselves: `GET https://the-analyst-kcuc.onrender.com/v1/story/demands` (they are `source_demands` on `wirecut_telling_desk`, `wirecut_spine`, `wirecut_screenwriter`, `wirecut_storyboard`, `wirecut_text_layer`, `wirecut_grounding_review`, `wirecut_pacing_editor`, `wirecut_music_brief` in the registry, editable in the Master console at https://analyzer-mgmt-frontend.onrender.com/engines/wirecut_spine and siblings). If a Wirecut pass needs something else from the sources, change the demand there, not the reader.
+- The demands themselves: `GET https://the-analyst-kcuc.onrender.com/v1/story/demands` (they are `source_demands` on `wirecut_telling_desk`, `wirecut_spine`, `wirecut_screenwriter`, `wirecut_storyboard`, `wirecut_text_layer`, `wirecut_grounding_review`, `wirecut_pacing_editor`, `wirecut_music_brief` in the registry, editable in the Mastermind console at https://the-mastermind.onrender.com/engines/wirecut_spine and siblings). If a Wirecut pass needs something else from the sources, change the demand there, not the reader.
 - Wirecut's own doctrines are served hash-pinned by the registry: `GET /v1/engines/wirecut_spine/doctrine` etc. The handoff lists the doctrine hashes it was written under.
 
 ## What to build in Wirecut
@@ -23,5 +23,5 @@ Paste this into a fresh session in `~/projects/veo2`. Owner's ask: "we have mult
 
 ## Rules
 - LLM-first doctrine as always: no keyword matching to assign sources; judgment assigns, code records.
-- Do not change the registry from Wirecut; if a demand or a doctrine is wrong, say so in `communications/` and the Analyst session changes it in the Master.
+- Do not change the registry from Wirecut; if a demand or a doctrine is wrong, say so in `communications/` and the Analyst session changes it in the Mastermind.
 - Keep the single-file path working; add, do not replace.
