@@ -20,8 +20,11 @@ from src.operationalizations.registry import get_operationalization_registry  # 
 
 OUT = ROOT / "data/study/v5_first_queue"; (OUT / "outputs").mkdir(parents=True, exist_ok=True)
 SRC = ROOT / "data/study"; IDEAS = SRC / "sources_ideas"
-PAPERS = {"aukus": SRC / "source_aukus.txt", "subsea": SRC / "source_subsea.txt", "zambrana": IDEAS / "zambrana2025_philosophy_in_the_severe_style_rose.txt", "harris": IDEAS / "harris2026_eight_arguments_against_honneth.txt"}
-PLAN = {"deep_summarization": (["zambrana", "aukus"], True), "statistical_evidence": (["aukus", "subsea"], False), "event_timeline_causal": (["aukus", "subsea"], True)}
+PAPERS = {"aukus": SRC / "source_aukus.txt", "subsea": SRC / "source_subsea.txt", "zambrana": IDEAS / "zambrana2025_philosophy_in_the_severe_style_rose.txt", "harris": IDEAS / "harris2026_eight_arguments_against_honneth.txt",
+          "hegel": IDEAS / "hegels_concept_of_the_concept_2026.txt", "elling": IDEAS / "elling2025_amphibian_habits_hegel_second_nature.txt", "promise": IDEAS / "deutschmann2001_promise_of_absolute_wealth.md"}
+PLAN = {"deep_summarization": (["zambrana", "aukus"], True), "statistical_evidence": (["aukus", "subsea"], False), "event_timeline_causal": (["aukus", "subsea"], True),
+        # second queue, lifted with existing questions (2026-09-06)
+        "comparative_reasoning_analyzer": (["aukus", "harris"], True), "concept_centrality_mapper": (["zambrana", "hegel"], True), "chapter_role_analyzer": (["elling", "promise"], True)}
 MODEL = "openrouter/openai/gpt-5.6-sol"; RATERS = {"sonnet": "claude-sonnet-4-6", "sol": "openrouter/openai/gpt-5.6-sol"}; lock = threading.Lock()
 KEYS = ("specificity", "anchoring", "non_obviousness", "coherence", "usefulness", "hallucination_risk")
 RUBRIC = ("Score the ANALYSIS on the SOURCE, 1-10 each. specificity: about THIS text? anchoring: claims tied to verbatim quotes that exist in the source? non_obviousness: what a careful expert finds and a casual reader misses? "
@@ -55,7 +58,7 @@ def generate(engine, paper, cond, results, sources):
                     "## Output\nThe analysis, then:\n## Findings ledger\n- [F1] <finding> — anchor: \"<verbatim>\" — confidence: high|medium|low\n(12-30 rows)\n### Counter-evidence\n### Open questions"])
             res = run_engine_call_auto(system_prompt=system, user_message=f"SOURCE [doc]:\n\n{src}", phase_number=1.0, model_hint=MODEL, depth="standard", label=f"v5 {key}")
             content = res["content"]; calls = [{"step": "old_oneshot", "model": res.get("model_used"), "cost": estimate_cost(res.get("model_used") or MODEL, res["input_tokens"], res["output_tokens"]) or 0.0}]
-        else:
+        else:   # "checked" or "checked_<tag>": the production default after a brief change
             run = run_oneshot_checked(cap, spec, {"doc": src}, tier_overrides={"strong": MODEL})
             content = run.final_content; calls = [{"step": c.step_key, "model": c.model_used, "cost": c.cost_usd, "wall": c.wall} for c in run.calls]
     except Exception as exc:  # noqa: BLE001
@@ -98,8 +101,12 @@ def report(results, R):
     (OUT / "REPORT.md").write_text("\n".join(lines)); log("wrote", OUT / "REPORT.md")
 
 if __name__ == "__main__":
+    import argparse
+    ap = argparse.ArgumentParser(); ap.add_argument("--engines", default=""); ap.add_argument("--tag", default="", help="suffix for the checked condition (a re-run after a brief change), e.g. v2"); a = ap.parse_args()
     sources = {p: PAPERS[p].read_text(encoding="utf-8", errors="replace") for p in PAPERS}
     results = load(OUT / "results.json", {}); R = load(OUT / "ratings.json", {})
-    specs = [(e, p, c) for e, (papers, has_old) in PLAN.items() for p in papers for c in (["checked", "old"] if has_old else ["checked"])]
+    plan = {e: v for e, v in PLAN.items() if not a.engines or e in a.engines.split(",")}
+    checked = "checked" + (("_" + a.tag) if a.tag else "")
+    specs = [(e, p, c) for e, (papers, has_old) in plan.items() for p in papers for c in ([checked, "old"] if (has_old and not a.tag) else [checked])]
     with ThreadPoolExecutor(max_workers=4) as pool: list(pool.map(lambda s: generate(*s, results, sources), specs))
     rate(results, sources, R); report(results, R); log("DONE")

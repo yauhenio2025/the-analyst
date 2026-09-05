@@ -5,7 +5,8 @@ from src.operationalizations.registry import get_operationalization_registry
 from src.stages.process_composer import LEDGER_HEADING, compose_oneshot_prompt
 
 UNDER_THE_SHAPE = ("conditions_of_possibility_analyzer", "argument_architecture", "inferential_commitment_mapper", "epistemological_method_detector",
-                   "deep_summarization", "statistical_evidence", "event_timeline_causal")   # + the first-queue methods S1, E8, T1 (2026-09-06)
+                   "deep_summarization", "statistical_evidence", "event_timeline_causal",   # + the first-queue methods S1, E8, T1 (2026-09-06)
+                   "comparative_reasoning_analyzer", "concept_centrality_mapper", "chapter_role_analyzer")   # + second queue, lifted with existing questions
 BANNED = ("author's prior work", "reputational", "embarrass", "would the author be comfortable", "husserlian critique", "the author's own social position")
 
 
@@ -17,7 +18,7 @@ def test_four_engines_share_the_shape():
         assert {d: op.mode_for_depth(d) for d in ("surface", "standard", "deep", "dvs")} == {"surface": "oneshot", "standard": "oneshot_checked", "deep": "dvs", "dvs": "dvs"}, key
         assert spec.routing["strong"] == "openrouter/openai/gpt-5.6-sol" and spec.routing["mid"].endswith("deepseek-v4-pro")
         doc_dims = [d for d in spec.dimensions if d.scope == "document"]
-        assert 5 <= len(doc_dims) <= 6 and any(d.scope == "corpus" for d in spec.dimensions), key
+        assert 5 <= len(doc_dims) <= 8 and any(d.scope == "corpus" for d in spec.dimensions), key
         for d in spec.dimensions:
             assert d.questions and d.method_card and d.answer_shape and d.indicators, (key, d.key)
             assert "Do:" in d.method_card, (key, d.key)   # a card says what to DO

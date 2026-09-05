@@ -1,0 +1,223 @@
+# Lifted under the shape (existing questions) by scripts/lift_engine_under_shape.py; stance passes kept for reference.
+engine_key: concept_centrality_mapper
+engine_name: Concept Centrality Mapper
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: 'Concept Centrality Mapper under the shape with its existing questions (lifted 2026-09-06): Which
+    concepts are load-bearing and what depends on them? Every finding anchored; nothing about the authors.'
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: structural_centrality
+    id_prefix: D1
+    name: Structural centrality
+    load_bearing: true
+    questions:
+    - How many other concepts are defined in terms of this concept?
+    - What inferential chains pass through this concept?
+    - Would removing this concept fragment the argument into disconnected pieces?
+    - Is this concept explicitly defended or silently presupposed?
+    - What is the shortest path from this concept to empirical claims?
+    answer_shape: '[D1.F<n>] <the finding in one sentence, naming the passage''s object> — dim: structural_centrality
+      — anchor: "<verbatim>" — confidence: high|medium|low'
+    method_card: 'Do: Quine: concepts are scored by their distance from the periphery where experience impinges
+      and by the systemic cost of their revision, operationalizing Quine''s image of the web where some beliefs
+      are more central and more resistant to revision than others. Anchor every finding in the sentence that shows
+      it; a claim about the authors'' minds or careers is not a finding.'
+    indicators:
+    - Concepts that appear in definitions of many other concepts
+    - Concepts that are presupposed but rarely explicitly defended
+    - Concepts whose removal would require rewriting multiple argument chains
+    - Concepts that bridge multiple domains of discussion
+    - Concepts inherited from background assumptions rather than introduced explicitly
+  - key: dependency_architecture
+    id_prefix: D2
+    name: Dependency architecture
+    load_bearing: true
+    questions:
+    - What must be accepted before this concept becomes intelligible?
+    - What other concepts are entailed by accepting this one?
+    - Are there circular dependencies where concepts mutually presuppose each other?
+    - Which dependency relationships are acknowledged and which are tacit?
+    - Where are the longest dependency chains in the text?
+    answer_shape: '[D2.F<n>] <the finding in one sentence, naming the passage''s object> — dim: dependency_architecture
+      — anchor: "<verbatim>" — confidence: high|medium|low'
+    method_card: 'Do: Brandom: dependency chains are mapped using the inferentialist principle that conceptual content
+      is constituted by what a concept follows from and what follows from it, revealing the game of giving and asking
+      for reasons implicit in any conceptual commitment. Anchor every finding in the sentence that shows it; a claim
+      about the authors'' minds or careers is not a finding.'
+    indicators:
+    - Explicit definitions establishing dependency relationships
+    - Phrases like 'given that,' 'assuming,' 'building on'
+    - Concepts introduced only after others have been established
+    - Arguments that would be unintelligible without prior conceptual setup
+    - Circular references where concepts mutually presuppose each other
+  - key: revision_dynamics
+    id_prefix: D3
+    name: Revision dynamics
+    load_bearing: true
+    questions:
+    - What would happen to the argument if this concept were abandoned?
+    - Could this concept be revised without affecting core conclusions?
+    - What alternative concepts could substitute with minimal disruption?
+    - Which concepts form a mutually reinforcing cluster that must stand or fall together?
+    - Where are the fault lines along which the system would fracture under pressure?
+    answer_shape: '[D3.F<n>] <the finding in one sentence, naming the passage''s object> — dim: revision_dynamics
+      — anchor: "<verbatim>" — confidence: high|medium|low'
+    method_card: 'Do: Brandom: dependency chains are mapped using the inferentialist principle that conceptual content
+      is constituted by what a concept follows from and what follows from it, revealing the game of giving and asking
+      for reasons implicit in any conceptual commitment; Lakatos: removal impact analysis distinguishes Lakatosian
+      hard core concepts (whose removal destroys the research programme) from protective belt concepts (whose removal
+      is absorbed as normal adjustment), mapping the boundary between revision and revolution. Anchor every finding
+      in the sentence that shows it; a claim about the authors'' minds or careers is not a finding.'
+    indicators:
+    - Explicit definitions establishing dependency relationships
+    - Phrases like 'given that,' 'assuming,' 'building on'
+    - Concepts introduced only after others have been established
+    - Arguments that would be unintelligible without prior conceptual setup
+    - Circular references where concepts mutually presuppose each other
+    - Concepts appearing in multiple independent argument chains
+  - key: empirical_grounding
+    id_prefix: D4
+    name: Empirical grounding
+    questions:
+    - What observations or experiences would bear on this concept?
+    - How many inferential steps separate this concept from empirical claims?
+    - Could empirical findings directly challenge this concept or only its downstream implications?
+    - Which concepts function as the interface between theory and evidence?
+    - Where are the empirical anchors that stabilize the conceptual network?
+    answer_shape: '[D4.F<n>] <the finding in one sentence, naming the passage''s object> — dim: empirical_grounding
+      — anchor: "<verbatim>" — confidence: high|medium|low'
+    method_card: 'Do: read the dimension''s questions against the text and answer only what its sentences show.
+      Anchor every finding in the sentence that shows it; a claim about the authors'' minds or careers is not a
+      finding.'
+    indicators:
+    - 'a sentence that answers: what observations or experiences would bear on this concept'
+    - 'a sentence that answers: how many inferential steps separate this concept from empirical claims'
+    - 'a sentence that answers: could empirical findings directly challenge this concept or only its downstream
+      implicatio'
+  - key: role_migration
+    id_prefix: D5
+    name: Role migration
+    questions:
+    - Does this concept's structural position change across the text?
+    - Is a concept that starts as peripheral later treated as central?
+    - Do concepts that are initially defended become later assumed without argument?
+    - Where do concepts shift from descriptive to normative or vice versa?
+    - How does the conceptual architecture differ between early and late sections?
+    answer_shape: '[D5.F<n>] <the finding in one sentence, naming the passage''s object> — dim: role_migration —
+      anchor: "<verbatim>" — confidence: high|medium|low'
+    method_card: 'Do: Kuhn: concept role migration is analyzed through the Kuhnian lens of how normal science gradually
+      shifts conceptual weights until accumulated changes precipitate gestalt shifts where core and periphery exchange
+      places—micro-migrations that aggregate into revolutionary restructuring. Anchor every finding in the sentence
+      that shows it; a claim about the authors'' minds or careers is not a finding.'
+    indicators:
+    - Concepts introduced with argument that are later used without argument
+    - Concepts that are peripheral in early sections but central to conclusions
+    - Concepts whose definitions shift across the text
+    - Concepts that change from descriptive to normative or vice versa
+    - Concepts treated differently in response to objections
+  - key: hub_bridge_topology
+    id_prefix: D6
+    name: Hub bridge topology
+    questions:
+    - Which concepts connect the most other concepts?
+    - Which concepts link otherwise isolated clusters of ideas?
+    - What would happen to network connectivity if this concept were removed?
+    - Are there concepts that appear unimportant but whose removal would isolate major argument clusters?
+    - Where are the structural bottlenecks through which inferential traffic must pass?
+    answer_shape: '[D6.F<n>] <the finding in one sentence, naming the passage''s object> — dim: hub_bridge_topology
+      — anchor: "<verbatim>" — confidence: high|medium|low'
+    method_card: 'Do: Burt: applying Ronald Burt''s network theory of structural holes—gaps between disconnected
+      clusters that create opportunities for bridging—to conceptual networks, identifying where concepts fill holes
+      and how their removal would recreate fragmentation; Lakatos: load-bearing structures are identified using
+      the Lakatosian insight that theoretical frameworks have defended cores of interconnected commitments, analyzing
+      which concept clusters function as protected cores versus adjustable auxiliaries. Anchor every finding in
+      the sentence that shows it; a claim about the authors'' minds or careers is not a finding.'
+    indicators:
+    - Concepts referenced from multiple distinct argument clusters
+    - Concepts that appear at transitions between topics
+    - Concepts that translate between different vocabularies or frameworks
+    - Concepts whose removal would partition the argument into isolated pieces
+    - Concepts with high betweenness but moderate degree centrality
+    - Clusters of concepts with dense cross-references
+  - key: shared_across_corpus
+    id_prefix: X7
+    name: The same finding across the corpus
+    scope: corpus
+    questions:
+    - Which findings recur across documents, in the same or different words? Anchor each in each document.
+    - On which question do documents diverge? Both anchors, with the object and scope of each.
+    answer_shape: '[X7.F<n>] <shared finding | divergence> — dim: shared_across_corpus — anchor: "<verbatim>" —
+      doc: <A> — anchor-b: "<verbatim>" — doc-b: <B> — confidence: …'
+    method_card: 'Do: match findings across documents by their object, not their wording; state recurrence and divergence
+      with two anchors; do not settle a divergence here.'
+    indicators:
+    - the same claim in two documents
+    - a term used differently in two documents
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension
+    model_tier: cheap
+    output: ledger
+    max_rows: 16
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - reject_biography
+    - merge_duplicates
+    - hunt_misses
+    - name_must_keep
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: 'a reader who must know what this text establishes on the question: Which concepts are load-bearing
+      and what depends on them?'
+    tables:
+    - structural_centrality
+    - dependency_architecture
+    - revision_dynamics
+    brief: '1. Structural centrality: The position of concepts in the inferential network based on connection patterns
+      rather than frequency or explicit emphasis.
+
+      2. Dependency architecture: The directed structure of presupposition and entailment relationships between
+      concepts.
+
+      3. Revision dynamics: The patterns of how conceptual change would propagate through the web of belief if particular
+      concepts were revised or abandoned.
+
+      4. Empirical grounding: The relationship between concepts and observational or experiential content that anchors
+      the web of belief.
+
+      5. Role migration: The movement of concepts between structural positions across the development of an argument
+      or across multiple works.
+
+      6. Hub bridge topology: The identification of concepts that function as hubs (highly connected within clusters)
+      or bridges (linking otherwise disconnected clusters).
+
+      7. The judgment: what the text establishes on this method''s question, what it leaves open, and the one finding
+      a reader should test first.
+
+      Carry one line of argument through the parts; cite findings by id; no claim without a row.'

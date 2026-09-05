@@ -1,0 +1,212 @@
+# Lifted under the shape (existing questions) by scripts/lift_engine_under_shape.py; stance passes kept for reference.
+engine_key: comparative_reasoning_analyzer
+engine_name: Comparative Reasoning Analyzer
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: 'Comparative Reasoning Analyzer under the shape with its existing questions (lifted 2026-09-06):
+    How does the text use comparison, contrast, and analogy to build arguments, and how rigorous are these comparative
+    moves? Every finding anchored; nothing about the authors.'
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: analogical_transfer_structure
+    id_prefix: D1
+    name: Analogical transfer structure
+    load_bearing: true
+    questions:
+    - What specific relations are mapped from source to target domain?
+    - Which attributes of the source domain are transferred versus left behind?
+    - Where does the analogy break down—which source domain features have no target domain counterpart?
+    - Is the mapping based on structural similarity or mere surface resemblance?
+    - What inferential work does the analogy perform—does it generate predictions, explanations, or evaluations?
+    answer_shape: '[D1.F<n>] <the finding in one sentence, naming the passage''s object> — dim: analogical_transfer_structure
+      — anchor: "<verbatim>" — confidence: high|medium|low'
+    method_card: 'Do: Gentner: identifies relational correspondences between domains, distinguishing structural
+      similarity (shared relations) from surface similarity (shared attributes), and assessing which higher-order
+      relations are preserved in the mapping. Anchor every finding in the sentence that shows it; a claim about
+      the authors'' minds or careers is not a finding.'
+    indicators:
+    - 'Explicit comparison markers: ''like'', ''as'', ''similar to'', ''parallel'''
+    - Domain-crossing vocabulary applying terms from one field to another
+    - Extended metaphors with multiple mapped elements
+    - Inferential moves that transfer conclusions across domains
+    - 'Negative comparison: ''unlike'', ''different from'', ''not analogous to'''
+  - key: dichotomy_architecture
+    id_prefix: D2
+    name: Dichotomy architecture
+    load_bearing: true
+    questions:
+    - Are the two options presented as genuinely exhaustive of the possibility space?
+    - What third, fourth, or nth options are suppressed by the dichotomy?
+    - Does the dichotomy structure genuine analytical distinction or merely organize presentation?
+    - How does the binary framing constrain what conclusions can be reached?
+    - Could the dichotomy be reconceived as a continuum, a typology, or a different binary?
+    answer_shape: '[D2.F<n>] <the finding in one sentence, naming the passage''s object> — dim: dichotomy_architecture
+      — anchor: "<verbatim>" — confidence: high|medium|low'
+    method_card: 'Do: Perelman: examines how binary constructions generate argumentative force through appearance
+      of logical exhaustiveness while often suppressing viable alternatives. Anchor every finding in the sentence
+      that shows it; a claim about the authors'' minds or careers is not a finding.'
+    indicators:
+    - 'Either/or constructions: ''either X or Y'', ''the choice is between'''
+    - 'Contrastive pairs: ''X versus Y'', ''X rather than Y'''
+    - 'Dissociative splits: ''true X vs. mere Y'', ''real X vs. apparent X'''
+    - 'Negation-defined concepts: ''non-X'', ''un-X'''
+    - 'Forced choice rhetoric: ''we must choose'', ''there is no middle ground'''
+  - key: scalar_positioning
+    id_prefix: D3
+    name: Scalar positioning
+    load_bearing: true
+    questions:
+    - What scale or continuum is being invoked?
+    - How are the endpoints of the scale defined and anchored?
+    - Is the scalar framing justified or does it impose a false continuum on categorical difference?
+    - What claims about position, movement, or tendency are made along the scale?
+    - Would different scale construction reverse the argument's conclusions?
+    answer_shape: '[D3.F<n>] <the finding in one sentence, naming the passage''s object> — dim: scalar_positioning
+      — anchor: "<verbatim>" — confidence: high|medium|low'
+    method_card: 'Do: Lakoff Johnson: analyzes how scalar framings draw on embodied experience of physical continua
+      (hot-cold, up-down, near-far) to structure understanding of abstract dimensions. Anchor every finding in the
+      sentence that shows it; a claim about the authors'' minds or careers is not a finding.'
+    indicators:
+    - 'Comparative adjectives: ''more X'', ''less Y'', ''increasingly Z'''
+    - 'Continuum language: ''spectrum'', ''range'', ''gradient'', ''scale'''
+    - 'Movement vocabulary: ''moving toward'', ''sliding into'', ''approaching'''
+    - 'Degree qualifiers: ''somewhat'', ''rather'', ''almost'', ''barely'''
+    - 'Endpoint references: ''at one extreme'', ''at the limit'', ''in the ideal case'''
+  - key: typological_structure
+    id_prefix: D4
+    name: Typological structure
+    questions:
+    - What typology or classification scheme structures the analysis?
+    - Are the types jointly exhaustive—do they cover all relevant cases?
+    - Are the types mutually exclusive—can cases belong to multiple types?
+    - How does the typology handle borderline, mixed, or anomalous cases?
+    - Does the classification enable analytical insight or merely organize description?
+    answer_shape: '[D4.F<n>] <the finding in one sentence, naming the passage''s object> — dim: typological_structure
+      — anchor: "<verbatim>" — confidence: high|medium|low'
+    method_card: 'Do: Weber: analyzes typologies as heuristic constructs whose value lies in enabling comparison
+      through deliberate abstraction rather than accurate description of empirical reality. Anchor every finding
+      in the sentence that shows it; a claim about the authors'' minds or careers is not a finding.'
+    indicators:
+    - 'Classification vocabulary: ''types'', ''kinds'', ''categories'', ''species'''
+    - 'Enumeration of distinct forms: ''three types of X'', ''two kinds of Y'''
+    - 'Ideal type language: ''pure form'', ''paradigm case'', ''exemplar'''
+    - Taxonomic organization of content
+    - Discussion of borderline or hybrid cases
+  - key: evaluative_criteria
+    id_prefix: D5
+    name: Evaluative criteria
+    questions:
+    - On what criteria are the compared items being evaluated?
+    - Are the evaluative criteria explicit or implicit in the comparison?
+    - How are the criteria themselves justified?
+    - Would alternative criteria reverse the ranking or evaluation?
+    - Are the criteria appropriate to the items being compared?
+    answer_shape: '[D5.F<n>] <the finding in one sentence, naming the passage''s object> — dim: evaluative_criteria
+      — anchor: "<verbatim>" — confidence: high|medium|low'
+    method_card: 'Do: Perelman: examines how comparative arguments establish values through implicit hierarchies
+      and criteria of evaluation that can be surfaced and contested. Anchor every finding in the sentence that shows
+      it; a claim about the authors'' minds or careers is not a finding.'
+    indicators:
+    - 'Evaluative comparatives: ''better than'', ''superior to'', ''more effective'''
+    - 'Ranking language: ''ranks higher'', ''comes first'', ''is preferred'''
+    - 'Criterial vocabulary: ''by this measure'', ''judged by'', ''evaluated in terms of'''
+    - 'Implicit evaluation in description: ''developed/developing'', ''advanced/backward'''
+    - 'Preference expressions: ''preferable to'', ''to be chosen over'''
+  - key: representativeness_logic
+    id_prefix: D6
+    name: Representativeness logic
+    questions:
+    - What part, example, or case is made to stand for a larger whole or class?
+    - Is the part genuinely representative of the whole?
+    - How was the example or case selected—randomly, strategically, tendentiously?
+    - What features of the class are highlighted by this representative and which are obscured?
+    - Could alternative representatives ground different conclusions?
+    answer_shape: '[D6.F<n>] <the finding in one sentence, naming the passage''s object> — dim: representativeness_logic
+      — anchor: "<verbatim>" — confidence: high|medium|low'
+    method_card: 'Do: Wittgenstein: examines how particular cases illuminate general concepts through strategic
+      selection and juxtaposition rather than subsumption under universal definitions. Anchor every finding in the
+      sentence that shows it; a claim about the authors'' minds or careers is not a finding.'
+    indicators:
+    - 'Example introduction: ''consider the case of'', ''for instance'', ''take the example'''
+    - 'Representativeness claims: ''typical'', ''representative'', ''paradigmatic'''
+    - 'Generalization from instance: ''this shows that'', ''which demonstrates'''
+    - 'Part-whole language: ''embodies'', ''instantiates'', ''exemplifies'''
+    - 'Case study methodology: ''this case reveals'', ''examining X illuminates'''
+  - key: shared_across_corpus
+    id_prefix: X7
+    name: The same finding across the corpus
+    scope: corpus
+    questions:
+    - Which findings recur across documents, in the same or different words? Anchor each in each document.
+    - On which question do documents diverge? Both anchors, with the object and scope of each.
+    answer_shape: '[X7.F<n>] <shared finding | divergence> — dim: shared_across_corpus — anchor: "<verbatim>" —
+      doc: <A> — anchor-b: "<verbatim>" — doc-b: <B> — confidence: …'
+    method_card: 'Do: match findings across documents by their object, not their wording; state recurrence and divergence
+      with two anchors; do not settle a divergence here.'
+    indicators:
+    - the same claim in two documents
+    - a term used differently in two documents
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension
+    model_tier: cheap
+    output: ledger
+    max_rows: 16
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - reject_biography
+    - merge_duplicates
+    - hunt_misses
+    - name_must_keep
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: 'a reader who must know what this text establishes on the question: How does the text use comparison,
+      contrast, and analogy to build arguments, and how rigorous are these comparative moves?'
+    tables:
+    - analogical_transfer_structure
+    - dichotomy_architecture
+    - scalar_positioning
+    brief: '1. Analogical transfer structure: The systematic mapping of relations, attributes, and inferential patterns
+      from source domains to target domains.
+
+      2. Dichotomy architecture: The structure and function of binary oppositions in organizing argument.
+
+      3. Scalar positioning: The construction and deployment of continua along which phenomena are positioned.
+
+      4. Typological structure: The classification schemes, ideal types, and categorical frameworks through which
+      phenomena are sorted and analyzed.
+
+      5. Evaluative criteria: The standards, metrics, and dimensions along which comparative evaluations are conducted.
+
+      6. Representativeness logic: The reasoning that allows parts to stand for wholes, examples to stand for classes,
+      and cases to stand for patterns.
+
+      7. The judgment: what the text establishes on this method''s question, what it leaves open, and the one finding
+      a reader should test first.
+
+      Carry one line of argument through the parts; cite findings by id; no claim without a row.'

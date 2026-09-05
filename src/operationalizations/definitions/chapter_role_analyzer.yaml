@@ -1,17 +1,24 @@
+# Lifted under the shape (existing questions) by scripts/lift_engine_under_shape.py; stance passes kept for reference.
 engine_key: chapter_role_analyzer
 engine_name: Chapter Role Analyzer
 stance_operationalizations:
 - stance_key: discovery
   label: Structural Discovery
-  description: |-
-    Discover the structural landscape: classify every chapter's functional
+  description: 'Discover the structural landscape: classify every chapter''s functional
+
     role (foundation, development, evidence, objection handling, synthesis,
+
     methodology, context, conclusion), track where key concepts are
+
     introduced and how they flow across chapters, and map the inter-part
+
     dynamics if the work has parts or major sections. Be exhaustive —
-    don't just classify the obvious chapters; even transitional or
+
+    don''t just classify the obvious chapters; even transitional or
+
     seemingly peripheral chapters serve functions that the architecture
-    pass will need to understand.
+
+    pass will need to understand.'
   focus_dimensions:
   - chapter_functional_role
   - key_concepts_introduced
@@ -22,16 +29,23 @@ stance_operationalizations:
   - analyze_inter_part_dynamics
 - stance_key: architecture
   label: Dependency and Coupling Architecture
-  description: |-
-    With chapter roles classified, build the dependency and coupling
+  description: 'With chapter roles classified, build the dependency and coupling
+
     architecture. Map what each chapter requires from upstream chapters
+
     (conceptual prerequisites, empirical foundations, methodological
+
     setups) and what it provides downstream. Assess coupling: which
-    chapters are tightly bound (can't be understood in isolation) and
+
+    chapters are tightly bound (can''t be understood in isolation) and
+
     which are loosely coupled (could be reordered)? Identify dialectical
+
     pairs, complementary groups, and standalone excursus chapters.
+
     This architecture is the structural skeleton of the argument —
-    it reveals the critical path through the text.
+
+    it reveals the critical path through the text.'
   focus_dimensions:
   - chapter_dependencies
   - chapter_coupling
@@ -40,22 +54,34 @@ stance_operationalizations:
   - assess_chapter_coupling
 - stance_key: confrontation
   label: Vulnerability Confrontation
-  description: |-
-    Confront the structural architecture with critical scrutiny. Where
+  description: 'Confront the structural architecture with critical scrutiny. Where
+
     are the vulnerabilities? Load-bearing chapters that are underdeveloped
+
     — chapters that the entire argument depends on but that provide thin
+
     argumentation. Missing bridges — places where the text leaps from
+
     one section to another without adequate connection. Circular
-    dependencies — arguments that depend on conclusions they're supposed
+
+    dependencies — arguments that depend on conclusions they''re supposed
+
     to establish. Orphaned threads — ideas introduced but never resolved
+
     or integrated. Redundancies — chapters that duplicate work done
+
     elsewhere without adding value.
 
+
     The confrontation pass is not about finding fault for its own sake
+
     but about identifying where a sophisticated critic would most
-    effectively intervene, and where the text's structural choices
+
+    effectively intervene, and where the text''s structural choices
+
     reveal tensions between what the author wants to argue and what
-    the argumentative architecture can actually support.
+
+    the argumentative architecture can actually support.'
   focus_dimensions:
   - structural_vulnerabilities
   - chapter_dependencies
@@ -66,19 +92,29 @@ stance_operationalizations:
   - assess_chapter_coupling
 - stance_key: integration
   label: Structural Integration
-  description: |-
-    Integrate all findings from discovery, architecture, and confrontation
+  description: 'Integrate all findings from discovery, architecture, and confrontation
+
     into a comprehensive structural assessment. The discovery pass mapped
+
     chapter roles and concept flows. The architecture pass built the
+
     dependency graph and coupling matrix. The confrontation pass exposed
+
     vulnerabilities, missing bridges, and circular dependencies. Now
+
     synthesize: what is the overall structural logic of this work? How
+
     do the chapter roles, dependencies, and vulnerabilities combine into
-    a coherent picture of the argument's organizational strategy? Where
+
+    a coherent picture of the argument''s organizational strategy? Where
+
     does the structure serve the argument well, and where does it
+
     undermine it? What does the structural analysis reveal about the
-    author's priorities — what did they invest structural effort in,
-    and what did they leave architecturally thin?
+
+    author''s priorities — what did they invest structural effort in,
+
+    and what did they leave architecturally thin?'
   focus_dimensions:
   - chapter_functional_role
   - chapter_dependencies
@@ -99,6 +135,7 @@ depth_sequences:
   - pass_number: 1
     stance_key: architecture
     consumes_from: []
+  mode: oneshot
 - depth_key: standard
   passes:
   - pass_number: 1
@@ -108,6 +145,7 @@ depth_sequences:
     stance_key: architecture
     consumes_from:
     - 1
+  mode: oneshot_checked
 - depth_key: deep
   passes:
   - pass_number: 1
@@ -128,3 +166,181 @@ depth_sequences:
     - 1
     - 2
     - 3
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: 'Chapter Role Analyzer under the shape with its existing questions (lifted 2026-09-06): What role
+    does each chapter play in the overall argument, and how do chapters depend on and enable each other? Every finding
+    anchored; nothing about the authors.'
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: chapter_functional_role
+    id_prefix: D1
+    name: Chapter functional role
+    load_bearing: true
+    questions:
+    - What is this chapter's primary function (establishing premises, advancing claims, handling objections)?
+    - Does it serve secondary functions beyond its primary role?
+    - How essential is it — is it load-bearing, supporting, or peripheral?
+    answer_shape: '[D1.F<n>] <the finding in one sentence, naming the passage''s object> — dim: chapter_functional_role
+      — anchor: "<verbatim>" — confidence: high|medium|low'
+    method_card: 'Do: Toulmin: analyze each chapter as providing claims, grounds, warrants, backing, or rebuttals
+      within the larger argument. Anchor every finding in the sentence that shows it; a claim about the authors''
+      minds or careers is not a finding.'
+    indicators:
+    - Chapter openings that signal function
+    - Types of content (definitions, evidence, objections, synthesis)
+    - Relationship to the central thesis
+  - key: chapter_dependencies
+    id_prefix: D2
+    name: Chapter dependencies
+    load_bearing: true
+    questions:
+    - What does this chapter need from prior chapters to work?
+    - What does it provide that later chapters require?
+    - How strong are these dependencies — necessary or merely helpful?
+    answer_shape: '[D2.F<n>] <the finding in one sentence, naming the passage''s object> — dim: chapter_dependencies
+      — anchor: "<verbatim>" — confidence: high|medium|low'
+    method_card: 'Do: Van Eemeren: analyze how argumentative stages create dependencies between chapters. Anchor
+      every finding in the sentence that shows it; a claim about the authors'' minds or careers is not a finding.'
+    indicators:
+    - References to prior chapter content
+    - Concepts that must be established before they can be used
+    - Argumentative moves that require prior setup
+  - key: key_concepts_introduced
+    id_prefix: D3
+    name: Key concepts introduced
+    load_bearing: true
+    questions:
+    - Where are the text's key concepts first introduced?
+    - Where do they first do significant analytical work?
+    - How does their role evolve across chapters?
+    answer_shape: '[D3.F<n>] <the finding in one sentence, naming the passage''s object> — dim: key_concepts_introduced
+      — anchor: "<verbatim>" — confidence: high|medium|low'
+    method_card: 'Do: Perelman: track how concepts gain presence through strategic placement and repetition across
+      the text. Anchor every finding in the sentence that shows it; a claim about the authors'' minds or careers
+      is not a finding.'
+    indicators:
+    - First mention of key terms
+    - First substantive engagement with concepts
+    - Chapters where concepts do heavy analytical work
+  - key: chapter_coupling
+    id_prefix: D4
+    name: Chapter coupling
+    questions:
+    - Which chapters are tightly coupled (can't be understood in isolation)?
+    - Which are loosely coupled (could be reordered)?
+    - Are there dialectical pairs or complementary chapter groups?
+    answer_shape: '[D4.F<n>] <the finding in one sentence, naming the passage''s object> — dim: chapter_coupling
+      — anchor: "<verbatim>" — confidence: high|medium|low'
+    method_card: 'Do: Walton: analyze how different parts of an extended dialogue depend on each other. Anchor every
+      finding in the sentence that shows it; a claim about the authors'' minds or careers is not a finding.'
+    indicators:
+    - Shared frameworks across chapters
+    - Continued arguments spanning chapters
+    - Dialectical pairs (thesis-antithesis chapters)
+    - Independent excursus chapters
+  - key: structural_vulnerabilities
+    id_prefix: D5
+    name: Structural vulnerabilities
+    questions:
+    - Where are the structural weak points?
+    - Are any load-bearing chapters underdeveloped?
+    - Are there missing bridges, circular dependencies, or orphaned threads?
+    answer_shape: '[D5.F<n>] <the finding in one sentence, naming the passage''s object> — dim: structural_vulnerabilities
+      — anchor: "<verbatim>" — confidence: high|medium|low'
+    method_card: 'Do: Toulmin: assess where the argumentative structure is weakest and most susceptible to challenge.
+      Anchor every finding in the sentence that shows it; a claim about the authors'' minds or careers is not a
+      finding.'
+    indicators:
+    - Load-bearing chapters with thin argumentation
+    - Missing connections between related chapters
+    - Arguments that depend on conclusions they're supposed to establish
+    - Threads introduced but never resolved
+  - key: inter_part_dynamics
+    id_prefix: D6
+    name: Inter part dynamics
+    questions:
+    - If the work has parts/sections, what does each accomplish as a unit?
+    - How do transitions between parts work — smooth, abrupt, or forced?
+    - What changes between parts (register, method, scope)?
+    answer_shape: '[D6.F<n>] <the finding in one sentence, naming the passage''s object> — dim: inter_part_dynamics
+      — anchor: "<verbatim>" — confidence: high|medium|low'
+    method_card: 'Do: Perelman: analyze how the largest structural units of a text organize and present the overall
+      argument. Anchor every finding in the sentence that shows it; a claim about the authors'' minds or careers
+      is not a finding.'
+    indicators:
+    - Part/section divisions
+    - Shifts in register, method, or scope at boundaries
+    - Transition quality (smooth, abrupt, forced)
+  - key: shared_across_corpus
+    id_prefix: X7
+    name: The same finding across the corpus
+    scope: corpus
+    questions:
+    - Which findings recur across documents, in the same or different words? Anchor each in each document.
+    - On which question do documents diverge? Both anchors, with the object and scope of each.
+    answer_shape: '[X7.F<n>] <shared finding | divergence> — dim: shared_across_corpus — anchor: "<verbatim>" —
+      doc: <A> — anchor-b: "<verbatim>" — doc-b: <B> — confidence: …'
+    method_card: 'Do: match findings across documents by their object, not their wording; state recurrence and divergence
+      with two anchors; do not settle a divergence here.'
+    indicators:
+    - the same claim in two documents
+    - a term used differently in two documents
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension
+    model_tier: cheap
+    output: ledger
+    max_rows: 16
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - reject_biography
+    - merge_duplicates
+    - hunt_misses
+    - name_must_keep
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: 'a reader who must know what this text establishes on the question: What role does each chapter play
+      in the overall argument, and how do chapters depend on and enable each other?'
+    tables:
+    - chapter_functional_role
+    - chapter_dependencies
+    - key_concepts_introduced
+    brief: '1. Chapter functional role: The primary and secondary functions each chapter serves in the overall argument.
+
+      2. Chapter dependencies: What each chapter requires from upstream chapters and provides to downstream ones.
+
+      3. Key concepts introduced: Where key concepts enter the text, where they are first used significantly, and
+      how their role evolves.
+
+      4. Chapter coupling: How tightly chapters are coupled — which are deeply interdependent and which could stand
+      alone.
+
+      5. Structural vulnerabilities: Weak points in the argumentative architecture — underdeveloped load-bearing
+      chapters, missing bridges, circular dependencies.
+
+      6. Inter part dynamics: How parts or major sections relate to each other — what each accomplishes and how
+      transitions work.
+
+      7. The judgment: what the text establishes on this method''s question, what it leaves open, and the one finding
+      a reader should test first.
+
+      Carry one line of argument through the parts; cite findings by id; no claim without a row.'
