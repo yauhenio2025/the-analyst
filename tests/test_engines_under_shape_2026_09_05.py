@@ -23,7 +23,7 @@ def test_four_engines_share_the_shape():
             for q in d.questions:
                 assert not any(b in q.lower() for b in BANNED), (key, d.key, q)
         assert sum(1 for d in doc_dims if d.load_bearing) >= 3, key
-        assert spec.final_step.brief.strip().startswith("1.") and spec.final_step.reader and spec.final_step.tables, key
+        assert "1." in spec.final_step.brief and "2." in spec.final_step.brief and spec.final_step.reader and spec.final_step.tables, key   # a numbered reader's order (a preamble rule may precede it)
 
 
 def test_prompts_compose_for_the_new_engines():
