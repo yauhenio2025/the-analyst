@@ -6,7 +6,10 @@ from src.stages.process_composer import LEDGER_HEADING, compose_oneshot_prompt
 
 UNDER_THE_SHAPE = ("conditions_of_possibility_analyzer", "argument_architecture", "inferential_commitment_mapper", "epistemological_method_detector",
                    "deep_summarization", "statistical_evidence", "event_timeline_causal",   # + the first-queue methods S1, E8, T1 (2026-09-06)
-                   "comparative_reasoning_analyzer", "concept_centrality_mapper", "chapter_role_analyzer")   # + second queue, lifted with existing questions
+                   "comparative_reasoning_analyzer", "concept_centrality_mapper", "chapter_role_analyzer",
+                   "compare_concept_trajectories", "concept_appropriation_tracker", "revision_presentation",
+                   "counterfactual_analyzer", "dialectical_structure", "modal_force_inventory", "meaning_in_use",
+                   "framework_components", "narrative_form_perspective", "theory_construction_analyzer")
 BANNED = ("author's prior work", "reputational", "embarrass", "would the author be comfortable", "husserlian critique", "the author's own social position")
 
 

@@ -1,0 +1,221 @@
+# Second queue: authored questions replace any earlier lifted process.
+engine_key: compare_concept_trajectories
+engine_name: Concept comparison and trajectories
+process:
+  key: dvs
+  description: How do a concept's meaning and argumentative role change or persist across the supplied works? Two
+    or more supplied works; dates and identity/uptake evidence only when claiming development; prior analyses must
+    retain their anchors.
+  framing: A one-page concept × work matrix comparing meaning, argumentative role, evidence/method, metaphor and
+    force. Lead with the most consequential continuity or difference; distinguish unordered comparison from demonstrated
+    development. Give each work a local inventory before any trajectory. The desks lift the matrix and a paired-change
+    table with chronology and uptake limits. Merge the six mapped engines. Preserve vocabulary/method/metaphor/framing
+    comparisons, but move relational questions to corpus scope. Replace career, invisible influence and inevitable
+    rupture questions with supplied dates, uptake and paired passages; a missing term is not abandonment.
+  scoped_outcomes: true
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: local_meanings
+    id_prefix: D1
+    name: Terms and their local meanings
+    scope: document
+    load_bearing: true
+    questions:
+    - Which terms does this work define or distinguish, and what object does each name?
+    - Which uses retain the definition and which give the same term a different sense?
+    answer_shape: '[D1.F<n>] <one scoped finding> — dim: local_meanings — term: <term> — sense: <local meaning>
+      — boundary: <limit> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source key> — confidence:
+      high|medium|low'
+    method_card: 'Do: Inventory definitions and actual uses; preserve negation and local scope. Split distinct senses
+      before comparing works.'
+    indicators:
+    - by X we mean
+    - defined as
+    - in this sense
+  - key: argumentative_roles
+    id_prefix: D2
+    name: What each concept does
+    scope: document
+    load_bearing: true
+    questions:
+    - What claim does each concept support here, and which premise connects them?
+    - What supporting claims, dependent concepts, and enabling assumptions constitute the argumentative architecture?
+    answer_shape: '[D2.F<n>] <one scoped finding> — dim: argumentative_roles — term: <term> — role: <premise, mechanism,
+      result> — supports: <claim> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source key> — confidence:
+      high|medium|low'
+    method_card: 'Do: Trace the move made with the concept and its warrant. Distinguish sharing a noun from sharing
+      an inferential role.'
+    indicators:
+    - therefore
+    - depends on
+    - constitutes
+  - key: method_and_evidence
+    id_prefix: D3
+    name: Method and evidence attached to the concept
+    scope: document
+    load_bearing: true
+    questions:
+    - Which evidence or analytical move establishes this use of the concept?
+    - Does the text derive, illustrate, apply or assume the concept at this passage?
+    answer_shape: '[D3.F<n>] <one scoped finding> — dim: method_and_evidence — term: <term> — move: <derivation,
+      application, assumption> — evidence: <kind> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source
+      key> — confidence: high|medium|low'
+    method_card: 'Do: Record the actual procedure and its passage. A conceptual derivation can supply support without
+      empirical testing.'
+    indicators:
+    - we derive
+    - for example
+    - we assume
+  - key: metaphor
+    id_prefix: D4
+    name: Metaphor and literal use
+    scope: document
+    load_bearing: false
+    questions:
+    - What governing metaphors appear in this work, and what relations do they carry?
+    - Where does the text mark a metaphor as limited or use it as a literal claim?
+    answer_shape: '[D4.F<n>] <one scoped finding> — dim: metaphor — term: <term> — mapping: <relation> — use: <metaphorical,
+      literal, unresolved> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source key> — confidence:
+      high|medium|low'
+    method_card: 'Do: Identify the transferred relation and limit; do not infer what the author sees privately.'
+    indicators:
+    - as if
+    - like
+    - metaphor
+  - key: framing
+    id_prefix: D5
+    name: Problem, scope and force
+    scope: document
+    load_bearing: false
+    questions:
+    - What problem is this concept made to answer, with what confidence and scope?
+    - Where does this work state a continuity, novelty or revision claim and what exact object does it concern?
+    answer_shape: '[D5.F<n>] <one scoped finding> — dim: framing — term: <term> — problem: <question> — force: <operator>
+      — claimed-relation: <claim> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source key> — confidence:
+      high|medium|low'
+    method_card: 'Do: Keep hedges attached to their propositions. Do not turn an introductory claim into a demonstrated
+      history.'
+    indicators:
+    - may
+    - must
+    - extending
+    - previously
+  - key: local_limits
+    id_prefix: D6
+    name: Qualifications and search limits
+    scope: document
+    load_bearing: false
+    questions:
+    - Which passage qualifies a proposed stable meaning or interpretation?
+    - Which relevant sections were inspected for an alternative term or use, and what remains outside that inspection?
+    answer_shape: '[D6.F<n>] <one scoped finding> — dim: local_limits — term: <term> — qualification: <limit> —
+      inspected: <sections> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source key> — confidence:
+      high|medium|low'
+    method_card: 'Do: Retain counter-uses and avoid forced consistency. Record a negative search in the scope report;
+      its context anchor cannot prove global absence.'
+    indicators:
+    - not in every case
+    - only
+    - scope
+  - key: concept_trajectories
+    id_prefix: X7
+    name: Comparison across supplied works
+    scope: corpus
+    load_bearing: false
+    questions:
+    - What terms appear in both the prior work and the current work?
+    - For each key concept, which dimensions changed and which remained stable?
+    - Which paired passages establish a change in meaning rather than only application, scope or rhetorical force?
+      What dates and uptake warrant an ordered trajectory?
+    answer_shape: '[X7.F<n>] <one scoped finding> — dim: concept_trajectories — relation: <aligned relation> — alignment:
+      <object, sense, owner, scope> — order-basis: <dates, uptake, or unordered> — anchor: "<verbatim supporting
+      clause, <=200 chars>" — doc: <source key> — anchor-b: "<verbatim supporting clause B>" — doc-b: <different
+      source key> — confidence: high|medium|low'
+    method_card: 'Do: Build attributed cells first, each with its own finding and supporting spans. Preserve unordered
+      cross-author comparison; same-year publication and input order establish no sequence. Pair both works and
+      retain counter-passages before claiming rupture, novelty or abandonment.'
+    indicators:
+    - explicit reference
+    - paired formulations
+    - scope qualification
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension_x_document
+    model_tier: cheap
+    output: ledger
+    max_rows: 8
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - reject_biography
+    - merge_duplicates
+    - hunt_misses
+    - name_must_keep
+    - Judge the warrant appropriate to the claim; preserve owners, scope, modality and counter-passages. Inspect
+      every declared question, not just retained positives.
+    - Every consequential table cell must cite a final finding whose complete supporting spans contain the attributed
+      fact and qualification. Split compound claims into several rows when <=200 characters cannot carry them. Use
+      a separate [F1] [F2] citation per finding. Include an anchor-b with its doc-b for a second supporting span
+      when needed, even in the same document; corpus relations always retain at least two distinct source keys.
+      Never use a scope record as a positive finding. Use comma-separated full IDs in from:, never space-concatenated
+      IDs. Judge meaning and completeness by reading the sources; code checks only anchors and IDs. Before returning,
+      read the actual final tables against their cited final rows and the source contexts, including each source
+      counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source
+      interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or
+      silent.
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: 'a reader with the supplied texts open who needs to answer: How do a concept''s meaning and argumentative
+      role change or persist across the supplied works?'
+    tables:
+    - concept_by_work
+    - paired_changes
+    brief: '1. A one-page concept × work matrix comparing meaning, argumentative role, evidence/method, metaphor
+      and force. Lead with the most consequential continuity or difference; distinguish unordered comparison from
+      demonstrated development. Give each work a local inventory before any trajectory. The desks lift the matrix
+      and a paired-change table with chronology and uptake limits.
+
+      2. Establish the most consequential local findings and their qualifications; organize the reading by the objects
+      and claims in these texts.
+
+      3. Render the named Markdown tables with final finding IDs in every positive cell. Explain the supported relation
+      and the strongest counter-passage; end with what is settled and the exact remaining question.
+
+      4. With multiple sources, build each work’s inventory before the paired comparison, and state alignment and
+      chronology limits. With one source, label the result a local inventory where a corpus relation would require
+      another work.
+
+      Every consequential table cell must cite a final finding whose complete supporting spans contain the attributed
+      fact and qualification. Split compound claims into several rows when <=200 characters cannot carry them. Use
+      a separate [F1] [F2] citation per finding. Include an anchor-b with its doc-b for a second supporting span
+      when needed, even in the same document; corpus relations always retain at least two distinct source keys.
+      Never use a scope record as a positive finding. Use comma-separated full IDs in from:, never space-concatenated
+      IDs. Judge meaning and completeness by reading the sources; code checks only anchors and IDs. Before returning,
+      read the actual final tables against their cited final rows and the source contexts, including each source
+      counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source
+      interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or
+      silent.'
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs

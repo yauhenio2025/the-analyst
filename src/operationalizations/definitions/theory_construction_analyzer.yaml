@@ -1,0 +1,222 @@
+# Second queue: authored questions replace any earlier lifted process.
+engine_key: theory_construction_analyzer
+engine_name: How a theory is built
+process:
+  key: dvs
+  description: By which moves does the text build and justify its proposed theory? Text proposing, revising or combining
+    theory; empirical measures only where empirical claims are undertaken.
+  framing: 'A construction ledger: problem and scope → inputs → move → resulting concept or mechanism → warrant
+    → limit. Lead with how the text earns its proposed contribution, distinguishing claimed novelty from demonstrated
+    work. Desks lift construction moves and theory–evidence articulation tables; a well-supported inventory is sufficient.
+    Reuse v2. Preserve middle-range scope, conceptual transfer, compatible synthesis, innovation and evidence direction.
+    Replace impossible questions, ungrounded alternative paradigms and nature-at-its-joints tests with supplied
+    problems, distinctions and warrants; empirical operationalization is conditional on empirical claims.'
+  scoped_outcomes: true
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: problem_and_scope
+    id_prefix: D1
+    name: Problem and intended reach
+    scope: document
+    load_bearing: true
+    questions:
+    - What specific phenomenon does the theory claim to explain?
+    - What scope conditions delimit where the theory applies?
+    answer_shape: '[D1.F<n>] <one scoped finding> — dim: problem_and_scope — problem: <question> — explanandum:
+      <object> — scope: <conditions> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source key> —
+      confidence: high|medium|low'
+    method_card: 'Do: Record the problem the theory undertakes, including a conceptual problem. Do not demand a
+      general theory from a bounded construction.'
+    indicators:
+    - explain
+    - our concern
+    - applies when
+  - key: inputs
+    id_prefix: D2
+    name: Borrowed and assumed inputs
+    scope: document
+    load_bearing: true
+    questions:
+    - What concepts does the text borrow from other domains?
+    - What premises or earlier results does the construction adopt, revise or provisionally grant?
+    answer_shape: '[D2.F<n>] <one scoped finding> — dim: inputs — input: <concept or premise> — ownership: <source
+      and status> — use: <job> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source key> — confidence:
+      high|medium|low'
+    method_card: 'Do: Keep inputs attributed and distinguish grants for argument from endorsed foundations. A reference
+      does not import the entire source system.'
+    indicators:
+    - following
+    - assume
+    - borrow
+  - key: moves
+    id_prefix: D3
+    name: Moves and resulting mechanisms
+    scope: document
+    load_bearing: true
+    questions:
+    - What mechanisms are proposed to account for the phenomenon?
+    - Which passage derives, abstracts, redefines or combines inputs into that mechanism or concept?
+    answer_shape: '[D3.F<n>] <one scoped finding> — dim: moves — move: <operation> — inputs: <premises> — result:
+      <concept or mechanism> — warrant: <bridge> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source
+      key> — confidence: high|medium|low'
+    method_card: 'Do: Trace construction as a sequence of justified moves. A failed old formulation does not by
+      itself prove the proposed replacement.'
+    indicators:
+    - derive
+    - therefore
+    - redefine
+    - combine
+  - key: synthesis
+    id_prefix: D4
+    name: Compatibility of combined frameworks
+    scope: document
+    load_bearing: false
+    questions:
+    - What distinct theoretical frameworks does the text combine?
+    - Are the combined frameworks logically compatible?
+    - Where do tensions between frameworks remain unresolved?
+    answer_shape: '[D4.F<n>] <one scoped finding> — dim: synthesis — inputs: <frameworks> — compatibility: <conditions>
+      — result: <new relation> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source key> — confidence:
+      high|medium|low'
+    method_card: 'Do: Judge compatibility at the level of selected components and their actual assumptions. Selective
+      borrowing can be coherent despite disagreement with the originator.'
+    indicators:
+    - synthesis
+    - complement
+    - tension
+  - key: contribution
+    id_prefix: D5
+    name: What the innovation adds
+    scope: document
+    load_bearing: false
+    questions:
+    - What new concepts does the text introduce?
+    - What existing concepts, if any, does the innovation replace or supplement?
+    - What analytical work does the new concept enable?
+    answer_shape: '[D5.F<n>] <one scoped finding> — dim: contribution — contribution: <claimed change> — demonstrated-work:
+      <application> — economy: <what must be retained> — anchor: "<verbatim supporting clause, <=200 chars>" — doc:
+      <source key> — confidence: high|medium|low'
+    method_card: 'Do: Separate novelty claims from demonstrated use; test parsimony against the text’s own distinctions
+      and fecundity against actual applications. Do not certify field-wide originality.'
+    indicators:
+    - we propose
+    - unlike
+    - allows us
+  - key: evidence_direction
+    id_prefix: D6
+    name: Theory and evidence articulation
+    scope: document
+    load_bearing: false
+    questions:
+    - 'What is the direction of inference: evidence to theory, theory to evidence, or iterative?'
+    - Where empirical claims are undertaken, how are abstract concepts operationalized into observable indicators?
+    - Where does a conceptual derivation supply the justification, and which step remains disputed?
+    answer_shape: '[D6.F<n>] <one scoped finding> — dim: evidence_direction — direction: <inductive, deductive,
+      iterative> — link: <theory to evidence or derivation> — limit: <scope> — anchor: "<verbatim supporting clause,
+      <=200 chars>" — doc: <source key> — confidence: high|medium|low'
+    method_card: 'Do: Match the warrant to the construction. A conceptual theory need not have measured indicators;
+      existence of a derivation differs from its adequacy.'
+    indicators:
+    - indicates
+    - derive
+    - illustrate
+    - test
+  - key: construction_comparison
+    id_prefix: X7
+    name: Comparison across supplied works
+    scope: corpus
+    load_bearing: false
+    questions:
+    - Which supplied works construct an aligned concept by different inputs or moves?
+    - Which paired warrants support continuity, revision or a difference of scope?
+    answer_shape: '[X7.F<n>] <one scoped finding> — dim: construction_comparison — relation: <aligned relation>
+      — alignment: <object, sense, owner, scope> — order-basis: <dates, uptake, or unordered> — anchor: "<verbatim
+      supporting clause, <=200 chars>" — doc: <source key> — anchor-b: "<verbatim supporting clause B>" — doc-b:
+      <different source key> — confidence: high|medium|low'
+    method_card: 'Do: Compare moves with both local arguments intact. Do not infer development, originality or uptake
+      merely from dates or shared vocabulary.'
+    indicators:
+    - explicit reference
+    - paired formulations
+    - scope qualification
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension_x_document
+    model_tier: cheap
+    output: ledger
+    max_rows: 8
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - reject_biography
+    - merge_duplicates
+    - hunt_misses
+    - name_must_keep
+    - Judge the warrant appropriate to the claim; preserve owners, scope, modality and counter-passages. Inspect
+      every declared question, not just retained positives.
+    - Every consequential table cell must cite a final finding whose complete supporting spans contain the attributed
+      fact and qualification. Split compound claims into several rows when <=200 characters cannot carry them. Use
+      a separate [F1] [F2] citation per finding. Include an anchor-b with its doc-b for a second supporting span
+      when needed, even in the same document; corpus relations always retain at least two distinct source keys.
+      Never use a scope record as a positive finding. Use comma-separated full IDs in from:, never space-concatenated
+      IDs. Judge meaning and completeness by reading the sources; code checks only anchors and IDs. Before returning,
+      read the actual final tables against their cited final rows and the source contexts, including each source
+      counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source
+      interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or
+      silent.
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: 'a reader with the supplied texts open who needs to answer: By which moves does the text build and justify
+      its proposed theory?'
+    tables:
+    - construction_moves
+    - theory_evidence_links
+    brief: '1. A construction ledger: problem and scope → inputs → move → resulting concept or mechanism → warrant
+      → limit. Lead with how the text earns its proposed contribution, distinguishing claimed novelty from demonstrated
+      work. Desks lift construction moves and theory–evidence articulation tables; a well-supported inventory is
+      sufficient.
+
+      2. Establish the most consequential local findings and their qualifications; organize the reading by the objects
+      and claims in these texts.
+
+      3. Render the named Markdown tables with final finding IDs in every positive cell. Explain the supported relation
+      and the strongest counter-passage; end with what is settled and the exact remaining question.
+
+      4. With multiple sources, build each work’s inventory before the paired comparison, and state alignment and
+      chronology limits. With one source, label the result a local inventory where a corpus relation would require
+      another work.
+
+      Every consequential table cell must cite a final finding whose complete supporting spans contain the attributed
+      fact and qualification. Split compound claims into several rows when <=200 characters cannot carry them. Use
+      a separate [F1] [F2] citation per finding. Include an anchor-b with its doc-b for a second supporting span
+      when needed, even in the same document; corpus relations always retain at least two distinct source keys.
+      Never use a scope record as a positive finding. Use comma-separated full IDs in from:, never space-concatenated
+      IDs. Judge meaning and completeness by reading the sources; code checks only anchors and IDs. Before returning,
+      read the actual final tables against their cited final rows and the source contexts, including each source
+      counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source
+      interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or
+      silent.'
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs

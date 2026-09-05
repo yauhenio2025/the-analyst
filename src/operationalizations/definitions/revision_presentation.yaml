@@ -1,0 +1,205 @@
+# Second queue: authored questions replace any earlier lifted process.
+engine_key: revision_presentation
+engine_name: How revisions are presented
+process:
+  key: dvs
+  description: How does a later text present its relationship to positions in earlier supplied works? Earlier position,
+    later treatment and any response or declared continuity claim; dated ordering if available.
+  framing: An earlier-position / later-position / claimed-relation table. Compare the text’s own account of continuity,
+    concession or clarification with changes in force, scope and support. Lead with the consequential match or mismatch,
+    then the exact wording and what it changes for the argument. Desks lift revision and evidence-change tables;
+    honest continuity is a valid result. Merge the mapped evolution and rhetoric engines. Preserve revision, concession,
+    changed wording and evidence escalation. Replace the ten-tactic checklist, career sophistication, public effectiveness
+    and strategic-amnesia presumptions with auditable presentation claims; omit motives and intent.
+  scoped_outcomes: true
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: position
+    id_prefix: D1
+    name: The position undertaken
+    scope: document
+    load_bearing: true
+    questions:
+    - What position does this text undertake, on what object and under what conditions?
+    - Which position does it attribute to a prior work or opponent, rather than undertake itself?
+    answer_shape: '[D1.F<n>] <one scoped finding> — dim: position — position: <proposition> — owner: <speaker> —
+      scope: <conditions> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source key> — confidence:
+      high|medium|low'
+    method_card: 'Do: Preserve voice and conditions before comparing commitments. Report an earlier view as attributed
+      until the earlier work is inspected.'
+    indicators:
+    - we argue
+    - previously
+    - according to
+  - key: claimed_relation
+    id_prefix: D2
+    name: The relation the text claims
+    scope: document
+    load_bearing: true
+    questions:
+    - Where does the text call its move a clarification, extension, correction, concession or departure?
+    - What exactly is said to remain unchanged and what is expressly relinquished?
+    answer_shape: '[D2.F<n>] <one scoped finding> — dim: claimed_relation — claimed-relation: <words> — retains:
+      <content> — relinquishes: <content> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source key>
+      — confidence: high|medium|low'
+    method_card: 'Do: Quote the self-description and the object it qualifies. Do not infer a continuity claim from
+      silence.'
+    indicators:
+    - clarify
+    - still
+    - no longer
+    - concede
+  - key: scope_and_force
+    id_prefix: D3
+    name: Scope and force of the wording
+    scope: document
+    load_bearing: true
+    questions:
+    - How is the position qualified by quantifier, modality, time or domain?
+    - Which local formulations change those conditions and what is their argumentative role?
+    answer_shape: '[D3.F<n>] <one scoped finding> — dim: scope_and_force — position: <proposition> — force: <operator>
+      — conditions: <scope> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source key> — confidence:
+      high|medium|low'
+    method_card: 'Do: Compare the same proposition; a firm conclusion and a tentative extension can coexist. Preserve
+      adjacent qualifying clauses.'
+    indicators:
+    - sometimes
+    - necessarily
+    - in this domain
+  - key: support
+    id_prefix: D4
+    name: Support supplied for the position
+    scope: document
+    load_bearing: false
+    questions:
+    - What evidence or derivation is offered for this position?
+    - Does the text identify new evidence or a new argument as its reason for changing the formulation?
+    answer_shape: '[D4.F<n>] <one scoped finding> — dim: support — support: <evidence or derivation> — change-reason:
+      <declared or unstated> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source key> — confidence:
+      high|medium|low'
+    method_card: 'Do: Inventory support appropriate to the claim. A stronger expression alone does not establish
+      unsupported escalation until the other work is read.'
+    indicators:
+    - because
+    - new evidence
+    - reconsider
+  - key: concession_consequence
+    id_prefix: D5
+    name: What a concession changes
+    scope: document
+    load_bearing: false
+    questions:
+    - What does the text concede and which conclusion does that concession narrow or preserve?
+    - Does it answer the conceded difficulty, distinguish its scope or leave it open?
+    answer_shape: '[D5.F<n>] <one scoped finding> — dim: concession_consequence — concession: <content> — response:
+      <move> — consequence: <affected claim> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source
+      key> — confidence: high|medium|low'
+    method_card: 'Do: Price the concession against the actual commitment. Acknowledged limits and continuing mediation
+      need not be retreat or failure.'
+    indicators:
+    - nevertheless
+    - this is not to say
+    - only partially
+  - key: revision_record
+    id_prefix: X6
+    name: Comparison across supplied works
+    scope: corpus
+    load_bearing: false
+    questions:
+    - Which earlier and later formulations concern the same owned position, and what establishes their order?
+    - Does the observed change in scope, force or support match the later text’s stated relation to the earlier
+      one?
+    - Where do paired passages show continuity, qualification or revision; which apparently new caution is already
+      present earlier?
+    answer_shape: '[X6.F<n>] <one scoped finding> — dim: revision_record — relation: <aligned relation> — alignment:
+      <object, sense, owner, scope> — order-basis: <dates, uptake, or unordered> — anchor: "<verbatim supporting
+      clause, <=200 chars>" — doc: <source key> — anchor-b: "<verbatim supporting clause B>" — doc-b: <different
+      source key> — confidence: high|medium|low'
+    method_card: 'Do: Compare the later account with the earlier text itself and its qualifications. Quote both
+      sides of every relation and a separate presentation finding where needed. Distinguish edition dates from composition,
+      no chronology from same-year order, and no concealment from unmentioned change.'
+    indicators:
+    - explicit reference
+    - paired formulations
+    - scope qualification
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension_x_document
+    model_tier: cheap
+    output: ledger
+    max_rows: 8
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - reject_biography
+    - merge_duplicates
+    - hunt_misses
+    - name_must_keep
+    - Judge the warrant appropriate to the claim; preserve owners, scope, modality and counter-passages. Inspect
+      every declared question, not just retained positives.
+    - Every consequential table cell must cite a final finding whose complete supporting spans contain the attributed
+      fact and qualification. Split compound claims into several rows when <=200 characters cannot carry them. Use
+      a separate [F1] [F2] citation per finding. Include an anchor-b with its doc-b for a second supporting span
+      when needed, even in the same document; corpus relations always retain at least two distinct source keys.
+      Never use a scope record as a positive finding. Use comma-separated full IDs in from:, never space-concatenated
+      IDs. Judge meaning and completeness by reading the sources; code checks only anchors and IDs. Before returning,
+      read the actual final tables against their cited final rows and the source contexts, including each source
+      counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source
+      interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or
+      silent.
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: 'a reader with the supplied texts open who needs to answer: How does a later text present its relationship
+      to positions in earlier supplied works?'
+    tables:
+    - positions_and_claimed_relations
+    - support_and_force
+    brief: '1. An earlier-position / later-position / claimed-relation table. Compare the text’s own account of
+      continuity, concession or clarification with changes in force, scope and support. Lead with the consequential
+      match or mismatch, then the exact wording and what it changes for the argument. Desks lift revision and evidence-change
+      tables; honest continuity is a valid result.
+
+      2. Establish the most consequential local findings and their qualifications; organize the reading by the objects
+      and claims in these texts.
+
+      3. Render the named Markdown tables with final finding IDs in every positive cell. Explain the supported relation
+      and the strongest counter-passage; end with what is settled and the exact remaining question.
+
+      4. With multiple sources, build each work’s inventory before the paired comparison, and state alignment and
+      chronology limits. With one source, label the result a local inventory where a corpus relation would require
+      another work.
+
+      Every consequential table cell must cite a final finding whose complete supporting spans contain the attributed
+      fact and qualification. Split compound claims into several rows when <=200 characters cannot carry them. Use
+      a separate [F1] [F2] citation per finding. Include an anchor-b with its doc-b for a second supporting span
+      when needed, even in the same document; corpus relations always retain at least two distinct source keys.
+      Never use a scope record as a positive finding. Use comma-separated full IDs in from:, never space-concatenated
+      IDs. Judge meaning and completeness by reading the sources; code checks only anchors and IDs. Before returning,
+      read the actual final tables against their cited final rows and the source contexts, including each source
+      counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source
+      interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or
+      silent.'
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs

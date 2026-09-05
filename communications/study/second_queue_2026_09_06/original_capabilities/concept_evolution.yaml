@@ -1,0 +1,683 @@
+engine_key: concept_evolution
+engine_name: Concept Evolution Tracker
+version: 2
+category: concepts
+kind: synthesis
+problematique: |
+  How do key terms and concepts evolve between an author's prior work
+  and their current work? When the same word appears in two texts
+  separated by years, it rarely means the same thing. Concepts are
+  living entities: they are born, mutate, merge, split, and sometimes
+  die -- replaced by successors that carry traces of their ancestors.
+
+  This engine performs multi-dimensional comparison between a prior work
+  and the current work's profile (established in Pass 1). It does not
+  merely track whether a concept appears in both places. It asks: has
+  the VOCABULARY shifted -- are the same terms used, or have new terms
+  replaced old ones? Has the METHODOLOGY changed -- does the author
+  argue for the same ideas using different evidence or analytical moves?
+  Have the METAPHORS evolved -- are the same images deployed, or have
+  they been abandoned for new ones? Has the FRAMING changed -- was
+  something once tentative now presented as axiomatic?
+
+  These four dimensions -- vocabulary, methodology, metaphor, framing --
+  constitute the engine's analytical lens. Each dimension can reveal
+  genealogical connections invisible to the others. Two works may share
+  no vocabulary but identical methodological signatures (foundational
+  influence). A concept may retain its name but undergo complete metaphor
+  replacement (deep reconceptualization masked by terminological continuity).
+
+  This is the FIRST engine in the prior work scanning chain (Pass 2).
+  It runs once per prior work, producing per-work dimensional comparisons
+  that feed into concept_appropriation_tracker and downstream synthesis.
+researcher_question: How do key terms transform across this collection?
+intellectual_lineage:
+  primary:
+    name: koselleck
+    description: 'Reinhart Koselleck (1923-2006), German historian and founder of Begriffsgeschichte (conceptual
+      history), demonstrated that political and social concepts are not stable carriers of meaning but
+      temporal indices that compress past experience and future horizons. His method of tracking how single
+      terms absorb, shed, and recombine semantic layers across centuries provides this engine''s foundational
+      logic: that concept evolution occurs through diachronic transformation of meaning-structures, not
+      mere terminological replacement. Koselleck''s insight that a word''s continuity often masks radical
+      semantic rupture makes him essential for distinguishing surface vocabulary persistence from deep
+      conceptual mutation.'
+  secondary:
+  - name: skinner
+    description: 'Quentin Skinner (1940-), Cambridge School historian, pioneered the study of how concepts
+      function as rhetorical moves within specific linguistic contexts, arguing that understanding a text
+      requires reconstructing the speech-acts its author performed. His methodology of reading for illocutionary
+      force complements Koselleck''s diachronic semantics by providing tools to detect framing shifts:
+      when an author repositions a concept from tentative hypothesis to axiom, or from polemical claim
+      to neutral description. Skinner''s attention to argumentative strategy enables this engine to track
+      not just what concepts mean but what authors DO with them across works.'
+  - name: kuhn
+    description: 'Thomas Kuhn (1922-1996), historian and philosopher of science, revealed that scientific
+      terms remain lexically stable across paradigm shifts while undergoing complete referential transformation—''mass''
+      means fundamentally different things in Newtonian versus relativistic physics despite surface continuity.
+      His analysis of incommensurability provides this engine with a model for detecting methodological
+      rupture masked by vocabulary persistence: when an author retains a term but embeds it in an incompatible
+      evidential or argumentative structure. Kuhn''s work licenses the engine''s skepticism toward terminological
+      overlap as evidence of conceptual continuity.'
+  - name: lakoff
+    description: 'George Lakoff (1941-), cognitive linguist, demonstrated that abstract concepts are systematically
+      structured by metaphorical mappings from embodied experience, and that changes in root metaphors
+      constitute changes in conceptual architecture, not mere stylistic variation. His theory of conceptual
+      metaphor provides this engine with diagnostic tools for tracking deep reconceptualization: when
+      an author shifts from mechanical to organic metaphors for social processes, the concept itself has
+      been restructured at a cognitive level. Lakoff''s work makes metaphor evolution a primary dimension
+      of analysis rather than an aesthetic supplement.'
+  - name: wittgenstein
+    description: 'Ludwig Wittgenstein (1889-1951), philosopher of language, replaced essentialist definitions
+      with the concept of family resemblance: terms gain meaning through overlapping similarities across
+      use-contexts rather than shared cores, and conceptual boundaries are drawn by practices not properties.
+      His later philosophy equips this engine to recognize that concept evolution often proceeds through
+      gradual shifts in the network of resemblances rather than sudden definitional breaks, and that apparent
+      continuity may mask the replacement of every specific usage. Wittgenstein''s method authorizes tracking
+      concepts as clusters of shifting practices rather than stable semantic units.'
+  traditions:
+  - name: begriffsgeschichte
+    description: 'Begriffsgeschichte (conceptual history), developed primarily in postwar Germany, treats
+      concepts as compressed historical experiences that structure political and social reality while
+      themselves undergoing temporal transformation. Its core commitment is that concepts have histories
+      that cannot be reduced to word histories: a term may persist while its semantic field, temporal
+      structure, and performative force shift radically. This tradition provides the engine''s foundational
+      assumption that diachronic semantic analysis reveals not just intellectual change but transformations
+      in the structures of historical experience and expectation.'
+  - name: cambridge_school
+    description: 'The Cambridge School of intellectual history, associated with Skinner and Pocock, insists
+      that texts must be read as interventions in specific linguistic contexts, with authors performing
+      speech-acts constrained and enabled by available vocabularies. Its methodology treats concepts not
+      as timeless ideas but as moves in situated arguments, making meaning inseparable from rhetorical
+      intention and polemical force. This tradition equips the engine to analyze framing shifts as changes
+      in illocutionary stance: when an author repositions a concept from one speech-act genre to another
+      across works, the concept''s function has evolved even if its definition remains stable.'
+  - name: paradigm_theory
+    description: 'Paradigm theory, originating in Kuhn''s analysis of scientific revolutions, demonstrates
+      that conceptual frameworks can be incommensurable despite sharing vocabulary: terms embedded in
+      different paradigms lack common measures of comparison because they presuppose incompatible worlds.
+      Its core insight is that revolutionary change often appears as interpretive shift rather than observational
+      correction, with new paradigms reorganizing the same evidence into different patterns. This tradition
+      enables the engine to detect methodological rupture through evidence-reweighting: when an author
+      treats the same data as supporting different conclusions across works, a paradigm-level shift may
+      have occurred beneath terminological continuity.'
+  - name: historical_semantics
+    description: 'Historical semantics studies meaning-change in natural language over time, tracking
+      how words acquire, lose, and redistribute senses through processes of generalization, specialization,
+      metaphorical extension, and pragmatic drift. Its empirical methods for documenting semantic fields,
+      collocational patterns, and usage frequencies provide technical tools for measuring vocabulary evolution
+      beyond impressionistic comparison. This tradition supplies the engine with quantifiable metrics
+      for semantic drift: frequency shifts, collocation changes, and domain transfers that indicate a
+      concept''s migration across discursive territories even when the term itself remains constant.'
+  - name: cognitive_linguistics
+    description: 'Cognitive linguistics, emerging from Lakoff and colleagues'' work, treats language as
+      grounded in embodied cognition and structured by conceptual metaphors that systematically map concrete
+      domains onto abstract ones. Its central claim is that metaphor is not ornamental but constitutive:
+      changing root metaphors changes conceptual structure, making metaphor analysis essential to understanding
+      thought itself. This tradition justifies the engine''s treatment of metaphor evolution as a primary
+      analytical dimension: when an author''s metaphors for a concept shift from containment to network
+      structures, the concept has been fundamentally reconceptualized regardless of terminological stability.'
+  key_concepts:
+  - name: begriffsgeschichte
+    definition: 'The diachronic study of how fundamental concepts absorb and reorganize historical experience,
+      revealing that terms function as temporal indices whose semantic layers compress past meanings and
+      future expectations. This engine uses begriffsgeschichte as its overarching analytical framework
+      for detecting when vocabulary persistence masks semantic transformation: a term shared between early
+      and late work may have undergone complete restructuring of its experiential content and temporal
+      horizons.'
+  - name: semantic_drift
+    definition: 'The gradual, often imperceptible process by which a term''s core meaning, connotations,
+      and typical usage contexts shift across time and texts, comparable to genetic drift in evolutionary
+      biology. The engine tracks semantic drift by measuring changes in collocation patterns, metaphorical
+      associations, and evidential contexts: a concept exhibits drift when it migrates to new discursive
+      domains, attracts different modifiers, or appears in altered argumentative structures across an
+      author''s corpus.'
+  - name: conceptual_genealogy
+    definition: 'The tracing of ancestral relationships between concepts, identifying which terms serve
+      as precursors, successors, or hybrid offspring of others within an intellectual lineage. This engine
+      constructs conceptual genealogies by detecting when a concept in the current work inherits vocabulary
+      from one prior concept, methodology from another, and metaphors from a third, revealing that concepts
+      reproduce through recombination rather than cloning: apparent descendants often have multiple parents
+      and exhibit traits from non-obvious ancestors.'
+  - name: paradigm_shift
+    definition: 'A transformation in interpretive framework so fundamental that it renders earlier and
+      later approaches incommensurable, with shared terms referring to incompatible conceptual structures.
+      The engine detects paradigm shifts not through vocabulary replacement but through methodological
+      rupture: when an author treats the same evidence as supporting opposite conclusions, deploys incompatible
+      standards of validity, or shifts root metaphors across works, a paradigm-level change has occurred
+      beneath surface terminological continuity.'
+  - name: family_resemblance
+    definition: 'Wittgenstein''s model of conceptual coherence through overlapping similarities rather
+      than shared essence, where meanings form networks of partial overlap without necessary common features.
+      This engine uses family resemblance to track concept evolution through gradual replacement of usage
+      contexts: a concept may maintain apparent continuity while every specific application changes, with
+      later uses resembling earlier ones only through intermediate links in a chain where no two endpoints
+      share defining features.'
+  - name: metaphor_evolution
+    definition: 'The transformation of the root metaphors structuring a concept''s cognitive architecture,
+      indicating deep reconceptualization beyond terminological or definitional change. The engine tracks
+      metaphor evolution by cataloging source domains: when an author shifts from describing social phenomena
+      through mechanical metaphors to organic ones, or from containment to network imagery, the underlying
+      concept has been restructured at the level of embodied cognition, making this dimension often more
+      revelatory than vocabulary or framing shifts.'
+  - name: framing_trajectory
+    definition: 'The path by which a concept''s rhetorical positioning and epistemic status changes across
+      an author''s works, moving along axes from tentative to axiomatic, polemical to neutral, marginal
+      to central, or contested to settled. This engine maps framing trajectories by analyzing changes
+      in illocutionary force: when a concept once introduced with hedges and qualifiers appears later
+      as an undefended premise, or shifts from a hypothesis requiring argument to a framework organizing
+      arguments, its framing has evolved independently of its semantic content.'
+  - name: vocabulary_birth_death
+    definition: 'The emergence of new terms and disappearance of old ones within an author''s conceptual
+      system, marking moments of explicit terminological innovation or abandonment that may signal underlying
+      conceptual rupture or continuity. The engine tracks vocabulary birth/death as a dimension distinct
+      from semantic drift: a concept may die as a term while surviving in successor vocabulary, or persist
+      terminologically while losing all functional roles, making term-level demography an imperfect but
+      essential index of conceptual evolution and intellectual succession patterns.'
+analytical_dimensions:
+- key: vocabulary_evolution
+  description: |
+    Track the birth, death, and mutation of terms between the prior work and the current work. Which terms are shared? Which appeared in the prior work but were later abandoned or renamed? When the same term persists, has its meaning drifted? Vocabulary comparison is the most reliable surface signal for tracing direct genealogical connections.
+  probing_questions:
+  - What terms appear in both the prior work and the current work?
+  - Which terms from the prior work have been abandoned -- and what replaced them?
+  - When the same term persists, has its meaning shifted (semantic drift)?
+  - Are there neologisms in the current work that have precursor forms in the prior work?
+  - What does the pattern of vocabulary birth/death reveal about the author's intellectual trajectory?
+  depth_guidance:
+    surface: List shared terms and obvious replacements between the two works
+    standard: Map vocabulary with semantic drift analysis, precursor-successor relationships, and evidence
+      from both texts showing meaning shifts
+    deep: 'Full vocabulary archaeology: complete term inventory for both works, detailed drift analysis
+      with quoted evidence, vocabulary clusters that reveal conceptual reorganization, and assessment
+      of whether terminological changes reflect genuine reconceptualization or mere relabeling'
+- key: methodology_evolution
+  description: |
+    Compare how the author argues for similar ideas across works. Do they use the same evidence types, the same analytical moves, the same reasoning patterns? Methodological consistency across different subject matter is a strong signal of foundational influence. Methodological divergence may reveal paradigm shifts or intellectual maturation.
+  probing_questions:
+  - Does the author use the same types of evidence in both works?
+  - Are the same analytical moves deployed -- the same patterns of argument?
+  - Has the author's relationship to empirical data changed?
+  - Have the reasoning patterns become more or less formal?
+  - Does methodological change track with or diverge from vocabulary change?
+  depth_guidance:
+    surface: Note whether the same general approach is used in both works
+    standard: Compare specific analytical moves, evidence types, and reasoning patterns with examples
+      from both texts
+    deep: 'Full methodological comparison: map the complete analytical toolkit in each work, identify
+      which tools were added/dropped/modified, assess whether changes are progressive (building sophistication)
+      or paradigmatic (switching frameworks), and match against the target work''s methodological signatures
+      from Pass 1'
+- key: metaphor_evolution
+  description: |
+    Compare the metaphors used to convey key ideas across works. Metaphors are not decorative -- they structure thought. When an author switches from mechanical metaphors to organic ones, or from spatial to temporal metaphors, something deep has changed in how they conceptualize the problem. Metaphor migration across works reveals intellectual continuities invisible at the vocabulary or methodology level.
+  probing_questions:
+  - What governing metaphors appear in the prior work, and do they persist?
+  - Have metaphors evolved -- simpler to more elaborate, or replaced entirely?
+  - Do new metaphors in the current work have precursor forms in the prior work?
+  - What does metaphor change reveal about shifts in how the author SEES the problem?
+  - Are there dead metaphors from the prior work that have become literal terms?
+  depth_guidance:
+    surface: Identify the dominant metaphors in each work and note changes
+    standard: Map metaphor evolution with examples, classify changes (elaboration, replacement, literalization),
+      and assess what the metaphor shifts reveal about conceptual change
+    deep: 'Full metaphor archaeology: complete metaphor inventory, evolution trajectories, source domain
+      analysis (where metaphors come from), interaction with vocabulary and methodology changes, and assessment
+      of whether metaphor shifts are leading or lagging indicators of conceptual change'
+- key: framing_evolution
+  description: |
+    Track how the author frames the same or related problems across works. Framing analysis captures the confidence trajectory of ideas: was something presented tentatively before but definitively now? Was an idea exploratory in the prior work but axiomatic in the current one? Framing shifts are CRITICAL for downstream tactic detection -- escalation, silent revision, and strategic reframing are all visible through the framing lens.
+  probing_questions:
+  - How was this idea framed in the prior work -- tentative, qualified, definitive, axiomatic, exploratory?
+  - How is the same idea framed now -- has confidence increased, decreased, or changed character?
+  - Has the PROBLEM being addressed been reframed -- same question asked differently?
+  - Are there ideas that were once hedged that are now presented as established?
+  - Does the framing shift track with evidence changes, or is it rhetorical?
+  depth_guidance:
+    surface: Note the most obvious framing shifts (tentative-to-definitive, etc.)
+    standard: Map framing changes with source/target classifications (tentative/qualified/definitive/axiomatic/exploratory),
+      evidence for the shift, and assessment of whether the shift is epistemically justified
+    deep: 'Full framing analysis: complete framing inventory for shared ideas, confidence trajectories
+      plotted across works, interaction with vocabulary/methodology/metaphor changes, assessment of epistemic
+      vs. rhetorical motivation for shifts, and identification of framing patterns that signal specific
+      downstream tactics'
+- key: concept_trajectory
+  description: |
+    Trace the lifecycle of individual concepts between the prior work and the current work. A concept may undergo expansion (taking on more meaning), narrowing (becoming more precise), reversal (meaning the opposite), splitting (becoming two concepts), or merger (absorbing another). Each trajectory type has different genealogical significance.
+  probing_questions:
+  - What evolution type characterizes each shared concept -- expansion, narrowing, reversal, splitting,
+    merger?
+  - What triggered each conceptual change -- new evidence, new interlocutors, internal logic?
+  - Are there concepts that split in the prior work and recombined in the current work, or vice versa?
+  - Which concepts show the most dramatic transformation?
+  - Are there concepts that appear stable but have undergone subtle internal reorganization?
+  depth_guidance:
+    surface: Identify 3-5 key concepts and their evolution type
+    standard: Map concept trajectories with evidence, triggers, and classification of evolution type;
+      include genealogies showing ancestor-descendant relationships
+    deep: 'Full conceptual lifecycle analysis: all shared concepts tracked with multi-stage trajectories,
+      triggers for each stage, genealogy trees showing how concepts are related across works, and assessment
+      of which trajectories are intellectually productive vs. degenerative'
+- key: dimensional_comparison_matrix
+  description: |
+    The synthetic view: how do vocabulary, methodology, metaphor, and framing changes interact for each concept? A concept may show vocabulary continuity but methodological divergence (same word, different argument). Or metaphor change but framing stability (new imagery, same confidence level). The matrix reveals which dimensions are coupled and which are independent -- a key diagnostic for understanding the nature of intellectual change.
+  probing_questions:
+  - For each key concept, which dimensions changed and which remained stable?
+  - Are vocabulary changes correlated with methodology changes, or independent?
+  - Do metaphor shifts predict framing shifts, or are they decoupled?
+  - Where do all four dimensions change simultaneously -- indicating genuine reconceptualization?
+  - Where do all four dimensions remain stable -- indicating true intellectual continuity?
+  depth_guidance:
+    surface: Summarize which dimensions changed most across all concepts
+    standard: Per-concept matrix showing change/stability across all four dimensions with brief evidence;
+      identify patterns of coupling and decoupling
+    deep: 'Full dimensional matrix: every concept scored across all dimensions, coupling analysis, identification
+      of change archetypes (e.g., ''vocabulary-led change'', ''methodology-led change'', ''metaphor-first
+      reconceptualization''), and assessment of what the coupling patterns reveal about the author''s
+      intellectual process'
+capabilities:
+- key: track_vocabulary_evolution
+  description: Map term birth, death, mutation, and semantic drift between prior and current work
+  produces_dimensions:
+  - vocabulary_evolution
+  requires_dimensions: []
+  extended_description: |-
+    This capability performs Koselleckian Begriffsgeschichte on the author's own conceptual vocabulary, treating each term as carrying sedimented layers of meaning that accumulate, shift, or erode across time. It does not merely identify shared words between prior and current work, but traces semantic drift—the phenomenon where a term retains its orthographic form while its conceptual content transforms. The capability distinguishes genuine neologisms from terminological replacements (where a new word captures what an old word once meant), from semantic mutations (where the same word now does different work), from dead metaphors that have calcified into technical terms. Each type of vocabulary change has distinct genealogical significance: replacements suggest deliberate distancing from prior formulations, mutations suggest conceptual drift that may be unconscious, and literalization of metaphors suggests a concept has achieved theoretical maturity.
+
+    This capability provides the foundational inventory for all other dimensional analyses. Without accurate vocabulary mapping, methodology comparison becomes impossible—you cannot determine whether analytical moves have changed if you cannot reliably identify when the same concept is being discussed. It feeds directly into concept_trajectory analysis by establishing the terminological boundaries of concepts, and into framing_evolution by providing the linguistic evidence for confidence shifts. The challenge is distinguishing homonyms (same word, unrelated meanings across works) from polysemes (same word, related meanings) from genuine semantic continuity with drift. A naive approach treats orthographic identity as conceptual identity; a sophisticated approach recognizes that vocabulary stability can mask profound reconceptualization, while vocabulary change can disguise underlying continuity.
+  intellectual_grounding:
+    thinker: koselleck
+    concept: begriffsgeschichte
+    method: Koselleck's method treats concepts as contested, temporally indexed semantic fields rather
+      than stable definitions. Vocabulary evolution is traced by identifying the Erwartungshorizont (horizon
+      of expectation) and Erfahrungsraum (space of experience) encoded in each term's usage, revealing
+      how changing historical conditions sediment into conceptual meaning.
+  indicators:
+  - The same term appears in both works but is defined differently or used in incompatible contexts
+  - A central term from the prior work is conspicuously absent from the current work, with no obvious
+    replacement
+  - New compound terms in the current work combine roots from the prior work in novel configurations
+  - The author explicitly flags that they are using a familiar term 'in a new sense' or distances themselves
+    from prior usage
+  - Surrounding vocabulary has changed while a key term persists, suggesting the term now operates in
+    a different semantic field
+  depth_scaling:
+    surface: List of shared terms, obviously abandoned terms, and clear neologisms with brief notes on
+      apparent changes
+    standard: Systematic vocabulary inventory with semantic drift analysis for persistent terms, precursor-successor
+      mappings for replacements, and quoted evidence showing meaning shifts in context
+    deep: Complete term archaeology with frequency analysis, collocation patterns, semantic field mapping
+      for both works, detailed drift trajectories with timestamped evidence, and assessment of whether
+      terminological changes reflect genuine reconceptualization, strategic rebranding, or disciplinary
+      accommodation
+- key: compare_methodology
+  description: Compare analytical moves, evidence types, and reasoning patterns across works
+  produces_dimensions:
+  - methodology_evolution
+  requires_dimensions: []
+  extended_description: |-
+    This capability performs analytical signature comparison across works, identifying the author's characteristic moves of thought—the recursive patterns of evidence-gathering, argument-building, and conceptual justification that persist across different subject matter. Following Kuhn's insight that paradigms are defined less by explicit doctrine than by shared exemplars and problem-solving techniques, this capability treats methodology as the deep grammar of intellectual practice. It distinguishes between surface-level topic shifts (writing about different things) and genuine methodological transformation (thinking in fundamentally different ways about any topic). The capability tracks what types of phenomena count as evidence, what forms of argumentation are deployed, whether reasoning is inductive or deductive, whether the author privileges formal analysis or thick description, and whether empirical data is treated as theory-neutral observation or theory-laden interpretation.
+
+    Methodology comparison is particularly powerful for detecting foundational influence that operates beneath vocabulary level. An author may abandon all the terminology of their earlier work while retaining its analytical habits—or conversely, may preserve vocabulary while completely transforming how they argue. This capability enables dimensional_comparison_matrix to identify 'methodology-led change' (where new analytical tools drive conceptual revision) versus 'vocabulary-led change' (where terminological innovation precedes methodological adaptation). The non-trivial challenge is distinguishing methodological evolution that represents progressive sophistication (adding tools to the toolkit) from paradigmatic rupture (switching toolkits entirely). A naive comparison notes whether 'the author still uses case studies'; a sophisticated comparison asks whether case studies now do different epistemic work, whether they are selected by different criteria, and whether they stand in different relationships to theoretical claims.
+  intellectual_grounding:
+    thinker: kuhn
+    concept: paradigm_exemplar
+    method: Kuhn argued that scientific paradigms are transmitted through exemplary problem-solutions
+      that demonstrate how to do research, not through explicit methodological rules. This capability
+      identifies the author's exemplars—the characteristic ways they approach problems—and tracks whether
+      these exemplars persist, evolve, or undergo revolutionary replacement across works.
+  indicators:
+  - The author makes similar types of arguments (e.g., inference to best explanation, reduction to absurdity)
+    in both works despite different subject matter
+  - Evidence types shift dramatically (e.g., from ethnographic observation to quantitative data, or from
+    textual exegesis to experimental results)
+  - Relationship to counterexamples changes (e.g., from addressing them extensively to dismissing them,
+    or from treating them as falsifiers to treating them as limiting cases)
+  - Level of formalization changes (e.g., from informal prose to mathematical models, or from axiomatic
+    systems to narrative accounts)
+  - The author explicitly reflects on methodological changes ('my earlier approach was limited by...',
+    'I now realize that...')
+  depth_scaling:
+    surface: General assessment of whether the same analytical approach (e.g., 'comparative historical
+      analysis', 'conceptual genealogy') is used in both works
+    standard: 'Systematic comparison of specific analytical moves with examples: types of evidence deployed,
+      patterns of argumentation, relationship to empirical data, reasoning structures, with assessment
+      of which methodological elements persisted or changed'
+    deep: Complete methodological profile for each work including epistemic commitments, problem-selection
+      criteria, evidence hierarchies, argumentative strategies, and relationship to theoretical versus
+      empirical claims; developmental trajectory analysis showing whether changes are progressive (accumulating
+      sophistication), paradigmatic (switching frameworks), or degenerative (losing analytical power)
+- key: trace_metaphor_change
+  description: Track governing metaphors, their evolution, replacement, and what shifts reveal about conceptual
+    change
+  produces_dimensions:
+  - metaphor_evolution
+  requires_dimensions: []
+  extended_description: |-
+    This capability performs cognitive archaeology on the author's conceptual imagery, recognizing with Lakoff that metaphors are not decorative rhetorical flourishes but the fundamental structures through which abstract concepts are made thinkable. It traces the source domains (concrete, embodied experiences) that the author maps onto target domains (abstract theoretical constructs) and tracks how these mappings evolve. When an author shifts from mechanical metaphors (systems, mechanisms, functions) to organic metaphors (growth, evolution, ecology), or from spatial metaphors (boundaries, territories, positions) to temporal metaphors (development, trajectories, genealogies), the shift signals a transformation in the underlying ontology of their thought. The capability distinguishes governing metaphors (pervasive structural mappings that organize entire domains of thought) from occasional analogies, and tracks metaphor lifecycles: birth (new source domain introduced), elaboration (existing metaphor extended to new entailments), competition (multiple metaphors for the same concept), replacement (one source domain supplants another), and literalization (dead metaphors that become technical vocabulary).
+
+    Metaphor analysis reveals intellectual continuities that vocabulary and methodology tracking miss. Two works may share no technical terms and employ different analytical methods, yet deploy identical metaphorical structures—a signal of deep cognitive continuity beneath surface change. Conversely, metaphor replacement while vocabulary persists indicates genuine reconceptualization masked by terminological conservation. This capability feeds framing_evolution by identifying when metaphor shifts correlate with confidence changes (tentative exploration often uses hedged, qualified metaphors; definitive claims use bold, extended metaphors), and enables dimensional_comparison_matrix to detect 'metaphor-first reconceptualization' where cognitive imagery drives subsequent terminological and methodological changes. The challenge is distinguishing live metaphors (that genuinely structure thought and generate novel entailments) from dead metaphors (fossilized in conventional usage) from purely ornamental analogies.
+  intellectual_grounding:
+    thinker: lakoff
+    concept: conceptual_metaphor_theory
+    method: Lakoff's cognitive linguistics demonstrates that abstract reasoning depends on systematic
+      mappings from concrete source domains to abstract target domains. This capability identifies these
+      mappings by analyzing the systematic entailments and inferences that metaphors generate, tracking
+      which source domains the author recruits and how these choices constrain subsequent theoretical
+      possibilities.
+  indicators:
+  - Recurring patterns of imagery appear across multiple discussions of a concept (e.g., repeatedly describing
+    social structures using architectural metaphors)
+  - The author extends a metaphor to generate novel inferences or predictions ('if society is an organism,
+    then...')
+  - A previously dominant metaphor disappears entirely or is explicitly rejected ('the mechanical model
+    fails to capture...')
+  - Mixed metaphors appear, suggesting the author is transitioning between conceptual frameworks
+  - The author mobilizes a metaphor from one domain (e.g., biology) when discussing a different domain
+    (e.g., economics), suggesting cross-domain conceptual transfer
+  depth_scaling:
+    surface: Identification of the most prominent metaphors in each work and notation of obvious changes
+      (e.g., 'prior work used machine metaphors, current work uses network metaphors')
+    standard: Systematic metaphor inventory with source-domain analysis, classification of changes (elaboration/replacement/literalization),
+      mapping of entailments that each metaphor generates, and assessment of what metaphor shifts reveal
+      about ontological commitments
+    deep: Complete metaphor archaeology including low-frequency and embedded metaphors, developmental
+      trajectories showing metaphor birth/competition/death, analysis of metaphor interactions and tensions,
+      correlation analysis with vocabulary and methodology changes, identification of whether metaphor
+      shifts lead or lag other conceptual changes, and assessment of cognitive productivity (which metaphors
+      generated novel insights versus which constrained thinking)
+- key: analyze_framing_shifts
+  description: Map confidence trajectories and problem reframing between works, producing signals for
+    downstream tactic detection
+  produces_dimensions:
+  - framing_evolution
+  requires_dimensions: []
+  extended_description: |-
+    This capability performs epistemic confidence trajectory analysis, tracking how the author's stance toward their own ideas evolves across works. Drawing on Skinner's contextualist insight that intellectual acts are rhetorical performances shaped by strategic communicative goals, it recognizes that the same propositional content can be framed as tentative hypothesis, qualified claim, definitive assertion, axiomatic foundation, or exploratory speculation—and that these framing differences are not merely ornamental but epistemically and strategically significant. The capability identifies linguistic markers of epistemic stance (modal verbs, hedging devices, qualification patterns, assertion strength, evidential basis claims) and maps confidence trajectories: ideas that were once presented with heavy hedging now asserted definitively, questions that were once central now treated as settled, claims that were once boldly stated now qualified into irrelevance. Each trajectory type has distinct genealogical and tactical significance: escalation (increasing confidence, often correlated with accumulated evidence or disciplinary acceptance), de-escalation (decreasing confidence, possibly due to counterevidence or strategic retreat), and reframing (changing the question being asked rather than the answer given).
+
+    Framing analysis is critical for downstream tactic detection engines (concept_appropriation_tracker, revisionist_historiography_detector) because rhetorical shifts often precede or accompany conceptual maneuvers. An author who silently escalates confidence without corresponding evidence changes may be engaged in strategic positioning; an author who reframes a problem to make their earlier claims appear prescient may be practicing retrospective vindication. This capability feeds directly into concept_trajectory by providing the epistemic dimension of concept evolution (did the concept itself change, or just the author's confidence in it?), and enables dimensional_comparison_matrix to identify 'framing-led change' versus 'evidence-led change'. The challenge is distinguishing legitimate epistemic confidence increases (based on accumulated evidence, theoretical integration, or empirical validation) from rhetorical confidence increases (strategic assertion unsupported by evidential gains). A naive analysis notes whether claims are hedged or unhedged; a sophisticated analysis tracks the relationship between confidence trajectories and evidential trajectories, identifying when they diverge.
+  intellectual_grounding:
+    thinker: skinner
+    concept: rhetorical_contextualism
+    method: Skinner's Cambridge School approach treats intellectual texts as performative speech acts
+      situated in rhetorical contexts. Authors frame arguments strategically to anticipate objections,
+      claim novelty, or position themselves relative to rivals. This capability identifies framing devices
+      and tracks how they shift as the author's strategic context evolves across works.
+  indicators:
+  - Modal verb usage changes dramatically (e.g., 'might' and 'could' in the prior work become 'must' and
+    'will' in the current work)
+  - Ideas previously flagged as 'preliminary', 'exploratory', or 'speculative' are presented without such
+    qualifications in later work
+  - The author provides explicit retrospective reframing ('what I was really arguing was...', 'the earlier
+    formulation obscured the key insight...')
+  - 'Hedging patterns change: claims previously surrounded by disclaimers and scope limitations are asserted
+    more boldly'
+  - 'Problem formulations shift: a question previously marked as open or contested is now treated as settled
+    or foundational'
+  depth_scaling:
+    surface: Identification of the most obvious framing shifts (e.g., 'tentative hypothesis in prior work
+      becomes definitive claim in current work') for 3-5 key ideas
+    standard: Systematic framing classification for shared ideas using epistemic stance categories (tentative/qualified/definitive/axiomatic/exploratory),
+      mapping of confidence trajectories with quoted evidence, and assessment of whether shifts correlate
+      with evidential changes or appear rhetorical
+    deep: Complete framing inventory for all shared ideas with fine-grained stance analysis, confidence
+      trajectory plotting over time, correlation analysis with vocabulary/methodology/metaphor changes,
+      identification of framing patterns that signal specific tactical moves (silent escalation, strategic
+      hedging, preemptive reframing), and assessment of epistemic versus rhetorical motivation for each
+      shift using evidential base comparison
+- key: trace_concept_lifecycles
+  description: Track individual concept trajectories -- expansion, narrowing, reversal, splitting, merger
+    -- with genealogies
+  produces_dimensions:
+  - concept_trajectory
+  requires_dimensions:
+  - vocabulary_evolution
+  - framing_evolution
+  extended_description: |-
+    This capability performs conceptual genealogy and lifecycle analysis, treating concepts as living entities that undergo birth, growth, transformation, splitting, merging, and death. Following Wittgenstein's insight that concepts have family resemblance structures rather than necessary and sufficient conditions, it recognizes that conceptual identity across time is often a matter of overlapping similarities and continuous chains of connection rather than preservation of essential features. The capability classifies concept evolution types: expansion (the concept takes on additional meaning, covering more phenomena or carrying more theoretical weight), narrowing (the concept becomes more precise, shedding connotations or restricting scope), reversal (the concept comes to mean something opposed to its earlier meaning—a particularly significant genealogical event), splitting (one concept becomes two, usually through disambiguation or theoretical differentiation), merger (multiple concepts collapse into one, suggesting theoretical unification or loss of distinction), and replacement (the concept is abandoned in favor of a successor that performs similar work). Each trajectory type has distinct intellectual significance: splitting often signals theoretical maturation and increased sophistication; merger can signal either productive synthesis or impoverishing reduction; reversal suggests either recognition of prior error or adaptation to new evidence that inverts earlier understanding.
+
+    This capability integrates vocabulary, metaphor, and framing analyses to produce concept-level genealogies. A concept may undergo vocabulary mutation (new terms), metaphor replacement (new imagery), and framing escalation (increased confidence) simultaneously—suggesting coherent reconceptualization. Or these dimensions may diverge: vocabulary stability with metaphor change suggests deep reconceptualization masked by terminological continuity. Concept lifecycles feed into dimensional_comparison_matrix as the unit of synthetic analysis, and provide critical input for downstream engines detecting conceptual appropriation or revisionist historiography. The challenge is identifying when a concept has genuinely evolved versus when an author has simply relabeled ideas, and distinguishing productive conceptual transformation from degenerative drift. A naive approach treats vocabulary changes as concept changes; a sophisticated approach recognizes that concepts can persist across terminological shifts and can fragment despite terminological stability.
+  intellectual_grounding:
+    thinker: wittgenstein
+    concept: family_resemblance
+    method: 'Wittgenstein argued that concepts are not defined by essential properties but by networks
+      of overlapping similarities, like family resemblances. This capability traces conceptual evolution
+      by identifying similarity chains across works: a concept may transform gradually through intermediate
+      stages where each stage resembles its predecessor, even if the endpoints share little apparent similarity.'
+  indicators:
+  - The same concept name appears in both works but is used to explain different phenomena or solve different
+    problems
+  - A previously unified concept is now discussed under multiple separate headings or with explicit differentiation
+  - Multiple concepts from the prior work are now discussed under a single unified framework or vocabulary
+    term
+  - The author explicitly marks conceptual revision ('my earlier notion of X was too broad/narrow/confused...')
+  - A concept that was foundational in the prior work is peripheral or absent in the current work, suggesting
+    conceptual death or marginalization
+  depth_scaling:
+    surface: Classification of 3-5 key concepts by evolution type (expansion/narrowing/reversal/splitting/merger)
+      with brief examples
+    standard: Systematic concept trajectory mapping for all shared concepts with evolution type classification,
+      triggering factors (new evidence, new interlocutors, internal logic), genealogical chains showing
+      ancestor-descendant relationships, and assessment of which trajectories are intellectually productive
+    deep: Complete conceptual lifecycle analysis with multi-stage trajectories for each concept, detailed
+      genealogy trees showing how concepts branch, merge, and transform across works, trigger analysis
+      for each evolutionary event, integration with vocabulary/metaphor/framing dimensions to identify
+      coherent versus divergent evolution, and assessment of whether transformations represent progressive
+      sophistication, paradigmatic rupture, or degenerative drift
+- key: synthesize_dimensional_matrix
+  description: Produce per-concept comparison across all four dimensions, revealing coupling patterns
+    and change archetypes
+  produces_dimensions:
+  - dimensional_comparison_matrix
+  requires_dimensions:
+  - vocabulary_evolution
+  - methodology_evolution
+  - metaphor_evolution
+  - framing_evolution
+  extended_description: |-
+    This capability produces the integrative synthesis that makes concept evolution analysis genuinely multi-dimensional rather than merely multi-aspect. For each concept traced between prior and current work, it constructs a four-dimensional comparison matrix showing whether vocabulary, methodology, metaphor, and framing have changed or remained stable—and more importantly, how these dimensions interact. The matrix reveals coupling patterns: dimensions that change together (suggesting coordinated reconceptualization) versus dimensions that change independently (suggesting surface transformation masking deep continuity, or vice versa). It identifies change archetypes: 'vocabulary-led change' (where terminological innovation drives subsequent methodological and metaphorical adaptation), 'methodology-led change' (where new analytical tools force conceptual revision), 'metaphor-first reconceptualization' (where new imagery enables previously unthinkable formulations), and 'framing-only change' (where rhetorical stance shifts without corresponding conceptual transformation). Each archetype has distinct genealogical significance and implies different relationships between prior and current work.
+
+    The matrix enables identification of intellectual continuities invisible to single-dimension analysis. A concept may show complete vocabulary replacement but perfect methodological continuity—signaling terminological distancing from a framework whose analytical habits persist. Or vocabulary and metaphor may remain stable while methodology transforms—suggesting an author is using old language to do genuinely new work. The capability provides the synthetic view required for downstream engines to assess appropriation tactics (did the author genuinely engage with the prior work or merely harvest vocabulary?) and to evaluate intellectual honesty (are claimed breakthroughs genuine reconceptualizations or rebranded continuities?). The challenge is avoiding false positives where apparent coupling is coincidental, and false negatives where genuine coupling is obscured by complex mediating factors. A naive synthesis reports change/stability in each dimension independently; a sophisticated synthesis identifies second-order patterns in how dimensions interact, revealing the author's characteristic pathways of conceptual change.
+  intellectual_grounding:
+    thinker: koselleck
+    concept: semantic_field_analysis
+    method: Koselleck analyzed concepts not in isolation but as elements of semantic fields where changes
+      in one concept ripple through related concepts and dimensions. This capability treats the four dimensions
+      (vocabulary, methodology, metaphor, framing) as constituting a semantic field for each concept,
+      identifying how perturbations in one dimension propagate through others or remain isolated.
+  indicators:
+  - Changes across multiple dimensions appear coordinated (e.g., vocabulary change accompanies metaphor
+    change and framing shift for the same concept)
+  - One dimension changes while others remain stable (e.g., new vocabulary but identical metaphors and
+    methodology)
+  - All four dimensions remain stable across works for certain concepts but change for others, suggesting
+    selective conceptual revision
+  - The author's explicit reflections on their intellectual development mention some dimensions (e.g.,
+    'methodological refinement') but not others (metaphors, framing)
+  - Similar coupling patterns appear across multiple concepts, suggesting systematic relationships between
+    dimensions rather than concept-specific accidents
+  depth_scaling:
+    surface: Summary statistics showing which dimensions changed most frequently across all concepts,
+      with 2-3 examples of different change patterns
+    standard: Per-concept matrix showing change/stability across all four dimensions with brief supporting
+      evidence, identification of 3-5 dominant coupling patterns (e.g., 'vocabulary and metaphor change
+      together but methodology remains stable'), and preliminary archetype classification
+    deep: Complete dimensional matrix for every traced concept with detailed coupling analysis, identification
+      of change archetypes (vocabulary-led, methodology-led, metaphor-first, framing-only, etc.), systematic
+      assessment of whether coupling patterns are concept-specific or systematic across the author's work,
+      second-order pattern analysis revealing how dimensions interact, and diagnostic assessment of what
+      coupling patterns reveal about the author's intellectual process (whether they are vocabulary-first
+      thinkers, methodology-first thinkers, etc.)
+composability:
+  shares_with:
+    dimensional_comparisons: Per-concept vocabulary/methodology/metaphor/framing comparisons for downstream
+      engines
+    foundational_patterns: Thinking patterns, analytical methods, and cognitive habits that persist across
+      works
+    cross_domain_transfers: Concepts, methods, or analogies that crossed domain boundaries between works
+    reversal_evidence: Positions reversed or significantly modified, with framing evidence
+    vocabulary_maps: Term inventories for both works with birth/death/mutation classifications
+  consumes_from:
+    target_work_profile: From Pass 1 profiling -- key ideas, vocabulary, methodological signatures of
+      the current work
+    relationship_classification: From Pass 1.5 -- whether this prior work is direct_precursor, indirect_contextualizer,
+      different_field_relevant, counter_position, or tangential
+    target_vocabulary: From Pass 1 -- key terms to trace in the prior work
+    target_methodological_signature: From Pass 1 -- analytical approach summary for comparison
+  synergy_engines:
+  - concept_appropriation_tracker
+  - conditions_of_possibility_analyzer
+  - evolution_tactics_detector
+  - inferential_commitment_mapper
+depth_levels:
+- key: surface
+  description: Identify shared concepts, note obvious vocabulary changes, and list dominant evolution
+    types
+  typical_passes: 1
+  suitable_for: Quick assessment, straightforward prior works, tangential relationships, preliminary scoping
+  passes:
+  - pass_number: 1
+    label: Concept Discovery Scan
+    stance: discovery
+    focus_dimensions:
+    - vocabulary_evolution
+    - concept_trajectory
+    focus_capabilities:
+    - track_vocabulary_evolution
+    - trace_concept_lifecycles
+    consumes_from: []
+    description: |
+      Scan for shared concepts between prior and current work. Note
+      obvious vocabulary changes (births, deaths, renames) and list
+      the dominant evolution types (expansion, narrowing, reversal).
+      At surface depth this is a quick scan for the strongest signals.
+- key: standard
+  description: Multi-dimensional comparison across vocabulary, methodology, metaphor, and framing for
+    each key concept. Per-concept trajectories with evidence. Foundational patterns and cross-domain transfers
+    identified.
+  typical_passes: 2
+  suitable_for: Most prior work comparisons, direct precursors with 3-10 shared concepts, standard genealogy
+    analysis
+  passes:
+  - pass_number: 1
+    label: Four-Dimension Excavation
+    stance: discovery
+    focus_dimensions:
+    - vocabulary_evolution
+    - methodology_evolution
+    - metaphor_evolution
+    - framing_evolution
+    focus_capabilities:
+    - track_vocabulary_evolution
+    - compare_methodology
+    - trace_metaphor_change
+    - analyze_framing_shifts
+    consumes_from: []
+    description: |
+      Independently excavate the four evolution dimensions. Track
+      vocabulary drift with evidence from both texts — births, deaths,
+      renames, semantic shifts. Compare methodology across works —
+      evidence types, analytical moves, reasoning patterns. Trace
+      metaphor migration between source domains. Map framing shifts
+      in how problems are positioned and confidence levels change.
+  - pass_number: 2
+    label: Trajectory Synthesis & Dimensional Matrix
+    stance: architecture
+    focus_dimensions:
+    - concept_trajectory
+    - dimensional_comparison_matrix
+    focus_capabilities:
+    - trace_concept_lifecycles
+    - synthesize_dimensional_matrix
+    consumes_from:
+    - 1
+    description: |
+      With the four-dimension excavation complete, trace individual
+      concept lifecycles showing expansion, narrowing, reversal,
+      splitting, or merger trajectories. Synthesize the dimensional
+      comparison matrix revealing which dimensions changed in tandem
+      and which remained stable — identifying foundational patterns
+      and cross-domain transfers.
+- key: deep
+  description: 'Full Koselleckian conceptual history: complete term inventories, detailed drift analysis
+    with quoted evidence, metaphor archaeology, framing trajectory mapping, coupling analysis across dimensions,
+    concept genealogy trees, and assessment of intellectual change archetypes. Suitable for the most important
+    prior works.'
+  typical_passes: 3
+  suitable_for: Key prior works with extensive conceptual overlap, prolific authors, works spanning multiple
+    domains, direct precursors to the author's most important ideas
+  passes:
+  - pass_number: 1
+    label: Comprehensive Four-Dimension Excavation
+    stance: discovery
+    focus_dimensions:
+    - vocabulary_evolution
+    - methodology_evolution
+    - metaphor_evolution
+    - framing_evolution
+    focus_capabilities:
+    - track_vocabulary_evolution
+    - compare_methodology
+    - trace_metaphor_change
+    - analyze_framing_shifts
+    consumes_from: []
+    description: |
+      Exhaustive excavation of all four evolution dimensions. Full
+      term inventories for both works with detailed drift analysis
+      and quoted evidence. Methodology comparison with evolution
+      type classification. Metaphor archaeology tracing source
+      domains, evolution trajectories, and structural implications.
+      Framing trajectory mapping with confidence arcs showing how
+      the author's relationship to ideas changed over time.
+  - pass_number: 2
+    label: Concept Lifecycle & Coupling Analysis
+    stance: architecture
+    focus_dimensions:
+    - concept_trajectory
+    - vocabulary_evolution
+    - metaphor_evolution
+    focus_capabilities:
+    - trace_concept_lifecycles
+    - track_vocabulary_evolution
+    - trace_metaphor_change
+    consumes_from:
+    - 1
+    description: |
+      Trace complete concept lifecycles with the four-dimension
+      evidence in hand. Map ancestor-descendant relationships between
+      concepts across works. Identify co-evolution patterns where
+      changes in one dimension drive changes in others. Analyze
+      coupling across dimensions — does vocabulary change predict
+      methodology change? Do metaphor shifts precede framing shifts?
+      These coupling patterns reveal change archetypes.
+  - pass_number: 3
+    label: Koselleckian Dimensional Synthesis
+    stance: integration
+    focus_dimensions:
+    - dimensional_comparison_matrix
+    - concept_trajectory
+    focus_capabilities:
+    - synthesize_dimensional_matrix
+    - trace_concept_lifecycles
+    consumes_from:
+    - 1
+    - 2
+    description: |
+      Full Koselleckian synthesis integrating all findings. Produce
+      the dimensional comparison matrix showing which dimensions
+      changed and which remained stable for each concept, with
+      coupling analysis revealing change archetypes. Concept
+      genealogy trees showing ancestor-descendant relationships,
+      co-evolution patterns, and the overall intellectual change
+      profile. Assessment of whether evolution is continuous or
+      punctuated, convergent or divergent across dimensions.
+legacy_engine_key: concept_evolution
+apps:
+- critic
+- visualizer
+function: genealogy
+paradigm_keys:
+- brandomian
+- hegelian_critical
+- pragmatist_praxis
+- genealogical

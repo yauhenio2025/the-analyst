@@ -1,6 +1,6 @@
-# Lifted under the shape (existing questions) by scripts/lift_engine_under_shape.py; stance passes kept for reference.
+# Second queue: authored questions replace any earlier lifted process.
 engine_key: comparative_reasoning_analyzer
-engine_name: Comparative Reasoning Analyzer
+engine_name: Audit comparisons and analogies
 stance_operationalizations: []
 depth_sequences:
 - depth_key: surface
@@ -13,159 +13,155 @@ depth_sequences:
   process: dvs
 process:
   key: dvs
-  description: 'Comparative Reasoning Analyzer under the shape with its existing questions (lifted 2026-09-06):
-    How does the text use comparison, contrast, and analogy to build arguments, and how rigorous are these comparative
-    moves? Every finding anchored; nothing about the authors.'
+  description: Do the text's analogies, classifications and rankings support the conclusions drawn from them? A
+    text making comparisons; source and target material when the comparison relies on facts outside it.
+  framing: 'A compact audit ordered by the conclusions that depend on comparison: what is transferred, which correspondence
+    warrants it, where disanalogies matter, and what weaker conclusion survives. The desks lift comparison → conclusion
+    → correspondence → defeating difference → scoped verdict, plus criteria and alternatives. The reading’s categories
+    are the consequential comparisons in this text. Replace the lifted block. Keep text-facing critical questions
+    but regroup them by audit work, not six kinds of device. Replace unsupported case-selection motives, suppressed
+    options and free-floating alternative rankings with source-supported alternatives and explicit analyst tests.
+    Typology, scalar endpoints and dichotomy checks are conditional probes inside the audit.'
+  scoped_outcomes: true
   routing:
     cheap: openrouter/openai/gpt-5.6-luna
     mid: openrouter/deepseek/deepseek-v4-pro
     strong: openrouter/openai/gpt-5.6-sol
   dimensions:
-  - key: analogical_transfer_structure
+  - key: transfer_claim
     id_prefix: D1
-    name: Analogical transfer structure
+    name: What the comparison must establish
+    scope: document
+    load_bearing: true
+    questions:
+    - What inferential work does the analogy perform—does it generate predictions, explanations, or evaluations?
+    - Which conclusion depends on which comparison, and is the move illustrative, classificatory or an evidential
+      transfer?
+    answer_shape: '[D1.F<n>] <one scoped finding> — dim: transfer_claim — comparison: <items> — conclusion: <claim>
+      — job: <function> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source key> — confidence:
+      high|medium|low'
+    method_card: 'Do: Start with the dependent conclusion and its force. An illustration need not prove a general
+      law; an explanatory transfer needs a warrant.'
+    indicators:
+    - like
+    - similarly
+    - therefore
+  - key: correspondence
+    id_prefix: D2
+    name: The relevant correspondence
+    scope: document
     load_bearing: true
     questions:
     - What specific relations are mapped from source to target domain?
     - Which attributes of the source domain are transferred versus left behind?
-    - Where does the analogy break down—which source domain features have no target domain counterpart?
-    - Is the mapping based on structural similarity or mere surface resemblance?
-    - What inferential work does the analogy perform—does it generate predictions, explanations, or evaluations?
-    answer_shape: '[D1.F<n>] <the finding in one sentence, naming the passage''s object> — dim: analogical_transfer_structure
-      — anchor: "<verbatim>" — confidence: high|medium|low'
-    method_card: 'Do: Gentner: identifies relational correspondences between domains, distinguishing structural
-      similarity (shared relations) from surface similarity (shared attributes), and assessing which higher-order
-      relations are preserved in the mapping. Anchor every finding in the sentence that shows it; a claim about
-      the authors'' minds or careers is not a finding.'
+    answer_shape: '[D2.F<n>] <one scoped finding> — dim: correspondence — comparison: <items> — correspondence:
+      <mapped relation> — warrant: <why relevant> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source
+      key> — confidence: high|medium|low'
+    method_card: 'Do: Map the relevant relation, not shared adjectives. Give supporting spans for both compared
+      sides; unsupported external facts stay unverified.'
     indicators:
-    - 'Explicit comparison markers: ''like'', ''as'', ''similar to'', ''parallel'''
-    - Domain-crossing vocabulary applying terms from one field to another
-    - Extended metaphors with multiple mapped elements
-    - Inferential moves that transfer conclusions across domains
-    - 'Negative comparison: ''unlike'', ''different from'', ''not analogous to'''
-  - key: dichotomy_architecture
-    id_prefix: D2
-    name: Dichotomy architecture
-    load_bearing: true
-    questions:
-    - Are the two options presented as genuinely exhaustive of the possibility space?
-    - What third, fourth, or nth options are suppressed by the dichotomy?
-    - Does the dichotomy structure genuine analytical distinction or merely organize presentation?
-    - How does the binary framing constrain what conclusions can be reached?
-    - Could the dichotomy be reconceived as a continuum, a typology, or a different binary?
-    answer_shape: '[D2.F<n>] <the finding in one sentence, naming the passage''s object> — dim: dichotomy_architecture
-      — anchor: "<verbatim>" — confidence: high|medium|low'
-    method_card: 'Do: Perelman: examines how binary constructions generate argumentative force through appearance
-      of logical exhaustiveness while often suppressing viable alternatives. Anchor every finding in the sentence
-      that shows it; a claim about the authors'' minds or careers is not a finding.'
-    indicators:
-    - 'Either/or constructions: ''either X or Y'', ''the choice is between'''
-    - 'Contrastive pairs: ''X versus Y'', ''X rather than Y'''
-    - 'Dissociative splits: ''true X vs. mere Y'', ''real X vs. apparent X'''
-    - 'Negation-defined concepts: ''non-X'', ''un-X'''
-    - 'Forced choice rhetoric: ''we must choose'', ''there is no middle ground'''
-  - key: scalar_positioning
+    - corresponds
+    - same relation
+    - unlike
+  - key: defeating_difference
     id_prefix: D3
-    name: Scalar positioning
+    name: Differences that bear on the conclusion
+    scope: document
     load_bearing: true
     questions:
-    - What scale or continuum is being invoked?
-    - How are the endpoints of the scale defined and anchored?
-    - Is the scalar framing justified or does it impose a false continuum on categorical difference?
-    - What claims about position, movement, or tendency are made along the scale?
-    - Would different scale construction reverse the argument's conclusions?
-    answer_shape: '[D3.F<n>] <the finding in one sentence, naming the passage''s object> — dim: scalar_positioning
-      — anchor: "<verbatim>" — confidence: high|medium|low'
-    method_card: 'Do: Lakoff Johnson: analyzes how scalar framings draw on embodied experience of physical continua
-      (hot-cold, up-down, near-far) to structure understanding of abstract dimensions. Anchor every finding in the
-      sentence that shows it; a claim about the authors'' minds or careers is not a finding.'
+    - Where does the analogy break down—which source domain features have no target domain counterpart?
+    - Which stated disanalogy changes the transferred conclusion, and does the text answer it or merely acknowledge
+      it?
+    answer_shape: '[D3.F<n>] <one scoped finding> — dim: defeating_difference — comparison: <items> — difference:
+      <scoped disanalogy> — consequence: <effect> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source
+      key> — confidence: high|medium|low'
+    method_card: 'Do: Test a difference for relevance to this transfer. Preserve disanalogies the text actually
+      discusses; inadequate treatment differs from absence.'
     indicators:
-    - 'Comparative adjectives: ''more X'', ''less Y'', ''increasingly Z'''
-    - 'Continuum language: ''spectrum'', ''range'', ''gradient'', ''scale'''
-    - 'Movement vocabulary: ''moving toward'', ''sliding into'', ''approaching'''
-    - 'Degree qualifiers: ''somewhat'', ''rather'', ''almost'', ''barely'''
-    - 'Endpoint references: ''at one extreme'', ''at the limit'', ''in the ideal case'''
-  - key: typological_structure
+    - however
+    - unlike
+    - only partially
+  - key: criterion
     id_prefix: D4
-    name: Typological structure
-    questions:
-    - What typology or classification scheme structures the analysis?
-    - Are the types jointly exhaustive—do they cover all relevant cases?
-    - Are the types mutually exclusive—can cases belong to multiple types?
-    - How does the typology handle borderline, mixed, or anomalous cases?
-    - Does the classification enable analytical insight or merely organize description?
-    answer_shape: '[D4.F<n>] <the finding in one sentence, naming the passage''s object> — dim: typological_structure
-      — anchor: "<verbatim>" — confidence: high|medium|low'
-    method_card: 'Do: Weber: analyzes typologies as heuristic constructs whose value lies in enabling comparison
-      through deliberate abstraction rather than accurate description of empirical reality. Anchor every finding
-      in the sentence that shows it; a claim about the authors'' minds or careers is not a finding.'
-    indicators:
-    - 'Classification vocabulary: ''types'', ''kinds'', ''categories'', ''species'''
-    - 'Enumeration of distinct forms: ''three types of X'', ''two kinds of Y'''
-    - 'Ideal type language: ''pure form'', ''paradigm case'', ''exemplar'''
-    - Taxonomic organization of content
-    - Discussion of borderline or hybrid cases
-  - key: evaluative_criteria
-    id_prefix: D5
-    name: Evaluative criteria
+    name: Criteria, scales and category boundaries
+    scope: document
+    load_bearing: false
     questions:
     - On what criteria are the compared items being evaluated?
-    - Are the evaluative criteria explicit or implicit in the comparison?
-    - How are the criteria themselves justified?
-    - Would alternative criteria reverse the ranking or evaluation?
-    - Are the criteria appropriate to the items being compared?
-    answer_shape: '[D5.F<n>] <the finding in one sentence, naming the passage''s object> — dim: evaluative_criteria
-      — anchor: "<verbatim>" — confidence: high|medium|low'
-    method_card: 'Do: Perelman: examines how comparative arguments establish values through implicit hierarchies
-      and criteria of evaluation that can be surfaced and contested. Anchor every finding in the sentence that shows
-      it; a claim about the authors'' minds or careers is not a finding.'
+    - How are the endpoints of the scale defined and anchored?
+    - How does the typology handle borderline, mixed, or anomalous cases?
+    answer_shape: '[D4.F<n>] <one scoped finding> — dim: criterion — comparison: <items> — criterion: <stated or
+      reconstructed> — boundary: <endpoints or types> — anchor: "<verbatim supporting clause, <=200 chars>" — doc:
+      <source key> — confidence: high|medium|low'
+    method_card: 'Do: Run scale and typology probes only when used. Ask whether the same rule governs both items
+      and whether overlap is allowed, without imposing exclusive categories.'
     indicators:
-    - 'Evaluative comparatives: ''better than'', ''superior to'', ''more effective'''
-    - 'Ranking language: ''ranks higher'', ''comes first'', ''is preferred'''
-    - 'Criterial vocabulary: ''by this measure'', ''judged by'', ''evaluated in terms of'''
-    - 'Implicit evaluation in description: ''developed/developing'', ''advanced/backward'''
-    - 'Preference expressions: ''preferable to'', ''to be chosen over'''
-  - key: representativeness_logic
-    id_prefix: D6
-    name: Representativeness logic
+    - more than
+    - best
+    - type
+    - between
+  - key: alternatives
+    id_prefix: D5
+    name: Alternatives and representative cases
+    scope: document
+    load_bearing: false
     questions:
+    - Are the two options presented as genuinely exhaustive of the possibility space?
     - What part, example, or case is made to stand for a larger whole or class?
-    - Is the part genuinely representative of the whole?
-    - How was the example or case selected—randomly, strategically, tendentiously?
-    - What features of the class are highlighted by this representative and which are obscured?
-    - Could alternative representatives ground different conclusions?
-    answer_shape: '[D6.F<n>] <the finding in one sentence, naming the passage''s object> — dim: representativeness_logic
-      — anchor: "<verbatim>" — confidence: high|medium|low'
-    method_card: 'Do: Wittgenstein: examines how particular cases illuminate general concepts through strategic
-      selection and juxtaposition rather than subsumption under universal definitions. Anchor every finding in the
-      sentence that shows it; a claim about the authors'' minds or careers is not a finding.'
+    - Which supplied alternative or counter-case tests exhaustiveness or representativeness, and which proposed
+      test needs more evidence?
+    answer_shape: '[D5.F<n>] <one scoped finding> — dim: alternatives — comparison: <items> — coverage-claim: <scope>
+      — alternative: <source case or analyst test> — anchor: "<verbatim supporting clause, <=200 chars>" — doc:
+      <source key> — confidence: high|medium|low'
+    method_card: 'Do: Use the text’s own third cases first. Do not infer case-selection motives or force an illustrative
+      example to be a representative sample.'
     indicators:
-    - 'Example introduction: ''consider the case of'', ''for instance'', ''take the example'''
-    - 'Representativeness claims: ''typical'', ''representative'', ''paradigmatic'''
-    - 'Generalization from instance: ''this shows that'', ''which demonstrates'''
-    - 'Part-whole language: ''embodies'', ''instantiates'', ''exemplifies'''
-    - 'Case study methodology: ''this case reveals'', ''examining X illuminates'''
-  - key: shared_across_corpus
-    id_prefix: X7
-    name: The same finding across the corpus
-    scope: corpus
+    - either
+    - all cases
+    - for example
+    - exception
+  - key: surviving_conclusion
+    id_prefix: D6
+    name: Supported conclusion and repair
+    scope: document
+    load_bearing: false
     questions:
-    - Which findings recur across documents, in the same or different words? Anchor each in each document.
-    - On which question do documents diverge? Both anchors, with the object and scope of each.
-    answer_shape: '[X7.F<n>] <shared finding | divergence> — dim: shared_across_corpus — anchor: "<verbatim>" —
-      doc: <A> — anchor-b: "<verbatim>" — doc-b: <B> — confidence: …'
-    method_card: 'Do: match findings across documents by their object, not their wording; state recurrence and divergence
-      with two anchors; do not settle a divergence here.'
+    - Once the relevant difference or criterion limit is retained, what conclusion still follows and at what force?
+    - Which independent route supports the conclusion if this comparison fails?
+    answer_shape: '[D6.F<n>] <one scoped finding> — dim: surviving_conclusion — comparison: <items> — supported-result:
+      <qualified claim> — repair: <needed premise or comparison> — anchor: "<verbatim supporting clause, <=200 chars>"
+      — doc: <source key> — confidence: high|medium|low'
+    method_card: 'Do: Keep a failed analogy distinct from a defeated conclusion. State a concrete repair in the
+      text’s terms, or explain why the comparison holds.'
     indicators:
-    - the same claim in two documents
-    - a term used differently in two documents
+    - even without
+    - on other grounds
+    - at most
+  - key: comparisons_across_works
+    id_prefix: X7
+    name: Comparison across supplied works
+    scope: corpus
+    load_bearing: false
+    questions:
+    - Do supplied texts make the same comparison under aligned criteria and conditions?
+    - Which paired claims agree or diverge once source, target and transfer are matched?
+    answer_shape: '[X7.F<n>] <one scoped finding> — dim: comparisons_across_works — relation: <aligned relation>
+      — alignment: <object, sense, owner, scope> — order-basis: <dates, uptake, or unordered> — anchor: "<verbatim
+      supporting clause, <=200 chars>" — doc: <source key> — anchor-b: "<verbatim supporting clause B>" — doc-b:
+      <different source key> — confidence: high|medium|low'
+    method_card: 'Do: Compare audits after each local inference is reconstructed. Paired anchors establish each
+      side; dates alone do not show uptake.'
+    indicators:
+    - explicit reference
+    - paired formulations
+    - scope qualification
   steps:
   - key: extract
     kind: extract
-    parallel_over: dimension
+    parallel_over: dimension_x_document
     model_tier: cheap
     output: ledger
-    max_rows: 16
+    max_rows: 8
   - key: verify
     kind: verify
     consumes:
@@ -178,6 +174,18 @@ process:
     - merge_duplicates
     - hunt_misses
     - name_must_keep
+    - Judge the warrant appropriate to the claim; preserve owners, scope, modality and counter-passages. Inspect
+      every declared question, not just retained positives.
+    - Every consequential table cell must cite a final finding whose complete supporting spans contain the attributed
+      fact and qualification. Split compound claims into several rows when <=200 characters cannot carry them. Use
+      a separate [F1] [F2] citation per finding. Include an anchor-b with its doc-b for a second supporting span
+      when needed, even in the same document; corpus relations always retain at least two distinct source keys.
+      Never use a scope record as a positive finding. Use comma-separated full IDs in from:, never space-concatenated
+      IDs. Judge meaning and completeness by reading the sources; code checks only anchors and IDs. Before returning,
+      read the actual final tables against their cited final rows and the source contexts, including each source
+      counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source
+      interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or
+      silent.
   - key: synthesize
     kind: synthesize
     consumes:
@@ -185,28 +193,33 @@ process:
     model_tier: strong
     output: prose_ledger
     is_final: true
-    reader: 'a reader who must know what this text establishes on the question: How does the text use comparison,
-      contrast, and analogy to build arguments, and how rigorous are these comparative moves?'
+    reader: 'a reader with the supplied texts open who needs to answer: Do the text''s analogies, classifications
+      and rankings support the conclusions drawn from them?'
     tables:
-    - analogical_transfer_structure
-    - dichotomy_architecture
-    - scalar_positioning
-    brief: '1. Analogical transfer structure: The systematic mapping of relations, attributes, and inferential patterns
-      from source domains to target domains.
+    - comparison_audit
+    - criteria_and_alternatives
+    brief: '1. A compact audit ordered by the conclusions that depend on comparison: what is transferred, which
+      correspondence warrants it, where disanalogies matter, and what weaker conclusion survives. The desks lift
+      comparison → conclusion → correspondence → defeating difference → scoped verdict, plus criteria and alternatives.
+      The reading’s categories are the consequential comparisons in this text.
 
-      2. Dichotomy architecture: The structure and function of binary oppositions in organizing argument.
+      2. Establish the most consequential local findings and their qualifications; organize the reading by the objects
+      and claims in these texts.
 
-      3. Scalar positioning: The construction and deployment of continua along which phenomena are positioned.
+      3. Render the named Markdown tables with final finding IDs in every positive cell. Explain the supported relation
+      and the strongest counter-passage; end with what is settled and the exact remaining question.
 
-      4. Typological structure: The classification schemes, ideal types, and categorical frameworks through which
-      phenomena are sorted and analyzed.
+      4. With multiple sources, build each work’s inventory before the paired comparison, and state alignment and
+      chronology limits. With one source, label the result a local inventory where a corpus relation would require
+      another work.
 
-      5. Evaluative criteria: The standards, metrics, and dimensions along which comparative evaluations are conducted.
-
-      6. Representativeness logic: The reasoning that allows parts to stand for wholes, examples to stand for classes,
-      and cases to stand for patterns.
-
-      7. The judgment: what the text establishes on this method''s question, what it leaves open, and the one finding
-      a reader should test first.
-
-      Carry one line of argument through the parts; cite findings by id; no claim without a row.'
+      Every consequential table cell must cite a final finding whose complete supporting spans contain the attributed
+      fact and qualification. Split compound claims into several rows when <=200 characters cannot carry them. Use
+      a separate [F1] [F2] citation per finding. Include an anchor-b with its doc-b for a second supporting span
+      when needed, even in the same document; corpus relations always retain at least two distinct source keys.
+      Never use a scope record as a positive finding. Use comma-separated full IDs in from:, never space-concatenated
+      IDs. Judge meaning and completeness by reading the sources; code checks only anchors and IDs. Before returning,
+      read the actual final tables against their cited final rows and the source contexts, including each source
+      counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source
+      interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or
+      silent.'

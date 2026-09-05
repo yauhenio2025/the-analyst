@@ -1,14 +1,18 @@
+# Second queue: authored questions replace any earlier lifted process.
 engine_key: concept_appropriation_tracker
-engine_name: Concept Appropriation Tracker
+engine_name: Borrowing and changed use
 stance_operationalizations:
 - stance_key: discovery
   label: Migration Discovery
-  description: |-
-    Identify the most obvious concept migrations between prior and
+  description: 'Identify the most obvious concept migrations between prior and
+
     current work. For each migration, note the mechanism of travel
+
     (cited, silently borrowed, absorbed) and whether the concept
+
     was carried faithfully or adapted. Quick surface scan for the
-    3-5 clearest cases.
+
+    3-5 clearest cases.'
   focus_dimensions:
   - migration_paths
   - acknowledgment_status
@@ -17,16 +21,23 @@ stance_operationalizations:
   - assess_acknowledgment
 - stance_key: inference
   label: Full Derridean Iterability Analysis
-  description: |-
-    Full Derridean iterability analysis in a single intensive pass.
+  description: 'Full Derridean iterability analysis in a single intensive pass.
+
     Every concept migration traced with mechanism, intermediate
+
     stops, and contextual analysis. Every semantic mutation classified
+
     and motivated (strategic vs. drift). Appropriation assessed for
+
     legitimacy with impact on both original and new context.
+
     Distortions catalogued with counterfactuals. Recombinations
+
     mapped with novelty assessment. Acknowledgment patterns analyzed
-    for strategic logic, revealing the author's characteristic
-    appropriation style.
+
+    for strategic logic, revealing the author''s characteristic
+
+    appropriation style.'
   focus_dimensions:
   - migration_paths
   - semantic_mutations
@@ -43,16 +54,23 @@ stance_operationalizations:
   - assess_acknowledgment
 - stance_key: architecture
   label: Appropriation Pattern Architecture
-  description: |-
-    With the migration catalog established, analyze the structural
+  description: 'With the migration catalog established, analyze the structural
+
     patterns. For appropriation patterns: classify each by the
+
     Derridean iterability framework — faithful citation, productive
+
     misreading, strategic redefinition, unconscious absorption. For
+
     distortion maps: what was lost, what was gained, and whether the
-    distortion serves the author's purposes or reveals a misunderstanding.
+
+    distortion serves the author''s purposes or reveals a misunderstanding.
+
     For recombinations: map how borrowed concepts combine with original
+
     ideas to produce genuinely new intellectual formations, assessing
-    the novelty and stability of each recombination.
+
+    the novelty and stability of each recombination.'
   focus_dimensions:
   - appropriation_patterns
   - distortion_map
@@ -63,18 +81,27 @@ stance_operationalizations:
   - detect_recombinations
 - stance_key: integration
   label: Appropriation Landscape Synthesis
-  description: |-
-    Synthesize the full appropriation landscape. The discovery pass
+  description: 'Synthesize the full appropriation landscape. The discovery pass
+
     mapped migrations and acknowledgments; the architecture pass
+
     analyzed structural patterns in appropriation, distortion, and
+
     recombination. Now produce the integrated assessment: what is
-    the author's characteristic appropriation style? Are they a
+
+    the author''s characteristic appropriation style? Are they a
+
     faithful transmitter, a productive transformer, or a strategic
+
     re-appropriator? How does the acknowledgment pattern align with
+
     the actual appropriation — does the author acknowledge what they
+
     transform but silently borrow what they preserve? Map the full
+
     trajectory from source through mutation to recombination,
-    producing a portrait of intellectual iterability in action.
+
+    producing a portrait of intellectual iterability in action.'
   focus_dimensions:
   - migration_paths
   - semantic_mutations
@@ -95,6 +122,7 @@ depth_sequences:
   - pass_number: 1
     stance_key: discovery
     consumes_from: []
+  mode: oneshot
 - depth_key: standard
   passes:
   - pass_number: 1
@@ -104,6 +132,7 @@ depth_sequences:
     stance_key: inference
     consumes_from:
     - 1
+  mode: oneshot_checked
 - depth_key: deep
   passes:
   - pass_number: 1
@@ -118,3 +147,196 @@ depth_sequences:
     consumes_from:
     - 1
     - 2
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: How does a concept's use change when it moves between supplied contexts? Source and receiving texts,
+    plus any supplied intermediary or transmission evidence.
+  framing: 'A source-use → receiving-use table: the concept as used in each context, changed purpose, retained and
+    dropped conditions, acknowledgment and evidence of transmission. Lead with what the receiving argument gains
+    or loses; distinguish adaptation from misrepresentation and resemblance from demonstrated borrowing. Desks lift
+    uses and transmission-status tables. Reuse the engine as v2. Preserve semantic mutation, purpose, recombination
+    and citation questions. Replace unconscious absorption, intention and concealment with explicit acknowledgment,
+    supplied intermediaries and unresolved transmission. Fidelity concerns representations of source claims, not
+    permission to create a new use.'
+  scoped_outcomes: true
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: use_in_context
+    id_prefix: D1
+    name: The local use
+    scope: document
+    load_bearing: true
+    questions:
+    - What concept is used here, for what object and purpose?
+    - What conditions or contrasts define its meaning in the quoted passage?
+    answer_shape: '[D1.F<n>] <one scoped finding> — dim: use_in_context — concept: <term> — purpose: <local job>
+      — conditions: <scope> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source key> — confidence:
+      high|medium|low'
+    method_card: 'Do: Reconstruct the local use before judging borrowing. Preserve the owner of the concept and
+      its conditions.'
+    indicators:
+    - means
+    - used to
+    - in contrast
+  - key: acknowledgment
+    id_prefix: D2
+    name: Declared sources and uptake
+    scope: document
+    load_bearing: true
+    questions:
+    - Which earlier text or domain does this work explicitly cite for the concept?
+    - Does the citation endorse a definition, adapt a method, report a rival or merely mention a name?
+    answer_shape: '[D2.F<n>] <one scoped finding> — dim: acknowledgment — source-mentioned: <work> — uptake: <specific
+      relation> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source key> — confidence: high|medium|low'
+    method_card: 'Do: Quote the uptake clause; citation alone does not show adoption of a whole system. Mark source
+      descriptions as this work’s reports until inspected independently.'
+    indicators:
+    - following
+    - drawing on
+    - as X argues
+  - key: changed_purpose
+    id_prefix: D3
+    name: Adaptation declared here
+    scope: document
+    load_bearing: true
+    questions:
+    - What new purpose does the appropriated concept serve?
+    - Which changes to the borrowed concept does this work expressly announce?
+    answer_shape: '[D3.F<n>] <one scoped finding> — dim: changed_purpose — concept: <term> — change-claimed: <change>
+      — new-job: <purpose> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source key> — confidence:
+      high|medium|low'
+    method_card: 'Do: Separate a new use from a claim to reproduce the origin faithfully. Record announced changes
+      without certifying them from one text.'
+    indicators:
+    - adapt
+    - narrower
+    - apply to
+  - key: recombination
+    id_prefix: D4
+    name: Components combined
+    scope: document
+    load_bearing: false
+    questions:
+    - Are ideas from the prior work combined with ideas from other sources in the current work?
+    - Are the recombined elements compatible, or does their combination create tensions?
+    answer_shape: '[D4.F<n>] <one scoped finding> — dim: recombination — components: <attributed inputs> — relation:
+      <combination and conditions> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source key> — confidence:
+      high|medium|low'
+    method_card: 'Do: Anchor each input in this work and show the connecting move. Assess compatibility under the
+      same object and assumptions.'
+    indicators:
+    - combine
+    - together
+    - synthesis
+  - key: representation_limits
+    id_prefix: D5
+    name: Quoted and qualified source claims
+    scope: document
+    load_bearing: false
+    questions:
+    - Which quotation or paraphrase represents the borrowed position, and with what attribution and qualification?
+    - What would change in this argument if a stated qualification were restored?
+    answer_shape: '[D5.F<n>] <one scoped finding> — dim: representation_limits — represented-claim: <owned proposition>
+      — qualification: <retained or omitted locally> — consequence: <route> — anchor: "<verbatim supporting clause,
+      <=200 chars>" — doc: <source key> — confidence: high|medium|low'
+    method_card: 'Do: Read surrounding attribution and conditions; do not allege distortion without a supplied original.
+      Distinguish local omission from misrepresentation.'
+    indicators:
+    - according to
+    - however
+    - only if
+  - key: borrowing_and_use
+    id_prefix: X6
+    name: Comparison across supplied works
+    scope: corpus
+    load_bearing: false
+    questions:
+    - For each migrated concept, what changed in its meaning?
+    - Is each appropriation faithful, adapted, distorted, or inverted relative to the original?
+    - What source–destination link or supplied intermediary establishes transmission, and what remains resemblance
+      only?
+    answer_shape: '[X6.F<n>] <one scoped finding> — dim: borrowing_and_use — relation: <aligned relation> — alignment:
+      <object, sense, owner, scope> — order-basis: <dates, uptake, or unordered> — anchor: "<verbatim supporting
+      clause, <=200 chars>" — doc: <source key> — anchor-b: "<verbatim supporting clause B>" — doc-b: <different
+      source key> — confidence: high|medium|low'
+    method_card: 'Do: Pair full local uses and acknowledgment evidence. Judge fidelity only to a represented source
+      claim; changed purpose alone is legitimate adaptation. Keep transmission unresolved when no link is supplied,
+      even if meanings resemble each other; do not invent silent or unconscious borrowing.'
+    indicators:
+    - explicit reference
+    - paired formulations
+    - scope qualification
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension_x_document
+    model_tier: cheap
+    output: ledger
+    max_rows: 8
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - reject_biography
+    - merge_duplicates
+    - hunt_misses
+    - name_must_keep
+    - Judge the warrant appropriate to the claim; preserve owners, scope, modality and counter-passages. Inspect
+      every declared question, not just retained positives.
+    - Every consequential table cell must cite a final finding whose complete supporting spans contain the attributed
+      fact and qualification. Split compound claims into several rows when <=200 characters cannot carry them. Use
+      a separate [F1] [F2] citation per finding. Include an anchor-b with its doc-b for a second supporting span
+      when needed, even in the same document; corpus relations always retain at least two distinct source keys.
+      Never use a scope record as a positive finding. Use comma-separated full IDs in from:, never space-concatenated
+      IDs. Judge meaning and completeness by reading the sources; code checks only anchors and IDs. Before returning,
+      read the actual final tables against their cited final rows and the source contexts, including each source
+      counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source
+      interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or
+      silent.
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: 'a reader with the supplied texts open who needs to answer: How does a concept''s use change when it
+      moves between supplied contexts?'
+    tables:
+    - uses_and_adaptations
+    - transmission_status
+    brief: '1. A source-use → receiving-use table: the concept as used in each context, changed purpose, retained
+      and dropped conditions, acknowledgment and evidence of transmission. Lead with what the receiving argument
+      gains or loses; distinguish adaptation from misrepresentation and resemblance from demonstrated borrowing.
+      Desks lift uses and transmission-status tables.
+
+      2. Establish the most consequential local findings and their qualifications; organize the reading by the objects
+      and claims in these texts.
+
+      3. Render the named Markdown tables with final finding IDs in every positive cell. Explain the supported relation
+      and the strongest counter-passage; end with what is settled and the exact remaining question.
+
+      4. With multiple sources, build each work’s inventory before the paired comparison, and state alignment and
+      chronology limits. With one source, label the result a local inventory where a corpus relation would require
+      another work.
+
+      Every consequential table cell must cite a final finding whose complete supporting spans contain the attributed
+      fact and qualification. Split compound claims into several rows when <=200 characters cannot carry them. Use
+      a separate [F1] [F2] citation per finding. Include an anchor-b with its doc-b for a second supporting span
+      when needed, even in the same document; corpus relations always retain at least two distinct source keys.
+      Never use a scope record as a positive finding. Use comma-separated full IDs in from:, never space-concatenated
+      IDs. Judge meaning and completeness by reading the sources; code checks only anchors and IDs. Before returning,
+      read the actual final tables against their cited final rows and the source contexts, including each source
+      counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source
+      interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or
+      silent.'

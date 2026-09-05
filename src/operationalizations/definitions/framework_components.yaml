@@ -1,0 +1,220 @@
+# Second queue: authored questions replace any earlier lifted process.
+engine_key: framework_components
+engine_name: Frameworks and their components
+process:
+  key: dvs
+  description: Which frameworks structure the text's inquiry, and what do their components let it see? One text
+    or a supplied collection; a genealogy profile is a declared output mode with hypotheses tagged.
+  framing: A framework map showing the inquiry, attributed lens, components, relations and one worked application.
+    Lead with what the composition makes visible and a source-evidenced limit; distinguish a named tradition from
+    an inferred profile. Desks lift component–relation and application–limit tables; an optional source-search profile
+    is made of passages, never a biography. Merge the mapped framework engines. Preserve vocabulary/method profile,
+    architecture, translations and boundaries. Replace fixed school registers, training inference, forgotten metaphors
+    and unsupplied precursors with attributed lenses and explicit hypotheses; inventory components rather than narrating
+    theory construction.
+  scoped_outcomes: true
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: attribution
+    id_prefix: D1
+    name: Framework and evidence for attribution
+    scope: document
+    load_bearing: true
+    questions:
+    - Which framework does the text name as organizing its inquiry, and what passage enacts it?
+    - What theoretical register is inferred from vocabulary or method, and what makes that only a hypothesis?
+    answer_shape: '[D1.F<n>] <one scoped finding> — dim: attribution — framework: <name or descriptive lens> — attribution:
+      <declared or hypothesis> — inquiry: <object> — anchor: "<verbatim supporting clause, <=200 chars>" — doc:
+      <source key> — confidence: high|medium|low'
+    method_card: 'Do: Attribute named frameworks from passages; an inferred profile needs vocabulary and method
+      evidence. Do not force the text into a school checklist.'
+    indicators:
+    - following
+    - framework
+    - we approach
+  - key: components
+    id_prefix: D2
+    name: Components and definitions
+    scope: document
+    load_bearing: true
+    questions:
+    - What terms does the author coin or use distinctively?
+    - What key oppositions structure the argument, and what local definition does each component have?
+    answer_shape: '[D2.F<n>] <one scoped finding> — dim: components — framework: <lens> — component: <concept> —
+      definition: <scope> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source key> — confidence:
+      high|medium|low'
+    method_card: 'Do: Inventory components as the text defines them. Standard usage needs supplied reference material
+      before a deviation can be claimed.'
+    indicators:
+    - defined as
+    - opposed to
+    - component
+  - key: relations
+    id_prefix: D3
+    name: How the components fit
+    scope: document
+    load_bearing: true
+    questions:
+    - Which frameworks are foundational -- everything else depends on them?
+    - Do any frameworks compete with each other -- offering alternative explanations for the same phenomena?
+    - What passage links component A to B, and what conclusion relies on that link?
+    answer_shape: '[D3.F<n>] <one scoped finding> — dim: relations — components: <nodes> — relation: <premise, mechanism,
+      constraint> — support: <passage> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source key>
+      — confidence: high|medium|low'
+    method_card: 'Do: Prove a dependency by the argument route, not frequency. Test competing lenses on the same
+      object and preserve independent routes.'
+    indicators:
+    - requires
+    - constitutes
+    - alternative explanation
+  - key: method_profile
+    id_prefix: D4
+    name: What the framework counts as evidence
+    scope: document
+    load_bearing: false
+    questions:
+    - What types of evidence does the author rely on (historical narrative, data, theoretical derivation, analogy,
+      case study, thought experiment)?
+    - What analytical move applies these components to the object, and what does it establish?
+    answer_shape: '[D4.F<n>] <one scoped finding> — dim: method_profile — framework: <lens> — procedure: <move>
+      — evidence: <kind> — result: <claim> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source
+      key> — confidence: high|medium|low'
+    method_card: 'Do: Give an enacted example; keep studied, advocated and used methods apart. Avoid judging a conceptual
+      derivation by an empirical checklist.'
+    indicators:
+    - we examine
+    - derive
+    - apply
+  - key: translations
+    id_prefix: D5
+    name: Cross-domain imports
+    scope: document
+    load_bearing: false
+    questions:
+    - What concepts, methods, or analogies are imported from other fields?
+    - How have imports been adapted for the current domain -- what was changed and what was preserved?
+    answer_shape: '[D5.F<n>] <one scoped finding> — dim: translations — import: <component> — source-domain: <stated
+      or hypothesis> — adaptation: <change> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source
+      key> — confidence: high|medium|low'
+    method_card: 'Do: Anchor the origin as stated and the local use. Mark unverified provenance; no inference to
+      training or unconscious influence.'
+    indicators:
+    - borrow
+    - adapt
+    - analogy with
+  - key: limits
+    id_prefix: D6
+    name: Applications, boundaries and alternatives
+    scope: document
+    load_bearing: false
+    questions:
+    - How is the central problem or question framed -- what does this framing make visible and invisible?
+    - Which supplied application or rival interpretation tests a boundary the framework states?
+    answer_shape: '[D6.F<n>] <one scoped finding> — dim: limits — framework: <lens> — application: <case> — limit:
+      <qualification> — alternative: <source view> — anchor: "<verbatim supporting clause, <=200 chars>" — doc:
+      <source key> — confidence: high|medium|low'
+    method_card: 'Do: Ground visibility in an actual finding and limits in a bracket or counter-passage. An unasked
+      question is not automatically impossible within the framework.'
+    indicators:
+    - beyond our scope
+    - cannot explain
+    - alternative
+  - key: framework_comparison
+    id_prefix: X7
+    name: Comparison across supplied works
+    scope: corpus
+    load_bearing: false
+    questions:
+    - Which supplied works use comparable components and what relation or application differs?
+    - Which paired passage supports continuity, translation or an unresolved framework conflict?
+    answer_shape: '[X7.F<n>] <one scoped finding> — dim: framework_comparison — relation: <aligned relation> — alignment:
+      <object, sense, owner, scope> — order-basis: <dates, uptake, or unordered> — anchor: "<verbatim supporting
+      clause, <=200 chars>" — doc: <source key> — anchor-b: "<verbatim supporting clause B>" — doc-b: <different
+      source key> — confidence: high|medium|low'
+    method_card: 'Do: Compare local architectures under aligned objects. Preserve uncertainty in inferred attribution
+      and do not turn resemblance into influence.'
+    indicators:
+    - explicit reference
+    - paired formulations
+    - scope qualification
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension_x_document
+    model_tier: cheap
+    output: ledger
+    max_rows: 8
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - reject_biography
+    - merge_duplicates
+    - hunt_misses
+    - name_must_keep
+    - Judge the warrant appropriate to the claim; preserve owners, scope, modality and counter-passages. Inspect
+      every declared question, not just retained positives.
+    - Every consequential table cell must cite a final finding whose complete supporting spans contain the attributed
+      fact and qualification. Split compound claims into several rows when <=200 characters cannot carry them. Use
+      a separate [F1] [F2] citation per finding. Include an anchor-b with its doc-b for a second supporting span
+      when needed, even in the same document; corpus relations always retain at least two distinct source keys.
+      Never use a scope record as a positive finding. Use comma-separated full IDs in from:, never space-concatenated
+      IDs. Judge meaning and completeness by reading the sources; code checks only anchors and IDs. Before returning,
+      read the actual final tables against their cited final rows and the source contexts, including each source
+      counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source
+      interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or
+      silent.
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: 'a reader with the supplied texts open who needs to answer: Which frameworks structure the text''s inquiry,
+      and what do their components let it see?'
+    tables:
+    - components_and_relations
+    - applications_and_limits
+    brief: '1. A framework map showing the inquiry, attributed lens, components, relations and one worked application.
+      Lead with what the composition makes visible and a source-evidenced limit; distinguish a named tradition from
+      an inferred profile. Desks lift component–relation and application–limit tables; an optional source-search
+      profile is made of passages, never a biography.
+
+      2. Establish the most consequential local findings and their qualifications; organize the reading by the objects
+      and claims in these texts.
+
+      3. Render the named Markdown tables with final finding IDs in every positive cell. Explain the supported relation
+      and the strongest counter-passage; end with what is settled and the exact remaining question.
+
+      4. With multiple sources, build each work’s inventory before the paired comparison, and state alignment and
+      chronology limits. With one source, label the result a local inventory where a corpus relation would require
+      another work.
+
+      Every consequential table cell must cite a final finding whose complete supporting spans contain the attributed
+      fact and qualification. Split compound claims into several rows when <=200 characters cannot carry them. Use
+      a separate [F1] [F2] citation per finding. Include an anchor-b with its doc-b for a second supporting span
+      when needed, even in the same document; corpus relations always retain at least two distinct source keys.
+      Never use a scope record as a positive finding. Use comma-separated full IDs in from:, never space-concatenated
+      IDs. Judge meaning and completeness by reading the sources; code checks only anchors and IDs. Before returning,
+      read the actual final tables against their cited final rows and the source contexts, including each source
+      counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source
+      interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or
+      silent.'
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs

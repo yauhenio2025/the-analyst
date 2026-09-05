@@ -1,0 +1,216 @@
+# Second queue: authored questions replace any earlier lifted process.
+engine_key: meaning_in_use
+engine_name: Meaning in use
+process:
+  key: dvs
+  description: How does the text distinguish and use a concept and its neighboring terms? One text or comparable
+    usage passages; disciplinary reference material if making a standard-usage comparison.
+  framing: A compact usage lexicon with term, local sense, contrasting or neighboring term, defining boundary, passage
+    and interpretive consequence. A second table pairs apparently inconsistent uses and explains genuine ambiguity
+    versus scope or voice changes. Desks lift both tables. Report stable, precise use when it holds. Merge the mapped
+    semantic and reification engines. Preserve synonyms, opposites, collocations, boundary, usage and connotation
+    probes. Replace disciplinary anomalies without a baseline, strategic ambiguity and predicted emotional responses
+    with textual comparisons; causation assigned to an abstraction requires checking its specified agents.
+  scoped_outcomes: true
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: senses
+    id_prefix: D1
+    name: Definitions and uses
+    scope: document
+    load_bearing: true
+    questions:
+    - Is the concept's actual usage consistent with its stated definition?
+    - Which distinct senses are supported by the surrounding predicates and examples?
+    answer_shape: '[D1.F<n>] <one scoped finding> — dim: senses — term: <term> — sense: <meaning> — context: <owned
+      use> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source key> — confidence: high|medium|low'
+    method_card: 'Do: Inventory actual use beside definitions. Keep quoted rivals and the paper’s own senses separate.'
+    indicators:
+    - means
+    - defined as
+    - in this sense
+  - key: neighbors
+    id_prefix: D2
+    name: Synonyms, contrasts and collocations
+    scope: document
+    load_bearing: true
+    questions:
+    - What terms does the author use as near-synonyms -- and what subtle distinctions does the author draw between
+      them?
+    - What antonyms or contrasts define the concept negatively -- what it is NOT?
+    - What terms habitually co-occur with the concept (collocations), and what do these associations reveal?
+    answer_shape: '[D2.F<n>] <one scoped finding> — dim: neighbors — term: <term> — neighbor: <term> — relation:
+      <stated or inferred> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source key> — confidence:
+      high|medium|low'
+    method_card: 'Do: Anchor both terms and the relation in context. Co-occurrence alone establishes no synonymy
+      or causal link.'
+    indicators:
+    - rather than
+    - also called
+    - paired terms
+  - key: boundaries
+    id_prefix: D3
+    name: Boundaries and edge cases
+    scope: document
+    load_bearing: true
+    questions:
+    - Where are the boundaries between related concepts sharp and explicit?
+    - Where are boundaries fuzzy or contested -- and does the author acknowledge the fuzziness?
+    answer_shape: '[D3.F<n>] <one scoped finding> — dim: boundaries — terms: <pair> — boundary: <criterion> — edge-case:
+      <source example> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source key> — confidence: high|medium|low'
+    method_card: 'Do: Use membership and contrast criteria the text supplies. Preserve acknowledged uncertainty
+      without assigning strategic intent.'
+    indicators:
+    - distinguish
+    - borderline
+    - not merely
+  - key: paired_usage
+    id_prefix: D4
+    name: Sense changes in context
+    scope: document
+    load_bearing: false
+    questions:
+    - Does the concept's meaning shift across different parts of the work?
+    - Does the concept function differently in positive arguments vs. critiques of others?
+    answer_shape: '[D4.F<n>] <one scoped finding> — dim: paired_usage — term: <term> — use-a: <meaning and owner>
+      — use-b: <meaning and owner> — effect: <interpretive consequence> — anchor: "<verbatim supporting clause,
+      <=200 chars>" — doc: <source key> — confidence: high|medium|low'
+    method_card: 'Do: Pair passages before diagnosing equivocation. A changed object, quotation or application can
+      explain different predicates without changing sense.'
+    indicators:
+    - earlier definition
+    - later application
+    - quoted criticism
+  - key: connotations
+    id_prefix: D5
+    name: Evaluative associations
+    scope: document
+    load_bearing: false
+    questions:
+    - What evaluative connotations attach to key terms -- positive, negative, neutral?
+    - Which wording makes an evaluation part of a description, and does it affect the inference?
+    answer_shape: '[D5.F<n>] <one scoped finding> — dim: connotations — term: <term> — evaluation: <wording> — function:
+      <local work> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source key> — confidence: high|medium|low'
+    method_card: 'Do: Locate evaluation in modifiers and contrasts. Do not predict a reader’s feelings or assert
+      disciplinary deviation without a supplied baseline.'
+    indicators:
+    - mere
+    - rational
+    - distorted
+    - liberation
+  - key: literalization
+    id_prefix: D6
+    name: Abstractions and metaphor
+    scope: document
+    load_bearing: false
+    questions:
+    - Where does the text attribute action or causal power to an abstraction, and what agents or mechanism does
+      it specify?
+    - Which metaphor is used literally, and which passage establishes that rather than ordinary shorthand?
+    answer_shape: '[D6.F<n>] <one scoped finding> — dim: literalization — term: <abstraction> — predicate: <action>
+      — mechanism: <specified or unresolved> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source
+      key> — confidence: high|medium|low'
+    method_card: 'Do: Check the surrounding account before alleging reification. A social relation or collective
+      mechanism may legitimately be the causal object.'
+    indicators:
+    - capital demands
+    - society acts
+    - as if
+  - key: usage_comparison
+    id_prefix: X7
+    name: Comparison across supplied works
+    scope: corpus
+    load_bearing: false
+    questions:
+    - Which paired usage passages show the same or different sense under comparable objects?
+    - Is a claimed anomaly relative to an explicitly supplied baseline, or merely a difference?
+    answer_shape: '[X7.F<n>] <one scoped finding> — dim: usage_comparison — relation: <aligned relation> — alignment:
+      <object, sense, owner, scope> — order-basis: <dates, uptake, or unordered> — anchor: "<verbatim supporting
+      clause, <=200 chars>" — doc: <source key> — anchor-b: "<verbatim supporting clause B>" — doc-b: <different
+      source key> — confidence: high|medium|low'
+    method_card: 'Do: Compare uses without imposing a standard from memory. Retain source ownership and scope on
+      both sides.'
+    indicators:
+    - explicit reference
+    - paired formulations
+    - scope qualification
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension_x_document
+    model_tier: cheap
+    output: ledger
+    max_rows: 8
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - reject_biography
+    - merge_duplicates
+    - hunt_misses
+    - name_must_keep
+    - Judge the warrant appropriate to the claim; preserve owners, scope, modality and counter-passages. Inspect
+      every declared question, not just retained positives.
+    - Every consequential table cell must cite a final finding whose complete supporting spans contain the attributed
+      fact and qualification. Split compound claims into several rows when <=200 characters cannot carry them. Use
+      a separate [F1] [F2] citation per finding. Include an anchor-b with its doc-b for a second supporting span
+      when needed, even in the same document; corpus relations always retain at least two distinct source keys.
+      Never use a scope record as a positive finding. Use comma-separated full IDs in from:, never space-concatenated
+      IDs. Judge meaning and completeness by reading the sources; code checks only anchors and IDs. Before returning,
+      read the actual final tables against their cited final rows and the source contexts, including each source
+      counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source
+      interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or
+      silent.
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: 'a reader with the supplied texts open who needs to answer: How does the text distinguish and use a
+      concept and its neighboring terms?'
+    tables:
+    - usage_lexicon
+    - paired_uses
+    brief: '1. A compact usage lexicon with term, local sense, contrasting or neighboring term, defining boundary,
+      passage and interpretive consequence. A second table pairs apparently inconsistent uses and explains genuine
+      ambiguity versus scope or voice changes. Desks lift both tables. Report stable, precise use when it holds.
+
+      2. Establish the most consequential local findings and their qualifications; organize the reading by the objects
+      and claims in these texts.
+
+      3. Render the named Markdown tables with final finding IDs in every positive cell. Explain the supported relation
+      and the strongest counter-passage; end with what is settled and the exact remaining question.
+
+      4. With multiple sources, build each work’s inventory before the paired comparison, and state alignment and
+      chronology limits. With one source, label the result a local inventory where a corpus relation would require
+      another work.
+
+      Every consequential table cell must cite a final finding whose complete supporting spans contain the attributed
+      fact and qualification. Split compound claims into several rows when <=200 characters cannot carry them. Use
+      a separate [F1] [F2] citation per finding. Include an anchor-b with its doc-b for a second supporting span
+      when needed, even in the same document; corpus relations always retain at least two distinct source keys.
+      Never use a scope record as a positive finding. Use comma-separated full IDs in from:, never space-concatenated
+      IDs. Judge meaning and completeness by reading the sources; code checks only anchors and IDs. Before returning,
+      read the actual final tables against their cited final rows and the source contexts, including each source
+      counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source
+      interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or
+      silent.'
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs

@@ -1,0 +1,218 @@
+# Second queue: authored questions replace any earlier lifted process.
+engine_key: narrative_form_perspective
+engine_name: Narrative form and perspective
+process:
+  key: dvs
+  description: How does the text's sequencing, voice and perspective shape its account? A text or comparable narrative
+    passages, allowing an absent or limited narrative structure.
+  framing: 'A one-page account of how sequence and viewpoint shape this text: local arc or limited narration, presentation
+    order versus narrated time, voices and access, the turn that changes the reader’s understanding, and what the
+    ending settles. Desks lift sequence–effect and perspective–evidence tables. Academic exposition may contain
+    only local narratives. Merge narrative structure and transformation. Preserve turns, closure, register, focalization,
+    devices and temporal questions. Replace closed emplotment labels and deliberate/unconscious shifts with source-specific
+    effects; actants and narrative programs are optional descriptions when supported, not mandatory categories.'
+  scoped_outcomes: true
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: sequence
+    id_prefix: D1
+    name: Sequence and turning points
+    scope: document
+    load_bearing: true
+    questions:
+    - Where are the narrative turning points — crises, reversals, revelations?
+    - What situation opens the account, what changes it, and is there a sustained arc or only a local sequence?
+    answer_shape: '[D1.F<n>] <one scoped finding> — dim: sequence — sequence: <opening, turn, result> — extent:
+      <local or sustained> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source key> — confidence:
+      high|medium|low'
+    method_card: 'Do: Read the actual order of presentation; distinguish events from the order of an exposition.
+      Do not impose romance, tragedy or a closed plot.'
+    indicators:
+    - initially
+    - then
+    - turning point
+  - key: perspective
+    id_prefix: D2
+    name: Perspective and access
+    scope: document
+    load_bearing: true
+    questions:
+    - Whose perspective does the narrator primarily adopt?
+    - Where does focalization shift, and what wording or access to experience marks the shift?
+    answer_shape: '[D2.F<n>] <one scoped finding> — dim: perspective — voice: <speaker> — focalizer: <whose access>
+      — shift: <passage> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source key> — confidence:
+      high|medium|low'
+    method_card: 'Do: Separate narrator, quoted voice and represented experience. Omitted testimony limits access;
+      it does not establish a deliberately excluded viewpoint.'
+    indicators:
+    - we
+    - they experienced
+    - according to
+  - key: time
+    id_prefix: D3
+    name: Narrated and presented time
+    scope: document
+    load_bearing: true
+    questions:
+    - What is the text's dominant temporality?
+    - What time scales are deployed and for what purposes?
+    - How does it construct the relationship between past, present, and future?
+    answer_shape: '[D3.F<n>] <one scoped finding> — dim: time — presented-order: <sequence> — narrated-time: <dates
+      or scale> — effect: <local implication> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source
+      key> — confidence: high|medium|low'
+    method_card: 'Do: Anchor dates, retrospection and anticipation. A sequence can suggest causation without evidencing
+      it; keep those claims distinct.'
+    indicators:
+    - before
+    - by now
+    - would later
+  - key: register
+    id_prefix: D4
+    name: Voice and register
+    scope: document
+    load_bearing: false
+    questions:
+    - What registers does the author deploy and where?
+    - Do different registers serve different argumentative functions?
+    answer_shape: '[D4.F<n>] <one scoped finding> — dim: register — register: <passage-specific description> — transition:
+      <where> — function: <work> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source key> — confidence:
+      high|medium|low'
+    method_card: 'Do: Show a wording change and its local function. Do not infer whether the change was deliberate
+      or unconscious.'
+    indicators:
+    - irony
+    - direct address
+    - technical definition
+  - key: devices
+    id_prefix: D5
+    name: Devices and roles
+    scope: document
+    load_bearing: false
+    questions:
+    - What narrative devices does the text deploy?
+    - Which actor seeks what, with which helper or obstacle, where a narrative program is actually developed?
+    answer_shape: '[D5.F<n>] <one scoped finding> — dim: devices — device: <device or role> — passage-function:
+      <effect> — evidential-limit: <what it cannot prove> — anchor: "<verbatim supporting clause, <=200 chars>"
+      — doc: <source key> — confidence: high|medium|low'
+    method_card: 'Do: Use concrete devices such as anticipation, repetition or withheld information only when shown.
+      Narrative agency does not establish causal agency.'
+    indicators:
+    - repeated image
+    - anticipated ending
+    - obstacle
+  - key: closure
+    id_prefix: D6
+    name: Tension and closure
+    scope: document
+    load_bearing: false
+    questions:
+    - How does it achieve or refuse closure?
+    - Where do the demands of narrative conflict with the demands of argument?
+    answer_shape: '[D6.F<n>] <one scoped finding> — dim: closure — ending: <settlement or openness> — tension: <source-supported
+      issue> — consequence: <interpretive effect> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source
+      key> — confidence: high|medium|low'
+    method_card: 'Do: Compare the closure with the evidence and stated question. Open-endedness can be the intended
+      textual result; do not manufacture hidden resolution or author intention.'
+    indicators:
+    - remains
+    - finally
+    - uncertain future
+  - key: narrative_comparison
+    id_prefix: X7
+    name: Comparison across supplied works
+    scope: corpus
+    load_bearing: false
+    questions:
+    - How do comparable accounts order the same object or adopt different perspectives?
+    - Which paired devices explain a difference in presentation without establishing changed historical facts?
+    answer_shape: '[X7.F<n>] <one scoped finding> — dim: narrative_comparison — relation: <aligned relation> — alignment:
+      <object, sense, owner, scope> — order-basis: <dates, uptake, or unordered> — anchor: "<verbatim supporting
+      clause, <=200 chars>" — doc: <source key> — anchor-b: "<verbatim supporting clause B>" — doc-b: <different
+      source key> — confidence: high|medium|low'
+    method_card: 'Do: Pair the passages and their narrated objects. Report limited comparability; publication order
+      alone is no narrative development.'
+    indicators:
+    - explicit reference
+    - paired formulations
+    - scope qualification
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension_x_document
+    model_tier: cheap
+    output: ledger
+    max_rows: 8
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - reject_biography
+    - merge_duplicates
+    - hunt_misses
+    - name_must_keep
+    - Judge the warrant appropriate to the claim; preserve owners, scope, modality and counter-passages. Inspect
+      every declared question, not just retained positives.
+    - Every consequential table cell must cite a final finding whose complete supporting spans contain the attributed
+      fact and qualification. Split compound claims into several rows when <=200 characters cannot carry them. Use
+      a separate [F1] [F2] citation per finding. Include an anchor-b with its doc-b for a second supporting span
+      when needed, even in the same document; corpus relations always retain at least two distinct source keys.
+      Never use a scope record as a positive finding. Use comma-separated full IDs in from:, never space-concatenated
+      IDs. Judge meaning and completeness by reading the sources; code checks only anchors and IDs. Before returning,
+      read the actual final tables against their cited final rows and the source contexts, including each source
+      counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source
+      interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or
+      silent.
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: 'a reader with the supplied texts open who needs to answer: How does the text''s sequencing, voice and
+      perspective shape its account?'
+    tables:
+    - sequence_and_effect
+    - perspectives_and_access
+    brief: '1. A one-page account of how sequence and viewpoint shape this text: local arc or limited narration,
+      presentation order versus narrated time, voices and access, the turn that changes the reader’s understanding,
+      and what the ending settles. Desks lift sequence–effect and perspective–evidence tables. Academic exposition
+      may contain only local narratives.
+
+      2. Establish the most consequential local findings and their qualifications; organize the reading by the objects
+      and claims in these texts.
+
+      3. Render the named Markdown tables with final finding IDs in every positive cell. Explain the supported relation
+      and the strongest counter-passage; end with what is settled and the exact remaining question.
+
+      4. With multiple sources, build each work’s inventory before the paired comparison, and state alignment and
+      chronology limits. With one source, label the result a local inventory where a corpus relation would require
+      another work.
+
+      Every consequential table cell must cite a final finding whose complete supporting spans contain the attributed
+      fact and qualification. Split compound claims into several rows when <=200 characters cannot carry them. Use
+      a separate [F1] [F2] citation per finding. Include an anchor-b with its doc-b for a second supporting span
+      when needed, even in the same document; corpus relations always retain at least two distinct source keys.
+      Never use a scope record as a positive finding. Use comma-separated full IDs in from:, never space-concatenated
+      IDs. Judge meaning and completeness by reading the sources; code checks only anchors and IDs. Before returning,
+      read the actual final tables against their cited final rows and the source contexts, including each source
+      counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source
+      interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or
+      silent.'
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs

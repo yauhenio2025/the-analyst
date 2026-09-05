@@ -1,0 +1,160 @@
+# Frozen design: communications/study/REDESIGN_second_queue_2026-09-06.md
+engine_key: modal_force_inventory
+engine_name: Possibility, necessity and certainty
+version: 1
+category: argument
+kind: extraction
+problematique: 'An operator inventory a reader can inspect: exact proposition and owner, must/may/cannot/ought or
+  epistemic hedge, type and scope, supporting warrant, justified force and available alternative. Lead with the
+  most consequential force distinction. Desks lift modal-claim and force-change tables; useful coverage is the product,
+  with no compulsory discovery of equivocation. Text containing modal claims or thought experiments; extra evidence
+  only when the claim invokes it.'
+researcher_question: What does the text claim must, may or cannot hold, and what supports that force?
+intellectual_lineage:
+  primary:
+    name: kripke
+    description: Saul Kripke (1940–2022), American philosopher and logician whose development of possible worlds
+      semantics revolutionized modal logic and provided the formal apparatus for analyzing necessity, possibility,
+      and contingency. His 1963 paper on semantical considerations established the accessibility relation between
+      possible worlds, allowing precise characterization of different modal systems. His 1972 lectures 'Naming and
+      Necessity' distinguished between epistemic and metaphysical necessity, showing that some truths are necessary
+      but only knowable a posteriori (necessary a posteriori) while others are contingent but knowable a priori.
+      This distinction is foundational for this engine's capacity to separate different types of modal claims and
+      evaluate their distinct justification requirements.
+  secondary:
+  - name: lewis
+    description: David Lewis (1941–2001), American philosopher whose modal realism treated possible worlds as concrete
+      entities rather than abstract constructs. His 1986 work 'On the Plurality of Worlds' provided the most systematic
+      defense of taking modal talk literally, treating 'possibly P' as 'there exists a world where P.' Even for
+      those who reject his ontology, Lewis's framework clarifies counterfactual reasoning, establishes criteria
+      for world-similarity, and provides tools for evaluating thought experiments. His analysis of counterfactual
+      conditionals grounds this engine's approach to branching possibility structures.
+  - name: williamson
+    description: Timothy Williamson (1955–), British philosopher whose work on modal epistemology addresses how
+      we can know modal truths. His 2007 'The Philosophy of Philosophy' argues that modal knowledge derives from
+      our capacity for counterfactual reasoning rather than from special rational intuition. This grounds the engine's
+      attention to how modal claims are justified and whether purported modal knowledge rests on legitimate counterfactual
+      imagination or mere failure of imagination.
+  - name: kratzer
+    description: Angelika Kratzer (1945–), German-American linguist whose formal semantics for modality in natural
+      language distinguishes between different modal bases (epistemic, deontic, circumstantial) and ordering sources.
+      Her framework explains why 'must' in 'You must be the new neighbor' (epistemic) differs from 'must' in 'You
+      must pay your taxes' (deontic). This informs the engine's classification of modal claims by modality type.
+  - name: aristotle
+    description: Aristotle (384–322 BCE), whose modal syllogistic in the 'Prior Analytics' was the first systematic
+      treatment of modal reasoning. His distinction between what is actual, what is possible, and what is necessary
+      established the foundational categories that persist in contemporary modal logic. His concept of potentiality
+      (dunamis) versus actuality (energeia) provides philosophical grounding for understanding how possibilities
+      relate to actualization.
+  traditions:
+  - name: possible_worlds_semantics
+    description: The formal tradition treating modal operators as quantifiers over possible worlds. Necessity becomes
+      universal quantification (true in all accessible worlds), possibility becomes existential quantification (true
+      in some accessible world). Different accessibility relations yield different modal logics. This provides the
+      formal backbone for analyzing modal claims with precision and detecting when modal operators are used inconsistently.
+  - name: analytic_modal_metaphysics
+    description: The philosophical tradition investigating the nature of modality itself — whether modal facts are
+      primitive or reducible, whether possible worlds are abstract or concrete, how modal truths are grounded. Debates
+      between actualists (only the actual world exists) and possibilists (possible worlds exist too) shape how we
+      understand what modal claims are about. This tradition informs the engine's sensitivity to different philosophical
+      frameworks underlying modal reasoning.
+  - name: thought_experiment_methodology
+    description: The philosophical practice of using imagined scenarios to test principles, identify necessary conditions,
+      or establish possibility. From Galileo's ship to Rawls's veil of ignorance, thought experiments are central
+      to philosophical argument. Critical analysis of this methodology — what makes a thought experiment probative,
+      what assumptions it smuggles in, how robust its conclusions are — is essential for evaluating modal claims
+      based on conceivability.
+  - name: deontic_logic
+    description: The formal study of obligation, permission, and prohibition as modal operators. Just as necessity
+      and possibility govern what must be and what can be, obligation and permission govern what ought to be and
+      what may be. The analogies and disanalogies between alethic and deontic modality — including the notorious
+      is-ought gap — are central to evaluating arguments that move between descriptive and normative modal claims.
+  - name: epistemic_logic
+    description: The formal study of knowledge and belief as modal operators, where 'knowing that P' implies that
+      P is true in all worlds compatible with what the agent knows. This tradition distinguishes between what is
+      epistemically possible (consistent with our knowledge) and what is metaphysically possible (consistent with
+      reality). The conflation of these is a common modal fallacy that this engine is designed to detect.
+  - name: counterfactual_reasoning
+    description: The study of conditionals concerning what would have happened if things had been different. Lewis's
+      similarity-based semantics, where counterfactuals are evaluated by looking at the most similar worlds where
+      the antecedent holds, provides tools for assessing branching possibility structures. This tradition grounds
+      the engine's analysis of alternative scenarios and their probability assignments.
+  key_concepts:
+  - name: alethic_modality
+    definition: Modality concerning what reality allows — what is metaphysically possible, necessary, or contingent.
+      A claim is alethically necessary if it holds in all possible worlds (or all worlds with the same fundamental
+      laws), possible if it holds in at least one, contingent if it holds in some but not all. This is the deepest
+      modal layer, concerning the very structure of reality rather than our knowledge or obligations.
+  - name: epistemic_modality
+    definition: 'Modality concerning what is consistent with what we know — what we can rule out, what remains open.
+      ''The culprit might be the butler'' expresses epistemic possibility (we cannot eliminate this hypothesis),
+      not metaphysical possibility. Confusing epistemic with alethic modality is a pervasive error: ''we cannot
+      rule it out'' does not entail ''it could actually happen.'''
+  - name: deontic_modality
+    definition: Modality concerning obligation and permission — what ought to be, what may be, what must not be.
+      Deontic necessity (obligation) is structurally analogous to alethic necessity but operates in the normative
+      rather than descriptive domain. The is-ought gap means deontic claims require distinct justification from
+      alethic claims; deriving 'must' (deontic) from 'is' (alethic) is a classic fallacy.
+  - name: possible_worlds
+    definition: 'Complete consistent descriptions of how reality could be. A possible world specifies a truth value
+      for every proposition in a way that respects logical constraints. Modal claims are analyzed as claims about
+      which possible worlds satisfy them: necessity means all worlds, possibility means at least one. Whether possible
+      worlds are abstract representations or concrete realities is contested, but the framework is indispensable
+      for rigorous modal analysis.'
+  - name: necessity_types
+    definition: 'Different strengths and sources of necessity: logical necessity (following from the laws of logic
+      alone), metaphysical necessity (following from the nature of things), physical necessity (following from natural
+      laws), and practical necessity (following from circumstances and constraints). Conflating these types — treating
+      practical necessity as if it were logical necessity — is a common source of modal overreach.'
+  - name: sorites_susceptibility
+    definition: 'Vulnerability to the sorites (heap) paradox: if removing one grain from a heap still leaves a heap,
+      then by repeated application no grains yield a heap. Arguments drawing sharp boundaries on continuous dimensions
+      are sorites-susceptible. Claims that ''at point X, A becomes B'' (reform becomes revolution, collection becomes
+      heap) often mask arbitrary boundary-drawing with the appearance of necessity.'
+  - name: counterfactual_robustness
+    definition: The property of a conclusion that it survives across reasonable variations in the thought experiment's
+      setup. A robust modal conclusion holds not just in the specific imagined scenario but across a range of similar
+      scenarios. Lack of robustness suggests the conclusion depends on arbitrary features of the example rather
+      than establishing genuine necessity or possibility.
+  - name: modal_fallacy
+    definition: 'An error in reasoning involving modal operators. Common forms include: scope fallacy (confusing
+      ''necessarily, if P then Q'' with ''if P then necessarily Q''), type confusion (treating epistemic possibility
+      as metaphysical possibility), probabilistic confusion (treating possibility as likelihood), and necessity
+      inflation (claiming logical necessity where only practical necessity holds).'
+analytical_dimensions:
+- key: operators
+  description: Claims and exact operators
+  probing_questions:
+  - What does the text claim must be the case, and what kind of necessity is invoked?
+  - What does the text claim could be different, and how is this possibility established?
+- key: scope
+  description: Scope of the operator
+  probing_questions:
+  - What object, quantifier, condition and time fall under each modal operator?
+  - Does a necessary exposure or capacity leave actual realization contingent?
+- key: warrant
+  description: Support for the force
+  probing_questions:
+  - Does the text distinguish between different grades of necessity and possibility?
+  - What conceptual, empirical, normative or practical warrant supports this exact force?
+- key: force_changes
+  description: Changes of modal register
+  probing_questions:
+  - Are modal operators used consistently, or do they shift meaning across contexts?
+  - Does an alleged change concern the same proposition and conditions, or a distinct claim?
+- key: possibility_tests
+  description: Scenarios and alternatives
+  probing_questions:
+  - What background assumptions does the scenario take for granted?
+  - Does conceivability in the thought experiment genuinely establish possibility?
+  - Which alternative does the text itself consider, and does it vary the condition relevant to this claim?
+- key: thresholds
+  description: Thresholds and limiting cases
+  probing_questions:
+  - Where does the text assert a sharp boundary between categories?
+  - Does the text acknowledge vagueness and gradual transitions, or does it impose false precision?
+apps:
+- critic
+function: genealogy
+family: analytical
+legacy_engine_key: modal_reasoning_analyzer
