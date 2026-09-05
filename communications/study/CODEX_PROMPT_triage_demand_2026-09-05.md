@@ -1,0 +1,15 @@
+# Codex task — demand-side check and rubric review for the engine-catalogue triage (2026-09-05)
+
+Context: ~/projects/the-analyst. Read first: `communications/study/STUDY_frontier_SYNTHESIS_2026-09-05.md` §4–§9, `communications/study/STUDY_argument_family_RESULTS_2026-09-05.md`, `communications/study/REDESIGN_method_shape_2026-09-04.md` §3. Decision taken with the owner: triage the whole catalogue before migrating engines. Claude is writing and running the supply-side triage (`scripts/triage_engine_catalogue.py`: one Sol judgment per registered analytical engine from its definition card, then a per-family consolidation pass). Your part is the demand side and a review of the rubric. No paid model calls; read and write files only.
+
+## 1. Demand side: what the desks and the brief ask engines for
+- The offered catalogue: `src/dossier/catalog_purpose.json`, `src/dossier/recipes.json`, and how `src/dossier/catalog.py` and `src/dossier/brief.py` use them. List the engines a user can be offered and the purposes/recipes they serve.
+- The brief's promises: what `BriefOption` v2 promises ("you will understand", "you will be able to", "questions answered"; see `src/dossier/schemas.py`, `src/dossier/brief.py`, and the sample briefs under `communications/changes/brief-v2-samples/`). Which promised understandings map to an offered engine, which map to none.
+- The desks' needs: what the spine, tables and figures desks consume from an engine (`src/dossier/spine.py`, `tables.py`, `figures.py`, `common.py:analysis_ledger`) — which engine outputs (findings with relations, inventories, comparisons across documents) they can use and which they cannot.
+- Live usage is thin (the service is two days old; 14 executor jobs at https://the-analyst-kcuc.onrender.com/v1/executor/jobs). Note it; do not over-read it.
+Output: `communications/study/TRIAGE_demand_memo_codex_2026-09-05.md` — a table of purposes/promises → engines that serve them (or none), the gaps (promises no engine answers well), and the engines offered that no purpose needs. Say which gaps are engines and which are reading skills better placed in the critic's duties or a shared method card.
+
+## 2. Rubric review
+Read `scripts/triage_engine_catalogue.py` when it appears (Claude is writing it now; if it is not there yet, review the rubric text in `communications/study/TRIAGE_rubric_2026-09-05.md`). Check: does the rubric let the model judge (a) what question the engine answers for a reader, (b) its family, (c) duplicates, (d) whether its questions/focus are about the text or about things a text cannot show (author biography, a checklist of schools, off-genre evidential demands), (e) a verdict keep-under-the-shape / merge / rewrite / retire — without leading it, and with the code checking only shape (ids, JSON, family names)? Propose concrete edits in `communications/study/TRIAGE_rubric_review_codex_2026-09-05.md`. Do not edit Claude's script.
+
+Rules: LLM-first (judgment to the model, plumbing to code); no API spend; commit your two memos to master with a clear message; do not touch engine definitions or operationalizations.
