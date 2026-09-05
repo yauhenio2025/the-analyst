@@ -91,13 +91,16 @@ stance_operationalizations:
   - logical_dependencies
   focus_capabilities:
   - reveal_hidden_implications
+# 2026-09-05: modes per depth (surface = one call, standard = one call + critic, deep = the chain); stance passes kept for reference
 depth_sequences:
 - depth_key: surface
+  mode: oneshot
   passes:
   - pass_number: 1
     stance_key: discovery
     consumes_from: []
 - depth_key: standard
+  mode: oneshot_checked
   passes:
   - pass_number: 1
     stance_key: discovery
@@ -107,6 +110,7 @@ depth_sequences:
     consumes_from:
     - 1
 - depth_key: deep
+  mode: dvs
   passes:
   - pass_number: 1
     stance_key: discovery
@@ -126,3 +130,174 @@ depth_sequences:
     - 1
     - 2
     - 3
+- depth_key: dvs
+  process: dvs
+# The process shape (2026-09-05): communications/study/REDESIGN_inferential_commitment_mapper_2026-09-05.md
+process:
+  key: dvs
+  description: 'A commitment map of the TEXT: what a reader signs up for by accepting its claims — the commitments
+    it undertakes, what its concepts entail as it uses them, which commitments exclude each other, what rests on
+    what, and what follows for practice. About the text''s score, never about the authors'' minds.'
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: declared
+    id_prefix: I1
+    name: Declared commitments
+    load_bearing: true
+    questions:
+    - What theses does the text undertake in its own words, and with what verb ("we argue", "constitutes", "we show")?
+      Give each a stable id (C1 the main thesis, C2 …).
+    - Which commitments does the text present as its own and which does it take from a cited source (quote the sentence
+      that takes it)?
+    - Which commitments does the text defend at length and which does it assert once and rely on?
+    - Which commitments does the text explicitly refuse (positions it rejects), and what does refusing them commit
+      it to?
+    answer_shape: '[I1.F<n>] C<k>: "<verbatim commitment>" — dim: declared — verb: <verb> — source: own|cited (<who>)
+      — defended: at length|asserted once — anchor: "<verbatim>" — confidence: …'
+    method_card: 'Brandom, scorekeeping. Do: keep the text''s score — for each commitment it undertakes, the entitlement
+      it claims (argued here, cited, presupposed) and the verb it uses; a refusal is a commitment too (rejecting
+      X commits the text to not-X). Quote the sentence that undertakes each.'
+    indicators:
+    - '"we argue", "we contend", "constitutes", "is not simply"'
+    - '"following X", "as X has shown"'
+    - a position rejected in one sentence
+  - key: entailed
+    id_prefix: I2
+    name: Entailed commitments (what the concepts commit a reader to)
+    load_bearing: true
+    questions:
+    - For each load-bearing concept, what does accepting it commit a reader to, by the inferential role the text
+      gives the concept? Quote where the text draws that inference itself.
+    - Where does the text presuppose an entailment it never draws (uses the concept as if the inference were settled)?
+      Quote the use.
+    - Which entailments does the text draw from one concept and not from another that carries the same inference
+      (an asymmetry)? Quote both.
+    - Which of these entailed commitments would a reader who accepts the main thesis be unable to refuse?
+    answer_shape: '[I2.F<n>] Accepting <concept or C<k>> commits a reader to <commitment> — dim: entailed — drawn|presupposed
+      — anchor: "<verbatim>" — confidence: …'
+    method_card: 'Brandom, material inference. Do: for each key concept write the inference the text treats as good
+      by the concept''s content rather than by logic ("regulatory control" → interests rearticulated as general
+      interest); anchor the sentence where the text draws it or uses the concept as if it were drawn; mark asymmetries
+      where a parallel inference is not drawn.'
+    indicators:
+    - a concept used as an explanation without the step being argued
+    - '"in other words", "that is", "amounts to"'
+    - a parallel case treated differently
+  - key: incompatibilities
+    id_prefix: I3
+    name: Incompatibilities
+    load_bearing: true
+    questions:
+    - Which pairs of commitments (declared or entailed) exclude each other in the text's own terms? Quote both sides.
+    - How does the text handle each pair — acknowledged and addressed, acknowledged and bracketed ("beyond our scope",
+      "this is not to say"), or unnoticed? Quote the handling.
+    - Which commitment inherited from a cited source conflicts with the text's own position? Quote both.
+    - Which incompatibility is productive (the text draws something from the tension) and which is damaging (the
+      text needs both sides)?
+    answer_shape: '[I3.F<n>] <commitment A> excludes <commitment B> — dim: incompatibilities — anchor: "<A>" — anchor-b:
+      "<B>" — handled: addressed|bracketed|unnoticed — confidence: …'
+    method_card: 'Brandom, incompatibility. Do: for every pair of commitments ask whether holding one precludes
+      entitlement to the other in the text''s own terms (not in yours); quote both sides; quote what the text does
+      with the pair, or say plainly that it does nothing.'
+    indicators:
+    - the same phenomenon explained by two mechanisms in different sections
+    - '"this is not to say", "beyond the scope"'
+    - a criticism of others that the text's own claim also meets
+  - key: dependencies
+    id_prefix: I4
+    name: Dependencies
+    questions:
+    - Which commitments does nothing in the text support (asserted, presupposed, or borrowed on authority)? These
+      are foundational.
+    - What is the chain from the foundational commitments to the main thesis — which commitment is derived from
+      which?
+    - Which single commitment, if withdrawn, takes the most with it? Quote it.
+    - Where does the chain circle (A supports B supports A)? Quote both.
+    answer_shape: '[I4.F<n>] C<k> is foundational|derived from C<m> — dim: dependencies — anchor: "<verbatim>" —
+      failure-takes: <what falls> — confidence: …'
+    method_card: 'Toulmin. Do: for each commitment, find what in the text supports it; what has no support is foundational;
+      follow the chain up to the thesis and name the single point of failure; quote any circle.'
+    indicators:
+    - '"therefore", "it follows", "this means"'
+    - an assumption introduced as obvious
+  - key: consequences
+    id_prefix: I5
+    name: Consequences drawn and stopped short of
+    questions:
+    - What does the text say follows from its commitments for practice, policy or method? Quote it.
+    - Where does a consequence follow from the text's commitments and the text stops? Quote the sentence where it
+      stops.
+    - Where does normative vocabulary sit inside a descriptive claim ("neatly", "merely", "obscures")? Quote it
+      and say what it commits the text to.
+    - Which consequence would the text's own evidence not support? Quote the evidence.
+    answer_shape: '[I5.F<n>] From C<k> follows <consequence> — dim: consequences — drawn|stopped — anchor: "<verbatim>"
+      — confidence: …'
+    method_card: 'Sellars. Do: keep the space of reasons and the space of causes apart — where the text explains
+      by causes what it evaluates by reasons (or the reverse), quote it; where a consequence for practice follows
+      and the text stops, quote the stop; read the normative words inside descriptive sentences as commitments.'
+    indicators:
+    - '"beyond the scope", "we leave aside"'
+    - evaluative adverbs in descriptive sentences
+  - key: shared_score
+    id_prefix: X6
+    name: The shared score across the corpus
+    scope: corpus
+    questions:
+    - Which commitments do the texts share? Anchor each in each text.
+    - Which entailment does one text draw and another refuse? Both anchors.
+    - Which incompatibility appears only when two texts are read together?
+    answer_shape: '[X6.F<n>] <shared commitment | divergence> — dim: shared_score — anchor: "<verbatim>" — doc:
+      <A> — anchor-b: "<verbatim>" — doc-b: <B> — confidence: …'
+    method_card: 'The school''s score. Do: reconcile the commitment lists across texts, then list what is shared,
+      what diverges, and what conflicts across texts.'
+    indicators:
+    - the same thesis in two documents in different words
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension
+    model_tier: cheap
+    output: ledger
+    max_rows: 16
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - reject_biography
+    - reconcile_ids
+    - merge_duplicates
+    - hunt_misses
+    - name_must_keep
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: a reader deciding whether to accept the text's position, who needs to know what accepting it commits
+      them to
+    tables:
+    - commitments
+    - entailments
+    - incompatibilities
+    brief: '1. What you sign up for: the main commitment in the text''s words and the two or three entailed commitments
+      a reader cannot refuse once they accept it, each anchored where the text draws or presupposes the inference.
+
+      2. The declared score: the commitments the text undertakes, its own and inherited, defended and merely asserted.
+
+      3. The incompatibilities: the pairs that exclude each other, both sides quoted, and what the text does with
+      each.
+
+      4. The dependencies: what is foundational, the chain to the thesis, the single point of failure.
+
+      5. The consequences: what the text draws for practice and where it stops, with the stop quoted.
+
+      6. The judgment: the price of accepting the position, and the one commitment a reader should test first.'

@@ -1,0 +1,186 @@
+engine_key: epistemological_method_detector
+engine_name: Epistemological Method Detector
+# The process shape (2026-09-05): communications/study/REDESIGN_epistemological_method_detector_2026-09-05.md
+# No stance operationalizations: the capability YAML's passes are reference only.
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: 'How the TEXT knows what it claims: what it counts as evidence, whose testimony it credits, where
+    it speaks from and what it claims beyond that, what it professes about knowing against what it practises, and
+    whether its standards apply to itself. Read off the page; never a claim about the authors'' identity or motives.'
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: evidence
+    id_prefix: E1
+    name: What counts as evidence
+    load_bearing: true
+    questions:
+    - What kinds of evidence does the text use (documents, statutes, press, interviews, other scholars, figures,
+      cases), and what is each kind asked to establish? Quote one use of each.
+    - What does the text say its method or sources are, and what does the evidence actually consist of? Quote both.
+    - What does the text treat as settled knowledge without evidence (a citation in place of evidence, "it is well
+      known")? Quote it.
+    - Where does the text claim to suspend an assumption, and what is the first assumption it does not suspend?
+    answer_shape: '[E1.F<n>] Evidence kind <kind> establishes <what> — dim: evidence — anchor: "<verbatim>" — sufficient-for:
+      <the claim it carries> — confidence: …'
+    method_card: 'Quine and Dewey. Do: treat the text''s knowing as a practice you can inventory — list the evidence
+      kinds and what each is made to carry; compare the method the text professes with the evidence it uses; note
+      what it holds as settled without evidence; if it brackets assumptions (Husserl), quote the bracket and the
+      first assumption left standing.'
+    indicators:
+    - '"we draw on", "archival", "interviews", "data"'
+    - a citation where evidence would be
+    - '"it is well established", "as is widely recognised"'
+  - key: testimony
+    id_prefix: E2
+    name: Whose testimony is credited
+    load_bearing: true
+    questions:
+    - Who is quoted as an authority, and for what kind of claim? Quote one instance each.
+    - Who is dismissed, and by what device (a label, a group citation, "vague", "insider", a single sentence)? Quote
+      the device.
+    - Whose experience or account does the argument concern and never hears (workers, officials, the actors explained)?
+      Anchor to the claim made about them.
+    - Where does the text credit a source's conclusion while rejecting the source's framework? Quote both.
+    answer_shape: '[E2.F<n>] <who> is credited|dismissed|absent for <what> — dim: testimony — device: <label|citation|silence>
+      — anchor: "<verbatim>" — confidence: …'
+    method_card: 'Fricker. Do: list who speaks with authority in the text and who is spoken about; for every dismissal
+      name the device that does it; ask whose experience the argument concerns and whether it is heard at all; note
+      a conclusion borrowed from a source whose framework the text rejects.'
+    indicators:
+    - '"as X argues", "X shows"'
+    - '"vague concepts", "insider baseball", "commentary"'
+    - actors explained by class or interest with no account of their own
+  - key: position
+    id_prefix: E3
+    name: Where the text speaks from
+    load_bearing: true
+    questions:
+    - What does the text say about where it speaks from — its discipline, its "we", its acknowledged limits? Quote
+      it.
+    - Which claims exceed what that position could know — a generalisation from two cases, an intention attributed
+      to an actor without a source, a causal claim from co-occurrence? Quote the claim and the position statement
+      it exceeds.
+    - Does the text use a standpoint (a position from which others' bias is visible) and does it turn that standpoint
+      on itself? Quote both or say where it stops.
+    - Where does the text write as if from nowhere (no agent, passive voice, "it is clear") about contested matters?
+      Quote it.
+    answer_shape: '[E3.F<n>] The text claims <what> beyond|within its stated position <position> — dim: position
+      — anchor: "<claim>" — anchor-b: "<position statement>" — confidence: …'
+    method_card: 'Haraway and Harding. Do: locate the knower — quote the text''s statements of position and limit;
+      test each large claim against what that position could know; find the standpoint the text uses to see others''
+      bias and ask whether it turns it on itself; mark view-from-nowhere sentences on contested matters.'
+    indicators:
+    - '"we", "our approach", "this paper"'
+    - '"it is clear", "obviously", agentless passives'
+    - two cases → a general law
+  - key: professed_practised
+    id_prefix: E4
+    name: Professed against practised
+    load_bearing: true
+    questions:
+    - What epistemic modesty does the text profess — hedges, "partial", "tentative", "only part of the story"? Quote
+      it.
+    - What are the text's evidential verbs where it makes its central claims ("we observe", "attests", "clearly",
+      "what is discernible")? Quote them.
+    - Which framework does the text use in one section and drop in another? Quote both.
+    - What would revise the central claim, and does the text say? Quote the closest it comes.
+    answer_shape: '[E4.F<n>] Professed <modesty|method> against practised <certainty|method> — dim: professed_practised
+      — anchor: "<professed>" — anchor-b: "<practised>" — confidence: …'
+    method_card: 'Dewey, warranted assertibility. Do: pair every profession of modesty with the verbs the text actually
+      uses at its central claims; note a framework used and dropped; ask what would revise the claim and whether
+      the text says — a claim held as unrevisable is a commitment, not knowledge.'
+    indicators:
+    - '"tentatively", "partial", "we do not claim"'
+    - '"clearly", "attests", "demonstrates", "what is discernible"'
+  - key: self_application
+    id_prefix: E5
+    name: Self-application
+    questions:
+    - What standard does the text apply to rivals (incompleteness, fetishism, state-centrism, vagueness)? Quote
+      it.
+    - Applied to the text, does its own central claim meet that standard? Quote the passage where it would fail
+      or pass.
+    - Where does the text exempt itself ("this is not to say", "we do not deny") and what does the exemption protect?
+    - Where is reflexivity a gesture — an acknowledgement that changes no claim? Quote the acknowledgement and the
+      unchanged claim.
+    answer_shape: '[E5.F<n>] Standard <standard> applied to the text: meets|fails|exempted — dim: self_application
+      — anchor: "<the standard>" — anchor-b: "<the text’s own passage>" — confidence: …'
+    method_card: 'Harding, strong objectivity. Do: take the standard the text applies to others and apply it to
+      the text''s own central claim, quoting both; find the exemptions and what they protect; distinguish reflexivity
+      that changes a claim from reflexivity that decorates it.'
+    indicators:
+    - a critique of others in the introduction
+    - '"this is not to say", "we do not suggest"'
+  - key: shared_theory
+    id_prefix: X6
+    name: The shared theory of knowledge across the corpus
+    scope: corpus
+    questions:
+    - Which evidence kinds and testimony patterns do the texts share? Anchor each in each text.
+    - Which standard does one text apply that another fails? Both anchors.
+    answer_shape: '[X6.F<n>] <shared pattern | divergence> — dim: shared_theory — anchor: "<verbatim>" — doc: <A>
+      — anchor-b: "<verbatim>" — doc-b: <B> — confidence: …'
+    method_card: 'The literature''s theory of knowledge. Do: compare the evidence inventories and the credited voices
+      across texts; state what the literature counts as knowing.'
+    indicators:
+    - the same sources credited across documents
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension
+    model_tier: cheap
+    output: ledger
+    max_rows: 16
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - reject_biography
+    - merge_duplicates
+    - hunt_misses
+    - name_must_keep
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: a reader who must decide how far to trust the text's central claim and wants to know how the text knows
+      it
+    tables:
+    - evidence
+    - testimony
+    - professed_practised
+    brief: '1. How the text knows: the evidence kinds it uses and what each is made to carry, against the method
+      it professes; what it holds as settled without evidence.
+
+      2. Whose word counts: who is credited, who is dismissed and by what device, whose account is never heard.
+
+      3. Where it speaks from: the position and limits the text declares, and the claims that exceed them.
+
+      4. Professed and practised: the modesty professed against the verbs used at the central claims; a framework
+      used and dropped; what would revise the claim.
+
+      5. Self-application: the standard the text applies to rivals, applied to itself; the exemptions and what they
+      protect.
+
+      6. The judgment: the text''s implicit theory of knowledge, where it breaks, and the one question a reader
+      should ask before trusting the central claim.'
