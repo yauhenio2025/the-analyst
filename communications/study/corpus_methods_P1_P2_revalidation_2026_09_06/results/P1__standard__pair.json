@@ -1,0 +1,1282 @@
+{
+  "status": "complete",
+  "job": {
+    "engine": "compare_supplied_cases",
+    "mode": "standard",
+    "corpus": "pair"
+  },
+  "output_sha256": "39966266e0db30db8d5aab803f1cf1b46874f15baac84f415e7faa009d82e1da",
+  "seconds": 415.142281293869,
+  "process": {
+    "engine": "compare_supplied_cases",
+    "process": "dvs",
+    "cost_usd": 0.4195,
+    "input_tokens": 146816,
+    "output_tokens": 33513,
+    "seconds": 415.1,
+    "final_model": "openrouter/openai/gpt-5.6-sol",
+    "final_wall": {
+      "rows": 23,
+      "with_anchor": 23,
+      "verified": 23,
+      "trimmed": 5,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 26,
+      "verified_anchors": 26,
+      "cross_document_rows": 3,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "checked",
+        "scope": "retained_ledger",
+        "missing_rejected_ids": [],
+        "missing_other_ids": []
+      },
+      "synthesis_contract": {
+        "failed_ids": [],
+        "incomplete_cross_document_ids": [],
+        "duplicate_ids": [],
+        "missing_cited": [],
+        "unknown_dimensions": [],
+        "missing_ledger": false,
+        "parse_error": "",
+        "incomplete_invocation": false
+      },
+      "synthesis_repair_attempts": [],
+      "check_ruling_coverage": {
+        "original_count": 20,
+        "explicitly_ruled_count": 20,
+        "missing_or_unruled_ids": [],
+        "unexpected_nonadded_ids": [],
+        "invalid_original_status_ids": [],
+        "duplicate_original_ids": [],
+        "duplicate_ruling_ids": [],
+        "coverage_complete": true
+      },
+      "scope_outcomes": [
+        {
+          "document_keys": [
+            "aukus"
+          ],
+          "dimension_key": "case_identity",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "Abstract",
+            "Introduction",
+            "AUKUS and militarised neoliberalism",
+            "Conclusion"
+          ],
+          "coverage": "complete",
+          "criterion": "Identify the case or approach, actors, object, place, and time covered by the source.",
+          "basis": "The article identifies AUKUS, its member states, Pillars, and the extension to Japan and South Korea; anchor verbatim.",
+          "limitations": [
+            "The article is a source containing several national and institutional subcases."
+          ],
+          "finding_ids": [
+            "F1"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "Anchor verified verbatim; finding correctly captures the case identity.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "aukus": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        },
+        {
+          "document_keys": [
+            "subsea"
+          ],
+          "dimension_key": "case_identity",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "Abstract",
+            "Reconciling Market Dynamics…",
+            "Case Studies and Methods",
+            "Case 1",
+            "Case 2",
+            "Conclusion"
+          ],
+          "coverage": "complete",
+          "criterion": "Identify the case or approach, actors, object, place, and time covered by the source.",
+          "basis": "The article explicitly names two empirical cases; anchors verbatim.",
+          "limitations": [
+            "SeaMeWe-6 and France–ASN are distinct cases."
+          ],
+          "finding_ids": [
+            "F3",
+            "F11",
+            "F15"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "All anchors verified; F15 anchor corrected for minor spacing.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "subsea": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        },
+        {
+          "document_keys": [
+            "aukus"
+          ],
+          "dimension_key": "case_answers",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "Introduction",
+            "AUKUS and militarised neoliberalism",
+            "AUKUS, bipartisanship…",
+            "State interventions…",
+            "The emergence of a new business class",
+            "Conclusion"
+          ],
+          "coverage": "complete",
+          "criterion": "Inventory the case’s answers on justified common criteria.",
+          "basis": "Conceptual claims and empirical examples for market coordination, regulatory controls, industrial policy, firms, and VC are supplied.",
+          "limitations": [
+            "Many consequences are interpretive/announced rather than completed outcomes."
+          ],
+          "finding_ids": [
+            "F7",
+            "F8",
+            "F9"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "F7 confirmed; F8/F9 anchors corrected for minor verbatim issues; concepts still supported.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "aukus": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        },
+        {
+          "document_keys": [
+            "subsea"
+          ],
+          "dimension_key": "case_answers",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "Non‑Alignment…",
+            "Case 1",
+            "Case 2",
+            "Conclusion"
+          ],
+          "coverage": "complete",
+          "criterion": "Inventory the case’s answers on justified common criteria.",
+          "basis": "Strategy types, consortium responses, investment withdrawal, nationalization terms, industrial capacities are reported with anchored evidence.",
+          "limitations": [
+            "No common quantitative effectiveness measure across cases."
+          ],
+          "finding_ids": [
+            "F4",
+            "F12",
+            "F13",
+            "F14",
+            "F16",
+            "F17"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "F4/F12/F15 anchors corrected; F12 narrowed to US instruments; core answers remain supported.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "subsea": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        },
+        {
+          "document_keys": [
+            "aukus"
+          ],
+          "dimension_key": "comparison_limits",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "AUKUS, bipartisanship…",
+            "Conclusion",
+            "Notes"
+          ],
+          "coverage": "complete",
+          "criterion": "Identify exceptions, scope exclusions, and evidence limits.",
+          "basis": "The article explicitly excludes conflict assessment and reports delivery uncertainty.",
+          "limitations": [
+            "No cross-language translation limitation established."
+          ],
+          "finding_ids": [
+            "F2",
+            "F10"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "F2 confirmed; F10 anchor corrected (plural) and still supports uncertainty.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "aukus": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        },
+        {
+          "document_keys": [
+            "subsea"
+          ],
+          "dimension_key": "comparison_limits",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "Non‑Alignment…",
+            "Case 2",
+            "Conclusion"
+          ],
+          "coverage": "complete",
+          "criterion": "Identify exceptions, contextual constraints, comparability limits.",
+          "basis": "The article states uneven effects and resource/sanction limits on France.",
+          "limitations": [
+            "No translation limitation established in substantive analysis."
+          ],
+          "finding_ids": [
+            "F5",
+            "F18"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "Both anchors verbatim; F18 truncated but supports the limit.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "subsea": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        },
+        {
+          "document_keys": [
+            "aukus",
+            "subsea"
+          ],
+          "dimension_key": "case_matrix",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "Both abstracts",
+            "Both introductions",
+            "Both frameworks",
+            "AUKUS empirical sections",
+            "Subsea Case 1",
+            "Subsea Case 2",
+            "Both conclusions"
+          ],
+          "coverage": "complete",
+          "criterion": "Compare cases on justified common questions while retaining differences.",
+          "basis": "Both documents supply distinct anchors for market–state diagnosis, intervention instruments, corporate roles, and limits.",
+          "limitations": [
+            "Comparison is approach-level, cross-sectoral; no evaluative ranking licensed; no argumentative inheritance claimed."
+          ],
+          "finding_ids": [
+            "F6",
+            "F19",
+            "F20"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "All cross‑source anchors verified verbatim; supported similarities/differences confirmed.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "aukus": "provided",
+              "subsea": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        }
+      ]
+    },
+    "calls": [
+      {
+        "step": "read",
+        "kind": "synthesize",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/openai/gpt-5.6-sol",
+        "model_used": "openrouter/openai/gpt-5.6-sol",
+        "input_tokens": 41855,
+        "output_tokens": 6569,
+        "duration_ms": 78213,
+        "cost_usd": 0.1494,
+        "retries": 0,
+        "wall": {
+          "rows": 20,
+          "with_anchor": 20,
+          "verified": 20,
+          "trimmed": 5,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 23,
+          "verified_anchors": 23,
+          "cross_document_rows": 3,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "has_ledger": true,
+          "prose_chars": 12596,
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "aukus"
+              ],
+              "dimension_key": "case_identity",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract",
+                "Introduction",
+                "AUKUS and militarised neoliberalism",
+                "Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "Identify the case or approach, actors, object, place, and time covered by the source.",
+              "basis": "The supplied article identifies AUKUS, its member states, Pillars I and II, and its extension to Japan and South Korea.",
+              "limitations": [
+                "The article is a source containing several national and institutional subcases, not a single bounded transaction."
+              ],
+              "finding_ids": [
+                "F1"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "aukus": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "subsea"
+              ],
+              "dimension_key": "case_identity",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract",
+                "Reconciling Market Dynamics and State Strategy in Global Networks",
+                "Case Studies and Methods",
+                "Case 1",
+                "Case 2",
+                "Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "Identify the case or approach, actors, object, place, and time covered by the source.",
+              "basis": "The article explicitly identifies two nested cases and their state, corporate, infrastructural, and temporal boundaries.",
+              "limitations": [
+                "SeaMeWe-6 and France–ASN are distinct cases and must not be collapsed into the document as a single empirical unit."
+              ],
+              "finding_ids": [
+                "F3",
+                "F11",
+                "F15"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "subsea": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "aukus"
+              ],
+              "dimension_key": "case_answers",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Introduction",
+                "AUKUS and militarised neoliberalism",
+                "AUKUS, bipartisanship, and the regulatory control",
+                "State interventions and politico-business coalitions",
+                "The emergence of a new business class",
+                "Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "Inventory the case’s answers on justified common criteria, preserving instruments, mechanisms, actors, and evidential status.",
+              "basis": "The article supplies conceptual claims and empirical examples concerning market coordination, regulatory control, industrial policy, firms, and venture capital.",
+              "limitations": [
+                "Many policy consequences are interpretive or announced mechanisms rather than completed outcomes."
+              ],
+              "finding_ids": [
+                "F7",
+                "F8",
+                "F9"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "aukus": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "subsea"
+              ],
+              "dimension_key": "case_answers",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Non-Alignment and Re-Alignment of Privately Owned Networks",
+                "Case 1: The US–Chinese Conflict Over SeaMeWe-6",
+                "Case 2: France's Nationalization of Alcatel Submarine Networks",
+                "Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "Inventory the case’s answers on justified common criteria, preserving instruments, mechanisms, actors, amounts, timing, and reported consequences.",
+              "basis": "The article reports strategy types, consortium responses, investment withdrawal, nationalization terms, and industrial capacities.",
+              "limitations": [
+                "The article does not supply a common quantitative effectiveness measure across its cases."
+              ],
+              "finding_ids": [
+                "F4",
+                "F12",
+                "F13",
+                "F14",
+                "F16",
+                "F17"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "subsea": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "aukus"
+              ],
+              "dimension_key": "comparison_limits",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "AUKUS, bipartisanship, and the regulatory control",
+                "Conclusion",
+                "Notes"
+              ],
+              "coverage": "complete",
+              "criterion": "Identify exceptions, scope exclusions, and evidence limits that qualify a proposed common pattern.",
+              "basis": "The article explicitly excludes conflict assessment and reports delivery uncertainty despite bipartisan support.",
+              "limitations": [
+                "No cross-language translation limitation is expressly established."
+              ],
+              "finding_ids": [
+                "F2",
+                "F10"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "aukus": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "subsea"
+              ],
+              "dimension_key": "comparison_limits",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Non-Alignment and Re-Alignment of Privately Owned Networks",
+                "Case 2: France's Nationalization of Alcatel Submarine Networks",
+                "Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "Identify exceptions, contextual constraints, and limits on comparability or effectiveness.",
+              "basis": "The article explicitly characterizes intervention effects as uneven and identifies financial and technological limits on France.",
+              "limitations": [
+                "No cross-language translation limitation is expressly established in the substantive analysis."
+              ],
+              "finding_ids": [
+                "F5",
+                "F18"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "subsea": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "aukus",
+                "subsea"
+              ],
+              "dimension_key": "case_matrix",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Both abstracts",
+                "Both introductions",
+                "Both theoretical frameworks",
+                "AUKUS empirical sections",
+                "Subsea Case 1",
+                "Subsea Case 2",
+                "Both conclusions"
+              ],
+              "coverage": "complete",
+              "criterion": "Compare cases on justified common questions while retaining differences in object, scope, evidence, and missing equivalence.",
+              "basis": "Both documents support comparison of market–state diagnosis, intervention instruments, corporate roles, and limits, with distinct anchors from each source.",
+              "limitations": [
+                "The comparison is approach-level and cross-sectoral.",
+                "No evaluative ranking is licensed.",
+                "Publication dates do not establish argumentative development or inheritance."
+              ],
+              "finding_ids": [
+                "F6",
+                "F19",
+                "F20"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "aukus": "provided",
+                  "subsea": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 31465
+      },
+      {
+        "step": "check",
+        "kind": "verify",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+        "model_used": "openrouter/deepseek/deepseek-v4-pro",
+        "input_tokens": 49299,
+        "output_tokens": 20472,
+        "duration_ms": 249822,
+        "cost_usd": 0.0941,
+        "retries": 0,
+        "wall": {
+          "rows": 23,
+          "with_anchor": 23,
+          "verified": 23,
+          "trimmed": 5,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 26,
+          "verified_anchors": 26,
+          "cross_document_rows": 3,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "checked",
+            "scope": "retained_ledger",
+            "missing_rejected_ids": [],
+            "missing_other_ids": []
+          },
+          "check_in": 20,
+          "check_confirmed": 15,
+          "check_weakened": 5,
+          "check_rejected": 0,
+          "check_added": 3,
+          "check_added_dropped": 0,
+          "check_carried": 0,
+          "check_unverified": 0,
+          "check_ruling_coverage": {
+            "original_count": 20,
+            "explicitly_ruled_count": 20,
+            "missing_or_unruled_ids": [],
+            "unexpected_nonadded_ids": [],
+            "invalid_original_status_ids": [],
+            "duplicate_original_ids": [],
+            "duplicate_ruling_ids": [],
+            "coverage_complete": true
+          },
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "aukus"
+              ],
+              "dimension_key": "case_identity",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract",
+                "Introduction",
+                "AUKUS and militarised neoliberalism",
+                "Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "Identify the case or approach, actors, object, place, and time covered by the source.",
+              "basis": "The article identifies AUKUS, its member states, Pillars, and the extension to Japan and South Korea; anchor verbatim.",
+              "limitations": [
+                "The article is a source containing several national and institutional subcases."
+              ],
+              "finding_ids": [
+                "F1"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "Anchor verified verbatim; finding correctly captures the case identity.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "aukus": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "subsea"
+              ],
+              "dimension_key": "case_identity",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract",
+                "Reconciling Market Dynamics…",
+                "Case Studies and Methods",
+                "Case 1",
+                "Case 2",
+                "Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "Identify the case or approach, actors, object, place, and time covered by the source.",
+              "basis": "The article explicitly names two empirical cases; anchors verbatim.",
+              "limitations": [
+                "SeaMeWe-6 and France–ASN are distinct cases."
+              ],
+              "finding_ids": [
+                "F3",
+                "F11",
+                "F15"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "All anchors verified; F15 anchor corrected for minor spacing.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "subsea": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "aukus"
+              ],
+              "dimension_key": "case_answers",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Introduction",
+                "AUKUS and militarised neoliberalism",
+                "AUKUS, bipartisanship…",
+                "State interventions…",
+                "The emergence of a new business class",
+                "Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "Inventory the case’s answers on justified common criteria.",
+              "basis": "Conceptual claims and empirical examples for market coordination, regulatory controls, industrial policy, firms, and VC are supplied.",
+              "limitations": [
+                "Many consequences are interpretive/announced rather than completed outcomes."
+              ],
+              "finding_ids": [
+                "F7",
+                "F8",
+                "F9"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "F7 confirmed; F8/F9 anchors corrected for minor verbatim issues; concepts still supported.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "aukus": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "subsea"
+              ],
+              "dimension_key": "case_answers",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Non‑Alignment…",
+                "Case 1",
+                "Case 2",
+                "Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "Inventory the case’s answers on justified common criteria.",
+              "basis": "Strategy types, consortium responses, investment withdrawal, nationalization terms, industrial capacities are reported with anchored evidence.",
+              "limitations": [
+                "No common quantitative effectiveness measure across cases."
+              ],
+              "finding_ids": [
+                "F4",
+                "F12",
+                "F13",
+                "F14",
+                "F16",
+                "F17"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "F4/F12/F15 anchors corrected; F12 narrowed to US instruments; core answers remain supported.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "subsea": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "aukus"
+              ],
+              "dimension_key": "comparison_limits",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "AUKUS, bipartisanship…",
+                "Conclusion",
+                "Notes"
+              ],
+              "coverage": "complete",
+              "criterion": "Identify exceptions, scope exclusions, and evidence limits.",
+              "basis": "The article explicitly excludes conflict assessment and reports delivery uncertainty.",
+              "limitations": [
+                "No cross-language translation limitation established."
+              ],
+              "finding_ids": [
+                "F2",
+                "F10"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "F2 confirmed; F10 anchor corrected (plural) and still supports uncertainty.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "aukus": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "subsea"
+              ],
+              "dimension_key": "comparison_limits",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Non‑Alignment…",
+                "Case 2",
+                "Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "Identify exceptions, contextual constraints, comparability limits.",
+              "basis": "The article states uneven effects and resource/sanction limits on France.",
+              "limitations": [
+                "No translation limitation established in substantive analysis."
+              ],
+              "finding_ids": [
+                "F5",
+                "F18"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "Both anchors verbatim; F18 truncated but supports the limit.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "subsea": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "aukus",
+                "subsea"
+              ],
+              "dimension_key": "case_matrix",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Both abstracts",
+                "Both introductions",
+                "Both frameworks",
+                "AUKUS empirical sections",
+                "Subsea Case 1",
+                "Subsea Case 2",
+                "Both conclusions"
+              ],
+              "coverage": "complete",
+              "criterion": "Compare cases on justified common questions while retaining differences.",
+              "basis": "Both documents supply distinct anchors for market–state diagnosis, intervention instruments, corporate roles, and limits.",
+              "limitations": [
+                "Comparison is approach-level, cross-sectoral; no evaluative ranking licensed; no argumentative inheritance claimed."
+              ],
+              "finding_ids": [
+                "F6",
+                "F19",
+                "F20"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "All cross‑source anchors verified verbatim; supported similarities/differences confirmed.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "aukus": "provided",
+                  "subsea": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 29401
+      },
+      {
+        "step": "reconcile_checked",
+        "kind": "synthesize",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/openai/gpt-5.6-sol",
+        "model_used": "openrouter/openai/gpt-5.6-sol",
+        "input_tokens": 55662,
+        "output_tokens": 6472,
+        "duration_ms": 87000,
+        "cost_usd": 0.176,
+        "retries": 0,
+        "wall": {
+          "rows": 23,
+          "with_anchor": 23,
+          "verified": 23,
+          "trimmed": 5,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 26,
+          "verified_anchors": 26,
+          "cross_document_rows": 3,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "checked",
+            "scope": "retained_ledger",
+            "missing_rejected_ids": [],
+            "missing_other_ids": []
+          },
+          "synthesis_contract": {
+            "failed_ids": [],
+            "incomplete_cross_document_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [],
+            "unknown_dimensions": [],
+            "missing_ledger": false,
+            "parse_error": "",
+            "incomplete_invocation": false
+          },
+          "synthesis_repair_attempts": [],
+          "check_ruling_coverage": {
+            "original_count": 20,
+            "explicitly_ruled_count": 20,
+            "missing_or_unruled_ids": [],
+            "unexpected_nonadded_ids": [],
+            "invalid_original_status_ids": [],
+            "duplicate_original_ids": [],
+            "duplicate_ruling_ids": [],
+            "coverage_complete": true
+          },
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "aukus"
+              ],
+              "dimension_key": "case_identity",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract",
+                "Introduction",
+                "AUKUS and militarised neoliberalism",
+                "Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "Identify the case or approach, actors, object, place, and time covered by the source.",
+              "basis": "The article identifies AUKUS, its member states, Pillars, and the extension to Japan and South Korea; anchor verbatim.",
+              "limitations": [
+                "The article is a source containing several national and institutional subcases."
+              ],
+              "finding_ids": [
+                "F1"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "Anchor verified verbatim; finding correctly captures the case identity.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "aukus": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "subsea"
+              ],
+              "dimension_key": "case_identity",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract",
+                "Reconciling Market Dynamics…",
+                "Case Studies and Methods",
+                "Case 1",
+                "Case 2",
+                "Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "Identify the case or approach, actors, object, place, and time covered by the source.",
+              "basis": "The article explicitly names two empirical cases; anchors verbatim.",
+              "limitations": [
+                "SeaMeWe-6 and France–ASN are distinct cases."
+              ],
+              "finding_ids": [
+                "F3",
+                "F11",
+                "F15"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "All anchors verified; F15 anchor corrected for minor spacing.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "subsea": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "aukus"
+              ],
+              "dimension_key": "case_answers",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Introduction",
+                "AUKUS and militarised neoliberalism",
+                "AUKUS, bipartisanship…",
+                "State interventions…",
+                "The emergence of a new business class",
+                "Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "Inventory the case’s answers on justified common criteria.",
+              "basis": "Conceptual claims and empirical examples for market coordination, regulatory controls, industrial policy, firms, and VC are supplied.",
+              "limitations": [
+                "Many consequences are interpretive/announced rather than completed outcomes."
+              ],
+              "finding_ids": [
+                "F7",
+                "F8",
+                "F9"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "F7 confirmed; F8/F9 anchors corrected for minor verbatim issues; concepts still supported.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "aukus": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "subsea"
+              ],
+              "dimension_key": "case_answers",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Non‑Alignment…",
+                "Case 1",
+                "Case 2",
+                "Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "Inventory the case’s answers on justified common criteria.",
+              "basis": "Strategy types, consortium responses, investment withdrawal, nationalization terms, industrial capacities are reported with anchored evidence.",
+              "limitations": [
+                "No common quantitative effectiveness measure across cases."
+              ],
+              "finding_ids": [
+                "F4",
+                "F12",
+                "F13",
+                "F14",
+                "F16",
+                "F17"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "F4/F12/F15 anchors corrected; F12 narrowed to US instruments; core answers remain supported.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "subsea": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "aukus"
+              ],
+              "dimension_key": "comparison_limits",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "AUKUS, bipartisanship…",
+                "Conclusion",
+                "Notes"
+              ],
+              "coverage": "complete",
+              "criterion": "Identify exceptions, scope exclusions, and evidence limits.",
+              "basis": "The article explicitly excludes conflict assessment and reports delivery uncertainty.",
+              "limitations": [
+                "No cross-language translation limitation established."
+              ],
+              "finding_ids": [
+                "F2",
+                "F10"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "F2 confirmed; F10 anchor corrected (plural) and still supports uncertainty.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "aukus": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "subsea"
+              ],
+              "dimension_key": "comparison_limits",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Non‑Alignment…",
+                "Case 2",
+                "Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "Identify exceptions, contextual constraints, comparability limits.",
+              "basis": "The article states uneven effects and resource/sanction limits on France.",
+              "limitations": [
+                "No translation limitation established in substantive analysis."
+              ],
+              "finding_ids": [
+                "F5",
+                "F18"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "Both anchors verbatim; F18 truncated but supports the limit.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "subsea": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "aukus",
+                "subsea"
+              ],
+              "dimension_key": "case_matrix",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Both abstracts",
+                "Both introductions",
+                "Both frameworks",
+                "AUKUS empirical sections",
+                "Subsea Case 1",
+                "Subsea Case 2",
+                "Both conclusions"
+              ],
+              "coverage": "complete",
+              "criterion": "Compare cases on justified common questions while retaining differences.",
+              "basis": "Both documents supply distinct anchors for market–state diagnosis, intervention instruments, corporate roles, and limits.",
+              "limitations": [
+                "Comparison is approach-level, cross-sectoral; no evaluative ranking licensed; no argumentative inheritance claimed."
+              ],
+              "finding_ids": [
+                "F6",
+                "F19",
+                "F20"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "All cross‑source anchors verified verbatim; supported similarities/differences confirmed.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "aukus": "provided",
+                  "subsea": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 28128
+      }
+    ]
+  }
+}

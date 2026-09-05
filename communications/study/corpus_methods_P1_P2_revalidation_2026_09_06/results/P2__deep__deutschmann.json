@@ -1,0 +1,2805 @@
+{
+  "status": "complete",
+  "job": {
+    "engine": "reconcile_sources",
+    "mode": "deep",
+    "corpus": "deutschmann"
+  },
+  "output_sha256": "9f786edf94b537e65ae0c4bdd25e56e188a941f274ad919d42b1b441173a38a7",
+  "seconds": 722.0468053817749,
+  "process": {
+    "engine": "reconcile_sources",
+    "process": "dvs",
+    "cost_usd": 0.4842,
+    "input_tokens": 364338,
+    "output_tokens": 84536,
+    "seconds": 722.0,
+    "final_model": "openrouter/openai/gpt-5.6-sol",
+    "final_wall": {
+      "rows": 16,
+      "with_anchor": 16,
+      "verified": 16,
+      "trimmed": 0,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 26,
+      "verified_anchors": 26,
+      "cross_document_rows": 7,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "checked",
+        "scope": "retained_ledger",
+        "missing_rejected_ids": [],
+        "missing_other_ids": []
+      },
+      "synthesis_contract": {
+        "failed_ids": [],
+        "incomplete_cross_document_ids": [],
+        "duplicate_ids": [],
+        "missing_cited": [],
+        "unknown_dimensions": [],
+        "missing_ledger": false,
+        "parse_error": "",
+        "incomplete_invocation": false
+      },
+      "synthesis_repair_attempts": [],
+      "has_ledger": true,
+      "prose_chars": 25212,
+      "missing_lineage": [
+        "R2.DOC1.F1 V.DOC2.F2",
+        "R3.DOC1.F4 R1.DOC2.F6",
+        "RM.F1 RM.F2 R2.DOC3.F3"
+      ],
+      "check_ruling_coverage": {
+        "coverage_complete": false,
+        "original_count": 53,
+        "explicitly_ruled_count": 53,
+        "reviews": [
+          {
+            "step": "verify",
+            "document": "deutschmann2001_capitalism_as_religion",
+            "original_count": 16,
+            "explicitly_ruled_count": 16,
+            "missing_or_unruled_ids": [],
+            "unexpected_nonadded_ids": [],
+            "invalid_original_status_ids": [],
+            "duplicate_original_ids": [],
+            "duplicate_ruling_ids": [],
+            "coverage_complete": true
+          },
+          {
+            "step": "verify",
+            "document": "deutschmann2001_promise_of_absolute_wealth",
+            "original_count": 16,
+            "explicitly_ruled_count": 16,
+            "missing_or_unruled_ids": [],
+            "unexpected_nonadded_ids": [],
+            "invalid_original_status_ids": [],
+            "duplicate_original_ids": [],
+            "duplicate_ruling_ids": [],
+            "coverage_complete": true
+          },
+          {
+            "step": "verify",
+            "document": "deutschmann2022_interpretation_of_capitalism_as_religion",
+            "original_count": 16,
+            "explicitly_ruled_count": 16,
+            "missing_or_unruled_ids": [],
+            "unexpected_nonadded_ids": [],
+            "invalid_original_status_ids": [],
+            "duplicate_original_ids": [],
+            "duplicate_ruling_ids": [],
+            "coverage_complete": true
+          },
+          {
+            "step": "verify",
+            "document": "",
+            "original_count": 5,
+            "explicitly_ruled_count": 5,
+            "missing_or_unruled_ids": [],
+            "unexpected_nonadded_ids": [
+              "RM.F6"
+            ],
+            "invalid_original_status_ids": [],
+            "duplicate_original_ids": [],
+            "duplicate_ruling_ids": [],
+            "coverage_complete": false
+          }
+        ]
+      },
+      "scope_outcomes": [
+        {
+          "document_keys": [
+            "deutschmann2001_capitalism_as_religion"
+          ],
+          "dimension_key": "source_questions",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "Abstract",
+            "The Paradoxes of Religion and Money",
+            "Simmel and Marx",
+            "Entrepreneurs and Economic Myths",
+            "Conclusions"
+          ],
+          "coverage": "complete",
+          "criterion": "A passage must organize or answer a substantive question about a theme, with the object, scope and role of that question recoverable from the text.",
+          "basis": "All six source_questions findings are anchored in the inspected sections; the sections explicitly frame the questions about money, religion, capitalist growth, entrepreneurship, innovation and economic myths. The original outcome was reclassified from inconclusive to findings_present because the findings are present and anchored.",
+          "limitations": [
+            "The references, notes and author biography were not treated as substantive source-question passages."
+          ],
+          "finding_ids": [
+            "[R1.DOC1.F1]",
+            "[R1.DOC1.F2]",
+            "[R1.DOC1.F3]",
+            "[R1.DOC1.F4]",
+            "[R1.DOC1.F5]",
+            "[R1.DOC1.F6]"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "All findings are anchored in the inspected sections; coverage is complete for the stated sections.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "deutschmann2001_capitalism_as_religion": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "One or more declared finding references lack retained verified evidence"
+            ]
+          }
+        },
+        {
+          "document_keys": [
+            "deutschmann2001_capitalism_as_religion"
+          ],
+          "dimension_key": "source_answers",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "Abstract",
+            "The Paradoxes of Religion and Money",
+            "Simmel and Marx",
+            "Entrepreneurs and Economic Myths",
+            "Conclusions"
+          ],
+          "coverage": "complete",
+          "criterion": "A source-attributed answer to a question, with its decisive condition or modality, attribution, warrant and object-time-scope, anchored in verbatim text.",
+          "basis": "All six original answers and the added miss are anchored in the inspected sections. The source provides explicit answers about capitalism’s religious qualities, the nature and dynamics of money and capital, entrepreneurial innovation, the development of economic myths, and the source of surplus value.",
+          "limitations": [
+            "The assessment concerns the supplied text and does not establish agreement or contradiction with other sources."
+          ],
+          "finding_ids": [
+            "R2.DOC1.F1",
+            "R2.DOC1.F2",
+            "R2.DOC1.F3",
+            "R2.DOC1.F4",
+            "R2.DOC1.F5",
+            "R2.DOC1.F6",
+            "V.DOC1.F1"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "All findings are anchored in the inspected sections; coverage is complete for the stated sections.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "deutschmann2001_capitalism_as_religion": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "Findings in this scope lost anchor evidence; this does not establish absence",
+              "One or more declared finding references lack retained verified evidence"
+            ]
+          }
+        },
+        {
+          "document_keys": [
+            "deutschmann2001_capitalism_as_religion"
+          ],
+          "dimension_key": "answer_limits",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "Abstract",
+            "The Paradoxes of Religion and Money",
+            "Simmel and Marx",
+            "Entrepreneurs and Economic Myths",
+            "Conclusions"
+          ],
+          "coverage": "complete",
+          "criterion": "Conditions, counter-passages, qualifications, scope differences, explicit unresolved issues, and narrowed or contested answers in the source.",
+          "basis": "Four anchored passages identify explicit narrowing, unresolved definitions, an acknowledged failure of solution, and a distinction between economic and religious myths. The original outcome was reclassified from inconclusive to findings_present because the findings are present and anchored.",
+          "limitations": [
+            "The assessment concerns the supplied text and its stated sections; it does not independently assess the cited works."
+          ],
+          "finding_ids": [
+            "[R3.DOC1.F1]",
+            "[R3.DOC1.F2]",
+            "[R3.DOC1.F3]",
+            "[R3.DOC1.F4]"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "All findings are anchored in the inspected sections; coverage is complete for the stated sections.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "deutschmann2001_capitalism_as_religion": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "Findings lost anchor evidence; this does not establish absence",
+              "One or more declared finding references lack retained verified evidence"
+            ]
+          }
+        },
+        {
+          "document_keys": [
+            "deutschmann2001_promise_of_absolute_wealth"
+          ],
+          "dimension_key": "source_questions",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "Abstract",
+            "Section I",
+            "Section II",
+            "Section III",
+            "Section IV"
+          ],
+          "coverage": "complete",
+          "criterion": "A passage must organize or answer a substantive question concerning the source's themes, concepts, connections, object, time, institutional level or kind of inquiry.",
+          "basis": "The source explicitly frames questions about capitalism and religion, the definition and paradox of money, capital growth, entrepreneurship, labour, economic myths, and the temporal distinction between capitalism and traditional religion. Six anchored findings retained (four weakened, two confirmed).",
+          "limitations": [
+            "Some answers were broader than the supplied anchors and were narrowed to the directly supported statements."
+          ],
+          "finding_ids": [
+            "[R1.DOC2.F1]",
+            "[R1.DOC2.F2]",
+            "[R1.DOC2.F3]",
+            "[R1.DOC2.F4]",
+            "[R1.DOC2.F5]",
+            "[R1.DOC2.F6]"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "All rows referenced verified verbatim anchors; four were weakened to match the anchor's exact scope, two were confirmed. No rows were rejected. Core questions are present.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "deutschmann2001_promise_of_absolute_wealth": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "One or more declared finding references lack retained verified evidence"
+            ]
+          }
+        },
+        {
+          "document_keys": [
+            "deutschmann2001_promise_of_absolute_wealth"
+          ],
+          "dimension_key": "source_answers",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "Abstract",
+            "Section I",
+            "Section II",
+            "Section III",
+            "Section IV"
+          ],
+          "coverage": "complete",
+          "criterion": "The source must give an attributable answer to a question, with a stated condition or modality and an identifiable conceptual, empirical, causal, interpretive or normative warrant.",
+          "basis": "The inspected source provides answers about money as Vermögen, capital growth via creative-destructive labour, myths' social resonance, and the promise of absolute wealth. Added two misses for Benjamin's traits and the consequence of indebtedness. Six anchored findings retained (three confirmed, one weakened, two added).",
+          "limitations": [
+            "The promise answer was narrowed to exclude consequences; a separate miss now captures the consequence of indebtedness."
+          ],
+          "finding_ids": [
+            "[R2.DOC2.F2]",
+            "[R2.DOC2.F3]",
+            "[R2.DOC2.F4]",
+            "[R2.DOC2.F5]",
+            "[V.DOC2.F1]",
+            "[V.DOC2.F2]"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "All rows reference confirmed anchors; one weakened to match anchor scope, two misses added to close gaps. No rows rejected.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "deutschmann2001_promise_of_absolute_wealth": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "Findings lost anchor evidence; this does not establish absence",
+              "One or more declared finding references lack retained verified evidence"
+            ]
+          }
+        },
+        {
+          "document_keys": [
+            "deutschmann2001_promise_of_absolute_wealth"
+          ],
+          "dimension_key": "answer_limits",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "Abstract",
+            "Section I",
+            "Section II",
+            "Section III",
+            "Section IV"
+          ],
+          "coverage": "complete",
+          "criterion": "Explicit qualifications, narrowing conditions, contests, refusals, unresolved questions, or different-scope distinctions that limit an apparent answer.",
+          "basis": "Six anchored findings cover the absence of a fixed mundane/transcendent distinction, the tentativeness of the religion-as-capitalism thesis, the qualification of Marx's labour theory, the scope limit on institutional reconciliation, the unresolved myth-cycle future, and the socially emergent character of innovation. All rows confirmed.",
+          "limitations": [
+            "No further qualifications found that alter the confirmed limits."
+          ],
+          "finding_ids": [
+            "R3.DOC2.F1",
+            "R3.DOC2.F2",
+            "R3.DOC2.F3",
+            "R3.DOC2.F4",
+            "R3.DOC2.F5",
+            "R3.DOC2.F6"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "All six rows confirmed by verbatim anchors that explicit state the claimed limitation or unresolved status. No over-reads.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "deutschmann2001_promise_of_absolute_wealth": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        },
+        {
+          "document_keys": [
+            "deutschmann2022_interpretation_of_capitalism_as_religion"
+          ],
+          "dimension_key": "source_questions",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "Religious and Secular Critique of Money",
+            "The Unbounding of Markets as the Basis of Modern Capitalism",
+            "The Intransparency of World Society to Itself: Luhmann and Hayek",
+            "The Religious Worldview and the Consequences of Its Dethronement",
+            "Universalism and the Contingency of the World: A Comparative Perspective on Capitalism and Religion",
+            "Conclusions"
+          ],
+          "coverage": "complete",
+          "criterion": "Passages that organize the source around themes and articulate substantive questions, comparisons, definitions, or proposed responses within source_questions.",
+          "basis": "All rows were verified against the source; the anchors directly support the thematic framing and questions. The source’s own announced plan of argument confirms the central questions.",
+          "limitations": [
+            "The findings preserve the source's conceptual and argumentative scope and do not independently verify cited authorities or historical claims."
+          ],
+          "finding_ids": [
+            "R1.DOC3.F1",
+            "R1.DOC3.F2",
+            "R1.DOC3.F3",
+            "R1.DOC3.F4",
+            "R1.DOC3.F5",
+            "R1.DOC3.F6"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "All findings confirmed; each anchor backs the stated theme and question. No over‑reading or unsupported claims found.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "deutschmann2022_interpretation_of_capitalism_as_religion": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        },
+        {
+          "document_keys": [
+            "deutschmann2022_interpretation_of_capitalism_as_religion"
+          ],
+          "dimension_key": "source_answers",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "Religious and Secular Critique of Money",
+            "The Unbounding of Markets as the Basis of Modern Capitalism",
+            "The Intransparency of World Society to Itself: Luhmann and Hayek",
+            "The Religious Worldview and the Consequences of Its Dethronement",
+            "Universalism and the Contingency of the World: A Comparative Perspective on Capitalism and Religion",
+            "Conclusions"
+          ],
+          "coverage": "complete",
+          "criterion": "Explicit answers given by the source in its own terms, with attribution, warrant, qualification, and object‑time‑scope identifiable from the text.",
+          "basis": "Rows verified against anchors; two were weakened to match what the anchor alone supports, and one miss was added to capture religion’s own answer to social intransparency. All retained rows are textually grounded.",
+          "limitations": [
+            "The added row (V.DOC3.F1) supplies a religion‑side answer missing from the original extraction; otherwise the extraction captures the source’s main answers."
+          ],
+          "finding_ids": [
+            "R2.DOC3.F1",
+            "R2.DOC3.F2",
+            "R2.DOC3.F3",
+            "R2.DOC3.F4",
+            "R2.DOC3.F5",
+            "V.DOC3.F1"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "Weakened R2.DOC3.F3 and R2.DOC3.F4 restrict the claims to what the anchors actually say; the rest were confirmed. The added row fills a genuine gap.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "deutschmann2022_interpretation_of_capitalism_as_religion": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "One or more declared finding references lack retained verified evidence"
+            ]
+          }
+        },
+        {
+          "document_keys": [
+            "deutschmann2022_interpretation_of_capitalism_as_religion"
+          ],
+          "dimension_key": "answer_limits",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "Religious and Secular Critique of Money",
+            "The Unbounding of Markets as the Basis of Modern Capitalism",
+            "The Intransparency of World Society to Itself: Luhmann and Hayek",
+            "The Religious Worldview and the Consequences of Its Dethronement",
+            "Universalism and the Contingency of the World: A Comparative Perspective on Capitalism and Religion",
+            "Conclusions"
+          ],
+          "coverage": "complete",
+          "criterion": "A retained finding must identify a textual qualification, narrowing, contestation, unresolved issue, or different‑scope relation affecting one of the source’s answers.",
+          "basis": "All original limit rows confirmed; two misses were added to capture important qualifications on freedom and the tension between market‑liberal and republican models. The source’s own statements directly anchor each limit.",
+          "limitations": [
+            "The added rows identify further limits that were present in the source but not extracted; the updated set is more representative."
+          ],
+          "finding_ids": [
+            "R3.DOC3.F1",
+            "R3.DOC3.F2",
+            "R3.DOC3.F3",
+            "R3.DOC3.F4",
+            "R3.DOC3.F5",
+            "V.DOC3.F2",
+            "V.DOC3.F3"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "All rows, including added ones, are directly anchored in the text and correctly report limits, qualifications, or rejected rival explanations.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "deutschmann2022_interpretation_of_capitalism_as_religion": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "One or more declared finding references lack retained verified evidence"
+            ]
+          }
+        },
+        {
+          "document_keys": [
+            "deutschmann2001_capitalism_as_religion",
+            "deutschmann2001_promise_of_absolute_wealth",
+            "deutschmann2022_interpretation_of_capitalism_as_religion"
+          ],
+          "dimension_key": "question_reconciliation",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "deutschmann2001_capitalism_as_religion: abstract, The Paradoxes of Religion and Money, Simmel and Marx, Entrepreneurs and Economic Myths, Conclusions",
+            "deutschmann2001_promise_of_absolute_wealth: abstract, sections I, II, III, IV",
+            "deutschmann2022_interpretation_of_capitalism_as_religion: Religious and Secular Critique of Money, The Unbounding of Markets, The Intransparency of World Society, The Religious Worldview, Universalism and the Contingency, Conclusions"
+          ],
+          "coverage": "complete",
+          "criterion": "A question must be alignable across at least two supplied sources after comparing object, time, definition, qualification and warrant, with each attributed answer supported by retained document-specific anchors.",
+          "basis": "Each anchor was verified against the relevant source text; the revised RM.F1 corrects a mischaracterization of the second article’s answer, and a missing cross‑source agreement on labour’s creative role was added. The remaining findings are supported by verbatim quotes. The 2022 article does not address the cyclical myth process (Q4), but that does not invalidate the reconciliation among the two 2001 articles.",
+          "limitations": [
+            "RM.F4’s agreement is limited to the two 2001 articles; the 2022 article does not provide a comparable answer.",
+            "The reconciliation does not exhaust all possible shared questions; additional themes (e.g., the entrepreneur as a religious figure) could be aligned but were not present in the supplied ledger."
+          ],
+          "finding_ids": [
+            "RM.F1",
+            "RM.F2",
+            "RM.F3",
+            "RM.F4",
+            "RM.F5",
+            "V.CORPUS.F6"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "All retained findings are anchored in verbatim quotes from the named sources; the one weakened row (RM.F1) was revised to match the source, and the missing RM.F6 was rejected. The added cross‑source finding (V.CORPUS.F6) fills a gap in the original ledger. Coverage of the relevant sections is complete for the questions addressed.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "deutschmann2001_capitalism_as_religion": "provided",
+              "deutschmann2001_promise_of_absolute_wealth": "provided",
+              "deutschmann2022_interpretation_of_capitalism_as_religion": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "Corpus findings lost anchor evidence; this does not establish absence",
+              "One or more declared finding references lack retained verified evidence",
+              "Findings in this scope lost anchor evidence; this does not establish absence"
+            ]
+          }
+        }
+      ],
+      "synthesis_evidence": {
+        "partial": false,
+        "stop_reason": "stop",
+        "error": null,
+        "ledger_parse_error": null
+      }
+    },
+    "calls": [
+      {
+        "step": "extract",
+        "kind": "extract",
+        "dimension": "source_questions",
+        "doc": "deutschmann2001_capitalism_as_religion",
+        "model_requested": "openrouter/openai/gpt-5.6-luna",
+        "model_used": "openrouter/openai/gpt-5.6-luna",
+        "input_tokens": 13241,
+        "output_tokens": 1254,
+        "duration_ms": 12621,
+        "cost_usd": 0.0042,
+        "retries": 0,
+        "wall": {
+          "rows": 6,
+          "with_anchor": 6,
+          "verified": 6,
+          "trimmed": 2,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 6,
+          "verified_anchors": 6,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "after_reanchor": {
+            "rows": 6,
+            "with_anchor": 6,
+            "verified": 6,
+            "trimmed": 2,
+            "anchor_rate": 1.0,
+            "failed_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [],
+            "anchors": 6,
+            "verified_anchors": 6,
+            "cross_document_rows": 0,
+            "incomplete_cross_document_ids": [],
+            "invalid_anchor_ids": [],
+            "citation_check": {
+              "status": "not_checked"
+            }
+          },
+          "scope_failed_rows": [],
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "deutschmann2001_capitalism_as_religion"
+              ],
+              "dimension_key": "source_questions",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Abstract",
+                "The Paradoxes of Religion and Money",
+                "Simmel and Marx",
+                "Entrepreneurs and Economic Myths",
+                "Conclusions"
+              ],
+              "coverage": "complete",
+              "criterion": "A passage must organize or answer a substantive question about a theme, with the object, scope and role of that question recoverable from the text.",
+              "basis": "The inspected sections explicitly frame questions about the nature of money, its religious qualities, capitalist growth, entrepreneurship, innovation and economic myths, and provide anchored answers or qualifications.",
+              "limitations": [
+                "The references, notes and author biography were not treated as substantive source-question passages."
+              ],
+              "finding_ids": [
+                "[R1.DOC1.F1]",
+                "[R1.DOC1.F2]",
+                "[R1.DOC1.F3]",
+                "[R1.DOC1.F4]",
+                "[R1.DOC1.F5]",
+                "[R1.DOC1.F6]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "deutschmann2001_capitalism_as_religion": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 5829
+      },
+      {
+        "step": "extract",
+        "kind": "extract",
+        "dimension": "source_questions",
+        "doc": "deutschmann2001_promise_of_absolute_wealth",
+        "model_requested": "openrouter/openai/gpt-5.6-luna",
+        "model_used": "openrouter/openai/gpt-5.6-luna",
+        "input_tokens": 36503,
+        "output_tokens": 1804,
+        "duration_ms": 15137,
+        "cost_usd": 0.0095,
+        "retries": 0,
+        "wall": {
+          "reanchor_receipts": [
+            {
+              "content": "## Findings ledger\n- [R1.DOC2.F2] The source asks what can serve as a valid comparison between capitalism and religion, arguing that both money and religious phenomena are non-observable, paradoxical constructs grounded in faith or trust — dim: source_questions — theme: concepts of religion and money — question: What object and definition permit comparison between capitalism and religion? — role: supporting — anchor: \"Rather, it can be only a *negative* one. Religious phenomena are not observable and definable, as they determine the forms of their own observation.\" — doc: deutschmann2001_promise_of_absolute_wealth — confidence: high — trimmed-anchor: yes\n- [R1.DOC2.F3] The source asks what money is and how it can measure value without intrinsic value, answering that money combines material, social, temporal and spatial powers in a paradoxical construct — dim: source_questions — theme: money as absolute means — question: How can money function simultaneously as a measure of value, a carrier of property rights and a generalized power? — role: central — anchor: \"It follows that money is a *numeraire* which measures something invisible and immeasurable: 'measurement', in other words, turns out to be a paradox.\" — doc: deutschmann2001_promise_of_absolute_wealth — confidence: high — trimmed-anchor: yes",
+              "partial": false,
+              "stop_reason": "stop",
+              "error": null
+            }
+          ],
+          "rows": 6,
+          "with_anchor": 6,
+          "verified": 4,
+          "trimmed": 0,
+          "anchor_rate": 0.667,
+          "failed_ids": [
+            "R1.DOC2.F2",
+            "R1.DOC2.F3"
+          ],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 6,
+          "verified_anchors": 4,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "after_reanchor": {
+            "rows": 6,
+            "with_anchor": 6,
+            "verified": 6,
+            "trimmed": 2,
+            "anchor_rate": 1.0,
+            "failed_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [],
+            "anchors": 6,
+            "verified_anchors": 6,
+            "cross_document_rows": 0,
+            "incomplete_cross_document_ids": [],
+            "invalid_anchor_ids": [],
+            "citation_check": {
+              "status": "not_checked"
+            }
+          },
+          "scope_failed_rows": [],
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "deutschmann2001_promise_of_absolute_wealth"
+              ],
+              "dimension_key": "source_questions",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Abstract",
+                "Sections I–IV",
+                "Notes"
+              ],
+              "coverage": "complete",
+              "criterion": "A passage must organize or answer a substantive question concerning the source's themes, concepts, connections, object, time, institutional level or kind of inquiry.",
+              "basis": "The inspected source explicitly frames questions about capitalism and religion, the definition and paradox of money, capital growth, entrepreneurship, labour, economic myths and the temporal distinction between capitalism and traditional religion.",
+              "limitations": [
+                "The findings preserve the source's arguments and reported positions; they do not establish agreement with other sources."
+              ],
+              "finding_ids": [
+                "[R1.DOC2.F1]",
+                "[R1.DOC2.F2]",
+                "[R1.DOC2.F3]",
+                "[R1.DOC2.F4]",
+                "[R1.DOC2.F5]",
+                "[R1.DOC2.F6]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "deutschmann2001_promise_of_absolute_wealth": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 2,
+        "dropped_ids": [],
+        "chars": 6019
+      },
+      {
+        "step": "extract",
+        "kind": "extract",
+        "dimension": "source_questions",
+        "doc": "deutschmann2022_interpretation_of_capitalism_as_religion",
+        "model_requested": "openrouter/openai/gpt-5.6-luna",
+        "model_used": "openrouter/openai/gpt-5.6-luna",
+        "input_tokens": 11606,
+        "output_tokens": 1450,
+        "duration_ms": 16790,
+        "cost_usd": 0.0041,
+        "retries": 0,
+        "wall": {
+          "rows": 6,
+          "with_anchor": 6,
+          "verified": 6,
+          "trimmed": 0,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 6,
+          "verified_anchors": 6,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "after_reanchor": {
+            "rows": 6,
+            "with_anchor": 6,
+            "verified": 6,
+            "trimmed": 0,
+            "anchor_rate": 1.0,
+            "failed_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [],
+            "anchors": 6,
+            "verified_anchors": 6,
+            "cross_document_rows": 0,
+            "incomplete_cross_document_ids": [],
+            "invalid_anchor_ids": [],
+            "citation_check": {
+              "status": "not_checked"
+            }
+          },
+          "scope_failed_rows": [],
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "deutschmann2022_interpretation_of_capitalism_as_religion"
+              ],
+              "dimension_key": "source_questions",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Religious and Secular Critique of Money",
+                "The Unbounding of Markets as the Basis of Modern Capitalism",
+                "The Intransparency of World Society to Itself: Luhmann and Hayek",
+                "The Religious Worldview and the Consequences of Its Dethronement",
+                "Universalism and the Contingency of the World: A Comparative Perspective on Capitalism and Religion",
+                "Conclusions"
+              ],
+              "coverage": "complete",
+              "criterion": "Passages that organize the source around themes and articulate substantive questions, comparisons, definitions, or proposed responses within source_questions.",
+              "basis": "The inspected source explicitly states the contribution’s planned questions and develops connected themes concerning secular capitalism critique, the unbounding of markets, social intransparency, religion, money, universalism, contingency, and practical containment.",
+              "limitations": [
+                "The findings preserve the source's conceptual and argumentative scope and do not independently verify cited authorities or historical claims."
+              ],
+              "finding_ids": [
+                "R1.DOC3.F1",
+                "R1.DOC3.F2",
+                "R1.DOC3.F3",
+                "R1.DOC3.F4",
+                "R1.DOC3.F5",
+                "R1.DOC3.F6"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "deutschmann2022_interpretation_of_capitalism_as_religion": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 6534
+      },
+      {
+        "step": "extract",
+        "kind": "extract",
+        "dimension": "source_answers",
+        "doc": "deutschmann2001_capitalism_as_religion",
+        "model_requested": "openrouter/openai/gpt-5.6-luna",
+        "model_used": "openrouter/openai/gpt-5.6-luna",
+        "input_tokens": 13256,
+        "output_tokens": 1458,
+        "duration_ms": 11545,
+        "cost_usd": 0.0044,
+        "retries": 0,
+        "wall": {
+          "rows": 6,
+          "with_anchor": 6,
+          "verified": 6,
+          "trimmed": 2,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 6,
+          "verified_anchors": 6,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "after_reanchor": {
+            "rows": 6,
+            "with_anchor": 6,
+            "verified": 6,
+            "trimmed": 2,
+            "anchor_rate": 1.0,
+            "failed_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [],
+            "anchors": 6,
+            "verified_anchors": 6,
+            "cross_document_rows": 0,
+            "incomplete_cross_document_ids": [],
+            "invalid_anchor_ids": [],
+            "citation_check": {
+              "status": "not_checked"
+            }
+          },
+          "scope_failed_rows": [],
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "deutschmann2001_capitalism_as_religion"
+              ],
+              "dimension_key": "source_answers",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract",
+                "The Paradoxes of Religion and Money",
+                "Simmel and Marx",
+                "Entrepreneurs and Economic Myths",
+                "Conclusions"
+              ],
+              "coverage": "complete",
+              "criterion": "A source-attributed answer to a question, with its decisive condition or modality, attribution, warrant and object-time-scope, anchored in verbatim text.",
+              "basis": "The inspected source presents explicit answers about capitalism’s religious qualities, the nature and dynamics of money and capital, entrepreneurial innovation, and the development of economic myths.",
+              "limitations": [
+                "The assessment concerns the supplied text and does not establish agreement or contradiction with other sources."
+              ],
+              "finding_ids": [
+                "R2.DOC1.F1",
+                "R2.DOC1.F2",
+                "R2.DOC1.F3",
+                "R2.DOC1.F4",
+                "R2.DOC1.F5",
+                "R2.DOC1.F6"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "deutschmann2001_capitalism_as_religion": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 6632
+      },
+      {
+        "step": "extract",
+        "kind": "extract",
+        "dimension": "source_answers",
+        "doc": "deutschmann2001_promise_of_absolute_wealth",
+        "model_requested": "openrouter/openai/gpt-5.6-luna",
+        "model_used": "openrouter/openai/gpt-5.6-luna",
+        "input_tokens": 36753,
+        "output_tokens": 1803,
+        "duration_ms": 16333,
+        "cost_usd": 0.0095,
+        "retries": 0,
+        "wall": {
+          "reanchor_receipts": [
+            {
+              "content": "## Findings ledger\n- [R2.DOC2.F1] The text answers whether capitalism can be understood as religion affirmatively, but in a qualified sense: capitalism is a secularized religion whose transcendence is continuously reconstructed through growth rather than fixed in a separate sacred realm — dim: source_answers — question: Can capitalism be understood as a religion? — attribution: own — warrant: interpretive — object-time-scope: modern capitalism and its religious character — anchor: \"the interpretation of capitalism 'as' a religion that can provide the systematic basis for this kind of analysis\" — doc: deutschmann2001_promise_of_absolute_wealth — confidence: high — trimmed-anchor: yes\n- [R2.DOC2.F2] Deutschmann answers what money is by presenting it, following Simmel, as an absolute or general means that embodies generalized power and the option to have options, rather than merely serving as an exchange medium — dim: source_answers — question: What is money? — attribution: own — warrant: conceptual — object-time-scope: money in modern capitalist society — anchor: \"money is *Vermögen*\" — doc: deutschmann2001_promise_of_absolute_wealth — confidence: high\n- [R2.DOC2.F3] The text answers how capital grows by arguing that money must be transformed into capital through labour capable of creative innovation, yielding an increment rather than merely reproducing the original sum — dim: source_answers — question: How does capital grow? — attribution: own — warrant: causal — object-time-scope: capitalist production and the capital-labour relation — anchor: \"labour must be employed in a *creatively destructive* way in order to be profitable\" — doc: deutschmann2001_promise_of_absolute_wealth — confidence: high — trimmed-anchor: yes\n- [R2.DOC2.F5] The text answers what capitalism promises by identifying money with a utopia of absolute wealth, while qualifying that the promise cannot be secured permanently and entails debt, risk and dependence on continuing creative destruction — dim: source_answers — question: What does capitalism promise, and with what consequence? — attribution: own — warrant: interpretive — object-time-scope: capitalist money and the historical development of capitalism — anchor: \"Individual command over *absolute wealth, over the totality of human possibilities*\" — doc: deutschmann2001_promise_of_absolute_wealth — confidence: high — trimmed-anchor: yes",
+              "partial": false,
+              "stop_reason": "stop",
+              "error": null
+            }
+          ],
+          "rows": 5,
+          "with_anchor": 5,
+          "verified": 1,
+          "trimmed": 1,
+          "anchor_rate": 0.2,
+          "failed_ids": [
+            "R2.DOC2.F1",
+            "R2.DOC2.F2",
+            "R2.DOC2.F3",
+            "R2.DOC2.F5"
+          ],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 5,
+          "verified_anchors": 1,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "after_reanchor": {
+            "rows": 4,
+            "with_anchor": 4,
+            "verified": 4,
+            "trimmed": 3,
+            "anchor_rate": 1.0,
+            "failed_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [],
+            "anchors": 4,
+            "verified_anchors": 4,
+            "cross_document_rows": 0,
+            "incomplete_cross_document_ids": [],
+            "invalid_anchor_ids": [],
+            "citation_check": {
+              "status": "not_checked"
+            }
+          },
+          "scope_failed_rows": [
+            {
+              "id": "R2.DOC2.F1",
+              "dimension": "source_answers"
+            }
+          ],
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "deutschmann2001_promise_of_absolute_wealth"
+              ],
+              "dimension_key": "source_answers",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Abstract",
+                "Sections I–IV",
+                "Notes"
+              ],
+              "coverage": "complete",
+              "criterion": "The source must give an attributable answer to a question, with a stated condition or modality and an identifiable conceptual, empirical, causal, interpretive or normative warrant.",
+              "basis": "The inspected source explicitly advances answers about capitalism as religion, the nature of money, the growth of capital, innovation myths and the promise of absolute wealth.",
+              "limitations": [
+                "The findings report the text's attributed positions and warrants; they do not independently verify the cited evidence or arguments."
+              ],
+              "finding_ids": [
+                "[R2.DOC2.F1]",
+                "[R2.DOC2.F2]",
+                "[R2.DOC2.F3]",
+                "[R2.DOC2.F4]",
+                "[R2.DOC2.F5]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "deutschmann2001_promise_of_absolute_wealth": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Findings lost anchor evidence; this does not establish absence",
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 3,
+        "dropped_ids": [
+          "R2.DOC2.F1"
+        ],
+        "chars": 4873
+      },
+      {
+        "step": "extract",
+        "kind": "extract",
+        "dimension": "source_answers",
+        "doc": "deutschmann2022_interpretation_of_capitalism_as_religion",
+        "model_requested": "openrouter/openai/gpt-5.6-luna",
+        "model_used": "openrouter/openai/gpt-5.6-luna",
+        "input_tokens": 11621,
+        "output_tokens": 1446,
+        "duration_ms": 14514,
+        "cost_usd": 0.0041,
+        "retries": 0,
+        "wall": {
+          "rows": 5,
+          "with_anchor": 5,
+          "verified": 5,
+          "trimmed": 1,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 5,
+          "verified_anchors": 5,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "after_reanchor": {
+            "rows": 5,
+            "with_anchor": 5,
+            "verified": 5,
+            "trimmed": 1,
+            "anchor_rate": 1.0,
+            "failed_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [],
+            "anchors": 5,
+            "verified_anchors": 5,
+            "cross_document_rows": 0,
+            "incomplete_cross_document_ids": [],
+            "invalid_anchor_ids": [],
+            "citation_check": {
+              "status": "not_checked"
+            }
+          },
+          "scope_failed_rows": [],
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "deutschmann2022_interpretation_of_capitalism_as_religion"
+              ],
+              "dimension_key": "source_answers",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Religious and Secular Critique of Money",
+                "The Unbounding of Markets as the Basis of Modern Capitalism",
+                "The Intransparency of World Society to Itself: Luhmann and Hayek",
+                "The Religious Worldview and the Consequences of Its Dethronement",
+                "Universalism and the Contingency of the World: A Comparative Perspective on Capitalism and Religion",
+                "Conclusions"
+              ],
+              "coverage": "complete",
+              "criterion": "Explicit answers given by the source in its own terms, with attribution, warrant, qualification, and object-time-scope identifiable from the text.",
+              "basis": "The inspected source explicitly states conceptual, interpretive, causal, and normative positions concerning capitalism, society’s intransparency, capitalism’s relation to religion, capitalist growth, and the recommended response to its consequences.",
+              "limitations": [
+                "The findings concern the supplied text and do not assess the accuracy of its cited sources or claims beyond the text."
+              ],
+              "finding_ids": [
+                "[R2.DOC3.F1]",
+                "[R2.DOC3.F2]",
+                "[R2.DOC3.F3]",
+                "[R2.DOC3.F4]",
+                "[R2.DOC3.F5]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "deutschmann2022_interpretation_of_capitalism_as_religion": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 6719
+      },
+      {
+        "step": "extract",
+        "kind": "extract",
+        "dimension": "answer_limits",
+        "doc": "deutschmann2001_capitalism_as_religion",
+        "model_requested": "openrouter/openai/gpt-5.6-luna",
+        "model_used": "openrouter/openai/gpt-5.6-luna",
+        "input_tokens": 26786,
+        "output_tokens": 1501,
+        "duration_ms": 16616,
+        "cost_usd": 0.0072,
+        "retries": 0,
+        "wall": {
+          "reanchor_receipts": [
+            {
+              "content": "## Findings ledger\n- [R3.DOC1.F5] The text qualifies the claim that capitalism provides a religious framework for analysis by presenting it as a proposed analytical perspective rather than an exclusive or conclusively established explanation — dim: answer_limits — question: How strongly does the source claim that interpreting capitalism as religion explains capitalist dynamics? — inspected-scope: Entrepreneurs and Economic Myths; Conclusions — limit: The formulation is explicitly prospective and leaves the analytical proposal open to further assessment — anchor: \"the concept of capitalism as a religion allows one to develop an analytical perspective, which gives due attention to the phenomenon of dynamics.\" — doc: deutschmann2001_capitalism_as_religion — confidence: medium — trimmed-anchor: yes",
+              "partial": false,
+              "stop_reason": "stop",
+              "error": null
+            }
+          ],
+          "rows": 5,
+          "with_anchor": 5,
+          "verified": 4,
+          "trimmed": 0,
+          "anchor_rate": 0.8,
+          "failed_ids": [
+            "R3.DOC1.F5"
+          ],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 5,
+          "verified_anchors": 4,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "after_reanchor": {
+            "rows": 4,
+            "with_anchor": 4,
+            "verified": 4,
+            "trimmed": 0,
+            "anchor_rate": 1.0,
+            "failed_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [],
+            "anchors": 4,
+            "verified_anchors": 4,
+            "cross_document_rows": 0,
+            "incomplete_cross_document_ids": [],
+            "invalid_anchor_ids": [],
+            "citation_check": {
+              "status": "not_checked"
+            }
+          },
+          "scope_failed_rows": [
+            {
+              "id": "R3.DOC1.F5",
+              "dimension": "answer_limits"
+            }
+          ],
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "deutschmann2001_capitalism_as_religion"
+              ],
+              "dimension_key": "answer_limits",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Abstract",
+                "The Paradoxes of Religion and Money",
+                "Simmel and Marx",
+                "Entrepreneurs and Economic Myths",
+                "Conclusions"
+              ],
+              "coverage": "complete",
+              "criterion": "Conditions, counter-passages, qualifications, scope differences, explicit unresolved issues, and narrowed or contested answers in the source",
+              "basis": "Five anchored passages identify explicit narrowing, unresolved definitions, an acknowledged failure of solution, a distinction between economic and religious myths, and a qualified analytical proposal.",
+              "limitations": [
+                "The assessment concerns the supplied text and its stated sections; it does not independently assess the cited works."
+              ],
+              "finding_ids": [
+                "[R3.DOC1.F1]",
+                "[R3.DOC1.F2]",
+                "[R3.DOC1.F3]",
+                "[R3.DOC1.F4]",
+                "[R3.DOC1.F5]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "deutschmann2001_capitalism_as_religion": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Findings lost anchor evidence; this does not establish absence",
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [
+          "R3.DOC1.F5"
+        ],
+        "chars": 5745
+      },
+      {
+        "step": "extract",
+        "kind": "extract",
+        "dimension": "answer_limits",
+        "doc": "deutschmann2001_promise_of_absolute_wealth",
+        "model_requested": "openrouter/openai/gpt-5.6-luna",
+        "model_used": "openrouter/openai/gpt-5.6-luna",
+        "input_tokens": 18085,
+        "output_tokens": 1403,
+        "duration_ms": 13240,
+        "cost_usd": 0.0053,
+        "retries": 0,
+        "wall": {
+          "rows": 6,
+          "with_anchor": 6,
+          "verified": 6,
+          "trimmed": 1,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 6,
+          "verified_anchors": 6,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "after_reanchor": {
+            "rows": 6,
+            "with_anchor": 6,
+            "verified": 6,
+            "trimmed": 1,
+            "anchor_rate": 1.0,
+            "failed_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [],
+            "anchors": 6,
+            "verified_anchors": 6,
+            "cross_document_rows": 0,
+            "incomplete_cross_document_ids": [],
+            "invalid_anchor_ids": [],
+            "citation_check": {
+              "status": "not_checked"
+            }
+          },
+          "scope_failed_rows": [],
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "deutschmann2001_promise_of_absolute_wealth"
+              ],
+              "dimension_key": "answer_limits",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract",
+                "Section I",
+                "Section II",
+                "Section III",
+                "Section IV",
+                "Notes",
+                "References"
+              ],
+              "coverage": "complete",
+              "criterion": "Explicit qualifications, narrowing conditions, contests, refusals, unresolved questions, or different-scope distinctions that limit an apparent answer",
+              "basis": "Six anchored passages identify qualifications concerning the capitalism-religion comparison, the tentative status of the proposed framework, Marx's account of profitability, the scope of institutional analysis, the unresolved continuation of the myth cycle, and the social basis of innovation.",
+              "limitations": [
+                "The source does not resolve every question it raises, especially the indefinite continuation of capitalist myth cycles and the full institutional reconciliation of entrepreneurship and structure."
+              ],
+              "finding_ids": [
+                "R3.DOC2.F1",
+                "R3.DOC2.F2",
+                "R3.DOC2.F3",
+                "R3.DOC2.F4",
+                "R3.DOC2.F5",
+                "R3.DOC2.F6"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "deutschmann2001_promise_of_absolute_wealth": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 6372
+      },
+      {
+        "step": "extract",
+        "kind": "extract",
+        "dimension": "answer_limits",
+        "doc": "deutschmann2022_interpretation_of_capitalism_as_religion",
+        "model_requested": "openrouter/openai/gpt-5.6-luna",
+        "model_used": "openrouter/openai/gpt-5.6-luna",
+        "input_tokens": 11631,
+        "output_tokens": 1341,
+        "duration_ms": 16125,
+        "cost_usd": 0.0039,
+        "retries": 0,
+        "wall": {
+          "rows": 5,
+          "with_anchor": 5,
+          "verified": 5,
+          "trimmed": 0,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 5,
+          "verified_anchors": 5,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "after_reanchor": {
+            "rows": 5,
+            "with_anchor": 5,
+            "verified": 5,
+            "trimmed": 0,
+            "anchor_rate": 1.0,
+            "failed_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [],
+            "anchors": 5,
+            "verified_anchors": 5,
+            "cross_document_rows": 0,
+            "incomplete_cross_document_ids": [],
+            "invalid_anchor_ids": [],
+            "citation_check": {
+              "status": "not_checked"
+            }
+          },
+          "scope_failed_rows": [],
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "deutschmann2022_interpretation_of_capitalism_as_religion"
+              ],
+              "dimension_key": "answer_limits",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Religious and Secular Critique of Money",
+                "The Unbounding of Markets as the Basis of Modern Capitalism",
+                "The Intransparency of World Society to Itself: Luhmann and Hayek",
+                "The Religious Worldview and the Consequences of Its Dethronement",
+                "Universalism and the Contingency of the World: A Comparative Perspective on Capitalism and Religion",
+                "Conclusions"
+              ],
+              "coverage": "complete",
+              "criterion": "A retained finding must identify a textual qualification, narrowing, contestation, unresolved issue, or different-scope relation affecting one of the source’s answers.",
+              "basis": "The inspected source contains explicit scope restrictions, qualifications of capitalism’s capacities and social effects, and distinctions between Smith’s work and its later reception.",
+              "limitations": [
+                "The assessment concerns qualifications and limits expressed in the supplied source; it does not independently verify cited works or settle the source’s unresolved theoretical distinctions."
+              ],
+              "finding_ids": [
+                "[R3.DOC3.F1]",
+                "[R3.DOC3.F2]",
+                "[R3.DOC3.F3]",
+                "[R3.DOC3.F4]",
+                "[R3.DOC3.F5]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "deutschmann2022_interpretation_of_capitalism_as_religion": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 5748
+      },
+      {
+        "step": "extract",
+        "kind": "extract",
+        "dimension": "question_reconciliation",
+        "doc": "",
+        "model_requested": "openrouter/openai/gpt-5.6-luna",
+        "model_used": "openrouter/openai/gpt-5.6-luna",
+        "input_tokens": 24494,
+        "output_tokens": 2400,
+        "duration_ms": 21107,
+        "cost_usd": 0.0078,
+        "retries": 0,
+        "wall": {
+          "reanchor_receipts": [
+            {
+              "content": "## Findings ledger",
+              "partial": false,
+              "stop_reason": "stop",
+              "error": null
+            }
+          ],
+          "rows": 6,
+          "with_anchor": 6,
+          "verified": 5,
+          "trimmed": 0,
+          "anchor_rate": 0.833,
+          "failed_ids": [
+            "RM.F6"
+          ],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 13,
+          "verified_anchors": 13,
+          "cross_document_rows": 6,
+          "incomplete_cross_document_ids": [
+            "RM.F6"
+          ],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "after_reanchor": {
+            "rows": 5,
+            "with_anchor": 5,
+            "verified": 5,
+            "trimmed": 0,
+            "anchor_rate": 1.0,
+            "failed_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [],
+            "anchors": 11,
+            "verified_anchors": 11,
+            "cross_document_rows": 5,
+            "incomplete_cross_document_ids": [],
+            "invalid_anchor_ids": [],
+            "citation_check": {
+              "status": "not_checked"
+            }
+          },
+          "scope_failed_rows": [
+            {
+              "id": "RM.F6",
+              "dimension": "question_reconciliation"
+            }
+          ],
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "deutschmann2001_capitalism_as_religion",
+                "deutschmann2001_promise_of_absolute_wealth",
+                "deutschmann2022_interpretation_of_capitalism_as_religion"
+              ],
+              "dimension_key": "question_reconciliation",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Supplied per-document findings ledgers",
+                "Supplied per-document scope reports for source_questions, source_answers and answer_limits"
+              ],
+              "coverage": "partial",
+              "criterion": "A question must be alignable across at least two supplied sources after comparing object, time, definition, qualification and warrant, with each attributed answer supported by retained document-specific anchors.",
+              "basis": "The supplied reports support cross-document alignments concerning capitalism and religion, money, capitalist growth, innovation myths and the limits of the capitalism-religion analogy.",
+              "limitations": [
+                "This reconciliation uses earlier reports rather than direct inspection of every source passage.",
+                "The reports do not establish whole-document or whole-corpus absence of additional questions, answers or conflicts.",
+                "Some underlying source-answer scope reports are inconclusive because retained evidence or finding references were flagged as incomplete."
+              ],
+              "finding_ids": [
+                "[RM.F1]",
+                "[RM.F2]",
+                "[RM.F3]",
+                "[RM.F4]",
+                "[RM.F5]",
+                "[RM.F6]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "deutschmann2001_capitalism_as_religion": "provided",
+                  "deutschmann2001_promise_of_absolute_wealth": "provided",
+                  "deutschmann2022_interpretation_of_capitalism_as_religion": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Corpus findings lost anchor evidence; this does not establish absence",
+                  "One or more declared finding references lack retained verified evidence"
+                ],
+                "basis_material": "Per-document ledgers and scope reports; no direct source inspection in this invocation"
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [
+          "RM.F6"
+        ],
+        "chars": 10745
+      },
+      {
+        "step": "verify",
+        "kind": "verify",
+        "dimension": "",
+        "doc": "deutschmann2001_capitalism_as_religion",
+        "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+        "model_used": "openrouter/deepseek/deepseek-v4-pro",
+        "input_tokens": 18397,
+        "output_tokens": 13192,
+        "duration_ms": 133413,
+        "cost_usd": 0.0467,
+        "retries": 0,
+        "wall": {
+          "rows": 17,
+          "with_anchor": 17,
+          "verified": 16,
+          "trimmed": 4,
+          "anchor_rate": 0.941,
+          "failed_ids": [
+            "V.DOC1.F1"
+          ],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 17,
+          "verified_anchors": 16,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "carried_forward": 0,
+          "rejected": 0,
+          "added": 1,
+          "ruling_coverage": {
+            "original_count": 16,
+            "explicitly_ruled_count": 16,
+            "missing_or_unruled_ids": [],
+            "unexpected_nonadded_ids": [],
+            "invalid_original_status_ids": [],
+            "duplicate_original_ids": [],
+            "duplicate_ruling_ids": [],
+            "coverage_complete": true
+          },
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "deutschmann2001_capitalism_as_religion"
+              ],
+              "dimension_key": "source_questions",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Abstract",
+                "The Paradoxes of Religion and Money",
+                "Simmel and Marx",
+                "Entrepreneurs and Economic Myths",
+                "Conclusions"
+              ],
+              "coverage": "complete",
+              "criterion": "A passage must organize or answer a substantive question about a theme, with the object, scope and role of that question recoverable from the text.",
+              "basis": "All six source_questions findings are anchored in the inspected sections; the sections explicitly frame the questions about money, religion, capitalist growth, entrepreneurship, innovation and economic myths. The original outcome was reclassified from inconclusive to findings_present because the findings are present and anchored.",
+              "limitations": [
+                "The references, notes and author biography were not treated as substantive source-question passages."
+              ],
+              "finding_ids": [
+                "[R1.DOC1.F1]",
+                "[R1.DOC1.F2]",
+                "[R1.DOC1.F3]",
+                "[R1.DOC1.F4]",
+                "[R1.DOC1.F5]",
+                "[R1.DOC1.F6]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "All findings are anchored in the inspected sections; coverage is complete for the stated sections.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "deutschmann2001_capitalism_as_religion": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "deutschmann2001_capitalism_as_religion"
+              ],
+              "dimension_key": "source_answers",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Abstract",
+                "The Paradoxes of Religion and Money",
+                "Simmel and Marx",
+                "Entrepreneurs and Economic Myths",
+                "Conclusions"
+              ],
+              "coverage": "complete",
+              "criterion": "A source-attributed answer to a question, with its decisive condition or modality, attribution, warrant and object-time-scope, anchored in verbatim text.",
+              "basis": "All six original answers and the added miss are anchored in the inspected sections. The source provides explicit answers about capitalism’s religious qualities, the nature and dynamics of money and capital, entrepreneurial innovation, the development of economic myths, and the source of surplus value.",
+              "limitations": [
+                "The assessment concerns the supplied text and does not establish agreement or contradiction with other sources."
+              ],
+              "finding_ids": [
+                "R2.DOC1.F1",
+                "R2.DOC1.F2",
+                "R2.DOC1.F3",
+                "R2.DOC1.F4",
+                "R2.DOC1.F5",
+                "R2.DOC1.F6",
+                "V.DOC1.F1"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "All findings are anchored in the inspected sections; coverage is complete for the stated sections.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "deutschmann2001_capitalism_as_religion": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Findings in this scope lost anchor evidence; this does not establish absence",
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "deutschmann2001_capitalism_as_religion"
+              ],
+              "dimension_key": "answer_limits",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Abstract",
+                "The Paradoxes of Religion and Money",
+                "Simmel and Marx",
+                "Entrepreneurs and Economic Myths",
+                "Conclusions"
+              ],
+              "coverage": "complete",
+              "criterion": "Conditions, counter-passages, qualifications, scope differences, explicit unresolved issues, and narrowed or contested answers in the source.",
+              "basis": "Four anchored passages identify explicit narrowing, unresolved definitions, an acknowledged failure of solution, and a distinction between economic and religious myths. The original outcome was reclassified from inconclusive to findings_present because the findings are present and anchored.",
+              "limitations": [
+                "The assessment concerns the supplied text and its stated sections; it does not independently assess the cited works."
+              ],
+              "finding_ids": [
+                "[R3.DOC1.F1]",
+                "[R3.DOC1.F2]",
+                "[R3.DOC1.F3]",
+                "[R3.DOC1.F4]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "All findings are anchored in the inspected sections; coverage is complete for the stated sections.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "deutschmann2001_capitalism_as_religion": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Findings lost anchor evidence; this does not establish absence",
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [
+          "V.DOC1.F1"
+        ],
+        "chars": 25312
+      },
+      {
+        "step": "verify",
+        "kind": "verify",
+        "dimension": "",
+        "doc": "deutschmann2001_promise_of_absolute_wealth",
+        "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+        "model_used": "openrouter/deepseek/deepseek-v4-pro",
+        "input_tokens": 23164,
+        "output_tokens": 18019,
+        "duration_ms": 123814,
+        "cost_usd": 0.0617,
+        "retries": 0,
+        "wall": {
+          "rows": 18,
+          "with_anchor": 18,
+          "verified": 18,
+          "trimmed": 2,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 18,
+          "verified_anchors": 18,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "carried_forward": 0,
+          "rejected": 0,
+          "added": 2,
+          "ruling_coverage": {
+            "original_count": 16,
+            "explicitly_ruled_count": 16,
+            "missing_or_unruled_ids": [],
+            "unexpected_nonadded_ids": [],
+            "invalid_original_status_ids": [],
+            "duplicate_original_ids": [],
+            "duplicate_ruling_ids": [],
+            "coverage_complete": true
+          },
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "deutschmann2001_promise_of_absolute_wealth"
+              ],
+              "dimension_key": "source_questions",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Abstract",
+                "Section I",
+                "Section II",
+                "Section III",
+                "Section IV"
+              ],
+              "coverage": "complete",
+              "criterion": "A passage must organize or answer a substantive question concerning the source's themes, concepts, connections, object, time, institutional level or kind of inquiry.",
+              "basis": "The source explicitly frames questions about capitalism and religion, the definition and paradox of money, capital growth, entrepreneurship, labour, economic myths, and the temporal distinction between capitalism and traditional religion. Six anchored findings retained (four weakened, two confirmed).",
+              "limitations": [
+                "Some answers were broader than the supplied anchors and were narrowed to the directly supported statements."
+              ],
+              "finding_ids": [
+                "[R1.DOC2.F1]",
+                "[R1.DOC2.F2]",
+                "[R1.DOC2.F3]",
+                "[R1.DOC2.F4]",
+                "[R1.DOC2.F5]",
+                "[R1.DOC2.F6]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "All rows referenced verified verbatim anchors; four were weakened to match the anchor's exact scope, two were confirmed. No rows were rejected. Core questions are present.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "deutschmann2001_promise_of_absolute_wealth": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "deutschmann2001_promise_of_absolute_wealth"
+              ],
+              "dimension_key": "source_answers",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Abstract",
+                "Section I",
+                "Section II",
+                "Section III",
+                "Section IV"
+              ],
+              "coverage": "complete",
+              "criterion": "The source must give an attributable answer to a question, with a stated condition or modality and an identifiable conceptual, empirical, causal, interpretive or normative warrant.",
+              "basis": "The inspected source provides answers about money as Vermögen, capital growth via creative-destructive labour, myths' social resonance, and the promise of absolute wealth. Added two misses for Benjamin's traits and the consequence of indebtedness. Six anchored findings retained (three confirmed, one weakened, two added).",
+              "limitations": [
+                "The promise answer was narrowed to exclude consequences; a separate miss now captures the consequence of indebtedness."
+              ],
+              "finding_ids": [
+                "[R2.DOC2.F2]",
+                "[R2.DOC2.F3]",
+                "[R2.DOC2.F4]",
+                "[R2.DOC2.F5]",
+                "[V.DOC2.F1]",
+                "[V.DOC2.F2]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "All rows reference confirmed anchors; one weakened to match anchor scope, two misses added to close gaps. No rows rejected.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "deutschmann2001_promise_of_absolute_wealth": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Findings lost anchor evidence; this does not establish absence",
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "deutschmann2001_promise_of_absolute_wealth"
+              ],
+              "dimension_key": "answer_limits",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract",
+                "Section I",
+                "Section II",
+                "Section III",
+                "Section IV"
+              ],
+              "coverage": "complete",
+              "criterion": "Explicit qualifications, narrowing conditions, contests, refusals, unresolved questions, or different-scope distinctions that limit an apparent answer.",
+              "basis": "Six anchored findings cover the absence of a fixed mundane/transcendent distinction, the tentativeness of the religion-as-capitalism thesis, the qualification of Marx's labour theory, the scope limit on institutional reconciliation, the unresolved myth-cycle future, and the socially emergent character of innovation. All rows confirmed.",
+              "limitations": [
+                "No further qualifications found that alter the confirmed limits."
+              ],
+              "finding_ids": [
+                "R3.DOC2.F1",
+                "R3.DOC2.F2",
+                "R3.DOC2.F3",
+                "R3.DOC2.F4",
+                "R3.DOC2.F5",
+                "R3.DOC2.F6"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "All six rows confirmed by verbatim anchors that explicit state the claimed limitation or unresolved status. No over-reads.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "deutschmann2001_promise_of_absolute_wealth": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 23846
+      },
+      {
+        "step": "verify",
+        "kind": "verify",
+        "dimension": "",
+        "doc": "deutschmann2022_interpretation_of_capitalism_as_religion",
+        "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+        "model_used": "openrouter/deepseek/deepseek-v4-pro",
+        "input_tokens": 17213,
+        "output_tokens": 15826,
+        "duration_ms": 116659,
+        "cost_usd": 0.0509,
+        "retries": 0,
+        "wall": {
+          "rows": 19,
+          "with_anchor": 19,
+          "verified": 19,
+          "trimmed": 4,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 19,
+          "verified_anchors": 19,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "carried_forward": 0,
+          "rejected": 0,
+          "added": 3,
+          "ruling_coverage": {
+            "original_count": 16,
+            "explicitly_ruled_count": 16,
+            "missing_or_unruled_ids": [],
+            "unexpected_nonadded_ids": [],
+            "invalid_original_status_ids": [],
+            "duplicate_original_ids": [],
+            "duplicate_ruling_ids": [],
+            "coverage_complete": true
+          },
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "deutschmann2022_interpretation_of_capitalism_as_religion"
+              ],
+              "dimension_key": "source_questions",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Religious and Secular Critique of Money",
+                "The Unbounding of Markets as the Basis of Modern Capitalism",
+                "The Intransparency of World Society to Itself: Luhmann and Hayek",
+                "The Religious Worldview and the Consequences of Its Dethronement",
+                "Universalism and the Contingency of the World: A Comparative Perspective on Capitalism and Religion",
+                "Conclusions"
+              ],
+              "coverage": "complete",
+              "criterion": "Passages that organize the source around themes and articulate substantive questions, comparisons, definitions, or proposed responses within source_questions.",
+              "basis": "All rows were verified against the source; the anchors directly support the thematic framing and questions. The source’s own announced plan of argument confirms the central questions.",
+              "limitations": [
+                "The findings preserve the source's conceptual and argumentative scope and do not independently verify cited authorities or historical claims."
+              ],
+              "finding_ids": [
+                "R1.DOC3.F1",
+                "R1.DOC3.F2",
+                "R1.DOC3.F3",
+                "R1.DOC3.F4",
+                "R1.DOC3.F5",
+                "R1.DOC3.F6"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "All findings confirmed; each anchor backs the stated theme and question. No over‑reading or unsupported claims found.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "deutschmann2022_interpretation_of_capitalism_as_religion": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "deutschmann2022_interpretation_of_capitalism_as_religion"
+              ],
+              "dimension_key": "source_answers",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Religious and Secular Critique of Money",
+                "The Unbounding of Markets as the Basis of Modern Capitalism",
+                "The Intransparency of World Society to Itself: Luhmann and Hayek",
+                "The Religious Worldview and the Consequences of Its Dethronement",
+                "Universalism and the Contingency of the World: A Comparative Perspective on Capitalism and Religion",
+                "Conclusions"
+              ],
+              "coverage": "complete",
+              "criterion": "Explicit answers given by the source in its own terms, with attribution, warrant, qualification, and object‑time‑scope identifiable from the text.",
+              "basis": "Rows verified against anchors; two were weakened to match what the anchor alone supports, and one miss was added to capture religion’s own answer to social intransparency. All retained rows are textually grounded.",
+              "limitations": [
+                "The added row (V.DOC3.F1) supplies a religion‑side answer missing from the original extraction; otherwise the extraction captures the source’s main answers."
+              ],
+              "finding_ids": [
+                "R2.DOC3.F1",
+                "R2.DOC3.F2",
+                "R2.DOC3.F3",
+                "R2.DOC3.F4",
+                "R2.DOC3.F5",
+                "V.DOC3.F1"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "Weakened R2.DOC3.F3 and R2.DOC3.F4 restrict the claims to what the anchors actually say; the rest were confirmed. The added row fills a genuine gap.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "deutschmann2022_interpretation_of_capitalism_as_religion": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "deutschmann2022_interpretation_of_capitalism_as_religion"
+              ],
+              "dimension_key": "answer_limits",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Religious and Secular Critique of Money",
+                "The Unbounding of Markets as the Basis of Modern Capitalism",
+                "The Intransparency of World Society to Itself: Luhmann and Hayek",
+                "The Religious Worldview and the Consequences of Its Dethronement",
+                "Universalism and the Contingency of the World: A Comparative Perspective on Capitalism and Religion",
+                "Conclusions"
+              ],
+              "coverage": "complete",
+              "criterion": "A retained finding must identify a textual qualification, narrowing, contestation, unresolved issue, or different‑scope relation affecting one of the source’s answers.",
+              "basis": "All original limit rows confirmed; two misses were added to capture important qualifications on freedom and the tension between market‑liberal and republican models. The source’s own statements directly anchor each limit.",
+              "limitations": [
+                "The added rows identify further limits that were present in the source but not extracted; the updated set is more representative."
+              ],
+              "finding_ids": [
+                "R3.DOC3.F1",
+                "R3.DOC3.F2",
+                "R3.DOC3.F3",
+                "R3.DOC3.F4",
+                "R3.DOC3.F5",
+                "V.DOC3.F2",
+                "V.DOC3.F3"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "All rows, including added ones, are directly anchored in the text and correctly report limits, qualifications, or rejected rival explanations.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "deutschmann2022_interpretation_of_capitalism_as_religion": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 28433
+      },
+      {
+        "step": "verify",
+        "kind": "verify",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+        "model_used": "openrouter/deepseek/deepseek-v4-pro",
+        "input_tokens": 44398,
+        "output_tokens": 14151,
+        "duration_ms": 170691,
+        "cost_usd": 0.0758,
+        "retries": 0,
+        "wall": {
+          "rows": 7,
+          "with_anchor": 6,
+          "verified": 6,
+          "trimmed": 1,
+          "anchor_rate": 0.857,
+          "failed_ids": [
+            "RM.F6"
+          ],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 15,
+          "verified_anchors": 14,
+          "cross_document_rows": 6,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "carried_forward": 0,
+          "ruling_coverage": {
+            "original_count": 5,
+            "explicitly_ruled_count": 5,
+            "missing_or_unruled_ids": [],
+            "unexpected_nonadded_ids": [
+              "RM.F6"
+            ],
+            "invalid_original_status_ids": [],
+            "duplicate_original_ids": [],
+            "duplicate_ruling_ids": [],
+            "coverage_complete": false
+          },
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "deutschmann2001_capitalism_as_religion",
+                "deutschmann2001_promise_of_absolute_wealth",
+                "deutschmann2022_interpretation_of_capitalism_as_religion"
+              ],
+              "dimension_key": "question_reconciliation",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "deutschmann2001_capitalism_as_religion: abstract, The Paradoxes of Religion and Money, Simmel and Marx, Entrepreneurs and Economic Myths, Conclusions",
+                "deutschmann2001_promise_of_absolute_wealth: abstract, sections I, II, III, IV",
+                "deutschmann2022_interpretation_of_capitalism_as_religion: Religious and Secular Critique of Money, The Unbounding of Markets, The Intransparency of World Society, The Religious Worldview, Universalism and the Contingency, Conclusions"
+              ],
+              "coverage": "complete",
+              "criterion": "A question must be alignable across at least two supplied sources after comparing object, time, definition, qualification and warrant, with each attributed answer supported by retained document-specific anchors.",
+              "basis": "Each anchor was verified against the relevant source text; the revised RM.F1 corrects a mischaracterization of the second article’s answer, and a missing cross‑source agreement on labour’s creative role was added. The remaining findings are supported by verbatim quotes. The 2022 article does not address the cyclical myth process (Q4), but that does not invalidate the reconciliation among the two 2001 articles.",
+              "limitations": [
+                "RM.F4’s agreement is limited to the two 2001 articles; the 2022 article does not provide a comparable answer.",
+                "The reconciliation does not exhaust all possible shared questions; additional themes (e.g., the entrepreneur as a religious figure) could be aligned but were not present in the supplied ledger."
+              ],
+              "finding_ids": [
+                "RM.F1",
+                "RM.F2",
+                "RM.F3",
+                "RM.F4",
+                "RM.F5",
+                "V.CORPUS.F6"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "All retained findings are anchored in verbatim quotes from the named sources; the one weakened row (RM.F1) was revised to match the source, and the missing RM.F6 was rejected. The added cross‑source finding (V.CORPUS.F6) fills a gap in the original ledger. Coverage of the relevant sections is complete for the questions addressed.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "deutschmann2001_capitalism_as_religion": "provided",
+                  "deutschmann2001_promise_of_absolute_wealth": "provided",
+                  "deutschmann2022_interpretation_of_capitalism_as_religion": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Corpus findings lost anchor evidence; this does not establish absence",
+                  "One or more declared finding references lack retained verified evidence",
+                  "Findings in this scope lost anchor evidence; this does not establish absence"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [
+          "RM.F6"
+        ],
+        "chars": 16859
+      },
+      {
+        "step": "synthesize",
+        "kind": "synthesize",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/openai/gpt-5.6-sol",
+        "model_used": "openrouter/openai/gpt-5.6-sol",
+        "input_tokens": 57190,
+        "output_tokens": 7488,
+        "duration_ms": 108456,
+        "cost_usd": 0.1893,
+        "retries": 0,
+        "wall": {
+          "rows": 16,
+          "with_anchor": 16,
+          "verified": 16,
+          "trimmed": 0,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 26,
+          "verified_anchors": 26,
+          "cross_document_rows": 7,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "checked",
+            "scope": "retained_ledger",
+            "missing_rejected_ids": [],
+            "missing_other_ids": []
+          },
+          "synthesis_contract": {
+            "failed_ids": [],
+            "incomplete_cross_document_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [],
+            "unknown_dimensions": [],
+            "missing_ledger": false,
+            "parse_error": "",
+            "incomplete_invocation": false
+          },
+          "synthesis_repair_attempts": [],
+          "has_ledger": true,
+          "prose_chars": 25212,
+          "missing_lineage": [
+            "R2.DOC1.F1 V.DOC2.F2",
+            "R3.DOC1.F4 R1.DOC2.F6",
+            "RM.F1 RM.F2 R2.DOC3.F3"
+          ],
+          "check_ruling_coverage": {
+            "coverage_complete": false,
+            "original_count": 53,
+            "explicitly_ruled_count": 53,
+            "reviews": [
+              {
+                "step": "verify",
+                "document": "deutschmann2001_capitalism_as_religion",
+                "original_count": 16,
+                "explicitly_ruled_count": 16,
+                "missing_or_unruled_ids": [],
+                "unexpected_nonadded_ids": [],
+                "invalid_original_status_ids": [],
+                "duplicate_original_ids": [],
+                "duplicate_ruling_ids": [],
+                "coverage_complete": true
+              },
+              {
+                "step": "verify",
+                "document": "deutschmann2001_promise_of_absolute_wealth",
+                "original_count": 16,
+                "explicitly_ruled_count": 16,
+                "missing_or_unruled_ids": [],
+                "unexpected_nonadded_ids": [],
+                "invalid_original_status_ids": [],
+                "duplicate_original_ids": [],
+                "duplicate_ruling_ids": [],
+                "coverage_complete": true
+              },
+              {
+                "step": "verify",
+                "document": "deutschmann2022_interpretation_of_capitalism_as_religion",
+                "original_count": 16,
+                "explicitly_ruled_count": 16,
+                "missing_or_unruled_ids": [],
+                "unexpected_nonadded_ids": [],
+                "invalid_original_status_ids": [],
+                "duplicate_original_ids": [],
+                "duplicate_ruling_ids": [],
+                "coverage_complete": true
+              },
+              {
+                "step": "verify",
+                "document": "",
+                "original_count": 5,
+                "explicitly_ruled_count": 5,
+                "missing_or_unruled_ids": [],
+                "unexpected_nonadded_ids": [
+                  "RM.F6"
+                ],
+                "invalid_original_status_ids": [],
+                "duplicate_original_ids": [],
+                "duplicate_ruling_ids": [],
+                "coverage_complete": false
+              }
+            ]
+          },
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "deutschmann2001_capitalism_as_religion"
+              ],
+              "dimension_key": "source_questions",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Abstract",
+                "The Paradoxes of Religion and Money",
+                "Simmel and Marx",
+                "Entrepreneurs and Economic Myths",
+                "Conclusions"
+              ],
+              "coverage": "complete",
+              "criterion": "A passage must organize or answer a substantive question about a theme, with the object, scope and role of that question recoverable from the text.",
+              "basis": "All six source_questions findings are anchored in the inspected sections; the sections explicitly frame the questions about money, religion, capitalist growth, entrepreneurship, innovation and economic myths. The original outcome was reclassified from inconclusive to findings_present because the findings are present and anchored.",
+              "limitations": [
+                "The references, notes and author biography were not treated as substantive source-question passages."
+              ],
+              "finding_ids": [
+                "[R1.DOC1.F1]",
+                "[R1.DOC1.F2]",
+                "[R1.DOC1.F3]",
+                "[R1.DOC1.F4]",
+                "[R1.DOC1.F5]",
+                "[R1.DOC1.F6]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "All findings are anchored in the inspected sections; coverage is complete for the stated sections.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "deutschmann2001_capitalism_as_religion": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "deutschmann2001_capitalism_as_religion"
+              ],
+              "dimension_key": "source_answers",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Abstract",
+                "The Paradoxes of Religion and Money",
+                "Simmel and Marx",
+                "Entrepreneurs and Economic Myths",
+                "Conclusions"
+              ],
+              "coverage": "complete",
+              "criterion": "A source-attributed answer to a question, with its decisive condition or modality, attribution, warrant and object-time-scope, anchored in verbatim text.",
+              "basis": "All six original answers and the added miss are anchored in the inspected sections. The source provides explicit answers about capitalism’s religious qualities, the nature and dynamics of money and capital, entrepreneurial innovation, the development of economic myths, and the source of surplus value.",
+              "limitations": [
+                "The assessment concerns the supplied text and does not establish agreement or contradiction with other sources."
+              ],
+              "finding_ids": [
+                "R2.DOC1.F1",
+                "R2.DOC1.F2",
+                "R2.DOC1.F3",
+                "R2.DOC1.F4",
+                "R2.DOC1.F5",
+                "R2.DOC1.F6",
+                "V.DOC1.F1"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "All findings are anchored in the inspected sections; coverage is complete for the stated sections.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "deutschmann2001_capitalism_as_religion": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Findings in this scope lost anchor evidence; this does not establish absence",
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "deutschmann2001_capitalism_as_religion"
+              ],
+              "dimension_key": "answer_limits",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Abstract",
+                "The Paradoxes of Religion and Money",
+                "Simmel and Marx",
+                "Entrepreneurs and Economic Myths",
+                "Conclusions"
+              ],
+              "coverage": "complete",
+              "criterion": "Conditions, counter-passages, qualifications, scope differences, explicit unresolved issues, and narrowed or contested answers in the source.",
+              "basis": "Four anchored passages identify explicit narrowing, unresolved definitions, an acknowledged failure of solution, and a distinction between economic and religious myths. The original outcome was reclassified from inconclusive to findings_present because the findings are present and anchored.",
+              "limitations": [
+                "The assessment concerns the supplied text and its stated sections; it does not independently assess the cited works."
+              ],
+              "finding_ids": [
+                "[R3.DOC1.F1]",
+                "[R3.DOC1.F2]",
+                "[R3.DOC1.F3]",
+                "[R3.DOC1.F4]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "All findings are anchored in the inspected sections; coverage is complete for the stated sections.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "deutschmann2001_capitalism_as_religion": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Findings lost anchor evidence; this does not establish absence",
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "deutschmann2001_promise_of_absolute_wealth"
+              ],
+              "dimension_key": "source_questions",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Abstract",
+                "Section I",
+                "Section II",
+                "Section III",
+                "Section IV"
+              ],
+              "coverage": "complete",
+              "criterion": "A passage must organize or answer a substantive question concerning the source's themes, concepts, connections, object, time, institutional level or kind of inquiry.",
+              "basis": "The source explicitly frames questions about capitalism and religion, the definition and paradox of money, capital growth, entrepreneurship, labour, economic myths, and the temporal distinction between capitalism and traditional religion. Six anchored findings retained (four weakened, two confirmed).",
+              "limitations": [
+                "Some answers were broader than the supplied anchors and were narrowed to the directly supported statements."
+              ],
+              "finding_ids": [
+                "[R1.DOC2.F1]",
+                "[R1.DOC2.F2]",
+                "[R1.DOC2.F3]",
+                "[R1.DOC2.F4]",
+                "[R1.DOC2.F5]",
+                "[R1.DOC2.F6]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "All rows referenced verified verbatim anchors; four were weakened to match the anchor's exact scope, two were confirmed. No rows were rejected. Core questions are present.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "deutschmann2001_promise_of_absolute_wealth": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "deutschmann2001_promise_of_absolute_wealth"
+              ],
+              "dimension_key": "source_answers",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Abstract",
+                "Section I",
+                "Section II",
+                "Section III",
+                "Section IV"
+              ],
+              "coverage": "complete",
+              "criterion": "The source must give an attributable answer to a question, with a stated condition or modality and an identifiable conceptual, empirical, causal, interpretive or normative warrant.",
+              "basis": "The inspected source provides answers about money as Vermögen, capital growth via creative-destructive labour, myths' social resonance, and the promise of absolute wealth. Added two misses for Benjamin's traits and the consequence of indebtedness. Six anchored findings retained (three confirmed, one weakened, two added).",
+              "limitations": [
+                "The promise answer was narrowed to exclude consequences; a separate miss now captures the consequence of indebtedness."
+              ],
+              "finding_ids": [
+                "[R2.DOC2.F2]",
+                "[R2.DOC2.F3]",
+                "[R2.DOC2.F4]",
+                "[R2.DOC2.F5]",
+                "[V.DOC2.F1]",
+                "[V.DOC2.F2]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "All rows reference confirmed anchors; one weakened to match anchor scope, two misses added to close gaps. No rows rejected.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "deutschmann2001_promise_of_absolute_wealth": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Findings lost anchor evidence; this does not establish absence",
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "deutschmann2001_promise_of_absolute_wealth"
+              ],
+              "dimension_key": "answer_limits",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract",
+                "Section I",
+                "Section II",
+                "Section III",
+                "Section IV"
+              ],
+              "coverage": "complete",
+              "criterion": "Explicit qualifications, narrowing conditions, contests, refusals, unresolved questions, or different-scope distinctions that limit an apparent answer.",
+              "basis": "Six anchored findings cover the absence of a fixed mundane/transcendent distinction, the tentativeness of the religion-as-capitalism thesis, the qualification of Marx's labour theory, the scope limit on institutional reconciliation, the unresolved myth-cycle future, and the socially emergent character of innovation. All rows confirmed.",
+              "limitations": [
+                "No further qualifications found that alter the confirmed limits."
+              ],
+              "finding_ids": [
+                "R3.DOC2.F1",
+                "R3.DOC2.F2",
+                "R3.DOC2.F3",
+                "R3.DOC2.F4",
+                "R3.DOC2.F5",
+                "R3.DOC2.F6"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "All six rows confirmed by verbatim anchors that explicit state the claimed limitation or unresolved status. No over-reads.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "deutschmann2001_promise_of_absolute_wealth": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "deutschmann2022_interpretation_of_capitalism_as_religion"
+              ],
+              "dimension_key": "source_questions",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Religious and Secular Critique of Money",
+                "The Unbounding of Markets as the Basis of Modern Capitalism",
+                "The Intransparency of World Society to Itself: Luhmann and Hayek",
+                "The Religious Worldview and the Consequences of Its Dethronement",
+                "Universalism and the Contingency of the World: A Comparative Perspective on Capitalism and Religion",
+                "Conclusions"
+              ],
+              "coverage": "complete",
+              "criterion": "Passages that organize the source around themes and articulate substantive questions, comparisons, definitions, or proposed responses within source_questions.",
+              "basis": "All rows were verified against the source; the anchors directly support the thematic framing and questions. The source’s own announced plan of argument confirms the central questions.",
+              "limitations": [
+                "The findings preserve the source's conceptual and argumentative scope and do not independently verify cited authorities or historical claims."
+              ],
+              "finding_ids": [
+                "R1.DOC3.F1",
+                "R1.DOC3.F2",
+                "R1.DOC3.F3",
+                "R1.DOC3.F4",
+                "R1.DOC3.F5",
+                "R1.DOC3.F6"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "All findings confirmed; each anchor backs the stated theme and question. No over‑reading or unsupported claims found.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "deutschmann2022_interpretation_of_capitalism_as_religion": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "deutschmann2022_interpretation_of_capitalism_as_religion"
+              ],
+              "dimension_key": "source_answers",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Religious and Secular Critique of Money",
+                "The Unbounding of Markets as the Basis of Modern Capitalism",
+                "The Intransparency of World Society to Itself: Luhmann and Hayek",
+                "The Religious Worldview and the Consequences of Its Dethronement",
+                "Universalism and the Contingency of the World: A Comparative Perspective on Capitalism and Religion",
+                "Conclusions"
+              ],
+              "coverage": "complete",
+              "criterion": "Explicit answers given by the source in its own terms, with attribution, warrant, qualification, and object‑time‑scope identifiable from the text.",
+              "basis": "Rows verified against anchors; two were weakened to match what the anchor alone supports, and one miss was added to capture religion’s own answer to social intransparency. All retained rows are textually grounded.",
+              "limitations": [
+                "The added row (V.DOC3.F1) supplies a religion‑side answer missing from the original extraction; otherwise the extraction captures the source’s main answers."
+              ],
+              "finding_ids": [
+                "R2.DOC3.F1",
+                "R2.DOC3.F2",
+                "R2.DOC3.F3",
+                "R2.DOC3.F4",
+                "R2.DOC3.F5",
+                "V.DOC3.F1"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "Weakened R2.DOC3.F3 and R2.DOC3.F4 restrict the claims to what the anchors actually say; the rest were confirmed. The added row fills a genuine gap.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "deutschmann2022_interpretation_of_capitalism_as_religion": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "deutschmann2022_interpretation_of_capitalism_as_religion"
+              ],
+              "dimension_key": "answer_limits",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Religious and Secular Critique of Money",
+                "The Unbounding of Markets as the Basis of Modern Capitalism",
+                "The Intransparency of World Society to Itself: Luhmann and Hayek",
+                "The Religious Worldview and the Consequences of Its Dethronement",
+                "Universalism and the Contingency of the World: A Comparative Perspective on Capitalism and Religion",
+                "Conclusions"
+              ],
+              "coverage": "complete",
+              "criterion": "A retained finding must identify a textual qualification, narrowing, contestation, unresolved issue, or different‑scope relation affecting one of the source’s answers.",
+              "basis": "All original limit rows confirmed; two misses were added to capture important qualifications on freedom and the tension between market‑liberal and republican models. The source’s own statements directly anchor each limit.",
+              "limitations": [
+                "The added rows identify further limits that were present in the source but not extracted; the updated set is more representative."
+              ],
+              "finding_ids": [
+                "R3.DOC3.F1",
+                "R3.DOC3.F2",
+                "R3.DOC3.F3",
+                "R3.DOC3.F4",
+                "R3.DOC3.F5",
+                "V.DOC3.F2",
+                "V.DOC3.F3"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "All rows, including added ones, are directly anchored in the text and correctly report limits, qualifications, or rejected rival explanations.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "deutschmann2022_interpretation_of_capitalism_as_religion": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "deutschmann2001_capitalism_as_religion",
+                "deutschmann2001_promise_of_absolute_wealth",
+                "deutschmann2022_interpretation_of_capitalism_as_religion"
+              ],
+              "dimension_key": "question_reconciliation",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "deutschmann2001_capitalism_as_religion: abstract, The Paradoxes of Religion and Money, Simmel and Marx, Entrepreneurs and Economic Myths, Conclusions",
+                "deutschmann2001_promise_of_absolute_wealth: abstract, sections I, II, III, IV",
+                "deutschmann2022_interpretation_of_capitalism_as_religion: Religious and Secular Critique of Money, The Unbounding of Markets, The Intransparency of World Society, The Religious Worldview, Universalism and the Contingency, Conclusions"
+              ],
+              "coverage": "complete",
+              "criterion": "A question must be alignable across at least two supplied sources after comparing object, time, definition, qualification and warrant, with each attributed answer supported by retained document-specific anchors.",
+              "basis": "Each anchor was verified against the relevant source text; the revised RM.F1 corrects a mischaracterization of the second article’s answer, and a missing cross‑source agreement on labour’s creative role was added. The remaining findings are supported by verbatim quotes. The 2022 article does not address the cyclical myth process (Q4), but that does not invalidate the reconciliation among the two 2001 articles.",
+              "limitations": [
+                "RM.F4’s agreement is limited to the two 2001 articles; the 2022 article does not provide a comparable answer.",
+                "The reconciliation does not exhaust all possible shared questions; additional themes (e.g., the entrepreneur as a religious figure) could be aligned but were not present in the supplied ledger."
+              ],
+              "finding_ids": [
+                "RM.F1",
+                "RM.F2",
+                "RM.F3",
+                "RM.F4",
+                "RM.F5",
+                "V.CORPUS.F6"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "All retained findings are anchored in verbatim quotes from the named sources; the one weakened row (RM.F1) was revised to match the source, and the missing RM.F6 was rejected. The added cross‑source finding (V.CORPUS.F6) fills a gap in the original ledger. Coverage of the relevant sections is complete for the questions addressed.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "deutschmann2001_capitalism_as_religion": "provided",
+                  "deutschmann2001_promise_of_absolute_wealth": "provided",
+                  "deutschmann2022_interpretation_of_capitalism_as_religion": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Corpus findings lost anchor evidence; this does not establish absence",
+                  "One or more declared finding references lack retained verified evidence",
+                  "Findings in this scope lost anchor evidence; this does not establish absence"
+                ]
+              }
+            }
+          ],
+          "synthesis_evidence": {
+            "partial": false,
+            "stop_reason": "stop",
+            "error": null,
+            "ledger_parse_error": null
+          }
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 35154
+      }
+    ]
+  }
+}

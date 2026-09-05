@@ -1,0 +1,1442 @@
+{
+  "status": "complete",
+  "job": {
+    "engine": "reconcile_sources",
+    "mode": "standard",
+    "corpus": "pair"
+  },
+  "output_sha256": "4328ff767df5291b7b7de4cc7324a427ee4923dc60c1eb6753982cc20f5c5805",
+  "seconds": 643.4208834171295,
+  "process": {
+    "engine": "reconcile_sources",
+    "process": "dvs",
+    "cost_usd": 0.5991,
+    "input_tokens": 206624,
+    "output_tokens": 37207,
+    "seconds": 643.4,
+    "final_model": "openrouter/openai/gpt-5.6-sol",
+    "final_wall": {
+      "rows": 18,
+      "with_anchor": 18,
+      "verified": 18,
+      "trimmed": 0,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 22,
+      "verified_anchors": 22,
+      "cross_document_rows": 4,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "checked",
+        "scope": "retained_ledger",
+        "missing_rejected_ids": [],
+        "missing_other_ids": []
+      },
+      "synthesis_contract": {
+        "failed_ids": [],
+        "incomplete_cross_document_ids": [],
+        "duplicate_ids": [],
+        "missing_cited": [],
+        "unknown_dimensions": [],
+        "missing_ledger": false,
+        "parse_error": "",
+        "incomplete_invocation": false
+      },
+      "synthesis_repair_attempts": [
+        {
+          "failed_ids": [
+            "F18"
+          ],
+          "incomplete_cross_document_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [
+            "F18"
+          ],
+          "unknown_dimensions": [],
+          "missing_ledger": false,
+          "parse_error": "",
+          "incomplete_invocation": false
+        }
+      ],
+      "check_ruling_coverage": {
+        "original_count": 17,
+        "explicitly_ruled_count": 17,
+        "missing_or_unruled_ids": [],
+        "unexpected_nonadded_ids": [],
+        "invalid_original_status_ids": [],
+        "duplicate_original_ids": [],
+        "duplicate_ruling_ids": [],
+        "coverage_complete": true
+      },
+      "scope_outcomes": [
+        {
+          "document_keys": [
+            "aukus"
+          ],
+          "dimension_key": "source_questions",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "Abstract",
+            "Introduction",
+            "AUKUS and militarised neoliberalism",
+            "AUKUS, bipartisanship, and the regulatory control",
+            "State interventions and politico-business coalitions",
+            "The emergence of a new business class",
+            "Conclusion"
+          ],
+          "coverage": "complete",
+          "criterion": "A source question is eligible where the text states or substantively frames an inquiry about an identified object, time, scope, and theme.",
+          "basis": "The article explicitly frames AUKUS beyond state-centric geopolitics and advances militarised neoliberalism as its central concept.",
+          "limitations": [
+            "The bibliography was inspected as supplied but not treated as independent evidence of endorsed questions."
+          ],
+          "finding_ids": [
+            "F1"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "All anchors confirmed verbatim; surrounding text reinforces the found question.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "aukus": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        },
+        {
+          "document_keys": [
+            "subsea"
+          ],
+          "dimension_key": "source_questions",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "Abstract",
+            "Reconciling Market Dynamics and State Strategy in Global Networks",
+            "Non-Alignment and Re-Alignment of Privately Owned Networks",
+            "Case Studies and Methods",
+            "Case 1",
+            "Case 2",
+            "Conclusion"
+          ],
+          "coverage": "complete",
+          "criterion": "A source question is eligible where the text states or substantively frames an inquiry about an identified object, time, scope, and theme.",
+          "basis": "The article expressly addresses the disconnect between statecraft-centric explanations and market-driven network development.",
+          "limitations": [
+            "The reference list was inspected as supplied but not treated as an endorsed answer."
+          ],
+          "finding_ids": [
+            "F2"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "Anchor confirmed verbatim; the article’s central question is clear.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "subsea": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        },
+        {
+          "document_keys": [
+            "aukus"
+          ],
+          "dimension_key": "source_answers",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "Abstract",
+            "Introduction",
+            "AUKUS and militarised neoliberalism",
+            "AUKUS, bipartisanship, and the regulatory control",
+            "State interventions and politico-business coalitions",
+            "The emergence of a new business class",
+            "Conclusion"
+          ],
+          "coverage": "complete",
+          "criterion": "An attributed answer is eligible when the text endorses a position and supplies a conceptual, empirical, causal, interpretive, or normative warrant.",
+          "basis": "The article endorses claims about selective economic reconnection, regulatory market creation, and incorporation of a new business class; the added finding on geopolitical fetishism is also supported.",
+          "limitations": [
+            "Reported views of strategic analysts were not treated as the article’s own answers unless the text endorsed them."
+          ],
+          "finding_ids": [
+            "F3",
+            "F4",
+            "F5",
+            "F18"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "All anchors (including the added V.D1) are verbatim and read in context support the findings.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "aukus": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        },
+        {
+          "document_keys": [
+            "subsea"
+          ],
+          "dimension_key": "source_answers",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "Abstract",
+            "Reconciling Market Dynamics and State Strategy in Global Networks",
+            "Non-Alignment and Re-Alignment of Privately Owned Networks",
+            "Case Studies and Methods",
+            "Case 1",
+            "Case 2",
+            "Conclusion"
+          ],
+          "coverage": "complete",
+          "criterion": "An attributed answer is eligible when the text endorses a position and supplies a conceptual, empirical, causal, interpretive, or normative warrant.",
+          "basis": "The article defines private network realignment, identifies its strategic forms, and supports the framework with SeaMeWe-6 and France case findings.",
+          "limitations": [
+            "Interview-derived claims are reported through the article’s synthesis; transcripts were not supplied for independent inspection."
+          ],
+          "finding_ids": [
+            "F7",
+            "F8",
+            "F9",
+            "F14",
+            "F16"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "All anchors confirmed verbatim; the analytical findings are well-grounded in the text.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "subsea": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        },
+        {
+          "document_keys": [
+            "aukus"
+          ],
+          "dimension_key": "answer_limits",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "Abstract",
+            "Introduction",
+            "AUKUS and militarised neoliberalism",
+            "AUKUS, bipartisanship, and the regulatory control",
+            "State interventions and politico-business coalitions",
+            "The emergence of a new business class",
+            "Conclusion",
+            "Notes"
+          ],
+          "coverage": "complete",
+          "criterion": "An answer limit is eligible where the source explicitly narrows its claim, excludes an outcome, records uncertainty, or supplies countervailing conditions.",
+          "basis": "The article explicitly excludes conflict-risk assessment and records delivery uncertainty surrounding Pillar I.",
+          "limitations": [
+            "The scope exclusion cannot be converted into a negative finding about conflict risk."
+          ],
+          "finding_ids": [
+            "F6",
+            "F17"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "Both anchors are verbatim and directly convey the limits.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "aukus": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        },
+        {
+          "document_keys": [
+            "subsea"
+          ],
+          "dimension_key": "answer_limits",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "Abstract",
+            "Reconciling Market Dynamics and State Strategy in Global Networks",
+            "Non-Alignment and Re-Alignment of Privately Owned Networks",
+            "Case 1",
+            "Case 2",
+            "Conclusion",
+            "Endnotes"
+          ],
+          "coverage": "complete",
+          "criterion": "An answer limit is eligible where the source explicitly narrows its claim, excludes an outcome, records uncertainty, or supplies countervailing conditions.",
+          "basis": "The article repeatedly limits realignment effectiveness and identifies financial, technological, fiscal, and US-pressure constraints on France.",
+          "limitations": [
+            "The two cases are described as instructive and prototypical rather than statistically representative of all infrastructure networks."
+          ],
+          "finding_ids": [
+            "F10"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "Anchor confirmed verbatim; the surrounding paragraph supplies the full constraint list.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "subsea": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        },
+        {
+          "document_keys": [
+            "aukus",
+            "subsea"
+          ],
+          "dimension_key": "question_reconciliation",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "Both abstracts",
+            "Both introductions and conceptual-framework sections",
+            "All empirical sections in both articles",
+            "Both conclusions and notes/endnotes"
+          ],
+          "coverage": "complete",
+          "criterion": "Cross-source reconciliation is eligible where questions can be aligned by object, time, definition, qualification, and warrant, with distinct verbatim anchors for both documents.",
+          "basis": "The sources can be aligned on state-market reorganization, effective agency, intervention instruments, deglobalization, and state ownership, while preserving their different objects and concepts.",
+          "limitations": [
+            "Neither text cites the other; intellectual chronology is not established.",
+            "The conflict-risk question remains unresolved because aukus excludes it and subsea does not test it.",
+            "Shared themes do not establish identity between militarised neoliberalism and private network realignment."
+          ],
+          "finding_ids": [
+            "F11",
+            "F12",
+            "F13",
+            "F15",
+            "V.CORPUS.F1"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "All cross-source anchors are verbatim and correctly attributed; the reconciliation analysis is sound within its stated scope.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "aukus": "provided",
+              "subsea": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "Findings in this scope lost anchor evidence; this does not establish absence",
+              "One or more declared finding references lack retained verified evidence"
+            ]
+          }
+        }
+      ]
+    },
+    "calls": [
+      {
+        "step": "read",
+        "kind": "synthesize",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/openai/gpt-5.6-sol",
+        "model_used": "openrouter/openai/gpt-5.6-sol",
+        "input_tokens": 41827,
+        "output_tokens": 6741,
+        "duration_ms": 80605,
+        "cost_usd": 0.1511,
+        "retries": 0,
+        "wall": {
+          "rows": 17,
+          "with_anchor": 17,
+          "verified": 16,
+          "trimmed": 0,
+          "anchor_rate": 0.941,
+          "failed_ids": [
+            "F15"
+          ],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 21,
+          "verified_anchors": 20,
+          "cross_document_rows": 4,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "has_ledger": true,
+          "prose_chars": 15081,
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "aukus"
+              ],
+              "dimension_key": "source_questions",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract",
+                "Introduction",
+                "AUKUS and militarised neoliberalism",
+                "AUKUS, bipartisanship, and the regulatory control",
+                "State interventions and politico-business coalitions",
+                "The emergence of a new business class",
+                "Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "A source question is eligible where the text states or substantively frames an inquiry about an identified object, time, scope, and theme.",
+              "basis": "The complete supplied article frames an inquiry into AUKUS beyond state-centric geopolitics and identifies militarised neoliberalism as its organizing concept.",
+              "limitations": [
+                "The bibliography was inspected as supplied but was not treated as independent evidence of the article's endorsed questions."
+              ],
+              "finding_ids": [
+                "F1"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "aukus": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "subsea"
+              ],
+              "dimension_key": "source_questions",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract",
+                "Reconciling Market Dynamics and State Strategy in Global Networks",
+                "Non-Alignment and Re-Alignment of Privately Owned Networks",
+                "Case Studies and Methods",
+                "Case 1",
+                "Case 2",
+                "Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "A source question is eligible where the text states or substantively frames an inquiry about an identified object, time, scope, and theme.",
+              "basis": "The complete supplied article expressly addresses the disconnect between statecraft-centric explanations and market-driven network development.",
+              "limitations": [
+                "The reference list was inspected as supplied but not treated as an endorsed answer by the article."
+              ],
+              "finding_ids": [
+                "F2"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "subsea": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "aukus"
+              ],
+              "dimension_key": "source_answers",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract",
+                "Introduction",
+                "AUKUS and militarised neoliberalism",
+                "AUKUS, bipartisanship, and the regulatory control",
+                "State interventions and politico-business coalitions",
+                "The emergence of a new business class",
+                "Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "An attributed answer is eligible when the text endorses a position and supplies a conceptual, empirical, causal, interpretive, or normative warrant.",
+              "basis": "The article endorses claims about selective economic reconnection, regulatory market creation, and incorporation of a new business class.",
+              "limitations": [
+                "Reported views of strategic analysts and policymakers were not treated as the article's own answers unless the text endorsed them."
+              ],
+              "finding_ids": [
+                "F3",
+                "F4",
+                "F5"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "aukus": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "subsea"
+              ],
+              "dimension_key": "source_answers",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract",
+                "Reconciling Market Dynamics and State Strategy in Global Networks",
+                "Non-Alignment and Re-Alignment of Privately Owned Networks",
+                "Case Studies and Methods",
+                "Case 1",
+                "Case 2",
+                "Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "An attributed answer is eligible when the text endorses a position and supplies a conceptual, empirical, causal, interpretive, or normative warrant.",
+              "basis": "The article defines private network realignment, identifies its strategic forms, and supports the framework with SeaMeWe-6 and France case findings.",
+              "limitations": [
+                "Interview-derived claims are reported through the article's synthesis; interview transcripts were not supplied for independent inspection."
+              ],
+              "finding_ids": [
+                "F7",
+                "F8",
+                "F9",
+                "F14",
+                "F16"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "subsea": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "aukus"
+              ],
+              "dimension_key": "answer_limits",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract",
+                "Introduction",
+                "AUKUS and militarised neoliberalism",
+                "AUKUS, bipartisanship, and the regulatory control",
+                "State interventions and politico-business coalitions",
+                "The emergence of a new business class",
+                "Conclusion",
+                "Notes"
+              ],
+              "coverage": "complete",
+              "criterion": "An answer limit is eligible where the source explicitly narrows its claim, excludes an outcome, records uncertainty, or supplies countervailing conditions.",
+              "basis": "The article explicitly excludes conflict-risk assessment and records delivery uncertainty surrounding Pillar I.",
+              "limitations": [
+                "The scope exclusion cannot be converted into a negative finding about conflict risk."
+              ],
+              "finding_ids": [
+                "F6",
+                "F17"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "aukus": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "subsea"
+              ],
+              "dimension_key": "answer_limits",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract",
+                "Reconciling Market Dynamics and State Strategy in Global Networks",
+                "Non-Alignment and Re-Alignment of Privately Owned Networks",
+                "Case 1",
+                "Case 2",
+                "Conclusion",
+                "Endnotes"
+              ],
+              "coverage": "complete",
+              "criterion": "An answer limit is eligible where the source explicitly narrows its claim, excludes an outcome, records uncertainty, or supplies countervailing conditions.",
+              "basis": "The article repeatedly limits realignment effectiveness and identifies financial, technological, fiscal, and US-pressure constraints on France.",
+              "limitations": [
+                "The two cases are described as instructive and prototypical rather than statistically representative of all infrastructure networks."
+              ],
+              "finding_ids": [
+                "F10"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "subsea": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "aukus",
+                "subsea"
+              ],
+              "dimension_key": "question_reconciliation",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Both supplied abstracts",
+                "Both introductions and conceptual-framework sections",
+                "All empirical sections in both supplied articles",
+                "Both conclusions and notes/endnotes"
+              ],
+              "coverage": "complete",
+              "criterion": "Cross-source reconciliation is eligible where questions can be aligned by object, time, definition, qualification, and warrant, with distinct verbatim anchors for both documents.",
+              "basis": "The sources can be aligned on state-market reorganization, effective agency, intervention instruments, and deglobalization, while preserving their different objects and concepts.",
+              "limitations": [
+                "Neither text cites the other, so inheritance and intellectual chronology are not established.",
+                "The conflict-risk question remains unresolved because aukus excludes it and subsea does not test it.",
+                "Shared themes do not establish identity between militarised neoliberalism and private network realignment."
+              ],
+              "finding_ids": [
+                "F11",
+                "F12",
+                "F13",
+                "F15"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "aukus": "provided",
+                  "subsea": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Findings in this scope lost anchor evidence; this does not establish absence",
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 32208
+      },
+      {
+        "step": "check",
+        "kind": "verify",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+        "model_used": "openrouter/deepseek/deepseek-v4-pro",
+        "input_tokens": 49543,
+        "output_tokens": 17527,
+        "duration_ms": 441990,
+        "cost_usd": 0.0882,
+        "retries": 0,
+        "wall": {
+          "rows": 19,
+          "with_anchor": 19,
+          "verified": 18,
+          "trimmed": 0,
+          "anchor_rate": 0.947,
+          "failed_ids": [
+            "F15"
+          ],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 24,
+          "verified_anchors": 23,
+          "cross_document_rows": 5,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "checked",
+            "scope": "retained_ledger",
+            "missing_rejected_ids": [],
+            "missing_other_ids": []
+          },
+          "check_in": 17,
+          "check_confirmed": 17,
+          "check_weakened": 0,
+          "check_rejected": 0,
+          "check_added": 2,
+          "check_added_dropped": 0,
+          "check_carried": 0,
+          "check_unverified": 1,
+          "check_ruling_coverage": {
+            "original_count": 17,
+            "explicitly_ruled_count": 17,
+            "missing_or_unruled_ids": [],
+            "unexpected_nonadded_ids": [],
+            "invalid_original_status_ids": [],
+            "duplicate_original_ids": [],
+            "duplicate_ruling_ids": [],
+            "coverage_complete": true
+          },
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "aukus"
+              ],
+              "dimension_key": "source_questions",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract",
+                "Introduction",
+                "AUKUS and militarised neoliberalism",
+                "AUKUS, bipartisanship, and the regulatory control",
+                "State interventions and politico-business coalitions",
+                "The emergence of a new business class",
+                "Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "A source question is eligible where the text states or substantively frames an inquiry about an identified object, time, scope, and theme.",
+              "basis": "The article explicitly frames AUKUS beyond state-centric geopolitics and advances militarised neoliberalism as its central concept.",
+              "limitations": [
+                "The bibliography was inspected as supplied but not treated as independent evidence of endorsed questions."
+              ],
+              "finding_ids": [
+                "F1"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "All anchors confirmed verbatim; surrounding text reinforces the found question.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "aukus": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "subsea"
+              ],
+              "dimension_key": "source_questions",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract",
+                "Reconciling Market Dynamics and State Strategy in Global Networks",
+                "Non-Alignment and Re-Alignment of Privately Owned Networks",
+                "Case Studies and Methods",
+                "Case 1",
+                "Case 2",
+                "Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "A source question is eligible where the text states or substantively frames an inquiry about an identified object, time, scope, and theme.",
+              "basis": "The article expressly addresses the disconnect between statecraft-centric explanations and market-driven network development.",
+              "limitations": [
+                "The reference list was inspected as supplied but not treated as an endorsed answer."
+              ],
+              "finding_ids": [
+                "F2"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "Anchor confirmed verbatim; the article’s central question is clear.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "subsea": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "aukus"
+              ],
+              "dimension_key": "source_answers",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract",
+                "Introduction",
+                "AUKUS and militarised neoliberalism",
+                "AUKUS, bipartisanship, and the regulatory control",
+                "State interventions and politico-business coalitions",
+                "The emergence of a new business class",
+                "Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "An attributed answer is eligible when the text endorses a position and supplies a conceptual, empirical, causal, interpretive, or normative warrant.",
+              "basis": "The article endorses claims about selective economic reconnection, regulatory market creation, and incorporation of a new business class; the added finding on geopolitical fetishism is also supported.",
+              "limitations": [
+                "Reported views of strategic analysts were not treated as the article’s own answers unless the text endorsed them."
+              ],
+              "finding_ids": [
+                "F3",
+                "F4",
+                "F5",
+                "F18"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "All anchors (including the added V.D1) are verbatim and read in context support the findings.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "aukus": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "subsea"
+              ],
+              "dimension_key": "source_answers",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract",
+                "Reconciling Market Dynamics and State Strategy in Global Networks",
+                "Non-Alignment and Re-Alignment of Privately Owned Networks",
+                "Case Studies and Methods",
+                "Case 1",
+                "Case 2",
+                "Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "An attributed answer is eligible when the text endorses a position and supplies a conceptual, empirical, causal, interpretive, or normative warrant.",
+              "basis": "The article defines private network realignment, identifies its strategic forms, and supports the framework with SeaMeWe-6 and France case findings.",
+              "limitations": [
+                "Interview-derived claims are reported through the article’s synthesis; transcripts were not supplied for independent inspection."
+              ],
+              "finding_ids": [
+                "F7",
+                "F8",
+                "F9",
+                "F14",
+                "F16"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "All anchors confirmed verbatim; the analytical findings are well-grounded in the text.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "subsea": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "aukus"
+              ],
+              "dimension_key": "answer_limits",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract",
+                "Introduction",
+                "AUKUS and militarised neoliberalism",
+                "AUKUS, bipartisanship, and the regulatory control",
+                "State interventions and politico-business coalitions",
+                "The emergence of a new business class",
+                "Conclusion",
+                "Notes"
+              ],
+              "coverage": "complete",
+              "criterion": "An answer limit is eligible where the source explicitly narrows its claim, excludes an outcome, records uncertainty, or supplies countervailing conditions.",
+              "basis": "The article explicitly excludes conflict-risk assessment and records delivery uncertainty surrounding Pillar I.",
+              "limitations": [
+                "The scope exclusion cannot be converted into a negative finding about conflict risk."
+              ],
+              "finding_ids": [
+                "F6",
+                "F17"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "Both anchors are verbatim and directly convey the limits.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "aukus": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "subsea"
+              ],
+              "dimension_key": "answer_limits",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract",
+                "Reconciling Market Dynamics and State Strategy in Global Networks",
+                "Non-Alignment and Re-Alignment of Privately Owned Networks",
+                "Case 1",
+                "Case 2",
+                "Conclusion",
+                "Endnotes"
+              ],
+              "coverage": "complete",
+              "criterion": "An answer limit is eligible where the source explicitly narrows its claim, excludes an outcome, records uncertainty, or supplies countervailing conditions.",
+              "basis": "The article repeatedly limits realignment effectiveness and identifies financial, technological, fiscal, and US-pressure constraints on France.",
+              "limitations": [
+                "The two cases are described as instructive and prototypical rather than statistically representative of all infrastructure networks."
+              ],
+              "finding_ids": [
+                "F10"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "Anchor confirmed verbatim; the surrounding paragraph supplies the full constraint list.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "subsea": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "aukus",
+                "subsea"
+              ],
+              "dimension_key": "question_reconciliation",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Both abstracts",
+                "Both introductions and conceptual-framework sections",
+                "All empirical sections in both articles",
+                "Both conclusions and notes/endnotes"
+              ],
+              "coverage": "complete",
+              "criterion": "Cross-source reconciliation is eligible where questions can be aligned by object, time, definition, qualification, and warrant, with distinct verbatim anchors for both documents.",
+              "basis": "The sources can be aligned on state-market reorganization, effective agency, intervention instruments, deglobalization, and state ownership, while preserving their different objects and concepts.",
+              "limitations": [
+                "Neither text cites the other; intellectual chronology is not established.",
+                "The conflict-risk question remains unresolved because aukus excludes it and subsea does not test it.",
+                "Shared themes do not establish identity between militarised neoliberalism and private network realignment."
+              ],
+              "finding_ids": [
+                "F11",
+                "F12",
+                "F13",
+                "F15",
+                "V.CORPUS.F1"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "All cross-source anchors are verbatim and correctly attributed; the reconciliation analysis is sound within its stated scope.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "aukus": "provided",
+                  "subsea": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Findings in this scope lost anchor evidence; this does not establish absence",
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 27853
+      },
+      {
+        "step": "reconcile_checked",
+        "kind": "synthesize",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/openai/gpt-5.6-sol",
+        "model_used": "openrouter/openai/gpt-5.6-sol",
+        "input_tokens": 54388,
+        "output_tokens": 6484,
+        "duration_ms": 69452,
+        "cost_usd": 0.1736,
+        "retries": 0,
+        "wall": {
+          "rows": 19,
+          "with_anchor": 19,
+          "verified": 18,
+          "trimmed": 0,
+          "anchor_rate": 0.947,
+          "failed_ids": [
+            "F18"
+          ],
+          "duplicate_ids": [],
+          "missing_cited": [
+            "F18"
+          ],
+          "anchors": 24,
+          "verified_anchors": 23,
+          "cross_document_rows": 5,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "checked",
+            "scope": "retained_ledger",
+            "missing_rejected_ids": [],
+            "missing_other_ids": [
+              "F18"
+            ]
+          },
+          "synthesis_contract": {
+            "failed_ids": [
+              "F18"
+            ],
+            "incomplete_cross_document_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [
+              "F18"
+            ],
+            "unknown_dimensions": [],
+            "missing_ledger": false,
+            "parse_error": "",
+            "incomplete_invocation": false
+          },
+          "synthesis_repair_attempts": []
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 30859
+      },
+      {
+        "step": "reconcile_checked",
+        "kind": "synthesize",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/openai/gpt-5.6-sol",
+        "model_used": "openrouter/openai/gpt-5.6-sol",
+        "input_tokens": 60866,
+        "output_tokens": 6455,
+        "duration_ms": 51271,
+        "cost_usd": 0.1863,
+        "retries": 0,
+        "wall": {
+          "rows": 18,
+          "with_anchor": 18,
+          "verified": 18,
+          "trimmed": 0,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 22,
+          "verified_anchors": 22,
+          "cross_document_rows": 4,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "checked",
+            "scope": "retained_ledger",
+            "missing_rejected_ids": [],
+            "missing_other_ids": []
+          },
+          "synthesis_contract": {
+            "failed_ids": [],
+            "incomplete_cross_document_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [],
+            "unknown_dimensions": [],
+            "missing_ledger": false,
+            "parse_error": "",
+            "incomplete_invocation": false
+          },
+          "synthesis_repair_attempts": [
+            {
+              "failed_ids": [
+                "F18"
+              ],
+              "incomplete_cross_document_ids": [],
+              "duplicate_ids": [],
+              "missing_cited": [
+                "F18"
+              ],
+              "unknown_dimensions": [],
+              "missing_ledger": false,
+              "parse_error": "",
+              "incomplete_invocation": false
+            }
+          ],
+          "check_ruling_coverage": {
+            "original_count": 17,
+            "explicitly_ruled_count": 17,
+            "missing_or_unruled_ids": [],
+            "unexpected_nonadded_ids": [],
+            "invalid_original_status_ids": [],
+            "duplicate_original_ids": [],
+            "duplicate_ruling_ids": [],
+            "coverage_complete": true
+          },
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "aukus"
+              ],
+              "dimension_key": "source_questions",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract",
+                "Introduction",
+                "AUKUS and militarised neoliberalism",
+                "AUKUS, bipartisanship, and the regulatory control",
+                "State interventions and politico-business coalitions",
+                "The emergence of a new business class",
+                "Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "A source question is eligible where the text states or substantively frames an inquiry about an identified object, time, scope, and theme.",
+              "basis": "The article explicitly frames AUKUS beyond state-centric geopolitics and advances militarised neoliberalism as its central concept.",
+              "limitations": [
+                "The bibliography was inspected as supplied but not treated as independent evidence of endorsed questions."
+              ],
+              "finding_ids": [
+                "F1"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "All anchors confirmed verbatim; surrounding text reinforces the found question.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "aukus": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "subsea"
+              ],
+              "dimension_key": "source_questions",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract",
+                "Reconciling Market Dynamics and State Strategy in Global Networks",
+                "Non-Alignment and Re-Alignment of Privately Owned Networks",
+                "Case Studies and Methods",
+                "Case 1",
+                "Case 2",
+                "Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "A source question is eligible where the text states or substantively frames an inquiry about an identified object, time, scope, and theme.",
+              "basis": "The article expressly addresses the disconnect between statecraft-centric explanations and market-driven network development.",
+              "limitations": [
+                "The reference list was inspected as supplied but not treated as an endorsed answer."
+              ],
+              "finding_ids": [
+                "F2"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "Anchor confirmed verbatim; the article’s central question is clear.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "subsea": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "aukus"
+              ],
+              "dimension_key": "source_answers",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract",
+                "Introduction",
+                "AUKUS and militarised neoliberalism",
+                "AUKUS, bipartisanship, and the regulatory control",
+                "State interventions and politico-business coalitions",
+                "The emergence of a new business class",
+                "Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "An attributed answer is eligible when the text endorses a position and supplies a conceptual, empirical, causal, interpretive, or normative warrant.",
+              "basis": "The article endorses claims about selective economic reconnection, regulatory market creation, and incorporation of a new business class; the added finding on geopolitical fetishism is also supported.",
+              "limitations": [
+                "Reported views of strategic analysts were not treated as the article’s own answers unless the text endorsed them."
+              ],
+              "finding_ids": [
+                "F3",
+                "F4",
+                "F5",
+                "F18"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "All anchors (including the added V.D1) are verbatim and read in context support the findings.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "aukus": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "subsea"
+              ],
+              "dimension_key": "source_answers",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract",
+                "Reconciling Market Dynamics and State Strategy in Global Networks",
+                "Non-Alignment and Re-Alignment of Privately Owned Networks",
+                "Case Studies and Methods",
+                "Case 1",
+                "Case 2",
+                "Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "An attributed answer is eligible when the text endorses a position and supplies a conceptual, empirical, causal, interpretive, or normative warrant.",
+              "basis": "The article defines private network realignment, identifies its strategic forms, and supports the framework with SeaMeWe-6 and France case findings.",
+              "limitations": [
+                "Interview-derived claims are reported through the article’s synthesis; transcripts were not supplied for independent inspection."
+              ],
+              "finding_ids": [
+                "F7",
+                "F8",
+                "F9",
+                "F14",
+                "F16"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "All anchors confirmed verbatim; the analytical findings are well-grounded in the text.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "subsea": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "aukus"
+              ],
+              "dimension_key": "answer_limits",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract",
+                "Introduction",
+                "AUKUS and militarised neoliberalism",
+                "AUKUS, bipartisanship, and the regulatory control",
+                "State interventions and politico-business coalitions",
+                "The emergence of a new business class",
+                "Conclusion",
+                "Notes"
+              ],
+              "coverage": "complete",
+              "criterion": "An answer limit is eligible where the source explicitly narrows its claim, excludes an outcome, records uncertainty, or supplies countervailing conditions.",
+              "basis": "The article explicitly excludes conflict-risk assessment and records delivery uncertainty surrounding Pillar I.",
+              "limitations": [
+                "The scope exclusion cannot be converted into a negative finding about conflict risk."
+              ],
+              "finding_ids": [
+                "F6",
+                "F17"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "Both anchors are verbatim and directly convey the limits.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "aukus": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "subsea"
+              ],
+              "dimension_key": "answer_limits",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract",
+                "Reconciling Market Dynamics and State Strategy in Global Networks",
+                "Non-Alignment and Re-Alignment of Privately Owned Networks",
+                "Case 1",
+                "Case 2",
+                "Conclusion",
+                "Endnotes"
+              ],
+              "coverage": "complete",
+              "criterion": "An answer limit is eligible where the source explicitly narrows its claim, excludes an outcome, records uncertainty, or supplies countervailing conditions.",
+              "basis": "The article repeatedly limits realignment effectiveness and identifies financial, technological, fiscal, and US-pressure constraints on France.",
+              "limitations": [
+                "The two cases are described as instructive and prototypical rather than statistically representative of all infrastructure networks."
+              ],
+              "finding_ids": [
+                "F10"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "Anchor confirmed verbatim; the surrounding paragraph supplies the full constraint list.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "subsea": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "aukus",
+                "subsea"
+              ],
+              "dimension_key": "question_reconciliation",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Both abstracts",
+                "Both introductions and conceptual-framework sections",
+                "All empirical sections in both articles",
+                "Both conclusions and notes/endnotes"
+              ],
+              "coverage": "complete",
+              "criterion": "Cross-source reconciliation is eligible where questions can be aligned by object, time, definition, qualification, and warrant, with distinct verbatim anchors for both documents.",
+              "basis": "The sources can be aligned on state-market reorganization, effective agency, intervention instruments, deglobalization, and state ownership, while preserving their different objects and concepts.",
+              "limitations": [
+                "Neither text cites the other; intellectual chronology is not established.",
+                "The conflict-risk question remains unresolved because aukus excludes it and subsea does not test it.",
+                "Shared themes do not establish identity between militarised neoliberalism and private network realignment."
+              ],
+              "finding_ids": [
+                "F11",
+                "F12",
+                "F13",
+                "F15",
+                "V.CORPUS.F1"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "All cross-source anchors are verbatim and correctly attributed; the reconciliation analysis is sound within its stated scope.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "aukus": "provided",
+                  "subsea": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Findings in this scope lost anchor evidence; this does not establish absence",
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 30351
+      }
+    ]
+  }
+}
