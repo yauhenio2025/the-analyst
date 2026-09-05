@@ -1,6 +1,6 @@
 # Ideas material study — protocol (2026-09-05)
 
-Status: preparation complete; awaiting approval for paid study calls. No paid study calls have been authorized or launched in this session. This prepares step 6 of `NEXT_SESSION_PROMPT_ideas_material_2026-09-05.md`. Engine consolidation follows the findings from this study.
+Status: approved and running. The owner authorized the proposed $20 budget on 2026-09-05 after the independent review and fixes in `c199a93` / `c195138`. A fresh interpreter launched `python -u scripts/study_ideas_material.py --run --budget-usd 20` from `c195138`; study identity `374325c24e6b10a15663e9cbe9fd3520818964bc05f8f46b2d88944e0b7cbfca`, outputs under `data/study/ideas_2026_09_05/374325c24e6b10a1/`. This is step 6 of `NEXT_SESSION_PROMPT_ideas_material_2026-09-05.md`. Engine consolidation follows the findings from this study.
 
 ## Comparisons and corpus readings
 
@@ -41,4 +41,4 @@ Keep the current questions fixed for the initial comparison. The productive-tens
 
 The handoff's standing rule is **“Ask before spend”** and its checks section says **“≈ $15–20; ask before launching.”** Request approval for the prepared matrix before using `--run`. Preparation, offline tests, and review can proceed. Its **“Commit and push per phase (master deploys to Render)”** instruction authorizes publishing each completed, tested phase to this repository's `origin/master`.
 
-Offline validation: 50 tests passed across the ideas runner, corpus ledger, process shape, desks' ledger handoff, and prior plumbing tests. The real-source dry run confirms the full matrix and model routing without paid calls. After approval, launch with `python scripts/study_ideas_material.py --run --budget-usd 20`.
+Offline validation: 51 tests passed in a fresh interpreter after the independent review's fixes, across the ideas runner, corpus ledger, process shape, desks' ledger handoff, and prior plumbing tests. The fixes preserve ordinary findings when executor and dossier document keys differ while requiring valid declared keys for corpus rows. The model run launched only after this check and the owner's approval.
