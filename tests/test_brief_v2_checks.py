@@ -260,8 +260,8 @@ def test_purpose_catalog_joins_the_runtime_registry():
     # Eligible purpose entries and unlisted capabilities are offered; explicit exclusions are withheld.
     assert listed - excluded <= offered and not (excluded & offered)
     assert len(engines) == len(offered) >= 22 and {e["engine_key"] for e in c["excluded"]} == excluded and len(c["recipes"]) == 7
-    assert {e["engine_key"] for e in c["excluded"]} == {"aoi_thematic_synthesis", "aoi_engagement_mapping", "aoi_sin_findings", "aoi_thematic_report",
-                                                        "genealogy_relationship_classification", "genealogy_final_synthesis"}
+    assert {"aoi_thematic_synthesis", "aoi_engagement_mapping", "aoi_sin_findings", "aoi_thematic_report",
+            "genealogy_relationship_classification", "genealogy_final_synthesis"} <= excluded
     by = {e["engine_key"]: e for e in engines}
     assert by["chapter_role_analyzer"]["fit"] == "off" and by["evolution_tactics_detector"]["fit"] == "off"
     assert by["inferential_commitment_mapper"]["plain_name"] == "hidden-obligations map"

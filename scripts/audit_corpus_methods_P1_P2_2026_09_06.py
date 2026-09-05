@@ -37,12 +37,15 @@ def audit():
         dimension_keys={d.key for d in declared}
         dims={d.key for d in declared if d.scope=='corpus'}
         raw_anchors=[{'id':r.id,'doc':a.doc,'quote':a.quote,'exact':a.quote in docs.get(a.doc,'')} for r in rows for a in r.anchors]
-        wall=verify_rows(rows,SourceIndex(docs),corpus_dimensions=dims)
+        prefixes={d.id_prefix or d.key.upper() for d in declared if d.scope=='corpus'}
+        if dims:prefixes.add('V.CORPUS')
+        corpus_ids={rid for r in rows for rid in [r.id,*r.lineage] if any(rid.startswith(prefix+'.') for prefix in prefixes)}
+        wall=verify_rows(rows,SourceIndex(docs),corpus_dimensions=dims,corpus_ids=corpus_ids)
         tables=[line for line in prose.splitlines() if line.lstrip().startswith('|')]
         scopes=record['process']['final_wall'].get('scope_outcomes',[])
         calls=[study.read(p) for p in (study.OUT/'calls').glob(key+'*/*.json') if '.prompt.' not in p.name]
         results[key]={'output_sha256':record['output_sha256'],'source_sha256':{k:study.digest(v.encode()) for k,v in docs.items()},
-          'wall':wall.as_dict(),'exact_raw_anchors':sum(a['exact'] for a in raw_anchors),'raw_anchor_count':len(raw_anchors),
+          'wall':wall.as_dict(),'production_wall':{k:v for k,v in record['process']['final_wall'].items() if k not in ('scope_outcomes','check_ruling_coverage')},'exact_raw_anchors':sum(a['exact'] for a in raw_anchors),'raw_anchor_count':len(raw_anchors),
           'raw_nonexact':[{k:v for k,v in a.items() if k!='quote'} for a in raw_anchors if not a['exact']],
           'verified_source_coverage':dict(Counter(a.verified_doc for r in rows for a in r.anchors if a.verified_doc)),
           'unknown_dimension_keys':sorted({r.dim for r in rows if r.dim not in dimension_keys}),
