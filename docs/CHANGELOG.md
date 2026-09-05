@@ -5,6 +5,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Added (2026-09-06 — catalogue triage and the first queue)
+- Catalogue triage: Sol sketch and Codex's independent redo ([communications/study/TRIAGE_engine_catalogue_CODEX_2026-09-05.md](../communications/study/TRIAGE_engine_catalogue_CODEX_2026-09-05.md)); nine-task first queue adopted.
+- First-queue methods: reading guide (`deep_summarization` under the shape), Quantities and Their Meaning (`statistical_evidence` v2), Events and Supported Causal Links (`event_timeline_causal` v2), offered under "Count and date" ([src/dossier/catalog_purpose.json](../src/dossier/catalog_purpose.json)); designs and validation memo in [communications/study/](../communications/study/); Codex's `compare_supplied_cases` and `reconcile_sources` in progress.
+- Brief test derives the offered-engine count from the catalogue file instead of a literal ([tests/test_brief_v2_checks.py](../tests/test_brief_v2_checks.py)).
+
 ### Fixed (2026-09-05, evening — graceful drain on deploy)
 - `render.yaml`: `maxShutdownDelaySeconds: 300` on the API web service — Render's maximum grace period between the SIGTERM it sends the old instance on every push and the SIGKILL; it was the default 30 s ([render.yaml](../render.yaml)).
 - The SIGTERM handler no longer exits at once (which killed every dossier thread mid-call and cost a whole step). It flips a process-wide drain flag (new [src/dossier/drain.py](../src/dossier/drain.py): `request_drain` / `is_draining` / `wait_for_idle`), `runner.start` refuses new dossier threads while draining (the job keeps its active status; the next instance's `recover_orphaned_dossiers` starts it), and the handler blocks until no dossier thread is running or 270 s have passed, logging the count every 15 s, then exits ([src/api/main.py](../src/api/main.py), [src/dossier/runner.py](../src/dossier/runner.py) `running_count`).

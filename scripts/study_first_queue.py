@@ -83,14 +83,18 @@ def rate(results, sources, R):
 
 def report(results, R):
     import statistics as st
+    def num(v):
+        try: return float(v)
+        except (TypeError, ValueError): return None
     def mean(k, rk):
-        r = R.get(f"{rk}:{k}"); vals = [r[c] for c in KEYS if r and isinstance(r.get(c), (int, float))]; return st.mean(vals) if vals else float("nan")
+        r = R.get(f"{rk}:{k}") or {}; vals = [num(r.get(c)) for c in KEYS]; vals = [v for v in vals if v is not None]; return st.mean(vals) if vals else float("nan")
     lines = ["# First-queue methods S1, E8, T1: production default vs original questions (2026-09-06)", "", "One call on Sol + DeepSeek check (`checked`) against the engine's original questions in one call on Sol (`old`, where an original exists). Independent scores by Sonnet and Sol, mean of six criteria; hallucination 10 = none; anchors verified by code.", "",
              "| engine | paper | condition | rubric sonnet / sol | halluc sonnet / sol | anchors | rows | $ | s |", "|---|---|---|---|---|---|---|---|---|"]
     for k, m in sorted(results.items(), key=lambda kv: (kv[1]["engine"], kv[1]["paper"], kv[1]["condition"])):
         h = lambda rk: (R.get(f"{rk}:{k}") or {}).get("hallucination_risk", "—")
         lines.append(f"| {m['engine']} | {m['paper']} | {m['condition']} | {mean(k,'sonnet'):.2f} / {mean(k,'sol'):.2f} | {h('sonnet')} / {h('sol')} | {m['anchor_rate']:.0%} | {m['rows']} | {m['cost_usd']:.2f} | {m['seconds']:.0f} |")
-    lines += ["", f"Generation ${sum(m['cost_usd'] for m in results.values()):.2f}; rating ${sum(v.get('cost_usd', 0) for v in R.values()):.2f}.", ""]
+    lines += ["", f"Generation ${sum(m['cost_usd'] for m in results.values()):.2f}; rating ${sum(v.get('cost_usd', 0) for v in R.values()):.2f}.", "",
+              "Reading the scores: the six-criterion rubric was written for a reading (coherence = 'one reading, not a list'); the quantity and event methods produce inventories by design, so their coherence and non-obviousness scores are low by construction. The hard measures for them are the code-verified anchor rate, the row counts, and the errors a source check finds. The raters' one-line reasons are in ratings.json.", ""]
     (OUT / "REPORT.md").write_text("\n".join(lines)); log("wrote", OUT / "REPORT.md")
 
 if __name__ == "__main__":

@@ -493,8 +493,20 @@
 - **Dependencies**: `src/executor/ledger_walls`, `src/executor/context_broker.split_ledger`
 - **Added**: 2026-09-05
 
+### First-queue methods: quantity ledger and event timeline
+- **Status**: Active (2026-09-06; offered under the purpose group "Count and date")
+- **Description**: `statistical_evidence` v2 inventories every quantity with unit, denominator, period, status and cited source, what claim it carries, the comparisons and their commensurability, and the figures the argument lacks; `event_timeline_causal` v2 inventories events with date precision, actor and source, the order the text asserts, the causal links typed from the text's connectives with their support, and coverage stated as coverage. Both replace legacy numeric credibility/strength scores with text-facing questions; both run one call + check on Sol by default.
+- **Entry Points**:
+  - `src/engines/capability_definitions/statistical_evidence.yaml`, `src/operationalizations/definitions/statistical_evidence.yaml`
+  - `src/engines/capability_definitions/event_timeline_causal.yaml`, `src/operationalizations/definitions/event_timeline_causal.yaml`
+  - `src/operationalizations/definitions/deep_summarization.yaml` - the reading guide's `process:` block (S1)
+  - `src/dossier/catalog_purpose.json` - group `count_and_date`
+  - `scripts/study_first_queue.py` - validation; memo `communications/study/STUDY_first_queue_S1_E8_T1_2026-09-06.md`
+- **Dependencies**: the process shape
+- **Added**: 2026-09-06
+
 ### Execution modes per depth (read → check → apply as the default)
-- **Status**: Active (frontier study 2026-09-05; live for conditions_of_possibility_analyzer, argument_architecture, inferential_commitment_mapper, epistemological_method_detector)
+- **Status**: Active (frontier study 2026-09-05; live for conditions_of_possibility_analyzer, argument_architecture, inferential_commitment_mapper, epistemological_method_detector; 2026-09-06 first queue: deep_summarization (reading guide), statistical_evidence v2 (Quantities and Their Meaning), event_timeline_causal v2 (Events and Supported Causal Links); Codex: compare_supplied_cases, reconcile_sources)
 - **Description**: `DepthSequence.mode` chooses how a depth executes: `oneshot` (one call with the process's question sets and method cards, strong tier), `oneshot_checked` (that call, then the mid-tier critic over its findings; code applies the rulings to the ledger and leaves the prose alone; rejected rows become a receipt, paraphrased quotes are tagged `anchor-verified: no`), `dvs` (the full chain), `stances` (the legacy passes). Both engines: surface = oneshot, standard = oneshot_checked, deep = dvs; strong tier GPT-5.6 Sol, critic DeepSeek V4 Pro.
 - **Entry Points**:
   - `src/operationalizations/schemas.py` - `DepthSequence.mode`, `EngineOperationalization.mode_for_depth`
