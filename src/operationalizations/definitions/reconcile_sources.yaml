@@ -1,0 +1,208 @@
+engine_key: reconcile_sources
+engine_name: Reconcile sources on shared questions
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: Reconcile how supplied sources answer shared questions. Discover recurring themes, then align each
+    source's attributed answer by object, time, definition and warrant before judging agreement, qualification or
+    contradiction. Different scope and inspected silence are distinct from disagreement; insufficient material remains
+    unresolved. The product is an answer reconciliation table and a theme coverage table, preserving source voices
+    and unanswerable cells. Frequency of a theme is never evidence of substantive consensus.
+  framing: Reconcile how supplied sources answer shared questions. Discover recurring themes, then align each source's
+    attributed answer by object, time, definition and warrant before judging agreement, qualification or contradiction.
+    Different scope and inspected silence are distinct from disagreement; insufficient material remains unresolved.
+    The product is an answer reconciliation table and a theme coverage table, preserving source voices and unanswerable
+    cells. Frequency of a theme is never evidence of substantive consensus.
+  scoped_outcomes: true
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: source_questions
+    name: Themes, shared questions and source scope
+    id_prefix: R1
+    scope: document
+    load_bearing: true
+    questions:
+    - What themes organize this source, and what substantive questions does it actually ask or answer under each?
+      Preserve reader-supplied questions and propose additional ones only from passages.
+    - What object, time, institutional level and kind of inquiry does each question concern? Which concepts require
+      definition before another source can be compared?
+    - 'What connections between themes does this source assert, and what role does each theme play: central answer,
+      supporting explanation, incidental mention, or reported rival?'
+    answer_shape: '[R1.F<n>] <source> addresses <question> under <theme>, about <object/time/scope> — dim: source_questions
+      — theme: <label> — question: <substantive question> — role: central|supporting|incidental|reported rival —
+      anchor: "<verbatim>" — doc: <source key> — confidence: high|medium|low'
+    method_card: Discover themes by the questions and connections the text makes. Distinguish discussing a theme
+      from answering a question, and reporting a view from endorsing it. Preserve definitions and scope before normalizing
+      labels; prevalence later counts named documents in this supplied set only.
+    indicators:
+    - our question
+    - we ask
+    - concept
+    - relation
+    - in this paper
+    - rather than
+  - key: source_answers
+    name: Attributed answers and their warrants
+    id_prefix: R2
+    scope: document
+    load_bearing: true
+    questions:
+    - For each question, what answer does this source give in its own terms, with the decisive condition, negation
+      and degree of commitment?
+    - 'Whose answer is it: this text''s position, a cited interlocutor''s, or a view reconstructed by the analyst?
+      What passage marks endorsement or distance?'
+    - What reason or evidence supports the answer, and is its force conceptual, empirical, causal, interpretive
+      or normative? What would have to match before another source could contradict it?
+    answer_shape: '[R2.F<n>] <source/speaker> answers <question>: <position with condition and modality> — dim:
+      source_answers — question: <question> — attribution: own|reported other|analyst reconstruction — warrant:
+      conceptual|empirical|causal|interpretive|normative — object-time-scope: <scope> — anchor: "<verbatim>" — doc:
+      <source key> — confidence: high|medium|low'
+    method_card: Write source-attributed answers, preserving their strongest qualification. Separate the text's
+      own commitments from a quoted opponent and an analyst reconstruction. Compare propositions at the same object
+      and warrant level; a normative demand does not contradict an empirical description merely because their verbs
+      differ.
+    indicators:
+    - we argue
+    - only if
+    - not
+    - because
+    - according to
+    - must
+    - can
+  - key: answer_limits
+    name: Qualifications, inspected silence and unresolved questions
+    id_prefix: R3
+    scope: document
+    load_bearing: true
+    questions:
+    - Where does the source qualify, narrow, contest or explicitly leave open one of its answers? Which passage
+      prevents an apparently categorical reading?
+    - For a candidate shared question, do the inspected sections provide an answer, only a relevant discussion,
+      or insufficient material? Name the sections inspected and limits; distinguish explicit refusal from inspected
+      silence.
+    - What object, time, definition, translation or warrant difference could make an apparent conflict a different-scope
+      relation? Which rival interpretation remains possible from the text?
+    answer_shape: '[R3.F<n>] <source answer> is limited by <qualification/different scope/unresolved issue> — dim:
+      answer_limits — question: <question> — inspected-scope: <sections> — limit: <reason> — anchor: "<verbatim>"
+      — doc: <source key> — confidence: high|medium|low. For silence or insufficient material use a separate scope
+      report; no invented anchor or automatic whole-source absence.'
+    method_card: Look for conditions and counter-passages before naming disagreement. Make a silence claim only
+      about stated inspected sections with a relevant question and adequate coverage. Keep insufficient material
+      and a change of subject visible. A partial fragment or failed anchor cannot support absence; do not turn an
+      unresolved question into a negative answer.
+    indicators:
+    - however
+    - not to say
+    - limited
+    - beyond our scope
+    - unresolved
+    - fragment
+    - distinguish
+  - key: question_reconciliation
+    name: Reconcile answers on shared questions
+    id_prefix: RM
+    scope: corpus
+    load_bearing: true
+    questions:
+    - Which questions can actually be aligned across sources after object, time, definition and warrant are compared?
+      Retain source-specific questions and unanswerable cells.
+    - For each aligned question, what does every source answer and why is the relation agreement, qualification,
+      contradiction, different scope, inspected silence or insufficient evidence? A contradiction requires incompatible
+      answers under the same conditions; silence requires stated inspection, not a count of missing rows.
+    - Which themes recur in which named sources, and with what role? Report n/N for the supplied collection with
+      the document list and denominator, separately from substantive agreement.
+    - What defensible synthesis preserves the strongest qualification and unresolved conflict? Which thematic connections
+      are supported across sources, and what evidence would settle the residual question?
+    answer_shape: '[RM.F<n>] On <shared scoped question>, <source A answer> and <source B answer> stand in <relation
+      and reason> — dim: question_reconciliation — question: <question> — relation: agreement|qualification|contradiction|different
+      scope — scope-test: <object/time/definition/warrant match or mismatch> — anchor: "<A>" — doc: <A key> — anchor-b:
+      "<B>" — doc-b: <distinct B key> — confidence: high|medium|low. Add anchor-c/doc-c for a third source covered.
+      Silence/insufficient cells are separate scoped assessments, never fabricated paired findings.'
+    method_card: Align questions before reconciling answers; judge each relation rather than counting shared words.
+      Give both attributed sides, their scopes and the exact reason for the relation. Count theme presence only
+      over named inspected sources and never equate frequency with consensus. Preserve an unresolved conflict or
+      scoped silence instead of manufacturing an integrated position; corpus extraction sees earlier reports, so
+      the critic must inspect all relevant source passages.
+    indicators:
+    - same question
+    - qualification
+    - incompatible answers
+    - different object
+    - theme coverage
+    - inspected silence
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension_x_document
+    model_tier: cheap
+    output: ledger
+    max_rows: 6
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - merge_duplicates
+    - hunt_misses
+    - Audit the shared criteria/questions, source attribution, object/time/definition/warrant alignment and each
+      claimed relation. Preserve empty or incommensurable cells as scoped assessments; never invent anchors for
+      absence. A corpus verification adds cross-document rows only, with distinct keyed quotes from all related
+      sources. A per-document verification retains the source inventory without asserting cross-source agreement.
+    - Check all stated coverage and silence claims against the named inspected sections. Keep partial fragments
+      inconclusive. Report contrary passages and exceptions before confirming a pattern or consensus.
+    - name_must_keep
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: a researcher or analyst who needs a source-grounded corpus table and a defensible comparative judgment
+    tables:
+    - shared_question_reconciliation
+    - theme_coverage
+    brief: '1. State the shared inquiry and a compact position map naming every source key, its object/time/scope,
+      central answer, distinctive role and important qualification. Do not infer an intellectual chronology from
+      input order or edition dates. If only one source is supplied, return a source-position inventory and say reconciliation
+      awaits additional sources.
+
+      2. Render an actual Markdown reconciliation table: shared question | source-attributed answers (one named
+      entry for every supplied source, each positive answer with final finding id) | object/time/definition/warrant
+      alignment | agreement/qualification/contradiction/different scope/inspected silence/insufficient evidence
+      | reason and paired finding ids or inspected-scope basis. Split the table into compact question tables if
+      needed; do not collapse source voices into a single consensus column. Missing and incommensurable cells stay
+      visible.
+
+      3. Develop the strongest substantive agreement and the strongest qualification or unresolved disagreement.
+      Quote both sides; explain why different objects, conditions or kinds of warrant make some apparent conflicts
+      a different-scope relation. A shared theme is not a shared answer; do not force a contradiction when none
+      survives alignment.
+
+      4. Render a theme coverage table: theme and substantive question | named source keys | n/N within the supplied
+      collection | central/supporting/incidental roles | supported connection to another theme | limits and finding
+      ids. Count discussion separately from endorsed answers; no prevalence claim beyond this set. Mark uncertain
+      presence instead of treating missing extraction as absence.
+
+      5. End with what the collection jointly licenses, the exact remaining disagreement or unanswered question,
+      and what further passage or evidence would decide it. Preserve every inspected-silence or insufficient-material
+      assessment with its stated scope; no invented quotation for a negative cell.
+
+      Retain final finding ids in every positive answer cell. Cross-source rows keep dim: question_reconciliation
+      and one anchor/doc pair for every source covered (at least two distinct keys). Final findings and all prose/table
+      citations use F1..Fn; from: carries earlier ids. The desks lift the reconciliation and coverage tables directly,
+      including all unresolved and unanswerable cells.'

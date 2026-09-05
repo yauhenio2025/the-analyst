@@ -1,0 +1,85 @@
+engine_key: compare_supplied_cases
+engine_name: Compare supplied cases
+version: 1
+problematique: Compare supplied cases on justified common questions. The unit may be a country, policy, institution,
+  option or conceptual approach, but a source is not automatically one case. The product is a case by criterion
+  matrix with attributed evidence, explicit missing and incommensurable cells, supported contrasts and exceptions.
+  Comparison criteria must answer the shared inquiry; evaluative rankings require reader criteria. Cultural context
+  and translation may limit equivalence; universal patterns cannot exceed the supplied coverage.
+category: evidence
+kind: comparison
+researcher_question: How do the supplied cases or approaches compare on justified common dimensions?
+legacy_engine_key: comparative_framework
+analytical_dimensions:
+- key: case_identity
+  description: Cases, boundaries and comparable objects. Identify the unit before comparing it. Separate a paper,
+    a case and an actor inside a case; keep nested cases explicit. Choose criteria because they answer a shared
+    question and the sources can speak to them. Treat approaches as cases when the material is conceptual, without
+    pretending they are empirical countries or successive stages.
+  probing_questions:
+  - What case or approach does this source actually document, which actors belong to it, and what object, place
+    and time does it cover? Distinguish a source from the cases within it.
+  - What shared reader question could this case answer, and which comparison criteria does the source justify? Preserve
+    supplied reader criteria; label analyst-proposed criteria and explain their relevance.
+  - Which names denote the same entity and which similar names denote different entities, institutional levels or
+    objects? What evidence warrants alignment?
+- key: case_answers
+  description: Answers on candidate common criteria. Inventory answers that can become matrix cells. Preserve the
+    case actor, instrument, mechanism and evidential status; do not convert the source's interpretation into an
+    independently observed outcome. Copy units and denominators with values. Supply the exact answer, not a generic
+    synopsis; leave unanswerable criteria in the coverage report.
+  probing_questions:
+  - On each justified candidate criterion, what answer does this case supply, with its mechanism, evidence and qualification?
+    Use the criterion as a question, not a topic label.
+  - What are the relevant actors, instruments, constraints and reported consequences, or the conceptual equivalents
+    if the case is an approach? Distinguish a stated aim, a mechanism and a demonstrated result.
+  - Where is the value quantitative, qualitative, binary or ordinal, and what definition, denominator, date or evaluative
+    standard makes that value meaningful? Do not create a ranking without supplied criteria.
+- key: comparison_limits
+  description: Exceptions, context and unavailable cells. Try to break the proposed pattern with the source's exceptions.
+    Name what a translation or cultural assumption changes in the comparison, or state that no such issue is established
+    in the inspected scope. Keep missing, insufficient and incommensurable distinct. Record actual inspection and
+    its limits separately; never fabricate a quote for an empty cell.
+  probing_questions:
+  - What in this source qualifies or defeats a proposed common pattern, and which case detail would a uniform template
+    erase?
+  - Which cultural or institutional assumptions and translation choices limit equivalence? Does a common word have
+    a different local meaning or referent?
+  - 'Which candidate criteria cannot be answered from the inspected passages, and why: not supplied, insufficient
+    evidence, or incommensurable object, time, unit or meaning? State inspected sections and coverage; a missing
+    extraction is not silence.'
+- key: case_matrix
+  description: The justified case by criterion matrix. Build the comparison from attributed cells, then argue the
+    contrast. Use a shared label only after checking object, time, unit and local meaning. Keep exceptions and unfilled
+    cells visible rather than imputing values. Every positive cross-source relation needs an anchor from every source
+    it covers; two distinct keys are the minimum. Per-document inventories permit only provisional coverage claims
+    until the corpus critic inspects the sources.
+  probing_questions:
+  - Which common questions are justified by the supplied case inventories? Explain alignment, keeping a source-to-case
+    map when a source contains several cases or several sources describe one case.
+  - For each common criterion, what does each case answer, with its source identity and scope? Retain every case
+    and every missing, insufficient or incommensurable cell in the table.
+  - Which similarities, differences, clusters or outliers survive equivalent definitions and explicit exceptions?
+    Test the strongest proposed common pattern against the most inconvenient case.
+  - What comparison is supportable within this collection, and which evaluative ranking or universal claim remains
+    unlicensed by the supplied criteria and coverage?
+capabilities:
+- key: case_identity
+  description: Cases, boundaries and comparable objects
+- key: case_answers
+  description: Answers on candidate common criteria
+- key: comparison_limits
+  description: Exceptions, context and unavailable cells
+- key: case_matrix
+  description: The justified case by criterion matrix
+depth_levels:
+- key: surface
+  description: One provisional corpus reading on the strong tier.
+  typical_passes: 1
+- key: standard
+  description: One corpus reading, then a source check of its findings; prose remains the original reading.
+  typical_passes: 2
+- key: deep
+  description: Per-document inventories, corpus relations, source verification and one integrated reading; natural
+    mode for desk-ready corpus work.
+  typical_passes: 3

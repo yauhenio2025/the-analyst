@@ -1,0 +1,202 @@
+engine_key: compare_supplied_cases
+engine_name: Compare supplied cases
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: Compare supplied cases on justified common questions. The unit may be a country, policy, institution,
+    option or conceptual approach, but a source is not automatically one case. The product is a case by criterion
+    matrix with attributed evidence, explicit missing and incommensurable cells, supported contrasts and exceptions.
+    Comparison criteria must answer the shared inquiry; evaluative rankings require reader criteria. Cultural context
+    and translation may limit equivalence; universal patterns cannot exceed the supplied coverage.
+  framing: Compare supplied cases on justified common questions. The unit may be a country, policy, institution,
+    option or conceptual approach, but a source is not automatically one case. The product is a case by criterion
+    matrix with attributed evidence, explicit missing and incommensurable cells, supported contrasts and exceptions.
+    Comparison criteria must answer the shared inquiry; evaluative rankings require reader criteria. Cultural context
+    and translation may limit equivalence; universal patterns cannot exceed the supplied coverage.
+  scoped_outcomes: true
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: case_identity
+    name: Cases, boundaries and comparable objects
+    id_prefix: C1
+    scope: document
+    load_bearing: true
+    questions:
+    - What case or approach does this source actually document, which actors belong to it, and what object, place
+      and time does it cover? Distinguish a source from the cases within it.
+    - What shared reader question could this case answer, and which comparison criteria does the source justify?
+      Preserve supplied reader criteria; label analyst-proposed criteria and explain their relevance.
+    - Which names denote the same entity and which similar names denote different entities, institutional levels
+      or objects? What evidence warrants alignment?
+    answer_shape: '[C1.F<n>] <case and source-supported boundary or criterion> — dim: case_identity — case: <stable
+      descriptive key> — object-time-scope: <scope> — criterion: <shared question or proposed criterion with rationale>
+      — anchor: "<verbatim>" — doc: <source key> — confidence: high|medium|low'
+    method_card: Identify the unit before comparing it. Separate a paper, a case and an actor inside a case; keep
+      nested cases explicit. Choose criteria because they answer a shared question and the sources can speak to
+      them. Treat approaches as cases when the material is conceptual, without pretending they are empirical countries
+      or successive stages.
+    indicators:
+    - case selection
+    - empirically
+    - in contrast
+    - jurisdiction
+    - period
+    - we examine
+  - key: case_answers
+    name: Answers on candidate common criteria
+    id_prefix: C2
+    scope: document
+    load_bearing: true
+    questions:
+    - On each justified candidate criterion, what answer does this case supply, with its mechanism, evidence and
+      qualification? Use the criterion as a question, not a topic label.
+    - What are the relevant actors, instruments, constraints and reported consequences, or the conceptual equivalents
+      if the case is an approach? Distinguish a stated aim, a mechanism and a demonstrated result.
+    - Where is the value quantitative, qualitative, binary or ordinal, and what definition, denominator, date or
+      evaluative standard makes that value meaningful? Do not create a ranking without supplied criteria.
+    answer_shape: '[C2.F<n>] <case> answers <criterion/question>: <value and qualification> — dim: case_answers
+      — case: <key> — criterion: <question> — value-kind: quantitative|qualitative|binary|ordinal — evidence-role:
+      aim|mechanism|reported result|conceptual claim — scope: <object/time/unit> — anchor: "<verbatim>" — doc: <source
+      key> — confidence: high|medium|low'
+    method_card: Inventory answers that can become matrix cells. Preserve the case actor, instrument, mechanism
+      and evidential status; do not convert the source's interpretation into an independently observed outcome.
+      Copy units and denominators with values. Supply the exact answer, not a generic synopsis; leave unanswerable
+      criteria in the coverage report.
+    indicators:
+    - instrument
+    - depends on
+    - result
+    - capacity
+    - market
+    - institution
+    - definition
+  - key: comparison_limits
+    name: Exceptions, context and unavailable cells
+    id_prefix: C3
+    scope: document
+    load_bearing: true
+    questions:
+    - What in this source qualifies or defeats a proposed common pattern, and which case detail would a uniform
+      template erase?
+    - Which cultural or institutional assumptions and translation choices limit equivalence? Does a common word
+      have a different local meaning or referent?
+    - 'Which candidate criteria cannot be answered from the inspected passages, and why: not supplied, insufficient
+      evidence, or incommensurable object, time, unit or meaning? State inspected sections and coverage; a missing
+      extraction is not silence.'
+    answer_shape: '[C3.F<n>] <case-specific exception or comparability limit> — dim: comparison_limits — case: <key>
+      — criterion: <question> — limit: <context/translation/coverage/comparability> — pattern-tested: <proposed
+      pattern, if any> — anchor: "<verbatim>" — doc: <source key> — confidence: high|medium|low. Unanswerable cells
+      belong in separate scope reports with inspected sections and reasons, not invented negative findings.'
+    method_card: Try to break the proposed pattern with the source's exceptions. Name what a translation or cultural
+      assumption changes in the comparison, or state that no such issue is established in the inspected scope. Keep
+      missing, insufficient and incommensurable distinct. Record actual inspection and its limits separately; never
+      fabricate a quote for an empty cell.
+    indicators:
+    - however
+    - exception
+    - only
+    - not comparable
+    - translation
+    - beyond the scope
+    - not available
+  - key: case_matrix
+    name: The justified case by criterion matrix
+    id_prefix: CM
+    scope: corpus
+    load_bearing: true
+    questions:
+    - Which common questions are justified by the supplied case inventories? Explain alignment, keeping a source-to-case
+      map when a source contains several cases or several sources describe one case.
+    - For each common criterion, what does each case answer, with its source identity and scope? Retain every case
+      and every missing, insufficient or incommensurable cell in the table.
+    - Which similarities, differences, clusters or outliers survive equivalent definitions and explicit exceptions?
+      Test the strongest proposed common pattern against the most inconvenient case.
+    - What comparison is supportable within this collection, and which evaluative ranking or universal claim remains
+      unlicensed by the supplied criteria and coverage?
+    answer_shape: '[CM.F<n>] On <shared criterion>, <case A answer> compared with <case B answer>, qualified by
+      <scope/exception> — dim: case_matrix — cases: <keys> — criterion: <question> — relation: similarity|difference|pattern|exception|incommensurable
+      — anchor: "<A>" — doc: <A source key> — anchor-b: "<B>" — doc-b: <distinct B source key> — confidence: high|medium|low.
+      Include anchor-c/doc-c for a claim covering a third source. Empty cells remain scope reports and table statuses.'
+    method_card: Build the comparison from attributed cells, then argue the contrast. Use a shared label only after
+      checking object, time, unit and local meaning. Keep exceptions and unfilled cells visible rather than imputing
+      values. Every positive cross-source relation needs an anchor from every source it covers; two distinct keys
+      are the minimum. Per-document inventories permit only provisional coverage claims until the corpus critic
+      inspects the sources.
+    indicators:
+    - matched criterion
+    - same object
+    - different scope
+    - exception
+    - unavailable cell
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension_x_document
+    model_tier: cheap
+    output: ledger
+    max_rows: 6
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - merge_duplicates
+    - hunt_misses
+    - Audit the shared criteria/questions, source attribution, object/time/definition/warrant alignment and each
+      claimed relation. Preserve empty or incommensurable cells as scoped assessments; never invent anchors for
+      absence. A corpus verification adds cross-document rows only, with distinct keyed quotes from all related
+      sources. A per-document verification retains the source inventory without asserting cross-source agreement.
+    - Check all stated coverage and silence claims against the named inspected sections. Keep partial fragments
+      inconclusive. Report contrary passages and exceptions before confirming a pattern or consensus.
+    - name_must_keep
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: a researcher or analyst who needs a source-grounded corpus table and a defensible comparative judgment
+    tables:
+    - case_by_criterion
+    - comparability_and_exceptions
+    brief: '1. State the comparison question and a compact source-to-case map: every source key, the case or approach
+      it supports, object/time boundary, distinctive claim and qualification. Justify the common criteria. If only
+      one source is supplied, provide a provisional case inventory and state that the corpus comparison has not
+      run.
+
+      2. Render an actual Markdown case × criterion matrix, not a promise of a table. Rows are cases; columns are
+      3–6 justified shared questions. Each populated cell gives its answer, source key and final finding id; keep
+      relevant time/unit and qualification. If a source contains nested cases, distinguish them in the cell or explicit
+      subrows. Every unfilled cell says missing, insufficient evidence or incommensurable, with the scope and reason.
+      Do not invent an anchor for an empty cell.
+
+      3. Explain the most consequential similarities and differences through paired evidence, then test the strongest
+      common pattern against the exception. Distinguish intended policy from reported results and conceptual cases
+      from empirical ones. Do not infer progression from document dates or input order.
+
+      4. Render a comparability and exceptions table: criterion | cases affected | object/time/unit/translation
+      limit | consequence for the contrast | finding ids or inspected-scope basis. No unasked ranking; conditional
+      evaluation only against stated reader criteria.
+
+      5. End with the comparison the supplied evidence supports and the most useful missing evidence. State cultural
+      and translation limits where established, and do not generalize beyond coverage.
+
+      Retain final finding ids in every populated table cell. Cross-source rows keep dim: case_matrix and one anchor/doc
+      pair per source covered (at least two distinct doc keys). Final findings and all prose/table citations use
+      F1..Fn; from: carries earlier ids. Keep absence and inconclusive scope reports distinct from anchored findings.
+      The desks must be able to lift the actual tables with their empty cells intact.'

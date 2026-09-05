@@ -1,0 +1,85 @@
+engine_key: reconcile_sources
+engine_name: Reconcile sources on shared questions
+version: 1
+problematique: Reconcile how supplied sources answer shared questions. Discover recurring themes, then align each
+  source's attributed answer by object, time, definition and warrant before judging agreement, qualification or
+  contradiction. Different scope and inspected silence are distinct from disagreement; insufficient material remains
+  unresolved. The product is an answer reconciliation table and a theme coverage table, preserving source voices
+  and unanswerable cells. Frequency of a theme is never evidence of substantive consensus.
+category: evidence
+kind: synthesis
+researcher_question: How do the supplied sources address shared questions and differ in their answers?
+legacy_engine_key: thematic_synthesis
+analytical_dimensions:
+- key: source_questions
+  description: Themes, shared questions and source scope. Discover themes by the questions and connections the text
+    makes. Distinguish discussing a theme from answering a question, and reporting a view from endorsing it. Preserve
+    definitions and scope before normalizing labels; prevalence later counts named documents in this supplied set
+    only.
+  probing_questions:
+  - What themes organize this source, and what substantive questions does it actually ask or answer under each?
+    Preserve reader-supplied questions and propose additional ones only from passages.
+  - What object, time, institutional level and kind of inquiry does each question concern? Which concepts require
+    definition before another source can be compared?
+  - 'What connections between themes does this source assert, and what role does each theme play: central answer,
+    supporting explanation, incidental mention, or reported rival?'
+- key: source_answers
+  description: Attributed answers and their warrants. Write source-attributed answers, preserving their strongest
+    qualification. Separate the text's own commitments from a quoted opponent and an analyst reconstruction. Compare
+    propositions at the same object and warrant level; a normative demand does not contradict an empirical description
+    merely because their verbs differ.
+  probing_questions:
+  - For each question, what answer does this source give in its own terms, with the decisive condition, negation
+    and degree of commitment?
+  - 'Whose answer is it: this text''s position, a cited interlocutor''s, or a view reconstructed by the analyst?
+    What passage marks endorsement or distance?'
+  - What reason or evidence supports the answer, and is its force conceptual, empirical, causal, interpretive or
+    normative? What would have to match before another source could contradict it?
+- key: answer_limits
+  description: Qualifications, inspected silence and unresolved questions. Look for conditions and counter-passages
+    before naming disagreement. Make a silence claim only about stated inspected sections with a relevant question
+    and adequate coverage. Keep insufficient material and a change of subject visible. A partial fragment or failed
+    anchor cannot support absence; do not turn an unresolved question into a negative answer.
+  probing_questions:
+  - Where does the source qualify, narrow, contest or explicitly leave open one of its answers? Which passage prevents
+    an apparently categorical reading?
+  - For a candidate shared question, do the inspected sections provide an answer, only a relevant discussion, or
+    insufficient material? Name the sections inspected and limits; distinguish explicit refusal from inspected silence.
+  - What object, time, definition, translation or warrant difference could make an apparent conflict a different-scope
+    relation? Which rival interpretation remains possible from the text?
+- key: question_reconciliation
+  description: Reconcile answers on shared questions. Align questions before reconciling answers; judge each relation
+    rather than counting shared words. Give both attributed sides, their scopes and the exact reason for the relation.
+    Count theme presence only over named inspected sources and never equate frequency with consensus. Preserve an
+    unresolved conflict or scoped silence instead of manufacturing an integrated position; corpus extraction sees
+    earlier reports, so the critic must inspect all relevant source passages.
+  probing_questions:
+  - Which questions can actually be aligned across sources after object, time, definition and warrant are compared?
+    Retain source-specific questions and unanswerable cells.
+  - For each aligned question, what does every source answer and why is the relation agreement, qualification, contradiction,
+    different scope, inspected silence or insufficient evidence? A contradiction requires incompatible answers under
+    the same conditions; silence requires stated inspection, not a count of missing rows.
+  - Which themes recur in which named sources, and with what role? Report n/N for the supplied collection with the
+    document list and denominator, separately from substantive agreement.
+  - What defensible synthesis preserves the strongest qualification and unresolved conflict? Which thematic connections
+    are supported across sources, and what evidence would settle the residual question?
+capabilities:
+- key: source_questions
+  description: Themes, shared questions and source scope
+- key: source_answers
+  description: Attributed answers and their warrants
+- key: answer_limits
+  description: Qualifications, inspected silence and unresolved questions
+- key: question_reconciliation
+  description: Reconcile answers on shared questions
+depth_levels:
+- key: surface
+  description: One provisional corpus reading on the strong tier.
+  typical_passes: 1
+- key: standard
+  description: One corpus reading, then a source check of its findings; prose remains the original reading.
+  typical_passes: 2
+- key: deep
+  description: Per-document inventories, corpus relations, source verification and one integrated reading; natural
+    mode for desk-ready corpus work.
+  typical_passes: 3
