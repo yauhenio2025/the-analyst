@@ -32,7 +32,7 @@ The second manifest also pins its unchanged replay dependency on the first scrip
 
 ## Adoption and judging lifecycle
 
-The adapter's default is an offline preview. Actual adoption requires the existing exclusive campaign lock, no running result or invocation, an unchanged frozen plan, reviewed manifest hashes, exact replay, and a source-results snapshot concurrency check. It creates the expected final output exclusively and replaces `results.json` atomically. The original failed `receipts/<job>/<attempt>/job.json` and every numeric call receipt remain byte-identical; the new completed result points back to them and to its recovery manifest. Audit snapshots record before/after hashes. Usage is counted once from the existing numeric receipts, including the calls whose postprocessing failed.
+The adapter's default is an offline preview. Its CLI expects consistent absolute paths for `--bundle` and `--run-dir`; the documented commands use an absolute run path because the default run directory is absolute. Actual adoption requires the existing exclusive campaign lock, no running result or invocation, an unchanged frozen plan, reviewed manifest hashes, exact replay, and a source-results snapshot concurrency check. It creates the expected final output exclusively and replaces `results.json` atomically. The original failed `receipts/<job>/<attempt>/job.json` and every numeric call receipt remain byte-identical; the new completed result points back to them and to its recovery manifest. Audit snapshots record before/after hashes. Usage is counted once from the existing numeric receipts, including the calls whose postprocessing failed.
 
 After adoption, use this adapter for reports and judges: ordinary harness validation correctly continues to reject the original failed processing. The adapter changes only target-parent validation and report annotations; fresh judge jobs still execute through the unchanged harness, fixed models, exact opposite-order prompts, existing lock, no-retry rule and fresh-study USD 6 admission limit. The merged report exposes both recovery provenance records, both historical postprocessing failures and the eight-versus-six sensitivity counts. `--require-complete` still requires all 16 valid generations and 16 valid judgments.
 
@@ -40,7 +40,7 @@ The following commands are for root's separate review and launch; preparing this
 
 ```bash
 export TMPDIR=/home/evgeny/projects/the-analyst-wt/ideas-hegel-test-tmp
-hegel_run=data/study/ideas_hegel_heldout_2026_09_05/43f051bdd4d89076
+hegel_run=/home/evgeny/projects/the-analyst/data/study/ideas_hegel_heldout_2026_09_05/43f051bdd4d89076
 hegel_recovery_args=(
   --bundle "$hegel_run/reader_notes/ruling_recovery/20260905T082845.591540Z"
   --manifest-sha256 ad296c943f5a46e5edcd3e62c8983447bfed826fb8e585859ffa9ce83509c64e
