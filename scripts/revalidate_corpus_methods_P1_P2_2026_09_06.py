@@ -40,7 +40,7 @@ def guard(plan):
     _guard(plan)
     for field, value in [('models', study.MODELS), ('prices', study.PRICES),
                          ('output_limits', study.LIMITS), ('rubric', study.RUBRIC), ('tasks', study.TASKS)]:
-        study.require(plan[field] == value, f'Frozen campaign setting changed: {field}')
+        study.require(study.digest(plan[field]) == study.digest(value), f'Frozen campaign setting changed: {field}')
 
 
 def memo_binding(key, plan):
