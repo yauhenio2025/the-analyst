@@ -5,6 +5,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Fixed
+- Ledger wall: `normalize` strips markdown emphasis (`**`, `__`) on both sides, so a quote the model bolded inside its anchor still verifies verbatim ([walls.py](src/dossier/walls.py)); regression test in `tests/test_process_shape_2026_09_04.py`.
+
+### Added
+- Study memo on lifting existing engines under the shape and its decisions ([STUDY_lifted_engines_2026-09-06.md](communications/study/STUDY_lifted_engines_2026-09-06.md)).
+
 ### Added (2026-09-06 — P1/P2 corpus methods, release withheld)
 
 - Built `compare_supplied_cases` and `reconcile_sources` designs and capability/process definitions with document inventories, corpus matrices, depth modes and Luna / DeepSeek V4 Pro / Sol routing. Six outputs and twelve independent scores completed; all source-read memos preceded scores. [Study, outputs and receipts](../communications/study/STUDY_corpus_methods_P1_P2_2026-09-06.md): $4.706588 accounted plus $0.952596 unknown-cost reserve against $8; 88 tests passed.

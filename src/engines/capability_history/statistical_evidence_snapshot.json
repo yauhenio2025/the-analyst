@@ -1,0 +1,78 @@
+{
+  "analytical_dimensions": [
+    {
+      "depth_guidance": {},
+      "description": "Every quantity the text uses, with unit, denominator, population, period and status.",
+      "key": "quantity_inventory",
+      "probing_questions": [
+        "What quantities appear, with what unit, denominator, population and period?",
+        "Is each a target, an estimate, an observation or a forecast, as the text states it?"
+      ]
+    },
+    {
+      "depth_guidance": {},
+      "description": "What each quantity is asked to establish and whether it can.",
+      "key": "claims_carried",
+      "probing_questions": [
+        "Which claim does each quantity support, and does the quantity bear the weight the claim puts on it?"
+      ]
+    },
+    {
+      "depth_guidance": {},
+      "description": "The comparisons the text draws or implies and their commensurability.",
+      "key": "comparisons",
+      "probing_questions": [
+        "Which quantities does the text compare, and are units, denominators and periods common?"
+      ]
+    },
+    {
+      "depth_guidance": {},
+      "description": "Where each quantity comes from as the text cites it, and its stated precision.",
+      "key": "provenance_precision",
+      "probing_questions": [
+        "What source and date does the text give for each quantity, and how precise is it?"
+      ]
+    },
+    {
+      "depth_guidance": {},
+      "description": "Quantities the argument needs and lacks.",
+      "key": "missing_quantities",
+      "probing_questions": [
+        "What denominator, baseline or total does a claim need that the text does not supply?"
+      ]
+    }
+  ],
+  "apps": [
+    "critic"
+  ],
+  "capabilities": [],
+  "category": "evidence",
+  "composability": {
+    "consumes_from": {},
+    "shares_with": {},
+    "synergy_engines": []
+  },
+  "composition_role": null,
+  "depth_levels": [],
+  "engine_key": "statistical_evidence",
+  "engine_name": "Quantities and Their Meaning",
+  "function": "logic",
+  "intellectual_lineage": {
+    "key_concepts": [],
+    "primary": {
+      "description": "The discipline of measurement and its presentation (Huff, Tufte, Gelman): a quantity is meaningless without its unit, denominator, population, period and status; comparisons require a common base; precision must match provenance.",
+      "name": "measurement_discipline"
+    },
+    "secondary": [],
+    "traditions": []
+  },
+  "kind": "extraction",
+  "legacy_engine_key": null,
+  "output_contract": null,
+  "output_mode": "prose",
+  "paradigm_keys": [],
+  "problematique": "Numbers carry arguments in ways words do not: a figure looks like a fact, a comparison looks like a finding, a percentage hides its denominator. A reader who must rely on a text needs to know which quantities it uses, what each is (a target, an estimate, an observation, a forecast), over what population and period, in what unit and against what denominator, what claim each is made to carry and whether it can carry it, which comparisons the text draws and whether the things compared are commensurable, and which quantities the argument needs and does not have. This method inventories the text's quantities and their meaning. It does not score credibility; it says what each number is, what it is asked to do, and where the text's own comparisons or uses outrun it. It replaces the earlier statistical-evidence catalogue (source credibility scores 0-1) with text-facing questions and verbatim anchors, and its rows are the desks' quantity tables.",
+  "prompt_context_keys": [],
+  "researcher_question": "What quantities support the text's claims, and are their meanings and comparisons preserved?",
+  "version": 2
+}

@@ -96,6 +96,9 @@ def normalize(text: str) -> str:
     # Ordinary hyphens keep the existing normalization/alternate-index behavior.
     text = re.sub(r"(?<=\w)\u00ad[ \t]*\r?\n[ \t]*(?=\w)", "", text)
     text = "".join(_QUOTE_MAP.get(ch, ch) for ch in text)
+    # markdown emphasis is presentation, not text: models bold the quote inside
+    # the anchor ("**it can be only a negative one**"); strip it on both sides
+    text = re.sub(r"\*{1,3}|_{2,3}", "", text)
     # join words hyphenated across line breaks ("exploit-\native")
     text = re.sub(r"(\w)-\s*\n\s*(\w)", r"\1\2", text)
     text = _WS.sub(" ", text)

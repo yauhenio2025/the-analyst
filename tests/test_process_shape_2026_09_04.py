@@ -310,3 +310,16 @@ def test_chain_runner_dispatches_oneshot_checked_at_standard_depth(monkeypatch):
     )
     assert seen == {"mode_check": True, "hint": None}
     assert [o.stance_key for o in out] == ["read", "checked"] and out[-1].content.endswith("### Check receipt\n- ok")
+
+
+def test_markdown_emphasis_inside_anchor_does_not_break_the_wall():
+    """Sol bolded the quoted text inside the anchor (chapter_role_analyzer on the Deutschmann paper: 0 of 26 anchors
+    verified, 24 of 26 once the bold was stripped). Emphasis is presentation, not text."""
+    from src.executor.ledger_walls import SourceIndex, parse_rows, verify_rows
+    src = "As for the comparison of capitalism and religion, it can be only a negative one, as Benjamin himself insisted."
+    ledger = ('## Findings ledger\n- **[F1]** The comparison is negative. — anchor: “**it can be only a negative one**” — confidence: **high**\n'
+              '- [F2] Benjamin insisted. — anchor: "as __Benjamin himself__ insisted" — confidence: medium\n')
+    rows = parse_rows(ledger)
+    assert [r.id for r in rows] == ["F1", "F2"]
+    verify_rows(rows, SourceIndex({"doc": src}))
+    assert all(r.anchor_verified for r in rows), [(r.id, r.anchor_verified) for r in rows]
