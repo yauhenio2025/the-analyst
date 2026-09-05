@@ -6,6 +6,7 @@ reasoning tokens, while emitting scope JSON. Raise only its provider output cap 
 All new calls share the original USD8 accounting root. No automatic retries.
 """
 import argparse
+from concurrent.futures import ThreadPoolExecutor
 import json
 from pathlib import Path
 import sys
@@ -69,6 +70,7 @@ def recover_pair(plan):
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--recover-pair',action='store_true')
+    parser.add_argument('--workers',type=int,choices=(1,2,3),default=1)
     parser.add_argument('--generate',nargs='*',choices=study.JOBS,default=[])
     args=parser.parse_args();plan=study.read(study.OUT/'plan.json');study.guard(plan)
     from dotenv import load_dotenv
@@ -76,7 +78,10 @@ def main():
     with (study.OUT/'campaign.lock').open('a') as lock:
         fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
         prepare(plan)
-        if args.recover_pair:recover_pair(plan)
-        for key in args.generate:study.generate(key,plan)
+        jobs=([None] if args.recover_pair else [])+args.generate
+        def run(key):
+            return recover_pair(plan) if key is None else study.generate(key,plan)
+        with ThreadPoolExecutor(max_workers=args.workers) as pool:
+            for _ in pool.map(run,jobs):pass
 
 if __name__=='__main__':main()
