@@ -62,12 +62,17 @@ def run_chain(
     requires_full_documents: bool = False,
     cancellation_check: Optional[Callable[[], bool]] = None,
     progress_callback: Optional[Callable[[str], None]] = None,
+    documents: Optional[dict[str, str]] = None,
+    document_context: str = "",
 ) -> dict:
     """Execute a chain of engines sequentially.
 
     Args:
         chain_key: Chain definition key
         document_text: The document text to analyze
+        documents: Selected raw sources keyed by stable source identity, for process modes.
+            Omit for the legacy single-document input. Never put generated context here.
+        document_context: Source labels/scope or generated summaries for process context only.
         job_id: Job ID for output persistence
         phase_number: Current phase number
         work_key: Work identifier (for per-work phases)
@@ -99,6 +104,8 @@ def run_chain(
             return run_single_engine(
                 engine_key=chain_key,
                 document_text=document_text,
+                documents=documents,
+                document_context=document_context,
                 job_id=job_id,
                 phase_number=phase_number,
                 work_key=work_key,
@@ -187,6 +194,8 @@ def run_chain(
             pass_results = _run_engine_passes(
                 cap_def=cap_def,
                 document_text=document_text,
+                documents=documents,
+                document_context=document_context,
                 depth=engine_depth,
                 focus_dimensions=engine_focus_dims,
                 previous_engine_output=previous_engine_output,
@@ -243,6 +252,8 @@ def _run_engine_passes(
     model_hint: Optional[str],
     requires_full_documents: bool,
     cancellation_check: Optional[Callable[[], bool]],
+    documents: Optional[dict[str, str]] = None,
+    document_context: str = "",
 ) -> list[EngineCallResult]:
     """Run all passes for a single engine using operationalization-driven prompts.
 
@@ -258,6 +269,7 @@ def _run_engine_passes(
     if _mode in ("oneshot", "oneshot_checked") and _op.process is not None:
         return _run_engine_process(
             cap_def=cap_def, spec=_op.process, document_text=document_text, depth=depth,
+            documents=documents, document_context=document_context,
             previous_engine_output=previous_engine_output, upstream_context=upstream_context,
             context_emphasis=context_emphasis, engine_label=engine_label, job_id=job_id,
             phase_number=phase_number, work_key=work_key, model_hint=model_hint,
@@ -268,6 +280,7 @@ def _run_engine_passes(
     if _spec is not None:
         return _run_engine_process(
             cap_def=cap_def, spec=_spec, document_text=document_text, depth=depth,
+            documents=documents, document_context=document_context,
             previous_engine_output=previous_engine_output, upstream_context=upstream_context,
             context_emphasis=context_emphasis, engine_label=engine_label, job_id=job_id,
             phase_number=phase_number, work_key=work_key, model_hint=model_hint,
@@ -523,6 +536,8 @@ def _run_engine_process(
     requires_full_documents: bool,
     cancellation_check: Optional[Callable[[], bool]],
     mode: str = "dvs",
+    documents: Optional[dict[str, str]] = None,
+    document_context: str = "",
 ) -> list[EngineCallResult]:
     """Run the engine's process and persist every call as a pass output. `mode` is `dvs` (the chain),
     `oneshot` (one call) or `oneshot_checked` (one call, then the critic, rulings applied by code).
@@ -532,7 +547,16 @@ def _run_engine_process(
     """
     from src.executor.process_runner import run_oneshot_checked, run_process
 
+    # Preserve source boundaries before the process decides whether to run corpus dimensions.
+    # The text form remains available to legacy stance engines and their auto-chunking path.
+    sources = dict(documents) if documents is not None else {work_key or "document": document_text}
+    empty_keys = [key for key, text in sources.items() if not text.strip()]
+    if not sources or empty_keys:
+        detail = ", ".join(empty_keys) if empty_keys else "no sources selected"
+        raise ValueError(f"Process execution requires non-empty selected source documents: {detail}")
     shared_parts = []
+    if document_context:
+        shared_parts.append(document_context)
     if upstream_context:
         shared_parts.append(upstream_context)
     if context_emphasis:
@@ -568,7 +592,7 @@ def _run_engine_process(
                                pass_name=f"process {spec.key}", stance=None, work_key=work_key or None):
         if mode in ("oneshot", "oneshot_checked"):
             run = run_oneshot_checked(
-                cap_def, spec, {work_key or "document": document_text}, depth=depth, check=(mode == "oneshot_checked"),
+                cap_def, spec, sources, depth=depth, check=(mode == "oneshot_checked"),
                 model_hint=model_hint, cancellation_check=cancellation_check, on_call=_persist, upstream_context=upstream,
             )
             # the applied ledger is the engine's product: persisted as the last pass so the desks read it
@@ -581,7 +605,7 @@ def _run_engine_process(
                                                 content=run.final_content, model_used=run.final_model))
         else:
             run = run_process(
-                cap_def, spec, {work_key or "document": document_text}, depth=depth, model_hint=model_hint,
+                cap_def, spec, sources, depth=depth, model_hint=model_hint,
                 cancellation_check=cancellation_check, on_call=_persist, upstream_context=upstream,
             )
     logger.info(f"{cap_def.engine_key} {mode} ({spec.key}): {len(run.calls)} calls, ${run.cost_usd}, {run.seconds:.0f}s, final anchor rate {run.final_wall.get('anchor_rate')}")
@@ -729,11 +753,14 @@ def run_single_engine(
     requires_full_documents: bool = False,
     cancellation_check: Optional[Callable[[], bool]] = None,
     progress_callback: Optional[Callable[[str], None]] = None,
+    documents: Optional[dict[str, str]] = None,
+    document_context: str = "",
 ) -> dict:
     """Execute a single engine (not part of a chain).
 
     Used for phases backed by a single engine_key instead of a chain_key.
     Handles multi-pass via operationalizations just like chain_runner does.
+    `documents` and `document_context` have the same source/context contract as run_chain.
 
     Returns:
         dict with keys: engine_results, final_output, total_tokens, duration_ms
@@ -755,6 +782,8 @@ def run_single_engine(
         pass_results = _run_engine_passes(
             cap_def=cap_def,
             document_text=document_text,
+            documents=documents,
+            document_context=document_context,
             depth=depth,
             focus_dimensions=focus_dimensions,
             previous_engine_output=None,

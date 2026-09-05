@@ -1,6 +1,7 @@
 """Step 4 — analysis: run the plan THROUGH THE EXISTING EXECUTOR.
 
-The corpus is stored as one target document; an executor job is created from
+The legacy text prompt is stored as one target document, alongside explicit
+original-source bindings for process engines; an executor job is created from
 the saved plan exactly the way POST /v1/executor/jobs does (create_job +
 start_execution_thread, in-process). The sub-job's events are mirrored into
 the dossier job's stream every 2 s (payload_json.source_job_id set); when the
@@ -13,6 +14,7 @@ from __future__ import annotations
 import logging
 import os
 import time
+from datetime import datetime, timezone
 from typing import Callable, Optional
 
 from src.dossier import events
@@ -40,6 +42,23 @@ def _store_corpus(job: DossierJob, docs: list[Document]) -> tuple[str, str]:
     text = corpus_text(docs)
     doc_id = store_document(title=title, text=text, author=f"dossier {job.id}", role="target")
     return doc_id, title
+
+
+def _store_source_bindings(job: DossierJob, docs: list[Document]) -> dict[str, str]:
+    """Keep desk source keys through the executor and its persisted resume inputs."""
+    from src.executor.document_ids import CORPUS_DOCUMENT_PREFIX
+    from src.executor.document_store import store_document
+
+    if len({doc.key for doc in docs}) != len(docs):
+        raise AnalysisFailed("duplicate source keys in dossier corpus")
+    stored = {meta.get("key"): meta.get("executor_doc_id") for meta in job.documents}
+    bindings = {}
+    for doc in docs:
+        doc_id = stored.get(doc.key)
+        if not doc_id:
+            doc_id = store_document(title=doc.title, text=doc.text, author=doc.creators, role="target")
+        bindings[CORPUS_DOCUMENT_PREFIX + doc.key] = doc_id
+    return bindings
 
 
 def _start_sub_job(job: DossierJob, plan_id: str, document_ids: dict[str, str]) -> str:
@@ -124,6 +143,26 @@ def _collect(job: DossierJob, sub_job_id: str, plan_phases: list[dict]) -> dict:
 
     names = {float(p["phase_number"]): p for p in plan_phases}
     rows = load_all_job_outputs(sub_job_id, include_content=True)
+    # Pass numbers restart at each engine. Sorting only by pass number can
+    # otherwise make an earlier, longer engine look like the chain's product.
+    by_phase: dict[float, list[dict]] = {}
+    for row in rows:
+        by_phase.setdefault(float(row["phase_number"]), []).append(row)
+    rows = []
+    for phase_rows in by_phase.values():
+        try:
+            dated = []
+            for row in phase_rows:
+                stamp = row.get("created_at")
+                when = stamp if isinstance(stamp, datetime) else datetime.fromisoformat(stamp)
+                when = when.replace(tzinfo=timezone.utc) if when.tzinfo is None else when
+                dated.append((when.timestamp(), row))
+            phase_rows = [row for _, row in sorted(dated, key=lambda item: item[0])]
+        except (TypeError, ValueError):
+            # Historical rows without complete timestamps keep their legacy
+            # order; do not invent a mixed chronology from pass numbers.
+            pass
+        rows.extend(phase_rows)
     analysis: dict[str, dict] = {}
     for row in rows:
         pn = float(row["phase_number"])
@@ -139,7 +178,18 @@ def _collect(job: DossierJob, sub_job_id: str, plan_phases: list[dict]) -> dict:
             "model": row.get("model_used") or "", "input_tokens": int(row.get("input_tokens") or 0),
             "output_tokens": int(row.get("output_tokens") or 0), "chars": len(content), "output_id": row.get("id"),
         })
-        entry["final_output"] = content  # rows are ordered by pass; the last pass is the phase output
+        # The final engine owns the final output, including the corpus namespace
+        # used by desk re-verification (e.g. P6 versus X6 in a mixed chain).
+        entry["engine_key"] = row.get("engine_key")
+        planned = names.get(pn, {})
+        entry["engine_name"] = (planned.get("engine_name") if planned.get("engine_key") == row.get("engine_key")
+                                else None) or row.get("engine_key")
+        entry["final_output"] = content  # latest call in this phase (legacy order when timestamps are incomplete)
+        metadata = row.get("metadata") or {}
+        if isinstance(metadata, str):
+            from src.executor.db import _json_loads
+            metadata = _json_loads(metadata) or {}
+        entry["final_wall"] = metadata.get("wall")
         receipt = make_receipt(
             step=STEP, kind="llm", model=row.get("model_used") or "",
             label=f"{row.get('engine_key')} pass {row.get('pass_number')}" + (f" ({row.get('stance_key')})" if row.get("stance_key") else ""),
@@ -174,6 +224,7 @@ def run_analysis(job: DossierJob, docs: list[Document], *, cancel_check: Optiona
     else:
         doc_id, title = _store_corpus(job, docs)
         document_ids = {"target": doc_id, title: doc_id}
+        document_ids.update(_store_source_bindings(job, docs))
         sub_job_id = _start_sub_job(job, job.plan.plan_id, document_ids)
         events.emit(job.id, "note", phase=STEP,
                     detail=f"executor job {sub_job_id} started from plan {job.plan.plan_id}: "

@@ -10,6 +10,6 @@ Use the established surface/standard/deep modes, Sol routing, default check, and
 
 Prepare a concrete validation matrix and budget, then obtain authorization before new paid validation. The completed study's $20 ceiling is not a continuing allowance for unspecified engine-family experiments. Judge on Sonnet in both orders and count only agreements. Commit and push completed tested phases to `origin/master` as authorized by the original handoff; master deploys to Render. Never Veo.
 
-The workflow corpus-dispatch gap remains open in `communications/BUG_TRACKING.md`: `chain_runner._run_engine_process` still wraps incoming text in one document entry. The direct runner study and repaired desk lineage checks do not certify that adapter. Carry actual document maps through the workflow and test scope before corpus exposure.
+The workflow corpus-dispatch gap was fixed after Fable's review: [application dispatch and validation](FIX_workflow_CORPUS_DISPATCH_2026-09-05.md). Original source maps survive dossier storage/resume and phase/chain dispatch; 189 distinct offline tests passed. Historical jobs without bindings retain legacy behavior. Wider result-key collisions and global latest-output ordering remain separately logged. This validation does not claim a paid application corpus run or observed production deployment.
 
 Use home-backed temporary storage: `TMPDIR=/home/evgeny/projects/the-analyst-wt/study-tmp-2026-09-05`. The completed audit bundles contain replay scripts and manifests; their evidence does not depend on a scratch `/tmp` worktree surviving.

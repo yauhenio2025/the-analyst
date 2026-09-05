@@ -2,6 +2,10 @@
 
 from typing import Optional
 
+# Explicit original-source bindings alongside a legacy flattened target. These
+# survive job serialization/resume; they are never inferred from text headers.
+CORPUS_DOCUMENT_PREFIX = "corpus:"
+
 
 def extract_target_title(plan_data: Optional[dict]) -> Optional[str]:
     """Extract the target-work title from a full plan or request snapshot."""

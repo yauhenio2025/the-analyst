@@ -104,13 +104,13 @@ Problem classes, root causes, files fixed. See global rules.
 
 **Pattern to Watch For**: a wall that refuses on arithmetic (length, enum, count) should fix the arithmetic itself; judgment repairs are for meaning. Families that passed today: register, flow_map, power_map, framework_map (Kering run), layer_stack (untested).
 
-## Corpus dimensions bypassed by workflow text flattening (2026-09-05, open)
+## Corpus dimensions bypassed by workflow text flattening (2026-09-05, fixed)
 
 **Problem Class**: A multi-document runner receives a single concatenated string through its workflow adapter, so its document-count dispatch silently selects single-document work.
 
 **Root Cause**: `src/executor/chain_runner.py:_run_engine_process` passes `{work_key or "document": document_text}` to both process modes. Corpus extraction in `run_process` requires two or more dictionary entries. Workflow headers inside the string do not preserve that structure.
 
-**Work to Do**: After the direct ideas-corpus validation, carry the phase's actual document map through chain and single-engine dispatch, respecting existing target/prior/source-thinker scope. Verify workflow dispatch with real document identities before exposing corpus modes. The ideas study supplies a document map directly and can validate the method, but cannot establish that workflow dispatch is fixed.
+**Fix and validation**: Carry selected raw-source maps through standard, per-work and chapter phases, chain and single-engine dispatch; keep generated summaries in context. Dossiers persist original document-key bindings alongside the legacy target so resume and desk anchors use the same identities. Missing explicit sources fail before model calls. Final dossier output, engine identity and wall metadata stay aligned by creation time when timestamps are complete. **189 distinct offline tests passed**, including 28 new dispatch regressions. This validates the application path with fake model responses; no paid application corpus run or live deployment observation is claimed. [Implementation and limits](study/FIX_workflow_CORPUS_DISPATCH_2026-09-05.md).
 
 **Pattern to Watch For**: an end-to-end test of the inner runner with a dictionary does not test an outer adapter that flattens the dictionary into text.
 
@@ -121,4 +121,10 @@ Problem classes, root causes, files fixed. See global rules.
 
 **Fix**: Join explicit discretionary wraps before normalization; tokenize declared fields outside quoted prose; require supported complete quotation forms, preserve malformed findings visibly unverified, verify counter-anchors and retain document bindings; apply and serialize explicit critic replacements with original-finding provenance; stop at the requested auxiliary sections; carry declared corpus namespaces through desk ancestry checks. The receipt states when the ledger changes but preceding prose remains original. Future study fingerprints include the shared normalizer. These changes leave semantic support to models/readers and retain the existing deliberate prefix-trimming policy.
 
-**Validation**: 186 affected-path tests plus 13 study-script guard tests passed after exact combined-patch application. Saved-artifact compatibility covers the baseline's 115 corpus calls and 28 final desk handoffs, with separately documented stricter quotation results. [Full audit and replay evidence](study/STUDY_ideas_ANCHOR_AUDIT_2026-09-05.md). The workflow document-map dispatch issue above remains open.
+**Validation**: 186 affected-path tests plus 13 study-script guard tests passed after exact combined-patch application. Saved-artifact compatibility covers the baseline's 115 corpus calls and 28 final desk handoffs, with separately documented stricter quotation results. [Full audit and replay evidence](study/STUDY_ideas_ANCHOR_AUDIT_2026-09-05.md). The workflow document-map dispatch issue was subsequently fixed and tested separately above.
+
+## Executor result selection and key collisions (2026-09-05, existing, open)
+
+**Problem**: Per-work result keys use `_sanitize_work_key`, so distinct titles can collide in result/presenter keys. Separately, `get_latest_output_for_phase` in `src/executor/output_store.py` orders by pass number even though numbering restarts at each engine; an earlier long engine can outrank a later short engine.
+
+**Scope**: The corpus-dispatch fix uses stable document identities for raw sources and chronological selection inside dossier collection. It does not change these wider result/presenter contracts. Audit their callers and persisted compatibility before repairing them; source-map tests do not establish that output selection elsewhere is fixed.

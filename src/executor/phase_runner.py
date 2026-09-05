@@ -13,6 +13,7 @@ now fully plan-driven instead of hardcoded.
 """
 
 import logging
+import hashlib
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Callable, Optional
@@ -20,7 +21,8 @@ from typing import Callable, Optional
 from src.aoi.contract import is_aoi_workflow_key
 from src.executor.chain_runner import run_chain, run_single_engine
 from src.executor.context_broker import assemble_phase_context
-from src.executor.document_ids import resolve_target_doc_id
+from src.executor.document_ids import CORPUS_DOCUMENT_PREFIX, resolve_target_doc_id
+from src.executor.document_inputs import ProcessDocumentInput
 from src.executor.document_store import get_document_text
 from src.executor.job_manager import get_job
 from src.executor.schemas import (
@@ -138,10 +140,12 @@ def run_phase(
     try:
         # Assemble upstream context
         upstream_context = ""
-        if workflow_phase.depends_on_phases:
+        phase_dependencies = (plan_phase.depends_on if plan_phase.depends_on is not None
+                              else workflow_phase.depends_on_phases)
+        if phase_dependencies:
             upstream_context = assemble_phase_context(
                 job_id=job_id,
-                upstream_phases=workflow_phase.depends_on_phases,
+                upstream_phases=phase_dependencies,
                 context_emphasis=plan_phase.context_emphasis,
                 phase_max_chars_override=context_char_overrides,
             )
@@ -241,6 +245,7 @@ def _run_standard_phase(
         job_id=job_id,
         phase_number=phase_number,
     )
+    source_input = _get_standard_phase_sources(document_ids, job_id, phase_number)
 
     # Resolve engine overrides from the plan
     engine_overrides = None
@@ -265,6 +270,8 @@ def _run_standard_phase(
         result = run_chain(
             chain_key=effective_chain_key,
             document_text=document_text,
+            documents=source_input.documents,
+            document_context=source_input.context,
             job_id=job_id,
             phase_number=phase_number,
             depth=plan_phase.depth,
@@ -288,6 +295,8 @@ def _run_standard_phase(
         result = run_single_engine(
             engine_key=effective_engine_key,
             document_text=document_text,
+            documents=source_input.documents,
+            document_context=source_input.context,
             job_id=job_id,
             phase_number=phase_number,
             depth=engine_depth,
@@ -337,6 +346,8 @@ def _run_standard_phase(
                 supp_result = run_chain(
                     chain_key=supp_chain_key,
                     document_text=document_text,
+                    documents=source_input.documents,
+                    document_context=source_input.context,
                     job_id=job_id,
                     phase_number=phase_number,
                     depth=plan_phase.depth,
@@ -425,13 +436,17 @@ def _run_per_work_phase(
     total_tokens = 0
     errors: list[str] = []
     target_title = _get_target_work_title(job_id)
+    plan_data = _get_plan_data(job_id)
 
     # Milestone 5: Determine if we should use distilled analysis
     # If upstream_context is available AND this is a per-work phase (1.5 or 2.0),
     # use the distilled analysis from Phase 1.0 instead of raw target text.
     # The upstream_context comes from the context broker's assembly of Phase 1.0
     # outputs (which may include supplementary chain outputs).
-    use_distilled = bool(upstream_context) and phase_number in (1.5, 2.0)
+    dependencies = (plan_phase.depends_on if plan_phase.depends_on is not None
+                    else workflow_phase.depends_on_phases)
+    is_independent_profiling = not dependencies
+    use_distilled = bool(upstream_context) and phase_number in (1.5, 2.0) and not is_independent_profiling
     if use_distilled:
         logger.info(
             f"Phase {phase_number}: using distilled analysis "
@@ -462,8 +477,6 @@ def _run_per_work_phase(
         # Phases with NO dependencies (like 1.8 Prior Work Profiling) are
         # profiling ONLY the prior works — injecting the target text would
         # cause the LLM to analyze the wrong document.
-        is_independent_profiling = not plan_phase.depends_on
-
         # Milestone 5: Use distilled analysis path when available
         if use_distilled:
             # Replace raw target text with distilled multi-engine analysis
@@ -477,12 +490,19 @@ def _run_per_work_phase(
             # Don't pass upstream_context again to the chain/engine — it's
             # already embedded in the combined_text
             effective_upstream = ""
+            source_input = _get_process_sources(document_ids, plan_data, works=[work_title])
+            process_context = _combine_with_distilled_analysis(
+                upstream_context, "[Raw prior text is supplied separately as a source]",
+                work_title, target_title, phase_number,
+            )
         elif is_independent_profiling:
             # Independent per-work profiling: ONLY the prior work text.
             # Do NOT include the target — this phase profiles each prior work
             # on its own terms, without reference to the target.
             combined_text = f"# {work_title}\n\n{doc_text}"
             effective_upstream = ""
+            source_input = _get_process_sources(document_ids, plan_data, works=[work_title])
+            process_context = f"Profile only the prior work: {work_title}."
             logger.info(
                 f"Phase {phase_number}: independent profiling of '{work_title}' "
                 f"({len(doc_text):,} chars, no target text injected)"
@@ -490,7 +510,7 @@ def _run_per_work_phase(
         else:
             # Legacy path: concatenate both full texts (for phases that need
             # both target and prior work, like classification or scanning)
-            target_text = _get_target_document_text(document_ids)
+            target_text = _get_target_document_text(document_ids, job_id=job_id)
             combined_text = _combine_document_texts(
                 target_text=target_text,
                 work_text=doc_text,
@@ -499,6 +519,10 @@ def _run_per_work_phase(
                 phase_number=phase_number,
             )
             effective_upstream = upstream_context
+            source_input = _get_process_sources(document_ids, plan_data, include_target=True, works=[work_title])
+            process_context = _build_per_work_scope_contract(target_title, work_title, phase_number)
+
+        process_context = source_input.context + "\n\n" + process_context
 
         # Engine overrides from plan
         engine_overrides = None
@@ -526,6 +550,8 @@ def _run_per_work_phase(
             result = run_chain(
                 chain_key=effective_chain_key,
                 document_text=combined_text,
+                documents=source_input.documents,
+                document_context=process_context,
                 job_id=job_id,
                 phase_number=phase_number,
                 work_key=work_key,
@@ -541,6 +567,8 @@ def _run_per_work_phase(
             result = run_single_engine(
                 engine_key=effective_engine_key,
                 document_text=combined_text,
+                documents=source_input.documents,
+                document_context=process_context,
                 job_id=job_id,
                 phase_number=phase_number,
                 work_key=work_key,
@@ -717,6 +745,16 @@ def _run_chapter_targeted_phase(
             )
 
             work_key = _sanitize_work_key(ch_target.chapter_id)
+            # A selected chapter is one source. Its whole-book summary is
+            # generated context, not a second source or an anchor reservoir.
+            chapter_source_key = chapter_doc_id or (
+                "target" if getattr(ch_target, "work_key", "target") == "target"
+                else _work_source_key(ch_target.work_key, document_ids, _get_plan_data(job_id))
+            )
+            process_context = (
+                f"# Chapter scope: {ch_target.chapter_title or ch_target.chapter_id}\n\n"
+                f"# Whole-Book Summary (from upstream profiling)\n\n{upstream_context}"
+            )
 
             effective_chain_key, effective_engine_key = _resolve_execution_target(
                 workflow_phase.chain_key,
@@ -729,6 +767,8 @@ def _run_chapter_targeted_phase(
                 result = run_chain(
                     chain_key=effective_chain_key,
                     document_text=combined_text,
+                    documents={chapter_source_key: chapter_text},
+                    document_context=process_context,
                     job_id=job_id,
                     phase_number=phase_number,
                     work_key=work_key,
@@ -744,6 +784,8 @@ def _run_chapter_targeted_phase(
                 result = run_single_engine(
                     engine_key=effective_engine_key,
                     document_text=combined_text,
+                    documents={chapter_source_key: chapter_text},
+                    document_context=process_context,
                     job_id=job_id,
                     phase_number=phase_number,
                     work_key=work_key,
@@ -831,14 +873,7 @@ def _get_standard_phase_document_text(
     phase_number: float,
 ) -> str:
     """Resolve document text for standard phases, including AOI source-corpus phases."""
-    plan_data = {}
-    try:
-        job = get_job(job_id) or {}
-        plan_data = job.get("plan_data") or {}
-        if plan_data.get("_type") == "request_snapshot":
-            plan_data = plan_data.get("plan_request") or {}
-    except Exception as exc:
-        logger.warning(f"Could not load plan data for job {job_id}: {exc}")
+    plan_data = _get_plan_data(job_id)
 
     workflow_key = plan_data.get("workflow_key")
     if not is_aoi_workflow_key(workflow_key):
@@ -883,11 +918,68 @@ def _get_standard_phase_document_text(
     return target_text
 
 
+def _get_plan_data(job_id: str) -> dict:
+    """Both accepted plans and the original request snapshot carry source identity."""
+    try:
+        data = (get_job(job_id) or {}).get("plan_data") or {}
+        return (data.get("plan_request") or {}) if data.get("_type") == "request_snapshot" else data
+    except Exception as exc:
+        logger.warning(f"Could not load plan data for job {job_id}: {exc}")
+        return {}
+
+
+def _work_source_key(title: str, document_ids: dict[str, str], plan_data: dict) -> str:
+    for work in plan_data.get("prior_works") or []:
+        if work.get("title") == title and work.get("source_document_id"):
+            return work["source_document_id"]
+    # Storage identities avoid sanitized-title collisions. The deterministic
+    # missing-source key is only diagnostic: an empty selected source cannot run.
+    return document_ids.get(title) or "missing-" + hashlib.sha256(title.encode()).hexdigest()[:16]
+
+
+def _get_process_sources(
+    document_ids: dict[str, str], plan_data: dict, *, include_target: bool = False,
+    works: Optional[list[str]] = None,
+) -> ProcessDocumentInput:
+    sources = ProcessDocumentInput()
+    if include_target:
+        corpus_ids = {k[len(CORPUS_DOCUMENT_PREFIX):]: v for k, v in document_ids.items()
+                      if k.startswith(CORPUS_DOCUMENT_PREFIX)}
+        if corpus_ids:
+            for key, doc_id in corpus_ids.items():
+                sources.add(key, doc_id, "Target corpus document")
+        else:
+            title = (plan_data.get("target_work") or {}).get("title") or "Target work"
+            sources.add("target", resolve_target_doc_id(document_ids, plan_data), f"Target work: {title}")
+    for title in works or []:
+        sources.add(_work_source_key(title, document_ids, plan_data), document_ids.get(title), f"Prior/source work: {title}")
+    return sources
+
+
+def _get_standard_phase_sources(
+    document_ids: dict[str, str], job_id: str, phase_number: float,
+) -> ProcessDocumentInput:
+    """Mirror the existing phase scope without parsing its flattened text.
+
+    AOI phase 1 reads only the selected thinker's sources; phase 3 reads the
+    target plus those sources. Other standard phases read the target only.
+    Explicit dossier bindings expand that target into its original documents.
+    """
+    plan_data = _get_plan_data(job_id)
+    if is_aoi_workflow_key(plan_data.get("workflow_key")) and phase_number in (1.0, 3.0):
+        thinker = plan_data.get("selected_source_thinker_id")
+        titles = [w.get("title") or "Source work" for w in plan_data.get("prior_works") or []
+                  if thinker and w.get("source_thinker_id") == thinker]
+        sources = _get_process_sources(document_ids, plan_data, include_target=phase_number == 3.0, works=titles)
+        sources.labels.insert(0, f"Selected source thinker: {plan_data.get('selected_source_thinker_name') or thinker}")
+        return sources
+    return _get_process_sources(document_ids, plan_data, include_target=True)
+
+
 def _get_target_work_title(job_id: str) -> str:
     """Resolve the target work title from the job plan."""
     try:
-        job = get_job(job_id) or {}
-        plan_data = job.get("plan_data") or {}
+        plan_data = _get_plan_data(job_id)
         target_work = plan_data.get("target_work") or {}
         return target_work.get("title") or "the target work"
     except Exception:
