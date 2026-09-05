@@ -74,3 +74,17 @@ def test_tables_and_figures_see_the_ledger_and_the_section_findings():
     mat = material_text(j)
     ledger_block = mat.split("FINDINGS LEDGER", 1)[1].split("ANALYSIS PROSE", 1)[0]
     assert "[F1]" in ledger_block and "[F3]" not in ledger_block   # the prose may mention F3; the ledger block does not offer it
+
+
+def test_a_foreign_doc_key_does_not_hide_a_verbatim_quote_but_a_wrong_known_key_does():
+    from src.executor.ledger_walls import SourceIndex
+    idx = SourceIndex({"up47F76C1E": DOC, "other": "Nothing relevant here."})
+    q = "constitutes a mutation of neoliberalism"
+    assert idx.find(q, prefer="document") == "up47F76C1E"      # the executor's key names no document: search all
+    assert idx.find(q, prefer="up47F76C1E") == "up47F76C1E"
+    assert idx.find(q, prefer="other") is None                 # a corpus row that names the wrong document fails
+    j = _job(); j.analysis["1.0"]["final_output"] = j.analysis["1.0"]["final_output"].replace(
+        '— anchor: "constitutes a mutation of neoliberalism emerging in the context of bipartisanship" —',
+        '— anchor: "constitutes a mutation of neoliberalism emerging in the context of bipartisanship" — doc: document —')
+    out = analysis_ledger(j, _docs())
+    assert '- [F1] (Conditions of Possibility Analyzer) The text presupposes a redefinition of neoliberalism — anchor [aukus]' in out

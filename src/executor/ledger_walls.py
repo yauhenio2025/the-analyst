@@ -158,8 +158,10 @@ class SourceIndex:
         q = normalize(quote)
         if not q:
             return None
-        if prefer:
-            return prefer if prefer in self.norm and self._has(prefer, q) else None
+        if prefer and prefer in self.norm:
+            # a declared key that names one of the documents is binding (a corpus row must quote the document it names)
+            return prefer if self._has(prefer, q) else None
+        # a declared key that names no document (the executor's work key against the dossier's doc keys) is ignored
         for k in self.norm:
             if self._has(k, q):
                 return k
