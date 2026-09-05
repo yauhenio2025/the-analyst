@@ -39,7 +39,10 @@ def test_every_anchor_is_verified_in_its_named_document_and_rendered_again():
     row.extra_anchors[0].quote = "This second quote occurs in no source whatsoever."
     assert verify_rows([row], SourceIndex(DOCS)).failed_ids == ["P6.F1"]
     assert not row.anchor_verified
-    assert SourceIndex(DOCS).find(QUOTES[0], "missing-key") is None
+    # Reconciled 2026-09-05 (c199a93): the lookup ignores a key that names no document (the executor's work key
+    # against the dossier's doc keys must not hide a verbatim quote from the desks); corpus rows are refused by
+    # verify_rows when a declared key names no document (see the third-anchor test below).
+    assert SourceIndex(DOCS).find(QUOTES[0], "missing-key") == "early-2001"
 
 
 @pytest.mark.parametrize("pair", [

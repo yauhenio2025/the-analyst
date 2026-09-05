@@ -248,7 +248,11 @@ def verify_rows(rows: Iterable[LedgerRow], index: SourceIndex, *, require_cross_
         for anchor in anchors:
             rep.anchors += 1
             # Within a document, a second quote can inherit the row's document key.
-            doc, quote, trimmed = verify_quote(anchor.quote, index, prefer=anchor.doc or r.doc)
+            declared = anchor.doc or r.doc
+            if cross_document and declared and declared not in index.norm:
+                doc, quote, trimmed = None, anchor.quote, False   # a corpus row must name a document that exists
+            else:
+                doc, quote, trimmed = verify_quote(anchor.quote, index, prefer=declared)
             anchor.verified, anchor.verified_doc = bool(doc), doc or ""
             anchor.trimmed = anchor.trimmed or trimmed
             if doc:
