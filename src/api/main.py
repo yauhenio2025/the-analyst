@@ -183,6 +183,16 @@ async def lifespan(app: FastAPI):
             f"{skipped} skipped (grace period) orphaned job(s)"
         )
 
+    # Dossier jobs run in daemon threads of this process too; a deploy kills them mid-step. Restart them from their
+    # recorded step (2026-09-05: two dossiers sat in reconnaissance / analysis for hours after deploys, nobody resumed them).
+    try:
+        from src.dossier.runner import recover_orphaned_dossiers
+        recovered = recover_orphaned_dossiers()
+        if any(recovered.values()):
+            logger.warning(f"Dossier startup recovery: {len(recovered['resumed'])} resumed, {len(recovered['failed'])} failed (too old), {len(recovered['skipped'])} skipped")
+    except Exception as exc:  # recovery must never keep the API from starting
+        logger.error(f"Dossier startup recovery failed: {exc}")
+
     # Register SIGTERM handler for graceful shutdown
     # Render sends SIGTERM before killing the process — mark running jobs as stoppable
     # We do NOT call recover_orphaned_jobs here because it would try to RESUME

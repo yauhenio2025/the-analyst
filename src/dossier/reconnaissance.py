@@ -10,7 +10,9 @@ from __future__ import annotations
 import logging
 
 from src.dossier import events
-from src.dossier.common import compact_profiles, corpus_text, doc_header, documents_index
+from typing import Callable, Optional
+
+from src.dossier.common import DossierCancelled, compact_profiles, corpus_text, doc_header, documents_index
 from src.dossier.llm import call_json
 from src.dossier.schemas import CorpusMap, DocumentProfile, DossierJob, Reconnaissance
 from src.dossier.walls import NormalizedCorpus, verify_anchor
@@ -86,7 +88,11 @@ def _verify_profiles(profiles: list[DocumentProfile], corpus: NormalizedCorpus) 
     return out, dropped_total
 
 
-def run_reconnaissance(job: DossierJob, docs: list[Document]) -> Reconnaissance:
+def run_reconnaissance(job: DossierJob, docs: list[Document], *, persist: Optional[Callable[..., None]] = None,
+                       cancel_check: Optional[Callable[[], bool]] = None) -> Reconnaissance:
+    """`persist` writes a per-document checkpoint (Reconnaissance with partial=True) after every profile, so a job
+    interrupted mid-way — an instance restart on deploy killed one at profile 36/195 on 2026-09-05 — resumes at the
+    next document instead of at 1. `cancel_check` is consulted between documents."""
     total_chars = sum(d.char_count for d in docs)
     intent = job.options.intent
     corpus = NormalizedCorpus({d.key: d.text for d in docs})
@@ -101,7 +107,19 @@ def run_reconnaissance(job: DossierJob, docs: list[Document]) -> Reconnaissance:
     else:
         events.emit(job.id, "note", phase=STEP, detail=f"corpus is {total_chars:,} chars; profiling document by document, then mapping")
         profiles: list[DocumentProfile] = []
+        done_keys: set[str] = set()
+        prior = job.profiles
+        if prior is not None and getattr(prior, "partial", False) and prior.profiles:
+            wanted = {d.key for d in docs}
+            profiles = [p for p in prior.profiles if p.doc_key in wanted]
+            done_keys = {p.doc_key for p in profiles}
+            events.emit(job.id, "note", phase=STEP, detail=f"resuming reconnaissance from the checkpoint: {len(done_keys)} of {len(docs)} profiles already on the record",
+                        payload_json={"kind": "reconnaissance_resumed", "profiled": len(done_keys), "total": len(docs)})
         for n, doc in enumerate(docs, start=1):
+            if doc.key in done_keys:
+                continue
+            if cancel_check and cancel_check():
+                raise DossierCancelled(f"cancelled at profile {n}/{len(docs)}")
             if doc.char_count > PER_DOC_MAX_CHARS:
                 events.emit(job.id, "note", phase=STEP,
                             detail=f"{doc.key}: {doc.char_count:,} chars exceeds the per-document cap; the profile reads the first {PER_DOC_MAX_CHARS:,} chars")
@@ -116,6 +134,10 @@ def run_reconnaissance(job: DossierJob, docs: list[Document]) -> Reconnaissance:
                     profiles.append(DocumentProfile.model_validate(p))
                 except Exception as exc:
                     logger.warning(f"profile for {doc.key} rejected: {exc}")
+            if persist is not None:
+                persist(profiles=Reconnaissance(profiles=profiles, corpus_map=CorpusMap(), partial=True))  # checkpoint: survives a restart
+        if cancel_check and cancel_check():
+            raise DossierCancelled("cancelled before the corpus map")
         interim = Reconnaissance(profiles=profiles, corpus_map=CorpusMap())
         cm, _ = call_json(
             job.id, STEP, label="corpus map over profiles", system=SYSTEM,

@@ -7,15 +7,17 @@ phase_finished; failures classify the run `failed` with the error recorded.
 from __future__ import annotations
 
 import logging
+import os
 import threading
 import time
 import traceback
+from datetime import datetime, timezone
 from typing import Callable, Optional
 
 from src.dossier import events
-from src.dossier.common import load_documents
+from src.dossier.common import DossierCancelled, load_documents
 from src.dossier.schemas import DossierJob, STEPS
-from src.dossier.store import add_note, get_job, record_step_duration, update_job
+from src.dossier.store import add_note, get_job, list_jobs, record_step_duration, update_job
 
 logger = logging.getLogger(__name__)
 
@@ -24,6 +26,11 @@ STATUS_FOR_STEP = {
     "spine": "spine", "tables": "tables", "figures": "figures", "plates": "plates", "compose": "composing", "crosscheck": "crosscheck",
     "receipts": "crosscheck",
 }
+# Statuses that mean "a thread is (supposed to be) running this job". Threads die with the process — Render replaces the
+# instance on every deploy (12 times on 2026-09-05) — so on startup every job in one of these is an orphan.
+ACTIVE_STATUSES = frozenset({"queued"} | set(STATUS_FOR_STEP.values()))
+RECOVER_MAX_AGE_HOURS = float(os.environ.get("DOSSIER_RECOVER_MAX_AGE_HOURS", "24"))
+
 STEP_WHY = {
     "reconnaissance": "Reading every document closely so the later steps work from what the material actually says, not from a summary.",
     "brief": "Proposing three genuinely different angles, each with its engines and cost, so the choice of dossier is explicit and cheap to change.",
@@ -92,6 +99,44 @@ def resume(job_id: str) -> bool:
     return start(job_id)
 
 
+def _hours_since(ts: str, now: Optional[datetime] = None) -> float:
+    try:
+        dt = datetime.fromisoformat(str(ts).replace("Z", "+00:00"))
+    except ValueError:
+        return float("inf")
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    return ((now or datetime.now(timezone.utc)) - dt).total_seconds() / 3600
+
+
+def recover_orphaned_dossiers(now: Optional[datetime] = None, max_age_hours: Optional[float] = None) -> dict[str, list[str]]:
+    """Startup: restart every dossier job whose status says a thread is running — there is none, this is a fresh
+    process. Each restarts at its recorded step (reconnaissance from its per-document checkpoint; analysis re-attaches
+    to its executor job). Jobs idle longer than `max_age_hours` are marked failed instead of silently re-billed;
+    POST /resume still runs them on request. Mirrors the executor's recover_orphaned_jobs, which never covered dossiers
+    (2026-09-05: two dossier jobs sat in 'reconnaissance' / 'analysis' for hours after deploys)."""
+    limit_h = RECOVER_MAX_AGE_HOURS if max_age_hours is None else max_age_hours
+    out: dict[str, list[str]] = {"resumed": [], "failed": [], "skipped": []}
+    for s in list_jobs(limit=200):
+        if s.status not in ACTIVE_STATUSES:
+            continue
+        age_h = _hours_since(s.updated_at, now)
+        if age_h > limit_h:
+            msg = (f"interrupted by an instance restart and not resumed automatically: last activity {age_h:.0f} h ago "
+                   f"(older than {limit_h:.0f} h). POST /v1/dossier/jobs/{s.id}/resume runs it anyway.")
+            update_job(s.id, status="failed", error=msg)
+            events.emit(s.id, "job_failed", detail=msg, payload_json={"kind": "instance_restart_not_resumed", "age_hours": round(age_h, 1)})
+            out["failed"].append(s.id)
+            continue
+        events.emit(s.id, "note", phase=s.step or "start",
+                    detail=f"resumed after an instance restart at step {s.step or 'start'} — the step continues from its last checkpoint",
+                    payload_json={"kind": "instance_restart_resume", "step": s.step, "idle_minutes": round(age_h * 60, 1)})
+        (out["resumed"] if start(s.id) else out["skipped"]).append(s.id)
+    if any(out.values()):
+        logger.warning(f"Dossier startup recovery: resumed {out['resumed']}, failed (too old) {out['failed']}, skipped {out['skipped']}")
+    return out
+
+
 def _run(job_id: str) -> None:
     try:
         job = get_job(job_id)
@@ -122,6 +167,9 @@ def _run(job_id: str) -> None:
         events.emit(job_id, "job_finished", detail=f"dossier done: ${job.totals.cost_usd:.2f}, {job.totals.llm_calls} calls, "
                     f"{round(job.totals.duration_ms/60000, 1)} min", cost_usd=job.totals.cost_usd,
                     payload_json={"paths": job.paths, "totals": job.totals.model_dump()})
+    except DossierCancelled as exc:
+        logger.info(f"dossier {job_id} cancelled: {exc}")
+        events.emit(job_id, "note", detail=f"stopped: {exc}", payload_json={"kind": "cancelled_mid_step"})
     except Exception as exc:
         logger.error(f"dossier {job_id} failed: {exc}\n{traceback.format_exc()}")
         try:
@@ -157,7 +205,7 @@ def _run_step(job: DossierJob, step: str, docs) -> None:
     if step == "reconnaissance":
         from src.dossier.reconnaissance import run_reconnaissance
 
-        recon = run_reconnaissance(job, docs)
+        recon = run_reconnaissance(job, docs, persist=persist, cancel_check=lambda: is_cancelled(job_id))
         job.profiles = recon
         persist(profiles=recon)
         summary = f"{len(recon.profiles)} profiles, {sum(len(p.key_claims) for p in recon.profiles)} anchored claims"

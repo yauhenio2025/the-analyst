@@ -75,6 +75,7 @@ class CorpusMap(BaseModel):
 class Reconnaissance(BaseModel):
     profiles: list[DocumentProfile] = Field(default_factory=list)
     corpus_map: CorpusMap = Field(default_factory=CorpusMap)
+    partial: bool = Field(default=False, description="a per-document checkpoint written mid-reconnaissance; the corpus map is not yet drawn")
 
 
 # ── Step 2: brief ───────────────────────────────────────────────────────
