@@ -435,8 +435,18 @@ def verify_rows(rows: Iterable[LedgerRow], index: SourceIndex, *, require_cross_
 
     Corpus scope comes from the process schema or explicit row lineage, never a judgment of the finding.
     """
+    rows = list(rows)
     rep = WallReport()
     corpus_dimensions, corpus_ids = set(corpus_dimensions), set(corpus_ids)
+    # Resolve lineage before checking, including descendants earlier in row order.
+    # Dropping a dimension label cannot erase a corpus ancestor's evidence duty.
+    while True:
+        inherited = {r.id for r in rows if r.dim in corpus_dimensions
+                     or set(r.lineage) & corpus_ids
+                     or len({a.doc for a in r.anchors if a.doc}) > 1}
+        if inherited <= corpus_ids:
+            break
+        corpus_ids.update(inherited)
     seen: set[str] = set()
     for r in rows:
         rep.rows += 1
@@ -496,6 +506,17 @@ def cited_ids(text: str) -> list[str]:
         i = m.group(1)
         if i not in seen:
             seen.add(i); out.append(i)
+    # Final matrices also use [F1, F3] and [F1–F3]; verify every member.
+    for bracket in re.findall(r"\[([^]\n]+)\]", text or ""):
+        if not re.fullmatch(r"\s*F\d+(?:\s*[,;–—‑-]\s*F?\d+)*\s*", bracket):
+            continue
+        members = re.findall(r"\bF\d+\b", bracket)
+        for a, b in re.findall(r"\bF(\d+)\s*[-–—‑]\s*F?(\d+)\b", bracket):
+            if 0 < int(a) <= int(b) < 10000:
+                members.extend(f"F{n}" for n in range(int(a), int(b) + 1))
+        for rid in members:
+            if rid not in seen:
+                seen.add(rid); out.append(rid)
     return out
 
 
@@ -512,7 +533,7 @@ def render_rows(rows: Iterable[LedgerRow], heading: str = "## Findings ledger") 
 def reanchor_request(failed: list[LedgerRow]) -> str:
     """The one re-anchor round: the rows whose anchors were not verbatim, returned to the model."""
     lines = [
-        "These rows' anchors are NOT verbatim in the source (after normalising whitespace, quotes and hyphenation). "
+        "These rows have non-verbatim anchors or incomplete corpus evidence (fewer than two distinct source keys). "
         "Return ONLY these rows again, same ids, same finding, each with a verbatim anchor copied exactly from the "
         "source (at most 200 characters, no ellipses), or omit a row you cannot anchor. Same row format, under the "
         "heading `## Findings ledger`. Preserve every anchor/doc pair, including anchor-b/doc-b and any further "

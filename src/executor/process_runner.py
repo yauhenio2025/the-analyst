@@ -21,7 +21,7 @@ import os
 import re
 import time
 from concurrent.futures import ThreadPoolExecutor
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from typing import Any, Callable, Iterable, Optional
 
 from src.events.pricing import estimate_cost
@@ -275,6 +275,50 @@ def _wall_extraction(sc: StepCall, prompt: ProcessPrompt, index: SourceIndex, ca
     return kept
 
 
+def _check_corpus_synthesis(sc, prompt, spec, index, corpus_ids, call_fn, model, *,
+                            depth, big, cancellation_check, record, reanchor=True):
+    """One full-response repair for corpus shape failures; never publish a broken table.
+
+    Rewriting the whole reading lets the model narrow/remove a row and update its
+    cells together. This checks evidence shape and ID membership, not entailment.
+    """
+    dimensions = {d.key for d in spec.dimensions}
+    corpus_dimensions = {d.key for d in spec.dimensions if d.scope == "corpus"}
+    prefixes = {d.id_prefix or d.key.upper() for d in spec.dimensions if d.scope == "corpus"} | {"V.CORPUS"}
+    attempts = []
+    for attempt in range(2 if reanchor else 1):
+        clean = strip_scope_outcomes(sc.content) if spec.scoped_outcomes else sc.content
+        prose, ledger = split_ledger(clean)
+        rows = _scope_rows(sc) if spec.scoped_outcomes else parse_rows(ledger)
+        inherited = set(corpus_ids) | {rid for r in rows for rid in [r.id, *r.lineage]
+                                      if any(rid.startswith(p + ".") for p in prefixes)}
+        wall = verify_rows(rows, index, corpus_dimensions=corpus_dimensions, corpus_ids=inherited)
+        wall.check_prose_citations(prose, {r.id for r in rows if r.anchor_verified})
+        issues = {"failed_ids": wall.failed_ids, "incomplete_cross_document_ids": wall.incomplete_cross_document_ids,
+                  "duplicate_ids": wall.duplicate_ids, "missing_cited": wall.missing_cited,
+                  "unknown_dimensions": sorted({r.dim for r in rows if r.dim not in dimensions}),
+                  "missing_ledger": not bool(ledger), "parse_error": sc.scope_parse_error,
+                  "incomplete_invocation": bool(sc.partial or sc.invocation_error or sc.stop_reason in ("length", "max_tokens", "error"))}
+        sc.wall = {**wall.as_dict(), "synthesis_contract": issues, "synthesis_repair_attempts": attempts.copy()}
+        if not any(issues.values()):
+            return sc
+        record(sc)
+        attempts.append(issues)
+        if attempt == (1 if reanchor else 0):
+            raise RuntimeError("Corpus synthesis contract failed after bounded repair: " + json.dumps(issues))
+        repair = prompt.model_copy(deep=True)
+        repair.label += " (repair corpus synthesis)"
+        repair.user += ("\n\n=====\n\nPREVIOUS READING TO REPAIR:\n" + clean
+                        + "\n\nCODE WALL FAILURES:\n" + json.dumps(issues)
+                        + "\nReturn the complete corrected reading, tables and final findings ledger. Preserve supported "
+                        "content. Corpus descendants need anchors from two distinct document keys. A single-source "
+                        "row must narrow its claim, use a declared document dimension and only document-level lineage. "
+                        "Do not merely drop a corpus dimension while keeping its ancestor. Every prose/table citation "
+                        "must resolve to a supported final finding; update or remove cells whose evidence cannot be repaired. "
+                        "Use individual [F1] [F2] citations, not lists or ranges. Do not invent supporting quotations.")
+        sc = _invoke(call_fn, repair, model, depth=depth, big=big, cancellation_check=cancellation_check)
+
+
 def run_process(
     cap_def: Any,
     spec: ProcessSpec,
@@ -451,7 +495,8 @@ def run_process(
                                                scope_identities=_identity(prior_scopes) if spec.scoped_outcomes else None)
                 sc = _invoke(call_fn, prompt, model, depth=depth, big=big, cancellation_check=cancellation_check)
                 vrows = _scope_rows(sc) if spec.scoped_outcomes else parse_rows(_ledger_text(sc.content))
-                rep = verify_rows(vrows, index, require_cross_document=True)
+                rep = verify_rows(vrows, index, corpus_dimensions=corpus_dimension_keys,
+                                  corpus_ids={r.id for r in per_doc.get("", [])})
                 mentioned = {r.id for r in vrows}
                 carried = [r for r in per_doc[""] if r.id not in mentioned]
                 sc.dropped_ids = [r.id for r in vrows if not r.anchor_verified]
@@ -488,16 +533,20 @@ def run_process(
             if upstream_context:
                 prompt.user = f"{upstream_context}\n\n=====\n\n{prompt.user}"
             sc = _invoke(call_fn, prompt, model, depth=depth, big=big, cancellation_check=cancellation_check)
+            corpus_ids = {r.id for r in all_rows if r.dim in corpus_dimension_keys or len({a.doc for a in r.anchors if a.doc}) > 1}
+            if corpus_dimension_keys:
+                sc = _check_corpus_synthesis(sc, prompt, spec, index, corpus_ids, call_fn, model,
+                                            depth=depth, big=big, cancellation_check=cancellation_check,
+                                            record=_record, reanchor=reanchor)
             clean_content = strip_scope_outcomes(sc.content) if spec.scoped_outcomes else sc.content
             prose, ledger = split_ledger(clean_content)
             frows = _scope_rows(sc) if spec.scoped_outcomes else parse_rows(ledger)
-            corpus_ids = {r.id for r in all_rows if r.dim in corpus_dimension_keys or len({a.doc for a in r.anchors if a.doc}) > 1}
             rep = verify_rows(frows, index, corpus_dimensions=corpus_dimension_keys, corpus_ids=corpus_ids)
             earlier = {r.id for r in all_rows} | {r.id for r in rejected_rows}
-            rep.check_prose_citations(prose, {r.id for r in frows}, also_ok=earlier,
+            rep.check_prose_citations(prose, {r.id for r in frows}, also_ok=None if corpus_dimension_keys else earlier,
                                       rejected_ids={r.id for r in rejected_rows})
             missing_lineage = sorted({rid for row in frows for rid in row.lineage if rid not in earlier})
-            sc.wall = {**rep.as_dict(), "has_ledger": bool(ledger), "prose_chars": len(prose),
+            sc.wall = {**sc.wall, **rep.as_dict(), "has_ledger": bool(ledger), "prose_chars": len(prose),
                        "missing_lineage": missing_lineage}
             reviews = [{"step": c.step_key, "document": c.doc_key, **c.wall["ruling_coverage"]}
                        for c in result.calls if "ruling_coverage" in c.wall]
@@ -723,6 +772,8 @@ def run_oneshot_checked(
     for r in rows:   # the wall's verdicts travel with the rows so the critic re-anchors paraphrased quotes
         flagged.append(r.render() + ("" if r.anchor_verified else " — wall: anchor not verbatim in the source; re-anchor or reject"))
     handoff = LEDGER_HEADING + "\n" + "\n".join(flagged)
+    if corpus_dimensions:
+        handoff = "READING AND MATRIX CELLS TO CHECK:\n" + prose + "\n\n" + handoff
     if spec.scoped_outcomes:
         handoff += "\n\n" + render_scope_json(reader_scopes)
     vprompt = compose_verify_prompt(cap_def, spec, verify_step, documents, handoff)
@@ -739,6 +790,39 @@ def run_oneshot_checked(
                                       reviewing=True, previous=reader_scopes,
                                       failed_rows=[r for r in rulings if not r.anchor_verified])
     _record(vc)
+    if corpus_dimensions:
+        # The critic changes evidence and may find a cell unsupported even when its
+        # old ID still exists. Reconcile the reading with the applied ledger once.
+        synthesis_step = spec.final_step
+        # Final F-numbering starts anew. Namespace inputs to avoid confusing a
+        # new F1 with the original F1's corpus scope.
+        synthesis_rows = [replace(r, id=f"CHECK.{r.id}") for r in kept]
+        synthesis_ledger = render_rows(synthesis_rows)
+        if spec.scoped_outcomes:
+            synthesis_ledger += "\n\n" + render_scope_json(checked_scopes)
+        sprompt = compose_synthesize_prompt(cap_def, spec, synthesis_step, documents, synthesis_ledger,
+                                           rejected_text="\n".join(r.render() for r in rejected))
+        sprompt.step_key = "reconcile_checked"
+        sprompt.label = f"{cap_def.engine_key} | reconcile checked tables"
+        sprompt.user += ("\n\nORIGINAL READING (input finding Fn is now CHECK.Fn; use CHECK.Fn in lineage, "
+                         "renumber final F1..Fn and revise every affected cell and citation):\n"
+                         + prose + "\n\nCRITIC REVIEW (rulings already applied; use cell/coverage advice):\n" + vc.content)
+        synthesis = _invoke(call_fn, sprompt, strong, depth=depth, big=big, cancellation_check=cancellation_check)
+        # IDs here refer to the supplied applied ledger; single-source additions
+        # have document prefixes, so corpus call scope cannot taint their lineage.
+        final_corpus_ids = {r.id for r in synthesis_rows if r.dim in corpus_dimensions or len({a.doc for a in r.anchors if a.doc}) > 1}
+        synthesis = _check_corpus_synthesis(synthesis, sprompt, spec, index, final_corpus_ids, call_fn, strong,
+                                           depth=depth, big=big, cancellation_check=cancellation_check, record=_record)
+        synthesis.wall["check_ruling_coverage"] = rep["ruling_coverage"]
+        if spec.scoped_outcomes:
+            synthesis.wall["scope_outcomes"] = checked_scopes
+        _record(synthesis)
+        result.final_content = strip_scope_outcomes(synthesis.content) if spec.scoped_outcomes else synthesis.content
+        if spec.scoped_outcomes:
+            result.final_content += "\n\n" + scope_report(checked_scopes)
+        result.final_model, result.final_wall = synthesis.model_used, synthesis.wall
+        result.seconds = time.time() - t0
+        return result
     result.final_content = assemble_checked_content(prose, ledger, kept, rejected, unverified, rep, vc.model_used,
                                                     scoped_outcomes=spec.scoped_outcomes,
                                                     citation_check=rep_final.citation_check)

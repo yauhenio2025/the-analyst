@@ -68,11 +68,13 @@ process:
     answer_shape: '[C2.F<n>] <case> answers <criterion/question>: <value and qualification> — dim: case_answers
       — case: <key> — criterion: <question> — value-kind: quantitative|qualitative|binary|ordinal — evidence-role:
       aim|mechanism|reported result|conceptual claim — scope: <object/time/unit> — anchor: "<verbatim>" — doc: <source
-      key> — confidence: high|medium|low'
+      key> — causal-attribution: <case named by the attributing sentence, or not established> — confidence: high|medium|low.
+      A causal or reactive status belongs only to the case the source attributes it to. Parallel infrastructure supports duplication, not transfer of chronology or causation. Quote the attributing sentence per case; keep another case unclassified when no sentence attributes that status to it.'
     method_card: Inventory answers that can become matrix cells. Preserve the case actor, instrument, mechanism
       and evidential status; do not convert the source's interpretation into an independently observed outcome.
       Copy units and denominators with values. Supply the exact answer, not a generic synopsis; leave unanswerable
       criteria in the coverage report.
+      A causal or reactive status belongs only to the case the source attributes it to. Parallel infrastructure supports duplication, not transfer of chronology or causation. Quote the attributing sentence per case; keep another case unclassified when no sentence attributes that status to it.
     indicators:
     - instrument
     - depends on
@@ -154,12 +156,14 @@ process:
     output: ledger
     duties:
     - check_anchors_in_context
+    - check_matrix_cell_support
+    - A causal or reactive status belongs only to the case the source attributes it to. Parallel infrastructure supports duplication, not transfer of chronology or causation. Quote the attributing sentence per case; keep another case unclassified when no sentence attributes that status to it.
     - merge_duplicates
     - hunt_misses
     - Audit the shared criteria/questions, source attribution, object/time/definition/warrant alignment and each
       claimed relation. Preserve empty or incommensurable cells as scoped assessments; never invent anchors for
-      absence. A corpus verification adds cross-document rows only, with distinct keyed quotes from all related
-      sources. A per-document verification retains the source inventory without asserting cross-source agreement.
+      absence. A corpus verification may add single-source misses under a declared document dimension and a V.D<n> prefix;
+      use V.CORPUS only for cross-document rows with distinct keyed quotes from all related sources. A per-document verification retains the source inventory without asserting cross-source agreement.
     - Check all stated coverage and silence claims against the named inspected sections. Keep partial fragments
       inconclusive. Report contrary passages and exceptions before confirming a pattern or consensus.
     - name_must_keep
@@ -199,4 +203,6 @@ process:
       Retain final finding ids in every populated table cell. Cross-source rows keep dim: case_matrix and one anchor/doc
       pair per source covered (at least two distinct doc keys). Final findings and all prose/table citations use
       F1..Fn; from: carries earlier ids. Keep absence and inconclusive scope reports distinct from anchored findings.
-      The desks must be able to lift the actual tables with their empty cells intact.'
+      The desks must be able to lift the actual tables with their empty cells intact.
+
+      Each matrix cell cites a finding whose keyed anchor contains the cell''s fact, including its actor, amount, timing and qualification. Generic typologies or scope exclusions cannot carry concrete acquisition terms or delivery delays. Split composite findings/cells or add granular anchored findings. Use only declared dimension keys. A corpus descendant keeps two distinct document keys; to relabel it single-source, narrow the claim, use a document dimension and document-only antecedents in from:, with no corpus lineage. Use separate [F1] [F2] citations rather than lists/ranges. A causal or reactive status belongs only to the case the source attributes it to. Parallel infrastructure supports duplication, not transfer of chronology or causation. Quote the attributing sentence per case; keep another case unclassified when no sentence attributes that status to it.'

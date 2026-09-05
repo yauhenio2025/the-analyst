@@ -41,7 +41,13 @@ CORPUS_ANCHORS = (
     "**Corpus anchors**: preserve every anchor/document pair through verification and synthesis. A cross-document "
     "row requires at least two distinct source keys: `anchor: \"<quote A>\" — doc: <A> — "
     "anchor-b: \"<quote B>\" — doc-b: <B>`. For further documents use anchor-c/doc-c, and so on. "
-    "Code verifies each quote only in its named document. Keep the corpus dimension key on these rows."
+    "Code verifies each quote only in its named document. Keep the corpus dimension key on these rows. "
+    "A row descending from a corpus finding through `from:` still needs two distinct source keys, even if "
+    "its dimension changes. To write a single-source finding, narrow its claim, use a declared document "
+    "dimension and cite only the supporting document findings in `from:`; do not retain corpus lineage. "
+    "A matrix cell must cite a finding whose keyed anchors contain that cell's fact, including actor, "
+    "quantity, timing and qualification. Generic typologies and scope exclusions cannot support concrete "
+    "facts. Split composite cells or supply additional anchored findings for every proposition."
 )
 
 CORPUS_READING = (
@@ -280,6 +286,23 @@ DUTY_TEXT = {
     "name_must_keep": (
         "End with `### Must keep`: the three to five row ids the synthesis must not lose, one line each on why."
     ),
+    "check_matrix_cell_support": (
+        "Check each supplied matrix cell against the finding IDs it cites and their keyed anchors: does the "
+        "anchor support every stated fact, actor, quantity, date, causal status and qualification? A generic "
+        "theme, typology or scope finding cannot carry a concrete fact. Correct the finding with an explicit "
+        "revised-finding or add a granular anchored miss; reject unsupported claims. After the ledger, include "
+        "a `### Cell support` table: cell | cited IDs | supported/repair needed | reason and supporting passage. "
+        "If no matrix was supplied, say so and check candidate answer rows; do not claim a final-cell audit."
+    ),
+    "inventory_question_coverage": (
+        "For EVERY shared question, inspect every available source for relevant answers and counter-passages, "
+        "not just the extracted rows. After the ledger include a `### Question coverage` table: question | "
+        "source key | relevant passage(s), or none in named inspected sections | inventoried finding IDs or "
+        "miss added | limits. Name every relevant passage, including qualifications that change the answer. "
+        "A document-only call covers that source; the corpus call covers every source for each shared question. "
+        "Missing extraction is not silence. State whether each alignment has the same object, same time and "
+        "same qualification; label mismatches different scope or bounded qualification, not agreement."
+    ),
 }
 
 
@@ -313,6 +336,11 @@ def compose_verify_prompt(
         cards,
         ANCHORING_LAW,
         CORPUS_ANCHORS if len(documents) > 1 else "",
+        "Use only these declared dimension keys: " + ", ".join(d.key for d in spec.dimensions),
+        ("For added single-source misses use `[V.D<n>.F<m>]`, where n is the source's 1-based position "
+         "in the supplied source list, and a document dimension. Reserve `[V.CORPUS.F<m>]` for actual "
+         "cross-source findings with paired anchors. Call scope is not finding scope.")
+        if len(documents) > 1 and not doc_key else "",
         TEXT_NOT_AUTHORS,
         "## Output (exactly this, nothing before it)",
         "\n".join([
@@ -372,6 +400,7 @@ def compose_synthesize_prompt(
         cards,
         ANCHORING_LAW,
         CORPUS_ANCHORS if len(documents) > 1 else "",
+        "Use only these declared dimension keys: " + ", ".join(d.key for d in spec.dimensions),
         TEXT_NOT_AUTHORS,
         "## Rules",
         "\n".join([
@@ -446,6 +475,7 @@ def compose_oneshot_prompt(cap_def, spec: ProcessSpec, documents: dict[str, str]
         ((final.brief if final else "") or "").strip(),
         ANCHORING_LAW,
         CORPUS_ANCHORS if len(documents) > 1 else "",
+        "Use only these declared dimension keys: " + ", ".join(d.key for d in spec.dimensions),
         TEXT_NOT_AUTHORS,
         "## Output",
         "\n".join([

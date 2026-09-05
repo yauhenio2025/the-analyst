@@ -1,6 +1,6 @@
 engine_key: compare_supplied_cases
 engine_name: Compare supplied cases
-version: 1
+version: 2
 problematique: Compare supplied cases on justified common questions. The unit may be a country, policy, institution,
   option or conceptual approach, but a source is not automatically one case. The product is a case by criterion
   matrix with attributed evidence, explicit missing and incommensurable cells, supported contrasts and exceptions.
@@ -28,6 +28,7 @@ analytical_dimensions:
     case actor, instrument, mechanism and evidential status; do not convert the source's interpretation into an
     independently observed outcome. Copy units and denominators with values. Supply the exact answer, not a generic
     synopsis; leave unanswerable criteria in the coverage report.
+    A causal or reactive status belongs only to the case the source attributes it to. Parallel infrastructure supports duplication, not transfer of chronology or causation. Quote the attributing sentence per case; keep another case unclassified when no sentence attributes that status to it.
   probing_questions:
   - On each justified candidate criterion, what answer does this case supply, with its mechanism, evidence and qualification?
     Use the criterion as a question, not a topic label.
@@ -77,8 +78,8 @@ depth_levels:
   description: One provisional corpus reading on the strong tier.
   typical_passes: 1
 - key: standard
-  description: One corpus reading, then a source check of its findings; prose remains the original reading.
-  typical_passes: 2
+  description: One corpus reading, a source and cell check, then reconciliation of the tables with the applied findings.
+  typical_passes: 3
 - key: deep
   description: Per-document inventories, corpus relations, source verification and one integrated reading; natural
     mode for desk-ready corpus work.

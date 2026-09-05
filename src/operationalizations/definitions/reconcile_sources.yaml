@@ -126,7 +126,7 @@ process:
       are supported across sources, and what evidence would settle the residual question?
     answer_shape: '[RM.F<n>] On <shared scoped question>, <source A answer> and <source B answer> stand in <relation
       and reason> — dim: question_reconciliation — question: <question> — relation: agreement|qualification|contradiction|different
-      scope — scope-test: <object/time/definition/warrant match or mismatch> — anchor: "<A>" — doc: <A key> — anchor-b:
+      scope — scope-test: <same object? same time? same qualification? definition/warrant match or mismatch> — anchor: "<A>" — doc: <A key> — anchor-b:
       "<B>" — doc-b: <distinct B key> — confidence: high|medium|low. Add anchor-c/doc-c for a third source covered.
       Silence/insufficient cells are separate scoped assessments, never fabricated paired findings.'
     method_card: Align questions before reconciling answers; judge each relation rather than counting shared words.
@@ -134,6 +134,7 @@ process:
       over named inspected sources and never equate frequency with consensus. Preserve an unresolved conflict or
       scoped silence instead of manufacturing an integrated position; corpus extraction sees earlier reports, so
       the critic must inspect all relevant source passages.
+      State the scope of every alignment explicitly — same object, same time, same qualification, or identify the mismatch in each. Alliance-linked engagement and selective nonalignment do not establish the same autonomous positioning. Preserve earlier qualifications before calling a later formulation new; label an integrated causal reconstruction as an analyst inference.
     indicators:
     - same question
     - qualification
@@ -156,12 +157,14 @@ process:
     output: ledger
     duties:
     - check_anchors_in_context
+    - check_matrix_cell_support
+    - inventory_question_coverage
     - merge_duplicates
     - hunt_misses
     - Audit the shared criteria/questions, source attribution, object/time/definition/warrant alignment and each
       claimed relation. Preserve empty or incommensurable cells as scoped assessments; never invent anchors for
-      absence. A corpus verification adds cross-document rows only, with distinct keyed quotes from all related
-      sources. A per-document verification retains the source inventory without asserting cross-source agreement.
+      absence. A corpus verification may add single-source misses under a declared document dimension and a V.D<n> prefix;
+      use V.CORPUS only for cross-document rows with distinct keyed quotes from all related sources. A per-document verification retains the source inventory without asserting cross-source agreement.
     - Check all stated coverage and silence claims against the named inspected sections. Keep partial fragments
       inconclusive. Report contrary passages and exceptions before confirming a pattern or consensus.
     - name_must_keep
@@ -205,4 +208,6 @@ process:
       Retain final finding ids in every positive answer cell. Cross-source rows keep dim: question_reconciliation
       and one anchor/doc pair for every source covered (at least two distinct keys). Final findings and all prose/table
       citations use F1..Fn; from: carries earlier ids. The desks lift the reconciliation and coverage tables directly,
-      including all unresolved and unanswerable cells.'
+      including all unresolved and unanswerable cells.
+
+      Each matrix cell cites a finding whose keyed anchor contains the cell''s fact, including its actor, amount, timing and qualification. Generic typologies or scope exclusions cannot carry concrete acquisition terms or delivery delays. Split composite findings/cells or add granular anchored findings. Use only declared dimension keys. A corpus descendant keeps two distinct document keys; to relabel it single-source, narrow the claim, use a document dimension and document-only antecedents in from:, with no corpus lineage. Use separate [F1] [F2] citations rather than lists/ranges. State the scope of every alignment explicitly — same object, same time, same qualification, or identify the mismatch in each. Alliance-linked engagement and selective nonalignment do not establish the same autonomous positioning. Preserve earlier qualifications before calling a later formulation new; label an integrated causal reconstruction as an analyst inference.'

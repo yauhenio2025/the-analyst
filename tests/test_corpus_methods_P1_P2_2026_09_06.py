@@ -107,7 +107,7 @@ def test_mixed_scope_records_survive_real_runner_to_desks(key,mode):
                   '| Source | Answer |\n|---|---|\n| archive_policy | Public copies are redacted [F1] |\n'
                   '| archive_inventory | No answer about access in this inventory |\n| archive_fragment | Insufficient evidence; preceding page missing |\n'
                   f'\n## Findings ledger\n- [F1] Public copies should be redacted — dim: {spec.dimensions[0].key} — anchor: "{quote}" — doc: archive_policy{lineage}')
-            if mode=='standard': text+='\n\n'+outcomes(system,parse_rows(text),False)
+            if mode=='standard' and '| oneshot' in label: text+='\n\n'+outcomes(system,parse_rows(text),False)
         return {'content':text,'model_used':model_hint,'input_tokens':1,'output_tokens':1,'partial':False,'stop_reason':'stop'}
     runner=run_process if mode=='deep' else run_oneshot_checked
     result=runner(cap,spec,DOCS,call_fn=fake,tier_overrides=spec.routing,**({'parallelism':1} if mode=='deep' else {}))
@@ -165,6 +165,54 @@ def test_reader_memo_binds_exact_completed_output_before_scoring(tmp_path,monkey
 def test_offline_audit_checks_ids_inside_final_citation_ranges():
     from scripts.audit_corpus_methods_P1_P2_2026_09_06 import expanded_final_citations
     assert expanded_final_citations('[F1–F3] and [F5, F7]')=={'F1','F2','F3','F5','F7'}
+
+
+def test_final_citations_expand_lists_without_splitting_dotted_ids():
+    from src.executor.ledger_walls import check_citations
+    assert check_citations('See [D1.F1], [D1.F9], [V.F2], [F1–F3] and [F5, F7].',
+                           {'D1.F1', 'F1', 'F3', 'F5'}, also_ok={'V.F2'}) == ['D1.F9', 'F2', 'F7']
+
+
+def test_corpus_lineage_is_transitive_even_when_descendants_come_first():
+    quote = 'Personal addresses should be removed from public copies.'
+    rows = parse_rows('\n'.join(
+        f'- [{rid}] Public copies — dim: case_answers — anchor: "{quote}" — doc: archive_policy — from: {parent}'
+        for rid, parent in [('F1', 'F2'), ('F2', 'C4.CORPUS.F1')]))
+    wall = verify_rows(rows, SourceIndex(DOCS), corpus_ids={'C4.CORPUS.F1'})
+    assert wall.incomplete_cross_document_ids == ['F1', 'F2']
+    assert wall.verified == 0
+
+
+@pytest.mark.parametrize('repair_succeeds', [True, False])
+def test_corpus_synthesis_repairs_once_or_refuses_output(repair_succeeds):
+    from src.executor.process_runner import StepCall, _check_corpus_synthesis
+    cap, op = engine('compare_supplied_cases')
+    spec = op.process.model_copy(update={'scoped_outcomes': False})
+    prompt = compose_synthesize_prompt(cap, spec, spec.final_step, DOCS, '')
+    quote = 'Personal addresses should be removed from public copies.'
+    bad = ('A comparison [F1].\n\n## Findings ledger\n'
+           f'- [F1] Public copies — dim: case_answers — anchor: "{quote}" — doc: archive_policy — from: C4.CORPUS.F1')
+    good = bad + (' — anchor-b: "The catalogue lists three items: A17, a blue folder; A18, a grey folder; A19, a green folder."'
+                  ' — doc-b: archive_inventory')
+    calls, recorded = [], []
+    def fake(system, user, **kwargs):
+        calls.append(user)
+        assert 'incomplete_cross_document_ids' in user and 'PREVIOUS READING TO REPAIR' in user
+        return {'content': good if repair_succeeds else bad, 'model_used': 'fake', 'stop_reason': 'stop'}
+    def run():
+        return _check_corpus_synthesis(StepCall(step_key='synthesize', kind='synthesize', content=bad),
+            prompt, spec, SourceIndex(DOCS), {'C4.CORPUS.F1'}, fake, 'fake', depth='deep', big=False,
+            cancellation_check=None, record=recorded.append)
+    if repair_succeeds:
+        result = run()
+        assert result.wall['failed_ids'] == []
+        assert result.wall['cross_document_rows'] == 1
+        assert len(result.wall['synthesis_repair_attempts']) == 1
+    else:
+        with pytest.raises(RuntimeError, match='Corpus synthesis contract failed after bounded repair'):
+            run()
+    assert len(calls) == 1
+    assert recorded[0].wall['incomplete_cross_document_ids'] == ['F1']
 
 
 def test_unreleased_corpus_methods_load_but_are_not_offered():
