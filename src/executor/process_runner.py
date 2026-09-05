@@ -296,10 +296,11 @@ def _check_corpus_synthesis(sc, prompt, spec, index, corpus_ids, call_fn, model,
         wall.check_prose_citations(prose, {r.id for r in rows if r.anchor_verified})
         issues = {"failed_ids": wall.failed_ids, "incomplete_cross_document_ids": wall.incomplete_cross_document_ids,
                   "duplicate_ids": wall.duplicate_ids, "missing_cited": wall.missing_cited,
-                  "unknown_dimensions": sorted({r.dim for r in rows if r.dim not in dimensions}),
+                  "unknown_dimensions": sorted({r.dim for r in rows if r.dim and r.dim not in dimensions}),
                   "missing_ledger": not bool(ledger), "parse_error": sc.scope_parse_error,
                   "incomplete_invocation": bool(sc.partial or sc.invocation_error or sc.stop_reason in ("length", "max_tokens", "error"))}
-        sc.wall = {**wall.as_dict(), "synthesis_contract": issues, "synthesis_repair_attempts": attempts.copy()}
+        sc.wall = {**wall.as_dict(), "synthesis_contract": issues, "synthesis_repair_attempts": attempts.copy(),
+                   "rows_without_dimension": sum(1 for r in rows if not r.dim)}
         if not any(issues.values()):
             return sc
         record(sc)

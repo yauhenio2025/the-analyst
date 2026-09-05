@@ -5,6 +5,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Fixed (2026-09-06 — P1/P2 evidence handoff and revalidation)
+
+- Corpus ancestry now preserves the two-source anchor duty through synthesis. The runner requests one complete repair for invalid corpus synthesis, then refuses a still-broken output; dotted citation IDs remain whole and F-number lists/ranges are checked. Standard corpus mode reconciles the reading and tables after critic rulings. P1 adds case-specific causal attribution and granular cell support; P2 adds question/source coverage and explicit alignment scope.
+- Five outputs and ten independent Sonnet/Sol ratings completed for **$4.424648 of $8**, with no unknown-cost reserve. All five source-read memos were committed before scoring. All 100 final findings, 125 anchors and 19 corpus rows pass the structural checks, with one successful bounded synthesis repair. Both methods remain excluded because the source-to-table contract still fails. [Report, source reviews and receipts](../communications/study/STUDY_corpus_methods_P1_P2_revalidation_2026-09-06.md).
+- **266 focused tests pass**, including the six broader regressions reported after the first fix commit. An absent dimension tag is a `rows_without_dimension` diagnostic; present undeclared keys still fail. Updated the 68-prompt snapshot for the intentional declared-dimension instruction, adopting the narrow corrections from Claude's prepared consolidation without its broader refactor. Paid-study artifacts retain their frozen implementation and independent scores.
+
 ### Fixed
 - Ledger wall: `normalize` strips markdown emphasis (`**`, `__`) on both sides, so a quote the model bolded inside its anchor still verifies verbatim ([walls.py](src/dossier/walls.py)); regression test in `tests/test_process_shape_2026_09_04.py`.
 

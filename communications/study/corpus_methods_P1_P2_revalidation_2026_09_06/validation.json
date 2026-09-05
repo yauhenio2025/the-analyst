@@ -1,0 +1,192 @@
+{
+  "plan_identity": "87e0cb7e033102981941dcbfb3230541230e0fee9668d4ceb7d310c85bdf18fe",
+  "memos_commit": "e8a54d317e489d01c56ed71e103962f217240516",
+  "memos_commit_epoch": 1788648283,
+  "generation_calls": 58,
+  "judge_calls": 10,
+  "all_provider_calls_complete": true,
+  "generation_usd": 2.843909,
+  "ratings_usd": 1.580739,
+  "total_usd": 4.424648,
+  "unknown_cost_reserve_usd": 0,
+  "cap_usd": 8,
+  "budget_remaining_usd": 3.575352,
+  "models": {
+    "openai/gpt-5.6-luna": 37,
+    "deepseek/deepseek-v4-pro": 13,
+    "openai/gpt-5.6-sol": 13,
+    "claude-sonnet-4-6": 5
+  },
+  "pre_score_checks": [
+    {
+      "job": "P1__deep__pair",
+      "identical_source_task_output_prompt_for_both_judges": true,
+      "output_and_committed_memo_hashes_match": true,
+      "both_scores_after_all_memos_commit": true
+    },
+    {
+      "job": "P1__deep__castoriadis",
+      "identical_source_task_output_prompt_for_both_judges": true,
+      "output_and_committed_memo_hashes_match": true,
+      "both_scores_after_all_memos_commit": true
+    },
+    {
+      "job": "P1__standard__pair",
+      "identical_source_task_output_prompt_for_both_judges": true,
+      "output_and_committed_memo_hashes_match": true,
+      "both_scores_after_all_memos_commit": true
+    },
+    {
+      "job": "P2__deep__deutschmann",
+      "identical_source_task_output_prompt_for_both_judges": true,
+      "output_and_committed_memo_hashes_match": true,
+      "both_scores_after_all_memos_commit": true
+    },
+    {
+      "job": "P2__standard__pair",
+      "identical_source_task_output_prompt_for_both_judges": true,
+      "output_and_committed_memo_hashes_match": true,
+      "both_scores_after_all_memos_commit": true
+    }
+  ],
+  "scores": {
+    "P1__deep__pair": {
+      "sonnet": {
+        "mean": 7.333333333333333,
+        "scores": {
+          "specificity": 8,
+          "anchoring": 7,
+          "non_obviousness": 7,
+          "coherence": 7,
+          "usefulness": 8,
+          "hallucination_risk": 7
+        }
+      },
+      "sol": {
+        "mean": 7.833333333333333,
+        "scores": {
+          "specificity": 9,
+          "anchoring": 9,
+          "non_obviousness": 8,
+          "coherence": 7,
+          "usefulness": 7,
+          "hallucination_risk": 7
+        }
+      }
+    },
+    "P1__deep__castoriadis": {
+      "sonnet": {
+        "mean": 7.666666666666667,
+        "scores": {
+          "specificity": 8,
+          "anchoring": 8,
+          "non_obviousness": 7,
+          "coherence": 8,
+          "usefulness": 7,
+          "hallucination_risk": 8
+        }
+      },
+      "sol": {
+        "mean": 7.166666666666667,
+        "scores": {
+          "specificity": 9,
+          "anchoring": 8,
+          "non_obviousness": 8,
+          "coherence": 6,
+          "usefulness": 7,
+          "hallucination_risk": 5
+        }
+      }
+    },
+    "P1__standard__pair": {
+      "sonnet": {
+        "mean": 7.833333333333333,
+        "scores": {
+          "specificity": 8,
+          "anchoring": 8,
+          "non_obviousness": 7,
+          "coherence": 8,
+          "usefulness": 8,
+          "hallucination_risk": 8
+        }
+      },
+      "sol": {
+        "mean": 8.333333333333334,
+        "scores": {
+          "specificity": 8,
+          "anchoring": 9,
+          "non_obviousness": 8,
+          "coherence": 9,
+          "usefulness": 7,
+          "hallucination_risk": 9
+        }
+      }
+    },
+    "P2__deep__deutschmann": {
+      "sonnet": {
+        "mean": 7.666666666666667,
+        "scores": {
+          "specificity": 8,
+          "anchoring": 8,
+          "non_obviousness": 7,
+          "coherence": 7,
+          "usefulness": 8,
+          "hallucination_risk": 8
+        }
+      },
+      "sol": {
+        "mean": 7.333333333333333,
+        "scores": {
+          "specificity": 8,
+          "anchoring": 9,
+          "non_obviousness": 8,
+          "coherence": 6,
+          "usefulness": 7,
+          "hallucination_risk": 6
+        }
+      }
+    },
+    "P2__standard__pair": {
+      "sonnet": {
+        "mean": 7.166666666666667,
+        "scores": {
+          "specificity": 7,
+          "anchoring": 7,
+          "non_obviousness": 7,
+          "coherence": 8,
+          "usefulness": 7,
+          "hallucination_risk": 7
+        }
+      },
+      "sol": {
+        "mean": 9.166666666666666,
+        "scores": {
+          "specificity": 10,
+          "anchoring": 9,
+          "non_obviousness": 9,
+          "coherence": 8,
+          "usefulness": 10,
+          "hallucination_risk": 9
+        }
+      }
+    }
+  },
+  "mechanical_wall_all_five_pass": true,
+  "release": {
+    "compare_supplied_cases": false,
+    "reconcile_sources": false
+  },
+  "release_reason": "Source-to-table entailment and coverage-link defects remain, independently of passing structural walls and generally favorable scores. See pre-score memos and revalidation report.",
+  "tests": {
+    "requested_suite_before_fix_commit": 142,
+    "with_P1_P2_regressions_before_fix_commit": 170,
+    "expanded_suite_after_compatibility_followup": 266,
+    "introduced_broader_failures_reproduced_and_resolved": 6,
+    "command": "python -m pytest tests/test_process_shape_2026_09_04.py tests/test_corpus_ledger_2026_09_05.py tests/test_anchor_repairs_2026_09_05.py tests/test_engines_under_shape_2026_09_05.py tests/test_corpus_methods_P1_P2_2026_09_06.py tests/test_workflow_corpus_dispatch.py tests/test_ruling_coverage_2026_09_05.py tests/test_scoped_outcomes_2026_09_05.py -q"
+  },
+  "post_generation_compatibility_followup": "Adopted the narrow missing-dimension diagnostic and the updated declared-key prompt snapshots from Claude consolidation commits 9d2f614/146ff3d; generated outputs and scores remain frozen under cc20595.",
+  "post_generation_implementation_sha256": {
+    "src/executor/process_runner.py": "2d12b11e20d3a91be4b513aefa171f58b3b923ddcafac8a5a77a02f029bf1260",
+    "tests/fixtures/scoped_outcomes/production_prompt_hashes_3426419.json": "d2fd950c2b3c61bb519ae63738bfbd3c5a2210402081c52d43006b2ddd7c698d"
+  }
+}
