@@ -1,0 +1,290 @@
+# DESIGN CANDIDATE ONLY. Not a registry definition or an executable approval.
+engine_key: dialectical_structure
+engine_name: Dialectical Structure Mapper
+candidate_metadata:
+  status: unregistered_validation_candidate
+  prepared_on: '2026-09-05'
+  reader_question: Which opposed positions or requirements organize this argument, what does the text do with them, and does the claimed transformation follow?
+  baseline: src/engines/capability_definitions/dialectical_structure.yaml (preserve unchanged)
+  runtime_support: supported_opt_in_unregistered
+  scope_outcome_notes:
+    storage: separate outcome record; never a fabricated normal findings row
+    analytical_outcomes: [findings_present, no_relevant_instance, inconclusive]
+    required_fields: [document_keys, dimension_key, outcome, sections_inspected, coverage, criterion, basis, limitations, finding_ids, review_state, review_basis]
+    assessment_note: Report every dispatched scope; describe actual inspection in sections_inspected and coverage. Put any nearest candidate and its rejection reason in basis/limitations, not in an invented negative ledger row.
+    review_states: [unchecked, supported_within_stated_scope, disputed]
+    separate_execution_fields: [scope_identity_validated, invocation_partial, invocation_stop_reason, invocation_error, source_access, blocking_issues]
+    eligibility: |-
+      A relation qualifies when the text juxtaposes or relies on distinguishable positions or
+      requirements and their relation does argumentative work. Qualified compatibility,
+      acknowledged appropriation and continuing mediation can be positive findings. A shared
+      word, any difference between sentences, or the absence of an unrecognized contradiction
+      does not by itself establish or exclude a relevant dialectical relation.
+    review_requirement: |-
+      When checking is requested, review a reasoned negative claim against its declared scope
+      and eligibility criterion even if it has no ordinary rows. Zero parsed rows, missing
+      sources and all anchors failing are not checked absence. All candidates rejected permits
+      a negative result only if the stated search and rejection reasons support it; otherwise
+      report inconclusive. A quotation can locate a nearest candidate, not prove universal absence.
+    mixed_corpus_requirement: |-
+      Retain each document's positive, negative or inconclusive outcome separately. A corpus
+      relation may be absent even when document findings exist. Silent documents cannot be
+      omitted from coverage, and document-level absence does not establish corpus-wide absence.
+  launch_blockers:
+    - Freeze this unregistered candidate and the accepted runtime in a separate no-call validation manifest.
+    - Complete source-aware candidate review, explicit absence/mixed-scope controls, and both-order judging under a newly authorized budget.
+    - Validate the generated outputs and desk source/lineage contract before any production registration.
+  ledger_contract: |-
+    Anchors are complete JSON string literals; escape internal double quotes. Preserve exact doc
+    keys. Quote both formulations for a comparison, plus the qualification or transition where
+    needed. A single passage can carry both formulations; omit unused secondary anchor/doc fields
+    rather than inserting placeholders. Corpus relations always require two different document
+    keys and a complete anchor for each. Membership verifies occurrence only; interpretation and
+    incompatibility remain review judgments. Use one stable relation label across related rows,
+    but cite only full canonical finding IDs, qualified by document namespace where supplied.
+
+stance_operationalizations: []
+depth_sequences:
+  - depth_key: surface
+    mode: oneshot
+    passes: []
+  - depth_key: standard
+    mode: oneshot_checked
+    passes: []
+  - depth_key: deep
+    mode: dvs
+    passes: []
+  - depth_key: dvs
+    process: dvs
+    passes: []
+process:
+  key: dvs
+  description: |-
+    Reconstruct the text's opposed positions and its treatment of their relation, where relevant.
+    Preserve owners, objects, qualifications and argumentative stages before testing incompatibility.
+    A response may distinguish, reject, revise, mediate or leave a tension open; no synthesis or
+    concealed contradiction is presumed. Test what a transition establishes and what independent
+    support survives if that transition fails. Keep analyst-proposed objections explicit.
+  framing: |-
+    Examine which opposed positions or requirements, if any, organize the text's argument.
+    Identify each position's owner, object, scope, modality, and argumentative stage. Determine
+    whether their relation is a contradiction, a performative conflict, a practical tension,
+    or compatibility clarified by a distinction. Trace how the text rejects, revises, mediates,
+    or preserves the relation, and assess the warrant for that response and what remains
+    unresolved. Selective borrowing and differences between stages may be coherent. Report no
+    relevant instance when the inspected material supports that conclusion, stating the scope
+    and limits of the search.
+
+    Eligibility:
+    A relation qualifies when the text juxtaposes or relies on distinguishable positions or
+    requirements and their relation does argumentative work. Qualified compatibility,
+    acknowledged appropriation and continuing mediation can be positive findings. A shared
+    word, any difference between sentences, or the absence of an unrecognized contradiction
+    does not by itself establish or exclude a relevant dialectical relation.
+  scoped_outcomes: true
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+    - key: positions_and_attribution
+      id_prefix: DS1
+      name: Positions, owners and the relation at issue
+      scope: document
+      load_bearing: true
+      questions:
+        - Which opposed positions or requirements does the text actually juxtapose? State their shared object and the argumentative work their relation performs; do not infer an opposition from vocabulary alone.
+        - "Who undertakes each position here: this paper, an interpreted thinker, a rival as represented by the paper, or a hypothetical interlocutor? What passage supports that attribution, and does the paper endorse, criticize or provisionally grant it?"
+        - Is a quotation direct evidence of a thinker's position or another interpreter's report or criticism of it? Preserve that mediation and distinguish the author's reconstruction from a distinction expressly made in the interpreted work.
+        - Do the formulations concern the same time, respect, level and stage of the argument? Identify the limiting clauses before treating them as a pair of commitments.
+      answer_shape: >-
+        [DS1.F<n>] <the organizing relation and its argumentative role> — dim: positions_and_attribution
+        — relation: <stable relation label> — position-a: <scoped claim> — owner-a: <owner and endorsement status>
+        — position-b: <scoped claim> — owner-b: <owner and endorsement status>
+        — attribution-basis: <direct, mediated, hypothetical, or reconstruction; passage>
+        — anchor: "<verbatim A>" — doc: <key> — anchor-b: "<verbatim B, when separate>" — doc-b: <key>
+        — confidence: high|medium|low
+      method_card: |-
+        Reconstruct before classifying. Locate each formulation and its owner in the immediate
+        discussion. A quoted criticism belongs to the critic unless the text supplies the criticized
+        party's own statement. Mark grants and objections as such. Align the object, modality and
+        stage; retain disagreements between interpreters without assigning every view to the paper.
+      indicators: ['whereas', 'according to', 'on this reading', 'the objection is', 'we distinguish']
+    - key: kind_of_opposition
+      id_prefix: DS2
+      name: Incompatibility, practical tension or qualified compatibility
+      scope: document
+      load_bearing: true
+      questions:
+        - Under the owners, object, respect and modality just identified, what would make the two formulations incompatible? State the conflict, or explain how the qualifications allow both to hold.
+        - Does the claimed conflict concern asserted propositions, the relation between an act and its characterization, practical requirements, or different levels of description? Which passages warrant that classification?
+        - Does the text distinguish appearance from independence, necessary exposure from inevitable realization, or a presupposed starting point from a derived result? Test the distinction before alleging contradiction.
+        - Is incompatibility the paper's finding, an opponent's allegation, or the analyst's reconstruction? What evidence could discriminate these readings within the supplied text?
+      answer_shape: >-
+        [DS2.F<n>] <what the pair can or cannot jointly sustain> — dim: kind_of_opposition
+        — relation: <stable label> — kind: contradiction|performative_conflict|practical_tension|qualified_compatibility|unsettled
+        — same-respect: <object, owner, stage and modality check> — qualification: <operative distinction or none stated>
+        — claim-owner: <paper, attributed position, or analyst>
+        — anchor: "<first formulation>" — doc: <key> — anchor-b: "<second formulation or qualification>" — doc-b: <key>
+        — confidence: high|medium|low
+      method_card: |-
+        Specify what excludes what only when exclusion is established. For a performative conflict,
+        name what the act does and what its characterization denies; do not substitute a sentential
+        contradiction. For practical tension, explain the difficulty of jointly realizing requirements
+        without asserting logical impossibility. A scope distinction may resolve an apparent conflict;
+        examine its adequacy rather than treating either the distinction or the contradiction as automatic.
+      indicators: ['contradiction', 'at the same time', 'in this respect', 'appearance', 'not necessarily']
+    - key: response_and_transition
+      id_prefix: DS3
+      name: The response and its inferential warrant
+      scope: document
+      load_bearing: true
+      questions:
+        - Where does the text reject, distinguish, revise, mediate or preserve the relation? Quote the passage that performs the response rather than merely announcing its name.
+        - What is retained, changed or relinquished, and at which argumentative stage? Is the result asserted as a local repair, a broader explanation, or complete resolution?
+        - What premise licenses this particular transition? Does showing that the starting formulation fails establish the proposed successor, or does a further argument supply that step?
+        - If the transition is challenged, which downstream route is affected and which independently supported claims remain? Do not make the success of one derivation necessary for every conclusion.
+      answer_shape: >-
+        [DS3.F<n>] <response and what it establishes> — dim: response_and_transition — relation: <stable label>
+        — response: distinction|rejection|revision|mediation|preservation|unsettled — retains: <what>
+        — changes: <what> — warrant: <stated or reconstructed bridge and its support>
+        — affected-route: <route whose support changes> — independent-support: <remaining grounds or not established>
+        — anchor: "<transition passage>" — doc: <key> — anchor-b: "<warrant or limiting passage, if available>" — doc-b: <key>
+        — confidence: high|medium|low
+      method_card: |-
+        Trace a transition as an inference, not a compulsory thesis-antithesis-synthesis sequence.
+        Separate the negative result about the initial position from the positive case for its replacement.
+        Identify the bridge in the paper's terms; mark a reconstructed bridge as the analyst's work.
+        Keep conceptual, historical and normative premises distinct. Failure of a conceptual reconstruction
+        does not erase separately supplied historical evidence.
+      indicators: ['therefore', 'must be understood', 'rather', 'preserves', 'mediates']
+    - key: dependence_and_self_application
+      id_prefix: DS4
+      name: Reliance, selective appropriation and self-application
+      scope: document
+      load_bearing: false
+      questions:
+        - Which specific resource from an opposed position does the argument use, and what precisely does its criticism reject? Quote both the use and the scope of rejection.
+        - Does the text acknowledge selective appropriation or distinguish a method from its prior application? What would make that use compatible or incompatible with its criticism?
+        - Where does the argument state a standard and apply it to its own claims? Is a difference in application warranted by different objects or evidential burdens?
+        - If the borrowed resource is withdrawn, which formulation or argument route fails? Can another stated resource support the conclusion without adopting the opposed position wholesale?
+      answer_shape: >-
+        [DS4.F<n>] <a reliance or self-application and its actual consequence> — dim: dependence_and_self_application
+        — relation: <stable label> — resource: <specific premise, method or concept> — criticism-scope: <what is rejected>
+        — application: acknowledged_appropriation|consistent_application|scoped_difference|conflict|unsettled
+        — affected-route: <specific dependence> — surviving-route: <independent grounds or not established>
+        — anchor: "<use or standard>" — doc: <key> — anchor-b: "<rejection or application>" — doc-b: <key>
+        — confidence: high|medium|low
+      method_card: |-
+        Test immanent criticism against the standard actually undertaken. Borrowing a distinction does
+        not entail accepting its originator's system or verdict. Locate the paper's account of appropriation
+        and assess that account before alleging dependence it cannot acknowledge. Do not infer motives,
+        embarrassment or concealment. Distinguish grounds the paper uses from commitments incurred by
+        accepting the conclusion; an independent route can survive withdrawal of those grounds.
+      indicators: ['drawing on', 'against this interpretation', 'by its own criterion', 'nevertheless', 'on other grounds']
+    - key: remainder_and_consequence
+      id_prefix: DS5
+      name: Resolution scope, remainder and practical consequence
+      scope: document
+      load_bearing: true
+      questions:
+        - What does the paper say remains unresolved after its response, and what passage resists the claimed extent of resolution? Distinguish acknowledged limits from a reader's proposed objection.
+        - Does continuing mediation count as the stated result, or does the argument claim to remove the conflict permanently? Assess it against its actual claim.
+        - What conceptual or practical consequence follows at the supported modal strength? Does a necessary vulnerability leave its realization contingent?
+        - Which open question could test the response using the paper's own material? State when an answer would require evidence beyond the supplied text.
+      answer_shape: >-
+        [DS5.F<n>] <what remains and what follows> — dim: remainder_and_consequence — relation: <stable label>
+        — resolution-scope: local_distinction|revised_position|continuing_mediation|complete_resolution_claim|unsettled
+        — remainder: <acknowledged limit or evidenced challenge> — consequence: <scoped and modal conclusion>
+        — text-or-reader: <paper, attributed view, or proposed test>
+        — anchor: "<claimed result or limit>" — doc: <key> — anchor-b: "<resisting or qualifying passage, if available>" — doc-b: <key>
+        — confidence: high|medium|low
+      method_card: |-
+        Preserve a remainder without inventing one. Read the conclusion and its qualifications together;
+        an account of continuing fragility need not promise final reconciliation. Keep risk, necessity,
+        possibility and actuality distinct. A missing implementation program does not refute a limited
+        conceptual result. Explain the concrete unresolved burden and whose burden it is.
+      indicators: ['remains', 'even when', 'threat', 'cannot settle', 'beyond the scope']
+    - key: relations_across_texts
+      id_prefix: DX6
+      name: The same relation under different arguments and stages
+      scope: corpus
+      load_bearing: false
+      questions:
+        - Which documents address a comparable relation, and which owners, objects, modalities and argumentative stages make the comparison warranted? Shared terminology alone is insufficient.
+        - Does the second treatment retain, qualify, revise or refuse a position or response? Can more than one relation hold, such as continuity with a changed argumentative use?
+        - Does an apparent incompatibility survive each text's qualifications? Distinguish opposing claims from changed questions, local versus social scope, or enabling conditions versus sufficient outcomes.
+        - "What establishes chronology or uptake: composition and edition information, an explicit reference, or only resemblance? State the limit; input order and shared year do not establish development."
+      answer_shape: >-
+        [DX6.F<n>] <relation and response in each text> — dim: relations_across_texts
+        — relation: <stable label> — comparison: continuity|qualification|revision|refusal|scoped_difference|incompatibility|unsettled
+        — comparable-scope: <owners, objects, modalities and stages> — uptake-basis: <explicit link, dated order, or resemblance only>
+        — anchor: "<verbatim A>" — doc: <A> — anchor-b: "<verbatim B>" — doc-b: <B>
+        — confidence: high|medium|low
+      method_card: |-
+        Establish each text's local position before drawing a relation across them. Always retain two
+        complete anchors with different doc keys, including in descendants and synthesis. Compare the
+        argument attached to a term, not its spelling alone. Distinguish local technical competence from
+        global neutrality, opposition from an unintended enabling effect, and selective uptake from
+        conversion. A claim of omission needs inspected scope and cannot be proved by two snippets.
+      indicators: ['explicit self-citation', 'revised application', 'shared object with changed scope', 'dated editions']
+  steps:
+    - key: extract
+      kind: extract
+      parallel_over: dimension_x_document
+      model_tier: cheap
+      output: ledger
+      max_rows: 16
+    - key: verify
+      kind: verify
+      consumes: [extract]
+      model_tier: mid
+      output: ledger
+      duties:
+        - |-
+            Judge the warrant actually offered: conceptual, interpretive, causal, historical or normative.
+            Lack of empirical evidence is not by itself a defect in a conceptual argument.
+            An analyst's ranking or reconstruction needs anchored grounds and explicit inferential
+            status; the exact analytical label need not occur in the source. Distinguish a discussed
+            alternative or disanalogy that is inadequately answered from one that is absent.
+            Test a proposed counterexample against the actual quantified and modal claim, preserving
+            its conditions and the distinctions between possibility, necessity and probability.
+        - check_anchors_in_context
+        - reject_biography
+        - Check both attributed formulations and their qualifications before confirming an incompatibility; a performative conflict needs its act and characterization, and a practical tension need not be a contradiction.
+        - Test the warrant for the proposed transition and any claim that losing one route defeats the conclusion; inspect independent grounds before confirming a casualty.
+        - merge_duplicates
+        - hunt_misses
+        - Name the supported must-keep finding IDs and why; do not invent findings to reach a numerical quota. Preserve full source-qualified IDs and both anchors on corpus descendants.
+    - key: synthesize
+      kind: synthesize
+      consumes: [verify]
+      model_tier: strong
+      output: prose_ledger
+      is_final: true
+      reader: a reader assessing how an argument handles opposed positions and whether its response is justified
+      tables: [relations, transitions, remainders]
+      brief: |-
+        Keep canonical finding IDs consistent in prose and the final ledger. If final IDs change,
+        cite those final IDs throughout and preserve the original IDs in from fields. Keep two
+        source-keyed anchors on every corpus relation and its descendants.
+        1. Lead with the central supported relation and the paper's response, at its actual scope.
+           Explain whether it is a contradiction, performative conflict, practical tension or a
+           distinction allowing compatibility. Do not manufacture a hidden contradiction.
+        2. Present the positions and their owners, with the qualifications that make the relation
+           intelligible. For a corpus, give each document's local argument briefly before the comparison.
+        3. Follow the response: what changes, what is retained, and which premise warrants the move.
+           Separate failure of a starting formulation from proof of this particular successor.
+        4. Test dependence and self-application where they matter. Preserve coherent selective
+           appropriation and identify independent routes that survive a challenged premise.
+        5. State what remains, the consequence supported, and the strongest unresolved question.
+           Continuing mediation may be the result; do not replace it with a promised final synthesis.
+        6. For a corpus, trace the evidenced continuity, qualification or change, retaining both
+           sources and explicit limits on chronology and uptake. Do not force a development narrative.
+        Tables: relations lists positions, owners, scope and relation type; transitions lists response,
+        retained and changed elements, warrant and affected route; remainders lists resolution scope,
+        remaining burden, consequence and text-versus-reader status. Each row names its finding IDs.
+        If the proposed scoped-outcome route applies, its separate report must state the search,
+        inspected scope, negative or inconclusive result, review state and uncertainty. Do not create
+        normal findings or tables merely to fill the positive-output template. This route requires
+        the pending runtime contract identified in candidate metadata.

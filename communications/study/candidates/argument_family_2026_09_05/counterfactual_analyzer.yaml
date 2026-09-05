@@ -1,0 +1,302 @@
+# DESIGN CANDIDATE ONLY. Not a registry definition or an executable approval.
+engine_key: counterfactual_analyzer
+engine_name: Counterfactual Analyzer
+candidate_metadata:
+  status: unregistered_validation_candidate
+  prepared_on: '2026-09-05'
+  reader_question: What is being varied or granted, what is held fixed, and which conclusion actually depends on that supposition?
+  baseline: src/engines/capability_definitions/counterfactual_analyzer.yaml (preserve unchanged)
+  runtime_support: supported_opt_in_unregistered
+  scope_outcome_notes:
+    storage: separate outcome record; never a fabricated normal findings row
+    analytical_outcomes: [findings_present, no_relevant_instance, inconclusive]
+    required_fields: [document_keys, dimension_key, outcome, sections_inspected, coverage, criterion, basis, limitations, finding_ids, review_state, review_basis]
+    assessment_note: Report every dispatched scope; describe actual inspection in sections_inspected and coverage. Put any nearest candidate and its rejection reason in basis/limitations, not in an invented negative ledger row.
+    review_states: [unchecked, supported_within_stated_scope, disputed]
+    separate_execution_fields: [scope_identity_validated, invocation_partial, invocation_stop_reason, invocation_error, source_access, blocking_issues]
+    eligibility: |-
+      A supposition qualifies when varying, granting or assuming a condition performs an
+      identifiable inferential task. Include explicit counterfactuals, open conditionals,
+      even-if concessions, reductios and justified reconstructions of dependency, while keeping
+      those forms distinct. Every causal sentence is not automatically a necessary but-for claim.
+      No explicit counterfactual wording is narrower than no relevant supposition. Do not create
+      an analyst's arbitrary scenario merely to avoid a negative finding.
+    review_requirement: |-
+      When checking is requested, review the reasoned negative claim against the source, scope
+      and eligibility criterion even if it has no ordinary rows. Zero parsed rows, missing text,
+      or all quotes failing cannot establish absence. Rejection of all candidates supports a
+      negative outcome only if the scope and reasons justify it; otherwise report inconclusive.
+      A nearby quotation may locate an excluded candidate, not prove universal absence.
+    mixed_corpus_requirement: |-
+      Preserve each document's positive, negative and inconclusive outcome. Report a missing
+      comparison separately from missing document-level suppositions. Shared vocabulary does
+      not supply a corpus relation, and one silent document cannot disappear from coverage.
+  launch_blockers:
+    - Freeze this unregistered candidate and the accepted runtime in a separate no-call validation manifest.
+    - Complete source-aware candidate review, explicit absence/mixed-scope controls, and both-order judging under a newly authorized budget.
+    - Validate the generated outputs and desk source/lineage contract before any production registration.
+  ledger_contract: |-
+    Write complete JSON string anchors and escape internal double quotes. Preserve exact source
+    keys. Quote both the supposition and the conclusion or warrant when separate passages carry
+    them. Omit optional secondary anchor/doc fields if no second passage is needed or available;
+    never invent a fixed condition to fill a slot. Every corpus comparison requires complete
+    anchors from two distinct doc keys, preserved in final descendants. Use one stable scenario
+    label across related rows; cite only full canonical finding IDs. Source membership does not
+    establish causal dependence, conceptual necessity or correct attribution.
+
+stance_operationalizations: []
+depth_sequences:
+  - depth_key: surface
+    mode: oneshot
+    passes: []
+  - depth_key: standard
+    mode: oneshot_checked
+    passes: []
+  - depth_key: deep
+    mode: dvs
+    passes: []
+  - depth_key: dvs
+    process: dvs
+    passes: []
+process:
+  key: dvs
+  description: |-
+    Reconstruct the suppositions doing argumentative work in the supplied text. Distinguish
+    counterfactual, conditional, concessive, reductio and reconstructed dependency uses. Preserve
+    the antecedent's status, the conclusion's modal force, and each speaker's commitment.
+    Test fixed and changed conditions and the appropriate inferential warrant. Removing one
+    premise may defeat a formulation or route while leaving independent support intact.
+  framing: |-
+    Examine the suppositions that do argumentative work in the text, if any. Distinguish an
+    explicit counterfactual, an open conditional, an even-if concession, a reductio, and an
+    analyst's reconstruction of a dependency. Preserve who makes the supposition, what is
+    varied or granted, what is held fixed, and what conclusion is claimed. Assess the
+    connecting warrant appropriate to the case: conceptual, causal, historical, or normative.
+    Identify additional assumptions and independent support that survives their removal.
+    Report no relevant instance when the inspected material supports that conclusion,
+    stating the scope and limits of the search.
+
+    Eligibility:
+    A supposition qualifies when varying, granting or assuming a condition performs an
+    identifiable inferential task. Include explicit counterfactuals, open conditionals,
+    even-if concessions, reductios and justified reconstructions of dependency, while keeping
+    those forms distinct. Every causal sentence is not automatically a necessary but-for claim.
+    No explicit counterfactual wording is narrower than no relevant supposition. Do not create
+    an analyst's arbitrary scenario merely to avoid a negative finding.
+  scoped_outcomes: true
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+    - key: supposition_and_function
+      id_prefix: CF1
+      name: The supposition, its owner and its inferential task
+      scope: document
+      load_bearing: true
+      questions:
+        - What antecedent is varied, denied, left open or provisionally granted, and what consequent is claimed? Quote the conditional wording and preserve its modal force.
+        - Is this an explicit counterfactual, an open conditional, an even-if concession, a reductio, or an analyst's reconstruction? Explain the classification from the passage rather than from the word if alone.
+        - Who undertakes the supposition here, and what is its task? Distinguish the paper's commitment from an interpreted thinker's position, an opponent's premise and an assumption adopted only for argument.
+        - Is the conclusion asserted only under that supposition? Before alleging strength drift elsewhere, check that the comparison concerns the same proposition under the same antecedent.
+      answer_shape: >-
+        [CF1.F<n>] <supposition and argumentative task> — dim: supposition_and_function
+        — scenario: <stable scenario label> — kind: counterfactual|open_conditional|even_if|reductio|reconstructed_dependency
+        — owner: <speaker and endorsement status> — antecedent: <condition and denied, open or granted status>
+        — consequent: <claim with modal strength> — function: <causal, conceptual, historical, normative or robustness task>
+        — anchor: "<supposition passage>" — doc: <key> — anchor-b: "<separate consequent or attribution passage, if needed>" — doc-b: <key>
+        — confidence: high|medium|low
+      method_card: |-
+        Start with the inferential use, not an alternate-history template. An even-if concession can
+        establish a requirement that survives granting an antecedent without asserting that antecedent
+        is actual or possible. A reductio can deliberately assume what the argument rejects. Mark a
+        reconstructed dependence as the analyst's formulation and cite the textual route it reconstructs;
+        a causal attribution alone does not establish that removing this cause removes every possible route.
+      indicators: ['if', 'even if', 'suppose', 'without', 'otherwise', 'for the sake of argument']
+    - key: fixed_and_changed_conditions
+      id_prefix: CF2
+      name: What is varied, what remains fixed and what is added
+      scope: document
+      load_bearing: true
+      questions:
+        - What does the text explicitly hold fixed while varying or granting the antecedent? Distinguish stated background conditions from assumptions reconstructed by the analyst.
+        - Which further changes follow from the supposition, and which are additional premises needed to obtain the proposed result? Identify the textual warrant or state that it is not supplied.
+        - Does the scenario require incompatible fixed conditions, or is the apparent incompatibility the deliberate object of a reductio or conceptual limit test?
+        - For a historical or causal scenario, what earlier conditions would have to differ and does the text disclose them? For a conceptual or normative scenario, what commitments define the permissible contrast?
+      answer_shape: >-
+        [CF2.F<n>] <the scenario's fixed and changed conditions and their adequacy> — dim: fixed_and_changed_conditions
+        — scenario: <stable label> — changed: <antecedent and required consequences> — held-fixed: <stated conditions or not specified>
+        — additional-assumption: <extra premise or none established> — basis: stated|reconstructed|unsettled
+        — consistency: compatible|conflict|deliberate_reductio|unsettled
+        — anchor: "<condition-changing passage>" — doc: <key> — anchor-b: "<background or limiting passage, if available>" — doc-b: <key>
+        — confidence: high|medium|low
+      method_card: |-
+        Audit the contrast actually used. Separate what must change to make the antecedent hold from
+        extra changes introduced to secure the conclusion. Apply historical backtracking and similarity
+        questions where the scenario has that temporal structure; do not require them of a conceptual
+        dependency test. Compatibility is not enough to show that a background condition should remain
+        fixed. Conversely, deliberate inconsistency in a reductio is not an unnoticed scenario error.
+      indicators: ['all else', 'still', 'regardless', 'assume', 'under these conditions']
+    - key: inferential_path
+      id_prefix: CF3
+      name: The warrant from supposition to result
+      scope: document
+      load_bearing: true
+      questions:
+        - What connects antecedent to consequent here? Identify a conceptual requirement, definition, causal mechanism, historical regularity, normative premise or cited argument, and the passage doing that work.
+        - Which steps are stated and which are reconstructed? Does restating the consequent answer the dependency question, or is a connecting premise still required?
+        - Does the support establish necessity, possibility, tendency or a result conditional on further premises? Preserve necessary vulnerability separately from inevitable realization and risk separately from actual occurrence.
+        - What scope does the warrant support, and what competing or independent route does the text itself supply? Do not reverse a sufficient argument into a necessary condition of accepting its conclusion.
+      answer_shape: >-
+        [CF3.F<n>] <the supported link and its limits> — dim: inferential_path — scenario: <stable label>
+        — warrant-kind: conceptual|definitional|causal|historical|normative|cited_argument|mixed
+        — link: <antecedent through bridge to consequent> — bridge-status: stated|reconstructed|unsettled
+        — support-strength: necessary|possible|tendency|conditional|underdetermined
+        — scope: <objects and additional conditions>
+        — anchor: "<claimed link>" — doc: <key> — anchor-b: "<support or qualification, if separate>" — doc-b: <key>
+        — confidence: high|medium|low
+      method_card: |-
+        Make the bridge inspectable and apply the standard appropriate to its task. A hypothetical
+        counterexample need not report observed frequencies; an assertion about actual historical
+        reception does need evidence of that occurrence. Do not assign numerical probabilities without
+        a supplied basis. Keep structural claims, illustrations and empirical premises separate. A paper's
+        argument for a conclusion is one route until it establishes why alternatives cannot support it.
+      indicators: ['would therefore', 'requires', 'only if', 'might', 'tends to', 'because']
+    - key: alternatives_and_scope
+      id_prefix: CF4
+      name: Relevant alternatives and the scope of comparison
+      scope: document
+      load_bearing: false
+      questions:
+        - What alternative case or interpretation does the text consider under a comparable supposition, and what makes it relevant to this consequent?
+        - Do different results arise because a background condition, object, modal force or argumentative task changed? Quote both cases and identify the difference before calling them inconsistent.
+        - For a historical comparison, what warrants the similarity ordering and treatment of earlier causes? For a conceptual comparison, which disputed commitments must remain in place for the test to bear on the argument?
+        - If an alternative is the analyst's proposed test, what textual premise makes it discriminating, and what would need further evidence? Do not present an invented scenario as one the paper claims.
+      answer_shape: >-
+        [CF4.F<n>] <alternative and what the comparison tests> — dim: alternatives_and_scope — scenario: <stable label>
+        — alternative: <case or interpretation> — origin: in_text|analyst_test
+        — relevant-similarity: <shared conditions> — scope-difference: <changed object, background, modality or task>
+        — result: supports|qualifies|challenges|does_not_discriminate|unsettled
+        — anchor: "<original scenario or tested premise>" — doc: <key>
+        — anchor-b: "<textual alternative or limiting passage, if available>" — doc-b: <key>
+        — confidence: high|medium|low
+      method_card: |-
+        Compare the same proposition under controlled qualifications. The failure of a negative critique
+        and the plausibility of a conditional constructive proposal are different targets. Start from
+        alternatives available in the text. A proposed test can be useful without becoming source evidence;
+        label it and anchor the premise it tests, not imaginary dialogue. Do not select a closest world
+        or historical probability by intuition and report it as an established fact.
+      indicators: ['by contrast', 'another possibility', 'unless', 'on a different reading', 'in that case']
+    - key: survival_and_robustness
+      id_prefix: CF5
+      name: What loses support and what survives
+      scope: document
+      load_bearing: true
+      questions:
+        - "If a disputed premise or additional change is withdrawn, what exactly loses support: this wording, this derivation, a stronger modal conclusion, or every route to the result?"
+        - What independent conceptual, empirical or normative grounds does the text offer for the same conclusion? Test them rather than treating the most prominent route as indispensable.
+        - Does a criticism remain intact if the paper's constructive alternative fails? Conversely, does failure of one criticism answer other independently developed objections?
+        - What is the weakest surviving conclusion and its conditions? State when a subtraction is the text's explicit argument, an analyst reconstruction, or a test the available material cannot settle.
+      answer_shape: >-
+        [CF5.F<n>] <withdrawal and the conclusion it actually leaves> — dim: survival_and_robustness — scenario: <stable label>
+        — withdrawn: <premise or extra change> — affected-route: <specific formulation or derivation>
+        — surviving-route: <separate support or not established> — conclusion-strength: unchanged|narrowed|this_route_defeated|all_routes_defeated_with_basis|unsettled
+        — origin: text|analyst_reconstruction|proposed_test
+        — anchor: "<withdrawn premise or affected route>" — doc: <key>
+        — anchor-b: "<independent support or qualification, if available>" — doc-b: <key>
+        — confidence: high|medium|low
+      method_card: |-
+        Remove one premise at a time while holding the remaining argument explicit. Distinguish a
+        resource that the author uses from a commitment every accepter must undertake. Separate the
+        identity of a theory from the adequacy of a revised descendant, and conceptual reconstruction
+        from independently supplied history. Do not invent a casualty: a route can fail while the
+        conclusion remains supported. No further support found is scoped to the inspected material.
+      indicators: ['even without', 'independently', 'whether or not', 'sufficient reason', 'remains valid']
+    - key: suppositions_across_texts
+      id_prefix: CX6
+      name: Comparable suppositions and changing inferential roles
+      scope: corpus
+      load_bearing: false
+      questions:
+        - Do two documents vary or grant the same condition under comparable background assumptions? Identify the shared variable and each text's inferential task before comparing outcomes.
+        - Does one text deny an antecedent that another merely grants for argument, or do they genuinely make competing assertions about the same scenario? Preserve each owner's commitment.
+        - Which result changes because the mechanism, object, scope or background changes, and which result remains robust? Do not infer revision from a shared conditional phrase alone.
+        - What supports chronology or transmission between the texts, and what is only a useful comparison? A shared year or input order cannot establish an intellectual development.
+      answer_shape: >-
+        [CX6.F<n>] <the comparable supposition and its role in each text> — dim: suppositions_across_texts
+        — shared-variable: <condition compared> — background: <comparable and changed assumptions>
+        — antecedent-status: <denied, open or granted in each text> — relation: continuity|changed_role|qualified_result|different_scope|incompatibility|unsettled
+        — uptake-basis: <explicit link, dated order, or comparison only>
+        — anchor: "<verbatim A>" — doc: <A> — anchor-b: "<verbatim B>" — doc-b: <B>
+        — confidence: high|medium|low
+      method_card: |-
+        Keep the two local arguments intact. An antecedent granted to test robustness is not an
+        empirical endorsement that can simply contradict another text's historical denial. Trace changes
+        in inferential use separately from changes in belief. Retain complete paired anchors and doc
+        keys in every corpus descendant. Do not manufacture an alternative history, continuity or
+        retraction to make the texts form a sequence. Report comparison limits and unsupported links.
+      indicators: ['same supposition with another function', 'repeated concession', 'explicit revision', 'different background assumptions']
+  steps:
+    - key: extract
+      kind: extract
+      parallel_over: dimension_x_document
+      model_tier: cheap
+      output: ledger
+      max_rows: 16
+    - key: verify
+      kind: verify
+      consumes: [extract]
+      model_tier: mid
+      output: ledger
+      duties:
+        - |-
+            Judge the warrant actually offered: conceptual, interpretive, causal, historical or normative.
+            Lack of empirical evidence is not by itself a defect in a conceptual argument.
+            An analyst's ranking or reconstruction needs anchored grounds and explicit inferential
+            status; the exact analytical label need not occur in the source. Distinguish a discussed
+            alternative or disanalogy that is inadequately answered from one that is absent.
+            Test a proposed counterexample against the actual quantified and modal claim, preserving
+            its conditions and the distinctions between possibility, necessity and probability.
+        - check_anchors_in_context
+        - reject_biography
+        - Check the supposition's owner, denied or granted status, fixed conditions and modal consequent; do not convert an even-if grant into an assertion of actuality or necessity.
+        - Test each claimed dependency against alternative argument routes and qualifications. A rejected route need not defeat the conclusion, and a stated consequent is not its own warrant.
+        - merge_duplicates
+        - hunt_misses
+        - Name only supported must-keep finding IDs and why; do not add scenarios to meet a numerical quota. Preserve full source-qualified IDs and both anchors on corpus descendants.
+    - key: synthesize
+      kind: synthesize
+      consumes: [verify]
+      model_tier: strong
+      output: prose_ledger
+      is_final: true
+      reader: a reader deciding which suppositions carry an argument and how much survives if they change
+      tables: [scenarios, dependencies, robustness]
+      brief: |-
+        Keep canonical finding IDs consistent in prose and the final ledger. If final IDs change,
+        use them in every prose citation and preserve original IDs in from fields. Every corpus
+        comparison and descendant retains complete anchors from both source keys.
+        1. State the most consequential supported supposition and what it tests. Give a compact
+           inventory distinguishing counterfactuals, open conditionals, concessions, reductios and
+           analyst reconstructions, with each owner's actual commitment and the consequent's modality.
+        2. Explain what is varied or granted and what remains fixed. Expose additional assumptions
+           without requiring an alternate history when the argument is conceptual or normative.
+        3. Trace the inferential bridge, its supporting passage and the missing step if one remains.
+           Distinguish necessity, vulnerability, tendency and possibility; retain limiting conditions.
+        4. Examine the strongest relevant alternative under comparable conditions. State when the
+           comparison changes the object or background, and mark a reader's proposed test as such.
+        5. Withdraw the disputed premise or extra change and show the surviving argument. Separate
+           losing a formulation, losing a route and losing every route; preserve independent grounds
+           and distinguish the paper's criticism from the success of its constructive alternative.
+        6. For a corpus, establish each document's scenario and then compare shared conditions,
+           changed roles and qualified outcomes. Keep all source outcomes visible and qualify claims
+           of chronology or uptake. End with what the material settles and the one unresolved test
+           that matters most, without inventing a probability or a required casualty.
+        Tables: scenarios lists owner, kind, antecedent status, consequent and function; dependencies
+        lists changed and fixed conditions, bridge and supported scope; robustness lists withdrawn
+        premise, affected route, independent support and surviving conclusion. Name finding IDs in
+        every row; omit a table that has no supported material rather than populating it speculatively.
+        A scoped negative or inconclusive outcome requires the separate proposed outcome report:
+        what was sought, what was inspected, why no relevant instance was retained, review state
+        and limits. No fabricated normal ledger or scenario is permitted. This route awaits the
+        runtime contract identified in candidate metadata.

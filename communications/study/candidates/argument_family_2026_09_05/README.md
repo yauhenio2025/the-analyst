@@ -1,0 +1,33 @@
+# Argument-family candidates, 2026-09-05
+
+These are **unregistered validation candidates**, not production definitions, a certification, or another study. No model calls were made. The original capability and production definitions remain unchanged.
+
+| Candidate | Reader's task | Document dimensions | Corpus dimension |
+|---|---|---|---|
+| [Dialectical Structure Mapper](dialectical_structure.yaml) | Reconstruct an organizing opposition, its treatment, the warrant for the response and what remains. | DS1 positions/attribution; DS2 kind of opposition; DS3 response/transition; DS4 dependence/self-application; DS5 remainder/consequence | DX6 relations across texts |
+| [Counterfactual Analyzer](counterfactual_analyzer.yaml) | Identify what is varied or granted, what remains fixed, and which conclusion depends on that supposition. | CF1 supposition/function; CF2 fixed/changed conditions; CF3 inferential path; CF4 alternatives/scope; CF5 survival/robustness | CX6 suppositions across texts |
+
+Each has five document dimensions and one corpus dimension, with questions, method cards, indicators and explicit row shapes. The proposed modes follow the current four-engine process: surface `oneshot`, standard `oneshot_checked`, deep `dvs`; Luna extracts, DeepSeek V4 Pro checks, and Sol reads/synthesizes. These are copied routing choices, not new comparative evidence. `load_bearing` marks priority; it does not imply that the current surface composer filters out the other document cards. Document iteration keeps the existing per-document namespaces. Corpus rows and descendants retain two complete anchors with different original source keys.
+
+The drafts keep author commitments distinct from reported philosophers, objections and provisional grants. They require scope and modal qualifications before alleging incompatibility or a change in strength. Losing one derivation is separated from losing every route to a conclusion. Same-document second anchors are used when separate passages carry the comparison; unused anchor/doc pairs must be omitted, not populated with placeholders. Tables name canonical finding IDs and cannot introduce unsupported claims.
+
+The neutral framing and eligibility criteria now live in the supported `process.framing`, with `process.scoped_outcomes: true`. The accepted [runtime implementation](../../IMPLEMENT_argument_family_SCOPED_OUTCOMES_2026-09-05.md) replaces the inherited capability opening, permits an empty ledger, reviews scoped negative claims when checking is requested, and preserves positive/negative/inconclusive scopes through deep and mixed-corpus synthesis. The accepted implementation passed 235 focused tests, including 68 unchanged production prompt hashes. These tests establish runtime behavior, not either candidate's analytical quality.
+
+`candidate_metadata.scope_outcome_notes` preserves the intended assessment policy for reviewers. It is documentary metadata, not another executable schema. Eligibility is folded into the actual process framing; no metadata default silently enables the process. Every negative assessment is limited to its reported inspected sections; lost anchors, malformed extraction and missing source cannot themselves establish absence. The explicit framing and scope contract must enter the future frozen prompt identity.
+
+Both verify cards now distinguish conceptual, interpretive, causal and historical warrants, allow anchored analyst reconstructions whose labels are not source quotations, distinguish an inadequately discussed alternative from an absent one, and test counterexamples against the actual quantified/modal claim. This is general methodological guidance, with no paper-specific examples supplied to models.
+
+The next step is the separate [no-call validation plan](../../VALIDATION_argument_family_2026-09-05.md): an original-capability baseline and checked candidate, source-aware Sonnet judgments in both orders, same-author corpora and explicit absence/mixed-scope controls. The plan does not launch calls or extend the existing held-out trial's USD 6 scope. **Neither file belongs in the production registry until the separate validation and exposure review are accepted.**
+
+The concrete questions follow the [preparation plan](../../REDESIGN_argument_family_PREPARATION_2026-09-05.md), the completed [conditions](../../STUDY_ideas_CONDITIONS_MEMO_2026-09-05.md), [argument](../../STUDY_ideas_ARGUMENT_MEMO_2026-09-05.md), [commitment](../../STUDY_ideas_COMMITMENT_MEMO_2026-09-05.md), and [epistemology](../../STUDY_ideas_EPISTEMOLOGY_MEMO_2026-09-05.md) memos, and the [corpus source notes](../../STUDY_ideas_CORPUS_READING_NOTES_2026-09-05.md). Review cases remain here, outside the question prompts:
+
+- Ganzinger: distinguish act/concept conflict from sentential contradiction; test the transition from original emptiness to derived unity without treating different stages as an automatic inconsistency.
+- Elling: distinguish necessary vulnerability from inevitable submission; preserve the even-if grant and continuing mediation without asserting that the historical antecedent holds.
+- Zambrana: test method/application separation and mediated attribution; retain independent historical grounds when evaluating a philosophical reconstruction.
+- Harris: distinguish the monism-dependent route from objections to recognition's primacy that could survive it.
+- Chen: compare modal strength only for the same proposition under the same condition; separate a negative critique from its conditional constructive alternative.
+- The existing corpora: check local versus social scope, selective uptake, and changed inferential use before alleging reversal or dependence on an entire framework.
+
+The first two checks derive from [preliminary source notes](../../STUDY_ideas_HELD_OUT_READING_NOTES_2026-09-05.md), not from a held-out output verdict. These cases guide later review; they are not an answer key. A later authorized comparison must include material with no relevant instance and must assess the scoped-outcome contract separately from ordinary anchor membership.
+
+Offline preparation checks parse both YAMLs, verify the five-plus-one scope and namespace structure, and validate that both actual process fields survive schema loading and enter every composed prompt. They make no semantic-quality or production-readiness claim.
