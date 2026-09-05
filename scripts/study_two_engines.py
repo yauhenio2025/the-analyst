@@ -21,7 +21,7 @@ from src.llm.client import parse_llm_json_response  # noqa: E402
 from src.operationalizations.registry import get_operationalization_registry  # noqa: E402
 from src.stages.process_composer import ANCHORING_LAW, LEDGER_HEADING  # noqa: E402
 
-OUT = ROOT / "data/study/v4_two_engines"; (OUT / "outputs").mkdir(parents=True, exist_ok=True)
+OUT = ROOT / "data/study/v4_two_engines"
 PAPERS = {"aukus": ROOT / "data/study/source_aukus.txt", "subsea": ROOT / "data/study/source_subsea.txt"}
 ENGINES = ("inferential_commitment_mapper", "epistemological_method_detector")
 MODEL = "openrouter/openai/gpt-5.6-sol"; JUDGE = "claude-sonnet-4-6"; lock = threading.Lock()
@@ -108,6 +108,7 @@ def report(results, J):
     (OUT / "REPORT.md").write_text("\n".join(lines)); log("wrote", OUT / "REPORT.md")
 
 if __name__ == "__main__":
+    (OUT / "outputs").mkdir(parents=True, exist_ok=True)
     sources = {p: PAPERS[p].read_text(encoding="utf-8", errors="replace") for p in PAPERS}
     results = load(OUT / "results.json", {}); J = load(OUT / "judgments.json", [])
     specs = [(e, p, c) for e in ENGINES for p in PAPERS for c in ("old", "new")]

@@ -33,6 +33,13 @@ TEXT_NOT_AUTHORS = (
     "`provenance: hypothesis` and keep the sentence about the text."
 )
 
+CORPUS_ANCHORS = (
+    "**Corpus anchors**: preserve every anchor/document pair through verification and synthesis. A cross-document "
+    "row requires at least two distinct source keys: `anchor: \"<quote A>\" — doc: <A> — "
+    "anchor-b: \"<quote B>\" — doc-b: <B>`. For further documents use anchor-c/doc-c, and so on. "
+    "Code verifies each quote only in its named document. Keep the corpus dimension key on these rows."
+)
+
 
 class ProcessPrompt(BaseModel):
     """A composed prompt for one step invocation."""
@@ -54,6 +61,11 @@ def dim_prefix(dim: ProcessDimension) -> str:
     return dim.id_prefix or dim.key.upper()
 
 
+def document_prefix(prefix: str, documents: dict[str, str], doc_key: str) -> str:
+    """A stable per-input ordinal keeps findings and critic additions unique across documents."""
+    return f"{prefix}.DOC{list(documents).index(doc_key) + 1}" if len(documents) > 1 and doc_key else prefix
+
+
 def _framing(cap_def, spec: ProcessSpec, title: str) -> str:
     problematique = (getattr(cap_def, "problematique", "") or "").strip()
     first = problematique.split("\n\n")[0].strip() if problematique else ""
@@ -65,8 +77,9 @@ def _framing(cap_def, spec: ProcessSpec, title: str) -> str:
     return "\n".join(lines).rstrip()
 
 
-def _method_card(dim: ProcessDimension) -> str:
-    lines = [f"### {dim.name} (rows `[{dim_prefix(dim)}.F<n>]`)", ""]
+def _method_card(dim: ProcessDimension, prefix: str = "") -> str:
+    prefix = prefix or dim_prefix(dim)
+    lines = [f"### {dim.name} (rows `[{prefix}.F<n>]`)", ""]
     if dim.method_card:
         lines += ["**Method card**", "", dim.method_card.strip(), ""]
     if dim.indicators:
@@ -74,7 +87,7 @@ def _method_card(dim: ProcessDimension) -> str:
     if dim.questions:
         lines += ["**Questions**", ""] + [f"- {q}" for q in dim.questions] + [""]
     if dim.answer_shape:
-        lines += ["**Answer shape**", "", f"`{dim.answer_shape.strip()}`", ""]
+        lines += ["**Answer shape**", "", f"`{dim.answer_shape.strip().replace(dim_prefix(dim) + '.F', prefix + '.F')}`", ""]
     return "\n".join(lines).rstrip()
 
 
@@ -93,7 +106,7 @@ def compose_extract_prompt(
     *, doc_key: str = "", prior_ledgers: str = "",
 ) -> ProcessPrompt:
     """One dimension, one document (or, for corpus dimensions, the per-document ledgers)."""
-    prefix = dim_prefix(dim)
+    prefix = document_prefix(dim_prefix(dim), documents, doc_key)
     rows_hint = f"8 to {step.max_rows}" if step.max_rows > 8 else str(step.max_rows)
     corpus_dim = dim.scope == "corpus"
     sections = [
@@ -108,14 +121,16 @@ def compose_extract_prompt(
             "and return only a findings ledger of cross-document findings. Every row carries one anchor "
             "from each document it relates, with its [doc_key]."
         ),
-        _method_card(dim),
+        _method_card(dim, prefix),
         ANCHORING_LAW,
+        CORPUS_ANCHORS if corpus_dim else "",
         TEXT_NOT_AUTHORS,
         "## Output (exactly this, nothing before it)",
         "\n".join([
             LEDGER_HEADING,
             f"- [{prefix}.F1] <the finding in one sentence> — dim: {dim.key} — anchor: \"<verbatim quote>\""
             + (" — doc: <doc_key>" if len(documents) > 1 else "")
+            + (' — anchor-b: "<verbatim quote from another document>" — doc-b: <other_doc_key>' if corpus_dim else "")
             + " — <the typed fields of the answer shape> — confidence: high|medium|low",
             f"- [{prefix}.F2] …",
             f"({rows_hint} rows, ids consecutive; one finding per row; the typed fields follow the answer shape above)",
@@ -188,10 +203,13 @@ def compose_verify_prompt(
     *, doc_key: str = "",
 ) -> ProcessPrompt:
     duties = step.duties or ["check_anchors_in_context", "merge_duplicates", "hunt_misses", "name_must_keep"]
+    prefix = document_prefix("V", documents, doc_key)
+    if len(documents) > 1 and not doc_key:
+        prefix = "V.CORPUS"
     duty_lines = []
     for i, d in enumerate(duties, 1):
-        duty_lines.append(f"{i}. {DUTY_TEXT.get(d, d)}")
-    cards = "\n\n".join(_method_card(d) for d in spec.dimensions if d.scope == "document" or len(documents) > 1)
+        duty_lines.append(f"{i}. {DUTY_TEXT.get(d, d).replace('V.F', prefix + '.F')}")
+    cards = "\n\n".join(_method_card(d) for d in spec.dimensions if d.scope == "document" or (len(documents) > 1 and not doc_key))
     sections = [
         _framing(cap_def, spec, "verification"),
         "## Your task",
@@ -204,6 +222,7 @@ def compose_verify_prompt(
         "## The dimensions the extractions answered",
         cards,
         ANCHORING_LAW,
+        CORPUS_ANCHORS if len(documents) > 1 else "",
         TEXT_NOT_AUTHORS,
         "## Output (exactly this, nothing before it)",
         "\n".join([
@@ -211,7 +230,10 @@ def compose_verify_prompt(
             "- [<original id>] <finding, rewritten if weakened> — dim: <key> — anchor: \"<verbatim>\""
             + (" — doc: <doc_key>" if len(documents) > 1 else "")
             + " — <typed fields kept> — status: confirmed|weakened|rejected — reason: <one line> — confidence: high|medium|low",
-            "- [V.F1] <a miss> — dim: <key> — anchor: \"<verbatim>\" — status: added — confidence: …",
+            f'- [{prefix}.F1] <a miss> — dim: <key> — anchor: "<verbatim>"'
+            + (" — doc: <doc_key>" if len(documents) > 1 else "") + " — status: added — confidence: …",
+            '(For cross-document rows keep both `anchor: "<A>" — doc: <A> — anchor-b: "<B>" — doc-b: <B>`.)'
+            if len(documents) > 1 and not doc_key else "",
             "(every input row appears once with a status; rejected rows keep their id and reason so the receipt is complete)",
             "### Must keep",
             "- <id>: <why>",
@@ -227,7 +249,7 @@ def compose_verify_prompt(
     return ProcessPrompt(
         engine_key=cap_def.engine_key, step_key=step.key, kind="verify", doc_key=doc_key,
         system=system, user=user, model_tier=step.model_tier,
-        label=f"{cap_def.engine_key} | {step.key}" + (f" | {doc_key}" if doc_key else ""), id_prefix="V",
+        label=f"{cap_def.engine_key} | {step.key}" + (f" | {doc_key}" if doc_key else ""), id_prefix=prefix,
     )
 
 
@@ -256,6 +278,7 @@ def compose_synthesize_prompt(
         "## Method cards (what the tradition asks you to do)",
         cards,
         ANCHORING_LAW,
+        CORPUS_ANCHORS if len(documents) > 1 else "",
         TEXT_NOT_AUTHORS,
         "## Rules",
         "\n".join([
@@ -273,6 +296,8 @@ def compose_synthesize_prompt(
             "- [F1] <finding> — dim: <key> — anchor: \"<verbatim>\""
             + (" — doc: <doc_key>" if len(documents) > 1 else "")
             + " — from: <the row ids it rests on> — confidence: high|medium|low",
+            '(Cross-document rows also retain `anchor-b: "<verbatim B>" — doc-b: <B>` and all further pairs.)'
+            if len(documents) > 1 else "",
             "(renumber F1..Fn in the order the reading uses them; 12-30 rows; every row the reading cites appears here)",
             "### Counter-evidence",
             "- <anchored>",
@@ -310,12 +335,14 @@ def compose_oneshot_prompt(cap_def, spec: ProcessSpec, documents: dict[str, str]
         "## What the reading contains, in order",
         ((final.brief if final else "") or "").strip(),
         ANCHORING_LAW,
+        CORPUS_ANCHORS if len(documents) > 1 else "",
         TEXT_NOT_AUTHORS,
         "## Output",
         "\n".join([
             "The reading (one line of argument, headed sections in the reader's terms, verbatim quotes where the sentence needs them), then:",
             LEDGER_HEADING,
-            "- [F1] <finding> — dim: <key> — anchor: \"<verbatim>\" — confidence: high|medium|low",
+            "- [F1] <finding> — dim: <key> — anchor: \"<verbatim>\""
+            + (" — doc: <doc_key>" if len(documents) > 1 else "") + " — confidence: high|medium|low",
             "(12-30 rows in the order the reading uses them)",
             "### Counter-evidence",
             "### Open questions",

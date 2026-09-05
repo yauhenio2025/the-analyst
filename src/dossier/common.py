@@ -203,6 +203,7 @@ def analysis_ledger(job: DossierJob, docs: Optional[list] = None, max_rows: int 
     """
     from src.executor.context_broker import split_ledger
     from src.executor.ledger_walls import SourceIndex, parse_rows, verify_rows
+    from src.operationalizations.registry import get_operationalization_registry
 
     index = SourceIndex({d.key: d.text for d in docs}) if docs else None
     citable, paraphrased, shown = [], [], 0
@@ -215,18 +216,26 @@ def analysis_ledger(job: DossierJob, docs: Optional[list] = None, max_rows: int 
             ledger = ledger.split(stop)[0]
         rows = parse_rows(ledger)
         if index is not None:
-            verify_rows(rows, index)
+            op = get_operationalization_registry().get(ph.get("engine_key") or "")
+            corpus_dimensions = {d.key for d in op.process.dimensions if d.scope == "corpus"} if op and op.process and len(index.norm) > 1 else set()
+            verify_rows(rows, index, corpus_dimensions=corpus_dimensions)
         label = ph.get("engine_name") or ph.get("engine_key") or f"phase {pn}"
         for r in rows:
             if shown >= max_rows:
                 break
             shown += 1
             if index is None and r.anchor:
-                citable.append(f"- [{r.id}] ({label}) {r.finding} — anchor: \"{r.anchor}\"")
+                anchors = " — ".join(f'anchor{f" [{a.doc}]" if a.doc else ""}: "{a.quote}"' for a in r.anchors)
+                citable.append(f"- [{r.id}] ({label}) {r.finding} — {anchors}")
             elif r.anchor_verified:
-                citable.append(f"- [{r.id}] ({label}) {r.finding} — anchor [{r.anchor_doc}]: \"{r.anchor}\"")
+                anchors = " — ".join(f'anchor [{a.verified_doc}]: "{a.quote}"' for a in r.anchors)
+                citable.append(f"- [{r.id}] ({label}) {r.finding} — {anchors}")
             elif r.anchor:
-                paraphrased.append(f"- [{r.id}] ({label}) {r.finding} — near: \"{r.anchor[:160]}\"")
+                anchors = " — ".join(f'near{f" [{a.doc}]" if a.doc else ""}: "{a.quote[:160]}"' for a in r.anchors)
+                # Preserve the legacy primary `near:` format for single-document findings.
+                if len(r.anchors) == 1:
+                    anchors = f'near: "{r.anchor[:160]}"'
+                paraphrased.append(f"- [{r.id}] ({label}) {r.finding} — {anchors}")
     if not citable and not paraphrased:
         return "(no findings ledger)"
     out = ["FINDINGS LEDGER — what the analysis established, by id. "
@@ -234,7 +243,7 @@ def analysis_ledger(job: DossierJob, docs: Optional[list] = None, max_rows: int 
               if index is not None else "Anchors are as the analysis wrote them (not re-verified here); name the row ids you build on.")]
     out += citable or ["- (no row with a verified anchor)"]
     if paraphrased:
-        out += ["", "Rows whose quote is a paraphrase (cite the finding by id; find the sentence in the document yourself, never copy these quotes):"] + paraphrased
+        out += ["", "Rows whose anchors are unverified or incomplete, including paraphrases (cite the finding by id; find the sentences in the documents yourself, never copy these quotes):"] + paraphrased
     return "\n".join(out)
 
 

@@ -21,7 +21,7 @@ import re
 import time
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
-from typing import Any, Callable, Optional
+from typing import Any, Callable, Iterable, Optional
 
 from src.events.pricing import estimate_cost
 from src.executor.context_broker import split_ledger
@@ -157,11 +157,26 @@ def _ledger_text(content: str) -> str:
     return ledger or content
 
 
+def _require_unique_ids(rows: list[LedgerRow], context: str) -> None:
+    """Ambiguous ids cannot be passed to a critic or synthesis as an evidence reference."""
+    seen, duplicates = set(), set()
+    for row in rows:
+        if row.id in seen:
+            duplicates.add(row.id)
+        seen.add(row.id)
+    if duplicates:
+        raise RuntimeError(f"{context}: duplicate ledger ids: {', '.join(sorted(duplicates))}")
+
+
 def _wall_extraction(sc: StepCall, prompt: ProcessPrompt, index: SourceIndex, call_fn: CallFn, model: str, *,
-                     depth: str, big: bool, cancellation_check, reanchor: bool = True) -> list[LedgerRow]:
+                     depth: str, big: bool, cancellation_check, reanchor: bool = True,
+                     require_cross_document: bool = False) -> list[LedgerRow]:
     """Verify an extraction's anchors; one re-anchor round for the failures; drop what still fails."""
     rows = parse_rows(_ledger_text(sc.content))
-    rep = verify_rows(rows, index)
+    for row in rows:
+        row.doc = row.doc or prompt.doc_key
+        row.dim = row.dim or prompt.dimension_key
+    rep = verify_rows(rows, index, require_cross_document=require_cross_document)
     failed = [r for r in rows if not r.anchor_verified]
     if failed and reanchor:
         req = ProcessPrompt(
@@ -174,19 +189,24 @@ def _wall_extraction(sc: StepCall, prompt: ProcessPrompt, index: SourceIndex, ca
             again = _invoke(call_fn, req, model, depth=depth, big=big, cancellation_check=cancellation_check)
             sc.input_tokens += again.input_tokens; sc.output_tokens += again.output_tokens
             sc.duration_ms += again.duration_ms; sc.cost_usd += again.cost_usd
-            fixed = {r.id: r for r in parse_rows(_ledger_text(again.content))}
-            verify_rows(fixed.values(), index)
+            fixed_rows = parse_rows(_ledger_text(again.content))
+            _require_unique_ids(fixed_rows, f"{prompt.label} re-anchor")
+            fixed = {r.id: r for r in fixed_rows}
+            for row in fixed.values():
+                row.doc = row.doc or prompt.doc_key
+                row.dim = row.dim or prompt.dimension_key
+            verify_rows(fixed.values(), index, require_cross_document=require_cross_document)
             for r in failed:
                 f = fixed.get(r.id)
                 if f and f.anchor_verified:
-                    r.anchor, r.anchor_verified, r.anchor_trimmed, r.anchor_doc = f.anchor, True, f.anchor_trimmed, f.anchor_doc
+                    r.copy_anchors_from(f)
                     r.text = f.text
                     sc.reanchored += 1
         except Exception as exc:  # noqa: BLE001 — the re-anchor round never blocks the run
             logger.warning(f"[{prompt.label}] re-anchor round failed: {exc}")
     kept = [r for r in rows if r.anchor_verified]
     sc.dropped_ids = [r.id for r in rows if not r.anchor_verified]
-    rep2 = verify_rows(kept, index)
+    rep2 = verify_rows(kept, index, require_cross_document=require_cross_document)
     sc.wall = {**rep.as_dict(), "after_reanchor": rep2.as_dict()}
     return kept
 
@@ -217,6 +237,7 @@ def run_process(
     corpus = len(documents) > 1
     doc_dims = [d for d in spec.dimensions if d.scope == "document" and (d.load_bearing or not surface_only_load_bearing)]
     corpus_dims = [d for d in spec.dimensions if d.scope == "corpus"] if corpus else []
+    corpus_dimension_keys = {d.key for d in corpus_dims}
 
     def _cancelled():
         return bool(cancellation_check and cancellation_check())
@@ -251,7 +272,8 @@ def run_process(
             def _do(job):
                 prompt, dk = job
                 sc = _invoke(call_fn, prompt, model, depth=depth, big=big, cancellation_check=cancellation_check)
-                kept = _wall_extraction(sc, prompt, index, call_fn, model, depth=depth, big=big,
+                local_index = SourceIndex({dk: documents[dk]}) if dk else index
+                kept = _wall_extraction(sc, prompt, local_index, call_fn, model, depth=depth, big=big,
                                         cancellation_check=cancellation_check, reanchor=reanchor)
                 for r in kept:
                     r.doc = r.doc or dk
@@ -263,21 +285,24 @@ def run_process(
                 for sc, dk, kept in pool.map(_do, jobs):
                     _record(sc)
                     step_ledgers.setdefault(dk, []).extend(kept)
+            _require_unique_ids([r for rows in step_ledgers.values() for r in rows], f"process {spec.key} extraction")
             # corpus dimensions read the per-document ledgers, not the sources
             if corpus_dims:
                 merged = "\n\n".join(
                     f"## Document [{dk}]\n" + render_rows(rows) for dk, rows in step_ledgers.items()
                 )
                 cjobs = [compose_extract_prompt(cap_def, spec, step, dim, documents, prior_ledgers=merged) for dim in corpus_dims]
+                def _do_corpus(prompt):
+                    sc = _invoke(call_fn, prompt, model, depth=depth, big=big, cancellation_check=cancellation_check)
+                    kept = _wall_extraction(sc, prompt, index, call_fn, model, depth=depth, big=big,
+                                            cancellation_check=cancellation_check, reanchor=reanchor,
+                                            require_cross_document=True)
+                    return sc, kept
                 with ThreadPoolExecutor(max_workers=max(1, min(parallelism, len(cjobs)))) as pool:
-                    for sc in pool.map(lambda p: _invoke(call_fn, p, model, depth=depth, big=big, cancellation_check=cancellation_check), cjobs):
-                        rows = parse_rows(_ledger_text(sc.content))
-                        rep = verify_rows(rows, index)
-                        kept = [r for r in rows if r.anchor_verified]
-                        sc.dropped_ids = [r.id for r in rows if not r.anchor_verified]
-                        sc.wall = rep.as_dict()
+                    for sc, kept in pool.map(_do_corpus, cjobs):
                         _record(sc)
                         step_ledgers.setdefault("", []).extend(kept)
+            _require_unique_ids([r for rows in step_ledgers.values() for r in rows], f"process {spec.key} extraction")
             ledgers[step.key] = step_ledgers
 
         elif step.kind == "verify":
@@ -287,7 +312,7 @@ def run_process(
                 for dk, rows in ledgers.get(ck, {}).items():
                     per_doc.setdefault(dk, []).extend(rows)
             step_ledgers = {}
-            targets = [dk for dk in per_doc.keys() if dk != ""] or [""]
+            targets = [dk for dk in per_doc.keys() if dk != ""] or ([] if corpus else [""])
             for dk in targets:
                 if _cancelled():
                     raise InterruptedError(f"process {spec.key} cancelled during {step.key}")
@@ -298,7 +323,10 @@ def run_process(
                 prompt = compose_verify_prompt(cap_def, spec, step, documents, text, doc_key=dk if corpus else "")
                 sc = _invoke(call_fn, prompt, model, depth=depth, big=big, cancellation_check=cancellation_check)
                 vrows = parse_rows(_ledger_text(sc.content))
-                rep = verify_rows(vrows, index)
+                for row in vrows:
+                    row.doc = row.doc or dk
+                rep = verify_rows(vrows, SourceIndex({dk: documents[dk]}) if dk else index,
+                                  corpus_dimensions=corpus_dimension_keys)
                 known = {r.id for r in rows}
                 # a row the critic did not mention is carried forward as confirmed (the critic's omission is not a rejection)
                 mentioned = {r.id for r in vrows}
@@ -318,9 +346,12 @@ def run_process(
                 prompt = compose_verify_prompt(cap_def, spec, step, documents, text)
                 sc = _invoke(call_fn, prompt, model, depth=depth, big=big, cancellation_check=cancellation_check)
                 vrows = parse_rows(_ledger_text(sc.content))
-                rep = verify_rows(vrows, index)
-                sc.wall = rep.as_dict(); _record(sc)
-                step_ledgers[""] = [r for r in vrows if r.anchor_verified and r.status != "rejected"]
+                rep = verify_rows(vrows, index, require_cross_document=True)
+                mentioned = {r.id for r in vrows}
+                carried = [r for r in per_doc[""] if r.id not in mentioned]
+                sc.dropped_ids = [r.id for r in vrows if not r.anchor_verified]
+                sc.wall = {**rep.as_dict(), "carried_forward": len(carried)}; _record(sc)
+                step_ledgers[""] = [r for r in vrows if r.anchor_verified and r.status != "rejected"] + carried
                 rejected_by_doc[""] = [r for r in vrows if r.status == "rejected"]
             ledgers[step.key] = step_ledgers
 
@@ -332,6 +363,7 @@ def run_process(
                     all_rows.extend(rows)
             if not all_rows:
                 raise RuntimeError(f"process {spec.key}: nothing survived the walls before {step.key}; no rows to synthesize from")
+            _require_unique_ids(all_rows, f"process {spec.key} before {step.key}")
             verified_text = render_rows(all_rows)
             rejected_rows = [r for rows in rejected_by_doc.values() for r in rows]
             rejected_text = "\n".join(r.render() for r in rejected_rows) if rejected_rows else ""
@@ -341,11 +373,14 @@ def run_process(
             sc = _invoke(call_fn, prompt, model, depth=depth, big=big, cancellation_check=cancellation_check)
             prose, ledger = split_ledger(sc.content)
             frows = parse_rows(ledger)
-            rep = verify_rows(frows, index)
+            corpus_ids = {r.id for r in all_rows if r.dim in corpus_dimension_keys or len({a.doc for a in r.anchors if a.doc}) > 1}
+            rep = verify_rows(frows, index, corpus_dimensions=corpus_dimension_keys, corpus_ids=corpus_ids)
             earlier = {r.id for r in all_rows} | {r.id for r in rejected_rows}
             missing = check_citations(prose, {r.id for r in frows}, also_ok=earlier)
             rep.missing_cited = missing
-            sc.wall = {**rep.as_dict(), "has_ledger": bool(ledger), "prose_chars": len(prose)}
+            missing_lineage = sorted({rid for row in frows for rid in row.lineage if rid not in earlier})
+            sc.wall = {**rep.as_dict(), "has_ledger": bool(ledger), "prose_chars": len(prose),
+                       "missing_lineage": missing_lineage}
             _record(sc)
             result.final_content = sc.content
             result.final_model = sc.model_used
@@ -384,9 +419,14 @@ def preview_prompts(cap_def: Any, spec: ProcessSpec, documents: dict[str, str]) 
 # The reading keeps the one call's coherence; the ledger becomes the checked contract the desks read.
 
 
-def apply_rulings(rows: list[LedgerRow], rulings: list[LedgerRow], index: SourceIndex) -> tuple[list[LedgerRow], list[LedgerRow], list[LedgerRow], dict]:
+def apply_rulings(rows: list[LedgerRow], rulings: list[LedgerRow], index: SourceIndex, *,
+                  corpus_dimensions: Iterable[str] = ()) -> tuple[list[LedgerRow], list[LedgerRow], list[LedgerRow], dict]:
     """(kept rows, rejected rows, unverified rows, report). Rows the critic did not mention are kept as confirmed."""
-    verify_rows(rulings, index)
+    corpus_dimensions = set(corpus_dimensions)
+    _require_unique_ids(rows, "reading before critic rulings")
+    _require_unique_ids(rulings, "critic rulings")
+    corpus_ids = {r.id for r in rows if r.dim in corpus_dimensions or len({a.doc for a in r.anchors if a.doc}) > 1}
+    verify_rows(rulings, index, corpus_dimensions=corpus_dimensions, corpus_ids=corpus_ids)
     by_id = {r.id: r for r in rulings}
     kept, rejected, unverified = [], [], []
     rep = {"in": len(rows), "confirmed": 0, "weakened": 0, "rejected": 0, "added": 0, "added_dropped": 0, "carried": 0, "unverified": 0}
@@ -399,12 +439,14 @@ def apply_rulings(rows: list[LedgerRow], rulings: list[LedgerRow], index: Source
             rep["rejected"] += 1; r.text = v.text; target = rejected
         elif v.status == "weakened":
             rep["weakened"] += 1; target = kept
-            r.text, r.finding, r.anchor, r.anchor_verified, r.anchor_trimmed = v.text, v.finding, v.anchor, v.anchor_verified, v.anchor_trimmed
+            r.text, r.finding = v.text, v.finding
+            r.copy_anchors_from(v)
             r.confidence, r.status = v.confidence or r.confidence, "weakened"
         else:
             rep["confirmed"] += 1; target = kept
             if v.anchor_verified and not r.anchor_verified:   # the critic re-anchored a paraphrased quote
-                r.anchor, r.anchor_verified = v.anchor, True
+                r.copy_anchors_from(v)
+                r.text = v.text
         if target is kept and not r.anchor_verified:
             # a paraphrased quote is not a false finding: the row stays in the ledger, tagged, so the reader keeps it
             # and the desks' walls decide citability (exiling these cost real findings in the 2026-09-05 check study)
@@ -459,6 +501,7 @@ def run_oneshot_checked(
     t0 = time.time()
     result = ProcessRunResult(engine_key=cap_def.engine_key, process_key=spec.key)
     index = SourceIndex(documents)
+    corpus_dimensions = {d.key for d in spec.dimensions if d.scope == "corpus"} if len(documents) > 1 else set()
     big = sum(len(v) for v in documents.values()) > 600_000
     read_step = ProcessStep(key="read", kind="synthesize", model_tier="strong", is_final=True)
     strong = resolve_step_model(read_step, spec, tier_overrides=tier_overrides, model_hint=model_hint)
@@ -480,13 +523,14 @@ def run_oneshot_checked(
         reading = sc.content
         prose0, ledger0 = split_ledger(reading)
         rows0 = parse_rows(ledger0)
-        rep0 = verify_rows(rows0, index)
+        rep0 = verify_rows(rows0, index, corpus_dimensions=corpus_dimensions)
         sc.wall = {**rep0.as_dict(), "has_ledger": bool(ledger0), "prose_chars": len(prose0)}
         _record(sc)
         result.final_content, result.final_model, result.final_wall = reading, sc.model_used, sc.wall
     prose, ledger = split_ledger(reading)
     rows = parse_rows(ledger)
-    verify_rows(rows, index)
+    verify_rows(rows, index, corpus_dimensions=corpus_dimensions)
+    corpus_ids = {r.id for r in rows if r.dim in corpus_dimensions or len({a.doc for a in r.anchors if a.doc}) > 1}
     if not check or not rows:
         result.seconds = time.time() - t0
         return result
@@ -500,9 +544,9 @@ def run_oneshot_checked(
     vprompt.step_key = "check"
     vc = _invoke(call_fn, vprompt, critic, depth=depth, big=big, cancellation_check=cancellation_check)
     rulings = parse_rows(_ledger_text(vc.content))
-    kept, rejected, unverified, rep = apply_rulings(rows, rulings, index)
+    kept, rejected, unverified, rep = apply_rulings(rows, rulings, index, corpus_dimensions=corpus_dimensions)
     final_rows = kept
-    rep_final = verify_rows(final_rows, index)
+    rep_final = verify_rows(final_rows, index, corpus_dimensions=corpus_dimensions, corpus_ids=corpus_ids)
     vc.wall = {**rep_final.as_dict(), **{f"check_{k}": v for k, v in rep.items()}}
     _record(vc)
     result.final_content = assemble_checked_content(prose, ledger, kept, rejected, unverified, rep, vc.model_used)

@@ -103,3 +103,13 @@ Problem classes, root causes, files fixed. See global rules.
 **Files to Fix** (open): `src/dossier/plates.py` — trim titles to the limit and normalise scorecard marks in code before the wall (shape, not judgment), and make the repair field-scoped like the storyboard patch retry in Wirecut.
 
 **Pattern to Watch For**: a wall that refuses on arithmetic (length, enum, count) should fix the arithmetic itself; judgment repairs are for meaning. Families that passed today: register, flow_map, power_map, framework_map (Kering run), layer_stack (untested).
+
+## Corpus dimensions bypassed by workflow text flattening (2026-09-05, open)
+
+**Problem Class**: A multi-document runner receives a single concatenated string through its workflow adapter, so its document-count dispatch silently selects single-document work.
+
+**Root Cause**: `src/executor/chain_runner.py:_run_engine_process` passes `{work_key or "document": document_text}` to both process modes. Corpus extraction in `run_process` requires two or more dictionary entries. Workflow headers inside the string do not preserve that structure.
+
+**Work to Do**: After the direct ideas-corpus validation, carry the phase's actual document map through chain and single-engine dispatch, respecting existing target/prior/source-thinker scope. Verify workflow dispatch with real document identities before exposing corpus modes. The ideas study supplies a document map directly and can validate the method, but cannot establish that workflow dispatch is fixed.
+
+**Pattern to Watch For**: an end-to-end test of the inner runner with a dictionary does not test an outer adapter that flattens the dictionary into text.
