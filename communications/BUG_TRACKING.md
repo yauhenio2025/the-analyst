@@ -128,3 +128,9 @@ Problem classes, root causes, files fixed. See global rules.
 **Problem**: Per-work result keys use `_sanitize_work_key`, so distinct titles can collide in result/presenter keys. Separately, `get_latest_output_for_phase` in `src/executor/output_store.py` orders by pass number even though numbering restarts at each engine; an earlier long engine can outrank a later short engine.
 
 **Scope**: The corpus-dispatch fix uses stable document identities for raw sources and chronological selection inside dossier collection. It does not change these wider result/presenter contracts. Audit their callers and persisted compatibility before repairing them; source-map tests do not establish that output selection elsewhere is fixed.
+
+## Length-clipped anchors lose shortening provenance (2026-09-05, fixed)
+
+**Problem**: Ledger and dossier quote verification clipped anchors to 200 characters before setting `trimmed=False`, so an exact prefix match could appear unshortened. Dossier re-verification also discarded an existing shortening marker. The held-out Hegel run exposed 214→200 and 204→200 cuts, including a word cut in half.
+
+**Fix**: Initialize shortening provenance from original length and retain existing dossier history. Matching and selected prefix text are unchanged; the marker now discloses the cut. **182 affected tests passed**, including four new provenance regressions. The held-out study remains on its archived runtime and original counters. [Evidence and validation](study/FIX_anchor_length_PROVENANCE_2026-09-05.md).

@@ -127,10 +127,10 @@ def verify_anchor(anchor: Anchor, corpus: NormalizedCorpus) -> Optional[Anchor]:
     quote = (anchor.quote or "").strip()
     if not quote:
         return None
+    trimmed = anchor.trimmed or len(quote) > MAX_QUOTE_CHARS
     if len(quote) > MAX_QUOTE_CHARS:
         quote = quote[:MAX_QUOTE_CHARS]
     words = quote.split()
-    trimmed = False
     while True:
         candidate = " ".join(words)
         norm = normalize(candidate)

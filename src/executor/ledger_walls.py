@@ -360,10 +360,10 @@ def verify_quote(quote: str, index: SourceIndex, prefer: str = "") -> tuple[Opti
     q = (quote or "").strip()
     if not q:
         return None, "", False
-    if len(q) > MAX_QUOTE_CHARS:
+    trimmed = len(q) > MAX_QUOTE_CHARS
+    if trimmed:
         q = q[:MAX_QUOTE_CHARS]
     words = q.split()
-    trimmed = False
     while True:
         cand = " ".join(words)
         doc = index.find(cand, prefer)
