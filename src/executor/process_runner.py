@@ -192,6 +192,41 @@ def _scope_rows(sc: StepCall) -> list[LedgerRow]:
         return []
 
 
+def _rows_from(sc: StepCall, scoped: bool) -> list[LedgerRow]:
+    """The ledger rows of a call (the whole content when it has no ledger heading); with scoped outcomes a
+    malformed ledger is recorded on the call as evidence trouble instead of parsing leniently."""
+    return _scope_rows(sc) if scoped else parse_rows(_ledger_text(sc.content))
+
+
+def _recorder(result: ProcessRunResult, on_call: Optional[Callable[[StepCall], None]]) -> Callable[[StepCall], None]:
+    """Append a call to the result and hand it to the caller's hook; the hook never breaks the run."""
+    def _append(sc: StepCall) -> None:
+        result.calls.append(sc)
+        if on_call:
+            try:
+                on_call(sc)
+            except Exception as exc:  # noqa: BLE001
+                logger.warning(f"on_call hook failed: {exc}")
+    return _append
+
+
+def _apply_critic(rows: list[LedgerRow], vrows: list[LedgerRow], rep: WallReport) -> tuple[list[LedgerRow], list[LedgerRow], dict]:
+    """(kept, rejected, wall) after a critic pass over `rows`: a verified ruling with a keeping status stays; a row
+    the critic did not mention is carried forward as confirmed (an omission is not a rejection); a rejection, or a
+    known row whose ruling failed the anchor wall, is rejected. Same rule for a document's ledger and the corpus ledger."""
+    known = {r.id for r in rows}
+    mentioned = {r.id for r in vrows}
+    carried = [r for r in rows if r.id not in mentioned]
+    for r in carried:
+        r.status = r.status or "confirmed"
+    kept = [r for r in vrows if r.anchor_verified and r.status in ("confirmed", "weakened", "added", "")] + carried
+    rejected = [r for r in vrows if r.status == "rejected" or (not r.anchor_verified and r.id in known)]
+    wall = {**rep.as_dict(), "carried_forward": len(carried), "rejected": len(rejected),
+            "added": sum(1 for r in vrows if r.status == "added"),
+            "ruling_coverage": critic_ruling_coverage(rows, vrows)}
+    return kept, rejected, wall
+
+
 def _assess_call(sc, identities, rows, documents, *, reviewing=False, previous=(), failed_rows=()):
     records = assess_scopes(
         sc.content, identities, rows, documents, reviewing=reviewing, previous=previous,
@@ -226,7 +261,7 @@ def _wall_extraction(sc: StepCall, prompt: ProcessPrompt, index: SourceIndex, ca
                      depth: str, big: bool, cancellation_check, reanchor: bool = True,
                      require_cross_document: bool = False, scoped_outcomes: bool = False) -> list[LedgerRow]:
     """Verify an extraction's anchors; one re-anchor round for the failures; drop what still fails."""
-    rows = _scope_rows(sc) if scoped_outcomes else parse_rows(_ledger_text(sc.content))
+    rows = _rows_from(sc, scoped_outcomes)
     for row in rows:
         row.doc = row.doc or prompt.doc_key
         row.dim = row.dim or prompt.dimension_key
@@ -243,7 +278,7 @@ def _wall_extraction(sc: StepCall, prompt: ProcessPrompt, index: SourceIndex, ca
             again = _invoke(call_fn, req, model, depth=depth, big=big, cancellation_check=cancellation_check)
             sc.input_tokens += again.input_tokens; sc.output_tokens += again.output_tokens
             sc.duration_ms += again.duration_ms; sc.cost_usd += again.cost_usd
-            fixed_rows = _scope_rows(again) if scoped_outcomes else parse_rows(_ledger_text(again.content))
+            fixed_rows = _rows_from(again, scoped_outcomes)
             if scoped_outcomes:
                 sc.wall.setdefault("reanchor_receipts", []).append({
                     "content": again.content, "partial": again.partial, "stop_reason": again.stop_reason,
@@ -300,6 +335,7 @@ def _check_corpus_synthesis(sc, prompt, spec, index, corpus_ids, call_fn, model,
                   "missing_ledger": not bool(ledger), "parse_error": sc.scope_parse_error,
                   "incomplete_invocation": bool(sc.partial or sc.invocation_error or sc.stop_reason in ("length", "max_tokens", "error"))}
         sc.wall = {**wall.as_dict(), "synthesis_contract": issues, "synthesis_repair_attempts": attempts.copy(),
+                   # a row without a `dim:` tag is a shape note for the desks, never a reason to fail the phase
                    "rows_without_dimension": sum(1 for r in rows if not r.dim)}
         if not any(issues.values()):
             return sc
@@ -357,13 +393,7 @@ def run_process(
     rejected_by_doc: dict[str, list[LedgerRow]] = {}
     scopes_by_step: dict[str, dict[str, list[dict]]] = {}
 
-    def _record(sc: StepCall) -> None:
-        result.calls.append(sc)
-        if on_call:
-            try:
-                on_call(sc)
-            except Exception as exc:  # noqa: BLE001
-                logger.warning(f"on_call hook failed: {exc}")
+    _record = _recorder(result, on_call)
 
     for step in spec.steps:
         if _cancelled():
@@ -462,23 +492,13 @@ def run_process(
                     text += "\n\n" + render_scope_json(prior_scopes)
                 prompt = compose_verify_prompt(cap_def, spec, step, documents, text, doc_key=dk if corpus else "", scope_identities=_identity(prior_scopes) if spec.scoped_outcomes else None)
                 sc = _invoke(call_fn, prompt, model, depth=depth, big=big, cancellation_check=cancellation_check)
-                vrows = _scope_rows(sc) if spec.scoped_outcomes else parse_rows(_ledger_text(sc.content))
+                vrows = _rows_from(sc, spec.scoped_outcomes)
                 for row in vrows:
                     row.doc = row.doc or dk
                 rep = verify_rows(vrows, SourceIndex({dk: documents[dk]}) if dk else index,
                                   corpus_dimensions=corpus_dimension_keys)
-                known = {r.id for r in rows}
-                # a row the critic did not mention is carried forward as confirmed (the critic's omission is not a rejection)
-                mentioned = {r.id for r in vrows}
-                carried = [r for r in rows if r.id not in mentioned]
-                for r in carried:
-                    r.status = r.status or "confirmed"
-                kept = [r for r in vrows if r.anchor_verified and r.status in ("confirmed", "weakened", "added", "")] + carried
-                rejected = [r for r in vrows if r.status == "rejected" or (not r.anchor_verified and r.id in known)]
+                kept, rejected, sc.wall = _apply_critic(rows, vrows, rep)
                 sc.dropped_ids = [r.id for r in vrows if not r.anchor_verified]
-                sc.wall = {**rep.as_dict(), "carried_forward": len(carried), "rejected": len(rejected),
-                           "added": sum(1 for r in vrows if r.status == "added"),
-                           "ruling_coverage": critic_ruling_coverage(rows, vrows)}
                 if spec.scoped_outcomes:
                     step_scopes[dk] = _assess_call(sc, _identity(prior_scopes), kept, documents,
                                                   reviewing=True, previous=prior_scopes,
@@ -495,21 +515,18 @@ def run_process(
                 prompt = compose_verify_prompt(cap_def, spec, step, documents, text,
                                                scope_identities=_identity(prior_scopes) if spec.scoped_outcomes else None)
                 sc = _invoke(call_fn, prompt, model, depth=depth, big=big, cancellation_check=cancellation_check)
-                vrows = _scope_rows(sc) if spec.scoped_outcomes else parse_rows(_ledger_text(sc.content))
+                vrows = _rows_from(sc, spec.scoped_outcomes)
                 rep = verify_rows(vrows, index, corpus_dimensions=corpus_dimension_keys,
                                   corpus_ids={r.id for r in per_doc.get("", [])})
-                mentioned = {r.id for r in vrows}
-                carried = [r for r in per_doc[""] if r.id not in mentioned]
+                kept, rejected, sc.wall = _apply_critic(per_doc[""], vrows, rep)
                 sc.dropped_ids = [r.id for r in vrows if not r.anchor_verified]
-                sc.wall = {**rep.as_dict(), "carried_forward": len(carried),
-                           "ruling_coverage": critic_ruling_coverage(per_doc[""], vrows)}
-                step_ledgers[""] = [r for r in vrows if r.anchor_verified and r.status != "rejected"] + carried
+                step_ledgers[""] = kept
                 if spec.scoped_outcomes:
                     step_scopes[""] = _assess_call(sc, _identity(prior_scopes), step_ledgers[""], documents,
                                                   reviewing=True, previous=prior_scopes,
                                                   failed_rows=[r for r in vrows if not r.anchor_verified])
                 _record(sc)
-                rejected_by_doc[""] = [r for r in vrows if r.status == "rejected"]
+                rejected_by_doc[""] = rejected
             ledgers[step.key] = step_ledgers
             scopes_by_step[step.key] = step_scopes
 
@@ -598,8 +615,9 @@ def preview_prompts(cap_def: Any, spec: ProcessSpec, documents: dict[str, str]) 
 # ── read → check → apply (the default for a reading; frontier study 2026-09-05) ─────────────────
 #
 # One strong call writes the reading with its ledger; the mid-tier critic rules on every row against
-# the source; code applies the rulings to the ledger and leaves the prose alone: rejected rows move to
-# a receipt section, weakened rows take the critic's wording, added rows are appended with lineage.
+# the source; code applies the rulings to the ledger and leaves the prose alone (a citation of a rejected row
+# is tagged where it stands): rejected rows move to a receipt section, weakened rows take the critic's
+# wording, added rows are appended with lineage.
 # The reading keeps the one call's coherence; the ledger becomes the checked contract the desks read.
 
 
@@ -658,6 +676,18 @@ def apply_rulings(rows: list[LedgerRow], rulings: list[LedgerRow], index: Source
 def assemble_checked_content(prose: str, ledger: str, kept: list[LedgerRow], rejected: list[LedgerRow], unverified: list[LedgerRow], rep: dict, critic: str, *, scoped_outcomes: bool = False, citation_check: Optional[dict] = None) -> str:
     """The reading's prose untouched, then the applied ledger, the reading's own counter-evidence and open
     questions, and the receipt sections the desks skip."""
+    # the prose stays the reader's, but a citation of a row the check rejected is tagged where it stands
+    # (id membership only): the reader no longer has to cross-check the receipt to see it
+    rejected_ids = {r.id for r in rejected}
+    tagged = 0
+    if rejected_ids:
+        def _tag(m: re.Match) -> str:
+            nonlocal tagged
+            if m.group(1) in rejected_ids:
+                tagged += 1
+                return f"[{m.group(1)}, rejected by the check]"
+            return m.group(0)
+        prose = re.sub(r"\[([A-Za-z][A-Za-z0-9]*(?:\.[A-Za-z0-9]+)*)\]", _tag, prose)
     tail = ""
     m = re.search(r"^\s{0,3}#{2,4}\s*(counter[- ]evidence|open questions)\b.*$", ledger, re.I | re.M)
     if m:
@@ -680,7 +710,8 @@ def assemble_checked_content(prose: str, ledger: str, kept: list[LedgerRow], rej
         if coverage["unexpected_nonadded_ids"]:
             parts.append("- Unmatched critic ruling IDs: " + ", ".join(coverage["unexpected_nonadded_ids"]) + ".")
     if any(rep[k] for k in ("weakened", "rejected", "added")):
-        parts.append("- The ledger incorporates the critic's changes; the preceding prose is unchanged from the original reading.")
+        parts.append("- The ledger incorporates the critic's changes; the preceding prose is unchanged from the original reading"
+                     + (f" except that {tagged} citation(s) of rejected findings are tagged where they stand." if tagged else "."))
     if citation_check and citation_check.get("status") == "checked":
         missing = []
         for key, label in (("missing_rejected_ids", "rejected IDs"), ("missing_other_ids", "other absent IDs")):
@@ -719,13 +750,7 @@ def run_oneshot_checked(
     read_step = ProcessStep(key="read", kind="synthesize", model_tier="strong", is_final=True)
     strong = resolve_step_model(read_step, spec, tier_overrides=tier_overrides, model_hint=model_hint)
 
-    def _record(sc: StepCall) -> None:
-        result.calls.append(sc)
-        if on_call:
-            try:
-                on_call(sc)
-            except Exception as exc:  # noqa: BLE001
-                logger.warning(f"on_call hook failed: {exc}")
+    _record = _recorder(result, on_call)
 
     read_call = None
     reader_scopes = []
@@ -780,7 +805,7 @@ def run_oneshot_checked(
     vprompt = compose_verify_prompt(cap_def, spec, verify_step, documents, handoff)
     vprompt.step_key = "check"
     vc = _invoke(call_fn, vprompt, critic, depth=depth, big=big, cancellation_check=cancellation_check)
-    rulings = _scope_rows(vc) if spec.scoped_outcomes else parse_rows(_ledger_text(vc.content))
+    rulings = _rows_from(vc, spec.scoped_outcomes)
     kept, rejected, unverified, rep = apply_rulings(rows, rulings, index, corpus_dimensions=corpus_dimensions)
     final_rows = kept
     rep_final = verify_rows(final_rows, index, corpus_dimensions=corpus_dimensions, corpus_ids=corpus_ids)

@@ -279,7 +279,7 @@ def test_run_oneshot_checked_with_a_fake_model(monkeypatch):
     res = run_oneshot_checked(cap, spec, {"aukus": SOURCE}, call_fn=fake, tier_overrides={"strong": "openrouter/openai/gpt-5.6-sol", "mid": "openrouter/deepseek/deepseek-v4-pro"})
     assert [c.step_key for c in res.calls] == ["read", "check"] and res.calls[0].model_used.endswith("gpt-5.6-sol") and res.calls[1].model_used.endswith("deepseek-v4-pro")
     out = res.final_content
-    assert out.startswith("# Reading\n\nThe text rests on a given [F1], and overreaches [F2].")   # prose untouched
+    assert out.startswith("# Reading\n\nThe text rests on a given [F1], and overreaches [F2, rejected by the check].")   # prose untouched but for the tag
     ledger = out.split(LEDGER_HEADING, 1)[1]
     assert "- [F1] A given" in ledger and "- [F3] A miss" in ledger and "from: V.F1" in ledger
     assert "### Rejected by the critic\n- [F2] Overreach" in ledger and "### Open questions\n- what the text cannot settle" in ledger

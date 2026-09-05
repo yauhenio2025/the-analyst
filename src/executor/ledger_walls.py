@@ -14,7 +14,6 @@ from dataclasses import dataclass, field
 from typing import Iterable, Optional
 
 from src.dossier.walls import MAX_QUOTE_CHARS, MIN_TRIMMED_CHARS, MIN_TRIMMED_WORDS, normalize
-from src.executor.context_broker import split_ledger
 
 # a row: "- [ID] …" with the id optionally bolded ("- **[ID]**", "- [**ID**]") or the bullet numbered ("1. [ID]")
 # … and the bullet itself is optional: DeepSeek writes bare "[F22] …" lines (frontier run, 23:14)
@@ -315,12 +314,6 @@ def parse_rows(ledger_text: str) -> list[LedgerRow]:
             row.lineage = [x.strip().strip("[]") for x in re.split(r"[,;]\s*", fields["from"]) if x.strip()]
         rows.append(row)
     return rows
-
-
-def ledger_rows(text: str) -> list[LedgerRow]:
-    """Rows of the ledger section of a step output (prose before the heading is ignored)."""
-    _, ledger = split_ledger(text)
-    return parse_rows(ledger or text if not ledger else ledger)
 
 
 _SPACED_HYPHEN = re.compile(r"(\w)-\s+(\w)")

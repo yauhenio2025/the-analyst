@@ -262,8 +262,11 @@ def test_checked_receipt_discloses_ledger_changes_while_preserving_original_pros
     def fake(*args, model_hint, **kwargs):
         return {"content": critic, "model_used": model_hint}
     result = run_oneshot_checked(cap, spec, {"paper": quote}, reading=reading, call_fn=fake)
-    assert result.final_content.split("## Findings ledger", 1)[0].strip() == prose
-    disclosure = "The ledger incorporates the critic's changes; the preceding prose is unchanged from the original reading."
+    final_prose = result.final_content.split("## Findings ledger", 1)[0].strip()
+    # the prose is the reader's; the only edit is the inline tag on a citation of a rejected row (2026-09-06)
+    assert final_prose.replace(", rejected by the check]", "]") == prose
+    assert (", rejected by the check]" in final_prose) == (ruling == "rejected")
+    disclosure = "The ledger incorporates the critic's changes; the preceding prose is unchanged from the original reading"
     assert (disclosure in result.final_content.split("### Check receipt", 1)[1]) == (ruling != "confirmed")
     assert result.calls[-1].content == critic
 

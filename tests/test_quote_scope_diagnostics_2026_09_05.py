@@ -98,7 +98,9 @@ def test_checked_prose_reports_rejected_and_absent_ids_without_remapping():
         "missing_rejected_ids": ["F2"], "missing_other_ids": ["F99", "V.F1"],
     }
     final_prose, ledger = split_ledger(result.final_content)
-    assert final_prose.strip() == prose and tail in result.final_content
+    # unchanged prose apart from the inline tag on each citation of the rejected row; absent and alias ids are not tagged
+    assert final_prose.strip().replace(", rejected by the check]", "]") == prose and tail in result.final_content
+    assert final_prose.count("[F2, rejected by the check]") == 2 and "[F99]" in final_prose and "[V.F1]" in final_prose
     retained = parse_rows(ledger)
     assert [r.id for r in retained] == ["F1", "F3"]
     assert retained[1].lineage == ["V.F1"]
