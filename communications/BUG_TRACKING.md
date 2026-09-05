@@ -2,6 +2,22 @@
 
 Problem classes, root causes, files fixed. See global rules.
 
+## Dossier threads die with the instance, nothing resumes them (2026-09-05)
+
+**Problem Class**: long-running work in daemon threads of an auto-deployed web process, without startup recovery for that job family. The executor had `recover_orphaned_jobs`; dossiers did not. A deploy (SIGTERM, new instance) left dossier jobs in `reconnaissance` / `analysis` indefinitely; the caller (The Reporter) saw silence and had to nudge or give up.
+
+**Root Cause**: recovery written for one job family only; long steps with no intermediate checkpoint (195 profiles, one call each, restarted from 1 on resume); cancellation checked only between steps.
+
+**Files Fixed**:
+- `src/dossier/runner.py` — `recover_orphaned_dossiers`, `ACTIVE_STATUSES`, `RECOVER_MAX_AGE_HOURS`; `DossierCancelled` handled as a quiet stop.
+- `src/api/main.py` — startup hook after the executor recovery.
+- `src/dossier/reconnaissance.py` — per-document checkpoint (`partial=True`), resume from it, cancel check per document.
+- `src/dossier/common.py` — `DossierCancelled`; `src/dossier/schemas.py` — `Reconnaissance.partial`.
+
+**Pattern to Watch For**: any background thread whose state lives only in the process. Every job family needs: a persisted step, a checkpoint inside any step longer than a minute, and a boot-time sweep that restarts or names what the last instance was doing. Verified live: the first boot after the fix resumed `dossier-c9cead36b44b` and it finished in 11 minutes.
+
+---
+
 ## SDK timeout object mismatch (2026-09-03)
 
 **Problem Class**: Third-party client constructed with an object from the wrong HTTP library after a major SDK upgrade — fails at request time, not at construction.

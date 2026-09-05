@@ -5,6 +5,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Fixed (2026-09-05, evening — dossiers survive a deploy)
+- Dossier jobs run as daemon threads in the web process and Render replaces the instance on every push to master (12 deploys today); two dossiers sat in `reconnaissance` / `analysis` for hours with nobody resuming them. Startup now runs `recover_orphaned_dossiers` next to the executor's `recover_orphaned_jobs`: every job in an active status restarts at its recorded step (jobs idle > `DOSSIER_RECOVER_MAX_AGE_HOURS`, default 24, are marked failed with a note instead of re-billed) ([src/dossier/runner.py](../src/dossier/runner.py), [src/api/main.py](../src/api/main.py)).
+- Reconnaissance checkpoints per document (`Reconnaissance.partial`) and resumes from the checkpoint — a restart at profile 36/195 used to start again at 1 ([src/dossier/reconnaissance.py](../src/dossier/reconnaissance.py)).
+- Cancellation is honoured inside the profile loop (`DossierCancelled`); a cancelled job used to keep buying profiles until the step ended ([src/dossier/common.py](../src/dossier/common.py)). Tests: [tests/test_dossier_boot_recovery.py](../tests/test_dossier_boot_recovery.py).
+
 ### Added (2026-09-05, morning — desks by id; two more engines)
 - The desks read the findings ledger by id ([src/dossier/common.py](../src/dossier/common.py) `analysis_ledger`/`ledger_ids`; spine `finding_ids`, tables, figures); tests [tests/test_desks_read_ledger_2026_09_05.py](../tests/test_desks_read_ledger_2026_09_05.py).
 - Inferential Commitment Mapper and Epistemological Method Detector under the shape: text-facing dimensions with method cards, modes per depth, Sol strong tier ([src/operationalizations/definitions/](../src/operationalizations/definitions/)); designs in [communications/study/](../communications/study/); comparison study [scripts/study_two_engines.py](../scripts/study_two_engines.py) (synthesis §9); tests [tests/test_engines_under_shape_2026_09_05.py](../tests/test_engines_under_shape_2026_09_05.py).
