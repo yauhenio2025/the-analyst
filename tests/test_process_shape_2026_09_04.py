@@ -251,7 +251,9 @@ def test_apply_rulings_keeps_weakens_rejects_and_adds():
     assert kept[1].finding == "Weaker wording" and kept[1].status == "weakened"
     assert kept[2].anchor_verified and kept[2].anchor.startswith("fear of being")        # re-anchored by the critic
     assert kept[4].text.endswith("— from: V.F1") and "status: added" not in kept[4].text
-    assert rep == {"in": 5, "confirmed": 2, "weakened": 1, "rejected": 1, "added": 1, "added_dropped": 1, "carried": 1, "unverified": 0}
+    assert {k: v for k, v in rep.items() if k != "ruling_coverage"} == {"in": 5, "confirmed": 2, "weakened": 1, "rejected": 1, "added": 1, "added_dropped": 1, "carried": 1, "unverified": 0}
+    assert rep["ruling_coverage"]["explicitly_ruled_count"] == 4
+    assert rep["ruling_coverage"]["missing_or_unruled_ids"] == ["F5"]
 
 
 def test_run_oneshot_checked_with_a_fake_model(monkeypatch):
@@ -282,6 +284,8 @@ def test_run_oneshot_checked_with_a_fake_model(monkeypatch):
     assert "- [F1] A given" in ledger and "- [F3] A miss" in ledger and "from: V.F1" in ledger
     assert "### Rejected by the critic\n- [F2] Overreach" in ledger and "### Open questions\n- what the text cannot settle" in ledger
     assert "### Check receipt" in ledger and res.final_wall["anchor_rate"] == 1.0 and res.final_wall["check_rejected"] == 1
+    assert res.final_wall["check_ruling_coverage"]["coverage_complete"]
+    assert "Check incomplete" not in ledger
     # without the check: one call, the reading as written
     res2 = run_oneshot_checked(cap, spec, {"aukus": SOURCE}, call_fn=fake, check=False, tier_overrides={"strong": "openrouter/openai/gpt-5.6-sol"})
     assert [c.step_key for c in res2.calls] == ["read"] and "### Check receipt" not in res2.final_content

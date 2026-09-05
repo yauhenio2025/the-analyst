@@ -1,0 +1,7 @@
+# Continue untouched jobs after the held-out parser failure
+
+After five completed checked readings, Argument/revised/Ganzinger completed both API calls but failed strict parsing: inference row `I4` repeated `anchor:` three times. Its attempt is `c5620c0d97c1`. All 12 invocation receipts have known costs totaling $0.880789. There were no API failures; null termination metadata remains unknown.
+
+The continuation launcher imports the unchanged harness and archived runtime, verifies the full study identity and harness hash, acquires the same campaign lock, and replays every completed generation before proceeding. It explicitly leaves this one reviewed failure untouched and invokes only the ten planned generations with no previous call receipts, through the original execution and USD6 admission guards. Any other failed or partially recorded job blocks it. It saves a hashed amendment and does not automatically restart itself.
+
+This changes scheduling after the stop, not the matrix, prompts, parsing, or judging. The failed pair remains incomplete while its saved response is reviewed for a separately documented offline recovery. No judge is launched by this continuation, and no additional paid attempt is made for the failed job. Its failure record and costs stay in the study. The launcher is `scripts/continue_ideas_hegel_unstarted_2026_09_05.py`; its no-call preview replayed all five completed finals successfully before launch.

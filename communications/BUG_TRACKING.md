@@ -134,3 +134,13 @@ Problem classes, root causes, files fixed. See global rules.
 **Problem**: Ledger and dossier quote verification clipped anchors to 200 characters before setting `trimmed=False`, so an exact prefix match could appear unshortened. Dossier re-verification also discarded an existing shortening marker. The held-out Hegel run exposed 214→200 and 204→200 cuts, including a word cut in half.
 
 **Fix**: Initialize shortening provenance from original length and retain existing dossier history. Matching and selected prefix text are unchanged; the marker now discloses the cut. **182 affected tests passed**, including four new provenance regressions. The held-out study remains on its archived runtime and original counters. [Evidence and validation](study/FIX_anchor_length_PROVENANCE_2026-09-05.md).
+
+## Completed critic call hid incomplete original-finding coverage (2026-09-05)
+
+**Problem Class:** A completed review call and carried findings can be mistaken for explicit confirmation when the critic omits or renames original IDs.
+
+**Root Cause:** Application defaults carry unmentioned rows and retain separate addition counters, without a dedicated exact-ID coverage measure. In the held-out Conditions/Elling revision, all 28 original IDs were renamed and carried; the prior condition also had one mistyped ID.
+
+**Files Fixed:** `src/executor/ruling_coverage.py` diagnoses exact, unique, valid-status original rulings; `src/executor/process_runner.py` persists the diagnostic for checked and deep paths and adds an incomplete-check notice to checked products. Tests cover both actual ID failure patterns and end-to-end persistence. Existing application rules and prompts are unchanged; this fix exposes incomplete review rather than inventing missing rulings.
+
+**Validation:** 188 affected offline tests passed. See [coverage fix](study/FIX_critic_RULING_COVERAGE_2026-09-05.md). Frozen study receipts retain their original counters.

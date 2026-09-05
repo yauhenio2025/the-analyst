@@ -1,0 +1,11 @@
+# Expose incomplete critic coverage
+
+The frozen held-out comparison exposed two exact-ID failures. The previous Conditions/Elling critic used `D3.2` for original `D3.F2`, leaving one finding carried. The revised critic renamed all 28 originals from `F<n>` to dimension-prefixed IDs; no original received an applicable ruling, although three additions survived. Completed API calls, valid quotations, and a nonempty final ledger did not mean the originals had been checked.
+
+The main runner now records explicit ruling coverage separately from its existing application counters. A unique original ID needs one exact-ID ruling with status `confirmed`, `weakened`, or `rejected`. Missing, invalid, duplicate, and unexpected IDs are reported; additions do not count toward original coverage. The checked product contains a plain incomplete-check notice when coverage fails. Deep runs persist per-document and corpus review coverage in call walls and aggregate it in the final wall.
+
+This is a disclosure fix. It does not infer renamed IDs, reinterpret critic prose, retry calls, change prompts, or change which findings the existing application keeps. The legacy counters can describe application defaults where no valid explicit ruling exists; consumers should consult `check_ruling_coverage` for explicit coverage. Deep synthesis is still model-written from the existing kept rows: aggregate diagnostics do not certify its interpretation. Quote membership also remains separate from whether a passage supports a finding.
+
+**Validation:** 188 affected offline tests passed across coverage, process shape, corpus ledgers, workflow dispatch, anchor repairs, and desk handoff. Sixteen coverage tests include the observed wholesale rename, a single mistyped ID, invalid statuses, duplicate IDs, rejection coverage, additions, and checked/deep persistence without extra calls. The existing application-counter assertion retains all its earlier expectations and now asserts the separate coverage field. `git diff --check` passed.
+
+The held-out run continues to use archived `d9cfc6e`. Its original outputs and counters remain evidence of that runtime, including the failed handoffs; this subsequent fix is not part of the paid comparison. A separate repeated-anchor postprocessing failure is under recovery review and is not repaired by these diagnostics.

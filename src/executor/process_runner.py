@@ -30,6 +30,7 @@ from src.executor.engine_runner import FALLBACK_MODEL, run_engine_call_auto
 from src.executor.ledger_walls import (
     LedgerRow, SourceIndex, WallReport, check_citations, parse_rows, reanchor_request, render_rows, verify_rows,
 )
+from src.executor.ruling_coverage import critic_ruling_coverage
 from src.operationalizations.schemas import ProcessDimension, ProcessSpec, ProcessStep
 from src.stages.process_composer import (
     LEDGER_HEADING, ProcessPrompt, compose_extract_prompt, compose_oneshot_prompt, compose_synthesize_prompt,
@@ -337,7 +338,9 @@ def run_process(
                 kept = [r for r in vrows if r.anchor_verified and r.status in ("confirmed", "weakened", "added", "")] + carried
                 rejected = [r for r in vrows if r.status == "rejected" or (not r.anchor_verified and r.id in known)]
                 sc.dropped_ids = [r.id for r in vrows if not r.anchor_verified]
-                sc.wall = {**rep.as_dict(), "carried_forward": len(carried), "rejected": len(rejected), "added": sum(1 for r in vrows if r.status == "added")}
+                sc.wall = {**rep.as_dict(), "carried_forward": len(carried), "rejected": len(rejected),
+                           "added": sum(1 for r in vrows if r.status == "added"),
+                           "ruling_coverage": critic_ruling_coverage(rows, vrows)}
                 _record(sc)
                 step_ledgers[dk] = kept
                 rejected_by_doc[dk] = rejected
@@ -351,7 +354,8 @@ def run_process(
                 mentioned = {r.id for r in vrows}
                 carried = [r for r in per_doc[""] if r.id not in mentioned]
                 sc.dropped_ids = [r.id for r in vrows if not r.anchor_verified]
-                sc.wall = {**rep.as_dict(), "carried_forward": len(carried)}; _record(sc)
+                sc.wall = {**rep.as_dict(), "carried_forward": len(carried),
+                           "ruling_coverage": critic_ruling_coverage(per_doc[""], vrows)}; _record(sc)
                 step_ledgers[""] = [r for r in vrows if r.anchor_verified and r.status != "rejected"] + carried
                 rejected_by_doc[""] = [r for r in vrows if r.status == "rejected"]
             ledgers[step.key] = step_ledgers
@@ -382,6 +386,15 @@ def run_process(
             missing_lineage = sorted({rid for row in frows for rid in row.lineage if rid not in earlier})
             sc.wall = {**rep.as_dict(), "has_ledger": bool(ledger), "prose_chars": len(prose),
                        "missing_lineage": missing_lineage}
+            reviews = [{"step": c.step_key, "document": c.doc_key, **c.wall["ruling_coverage"]}
+                       for c in result.calls if "ruling_coverage" in c.wall]
+            if reviews:
+                sc.wall["check_ruling_coverage"] = {
+                    "coverage_complete": all(r["coverage_complete"] for r in reviews),
+                    "original_count": sum(r["original_count"] for r in reviews),
+                    "explicitly_ruled_count": sum(r["explicitly_ruled_count"] for r in reviews),
+                    "reviews": reviews,
+                }
             _record(sc)
             result.final_content = sc.content
             result.final_model = sc.model_used
@@ -431,6 +444,7 @@ def apply_rulings(rows: list[LedgerRow], rulings: list[LedgerRow], index: Source
     by_id = {r.id: r for r in rulings}
     kept, rejected, unverified = [], [], []
     rep = {"in": len(rows), "confirmed": 0, "weakened": 0, "rejected": 0, "added": 0, "added_dropped": 0, "carried": 0, "unverified": 0}
+    rep["ruling_coverage"] = critic_ruling_coverage(rows, rulings)
     next_n = max([int(m) for r in rows for m in [re.sub(r"^[A-Za-z.]*?(\d+)$", r"\1", r.id)] if m.isdigit()] or [0]) + 1
     for r in rows:
         v = by_id.get(r.id)
@@ -484,6 +498,15 @@ def assemble_checked_content(prose: str, ledger: str, kept: list[LedgerRow], rej
     if rejected:
         parts += ["", "### Rejected by the critic", *(r.render() for r in rejected)]
     parts += ["", "### Check receipt", f"- critic: {critic}; rows in: {rep['in']}; confirmed {rep['confirmed']} (+{rep['carried']} unmentioned, kept); weakened {rep['weakened']}; rejected {rep['rejected']}; added {rep['added']} (dropped {rep['added_dropped']} whose anchors did not match the source); rows kept with an unverified or incomplete anchor (tagged anchor-verified: no) {rep['unverified']}"]
+    coverage = rep.get("ruling_coverage")
+    if coverage and not coverage["coverage_complete"]:
+        parts.append(
+            f"- Check incomplete: {coverage['explicitly_ruled_count']} of {coverage['original_count']} original "
+            "findings received an unambiguous ruling with their exact ID and a valid status. "
+            "Carried findings have no explicit ruling; additions do not complete their review."
+        )
+        if coverage["unexpected_nonadded_ids"]:
+            parts.append("- Unmatched critic ruling IDs: " + ", ".join(coverage["unexpected_nonadded_ids"]) + ".")
     if any(rep[k] for k in ("weakened", "rejected", "added")):
         parts.append("- The ledger incorporates the critic's changes; the preceding prose is unchanged from the original reading.")
     return "\n".join(parts).rstrip() + "\n"
