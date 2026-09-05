@@ -154,6 +154,12 @@ class ProcessSpec(BaseModel):
 
     key: str = Field("dvs", description="Process key referenced by DepthSequence.process")
     description: str = ""
+    framing: Optional[str] = Field(
+        None, description="Explicit process framing, replacing the capability opening in every process prompt. None preserves the legacy opening.",
+    )
+    scoped_outcomes: bool = Field(
+        False, description="Opt in to separate document/dimension outcomes, including reviewed scoped negatives and inconclusive evidence. Never infer absence from an empty ledger.",
+    )
     dimensions: list[ProcessDimension] = Field(default_factory=list)
     steps: list[ProcessStep] = Field(default_factory=list)
     routing: dict[str, str] = Field(

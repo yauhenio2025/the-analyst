@@ -10,11 +10,13 @@ Walls (code) check anchors and ids afterwards; nothing here judges meaning.
 """
 from __future__ import annotations
 
+import json
 from typing import Optional
 
 from pydantic import BaseModel, Field
 
 from src.operationalizations.schemas import ProcessDimension, ProcessSpec, ProcessStep
+from src.executor.scoped_outcomes import expected_scopes
 
 LEDGER_HEADING = "## Findings ledger"
 
@@ -89,6 +91,8 @@ def document_prefix(prefix: str, documents: dict[str, str], doc_key: str) -> str
 def _framing(cap_def, spec: ProcessSpec, title: str) -> str:
     problematique = (getattr(cap_def, "problematique", "") or "").strip()
     first = problematique.split("\n\n")[0].strip() if problematique else ""
+    if spec.framing is not None:
+        first = spec.framing.strip()
     lines = [f"# {cap_def.engine_name} — {title}", ""]
     if first:
         lines += ["## The method", "", first, ""]
@@ -119,6 +123,54 @@ def _source_block(documents: dict[str, str]) -> str:
     return "\n\n=====\n\n".join(parts)
 
 
+def _scope_protocol(spec, documents, *, doc_key="", dimension=None, reviewing=False, identities=None):
+    if not spec.scoped_outcomes:
+        return ""
+    identities = expected_scopes(spec, documents, doc_key=doc_key, dimension=dimension) if identities is None else identities
+    template = {
+        "document_keys": ["<exact source key>"], "dimension_key": "<exact dimension key>",
+        "outcome": "findings_present|no_relevant_instance|inconclusive",
+        "sections_inspected": ["<section or passage actually inspected>"],
+        "coverage": "complete|partial|unknown", "criterion": "<eligibility criterion from the framing/method card>",
+        "basis": "<reason for this scoped assessment>", "limitations": ["<scope or evidence limit, if any>"],
+        "finding_ids": [], "review_state": "unchecked", "review_basis": "",
+    }
+    return (
+        "## Scoped outcomes contract\n\n"
+        "Zero findings is allowed; there is no positive row minimum. Leave an empty ledger with its heading only, without placeholder rows. Empty findings do not establish absence. "
+        "After the ledger and auxiliary sections, return exactly one `## Scope outcomes` section containing "
+        "a JSON array, one object for each identity below. Do not invent negative ledger rows or quotation anchors. "
+        "Apply eligibility from this process's framing and method cards, not from its name or tradition. "
+        "Use findings_present only with retained finding_ids; use no_relevant_instance only with an explicit "
+        "criterion, inspected sections, basis and limitations; use inconclusive when evidence or inspection is "
+        "insufficient. Coverage reports your actual inspection of the stated sections: complete does not mean "
+        "the whole paper unless you explicitly inspected it. Partial or unknown coverage cannot support "
+        "whole-document or whole-corpus absence. A supplied source is not proof that you inspected all of it. "
+        "A missing source, malformed extraction or failed anchors never by themselves establish absence. "
+        "Every positive row must include its exact dim and document key, even for one source.\n\n"
+        + ("Review every scoped claim against the source, including when there are zero rows. Return a fresh "
+           "object with review_state unchecked, supported_within_stated_scope, or disputed, plus a separate "
+           "review_basis explaining your check. Do not copy a reader's asserted support. Omissions remain "
+           "unchecked. Keep technical evidence_state fields out of your JSON; they are code receipts, not "
+           "authorizations to claim support. Must-keep lists may be empty; do not invent findings to fill them. "
+           "Any incomplete source/record limits in the handoff must remain explicit.\n\n" if reviewing else
+           "Set review_state to unchecked and review_basis to an empty string; this is a reader report, not a review.\n\n")
+        + "Required identities: " + json.dumps(identities, ensure_ascii=False)
+        + "\n\nObject shape (choose a single enum value):\n```json\n" + json.dumps(template, indent=2) + "\n```"
+    )
+
+
+def _corpus_reading(spec):
+    if not spec.scoped_outcomes:
+        return CORPUS_READING
+    return CORPUS_READING.replace(
+        "Give each assessed document anchored representation in the final findings; explicitly identify any document you cannot assess and why.",
+        "Represent every document's stated scope and outcome. Positive findings require anchors; scoped negatives "
+        "and inconclusive assessments require their stated criterion, inspected sections, basis and limits, "
+        "not invented positive findings. Do not erase these scopes in a mixed corpus reading.",
+    )
+
+
 # ── Extract ───────────────────────────────────────────────────────────────
 
 def compose_extract_prompt(
@@ -128,6 +180,8 @@ def compose_extract_prompt(
     """One dimension, one document (or, for corpus dimensions, the per-document ledgers)."""
     prefix = document_prefix(dim_prefix(dim), documents, doc_key)
     rows_hint = f"8 to {step.max_rows}" if step.max_rows > 8 else str(step.max_rows)
+    if spec.scoped_outcomes:
+        rows_hint = f"0 to {step.max_rows}"
     corpus_dim = dim.scope == "corpus"
     sections = [
         _framing(cap_def, spec, f"extraction: {dim.name}"),
@@ -160,6 +214,14 @@ def compose_extract_prompt(
             "- <what the text cannot settle for this dimension>",
         ]),
     ]
+    if spec.scoped_outcomes:
+        sections[2] = ("Read the source through this dimension and return a possibly empty findings ledger, "
+                       "its auxiliary sections and the required separate scope outcomes. Other extractions cover "
+                       "the other dimensions. " if not corpus_dim else
+                       "Read the per-document findings and scope reports. Return a possibly empty cross-document "
+                       "ledger and separate corpus scope outcomes. Your material here is earlier reports, not "
+                       "direct inspection of every source: preserve their coverage limits; do not infer corpus absence.")
+        sections.append(_scope_protocol(spec, documents, doc_key=doc_key, dimension=dim))
     system = "\n\n".join(s for s in sections if s)
     if corpus_dim:
         user = prior_ledgers or "(no per-document ledgers)"
@@ -223,7 +285,7 @@ DUTY_TEXT = {
 
 def compose_verify_prompt(
     cap_def, spec: ProcessSpec, step: ProcessStep, documents: dict[str, str], ledgers_text: str,
-    *, doc_key: str = "",
+    *, doc_key: str = "", scope_identities: Optional[list[dict]] = None,
 ) -> ProcessPrompt:
     duties = step.duties or ["check_anchors_in_context", "merge_duplicates", "hunt_misses", "name_must_keep"]
     prefix = document_prefix("V", documents, doc_key)
@@ -231,7 +293,12 @@ def compose_verify_prompt(
         prefix = "V.CORPUS"
     duty_lines = []
     for i, d in enumerate(duties, 1):
-        duty_lines.append(f"{i}. {DUTY_TEXT.get(d, d).replace('V.F', prefix + '.F')}")
+        text = DUTY_TEXT.get(d, d)
+        if spec.scoped_outcomes and d == "name_must_keep":
+            text = "End with `### Must keep`: name supported findings the synthesis must retain, if any; zero is allowed."
+        if spec.scoped_outcomes and d == "rerun_critical_questions":
+            text = text.replace("For the three inferences that carry the most weight", "For the available inferences that carry the most weight (up to three, possibly none)")
+        duty_lines.append(f"{i}. {text.replace('V.F', prefix + '.F')}")
     cards = "\n\n".join(_method_card(d) for d in spec.dimensions if d.scope == "document" or (len(documents) > 1 and not doc_key))
     sections = [
         _framing(cap_def, spec, "verification"),
@@ -267,6 +334,8 @@ def compose_verify_prompt(
         ]),
     ]
     system = "\n\n".join(s for s in sections if s)
+    if spec.scoped_outcomes:
+        system += "\n\n" + _scope_protocol(spec, documents, doc_key=doc_key, reviewing=True, identities=scope_identities)
     src = _source_block(documents if not doc_key else {doc_key: documents[doc_key]})
     user = f"{src}\n\n=====\n\nEXTRACTION LEDGERS:\n\n{ledgers_text}"
     return ProcessPrompt(
@@ -296,7 +365,7 @@ def compose_synthesize_prompt(
         "confirmed against the source, with the misses the critic added) and the source itself. This is the "
         "engine's product: it is read by the dossier's desks (spine, tables, figures) and by a person, not by "
         "another pass.",
-        CORPUS_READING if len(documents) > 1 else "",
+        _corpus_reading(spec) if len(documents) > 1 else "",
         "## What the reading contains, in order",
         (step.brief or "").strip(),
         "## Method cards (what the tradition asks you to do)",
@@ -332,6 +401,22 @@ def compose_synthesize_prompt(
         ]).rstrip(),
     ]
     system = "\n\n".join(s for s in sections if s)
+    if spec.scoped_outcomes:
+        system = system.replace(
+            "the verified findings ledger below (rows a critic confirmed against the source, with the misses the critic added)",
+            "the retained findings below, with their recorded review and evidence limits, and the separate scope assessments",
+        )
+        system = system.replace("12-30 rows", "0-30 rows; no positive minimum")
+        system = system.replace("- No claim without a row.", "- Positive findings need rows. Stated scope assessments are separate reports, not anchored findings.")
+        system += (
+            "\n\n## Preserve the scope assessments\n\n"
+            "The supplied Scope outcomes are authoritative handoff records, not new questions for you to decide. "
+            "Write each document/dimension's scope, outcome, review status, criterion, basis and limitations in "
+            "plain reader-facing prose, including every negative and inconclusive scope in mixed corpora. "
+            "Do not upgrade unchecked or disputed assessments or turn scoped negatives into whole-source absence. "
+            "An empty ledger is allowed; do not fill it with invented findings. Do not emit scope JSON or new "
+            "scope verdicts: the recorded assessments will accompany your reading."
+        )
     user = f"{_source_block(documents)}\n\n=====\n\nVERIFIED FINDINGS LEDGER:\n\n{verified_ledger_text}"
     if rejected_text:
         user += f"\n\n=====\n\nREJECTED BY THE CRITIC (do not reintroduce):\n\n{rejected_text}"
@@ -354,7 +439,7 @@ def compose_oneshot_prompt(cap_def, spec: ProcessSpec, documents: dict[str, str]
         "## Your task",
         f"Read the source with the question sets below, in your own order, and write the reading for {reader}. "
         "Work through the questions to find the material; do not answer them one by one in the output.",
-        CORPUS_READING if len(documents) > 1 else "",
+        _corpus_reading(spec) if len(documents) > 1 else "",
         "## Dimensions",
         cards,
         "## What the reading contains, in order",
@@ -374,6 +459,9 @@ def compose_oneshot_prompt(cap_def, spec: ProcessSpec, documents: dict[str, str]
         ]),
     ]
     system = "\n\n".join(s for s in sections if s)
+    if spec.scoped_outcomes:
+        system = system.replace("12-30 rows", "0-30 rows; no positive minimum")
+        system += "\n\n" + _scope_protocol(spec, documents)
     return ProcessPrompt(
         engine_key=cap_def.engine_key, step_key="oneshot", kind="synthesize", system=system,
         user=_source_block(documents), model_tier="strong", label=f"{cap_def.engine_key} | oneshot", id_prefix="F",

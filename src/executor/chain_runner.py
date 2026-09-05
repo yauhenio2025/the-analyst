@@ -595,19 +595,20 @@ def _run_engine_process(
                 cap_def, spec, sources, depth=depth, check=(mode == "oneshot_checked"),
                 model_hint=model_hint, cancellation_check=cancellation_check, on_call=_persist, upstream_context=upstream,
             )
-            # the applied ledger is the engine's product: persisted as the last pass so the desks read it
-            if mode == "oneshot_checked" and results and run.final_content != results[-1].content:
-                counter["n"] += 1
-                save_output(job_id=job_id, phase_number=phase_number, engine_key=cap_def.engine_key, pass_number=counter["n"],
-                            content=run.final_content, work_key=work_key, stance_key="checked", role="synthesis",
-                            model_used=run.final_model, metadata={"process": spec.key, "mode": mode, "wall": run.final_wall})
-                results.append(EngineCallResult(engine_key=cap_def.engine_key, pass_number=counter["n"], stance_key="checked",
-                                                content=run.final_content, model_used=run.final_model))
         else:
             run = run_process(
                 cap_def, spec, sources, depth=depth, model_hint=model_hint,
                 cancellation_check=cancellation_check, on_call=_persist, upstream_context=upstream,
             )
+        # The applied ledger is the engine's product: persisted as the last pass so the desks read it
+        if (mode == "oneshot_checked" or spec.scoped_outcomes) and results and run.final_content != results[-1].content:
+            stance = "checked" if mode == "oneshot_checked" else "scope_assessed"
+            counter["n"] += 1
+            save_output(job_id=job_id, phase_number=phase_number, engine_key=cap_def.engine_key, pass_number=counter["n"],
+                        content=run.final_content, work_key=work_key, stance_key=stance, role="synthesis",
+                        model_used=run.final_model, metadata={"process": spec.key, "mode": mode, "wall": run.final_wall})
+            results.append(EngineCallResult(engine_key=cap_def.engine_key, pass_number=counter["n"], stance_key=stance,
+                                            content=run.final_content, model_used=run.final_model))
     logger.info(f"{cap_def.engine_key} {mode} ({spec.key}): {len(run.calls)} calls, ${run.cost_usd}, {run.seconds:.0f}s, final anchor rate {run.final_wall.get('anchor_rate')}")
     return results
 

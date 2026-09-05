@@ -31,6 +31,9 @@ from src.executor.ledger_walls import (
     LedgerRow, SourceIndex, WallReport, check_citations, parse_rows, reanchor_request, render_rows, verify_rows,
 )
 from src.executor.ruling_coverage import critic_ruling_coverage
+from src.executor.scoped_outcomes import (
+    assess_scopes, expected_scopes, render_scope_json, scope_report, strip_scope_outcomes,
+)
 from src.operationalizations.schemas import ProcessDimension, ProcessSpec, ProcessStep
 from src.stages.process_composer import (
     LEDGER_HEADING, ProcessPrompt, compose_extract_prompt, compose_oneshot_prompt, compose_synthesize_prompt,
@@ -86,6 +89,12 @@ class StepCall:
     dropped_ids: list[str] = field(default_factory=list)
     label: str = ""
     system_prompt: str = ""
+    # Retain invocation evidence before the provider result is discarded. These
+    # fields enter receipts only through the opt-in scope assessment.
+    partial: Optional[bool] = None
+    stop_reason: Optional[str] = None
+    invocation_error: str = ""
+    scope_parse_error: str = ""
 
     def as_receipt(self) -> dict:
         return {
@@ -149,6 +158,8 @@ def _invoke(call_fn: CallFn, prompt: ProcessPrompt, model: str, *, depth: str, b
         input_tokens=int(res.get("input_tokens") or 0), output_tokens=int(res.get("output_tokens") or 0),
         duration_ms=int(res.get("duration_ms") or (time.time() - t0) * 1000), retries=int(res.get("retries") or 0),
         label=prompt.label, system_prompt=prompt.system,
+        partial=res.get("partial"), stop_reason=res.get("stop_reason"),
+        invocation_error=str(res.get("error") or res.get("connection_error") or ""),
     )
     sc.cost_usd = estimate_cost(used, sc.input_tokens, sc.output_tokens) or 0.0
     return sc
@@ -157,6 +168,44 @@ def _invoke(call_fn: CallFn, prompt: ProcessPrompt, model: str, *, depth: str, b
 def _ledger_text(content: str) -> str:
     _, ledger = split_ledger(content)
     return ledger or content
+
+
+def _scope_rows(sc: StepCall) -> list[LedgerRow]:
+    """Malformed opt-in extraction is evidence trouble, never an empty finding."""
+    clean = strip_scope_outcomes(sc.content)
+    if LEDGER_HEADING not in clean:
+        sc.scope_parse_error = "Missing findings ledger section"
+    try:
+        rows = parse_rows(_ledger_text(clean))
+        if not rows:
+            _, ledger = split_ledger(clean)
+            body = ledger.split("\n", 1)[1] if "\n" in ledger else ""
+            body = re.split(r"^\s*#{2,4}\s", body, maxsplit=1, flags=re.M)[0].strip()
+            if body:
+                sc.scope_parse_error = "Ledger contains non-row material instead of an explicitly empty findings section"
+        return rows
+    except ValueError as exc:
+        sc.scope_parse_error = f"Malformed findings ledger: {exc}"
+        return []
+
+
+def _assess_call(sc, identities, rows, documents, *, reviewing=False, previous=(), failed_rows=()):
+    records = assess_scopes(
+        sc.content, identities, rows, documents, reviewing=reviewing, previous=previous,
+        partial=sc.partial, stop_reason=sc.stop_reason, error=sc.invocation_error,
+        evidence_issue=sc.scope_parse_error, failed_rows=failed_rows,
+    )
+    sc.wall["scope_outcomes"] = records
+    return records
+
+
+def _check_scope_sources(spec, documents):
+    if spec.scoped_outcomes and (not documents or any(not text.strip() for text in documents.values())):
+        raise ValueError("Scoped process requires every selected source to be non-empty; missing source is not absence")
+
+
+def _identity(records):
+    return [{"document_keys": r["document_keys"], "dimension_key": r["dimension_key"]} for r in records]
 
 
 def _require_unique_ids(rows: list[LedgerRow], context: str) -> None:
@@ -172,9 +221,9 @@ def _require_unique_ids(rows: list[LedgerRow], context: str) -> None:
 
 def _wall_extraction(sc: StepCall, prompt: ProcessPrompt, index: SourceIndex, call_fn: CallFn, model: str, *,
                      depth: str, big: bool, cancellation_check, reanchor: bool = True,
-                     require_cross_document: bool = False) -> list[LedgerRow]:
+                     require_cross_document: bool = False, scoped_outcomes: bool = False) -> list[LedgerRow]:
     """Verify an extraction's anchors; one re-anchor round for the failures; drop what still fails."""
-    rows = parse_rows(_ledger_text(sc.content))
+    rows = _scope_rows(sc) if scoped_outcomes else parse_rows(_ledger_text(sc.content))
     for row in rows:
         row.doc = row.doc or prompt.doc_key
         row.dim = row.dim or prompt.dimension_key
@@ -191,7 +240,14 @@ def _wall_extraction(sc: StepCall, prompt: ProcessPrompt, index: SourceIndex, ca
             again = _invoke(call_fn, req, model, depth=depth, big=big, cancellation_check=cancellation_check)
             sc.input_tokens += again.input_tokens; sc.output_tokens += again.output_tokens
             sc.duration_ms += again.duration_ms; sc.cost_usd += again.cost_usd
-            fixed_rows = parse_rows(_ledger_text(again.content))
+            fixed_rows = _scope_rows(again) if scoped_outcomes else parse_rows(_ledger_text(again.content))
+            if scoped_outcomes:
+                sc.wall.setdefault("reanchor_receipts", []).append({
+                    "content": again.content, "partial": again.partial, "stop_reason": again.stop_reason,
+                    "error": again.invocation_error or None,
+                })
+                if again.partial or again.invocation_error or again.stop_reason in ("length", "max_tokens", "error"):
+                    sc.scope_parse_error = "Re-anchoring invocation was partial or failed"
             _require_unique_ids(fixed_rows, f"{prompt.label} re-anchor")
             fixed = {r.id: r for r in fixed_rows}
             for row in fixed.values():
@@ -209,7 +265,10 @@ def _wall_extraction(sc: StepCall, prompt: ProcessPrompt, index: SourceIndex, ca
     kept = [r for r in rows if r.anchor_verified]
     sc.dropped_ids = [r.id for r in rows if not r.anchor_verified]
     rep2 = verify_rows(kept, index, require_cross_document=require_cross_document)
-    sc.wall = {**rep.as_dict(), "after_reanchor": rep2.as_dict()}
+    sc.wall = {**sc.wall, **rep.as_dict(), "after_reanchor": rep2.as_dict()}
+    if scoped_outcomes:
+        # Failed evidence must survive the positive-row wall as an explicit limit.
+        sc.wall["scope_failed_rows"] = [{"id": r.id, "dimension": r.dim} for r in rows if not r.anchor_verified]
     return kept
 
 
@@ -230,6 +289,7 @@ def run_process(
     upstream_context: str = "",
 ) -> ProcessRunResult:
     """Run the process over `documents` ({doc_key: text}). Returns every call's receipt and the final reading."""
+    _check_scope_sources(spec, documents)
     call_fn = call_fn or _default_call
     t0 = time.time()
     result = ProcessRunResult(engine_key=cap_def.engine_key, process_key=spec.key)
@@ -247,6 +307,7 @@ def run_process(
     # Ledgers by step key: {step_key: {doc_key: [rows]}}; "" is the corpus-level doc key
     ledgers: dict[str, dict[str, list[LedgerRow]]] = {}
     rejected_by_doc: dict[str, list[LedgerRow]] = {}
+    scopes_by_step: dict[str, dict[str, list[dict]]] = {}
 
     def _record(sc: StepCall) -> None:
         result.calls.append(sc)
@@ -276,36 +337,57 @@ def run_process(
                 sc = _invoke(call_fn, prompt, model, depth=depth, big=big, cancellation_check=cancellation_check)
                 local_index = SourceIndex({dk: documents[dk]}) if dk else index
                 kept = _wall_extraction(sc, prompt, local_index, call_fn, model, depth=depth, big=big,
-                                        cancellation_check=cancellation_check, reanchor=reanchor)
+                                        cancellation_check=cancellation_check, reanchor=reanchor,
+                                        scoped_outcomes=spec.scoped_outcomes)
+                if spec.scoped_outcomes:
+                    dim = next(d for d in doc_dims if d.key == prompt.dimension_key)
+                    if sc.dropped_ids:
+                        sc.scope_parse_error = sc.scope_parse_error or "Findings lost anchor evidence; this does not establish absence"
+                    _assess_call(sc, expected_scopes(spec, documents, doc_key=dk, dimension=dim), kept, documents)
                 for r in kept:
                     r.doc = r.doc or dk
                 return sc, dk, kept
 
             step_ledgers: dict[str, list[LedgerRow]] = {}
+            step_scopes: dict[str, list[dict]] = {}
             workers = max(1, min(parallelism, len(jobs))) if step.parallel_over != "none" else 1
             with ThreadPoolExecutor(max_workers=workers) as pool:
                 for sc, dk, kept in pool.map(_do, jobs):
                     _record(sc)
                     step_ledgers.setdefault(dk, []).extend(kept)
+                    if spec.scoped_outcomes:
+                        step_scopes.setdefault(dk, []).extend(sc.wall["scope_outcomes"])
             _require_unique_ids([r for rows in step_ledgers.values() for r in rows], f"process {spec.key} extraction")
             # corpus dimensions read the per-document ledgers, not the sources
             if corpus_dims:
                 merged = "\n\n".join(
                     f"## Document [{dk}]\n" + render_rows(rows) for dk, rows in step_ledgers.items()
                 )
+                if spec.scoped_outcomes:
+                    merged += "\n\n" + render_scope_json([r for rs in step_scopes.values() for r in rs])
                 cjobs = [compose_extract_prompt(cap_def, spec, step, dim, documents, prior_ledgers=merged) for dim in corpus_dims]
                 def _do_corpus(prompt):
                     sc = _invoke(call_fn, prompt, model, depth=depth, big=big, cancellation_check=cancellation_check)
                     kept = _wall_extraction(sc, prompt, index, call_fn, model, depth=depth, big=big,
                                             cancellation_check=cancellation_check, reanchor=reanchor,
-                                            require_cross_document=True)
+                                            require_cross_document=True, scoped_outcomes=spec.scoped_outcomes)
+                    if spec.scoped_outcomes:
+                        dim = next(d for d in corpus_dims if d.key == prompt.dimension_key)
+                        if sc.dropped_ids:
+                            sc.scope_parse_error = sc.scope_parse_error or "Corpus findings lost anchor evidence; this does not establish absence"
+                        records = _assess_call(sc, expected_scopes(spec, documents, dimension=dim), kept, documents)
+                        for record in records:
+                            record["evidence_state"]["basis_material"] = "Per-document ledgers and scope reports; no direct source inspection in this invocation"
                     return sc, kept
                 with ThreadPoolExecutor(max_workers=max(1, min(parallelism, len(cjobs)))) as pool:
                     for sc, kept in pool.map(_do_corpus, cjobs):
                         _record(sc)
                         step_ledgers.setdefault("", []).extend(kept)
+                        if spec.scoped_outcomes:
+                            step_scopes.setdefault("", []).extend(sc.wall["scope_outcomes"])
             _require_unique_ids([r for rows in step_ledgers.values() for r in rows], f"process {spec.key} extraction")
             ledgers[step.key] = step_ledgers
+            scopes_by_step[step.key] = step_scopes
 
         elif step.kind == "verify":
             consumed = step.consumes or [s.key for s in spec.steps if s.kind == "extract"]
@@ -313,18 +395,26 @@ def run_process(
             for ck in consumed:
                 for dk, rows in ledgers.get(ck, {}).items():
                     per_doc.setdefault(dk, []).extend(rows)
+            per_doc_scopes: dict[str, list[dict]] = {}
+            for ck in consumed:
+                for dk, records in scopes_by_step.get(ck, {}).items():
+                    per_doc_scopes.setdefault(dk, []).extend(records)
+            step_scopes = {}
             step_ledgers = {}
             targets = [dk for dk in per_doc.keys() if dk != ""] or ([] if corpus else [""])
             for dk in targets:
                 if _cancelled():
                     raise InterruptedError(f"process {spec.key} cancelled during {step.key}")
                 rows = per_doc.get(dk, [])
-                if not rows:
+                if not rows and not spec.scoped_outcomes:
                     continue
+                prior_scopes = per_doc_scopes.get(dk, [])
                 text = render_rows(rows)
-                prompt = compose_verify_prompt(cap_def, spec, step, documents, text, doc_key=dk if corpus else "")
+                if spec.scoped_outcomes:
+                    text += "\n\n" + render_scope_json(prior_scopes)
+                prompt = compose_verify_prompt(cap_def, spec, step, documents, text, doc_key=dk if corpus else "", scope_identities=_identity(prior_scopes) if spec.scoped_outcomes else None)
                 sc = _invoke(call_fn, prompt, model, depth=depth, big=big, cancellation_check=cancellation_check)
-                vrows = parse_rows(_ledger_text(sc.content))
+                vrows = _scope_rows(sc) if spec.scoped_outcomes else parse_rows(_ledger_text(sc.content))
                 for row in vrows:
                     row.doc = row.doc or dk
                 rep = verify_rows(vrows, SourceIndex({dk: documents[dk]}) if dk else index,
@@ -341,24 +431,38 @@ def run_process(
                 sc.wall = {**rep.as_dict(), "carried_forward": len(carried), "rejected": len(rejected),
                            "added": sum(1 for r in vrows if r.status == "added"),
                            "ruling_coverage": critic_ruling_coverage(rows, vrows)}
+                if spec.scoped_outcomes:
+                    step_scopes[dk] = _assess_call(sc, _identity(prior_scopes), kept, documents,
+                                                  reviewing=True, previous=prior_scopes,
+                                                  failed_rows=[r for r in vrows if not r.anchor_verified])
                 _record(sc)
                 step_ledgers[dk] = kept
                 rejected_by_doc[dk] = rejected
-            if corpus and per_doc.get(""):
+            if corpus and (per_doc.get("") or (spec.scoped_outcomes and per_doc_scopes.get(""))):
                 # cross-document rows: one verify with all sources in context
-                text = render_rows(per_doc[""])
-                prompt = compose_verify_prompt(cap_def, spec, step, documents, text)
+                text = render_rows(per_doc.get("", []))
+                prior_scopes = per_doc_scopes.get("", [])
+                if spec.scoped_outcomes:
+                    text += "\n\n" + render_scope_json(prior_scopes)
+                prompt = compose_verify_prompt(cap_def, spec, step, documents, text,
+                                               scope_identities=_identity(prior_scopes) if spec.scoped_outcomes else None)
                 sc = _invoke(call_fn, prompt, model, depth=depth, big=big, cancellation_check=cancellation_check)
-                vrows = parse_rows(_ledger_text(sc.content))
+                vrows = _scope_rows(sc) if spec.scoped_outcomes else parse_rows(_ledger_text(sc.content))
                 rep = verify_rows(vrows, index, require_cross_document=True)
                 mentioned = {r.id for r in vrows}
                 carried = [r for r in per_doc[""] if r.id not in mentioned]
                 sc.dropped_ids = [r.id for r in vrows if not r.anchor_verified]
                 sc.wall = {**rep.as_dict(), "carried_forward": len(carried),
-                           "ruling_coverage": critic_ruling_coverage(per_doc[""], vrows)}; _record(sc)
+                           "ruling_coverage": critic_ruling_coverage(per_doc[""], vrows)}
                 step_ledgers[""] = [r for r in vrows if r.anchor_verified and r.status != "rejected"] + carried
+                if spec.scoped_outcomes:
+                    step_scopes[""] = _assess_call(sc, _identity(prior_scopes), step_ledgers[""], documents,
+                                                  reviewing=True, previous=prior_scopes,
+                                                  failed_rows=[r for r in vrows if not r.anchor_verified])
+                _record(sc)
                 rejected_by_doc[""] = [r for r in vrows if r.status == "rejected"]
             ledgers[step.key] = step_ledgers
+            scopes_by_step[step.key] = step_scopes
 
         elif step.kind == "synthesize":
             consumed = step.consumes or [s.key for s in spec.steps if s.kind in ("verify", "extract")][-1:]
@@ -366,18 +470,24 @@ def run_process(
             for ck in consumed:
                 for dk, rows in ledgers.get(ck, {}).items():
                     all_rows.extend(rows)
-            if not all_rows:
+            if not all_rows and not spec.scoped_outcomes:
                 raise RuntimeError(f"process {spec.key}: nothing survived the walls before {step.key}; no rows to synthesize from")
             _require_unique_ids(all_rows, f"process {spec.key} before {step.key}")
             verified_text = render_rows(all_rows)
+            final_scopes = [r for ck in consumed for rs in scopes_by_step.get(ck, {}).values() for r in rs]
+            if spec.scoped_outcomes:
+                if not final_scopes:
+                    raise RuntimeError(f"process {spec.key}: missing scope inventory before {step.key}")
+                verified_text += "\n\n" + render_scope_json(final_scopes)
             rejected_rows = [r for rows in rejected_by_doc.values() for r in rows]
             rejected_text = "\n".join(r.render() for r in rejected_rows) if rejected_rows else ""
             prompt = compose_synthesize_prompt(cap_def, spec, step, documents, verified_text, rejected_text=rejected_text)
             if upstream_context:
                 prompt.user = f"{upstream_context}\n\n=====\n\n{prompt.user}"
             sc = _invoke(call_fn, prompt, model, depth=depth, big=big, cancellation_check=cancellation_check)
-            prose, ledger = split_ledger(sc.content)
-            frows = parse_rows(ledger)
+            clean_content = strip_scope_outcomes(sc.content) if spec.scoped_outcomes else sc.content
+            prose, ledger = split_ledger(clean_content)
+            frows = _scope_rows(sc) if spec.scoped_outcomes else parse_rows(ledger)
             corpus_ids = {r.id for r in all_rows if r.dim in corpus_dimension_keys or len({a.doc for a in r.anchors if a.doc}) > 1}
             rep = verify_rows(frows, index, corpus_dimensions=corpus_dimension_keys, corpus_ids=corpus_ids)
             earlier = {r.id for r in all_rows} | {r.id for r in rejected_rows}
@@ -395,8 +505,15 @@ def run_process(
                     "explicitly_ruled_count": sum(r["explicitly_ruled_count"] for r in reviews),
                     "reviews": reviews,
                 }
+            if spec.scoped_outcomes:
+                # Synthesis is not another scope reviewer. Preserve the checked
+                # inventory verbatim even if its prose omits a negative scope.
+                sc.wall["scope_outcomes"] = final_scopes
+                sc.wall["synthesis_evidence"] = {"partial": sc.partial, "stop_reason": sc.stop_reason,
+                                                  "error": sc.invocation_error or None,
+                                                  "ledger_parse_error": sc.scope_parse_error or None}
             _record(sc)
-            result.final_content = sc.content
+            result.final_content = clean_content + "\n\n" + scope_report(final_scopes) if spec.scoped_outcomes else sc.content
             result.final_model = sc.model_used
             result.final_wall = sc.wall
             ledgers[step.key] = {"": frows}
@@ -485,7 +602,7 @@ def apply_rulings(rows: list[LedgerRow], rulings: list[LedgerRow], index: Source
     return kept, rejected, unverified, rep
 
 
-def assemble_checked_content(prose: str, ledger: str, kept: list[LedgerRow], rejected: list[LedgerRow], unverified: list[LedgerRow], rep: dict, critic: str) -> str:
+def assemble_checked_content(prose: str, ledger: str, kept: list[LedgerRow], rejected: list[LedgerRow], unverified: list[LedgerRow], rep: dict, critic: str, *, scoped_outcomes: bool = False) -> str:
     """The reading's prose untouched, then the applied ledger, the reading's own counter-evidence and open
     questions, and the receipt sections the desks skip."""
     tail = ""
@@ -499,7 +616,9 @@ def assemble_checked_content(prose: str, ledger: str, kept: list[LedgerRow], rej
         parts += ["", "### Rejected by the critic", *(r.render() for r in rejected)]
     parts += ["", "### Check receipt", f"- critic: {critic}; rows in: {rep['in']}; confirmed {rep['confirmed']} (+{rep['carried']} unmentioned, kept); weakened {rep['weakened']}; rejected {rep['rejected']}; added {rep['added']} (dropped {rep['added_dropped']} whose anchors did not match the source); rows kept with an unverified or incomplete anchor (tagged anchor-verified: no) {rep['unverified']}"]
     coverage = rep.get("ruling_coverage")
-    if coverage and not coverage["coverage_complete"]:
+    if scoped_outcomes and rep["in"] == 0:
+        parts.append("- No original finding rows; see the scope review below.")
+    elif coverage and not coverage["coverage_complete"]:
         parts.append(
             f"- Check incomplete: {coverage['explicitly_ruled_count']} of {coverage['original_count']} original "
             "findings received an unambiguous ruling with their exact ID and a valid status. "
@@ -529,6 +648,7 @@ def run_oneshot_checked(
 ) -> ProcessRunResult:
     """One call on the strong tier (or a `reading` already on disk), then, if `check`, the critic on the mid tier
     over its ledger and the rulings applied by code."""
+    _check_scope_sources(spec, documents)
     call_fn = call_fn or _default_call
     t0 = time.time()
     result = ProcessRunResult(engine_key=cap_def.engine_key, process_key=spec.key)
@@ -546,24 +666,43 @@ def run_oneshot_checked(
             except Exception as exc:  # noqa: BLE001
                 logger.warning(f"on_call hook failed: {exc}")
 
+    read_call = None
+    reader_scopes = []
     if reading is None:
         prompt = compose_oneshot_prompt(cap_def, spec, documents)
         prompt.step_key = "read"
         if upstream_context:
             prompt.user = f"{upstream_context}\n\n=====\n\n{prompt.user}"
         sc = _invoke(call_fn, prompt, strong, depth=depth, big=big, cancellation_check=cancellation_check)
+        read_call = sc
         reading = sc.content
-        prose0, ledger0 = split_ledger(reading)
-        rows0 = parse_rows(ledger0)
+        prose0, ledger0 = split_ledger(strip_scope_outcomes(reading) if spec.scoped_outcomes else reading)
+        rows0 = _scope_rows(sc) if spec.scoped_outcomes else parse_rows(ledger0)
         rep0 = verify_rows(rows0, index, corpus_dimensions=corpus_dimensions)
         sc.wall = {**rep0.as_dict(), "has_ledger": bool(ledger0), "prose_chars": len(prose0)}
+        if spec.scoped_outcomes:
+            reader_scopes = _assess_call(sc, expected_scopes(spec, documents), rows0, documents,
+                                         failed_rows=[r for r in rows0 if not r.anchor_verified])
         _record(sc)
         result.final_content, result.final_model, result.final_wall = reading, sc.model_used, sc.wall
-    prose, ledger = split_ledger(reading)
-    rows = parse_rows(ledger)
+    clean_reading = strip_scope_outcomes(reading) if spec.scoped_outcomes else reading
+    prose, ledger = split_ledger(clean_reading)
+    if spec.scoped_outcomes:
+        # An externally supplied reading has unknown invocation provenance. Keep
+        # that explicit; its scope review can still inspect the selected sources.
+        read_call = read_call or StepCall(step_key="read", kind="synthesize", content=reading)
+        rows = _scope_rows(read_call)
+    else:
+        rows = parse_rows(ledger)
     verify_rows(rows, index, corpus_dimensions=corpus_dimensions)
     corpus_ids = {r.id for r in rows if r.dim in corpus_dimensions or len({a.doc for a in r.anchors if a.doc}) > 1}
-    if not check or not rows:
+    if spec.scoped_outcomes:
+        if not reader_scopes:
+            reader_scopes = _assess_call(read_call, expected_scopes(spec, documents), rows, documents,
+                                         failed_rows=[r for r in rows if not r.anchor_verified])
+        result.final_content = clean_reading + "\n\n" + scope_report(reader_scopes)
+        result.final_wall = {**result.final_wall, "scope_outcomes": reader_scopes}
+    if not check or (not rows and not spec.scoped_outcomes):
         result.seconds = time.time() - t0
         return result
 
@@ -572,16 +711,25 @@ def run_oneshot_checked(
     flagged = []
     for r in rows:   # the wall's verdicts travel with the rows so the critic re-anchors paraphrased quotes
         flagged.append(r.render() + ("" if r.anchor_verified else " — wall: anchor not verbatim in the source; re-anchor or reject"))
-    vprompt = compose_verify_prompt(cap_def, spec, verify_step, documents, LEDGER_HEADING + "\n" + "\n".join(flagged))
+    handoff = LEDGER_HEADING + "\n" + "\n".join(flagged)
+    if spec.scoped_outcomes:
+        handoff += "\n\n" + render_scope_json(reader_scopes)
+    vprompt = compose_verify_prompt(cap_def, spec, verify_step, documents, handoff)
     vprompt.step_key = "check"
     vc = _invoke(call_fn, vprompt, critic, depth=depth, big=big, cancellation_check=cancellation_check)
-    rulings = parse_rows(_ledger_text(vc.content))
+    rulings = _scope_rows(vc) if spec.scoped_outcomes else parse_rows(_ledger_text(vc.content))
     kept, rejected, unverified, rep = apply_rulings(rows, rulings, index, corpus_dimensions=corpus_dimensions)
     final_rows = kept
     rep_final = verify_rows(final_rows, index, corpus_dimensions=corpus_dimensions, corpus_ids=corpus_ids)
     vc.wall = {**rep_final.as_dict(), **{f"check_{k}": v for k, v in rep.items()}}
+    if spec.scoped_outcomes:
+        checked_scopes = _assess_call(vc, expected_scopes(spec, documents), kept, documents,
+                                      reviewing=True, previous=reader_scopes,
+                                      failed_rows=[r for r in rulings if not r.anchor_verified])
     _record(vc)
-    result.final_content = assemble_checked_content(prose, ledger, kept, rejected, unverified, rep, vc.model_used)
+    result.final_content = assemble_checked_content(prose, ledger, kept, rejected, unverified, rep, vc.model_used, scoped_outcomes=spec.scoped_outcomes)
+    if spec.scoped_outcomes:
+        result.final_content += "\n" + scope_report(checked_scopes)
     result.final_model = result.final_model or strong
     result.final_wall = vc.wall
     result.seconds = time.time() - t0
