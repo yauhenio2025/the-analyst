@@ -5,9 +5,15 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Added (2026-09-06 — P1/P2 corpus methods, release withheld)
+
+- Built `compare_supplied_cases` and `reconcile_sources` designs and capability/process definitions with document inventories, corpus matrices, depth modes and Luna / DeepSeek V4 Pro / Sol routing. Six outputs and twelve independent scores completed; all source-read memos preceded scores. [Study, outputs and receipts](../communications/study/STUDY_corpus_methods_P1_P2_2026-09-06.md): $4.706588 accounted plus $0.952596 unknown-cost reserve against $8; 88 tests passed.
+- Neither method is offered: source-level errors, incomplete corpus findings, undeclared dimensions and stale checked-table citations remain. Existing active and S1/E8/T1 method definitions are unchanged.
+- Fixed dossier catalog exclusions to suppress explicitly withheld capabilities from purpose entries, “More”, recipes and normal path resolution while preserving research registry access.
+
 ### Added (2026-09-06 — catalogue triage and the first queue)
 - Catalogue triage: Sol sketch and Codex's independent redo ([communications/study/TRIAGE_engine_catalogue_CODEX_2026-09-05.md](../communications/study/TRIAGE_engine_catalogue_CODEX_2026-09-05.md)); nine-task first queue adopted.
-- First-queue methods: reading guide (`deep_summarization` under the shape), Quantities and Their Meaning (`statistical_evidence` v2), Events and Supported Causal Links (`event_timeline_causal` v2), offered under "Count and date" ([src/dossier/catalog_purpose.json](../src/dossier/catalog_purpose.json)); designs and validation memo in [communications/study/](../communications/study/); Codex's `compare_supplied_cases` and `reconcile_sources` in progress.
+- First-queue methods: reading guide (`deep_summarization` under the shape), Quantities and Their Meaning (`statistical_evidence` v2), Events and Supported Causal Links (`event_timeline_causal` v2), offered under "Count and date" ([src/dossier/catalog_purpose.json](../src/dossier/catalog_purpose.json)); designs and validation memo in [communications/study/](../communications/study/).
 - Brief test derives the offered-engine count from the catalogue file instead of a literal ([tests/test_brief_v2_checks.py](../tests/test_brief_v2_checks.py)).
 
 ### Fixed (2026-09-05, evening — graceful drain on deploy)

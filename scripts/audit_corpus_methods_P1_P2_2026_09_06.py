@@ -7,6 +7,9 @@ import sys
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
 from scripts import study_corpus_methods_P1_P2_2026_09_06 as study
+from src.dossier.common import analysis_ledger
+from src.dossier.schemas import DossierJob
+from src.sources.schemas import Document
 from src.executor.context_broker import split_ledger
 from src.executor.ledger_walls import SourceIndex,parse_rows,verify_rows,check_citations
 from src.operationalizations.registry import get_operationalization_registry
@@ -42,6 +45,10 @@ def audit():
         corpus_ids={rid for r in rows for rid in [r.id,*r.lineage] if any(rid.startswith(prefix+'.') for prefix in prefixes)}
         wall=verify_rows(rows,SourceIndex(docs),corpus_dimensions=dims,corpus_ids=corpus_ids)
         tables=[line for line in prose.splitlines() if line.lstrip().startswith('|')]
+        job_view=DossierJob();job_view.analysis={'1.0':{'engine_key':job['engine'],'final_output':content}}
+        desk=analysis_ledger(job_view,[Document(key=k,title=k,text=v) for k,v in docs.items()])
+        desk_path=study.OUT/'desk_ledgers'/f'{key}.md';desk_path.parent.mkdir(parents=True,exist_ok=True);desk_path.write_text(desk)
+        desk_citable=set(re.findall(r'^- \[([^]]+)\]',desk.split('Rows whose anchors are unverified or incomplete')[0],re.M))
         scopes=record['process']['final_wall'].get('scope_outcomes',[])
         calls=[study.read(p) for p in (study.OUT/'calls').glob(key+'*/*.json') if '.prompt.' not in p.name]
         results[key]={'output_sha256':record['output_sha256'],'source_sha256':{k:study.digest(v.encode()) for k,v in docs.items()},
@@ -52,6 +59,8 @@ def audit():
           'missing_prose_ids':check_citations(prose,{r.id for r in rows}),
           'missing_table_ids':check_citations('\n'.join(tables),{r.id for r in rows}),
           'missing_expanded_final_ids':sorted(expanded_final_citations(prose)-{r.id for r in rows}),
+          'desk_citable_ids':sorted(desk_citable),
+          'table_ids_not_in_citable_desk_rows':sorted(expanded_final_citations('\n'.join(tables))-desk_citable),
           'table_lines':len(tables),'scope_outcomes':dict(Counter(r['outcome'] for r in scopes)),
           'scope_blocking_issues':[{'docs':r['document_keys'],'dimension':r['dimension_key'],'issues':r.get('evidence_state',{}).get('blocking_issues',[])} for r in scopes if r.get('evidence_state',{}).get('blocking_issues')],
           'ruling_coverage':record['process']['final_wall'].get('check_ruling_coverage'),

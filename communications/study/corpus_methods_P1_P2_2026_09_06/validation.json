@@ -1,0 +1,373 @@
+{
+  "frozen_plan": {
+    "cap_usd": 8.0,
+    "commit": "9acf7ec44191fe4afb0833b454905accc2371e26",
+    "frozen_at": 1788627816.6263175,
+    "jobs": {
+      "P1__deep__pair": {
+        "engine": "compare_supplied_cases",
+        "mode": "deep",
+        "corpus": "pair"
+      },
+      "P1__deep__castoriadis": {
+        "engine": "compare_supplied_cases",
+        "mode": "deep",
+        "corpus": "castoriadis"
+      },
+      "P1__standard__pair": {
+        "engine": "compare_supplied_cases",
+        "mode": "standard",
+        "corpus": "pair"
+      },
+      "P2__deep__deutschmann": {
+        "engine": "reconcile_sources",
+        "mode": "deep",
+        "corpus": "deutschmann"
+      },
+      "P2__deep__castoriadis": {
+        "engine": "reconcile_sources",
+        "mode": "deep",
+        "corpus": "castoriadis"
+      },
+      "P2__standard__pair": {
+        "engine": "reconcile_sources",
+        "mode": "standard",
+        "corpus": "pair"
+      }
+    },
+    "models": {
+      "cheap": "openrouter/openai/gpt-5.6-luna",
+      "mid": "openrouter/deepseek/deepseek-v4-pro",
+      "strong": "openrouter/openai/gpt-5.6-sol",
+      "sonnet": "claude-sonnet-4-6",
+      "sol": "openrouter/openai/gpt-5.6-sol"
+    },
+    "prices": {
+      "cheap": [
+        0.2,
+        1.2
+      ],
+      "mid": [
+        1.042,
+        2.085
+      ],
+      "strong": [
+        2,
+        10
+      ],
+      "sonnet": [
+        3,
+        15
+      ],
+      "sol": [
+        2,
+        10
+      ]
+    },
+    "output_limits": {
+      "cheap": 9000,
+      "mid": 18000,
+      "strong": 22000,
+      "sonnet": 3000,
+      "sol": 4000
+    },
+    "rubric": "Score this single ANALYSIS against the supplied SOURCES, independently. No comparison or winner.\nSix integer scores from 1 to 10, higher always better:\nspecificity: captures these sources and their distinct roles rather than generic themes;\nanchoring: quotes occur in the named sources AND support the actual interpretation and scope;\nnon_obviousness: useful expert distinctions a casual reader misses;\ncoherence: consistent source attribution, scope and claims across prose, tables and findings;\nusefulness: the requested comparison/reconciliation tables can be lifted, with honest missing/incommensurable cells;\nhallucination_risk: 10 means no unsupported claims, invented consensus, false contradiction, or invented absence.\nRead all sources and all substantive output. A verbatim quote verifies occurrence, not meaning. Judge table cells,\nrelation labels, definitions, quantifiers, dates, attribution, warrants and silence against the actual passages.\nDifferent scope is not contradiction; recurring vocabulary is not agreement. An honest inconclusive or bounded\nnegative cell can be useful. Do not reward length, row count, special fields or asserted verification/check status.\nIdentify any decisive error with the analysis claim and counter-passage. Give a concise source-specific reason\nfor each criterion. Return only JSON with all six scores and nonempty reasons:\n{\"specificity\":n,\"anchoring\":n,\"non_obviousness\":n,\"coherence\":n,\"usefulness\":n,\"hallucination_risk\":n,\n\"reasons\":{\"specificity\":\"...\",\"anchoring\":\"...\",\"non_obviousness\":\"...\",\"coherence\":\"...\",\n\"usefulness\":\"...\",\"hallucination_risk\":\"...\"},\"decisive_errors\":[],\"one_line\":\"...\"}",
+    "tasks": {
+      "P1": "Compare the supplied cases or approaches on justified common questions. Preserve case/source identity, criteria, each attributed matrix cell, scope, missing/incommensurable cells and exceptions. For AUKUS/subsea compare state strategies toward private networks and markets without pooling distinct actors. For conceptual sources compare the supplied approaches as approaches.",
+      "P2": "Reconcile how these sources answer shared questions. Preserve every source's answer and object/time/scope; distinguish agreement, qualification, contradiction, different scope, inspected silence and insufficient evidence. Discover themes and coverage without inferring consensus from recurrence."
+    },
+    "input_hashes": {
+      "communications/study/REDESIGN_compare_supplied_cases_2026-09-06.md": "32e183163184f871a6706fb1ecfff0ae9958578f597346f75a069080a6a77c30",
+      "communications/study/REDESIGN_reconcile_sources_2026-09-06.md": "609e6c6c5be77d84459fe1f9165deb207dd9d1c7994fe1e2d6db5e7d0b677df5",
+      "data/study/source_aukus.txt": "b7e74a27320764af339eeb8840a24ec2e427eaaae157655a3d08192af253386a",
+      "data/study/source_subsea.txt": "1c788e8d05dd98d699dc614b9f2e2d3d22794834adf86c5203932451538dcce1",
+      "data/study/sources_ideas/castoriadis1984_technique.md": "7670d7493c3b2374cd88311f97884707045f8e0e5d984a9747a8981cdaa67d63",
+      "data/study/sources_ideas/castoriadis1990_what_democracy.md": "4fb306a80b2fdcf583f4c23b78f57495b890a630caaf580d59e601a697424c55",
+      "data/study/sources_ideas/castoriadis1997_rationality_of_capitalism.md": "ef090da9111fa3f4fa435641c7cc3fabda744c1ee939976c3df01021ceaec857",
+      "data/study/sources_ideas/deutschmann2001_capitalism_as_religion.md": "857a6f44dcbbfe23017207c80569e3715276396f12f5e98aac6e1d617da912a7",
+      "data/study/sources_ideas/deutschmann2001_promise_of_absolute_wealth.md": "a2d1fe4a0f63ed7da3ac7af395884331a55ddeda6997a09c1fbaeec586d599dc",
+      "data/study/sources_ideas/deutschmann2022_interpretation_of_capitalism_as_religion.md": "36370e40fb7800b1b04a05bd02065d94e294889c01814f3ee523188233e271d0",
+      "scripts/study_corpus_methods_P1_P2_2026_09_06.py": "11f059da89c0c681fd8b300757006b70c9fed6ce520acf123de94d166ce627ec",
+      "src/engines/capability_definitions/compare_supplied_cases.yaml": "988ed9ae4498248c2460e234a0f08f9b24530a665ebcb26e7e62e3815d5a9548",
+      "src/engines/capability_definitions/reconcile_sources.yaml": "6f1b339ee1506430eae0f457c1ba31e72d988a82eddf5a2125e69be5aa16a3ab",
+      "src/engines/schemas_v2.py": "9632ad61727e1f2025c61a83fbd03b8c89f763b70087358b5783b02cf52f9789",
+      "src/events/pricing.py": "142dd59fa7f9185c2d6838745f6049011315079f6270a8f749ca1c8613d11399",
+      "src/executor/context_broker.py": "014ebc6abbc1c9b257306e0d1a1ea9a6fd30ef3fb6c56c7056dd099c46e1543d",
+      "src/executor/ledger_walls.py": "af8a0e89248b7c1644115667d034053067be7d7753937507fb93d7030e415da3",
+      "src/executor/process_runner.py": "00bceae383ec3454c9ef87574a2bfcee24ea10fc1f31e8b2984aa153b1c424f7",
+      "src/executor/ruling_coverage.py": "154a6889a61204ede20bca0ede14178ee8116c1f2360626c14cd397b98d9648e",
+      "src/executor/scoped_outcomes.py": "b2f6fdcc7de13be8628e440474fae9de4af7dd3078cb5d82dbfd0cf332634ab7",
+      "src/operationalizations/definitions/compare_supplied_cases.yaml": "d9e7dc09cb6e51500809e6a0df2d33399ef7d922f16c7595eacee95e3c1a3a5a",
+      "src/operationalizations/definitions/reconcile_sources.yaml": "332c27de7e8f016821058aabeaa221ac3deabe45457913bb38b17d8ebfd808af",
+      "src/operationalizations/schemas.py": "b20cdec494a3326d9fac7f3ad8bd8b58446c86e45511c848918148388d767637",
+      "src/stages/process_composer.py": "d4bf07c918ac8fb6801fae1d2cbaa6a980207f30bfbb12218f8bbe7f7a37f514"
+    },
+    "control": "Offline mixed-scope archive fixture only; no additional paid control.",
+    "identity": "b579cfa49898ebac8fcad175fd168335f708ed75cc0af400bd9c7062932aa0a2"
+  },
+  "transport_amendment": {
+    "original_identity": "b579cfa49898ebac8fcad175fd168335f708ed75cc0af400bd9c7062932aa0a2",
+    "script_sha256": "406d4636a0cd17dc266caa79ce7b779e2d3a1ef0cd762829085eb4d261bb14bb",
+    "change": "mid max_output_tokens 18000 -> 32000; unchanged source, method, prompt, routing, rubric and budget",
+    "limits": {
+      "cheap": 9000,
+      "mid": 32000,
+      "strong": 22000,
+      "sonnet": 3000,
+      "sol": 4000
+    },
+    "failure_sha256": "160d7d71b6edc850a9cf23b58f0b7c43aa3ffc356d9b75f00c569e3b466b57a2",
+    "original_spend_root": "/home/evgeny/projects/the-analyst/data/study/corpus_methods_P1_P2_2026_09_06",
+    "cap_usd": 8.0
+  },
+  "source_memos_commit": "d6c798b",
+  "all_memos_before_scores": {
+    "P1__deep__pair": {
+      "output_sha256": "24dcc58abb550c33ab40531c8b32bdee4f4577f4c175f6e7a74dea395a0e7a72",
+      "memo_sha256": "6a45b16c0126d070045d66b67ed1d5c50c4ac5242dfad41c6d5728637f24cbd9",
+      "memo_path": "communications/study/corpus_methods_P1_P2_2026_09_06/P1__deep__pair.md"
+    },
+    "P1__deep__castoriadis": {
+      "output_sha256": "ea9be9c14be708a1fbc849ccff2ac4bab430556f2b81120e6b7a4c17236e2112",
+      "memo_sha256": "ae9a085f14a01d355c062a2fbc2f933f7f7039006842812f3231dfb15600d2cd",
+      "memo_path": "communications/study/corpus_methods_P1_P2_2026_09_06/P1__deep__castoriadis.md"
+    },
+    "P1__standard__pair": {
+      "output_sha256": "2cdfccd533b42ca34604015d31a57915dcae6726123e53b1cb44c9cadae1e467",
+      "memo_sha256": "3abab8c092df78633927a36ba99efb9d24576905b42690a5e4128232fe42e6d4",
+      "memo_path": "communications/study/corpus_methods_P1_P2_2026_09_06/P1__standard__pair.md"
+    },
+    "P2__deep__deutschmann": {
+      "output_sha256": "029fda4ccc935ecd78e4e894c958be3ad77f0c9e401361b3b65625fb994c3306",
+      "memo_sha256": "540745c40a97ed48f2b44bf192fdb489551c66bf6d194bb1df3b6b2449d9f786",
+      "memo_path": "communications/study/corpus_methods_P1_P2_2026_09_06/P2__deep__deutschmann.md"
+    },
+    "P2__deep__castoriadis": {
+      "output_sha256": "b783a8dcefb5a7836451d45fe4b92c15e1649ff7d2bd654d85dabc6ce678f60f",
+      "memo_sha256": "a8f69ebee11bce1c165d5b26b7517a707b52c960c979dc1e3e33f8bd35940f33",
+      "memo_path": "communications/study/corpus_methods_P1_P2_2026_09_06/P2__deep__castoriadis.md"
+    },
+    "P2__standard__pair": {
+      "output_sha256": "c8e2a3bf8a52db9e2dd0236ab937d4167226ad66efd0614b6c9204d772b5963f",
+      "memo_sha256": "a91bff868b5e289502b5f95dad328a08c924e0edfe7053427acb710bbd21f268",
+      "memo_path": "communications/study/corpus_methods_P1_P2_2026_09_06/P2__standard__pair.md"
+    }
+  },
+  "judge_inputs": {
+    "P1__deep__pair__sol": {
+      "binding": {
+        "output_sha256": "24dcc58abb550c33ab40531c8b32bdee4f4577f4c175f6e7a74dea395a0e7a72",
+        "memo_sha256": "6a45b16c0126d070045d66b67ed1d5c50c4ac5242dfad41c6d5728637f24cbd9",
+        "memo_path": "communications/study/corpus_methods_P1_P2_2026_09_06/P1__deep__pair.md"
+      },
+      "prepared_at": 1788630676.568448,
+      "analysis_sha256": "24dcc58abb550c33ab40531c8b32bdee4f4577f4c175f6e7a74dea395a0e7a72"
+    },
+    "P1__deep__pair__sonnet": {
+      "binding": {
+        "output_sha256": "24dcc58abb550c33ab40531c8b32bdee4f4577f4c175f6e7a74dea395a0e7a72",
+        "memo_sha256": "6a45b16c0126d070045d66b67ed1d5c50c4ac5242dfad41c6d5728637f24cbd9",
+        "memo_path": "communications/study/corpus_methods_P1_P2_2026_09_06/P1__deep__pair.md"
+      },
+      "prepared_at": 1788630676.567927,
+      "analysis_sha256": "24dcc58abb550c33ab40531c8b32bdee4f4577f4c175f6e7a74dea395a0e7a72"
+    },
+    "P1__deep__castoriadis__sonnet": {
+      "binding": {
+        "output_sha256": "ea9be9c14be708a1fbc849ccff2ac4bab430556f2b81120e6b7a4c17236e2112",
+        "memo_sha256": "ae9a085f14a01d355c062a2fbc2f933f7f7039006842812f3231dfb15600d2cd",
+        "memo_path": "communications/study/corpus_methods_P1_P2_2026_09_06/P1__deep__castoriadis.md"
+      },
+      "prepared_at": 1788630676.5709813,
+      "analysis_sha256": "ea9be9c14be708a1fbc849ccff2ac4bab430556f2b81120e6b7a4c17236e2112"
+    },
+    "P1__deep__castoriadis__sol": {
+      "binding": {
+        "output_sha256": "ea9be9c14be708a1fbc849ccff2ac4bab430556f2b81120e6b7a4c17236e2112",
+        "memo_sha256": "ae9a085f14a01d355c062a2fbc2f933f7f7039006842812f3231dfb15600d2cd",
+        "memo_path": "communications/study/corpus_methods_P1_P2_2026_09_06/P1__deep__castoriadis.md"
+      },
+      "prepared_at": 1788630696.4602277,
+      "analysis_sha256": "ea9be9c14be708a1fbc849ccff2ac4bab430556f2b81120e6b7a4c17236e2112"
+    },
+    "P1__standard__pair__sonnet": {
+      "binding": {
+        "output_sha256": "2cdfccd533b42ca34604015d31a57915dcae6726123e53b1cb44c9cadae1e467",
+        "memo_sha256": "3abab8c092df78633927a36ba99efb9d24576905b42690a5e4128232fe42e6d4",
+        "memo_path": "communications/study/corpus_methods_P1_P2_2026_09_06/P1__standard__pair.md"
+      },
+      "prepared_at": 1788630711.565624,
+      "analysis_sha256": "0590e83ed0e0e1d2be8a39f9ba83cd28c26b444944798619339d027c4a3c6247"
+    },
+    "P1__standard__pair__sol": {
+      "binding": {
+        "output_sha256": "2cdfccd533b42ca34604015d31a57915dcae6726123e53b1cb44c9cadae1e467",
+        "memo_sha256": "3abab8c092df78633927a36ba99efb9d24576905b42690a5e4128232fe42e6d4",
+        "memo_path": "communications/study/corpus_methods_P1_P2_2026_09_06/P1__standard__pair.md"
+      },
+      "prepared_at": 1788630712.3492599,
+      "analysis_sha256": "0590e83ed0e0e1d2be8a39f9ba83cd28c26b444944798619339d027c4a3c6247"
+    },
+    "P2__deep__deutschmann__sonnet": {
+      "binding": {
+        "output_sha256": "029fda4ccc935ecd78e4e894c958be3ad77f0c9e401361b3b65625fb994c3306",
+        "memo_sha256": "540745c40a97ed48f2b44bf192fdb489551c66bf6d194bb1df3b6b2449d9f786",
+        "memo_path": "communications/study/corpus_methods_P1_P2_2026_09_06/P2__deep__deutschmann.md"
+      },
+      "prepared_at": 1788630713.027344,
+      "analysis_sha256": "029fda4ccc935ecd78e4e894c958be3ad77f0c9e401361b3b65625fb994c3306"
+    },
+    "P2__deep__deutschmann__sol": {
+      "binding": {
+        "output_sha256": "029fda4ccc935ecd78e4e894c958be3ad77f0c9e401361b3b65625fb994c3306",
+        "memo_sha256": "540745c40a97ed48f2b44bf192fdb489551c66bf6d194bb1df3b6b2449d9f786",
+        "memo_path": "communications/study/corpus_methods_P1_P2_2026_09_06/P2__deep__deutschmann.md"
+      },
+      "prepared_at": 1788630728.964847,
+      "analysis_sha256": "029fda4ccc935ecd78e4e894c958be3ad77f0c9e401361b3b65625fb994c3306"
+    },
+    "P2__deep__castoriadis__sonnet": {
+      "binding": {
+        "output_sha256": "b783a8dcefb5a7836451d45fe4b92c15e1649ff7d2bd654d85dabc6ce678f60f",
+        "memo_sha256": "a8f69ebee11bce1c165d5b26b7517a707b52c960c979dc1e3e33f8bd35940f33",
+        "memo_path": "communications/study/corpus_methods_P1_P2_2026_09_06/P2__deep__castoriadis.md"
+      },
+      "prepared_at": 1788630737.7685955,
+      "analysis_sha256": "b783a8dcefb5a7836451d45fe4b92c15e1649ff7d2bd654d85dabc6ce678f60f"
+    },
+    "P2__deep__castoriadis__sol": {
+      "binding": {
+        "output_sha256": "b783a8dcefb5a7836451d45fe4b92c15e1649ff7d2bd654d85dabc6ce678f60f",
+        "memo_sha256": "a8f69ebee11bce1c165d5b26b7517a707b52c960c979dc1e3e33f8bd35940f33",
+        "memo_path": "communications/study/corpus_methods_P1_P2_2026_09_06/P2__deep__castoriadis.md"
+      },
+      "prepared_at": 1788630742.61874,
+      "analysis_sha256": "b783a8dcefb5a7836451d45fe4b92c15e1649ff7d2bd654d85dabc6ce678f60f"
+    },
+    "P2__standard__pair__sonnet": {
+      "binding": {
+        "output_sha256": "c8e2a3bf8a52db9e2dd0236ab937d4167226ad66efd0614b6c9204d772b5963f",
+        "memo_sha256": "a91bff868b5e289502b5f95dad328a08c924e0edfe7053427acb710bbd21f268",
+        "memo_path": "communications/study/corpus_methods_P1_P2_2026_09_06/P2__standard__pair.md"
+      },
+      "prepared_at": 1788630744.133474,
+      "analysis_sha256": "08287836d65c0b568b2d622bb1d6771fe4b3284c55ca4c7da00657f4ee0ed54c"
+    },
+    "P2__standard__pair__sol": {
+      "binding": {
+        "output_sha256": "c8e2a3bf8a52db9e2dd0236ab937d4167226ad66efd0614b6c9204d772b5963f",
+        "memo_sha256": "a91bff868b5e289502b5f95dad328a08c924e0edfe7053427acb710bbd21f268",
+        "memo_path": "communications/study/corpus_methods_P1_P2_2026_09_06/P2__standard__pair.md"
+      },
+      "prepared_at": 1788630763.1739361,
+      "analysis_sha256": "08287836d65c0b568b2d622bb1d6771fe4b3284c55ca4c7da00657f4ee0ed54c"
+    }
+  },
+  "costs": {
+    "calls": 84,
+    "known_usd": 4.706588,
+    "reserved_usd": 0.952596,
+    "incomplete_calls": 2,
+    "provider_reported_usd": 3.365698
+  },
+  "conservative_total_usd": 5.659184,
+  "runs": {
+    "P1__deep__pair": {
+      "status": "complete",
+      "job": {
+        "engine": "compare_supplied_cases",
+        "mode": "deep",
+        "corpus": "pair"
+      },
+      "output_sha256": "24dcc58abb550c33ab40531c8b32bdee4f4577f4c175f6e7a74dea395a0e7a72",
+      "seconds": 998.5273559093475,
+      "recovery_seconds": 656.0769245624542,
+      "replayed_calls": [
+        "calls/P1__deep__pair/0001.json",
+        "calls/P1__deep__pair/0002.json",
+        "calls/P1__deep__pair/0003.json",
+        "calls/P1__deep__pair/0004.json",
+        "calls/P1__deep__pair/0007.json",
+        "calls/P1__deep__pair/0005.json",
+        "calls/P1__deep__pair/0006.json",
+        "calls/P1__deep__pair/0008.json",
+        "calls/P1__deep__pair/0009.json"
+      ],
+      "failed_attempt": "failed_results/P1__deep__pair.json",
+      "new_calls": "P1__deep__pair__continuation1"
+    },
+    "P1__deep__castoriadis": {
+      "status": "complete",
+      "job": {
+        "engine": "compare_supplied_cases",
+        "mode": "deep",
+        "corpus": "castoriadis"
+      },
+      "output_sha256": "ea9be9c14be708a1fbc849ccff2ac4bab430556f2b81120e6b7a4c17236e2112",
+      "seconds": 1100.0136189460754,
+      "recovery_seconds": 80.910085439682,
+      "replayed_calls": [
+        "calls/P1__deep__castoriadis/0001.json",
+        "calls/P1__deep__castoriadis/0002.json",
+        "calls/P1__deep__castoriadis/0003.json",
+        "calls/P1__deep__castoriadis/0006.json",
+        "calls/P1__deep__castoriadis/0004.json",
+        "calls/P1__deep__castoriadis/0005.json",
+        "calls/P1__deep__castoriadis/0007.json",
+        "calls/P1__deep__castoriadis/0010.json",
+        "calls/P1__deep__castoriadis/0008.json",
+        "calls/P1__deep__castoriadis/0009.json",
+        "calls/P1__deep__castoriadis/0012.json",
+        "calls/P1__deep__castoriadis/0011.json",
+        "calls/P1__deep__castoriadis/0013.json",
+        "calls/P1__deep__castoriadis/0014.json",
+        "calls/P1__deep__castoriadis/0015.json",
+        "calls/P1__deep__castoriadis/0016.json",
+        "calls/P1__deep__castoriadis/0017.json"
+      ],
+      "failed_attempt": "failed_results/P1__deep__castoriadis.json",
+      "new_calls": "P1__deep__castoriadis__replay1"
+    },
+    "P1__standard__pair": {
+      "status": "complete",
+      "job": {
+        "engine": "compare_supplied_cases",
+        "mode": "standard",
+        "corpus": "pair"
+      },
+      "output_sha256": "2cdfccd533b42ca34604015d31a57915dcae6726123e53b1cb44c9cadae1e467",
+      "seconds": 188.52373147010803
+    },
+    "P2__deep__deutschmann": {
+      "status": "complete",
+      "job": {
+        "engine": "reconcile_sources",
+        "mode": "deep",
+        "corpus": "deutschmann"
+      },
+      "output_sha256": "029fda4ccc935ecd78e4e894c958be3ad77f0c9e401361b3b65625fb994c3306",
+      "seconds": 1188.0298385620117
+    },
+    "P2__deep__castoriadis": {
+      "status": "complete",
+      "job": {
+        "engine": "reconcile_sources",
+        "mode": "deep",
+        "corpus": "castoriadis"
+      },
+      "output_sha256": "b783a8dcefb5a7836451d45fe4b92c15e1649ff7d2bd654d85dabc6ce678f60f",
+      "seconds": 1030.883338689804
+    },
+    "P2__standard__pair": {
+      "status": "complete",
+      "job": {
+        "engine": "reconcile_sources",
+        "mode": "standard",
+        "corpus": "pair"
+      },
+      "output_sha256": "c8e2a3bf8a52db9e2dd0236ab937d4167226ad66efd0614b6c9204d772b5963f",
+      "seconds": 246.64577174186707
+    }
+  },
+  "note": "Source texts, prompts and per-call raw model outputs remain in ignored data/study/corpus_methods_P1_P2_2026_09_06. Final outputs, original unchecked pair readings, desk ledgers, all scores and call receipts are archived beside this manifest. No source texts or credentials copied."
+}

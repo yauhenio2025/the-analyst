@@ -505,8 +505,16 @@
 - **Dependencies**: the process shape
 - **Added**: 2026-09-06
 
+### Corpus methods: compare cases and reconcile sources
+
+- **Status**: Built and validated; withheld from dossier offers (2026-09-06).
+- **Description**: `compare_supplied_cases` inventories cases on shared criteria and builds a case × criterion matrix; `reconcile_sources` inventories source answers and builds shared-question and theme-coverage tables. Both retain missing/incommensurable cells, document identities, method cards and corpus dimensions. Surface = oneshot, standard = oneshot_checked, deep = dvs; Luna / DeepSeek V4 Pro / Sol routing.
+- **Validation**: Six corpus outputs, twelve independent Sonnet/Sol scores, source-read memos fixed before scoring, actual desk-ledger audits and offline mixed-scope controls. $4.706588 accounted plus $0.952596 reserved for unknown usage, below the $8 cap. Useful readings, but source-alignment errors and broken evidence handoffs prevent offering. See [study and artifacts](../communications/study/STUDY_corpus_methods_P1_P2_2026-09-06.md).
+- **Entry Points**: Capability and operationalization YAMLs for both keys; `scripts/study_corpus_methods_P1_P2_2026_09_06.py`; `tests/test_corpus_methods_P1_P2_2026_09_06.py`.
+- **Release behavior**: Explicit `catalog_purpose.json` exclusions suppress purpose entries, the “More” fallback, recipes and normal dossier paths. Definitions remain loadable for research.
+
 ### Execution modes per depth (read → check → apply as the default)
-- **Status**: Active (frontier study 2026-09-05; live for conditions_of_possibility_analyzer, argument_architecture, inferential_commitment_mapper, epistemological_method_detector; 2026-09-06 first queue: deep_summarization (reading guide), statistical_evidence v2 (Quantities and Their Meaning), event_timeline_causal v2 (Events and Supported Causal Links); Codex: compare_supplied_cases, reconcile_sources)
+- **Status**: Active (frontier study 2026-09-05; live for conditions_of_possibility_analyzer, argument_architecture, inferential_commitment_mapper, epistemological_method_detector; 2026-09-06 first queue: deep_summarization (reading guide), statistical_evidence v2 (Quantities and Their Meaning), event_timeline_causal v2 (Events and Supported Causal Links); compare_supplied_cases and reconcile_sources have research definitions but remain withheld after corpus validation)
 - **Description**: `DepthSequence.mode` chooses how a depth executes: `oneshot` (one call with the process's question sets and method cards, strong tier), `oneshot_checked` (that call, then the mid-tier critic over its findings; code applies the rulings to the ledger and leaves the prose alone; rejected rows become a receipt, paraphrased quotes are tagged `anchor-verified: no`), `dvs` (the full chain), `stances` (the legacy passes). Both engines: surface = oneshot, standard = oneshot_checked, deep = dvs; strong tier GPT-5.6 Sol, critic DeepSeek V4 Pro.
 - **Entry Points**:
   - `src/operationalizations/schemas.py` - `DepthSequence.mode`, `EngineOperationalization.mode_for_depth`
