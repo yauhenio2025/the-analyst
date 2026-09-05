@@ -160,8 +160,10 @@ def assess_scopes(content, expected, rows, documents, *, reviewing=False, previo
                 problems.append("Negative claim conflicts with retained findings in this scope")
         if record["outcome"] == "findings_present":
             refs = [by_id.get(rid) for rid in record["finding_ids"]]
-            if not refs or any(r is None or not r.anchor_verified for r in refs):
-                problems.append("Declared findings have no retained verified evidence")
+            if not refs:
+                problems.append("Findings-present claim declares no finding references")
+            elif any(r is None or not r.anchor_verified for r in refs):
+                problems.append("One or more declared finding references lack retained verified evidence")
             elif any((r.dim != identity["dimension_key"]) or not {a.verified_doc for a in r.anchors if a.verified_doc} <= set(identity["document_keys"]) for r in refs):
                 problems.append("Finding identity does not belong to the declared scope")
             else:

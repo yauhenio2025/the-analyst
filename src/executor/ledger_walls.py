@@ -389,10 +389,32 @@ class WallReport:
     cross_document_rows: int = 0
     incomplete_cross_document_ids: list[str] = field(default_factory=list)
     invalid_anchor_ids: list[str] = field(default_factory=list)
+    citation_check: dict = field(default_factory=lambda: {"status": "not_checked"})
 
     @property
     def anchor_rate(self) -> float:
         return round(self.verified / self.rows, 3) if self.rows else 0.0
+
+    def check_prose_citations(self, prose: str, ledger_ids: set[str], *,
+                              also_ok: Optional[set[str]] = None,
+                              rejected_ids: Iterable[str] = ()) -> None:
+        """Record bracketed finding-ID membership in preceding prose only.
+
+        Callers exclude ledger/auxiliary sections. This does not certify quote
+        validity or interpretive support, or audit IDs in other response fields.
+
+        Oneshot checks only retained IDs. Deep synthesis also accepts the earlier
+        ledger IDs supplied by its caller, including earlier rejected rows.
+        Explicit lineage is provenance, not an automatic citation alias.
+        """
+        self.missing_cited = check_citations(prose, ledger_ids, also_ok=also_ok)
+        rejected = set(rejected_ids)
+        self.citation_check = {
+            "status": "checked",
+            "scope": "final_and_earlier_ledgers" if also_ok is not None else "retained_ledger",
+            "missing_rejected_ids": [rid for rid in self.missing_cited if rid in rejected],
+            "missing_other_ids": [rid for rid in self.missing_cited if rid not in rejected],
+        }
 
     def as_dict(self) -> dict:
         return {
@@ -403,6 +425,7 @@ class WallReport:
             "cross_document_rows": self.cross_document_rows,
             "incomplete_cross_document_ids": self.incomplete_cross_document_ids[:40],
             "invalid_anchor_ids": self.invalid_anchor_ids[:40],
+            "citation_check": self.citation_check,
         }
 
 

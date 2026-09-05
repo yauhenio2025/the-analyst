@@ -27,6 +27,7 @@ from typing import Any, Callable, Iterable, Optional
 from src.events.pricing import estimate_cost
 from src.executor.context_broker import split_ledger
 from src.executor.engine_runner import FALLBACK_MODEL, run_engine_call_auto
+# check_citations remains re-exported for the saved corpus-followup audit helper.
 from src.executor.ledger_walls import (
     LedgerRow, SourceIndex, WallReport, check_citations, parse_rows, reanchor_request, render_rows, verify_rows,
 )
@@ -181,7 +182,9 @@ def _scope_rows(sc: StepCall) -> list[LedgerRow]:
             _, ledger = split_ledger(clean)
             body = ledger.split("\n", 1)[1] if "\n" in ledger else ""
             body = re.split(r"^\s*#{2,4}\s", body, maxsplit=1, flags=re.M)[0].strip()
-            if body:
+            # A literal empty-body spelling is not a finding or an absence
+            # judgment. Scope records, source access and invocation checks still apply.
+            if body and body != "(empty)":
                 sc.scope_parse_error = "Ledger contains non-row material instead of an explicitly empty findings section"
         return rows
     except ValueError as exc:
@@ -491,8 +494,8 @@ def run_process(
             corpus_ids = {r.id for r in all_rows if r.dim in corpus_dimension_keys or len({a.doc for a in r.anchors if a.doc}) > 1}
             rep = verify_rows(frows, index, corpus_dimensions=corpus_dimension_keys, corpus_ids=corpus_ids)
             earlier = {r.id for r in all_rows} | {r.id for r in rejected_rows}
-            missing = check_citations(prose, {r.id for r in frows}, also_ok=earlier)
-            rep.missing_cited = missing
+            rep.check_prose_citations(prose, {r.id for r in frows}, also_ok=earlier,
+                                      rejected_ids={r.id for r in rejected_rows})
             missing_lineage = sorted({rid for row in frows for rid in row.lineage if rid not in earlier})
             sc.wall = {**rep.as_dict(), "has_ledger": bool(ledger), "prose_chars": len(prose),
                        "missing_lineage": missing_lineage}
@@ -602,7 +605,7 @@ def apply_rulings(rows: list[LedgerRow], rulings: list[LedgerRow], index: Source
     return kept, rejected, unverified, rep
 
 
-def assemble_checked_content(prose: str, ledger: str, kept: list[LedgerRow], rejected: list[LedgerRow], unverified: list[LedgerRow], rep: dict, critic: str, *, scoped_outcomes: bool = False) -> str:
+def assemble_checked_content(prose: str, ledger: str, kept: list[LedgerRow], rejected: list[LedgerRow], unverified: list[LedgerRow], rep: dict, critic: str, *, scoped_outcomes: bool = False, citation_check: Optional[dict] = None) -> str:
     """The reading's prose untouched, then the applied ledger, the reading's own counter-evidence and open
     questions, and the receipt sections the desks skip."""
     tail = ""
@@ -628,6 +631,14 @@ def assemble_checked_content(prose: str, ledger: str, kept: list[LedgerRow], rej
             parts.append("- Unmatched critic ruling IDs: " + ", ".join(coverage["unexpected_nonadded_ids"]) + ".")
     if any(rep[k] for k in ("weakened", "rejected", "added")):
         parts.append("- The ledger incorporates the critic's changes; the preceding prose is unchanged from the original reading.")
+    if citation_check and citation_check.get("status") == "checked":
+        missing = []
+        for key, label in (("missing_rejected_ids", "rejected IDs"), ("missing_other_ids", "other absent IDs")):
+            if citation_check[key]:
+                missing.append(label + " " + ", ".join(f"[{rid}]" for rid in citation_check[key]))
+        if missing:
+            parts.append("- Prose citations do not resolve to retained findings: " + "; ".join(missing)
+                         + ". The prose is unchanged; rejected-row records and addition lineage do not resolve these citations.")
     return "\n".join(parts).rstrip() + "\n"
 
 
@@ -721,13 +732,16 @@ def run_oneshot_checked(
     kept, rejected, unverified, rep = apply_rulings(rows, rulings, index, corpus_dimensions=corpus_dimensions)
     final_rows = kept
     rep_final = verify_rows(final_rows, index, corpus_dimensions=corpus_dimensions, corpus_ids=corpus_ids)
+    rep_final.check_prose_citations(prose, {r.id for r in kept}, rejected_ids={r.id for r in rejected})
     vc.wall = {**rep_final.as_dict(), **{f"check_{k}": v for k, v in rep.items()}}
     if spec.scoped_outcomes:
         checked_scopes = _assess_call(vc, expected_scopes(spec, documents), kept, documents,
                                       reviewing=True, previous=reader_scopes,
                                       failed_rows=[r for r in rulings if not r.anchor_verified])
     _record(vc)
-    result.final_content = assemble_checked_content(prose, ledger, kept, rejected, unverified, rep, vc.model_used, scoped_outcomes=spec.scoped_outcomes)
+    result.final_content = assemble_checked_content(prose, ledger, kept, rejected, unverified, rep, vc.model_used,
+                                                    scoped_outcomes=spec.scoped_outcomes,
+                                                    citation_check=rep_final.citation_check)
     if spec.scoped_outcomes:
         result.final_content += "\n" + scope_report(checked_scopes)
     result.final_model = result.final_model or strong
