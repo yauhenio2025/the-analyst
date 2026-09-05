@@ -1,0 +1,2144 @@
+{
+  "G2": {
+    "id": "G2",
+    "key": "compare_concept_trajectories",
+    "old": "concept_evolution",
+    "ideal": "A one-page concept × work matrix comparing meaning, argumentative role, evidence/method, metaphor and force. Lead with the most consequential continuity or difference; distinguish unordered comparison from demonstrated development. Give each work a local inventory before any trajectory. The desks lift the matrix and a paired-change table with chronology and uptake limits.",
+    "tables": [
+      "concept_by_work",
+      "paired_changes"
+    ],
+    "repair": "Merge the six mapped engines. Preserve vocabulary/method/metaphor/framing comparisons, but move relational questions to corpus scope. Replace career, invisible influence and inevitable rupture questions with supplied dates, uptake and paired passages; a missing term is not abandonment.",
+    "process": {
+      "key": "dvs",
+      "description": "How do a concept's meaning and argumentative role change or persist across the supplied works? Two or more supplied works; dates and identity/uptake evidence only when claiming development; prior analyses must retain their anchors.",
+      "framing": "A one-page concept × work matrix comparing meaning, argumentative role, evidence/method, metaphor and force. Lead with the most consequential continuity or difference; distinguish unordered comparison from demonstrated development. Give each work a local inventory before any trajectory. The desks lift the matrix and a paired-change table with chronology and uptake limits. Merge the six mapped engines. Preserve vocabulary/method/metaphor/framing comparisons, but move relational questions to corpus scope. Replace career, invisible influence and inevitable rupture questions with supplied dates, uptake and paired passages; a missing term is not abandonment.",
+      "scoped_outcomes": true,
+      "routing": {
+        "cheap": "openrouter/openai/gpt-5.6-luna",
+        "mid": "openrouter/deepseek/deepseek-v4-pro",
+        "strong": "openrouter/openai/gpt-5.6-sol"
+      },
+      "dimensions": [
+        {
+          "key": "local_meanings",
+          "id_prefix": "D1",
+          "name": "Terms and their local meanings",
+          "scope": "document",
+          "load_bearing": true,
+          "questions": [
+            "Which terms does this work define or distinguish, and what object does each name?",
+            "Which uses retain the definition and which give the same term a different sense?"
+          ],
+          "answer_shape": "[D1.F<n>] <one scoped finding> — dim: local_meanings — term: <term> — sense: <local meaning> — boundary: <limit> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Inventory definitions and actual uses; preserve negation and local scope. Split distinct senses before comparing works.",
+          "indicators": [
+            "by X we mean",
+            "defined as",
+            "in this sense"
+          ]
+        },
+        {
+          "key": "argumentative_roles",
+          "id_prefix": "D2",
+          "name": "What each concept does",
+          "scope": "document",
+          "load_bearing": true,
+          "questions": [
+            "What claim does each concept support here, and which premise connects them?",
+            "What supporting claims, dependent concepts, and enabling assumptions constitute the argumentative architecture?"
+          ],
+          "answer_shape": "[D2.F<n>] <one scoped finding> — dim: argumentative_roles — term: <term> — role: <premise, mechanism, result> — supports: <claim> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Trace the move made with the concept and its warrant. Distinguish sharing a noun from sharing an inferential role.",
+          "indicators": [
+            "therefore",
+            "depends on",
+            "constitutes"
+          ]
+        },
+        {
+          "key": "method_and_evidence",
+          "id_prefix": "D3",
+          "name": "Method and evidence attached to the concept",
+          "scope": "document",
+          "load_bearing": true,
+          "questions": [
+            "Which evidence or analytical move establishes this use of the concept?",
+            "Does the text derive, illustrate, apply or assume the concept at this passage?"
+          ],
+          "answer_shape": "[D3.F<n>] <one scoped finding> — dim: method_and_evidence — term: <term> — move: <derivation, application, assumption> — evidence: <kind> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Record the actual procedure and its passage. A conceptual derivation can supply support without empirical testing.",
+          "indicators": [
+            "we derive",
+            "for example",
+            "we assume"
+          ]
+        },
+        {
+          "key": "metaphor",
+          "id_prefix": "D4",
+          "name": "Metaphor and literal use",
+          "scope": "document",
+          "load_bearing": false,
+          "questions": [
+            "What governing metaphors appear in this work, and what relations do they carry?",
+            "Where does the text mark a metaphor as limited or use it as a literal claim?"
+          ],
+          "answer_shape": "[D4.F<n>] <one scoped finding> — dim: metaphor — term: <term> — mapping: <relation> — use: <metaphorical, literal, unresolved> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Identify the transferred relation and limit; do not infer what the author sees privately.",
+          "indicators": [
+            "as if",
+            "like",
+            "metaphor"
+          ]
+        },
+        {
+          "key": "framing",
+          "id_prefix": "D5",
+          "name": "Problem, scope and force",
+          "scope": "document",
+          "load_bearing": false,
+          "questions": [
+            "What problem is this concept made to answer, with what confidence and scope?",
+            "Where does this work state a continuity, novelty or revision claim and what exact object does it concern?"
+          ],
+          "answer_shape": "[D5.F<n>] <one scoped finding> — dim: framing — term: <term> — problem: <question> — force: <operator> — claimed-relation: <claim> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Keep hedges attached to their propositions. Do not turn an introductory claim into a demonstrated history.",
+          "indicators": [
+            "may",
+            "must",
+            "extending",
+            "previously"
+          ]
+        },
+        {
+          "key": "local_limits",
+          "id_prefix": "D6",
+          "name": "Qualifications and search limits",
+          "scope": "document",
+          "load_bearing": false,
+          "questions": [
+            "Which passage qualifies a proposed stable meaning or interpretation?",
+            "Which relevant sections were inspected for an alternative term or use, and what remains outside that inspection?"
+          ],
+          "answer_shape": "[D6.F<n>] <one scoped finding> — dim: local_limits — term: <term> — qualification: <limit> — inspected: <sections> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Retain counter-uses and avoid forced consistency. Record a negative search in the scope report; its context anchor cannot prove global absence.",
+          "indicators": [
+            "not in every case",
+            "only",
+            "scope"
+          ]
+        },
+        {
+          "key": "concept_trajectories",
+          "id_prefix": "X7",
+          "name": "Comparison across supplied works",
+          "scope": "corpus",
+          "load_bearing": false,
+          "questions": [
+            "What terms appear in both the prior work and the current work?",
+            "For each key concept, which dimensions changed and which remained stable?",
+            "Which paired passages establish a change in meaning rather than only application, scope or rhetorical force? What dates and uptake warrant an ordered trajectory?"
+          ],
+          "answer_shape": "[X7.F<n>] <one scoped finding> — dim: concept_trajectories — relation: <aligned relation> — alignment: <object, sense, owner, scope> — order-basis: <dates, uptake, or unordered> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — anchor-b: \"<verbatim supporting clause B>\" — doc-b: <different source key> — confidence: high|medium|low",
+          "method_card": "Do: Build attributed cells first, each with its own finding and supporting spans. Preserve unordered cross-author comparison; same-year publication and input order establish no sequence. Pair both works and retain counter-passages before claiming rupture, novelty or abandonment.",
+          "indicators": [
+            "explicit reference",
+            "paired formulations",
+            "scope qualification"
+          ]
+        }
+      ],
+      "steps": [
+        {
+          "key": "extract",
+          "kind": "extract",
+          "parallel_over": "dimension_x_document",
+          "model_tier": "cheap",
+          "output": "ledger",
+          "max_rows": 8
+        },
+        {
+          "key": "verify",
+          "kind": "verify",
+          "consumes": [
+            "extract"
+          ],
+          "model_tier": "mid",
+          "output": "ledger",
+          "duties": [
+            "check_anchors_in_context",
+            "reject_biography",
+            "merge_duplicates",
+            "hunt_misses",
+            "name_must_keep",
+            "Judge the warrant appropriate to the claim; preserve owners, scope, modality and counter-passages. Inspect every declared question, not just retained positives.",
+            "Every consequential table cell must cite a final finding whose complete supporting spans contain the attributed fact and qualification. Split compound claims into several rows when <=200 characters cannot carry them. Use a separate [F1] [F2] citation per finding. Include an anchor-b with its doc-b for a second supporting span when needed, even in the same document; corpus relations always retain at least two distinct source keys. Never use a scope record as a positive finding. Use comma-separated full IDs in from:, never space-concatenated IDs. Judge meaning and completeness by reading the sources; code checks only anchors and IDs. Before returning, read the actual final tables against their cited final rows and the source contexts, including each source counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or silent."
+          ]
+        },
+        {
+          "key": "synthesize",
+          "kind": "synthesize",
+          "consumes": [
+            "verify"
+          ],
+          "model_tier": "strong",
+          "output": "prose_ledger",
+          "is_final": true,
+          "reader": "a reader with the supplied texts open who needs to answer: How do a concept's meaning and argumentative role change or persist across the supplied works?",
+          "tables": [
+            "concept_by_work",
+            "paired_changes"
+          ],
+          "brief": "1. A one-page concept × work matrix comparing meaning, argumentative role, evidence/method, metaphor and force. Lead with the most consequential continuity or difference; distinguish unordered comparison from demonstrated development. Give each work a local inventory before any trajectory. The desks lift the matrix and a paired-change table with chronology and uptake limits.\n2. Establish the most consequential local findings and their qualifications; organize the reading by the objects and claims in these texts.\n3. Render the named Markdown tables with final finding IDs in every positive cell. Explain the supported relation and the strongest counter-passage; end with what is settled and the exact remaining question.\n4. With multiple sources, build each work’s inventory before the paired comparison, and state alignment and chronology limits. With one source, label the result a local inventory where a corpus relation would require another work.\nEvery consequential table cell must cite a final finding whose complete supporting spans contain the attributed fact and qualification. Split compound claims into several rows when <=200 characters cannot carry them. Use a separate [F1] [F2] citation per finding. Include an anchor-b with its doc-b for a second supporting span when needed, even in the same document; corpus relations always retain at least two distinct source keys. Never use a scope record as a positive finding. Use comma-separated full IDs in from:, never space-concatenated IDs. Judge meaning and completeness by reading the sources; code checks only anchors and IDs. Before returning, read the actual final tables against their cited final rows and the source contexts, including each source counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or silent."
+        }
+      ]
+    }
+  },
+  "G3": {
+    "id": "G3",
+    "key": "concept_appropriation_tracker",
+    "old": "concept_appropriation_tracker",
+    "ideal": "A source-use → receiving-use table: the concept as used in each context, changed purpose, retained and dropped conditions, acknowledgment and evidence of transmission. Lead with what the receiving argument gains or loses; distinguish adaptation from misrepresentation and resemblance from demonstrated borrowing. Desks lift uses and transmission-status tables.",
+    "tables": [
+      "uses_and_adaptations",
+      "transmission_status"
+    ],
+    "repair": "Reuse the engine as v2. Preserve semantic mutation, purpose, recombination and citation questions. Replace unconscious absorption, intention and concealment with explicit acknowledgment, supplied intermediaries and unresolved transmission. Fidelity concerns representations of source claims, not permission to create a new use.",
+    "process": {
+      "key": "dvs",
+      "description": "How does a concept's use change when it moves between supplied contexts? Source and receiving texts, plus any supplied intermediary or transmission evidence.",
+      "framing": "A source-use → receiving-use table: the concept as used in each context, changed purpose, retained and dropped conditions, acknowledgment and evidence of transmission. Lead with what the receiving argument gains or loses; distinguish adaptation from misrepresentation and resemblance from demonstrated borrowing. Desks lift uses and transmission-status tables. Reuse the engine as v2. Preserve semantic mutation, purpose, recombination and citation questions. Replace unconscious absorption, intention and concealment with explicit acknowledgment, supplied intermediaries and unresolved transmission. Fidelity concerns representations of source claims, not permission to create a new use.",
+      "scoped_outcomes": true,
+      "routing": {
+        "cheap": "openrouter/openai/gpt-5.6-luna",
+        "mid": "openrouter/deepseek/deepseek-v4-pro",
+        "strong": "openrouter/openai/gpt-5.6-sol"
+      },
+      "dimensions": [
+        {
+          "key": "use_in_context",
+          "id_prefix": "D1",
+          "name": "The local use",
+          "scope": "document",
+          "load_bearing": true,
+          "questions": [
+            "What concept is used here, for what object and purpose?",
+            "What conditions or contrasts define its meaning in the quoted passage?"
+          ],
+          "answer_shape": "[D1.F<n>] <one scoped finding> — dim: use_in_context — concept: <term> — purpose: <local job> — conditions: <scope> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Reconstruct the local use before judging borrowing. Preserve the owner of the concept and its conditions.",
+          "indicators": [
+            "means",
+            "used to",
+            "in contrast"
+          ]
+        },
+        {
+          "key": "acknowledgment",
+          "id_prefix": "D2",
+          "name": "Declared sources and uptake",
+          "scope": "document",
+          "load_bearing": true,
+          "questions": [
+            "Which earlier text or domain does this work explicitly cite for the concept?",
+            "Does the citation endorse a definition, adapt a method, report a rival or merely mention a name?"
+          ],
+          "answer_shape": "[D2.F<n>] <one scoped finding> — dim: acknowledgment — source-mentioned: <work> — uptake: <specific relation> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Quote the uptake clause; citation alone does not show adoption of a whole system. Mark source descriptions as this work’s reports until inspected independently.",
+          "indicators": [
+            "following",
+            "drawing on",
+            "as X argues"
+          ]
+        },
+        {
+          "key": "changed_purpose",
+          "id_prefix": "D3",
+          "name": "Adaptation declared here",
+          "scope": "document",
+          "load_bearing": true,
+          "questions": [
+            "What new purpose does the appropriated concept serve?",
+            "Which changes to the borrowed concept does this work expressly announce?"
+          ],
+          "answer_shape": "[D3.F<n>] <one scoped finding> — dim: changed_purpose — concept: <term> — change-claimed: <change> — new-job: <purpose> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Separate a new use from a claim to reproduce the origin faithfully. Record announced changes without certifying them from one text.",
+          "indicators": [
+            "adapt",
+            "narrower",
+            "apply to"
+          ]
+        },
+        {
+          "key": "recombination",
+          "id_prefix": "D4",
+          "name": "Components combined",
+          "scope": "document",
+          "load_bearing": false,
+          "questions": [
+            "Are ideas from the prior work combined with ideas from other sources in the current work?",
+            "Are the recombined elements compatible, or does their combination create tensions?"
+          ],
+          "answer_shape": "[D4.F<n>] <one scoped finding> — dim: recombination — components: <attributed inputs> — relation: <combination and conditions> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Anchor each input in this work and show the connecting move. Assess compatibility under the same object and assumptions.",
+          "indicators": [
+            "combine",
+            "together",
+            "synthesis"
+          ]
+        },
+        {
+          "key": "representation_limits",
+          "id_prefix": "D5",
+          "name": "Quoted and qualified source claims",
+          "scope": "document",
+          "load_bearing": false,
+          "questions": [
+            "Which quotation or paraphrase represents the borrowed position, and with what attribution and qualification?",
+            "What would change in this argument if a stated qualification were restored?"
+          ],
+          "answer_shape": "[D5.F<n>] <one scoped finding> — dim: representation_limits — represented-claim: <owned proposition> — qualification: <retained or omitted locally> — consequence: <route> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Read surrounding attribution and conditions; do not allege distortion without a supplied original. Distinguish local omission from misrepresentation.",
+          "indicators": [
+            "according to",
+            "however",
+            "only if"
+          ]
+        },
+        {
+          "key": "borrowing_and_use",
+          "id_prefix": "X6",
+          "name": "Comparison across supplied works",
+          "scope": "corpus",
+          "load_bearing": false,
+          "questions": [
+            "For each migrated concept, what changed in its meaning?",
+            "Is each appropriation faithful, adapted, distorted, or inverted relative to the original?",
+            "What source–destination link or supplied intermediary establishes transmission, and what remains resemblance only?"
+          ],
+          "answer_shape": "[X6.F<n>] <one scoped finding> — dim: borrowing_and_use — relation: <aligned relation> — alignment: <object, sense, owner, scope> — order-basis: <dates, uptake, or unordered> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — anchor-b: \"<verbatim supporting clause B>\" — doc-b: <different source key> — confidence: high|medium|low",
+          "method_card": "Do: Pair full local uses and acknowledgment evidence. Judge fidelity only to a represented source claim; changed purpose alone is legitimate adaptation. Keep transmission unresolved when no link is supplied, even if meanings resemble each other; do not invent silent or unconscious borrowing.",
+          "indicators": [
+            "explicit reference",
+            "paired formulations",
+            "scope qualification"
+          ]
+        }
+      ],
+      "steps": [
+        {
+          "key": "extract",
+          "kind": "extract",
+          "parallel_over": "dimension_x_document",
+          "model_tier": "cheap",
+          "output": "ledger",
+          "max_rows": 8
+        },
+        {
+          "key": "verify",
+          "kind": "verify",
+          "consumes": [
+            "extract"
+          ],
+          "model_tier": "mid",
+          "output": "ledger",
+          "duties": [
+            "check_anchors_in_context",
+            "reject_biography",
+            "merge_duplicates",
+            "hunt_misses",
+            "name_must_keep",
+            "Judge the warrant appropriate to the claim; preserve owners, scope, modality and counter-passages. Inspect every declared question, not just retained positives.",
+            "Every consequential table cell must cite a final finding whose complete supporting spans contain the attributed fact and qualification. Split compound claims into several rows when <=200 characters cannot carry them. Use a separate [F1] [F2] citation per finding. Include an anchor-b with its doc-b for a second supporting span when needed, even in the same document; corpus relations always retain at least two distinct source keys. Never use a scope record as a positive finding. Use comma-separated full IDs in from:, never space-concatenated IDs. Judge meaning and completeness by reading the sources; code checks only anchors and IDs. Before returning, read the actual final tables against their cited final rows and the source contexts, including each source counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or silent."
+          ]
+        },
+        {
+          "key": "synthesize",
+          "kind": "synthesize",
+          "consumes": [
+            "verify"
+          ],
+          "model_tier": "strong",
+          "output": "prose_ledger",
+          "is_final": true,
+          "reader": "a reader with the supplied texts open who needs to answer: How does a concept's use change when it moves between supplied contexts?",
+          "tables": [
+            "uses_and_adaptations",
+            "transmission_status"
+          ],
+          "brief": "1. A source-use → receiving-use table: the concept as used in each context, changed purpose, retained and dropped conditions, acknowledgment and evidence of transmission. Lead with what the receiving argument gains or loses; distinguish adaptation from misrepresentation and resemblance from demonstrated borrowing. Desks lift uses and transmission-status tables.\n2. Establish the most consequential local findings and their qualifications; organize the reading by the objects and claims in these texts.\n3. Render the named Markdown tables with final finding IDs in every positive cell. Explain the supported relation and the strongest counter-passage; end with what is settled and the exact remaining question.\n4. With multiple sources, build each work’s inventory before the paired comparison, and state alignment and chronology limits. With one source, label the result a local inventory where a corpus relation would require another work.\nEvery consequential table cell must cite a final finding whose complete supporting spans contain the attributed fact and qualification. Split compound claims into several rows when <=200 characters cannot carry them. Use a separate [F1] [F2] citation per finding. Include an anchor-b with its doc-b for a second supporting span when needed, even in the same document; corpus relations always retain at least two distinct source keys. Never use a scope record as a positive finding. Use comma-separated full IDs in from:, never space-concatenated IDs. Judge meaning and completeness by reading the sources; code checks only anchors and IDs. Before returning, read the actual final tables against their cited final rows and the source contexts, including each source counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or silent."
+        }
+      ]
+    }
+  },
+  "G4": {
+    "id": "G4",
+    "key": "revision_presentation",
+    "old": "evolution_tactics_detector",
+    "ideal": "An earlier-position / later-position / claimed-relation table. Compare the text’s own account of continuity, concession or clarification with changes in force, scope and support. Lead with the consequential match or mismatch, then the exact wording and what it changes for the argument. Desks lift revision and evidence-change tables; honest continuity is a valid result.",
+    "tables": [
+      "positions_and_claimed_relations",
+      "support_and_force"
+    ],
+    "repair": "Merge the mapped evolution and rhetoric engines. Preserve revision, concession, changed wording and evidence escalation. Replace the ten-tactic checklist, career sophistication, public effectiveness and strategic-amnesia presumptions with auditable presentation claims; omit motives and intent.",
+    "process": {
+      "key": "dvs",
+      "description": "How does a later text present its relationship to positions in earlier supplied works? Earlier position, later treatment and any response or declared continuity claim; dated ordering if available.",
+      "framing": "An earlier-position / later-position / claimed-relation table. Compare the text’s own account of continuity, concession or clarification with changes in force, scope and support. Lead with the consequential match or mismatch, then the exact wording and what it changes for the argument. Desks lift revision and evidence-change tables; honest continuity is a valid result. Merge the mapped evolution and rhetoric engines. Preserve revision, concession, changed wording and evidence escalation. Replace the ten-tactic checklist, career sophistication, public effectiveness and strategic-amnesia presumptions with auditable presentation claims; omit motives and intent.",
+      "scoped_outcomes": true,
+      "routing": {
+        "cheap": "openrouter/openai/gpt-5.6-luna",
+        "mid": "openrouter/deepseek/deepseek-v4-pro",
+        "strong": "openrouter/openai/gpt-5.6-sol"
+      },
+      "dimensions": [
+        {
+          "key": "position",
+          "id_prefix": "D1",
+          "name": "The position undertaken",
+          "scope": "document",
+          "load_bearing": true,
+          "questions": [
+            "What position does this text undertake, on what object and under what conditions?",
+            "Which position does it attribute to a prior work or opponent, rather than undertake itself?"
+          ],
+          "answer_shape": "[D1.F<n>] <one scoped finding> — dim: position — position: <proposition> — owner: <speaker> — scope: <conditions> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Preserve voice and conditions before comparing commitments. Report an earlier view as attributed until the earlier work is inspected.",
+          "indicators": [
+            "we argue",
+            "previously",
+            "according to"
+          ]
+        },
+        {
+          "key": "claimed_relation",
+          "id_prefix": "D2",
+          "name": "The relation the text claims",
+          "scope": "document",
+          "load_bearing": true,
+          "questions": [
+            "Where does the text call its move a clarification, extension, correction, concession or departure?",
+            "What exactly is said to remain unchanged and what is expressly relinquished?"
+          ],
+          "answer_shape": "[D2.F<n>] <one scoped finding> — dim: claimed_relation — claimed-relation: <words> — retains: <content> — relinquishes: <content> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Quote the self-description and the object it qualifies. Do not infer a continuity claim from silence.",
+          "indicators": [
+            "clarify",
+            "still",
+            "no longer",
+            "concede"
+          ]
+        },
+        {
+          "key": "scope_and_force",
+          "id_prefix": "D3",
+          "name": "Scope and force of the wording",
+          "scope": "document",
+          "load_bearing": true,
+          "questions": [
+            "How is the position qualified by quantifier, modality, time or domain?",
+            "Which local formulations change those conditions and what is their argumentative role?"
+          ],
+          "answer_shape": "[D3.F<n>] <one scoped finding> — dim: scope_and_force — position: <proposition> — force: <operator> — conditions: <scope> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Compare the same proposition; a firm conclusion and a tentative extension can coexist. Preserve adjacent qualifying clauses.",
+          "indicators": [
+            "sometimes",
+            "necessarily",
+            "in this domain"
+          ]
+        },
+        {
+          "key": "support",
+          "id_prefix": "D4",
+          "name": "Support supplied for the position",
+          "scope": "document",
+          "load_bearing": false,
+          "questions": [
+            "What evidence or derivation is offered for this position?",
+            "Does the text identify new evidence or a new argument as its reason for changing the formulation?"
+          ],
+          "answer_shape": "[D4.F<n>] <one scoped finding> — dim: support — support: <evidence or derivation> — change-reason: <declared or unstated> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Inventory support appropriate to the claim. A stronger expression alone does not establish unsupported escalation until the other work is read.",
+          "indicators": [
+            "because",
+            "new evidence",
+            "reconsider"
+          ]
+        },
+        {
+          "key": "concession_consequence",
+          "id_prefix": "D5",
+          "name": "What a concession changes",
+          "scope": "document",
+          "load_bearing": false,
+          "questions": [
+            "What does the text concede and which conclusion does that concession narrow or preserve?",
+            "Does it answer the conceded difficulty, distinguish its scope or leave it open?"
+          ],
+          "answer_shape": "[D5.F<n>] <one scoped finding> — dim: concession_consequence — concession: <content> — response: <move> — consequence: <affected claim> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Price the concession against the actual commitment. Acknowledged limits and continuing mediation need not be retreat or failure.",
+          "indicators": [
+            "nevertheless",
+            "this is not to say",
+            "only partially"
+          ]
+        },
+        {
+          "key": "revision_record",
+          "id_prefix": "X6",
+          "name": "Comparison across supplied works",
+          "scope": "corpus",
+          "load_bearing": false,
+          "questions": [
+            "Which earlier and later formulations concern the same owned position, and what establishes their order?",
+            "Does the observed change in scope, force or support match the later text’s stated relation to the earlier one?",
+            "Where do paired passages show continuity, qualification or revision; which apparently new caution is already present earlier?"
+          ],
+          "answer_shape": "[X6.F<n>] <one scoped finding> — dim: revision_record — relation: <aligned relation> — alignment: <object, sense, owner, scope> — order-basis: <dates, uptake, or unordered> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — anchor-b: \"<verbatim supporting clause B>\" — doc-b: <different source key> — confidence: high|medium|low",
+          "method_card": "Do: Compare the later account with the earlier text itself and its qualifications. Quote both sides of every relation and a separate presentation finding where needed. Distinguish edition dates from composition, no chronology from same-year order, and no concealment from unmentioned change.",
+          "indicators": [
+            "explicit reference",
+            "paired formulations",
+            "scope qualification"
+          ]
+        }
+      ],
+      "steps": [
+        {
+          "key": "extract",
+          "kind": "extract",
+          "parallel_over": "dimension_x_document",
+          "model_tier": "cheap",
+          "output": "ledger",
+          "max_rows": 8
+        },
+        {
+          "key": "verify",
+          "kind": "verify",
+          "consumes": [
+            "extract"
+          ],
+          "model_tier": "mid",
+          "output": "ledger",
+          "duties": [
+            "check_anchors_in_context",
+            "reject_biography",
+            "merge_duplicates",
+            "hunt_misses",
+            "name_must_keep",
+            "Judge the warrant appropriate to the claim; preserve owners, scope, modality and counter-passages. Inspect every declared question, not just retained positives.",
+            "Every consequential table cell must cite a final finding whose complete supporting spans contain the attributed fact and qualification. Split compound claims into several rows when <=200 characters cannot carry them. Use a separate [F1] [F2] citation per finding. Include an anchor-b with its doc-b for a second supporting span when needed, even in the same document; corpus relations always retain at least two distinct source keys. Never use a scope record as a positive finding. Use comma-separated full IDs in from:, never space-concatenated IDs. Judge meaning and completeness by reading the sources; code checks only anchors and IDs. Before returning, read the actual final tables against their cited final rows and the source contexts, including each source counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or silent."
+          ]
+        },
+        {
+          "key": "synthesize",
+          "kind": "synthesize",
+          "consumes": [
+            "verify"
+          ],
+          "model_tier": "strong",
+          "output": "prose_ledger",
+          "is_final": true,
+          "reader": "a reader with the supplied texts open who needs to answer: How does a later text present its relationship to positions in earlier supplied works?",
+          "tables": [
+            "positions_and_claimed_relations",
+            "support_and_force"
+          ],
+          "brief": "1. An earlier-position / later-position / claimed-relation table. Compare the text’s own account of continuity, concession or clarification with changes in force, scope and support. Lead with the consequential match or mismatch, then the exact wording and what it changes for the argument. Desks lift revision and evidence-change tables; honest continuity is a valid result.\n2. Establish the most consequential local findings and their qualifications; organize the reading by the objects and claims in these texts.\n3. Render the named Markdown tables with final finding IDs in every positive cell. Explain the supported relation and the strongest counter-passage; end with what is settled and the exact remaining question.\n4. With multiple sources, build each work’s inventory before the paired comparison, and state alignment and chronology limits. With one source, label the result a local inventory where a corpus relation would require another work.\nEvery consequential table cell must cite a final finding whose complete supporting spans contain the attributed fact and qualification. Split compound claims into several rows when <=200 characters cannot carry them. Use a separate [F1] [F2] citation per finding. Include an anchor-b with its doc-b for a second supporting span when needed, even in the same document; corpus relations always retain at least two distinct source keys. Never use a scope record as a positive finding. Use comma-separated full IDs in from:, never space-concatenated IDs. Judge meaning and completeness by reading the sources; code checks only anchors and IDs. Before returning, read the actual final tables against their cited final rows and the source contexts, including each source counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or silent."
+        }
+      ]
+    }
+  },
+  "A4": {
+    "id": "A4",
+    "key": "counterfactual_analyzer",
+    "old": "counterfactual_analyzer",
+    "ideal": "A one-page audit of the text’s consequential suppositions: antecedent and owner, fixed background and extra changes, bridge and modal force, relevant alternative, and what independently survives. Desks lift scenarios, dependencies and robustness tables. A genuine inferential counterexample qualifies without literal if–then syntax.",
+    "tables": [
+      "scenarios",
+      "dependencies",
+      "robustness"
+    ],
+    "repair": "Keep the candidate’s five document dimensions and corpus comparison. Correct Harris counterexample eligibility, Ganzinger positive-route ownership, Elling structural necessity versus historical intensity, and Deutschmann continuity and slavery qualifications. Do not substitute denial of a necessity premise for an intervention removing the condition itself.",
+    "process": {
+      "key": "dvs",
+      "description": "Reconstruct the suppositions doing argumentative work in the supplied text. Distinguish\ncounterfactual, conditional, concessive, reductio and reconstructed dependency uses. Preserve\nthe antecedent's status, the conclusion's modal force, and each speaker's commitment.\nTest fixed and changed conditions and the appropriate inferential warrant. Removing one\npremise may defeat a formulation or route while leaving independent support intact.",
+      "framing": "Examine the suppositions that do argumentative work in the text, if any. Distinguish an\nexplicit counterfactual, an open conditional, an even-if concession, a reductio, and an\nanalyst's reconstruction of a dependency. Preserve who makes the supposition, what is\nvaried or granted, what is held fixed, and what conclusion is claimed. Assess the\nconnecting warrant appropriate to the case: conceptual, causal, historical, or normative.\nIdentify additional assumptions and independent support that survives their removal.\nReport no relevant instance when the inspected material supports that conclusion,\nstating the scope and limits of the search.\n\nEligibility:\nA supposition qualifies when varying, granting or assuming a condition performs an\nidentifiable inferential task. Include explicit counterfactuals, open conditionals,\neven-if concessions, reductios and justified reconstructions of dependency, while keeping\nthose forms distinct. Every causal sentence is not automatically a necessary but-for claim.\nNo explicit counterfactual wording is narrower than no relevant supposition. Do not create\nan analyst's arbitrary scenario merely to avoid a negative finding.",
+      "scoped_outcomes": true,
+      "routing": {
+        "cheap": "openrouter/openai/gpt-5.6-luna",
+        "mid": "openrouter/deepseek/deepseek-v4-pro",
+        "strong": "openrouter/openai/gpt-5.6-sol"
+      },
+      "dimensions": [
+        {
+          "key": "supposition_and_function",
+          "id_prefix": "CF1",
+          "name": "The supposition, its owner and its inferential task",
+          "scope": "document",
+          "load_bearing": true,
+          "questions": [
+            "What antecedent is varied, denied, left open or provisionally granted, and what consequent is claimed? Quote the inferential passage, including a counterexample without literal if–then wording, and preserve its modal force.",
+            "Is this an explicit counterfactual, an open conditional, an even-if concession, a reductio, or an analyst's reconstruction? Explain the classification from the passage rather than from the word if alone.",
+            "Who undertakes the supposition here, and what is its task? Distinguish the paper's commitment from an interpreted thinker's position, an opponent's premise and an assumption adopted only for argument.",
+            "Is the conclusion asserted only under that supposition? Before alleging strength drift elsewhere, check that the comparison concerns the same proposition under the same antecedent."
+          ],
+          "answer_shape": "[CF1.F<n>] <supposition and argumentative task> — dim: supposition_and_function — scenario: <stable scenario label> — kind: counterfactual|open_conditional|even_if|reductio|reconstructed_dependency — owner: <speaker and endorsement status> — antecedent: <condition and denied, open or granted status> — consequent: <claim with modal strength> — function: <causal, conceptual, historical, normative or robustness task> — anchor: \"<supposition passage>\" — doc: <key> — anchor-b: \"<separate consequent or attribution passage, if needed>\" — doc-b: <key> — confidence: high|medium|low",
+          "method_card": "Do: Start with the inferential use, not an alternate-history template. An even-if concession can\nestablish a requirement that survives granting an antecedent without asserting that antecedent\nis actual or possible. A reductio can deliberately assume what the argument rejects. Mark a\nreconstructed dependence as the analyst's formulation and cite the textual route it reconstructs;\na causal attribution alone does not establish that removing this cause removes every possible route. A counterexample defeats a universal or primacy claim through its inference; literal conditional syntax is not an eligibility test.",
+          "indicators": [
+            "if",
+            "even if",
+            "suppose",
+            "without",
+            "otherwise",
+            "for the sake of argument"
+          ]
+        },
+        {
+          "key": "fixed_and_changed_conditions",
+          "id_prefix": "CF2",
+          "name": "What is varied, what remains fixed and what is added",
+          "scope": "document",
+          "load_bearing": true,
+          "questions": [
+            "What does the text explicitly hold fixed while varying or granting the antecedent? Distinguish stated background conditions from assumptions reconstructed by the analyst.",
+            "Which further changes follow from the supposition, and which are additional premises needed to obtain the proposed result? Identify the textual warrant or state that it is not supplied.",
+            "Does the scenario require incompatible fixed conditions, or is the apparent incompatibility the deliberate object of a reductio or conceptual limit test?",
+            "For a historical or causal scenario, what earlier conditions would have to differ and does the text disclose them? For a conceptual or normative scenario, what commitments define the permissible contrast?"
+          ],
+          "answer_shape": "[CF2.F<n>] <the scenario's fixed and changed conditions and their adequacy> — dim: fixed_and_changed_conditions — scenario: <stable label> — changed: <antecedent and required consequences> — held-fixed: <stated conditions or not specified> — additional-assumption: <extra premise or none established> — basis: stated|reconstructed|unsettled — consistency: compatible|conflict|deliberate_reductio|unsettled — anchor: \"<condition-changing passage>\" — doc: <key> — anchor-b: \"<background or limiting passage, if available>\" — doc-b: <key> — confidence: high|medium|low",
+          "method_card": "Do: Audit the contrast actually used. Separate what must change to make the antecedent hold from\nextra changes introduced to secure the conclusion. Apply historical backtracking and similarity\nquestions where the scenario has that temporal structure; do not require them of a conceptual\ndependency test. Compatibility is not enough to show that a background condition should remain\nfixed. Conversely, deliberate inconsistency in a reductio is not an unnoticed scenario error.",
+          "indicators": [
+            "all else",
+            "still",
+            "regardless",
+            "assume",
+            "under these conditions"
+          ]
+        },
+        {
+          "key": "inferential_path",
+          "id_prefix": "CF3",
+          "name": "The warrant from supposition to result",
+          "scope": "document",
+          "load_bearing": true,
+          "questions": [
+            "What connects antecedent to consequent here? Identify a conceptual requirement, definition, causal mechanism, historical regularity, normative premise or cited argument, and the passage doing that work.",
+            "Which steps are stated and which are reconstructed? Does restating the consequent answer the dependency question, or is a connecting premise still required?",
+            "Does the support establish necessity, possibility, tendency or a result conditional on further premises? Preserve necessary vulnerability separately from inevitable realization and risk separately from actual occurrence.",
+            "What scope does the warrant support, and what competing or independent route does the text itself supply? Do not reverse a sufficient argument into a necessary condition of accepting its conclusion."
+          ],
+          "answer_shape": "[CF3.F<n>] <the supported link and its limits> — dim: inferential_path — scenario: <stable label> — warrant-kind: conceptual|definitional|causal|historical|normative|cited_argument|mixed — link: <antecedent through bridge to consequent> — bridge-status: stated|reconstructed|unsettled — support-strength: necessary|possible|tendency|conditional|underdetermined — scope: <objects and additional conditions> — anchor: \"<claimed link>\" — doc: <key> — anchor-b: \"<support or qualification, if separate>\" — doc-b: <key> — confidence: high|medium|low",
+          "method_card": "Do: Make the bridge inspectable and apply the standard appropriate to its task. A hypothetical\ncounterexample need not report observed frequencies; an assertion about actual historical\nreception does need evidence of that occurrence. Do not assign numerical probabilities without\na supplied basis. Keep structural claims, illustrations and empirical premises separate. A paper's\nargument for a conclusion is one route until it establishes why alternatives cannot support it. Distinguish a positive conceptual derivation from an opponent premise rejected along the way. Quote the actual supporting step. General contingency or historical intensity does not refute a specifically scoped necessity claim.",
+          "indicators": [
+            "would therefore",
+            "requires",
+            "only if",
+            "might",
+            "tends to",
+            "because"
+          ]
+        },
+        {
+          "key": "alternatives_and_scope",
+          "id_prefix": "CF4",
+          "name": "Relevant alternatives and the scope of comparison",
+          "scope": "document",
+          "load_bearing": false,
+          "questions": [
+            "What alternative case or interpretation does the text consider under a comparable supposition, and what makes it relevant to this consequent?",
+            "Do different results arise because a background condition, object, modal force or argumentative task changed? Quote both cases and identify the difference before calling them inconsistent.",
+            "For a historical comparison, what warrants the similarity ordering and treatment of earlier causes? For a conceptual comparison, which disputed commitments must remain in place for the test to bear on the argument?",
+            "If an alternative is the analyst's proposed test, what textual premise makes it discriminating, and what would need further evidence? Do not present an invented scenario as one the paper claims."
+          ],
+          "answer_shape": "[CF4.F<n>] <alternative and what the comparison tests> — dim: alternatives_and_scope — scenario: <stable label> — alternative: <case or interpretation> — origin: in_text|analyst_test — relevant-similarity: <shared conditions> — scope-difference: <changed object, background, modality or task> — result: supports|qualifies|challenges|does_not_discriminate|unsettled — anchor: \"<original scenario or tested premise>\" — doc: <key> — anchor-b: \"<textual alternative or limiting passage, if available>\" — doc-b: <key> — confidence: high|medium|low",
+          "method_card": "Do: Compare the same proposition under controlled qualifications. The failure of a negative critique\nand the plausibility of a conditional constructive proposal are different targets. Start from\nalternatives available in the text. A proposed test can be useful without becoming source evidence;\nlabel it and anchor the premise it tests, not imaginary dialogue. Do not select a closest world\nor historical probability by intuition and report it as an established fact.",
+          "indicators": [
+            "by contrast",
+            "another possibility",
+            "unless",
+            "on a different reading",
+            "in that case"
+          ]
+        },
+        {
+          "key": "survival_and_robustness",
+          "id_prefix": "CF5",
+          "name": "What loses support and what survives",
+          "scope": "document",
+          "load_bearing": true,
+          "questions": [
+            "If a disputed premise or additional change is withdrawn, what exactly loses support: this wording, this derivation, a stronger modal conclusion, or every route to the result?",
+            "What independent conceptual, empirical or normative grounds does the text offer for the same conclusion? Test them rather than treating the most prominent route as indispensable.",
+            "Does a criticism remain intact if the paper's constructive alternative fails? Conversely, does failure of one criticism answer other independently developed objections?",
+            "What is the weakest surviving conclusion and its conditions? State when a subtraction is the text's explicit argument, an analyst reconstruction, or a test the available material cannot settle."
+          ],
+          "answer_shape": "[CF5.F<n>] <withdrawal and the conclusion it actually leaves> — dim: survival_and_robustness — scenario: <stable label> — withdrawn: <premise or extra change> — affected-route: <specific formulation or derivation> — surviving-route: <separate support or not established> — conclusion-strength: unchanged|narrowed|this_route_defeated|all_routes_defeated_with_basis|unsettled — origin: text|analyst_reconstruction|proposed_test — anchor: \"<withdrawn premise or affected route>\" — doc: <key> — anchor-b: \"<independent support or qualification, if available>\" — doc-b: <key> — confidence: high|medium|low",
+          "method_card": "Do: Remove one premise at a time while holding the remaining argument explicit. Distinguish a\nresource that the author uses from a commitment every accepter must undertake. Separate the\nidentity of a theory from the adequacy of a revised descendant, and conceptual reconstruction\nfrom independently supplied history. Do not invent a casualty: a route can fail while the\nconclusion remains supported. No further support found is scoped to the inspected material. Hold the intervention fixed: removing uncertainty differs from rejecting the premise that uncertainty is necessary. Test whether purported independent routes survive the exact intervention, not a weaker substitute.",
+          "indicators": [
+            "even without",
+            "independently",
+            "whether or not",
+            "sufficient reason",
+            "remains valid"
+          ]
+        },
+        {
+          "key": "suppositions_across_texts",
+          "id_prefix": "CX6",
+          "name": "Comparable suppositions and changing inferential roles",
+          "scope": "corpus",
+          "load_bearing": false,
+          "questions": [
+            "Do two documents vary or grant the same condition under comparable background assumptions? Identify the shared variable and each text's inferential task before comparing outcomes.",
+            "Does one text deny an antecedent that another merely grants for argument, or do they genuinely make competing assertions about the same scenario? Preserve each owner's commitment.",
+            "Which result changes because the mechanism, object, scope or background changes, and which result remains robust? Do not infer revision from a shared conditional phrase alone.",
+            "What supports chronology or transmission between the texts, and what is only a useful comparison? A shared year or input order cannot establish an intellectual development."
+          ],
+          "answer_shape": "[CX6.F<n>] <the comparable supposition and its role in each text> — dim: suppositions_across_texts — shared-variable: <condition compared> — background: <comparable and changed assumptions> — antecedent-status: <denied, open or granted in each text> — relation: continuity|changed_role|qualified_result|different_scope|incompatibility|unsettled — uptake-basis: <explicit link, dated order, or comparison only> — anchor: \"<verbatim A>\" — doc: <A> — anchor-b: \"<verbatim B>\" — doc-b: <B> — confidence: high|medium|low",
+          "method_card": "Do: Keep the two local arguments intact. An antecedent granted to test robustness is not an\nempirical endorsement that can simply contradict another text's historical denial. Trace changes\nin inferential use separately from changes in belief. Retain complete paired anchors and doc\nkeys in every corpus descendant. Do not manufacture an alternative history, continuity or\nretraction to make the texts form a sequence. Report comparison limits and unsupported links. Read earlier caution before positing later sobriety. Preserve slavery versus later industrial-capitalist scope and any Abrahamic or practical qualification with additional anchored rows if needed.",
+          "indicators": [
+            "same supposition with another function",
+            "repeated concession",
+            "explicit revision",
+            "different background assumptions"
+          ]
+        }
+      ],
+      "steps": [
+        {
+          "key": "extract",
+          "kind": "extract",
+          "parallel_over": "dimension_x_document",
+          "model_tier": "cheap",
+          "output": "ledger",
+          "max_rows": 8
+        },
+        {
+          "key": "verify",
+          "kind": "verify",
+          "consumes": [
+            "extract"
+          ],
+          "model_tier": "mid",
+          "output": "ledger",
+          "duties": [
+            "Judge the warrant actually offered: conceptual, interpretive, causal, historical or normative.\nLack of empirical evidence is not by itself a defect in a conceptual argument.\nAn analyst's ranking or reconstruction needs anchored grounds and explicit inferential\nstatus; the exact analytical label need not occur in the source. Distinguish a discussed\nalternative or disanalogy that is inadequately answered from one that is absent.\nTest a proposed counterexample against the actual quantified and modal claim, preserving\nits conditions and the distinctions between possibility, necessity and probability.",
+            "check_anchors_in_context",
+            "reject_biography",
+            "Check the supposition's owner, denied or granted status, fixed conditions and modal consequent; do not convert an even-if grant into an assertion of actuality or necessity.",
+            "Test each claimed dependency against alternative argument routes and qualifications. A rejected route need not defeat the conclusion, and a stated consequent is not its own warrant.",
+            "merge_duplicates",
+            "hunt_misses",
+            "Name only supported must-keep finding IDs and why; do not add scenarios to meet a numerical quota. Preserve full source-qualified IDs and both anchors on corpus descendants.",
+            "Keep the candidate’s five document dimensions and corpus comparison. Correct Harris counterexample eligibility, Ganzinger positive-route ownership, Elling structural necessity versus historical intensity, and Deutschmann continuity and slavery qualifications. Do not substitute denial of a necessity premise for an intervention removing the condition itself.",
+            "Every consequential table cell must cite a final finding whose complete supporting spans contain the attributed fact and qualification. Split compound claims into several rows when <=200 characters cannot carry them. Use a separate [F1] [F2] citation per finding. Include an anchor-b with its doc-b for a second supporting span when needed, even in the same document; corpus relations always retain at least two distinct source keys. Never use a scope record as a positive finding. Use comma-separated full IDs in from:, never space-concatenated IDs. Judge meaning and completeness by reading the sources; code checks only anchors and IDs. Before returning, read the actual final tables against their cited final rows and the source contexts, including each source counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or silent."
+          ]
+        },
+        {
+          "key": "synthesize",
+          "kind": "synthesize",
+          "consumes": [
+            "verify"
+          ],
+          "model_tier": "strong",
+          "output": "prose_ledger",
+          "is_final": true,
+          "reader": "a reader deciding which suppositions carry an argument and how much survives if they change",
+          "tables": [
+            "scenarios",
+            "dependencies",
+            "robustness"
+          ],
+          "brief": "Keep canonical finding IDs consistent in prose and the final ledger. If final IDs change,\nuse them in every prose citation and preserve original IDs in from fields. Every corpus\ncomparison and descendant retains complete anchors from both source keys.\n1. State the most consequential supported supposition and what it tests. Give a compact\n   inventory distinguishing counterfactuals, open conditionals, concessions, reductios and\n   analyst reconstructions, with each owner's actual commitment and the consequent's modality.\n2. Explain what is varied or granted and what remains fixed. Expose additional assumptions\n   without requiring an alternate history when the argument is conceptual or normative.\n3. Trace the inferential bridge, its supporting passage and the missing step if one remains.\n   Distinguish necessity, vulnerability, tendency and possibility; retain limiting conditions.\n4. Examine the strongest relevant alternative under comparable conditions. State when the\n   comparison changes the object or background, and mark a reader's proposed test as such.\n5. Withdraw the disputed premise or extra change and show the surviving argument. Separate\n   losing a formulation, losing a route and losing every route; preserve independent grounds\n   and distinguish the paper's criticism from the success of its constructive alternative.\n6. For a corpus, establish each document's scenario and then compare shared conditions,\n   changed roles and qualified outcomes. Keep all source outcomes visible and qualify claims\n   of chronology or uptake. End with what the material settles and the one unresolved test\n   that matters most, without inventing a probability or a required casualty.\nTables: scenarios lists owner, kind, antecedent status, consequent and function; dependencies\nlists changed and fixed conditions, bridge and supported scope; robustness lists withdrawn\npremise, affected route, independent support and surviving conclusion. Name finding IDs in\nevery row; omit a table that has no supported material rather than populating it speculatively.\nA scoped negative or inconclusive outcome requires the separate scope report:\nwhat was sought, what was inspected, why no relevant instance was retained, review state\nand limits. No fabricated normal ledger or scenario is permitted. Follow the\nscoped-outcome contract supplied in this prompt.\nEvery consequential table cell must cite a final finding whose complete supporting spans contain the attributed fact and qualification. Split compound claims into several rows when <=200 characters cannot carry them. Use a separate [F1] [F2] citation per finding. Include an anchor-b with its doc-b for a second supporting span when needed, even in the same document; corpus relations always retain at least two distinct source keys. Never use a scope record as a positive finding. Use comma-separated full IDs in from:, never space-concatenated IDs. Judge meaning and completeness by reading the sources; code checks only anchors and IDs. Before returning, read the actual final tables against their cited final rows and the source contexts, including each source counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or silent."
+        }
+      ]
+    }
+  },
+  "A5": {
+    "id": "A5",
+    "key": "dialectical_structure",
+    "old": "dialectical_structure",
+    "ideal": "A one-page account of the central tension and its handling: both owned and scoped positions, what can or cannot coexist, the warranted transition, what is preserved, and the remainder. Desks lift relations, transitions and remainders. An adequate distinction or continuing mediation is a positive finding; no forced progress.",
+    "tables": [
+      "relations",
+      "transitions",
+      "remainders"
+    ],
+    "repair": "Keep the candidate’s five document dimensions and corpus comparison. Correct Ganzinger existence versus adequacy of conceptual proof, Elling normative illness versus resultant parabasis, Zambrana phantom/real appearance, Castoriadis local technical neutrality versus social constitution, and unwarranted compatibility of an unknown fragment.",
+    "process": {
+      "key": "dvs",
+      "description": "Reconstruct the text's opposed positions and its treatment of their relation, where relevant.\nPreserve owners, objects, qualifications and argumentative stages before testing incompatibility.\nA response may distinguish, reject, revise, mediate or leave a tension open; no synthesis or\nconcealed contradiction is presumed. Test what a transition establishes and what independent\nsupport survives if that transition fails. Keep analyst-proposed objections explicit.",
+      "framing": "Examine which opposed positions or requirements, if any, organize the text's argument.\nIdentify each position's owner, object, scope, modality, and argumentative stage. Determine\nwhether their relation is a contradiction, a performative conflict, a practical tension,\nor compatibility clarified by a distinction. Trace how the text rejects, revises, mediates,\nor preserves the relation, and assess the warrant for that response and what remains\nunresolved. Selective borrowing and differences between stages may be coherent. Report no\nrelevant instance when the inspected material supports that conclusion, stating the scope\nand limits of the search.\n\nEligibility:\nA relation qualifies when the text juxtaposes or relies on distinguishable positions or\nrequirements and their relation does argumentative work. Qualified compatibility,\nacknowledged appropriation and continuing mediation can be positive findings. A shared\nword, any difference between sentences, or the absence of an unrecognized contradiction\ndoes not by itself establish or exclude a relevant dialectical relation.",
+      "scoped_outcomes": true,
+      "routing": {
+        "cheap": "openrouter/openai/gpt-5.6-luna",
+        "mid": "openrouter/deepseek/deepseek-v4-pro",
+        "strong": "openrouter/openai/gpt-5.6-sol"
+      },
+      "dimensions": [
+        {
+          "key": "positions_and_attribution",
+          "id_prefix": "DS1",
+          "name": "Positions, owners and the relation at issue",
+          "scope": "document",
+          "load_bearing": true,
+          "questions": [
+            "Which opposed positions or requirements does the text actually juxtapose? State their shared object and the argumentative work their relation performs; do not infer an opposition from vocabulary alone.",
+            "Who undertakes each position here: this paper, an interpreted thinker, a rival as represented by the paper, or a hypothetical interlocutor? What passage supports that attribution, and does the paper endorse, criticize or provisionally grant it?",
+            "Is a quotation direct evidence of a thinker's position or another interpreter's report or criticism of it? Preserve that mediation and distinguish the author's reconstruction from a distinction expressly made in the interpreted work.",
+            "Do the formulations concern the same time, respect, level and stage of the argument? Identify the limiting clauses before treating them as a pair of commitments."
+          ],
+          "answer_shape": "[DS1.F<n>] <the organizing relation and its argumentative role> — dim: positions_and_attribution — relation: <stable relation label> — position-a: <scoped claim> — owner-a: <owner and endorsement status> — position-b: <scoped claim> — owner-b: <owner and endorsement status> — attribution-basis: <direct, mediated, hypothetical, or reconstruction; passage> — anchor: \"<verbatim A>\" — doc: <key> — anchor-b: \"<verbatim B, when separate>\" — doc-b: <key> — confidence: high|medium|low",
+          "method_card": "Do: Reconstruct before classifying. Locate each formulation and its owner in the immediate\ndiscussion. A quoted criticism belongs to the critic unless the text supplies the criticized\nparty's own statement. Mark grants and objections as such. Align the object, modality and\nstage; retain disagreements between interpreters without assigning every view to the paper.",
+          "indicators": [
+            "whereas",
+            "according to",
+            "on this reading",
+            "the objection is",
+            "we distinguish"
+          ]
+        },
+        {
+          "key": "kind_of_opposition",
+          "id_prefix": "DS2",
+          "name": "Incompatibility, practical tension or qualified compatibility",
+          "scope": "document",
+          "load_bearing": true,
+          "questions": [
+            "Under the owners, object, respect and modality just identified, what would make the two formulations incompatible? State the conflict, or explain how the qualifications allow both to hold.",
+            "Does the claimed conflict concern asserted propositions, the relation between an act and its characterization, practical requirements, or different levels of description? Which passages warrant that classification?",
+            "Does the text distinguish appearance from independence, necessary exposure from inevitable realization, or a presupposed starting point from a derived result? Test the distinction before alleging contradiction.",
+            "Is incompatibility the paper's finding, an opponent's allegation, or the analyst's reconstruction? What evidence could discriminate these readings within the supplied text?"
+          ],
+          "answer_shape": "[DS2.F<n>] <what the pair can or cannot jointly sustain> — dim: kind_of_opposition — relation: <stable label> — kind: contradiction|performative_conflict|practical_tension|qualified_compatibility|unsettled — same-respect: <object, owner, stage and modality check> — qualification: <operative distinction or none stated> — claim-owner: <paper, attributed position, or analyst> — anchor: \"<first formulation>\" — doc: <key> — anchor-b: \"<second formulation or qualification>\" — doc-b: <key> — confidence: high|medium|low",
+          "method_card": "Do: Specify what excludes what only when exclusion is established. For a performative conflict,\nname what the act does and what its characterization denies; do not substitute a sentential\ncontradiction. For practical tension, explain the difficulty of jointly realizing requirements\nwithout asserting logical impossibility. A scope distinction may resolve an apparent conflict;\nexamine its adequacy rather than treating either the distinction or the contradiction as automatic. Keep phantom and real appearance in their stated relation: a grounding or contrast does not automatically resolve their tension. Distinguish normative illness from the parabasis it results in.",
+          "indicators": [
+            "contradiction",
+            "at the same time",
+            "in this respect",
+            "appearance",
+            "not necessarily"
+          ]
+        },
+        {
+          "key": "response_and_transition",
+          "id_prefix": "DS3",
+          "name": "The response and its inferential warrant",
+          "scope": "document",
+          "load_bearing": true,
+          "questions": [
+            "Where does the text reject, distinguish, revise, mediate or preserve the relation? Quote the passage that performs the response rather than merely announcing its name.",
+            "What is retained, changed or relinquished, and at which argumentative stage? Is the result asserted as a local repair, a broader explanation, or complete resolution?",
+            "What premise licenses this particular transition? Does showing that the starting formulation fails establish the proposed successor, or does a further argument supply that step?",
+            "If the transition is challenged, which downstream route is affected and which independently supported claims remain? Do not make the success of one derivation necessary for every conclusion."
+          ],
+          "answer_shape": "[DS3.F<n>] <response and what it establishes> — dim: response_and_transition — relation: <stable label> — response: distinction|rejection|revision|mediation|preservation|unsettled — retains: <what> — changes: <what> — warrant: <stated or reconstructed bridge and its support> — affected-route: <route whose support changes> — independent-support: <remaining grounds or not established> — anchor: \"<transition passage>\" — doc: <key> — anchor-b: \"<warrant or limiting passage, if available>\" — doc-b: <key> — confidence: high|medium|low",
+          "method_card": "Do: Trace a transition as an inference, not a compulsory thesis-antithesis-synthesis sequence.\nSeparate the negative result about the initial position from the positive case for its replacement.\nIdentify the bridge in the paper's terms; mark a reconstructed bridge as the analyst's work.\nKeep conceptual, historical and normative premises distinct. Failure of a conceptual reconstruction\ndoes not erase separately supplied historical evidence. Find the conceptual derivation before saying proof is absent; separately judge whether its bridge is adequate. Do not include an opponent premise rejected in the derivation among its positive grounds.",
+          "indicators": [
+            "therefore",
+            "must be understood",
+            "rather",
+            "preserves",
+            "mediates"
+          ]
+        },
+        {
+          "key": "dependence_and_self_application",
+          "id_prefix": "DS4",
+          "name": "Reliance, selective appropriation and self-application",
+          "scope": "document",
+          "load_bearing": false,
+          "questions": [
+            "Which specific resource from an opposed position does the argument use, and what precisely does its criticism reject? Quote both the use and the scope of rejection.",
+            "Does the text acknowledge selective appropriation or distinguish a method from its prior application? What would make that use compatible or incompatible with its criticism?",
+            "Where does the argument state a standard and apply it to its own claims? Is a difference in application warranted by different objects or evidential burdens?",
+            "If the borrowed resource is withdrawn, which formulation or argument route fails? Can another stated resource support the conclusion without adopting the opposed position wholesale?"
+          ],
+          "answer_shape": "[DS4.F<n>] <a reliance or self-application and its actual consequence> — dim: dependence_and_self_application — relation: <stable label> — resource: <specific premise, method or concept> — criticism-scope: <what is rejected> — application: acknowledged_appropriation|consistent_application|scoped_difference|conflict|unsettled — affected-route: <specific dependence> — surviving-route: <independent grounds or not established> — anchor: \"<use or standard>\" — doc: <key> — anchor-b: \"<rejection or application>\" — doc-b: <key> — confidence: high|medium|low",
+          "method_card": "Do: Test immanent criticism against the standard actually undertaken. Borrowing a distinction does\nnot entail accepting its originator's system or verdict. Locate the paper's account of appropriation\nand assess that account before alleging dependence it cannot acknowledge. Do not infer motives,\nembarrassment or concealment. Distinguish grounds the paper uses from commitments incurred by\naccepting the conclusion; an independent route can survive withdrawal of those grounds.",
+          "indicators": [
+            "drawing on",
+            "against this interpretation",
+            "by its own criterion",
+            "nevertheless",
+            "on other grounds"
+          ]
+        },
+        {
+          "key": "remainder_and_consequence",
+          "id_prefix": "DS5",
+          "name": "Resolution scope, remainder and practical consequence",
+          "scope": "document",
+          "load_bearing": true,
+          "questions": [
+            "What does the paper say remains unresolved after its response, and what passage resists the claimed extent of resolution? Distinguish acknowledged limits from a reader's proposed objection.",
+            "Does continuing mediation count as the stated result, or does the argument claim to remove the conflict permanently? Assess it against its actual claim.",
+            "What conceptual or practical consequence follows at the supported modal strength? Does a necessary vulnerability leave its realization contingent?",
+            "Which open question could test the response using the paper's own material? State when an answer would require evidence beyond the supplied text."
+          ],
+          "answer_shape": "[DS5.F<n>] <what remains and what follows> — dim: remainder_and_consequence — relation: <stable label> — resolution-scope: local_distinction|revised_position|continuing_mediation|complete_resolution_claim|unsettled — remainder: <acknowledged limit or evidenced challenge> — consequence: <scoped and modal conclusion> — text-or-reader: <paper, attributed view, or proposed test> — anchor: \"<claimed result or limit>\" — doc: <key> — anchor-b: \"<resisting or qualifying passage, if available>\" — doc-b: <key> — confidence: high|medium|low",
+          "method_card": "Do: Preserve a remainder without inventing one. Read the conclusion and its qualifications together;\nan account of continuing fragility need not promise final reconciliation. Keep risk, necessity,\npossibility and actuality distinct. A missing implementation program does not refute a limited\nconceptual result. Explain the concrete unresolved burden and whose burden it is. An unknown fragment supplies no evidence that two requirements are jointly preserved. Use an inconclusive scope outcome when the decisive content is missing.",
+          "indicators": [
+            "remains",
+            "even when",
+            "threat",
+            "cannot settle",
+            "beyond the scope"
+          ]
+        },
+        {
+          "key": "relations_across_texts",
+          "id_prefix": "DX6",
+          "name": "The same relation under different arguments and stages",
+          "scope": "corpus",
+          "load_bearing": false,
+          "questions": [
+            "Which documents address a comparable relation, and which owners, objects, modalities and argumentative stages make the comparison warranted? Shared terminology alone is insufficient.",
+            "Does the second treatment retain, qualify, revise or refuse a position or response? Can more than one relation hold, such as continuity with a changed argumentative use?",
+            "Does an apparent incompatibility survive each text's qualifications? Distinguish opposing claims from changed questions, local versus social scope, or enabling conditions versus sufficient outcomes.",
+            "What establishes chronology or uptake: composition and edition information, an explicit reference, or only resemblance? State the limit; input order and shared year do not establish development."
+          ],
+          "answer_shape": "[DX6.F<n>] <relation and response in each text> — dim: relations_across_texts — relation: <stable label> — comparison: continuity|qualification|revision|refusal|scoped_difference|incompatibility|unsettled — comparable-scope: <owners, objects, modalities and stages> — uptake-basis: <explicit link, dated order, or resemblance only> — anchor: \"<verbatim A>\" — doc: <A> — anchor-b: \"<verbatim B>\" — doc-b: <B> — confidence: high|medium|low",
+          "method_card": "Do: Establish each text's local position before drawing a relation across them. Always retain two\ncomplete anchors with different doc keys, including in descendants and synthesis. Compare the\nargument attached to a term, not its spelling alone. Distinguish local technical competence from\nglobal neutrality, opposition from an unintended enabling effect, and selective uptake from\nconversion. A claim of omission needs inspected scope and cannot be proved by two snippets. Local technical neutrality can coexist with the social constitution of technical choices; preserve the local qualification in the finding, not only surrounding prose.",
+          "indicators": [
+            "explicit self-citation",
+            "revised application",
+            "shared object with changed scope",
+            "dated editions"
+          ]
+        }
+      ],
+      "steps": [
+        {
+          "key": "extract",
+          "kind": "extract",
+          "parallel_over": "dimension_x_document",
+          "model_tier": "cheap",
+          "output": "ledger",
+          "max_rows": 8
+        },
+        {
+          "key": "verify",
+          "kind": "verify",
+          "consumes": [
+            "extract"
+          ],
+          "model_tier": "mid",
+          "output": "ledger",
+          "duties": [
+            "Judge the warrant actually offered: conceptual, interpretive, causal, historical or normative.\nLack of empirical evidence is not by itself a defect in a conceptual argument.\nAn analyst's ranking or reconstruction needs anchored grounds and explicit inferential\nstatus; the exact analytical label need not occur in the source. Distinguish a discussed\nalternative or disanalogy that is inadequately answered from one that is absent.\nTest a proposed counterexample against the actual quantified and modal claim, preserving\nits conditions and the distinctions between possibility, necessity and probability.",
+            "check_anchors_in_context",
+            "reject_biography",
+            "Check both attributed formulations and their qualifications before confirming an incompatibility; a performative conflict needs its act and characterization, and a practical tension need not be a contradiction.",
+            "Test the warrant for the proposed transition and any claim that losing one route defeats the conclusion; inspect independent grounds before confirming a casualty.",
+            "merge_duplicates",
+            "hunt_misses",
+            "Name the supported must-keep finding IDs and why; do not invent findings to reach a numerical quota. Preserve full source-qualified IDs and both anchors on corpus descendants.",
+            "Keep the candidate’s five document dimensions and corpus comparison. Correct Ganzinger existence versus adequacy of conceptual proof, Elling normative illness versus resultant parabasis, Zambrana phantom/real appearance, Castoriadis local technical neutrality versus social constitution, and unwarranted compatibility of an unknown fragment.",
+            "Every consequential table cell must cite a final finding whose complete supporting spans contain the attributed fact and qualification. Split compound claims into several rows when <=200 characters cannot carry them. Use a separate [F1] [F2] citation per finding. Include an anchor-b with its doc-b for a second supporting span when needed, even in the same document; corpus relations always retain at least two distinct source keys. Never use a scope record as a positive finding. Use comma-separated full IDs in from:, never space-concatenated IDs. Judge meaning and completeness by reading the sources; code checks only anchors and IDs. Before returning, read the actual final tables against their cited final rows and the source contexts, including each source counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or silent."
+          ]
+        },
+        {
+          "key": "synthesize",
+          "kind": "synthesize",
+          "consumes": [
+            "verify"
+          ],
+          "model_tier": "strong",
+          "output": "prose_ledger",
+          "is_final": true,
+          "reader": "a reader assessing how an argument handles opposed positions and whether its response is justified",
+          "tables": [
+            "relations",
+            "transitions",
+            "remainders"
+          ],
+          "brief": "Keep canonical finding IDs consistent in prose and the final ledger. If final IDs change,\ncite those final IDs throughout and preserve the original IDs in from fields. Keep two\nsource-keyed anchors on every corpus relation and its descendants.\n1. Lead with the central supported relation and the paper's response, at its actual scope.\n   Explain whether it is a contradiction, performative conflict, practical tension or a\n   distinction allowing compatibility. Do not manufacture a hidden contradiction.\n2. Present the positions and their owners, with the qualifications that make the relation\n   intelligible. For a corpus, give each document's local argument briefly before the comparison.\n3. Follow the response: what changes, what is retained, and which premise warrants the move.\n   Separate failure of a starting formulation from proof of this particular successor.\n4. Test dependence and self-application where they matter. Preserve coherent selective\n   appropriation and identify independent routes that survive a challenged premise.\n5. State what remains, the consequence supported, and the strongest unresolved question.\n   Continuing mediation may be the result; do not replace it with a promised final synthesis.\n6. For a corpus, trace the evidenced continuity, qualification or change, retaining both\n   sources and explicit limits on chronology and uptake. Do not force a development narrative.\nTables: relations lists positions, owners, scope and relation type; transitions lists response,\nretained and changed elements, warrant and affected route; remainders lists resolution scope,\nremaining burden, consequence and text-versus-reader status. Each row names its finding IDs.\nThe separate scope report must state the search,\ninspected scope, negative or inconclusive result, review state and uncertainty. Do not create\nnormal findings or tables merely to fill the positive-output template. Follow the\nscoped-outcome contract supplied in this prompt.\nEvery consequential table cell must cite a final finding whose complete supporting spans contain the attributed fact and qualification. Split compound claims into several rows when <=200 characters cannot carry them. Use a separate [F1] [F2] citation per finding. Include an anchor-b with its doc-b for a second supporting span when needed, even in the same document; corpus relations always retain at least two distinct source keys. Never use a scope record as a positive finding. Use comma-separated full IDs in from:, never space-concatenated IDs. Judge meaning and completeness by reading the sources; code checks only anchors and IDs. Before returning, read the actual final tables against their cited final rows and the source contexts, including each source counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or silent."
+        }
+      ]
+    }
+  },
+  "A6": {
+    "id": "A6",
+    "key": "modal_force_inventory",
+    "old": "modal_reasoning_analyzer",
+    "ideal": "An operator inventory a reader can inspect: exact proposition and owner, must/may/cannot/ought or epistemic hedge, type and scope, supporting warrant, justified force and available alternative. Lead with the most consequential force distinction. Desks lift modal-claim and force-change tables; useful coverage is the product, with no compulsory discovery of equivocation.",
+    "tables": [
+      "modal_claims",
+      "force_checks"
+    ],
+    "repair": "Merge modal reasoning, epistemic stance and imagination failure. Preserve operator, type, thought-experiment and threshold probes. Replace mandatory deductive proof, arbitrary ignored branches and mental incapacity with warrant-appropriate checks and supplied alternatives.",
+    "process": {
+      "key": "dvs",
+      "description": "What does the text claim must, may or cannot hold, and what supports that force? Text containing modal claims or thought experiments; extra evidence only when the claim invokes it.",
+      "framing": "An operator inventory a reader can inspect: exact proposition and owner, must/may/cannot/ought or epistemic hedge, type and scope, supporting warrant, justified force and available alternative. Lead with the most consequential force distinction. Desks lift modal-claim and force-change tables; useful coverage is the product, with no compulsory discovery of equivocation. Merge modal reasoning, epistemic stance and imagination failure. Preserve operator, type, thought-experiment and threshold probes. Replace mandatory deductive proof, arbitrary ignored branches and mental incapacity with warrant-appropriate checks and supplied alternatives.",
+      "scoped_outcomes": true,
+      "routing": {
+        "cheap": "openrouter/openai/gpt-5.6-luna",
+        "mid": "openrouter/deepseek/deepseek-v4-pro",
+        "strong": "openrouter/openai/gpt-5.6-sol"
+      },
+      "dimensions": [
+        {
+          "key": "operators",
+          "id_prefix": "D1",
+          "name": "Claims and exact operators",
+          "scope": "document",
+          "load_bearing": true,
+          "questions": [
+            "What does the text claim must be the case, and what kind of necessity is invoked?",
+            "What does the text claim could be different, and how is this possibility established?"
+          ],
+          "answer_shape": "[D1.F<n>] <one scoped finding> — dim: operators — claim: <owned proposition> — operator: <exact words> — kind: <epistemic, alethic, deontic, practical> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Keep the operator with its proposition and owner. Inventory uncertainty as well as necessity; a quoted opponent is not the paper’s commitment.",
+          "indicators": [
+            "must",
+            "may",
+            "cannot",
+            "ought",
+            "probably"
+          ]
+        },
+        {
+          "key": "scope",
+          "id_prefix": "D2",
+          "name": "Scope of the operator",
+          "scope": "document",
+          "load_bearing": true,
+          "questions": [
+            "What object, quantifier, condition and time fall under each modal operator?",
+            "Does a necessary exposure or capacity leave actual realization contingent?"
+          ],
+          "answer_shape": "[D2.F<n>] <one scoped finding> — dim: scope — claim: <proposition> — quantifier: <scope> — condition: <if clause> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Bracket the operator’s scope explicitly. Separate necessity of vulnerability, frequency of realization and probability of a particular outcome.",
+          "indicators": [
+            "always",
+            "if",
+            "liable to",
+            "sometimes"
+          ]
+        },
+        {
+          "key": "warrant",
+          "id_prefix": "D3",
+          "name": "Support for the force",
+          "scope": "document",
+          "load_bearing": true,
+          "questions": [
+            "Does the text distinguish between different grades of necessity and possibility?",
+            "What conceptual, empirical, normative or practical warrant supports this exact force?"
+          ],
+          "answer_shape": "[D3.F<n>] <one scoped finding> — dim: warrant — claim: <proposition> — warrant: <passage and kind> — justified-force: <assessment> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Assess the argument actually offered; conceptual necessity need not have frequency data. Separate an absent derivation from one present but inadequate.",
+          "indicators": [
+            "because",
+            "by definition",
+            "evidence suggests"
+          ]
+        },
+        {
+          "key": "force_changes",
+          "id_prefix": "D4",
+          "name": "Changes of modal register",
+          "scope": "document",
+          "load_bearing": false,
+          "questions": [
+            "Are modal operators used consistently, or do they shift meaning across contexts?",
+            "Does an alleged change concern the same proposition and conditions, or a distinct claim?"
+          ],
+          "answer_shape": "[D4.F<n>] <one scoped finding> — dim: force_changes — claim: <aligned proposition> — first-force: <operator> — second-force: <operator> — reason: <scope relation> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Pair both formulations and retain their conditions. Do not infer is-to-ought or epistemic-to-metaphysical drift from adjacent vocabulary alone.",
+          "indicators": [
+            "could",
+            "therefore must",
+            "ought"
+          ]
+        },
+        {
+          "key": "possibility_tests",
+          "id_prefix": "D5",
+          "name": "Scenarios and alternatives",
+          "scope": "document",
+          "load_bearing": false,
+          "questions": [
+            "What background assumptions does the scenario take for granted?",
+            "Does conceivability in the thought experiment genuinely establish possibility?",
+            "Which alternative does the text itself consider, and does it vary the condition relevant to this claim?"
+          ],
+          "answer_shape": "[D5.F<n>] <one scoped finding> — dim: possibility_tests — scenario: <test> — background: <fixed conditions> — supports: <modal conclusion> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Distinguish a coherent conceptual counterexample from a historical forecast. Lack of an imagined alternative proves no impossibility.",
+          "indicators": [
+            "imagine",
+            "suppose",
+            "even if"
+          ]
+        },
+        {
+          "key": "thresholds",
+          "id_prefix": "D6",
+          "name": "Thresholds and limiting cases",
+          "scope": "document",
+          "load_bearing": false,
+          "questions": [
+            "Where does the text assert a sharp boundary between categories?",
+            "Does the text acknowledge vagueness and gradual transitions, or does it impose false precision?"
+          ],
+          "answer_shape": "[D6.F<n>] <one scoped finding> — dim: thresholds — boundary: <threshold> — criterion: <rule> — consequence: <modal role> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Record only boundaries that do work; assess their criterion using supplied cases. No arbitrary numerical cutoff or forced sorites criticism.",
+          "indicators": [
+            "only when",
+            "enough",
+            "threshold"
+          ]
+        },
+        {
+          "key": "modal_comparison",
+          "id_prefix": "X7",
+          "name": "Comparison across supplied works",
+          "scope": "corpus",
+          "load_bearing": false,
+          "questions": [
+            "Which aligned proposition has a different modal force or warrant in another supplied work?",
+            "Which difference disappears once conditions and owners are preserved?"
+          ],
+          "answer_shape": "[X7.F<n>] <one scoped finding> — dim: modal_comparison — relation: <aligned relation> — alignment: <object, sense, owner, scope> — order-basis: <dates, uptake, or unordered> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — anchor-b: \"<verbatim supporting clause B>\" — doc-b: <different source key> — confidence: high|medium|low",
+          "method_card": "Do: Pair propositions and their qualifiers. A changed confidence level need not be changed meaning or evidence of intellectual development.",
+          "indicators": [
+            "explicit reference",
+            "paired formulations",
+            "scope qualification"
+          ]
+        }
+      ],
+      "steps": [
+        {
+          "key": "extract",
+          "kind": "extract",
+          "parallel_over": "dimension_x_document",
+          "model_tier": "cheap",
+          "output": "ledger",
+          "max_rows": 8
+        },
+        {
+          "key": "verify",
+          "kind": "verify",
+          "consumes": [
+            "extract"
+          ],
+          "model_tier": "mid",
+          "output": "ledger",
+          "duties": [
+            "check_anchors_in_context",
+            "reject_biography",
+            "merge_duplicates",
+            "hunt_misses",
+            "name_must_keep",
+            "Judge the warrant appropriate to the claim; preserve owners, scope, modality and counter-passages. Inspect every declared question, not just retained positives.",
+            "Every consequential table cell must cite a final finding whose complete supporting spans contain the attributed fact and qualification. Split compound claims into several rows when <=200 characters cannot carry them. Use a separate [F1] [F2] citation per finding. Include an anchor-b with its doc-b for a second supporting span when needed, even in the same document; corpus relations always retain at least two distinct source keys. Never use a scope record as a positive finding. Use comma-separated full IDs in from:, never space-concatenated IDs. Judge meaning and completeness by reading the sources; code checks only anchors and IDs. Before returning, read the actual final tables against their cited final rows and the source contexts, including each source counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or silent."
+          ]
+        },
+        {
+          "key": "synthesize",
+          "kind": "synthesize",
+          "consumes": [
+            "verify"
+          ],
+          "model_tier": "strong",
+          "output": "prose_ledger",
+          "is_final": true,
+          "reader": "a reader with the supplied texts open who needs to answer: What does the text claim must, may or cannot hold, and what supports that force?",
+          "tables": [
+            "modal_claims",
+            "force_checks"
+          ],
+          "brief": "1. An operator inventory a reader can inspect: exact proposition and owner, must/may/cannot/ought or epistemic hedge, type and scope, supporting warrant, justified force and available alternative. Lead with the most consequential force distinction. Desks lift modal-claim and force-change tables; useful coverage is the product, with no compulsory discovery of equivocation.\n2. Establish the most consequential local findings and their qualifications; organize the reading by the objects and claims in these texts.\n3. Render the named Markdown tables with final finding IDs in every positive cell. Explain the supported relation and the strongest counter-passage; end with what is settled and the exact remaining question.\n4. With multiple sources, build each work’s inventory before the paired comparison, and state alignment and chronology limits. With one source, label the result a local inventory where a corpus relation would require another work.\nEvery consequential table cell must cite a final finding whose complete supporting spans contain the attributed fact and qualification. Split compound claims into several rows when <=200 characters cannot carry them. Use a separate [F1] [F2] citation per finding. Include an anchor-b with its doc-b for a second supporting span when needed, even in the same document; corpus relations always retain at least two distinct source keys. Never use a scope record as a positive finding. Use comma-separated full IDs in from:, never space-concatenated IDs. Judge meaning and completeness by reading the sources; code checks only anchors and IDs. Before returning, read the actual final tables against their cited final rows and the source contexts, including each source counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or silent."
+        }
+      ]
+    }
+  },
+  "C1": {
+    "id": "C1",
+    "key": "meaning_in_use",
+    "old": "concept_semantic_constellation",
+    "ideal": "A compact usage lexicon with term, local sense, contrasting or neighboring term, defining boundary, passage and interpretive consequence. A second table pairs apparently inconsistent uses and explains genuine ambiguity versus scope or voice changes. Desks lift both tables. Report stable, precise use when it holds.",
+    "tables": [
+      "usage_lexicon",
+      "paired_uses"
+    ],
+    "repair": "Merge the mapped semantic and reification engines. Preserve synonyms, opposites, collocations, boundary, usage and connotation probes. Replace disciplinary anomalies without a baseline, strategic ambiguity and predicted emotional responses with textual comparisons; causation assigned to an abstraction requires checking its specified agents.",
+    "process": {
+      "key": "dvs",
+      "description": "How does the text distinguish and use a concept and its neighboring terms? One text or comparable usage passages; disciplinary reference material if making a standard-usage comparison.",
+      "framing": "A compact usage lexicon with term, local sense, contrasting or neighboring term, defining boundary, passage and interpretive consequence. A second table pairs apparently inconsistent uses and explains genuine ambiguity versus scope or voice changes. Desks lift both tables. Report stable, precise use when it holds. Merge the mapped semantic and reification engines. Preserve synonyms, opposites, collocations, boundary, usage and connotation probes. Replace disciplinary anomalies without a baseline, strategic ambiguity and predicted emotional responses with textual comparisons; causation assigned to an abstraction requires checking its specified agents.",
+      "scoped_outcomes": true,
+      "routing": {
+        "cheap": "openrouter/openai/gpt-5.6-luna",
+        "mid": "openrouter/deepseek/deepseek-v4-pro",
+        "strong": "openrouter/openai/gpt-5.6-sol"
+      },
+      "dimensions": [
+        {
+          "key": "senses",
+          "id_prefix": "D1",
+          "name": "Definitions and uses",
+          "scope": "document",
+          "load_bearing": true,
+          "questions": [
+            "Is the concept's actual usage consistent with its stated definition?",
+            "Which distinct senses are supported by the surrounding predicates and examples?"
+          ],
+          "answer_shape": "[D1.F<n>] <one scoped finding> — dim: senses — term: <term> — sense: <meaning> — context: <owned use> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Inventory actual use beside definitions. Keep quoted rivals and the paper’s own senses separate.",
+          "indicators": [
+            "means",
+            "defined as",
+            "in this sense"
+          ]
+        },
+        {
+          "key": "neighbors",
+          "id_prefix": "D2",
+          "name": "Synonyms, contrasts and collocations",
+          "scope": "document",
+          "load_bearing": true,
+          "questions": [
+            "What terms does the author use as near-synonyms -- and what subtle distinctions does the author draw between them?",
+            "What antonyms or contrasts define the concept negatively -- what it is NOT?",
+            "What terms habitually co-occur with the concept (collocations), and what do these associations reveal?"
+          ],
+          "answer_shape": "[D2.F<n>] <one scoped finding> — dim: neighbors — term: <term> — neighbor: <term> — relation: <stated or inferred> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Anchor both terms and the relation in context. Co-occurrence alone establishes no synonymy or causal link.",
+          "indicators": [
+            "rather than",
+            "also called",
+            "paired terms"
+          ]
+        },
+        {
+          "key": "boundaries",
+          "id_prefix": "D3",
+          "name": "Boundaries and edge cases",
+          "scope": "document",
+          "load_bearing": true,
+          "questions": [
+            "Where are the boundaries between related concepts sharp and explicit?",
+            "Where are boundaries fuzzy or contested -- and does the author acknowledge the fuzziness?"
+          ],
+          "answer_shape": "[D3.F<n>] <one scoped finding> — dim: boundaries — terms: <pair> — boundary: <criterion> — edge-case: <source example> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Use membership and contrast criteria the text supplies. Preserve acknowledged uncertainty without assigning strategic intent.",
+          "indicators": [
+            "distinguish",
+            "borderline",
+            "not merely"
+          ]
+        },
+        {
+          "key": "paired_usage",
+          "id_prefix": "D4",
+          "name": "Sense changes in context",
+          "scope": "document",
+          "load_bearing": false,
+          "questions": [
+            "Does the concept's meaning shift across different parts of the work?",
+            "Does the concept function differently in positive arguments vs. critiques of others?"
+          ],
+          "answer_shape": "[D4.F<n>] <one scoped finding> — dim: paired_usage — term: <term> — use-a: <meaning and owner> — use-b: <meaning and owner> — effect: <interpretive consequence> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Pair passages before diagnosing equivocation. A changed object, quotation or application can explain different predicates without changing sense.",
+          "indicators": [
+            "earlier definition",
+            "later application",
+            "quoted criticism"
+          ]
+        },
+        {
+          "key": "connotations",
+          "id_prefix": "D5",
+          "name": "Evaluative associations",
+          "scope": "document",
+          "load_bearing": false,
+          "questions": [
+            "What evaluative connotations attach to key terms -- positive, negative, neutral?",
+            "Which wording makes an evaluation part of a description, and does it affect the inference?"
+          ],
+          "answer_shape": "[D5.F<n>] <one scoped finding> — dim: connotations — term: <term> — evaluation: <wording> — function: <local work> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Locate evaluation in modifiers and contrasts. Do not predict a reader’s feelings or assert disciplinary deviation without a supplied baseline.",
+          "indicators": [
+            "mere",
+            "rational",
+            "distorted",
+            "liberation"
+          ]
+        },
+        {
+          "key": "literalization",
+          "id_prefix": "D6",
+          "name": "Abstractions and metaphor",
+          "scope": "document",
+          "load_bearing": false,
+          "questions": [
+            "Where does the text attribute action or causal power to an abstraction, and what agents or mechanism does it specify?",
+            "Which metaphor is used literally, and which passage establishes that rather than ordinary shorthand?"
+          ],
+          "answer_shape": "[D6.F<n>] <one scoped finding> — dim: literalization — term: <abstraction> — predicate: <action> — mechanism: <specified or unresolved> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Check the surrounding account before alleging reification. A social relation or collective mechanism may legitimately be the causal object.",
+          "indicators": [
+            "capital demands",
+            "society acts",
+            "as if"
+          ]
+        },
+        {
+          "key": "usage_comparison",
+          "id_prefix": "X7",
+          "name": "Comparison across supplied works",
+          "scope": "corpus",
+          "load_bearing": false,
+          "questions": [
+            "Which paired usage passages show the same or different sense under comparable objects?",
+            "Is a claimed anomaly relative to an explicitly supplied baseline, or merely a difference?"
+          ],
+          "answer_shape": "[X7.F<n>] <one scoped finding> — dim: usage_comparison — relation: <aligned relation> — alignment: <object, sense, owner, scope> — order-basis: <dates, uptake, or unordered> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — anchor-b: \"<verbatim supporting clause B>\" — doc-b: <different source key> — confidence: high|medium|low",
+          "method_card": "Do: Compare uses without imposing a standard from memory. Retain source ownership and scope on both sides.",
+          "indicators": [
+            "explicit reference",
+            "paired formulations",
+            "scope qualification"
+          ]
+        }
+      ],
+      "steps": [
+        {
+          "key": "extract",
+          "kind": "extract",
+          "parallel_over": "dimension_x_document",
+          "model_tier": "cheap",
+          "output": "ledger",
+          "max_rows": 8
+        },
+        {
+          "key": "verify",
+          "kind": "verify",
+          "consumes": [
+            "extract"
+          ],
+          "model_tier": "mid",
+          "output": "ledger",
+          "duties": [
+            "check_anchors_in_context",
+            "reject_biography",
+            "merge_duplicates",
+            "hunt_misses",
+            "name_must_keep",
+            "Judge the warrant appropriate to the claim; preserve owners, scope, modality and counter-passages. Inspect every declared question, not just retained positives.",
+            "Every consequential table cell must cite a final finding whose complete supporting spans contain the attributed fact and qualification. Split compound claims into several rows when <=200 characters cannot carry them. Use a separate [F1] [F2] citation per finding. Include an anchor-b with its doc-b for a second supporting span when needed, even in the same document; corpus relations always retain at least two distinct source keys. Never use a scope record as a positive finding. Use comma-separated full IDs in from:, never space-concatenated IDs. Judge meaning and completeness by reading the sources; code checks only anchors and IDs. Before returning, read the actual final tables against their cited final rows and the source contexts, including each source counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or silent."
+          ]
+        },
+        {
+          "key": "synthesize",
+          "kind": "synthesize",
+          "consumes": [
+            "verify"
+          ],
+          "model_tier": "strong",
+          "output": "prose_ledger",
+          "is_final": true,
+          "reader": "a reader with the supplied texts open who needs to answer: How does the text distinguish and use a concept and its neighboring terms?",
+          "tables": [
+            "usage_lexicon",
+            "paired_uses"
+          ],
+          "brief": "1. A compact usage lexicon with term, local sense, contrasting or neighboring term, defining boundary, passage and interpretive consequence. A second table pairs apparently inconsistent uses and explains genuine ambiguity versus scope or voice changes. Desks lift both tables. Report stable, precise use when it holds.\n2. Establish the most consequential local findings and their qualifications; organize the reading by the objects and claims in these texts.\n3. Render the named Markdown tables with final finding IDs in every positive cell. Explain the supported relation and the strongest counter-passage; end with what is settled and the exact remaining question.\n4. With multiple sources, build each work’s inventory before the paired comparison, and state alignment and chronology limits. With one source, label the result a local inventory where a corpus relation would require another work.\nEvery consequential table cell must cite a final finding whose complete supporting spans contain the attributed fact and qualification. Split compound claims into several rows when <=200 characters cannot carry them. Use a separate [F1] [F2] citation per finding. Include an anchor-b with its doc-b for a second supporting span when needed, even in the same document; corpus relations always retain at least two distinct source keys. Never use a scope record as a positive finding. Use comma-separated full IDs in from:, never space-concatenated IDs. Judge meaning and completeness by reading the sources; code checks only anchors and IDs. Before returning, read the actual final tables against their cited final rows and the source contexts, including each source counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or silent."
+        }
+      ]
+    }
+  },
+  "C6": {
+    "id": "C6",
+    "key": "framework_components",
+    "old": "conceptual_framework_extraction",
+    "ideal": "A framework map showing the inquiry, attributed lens, components, relations and one worked application. Lead with what the composition makes visible and a source-evidenced limit; distinguish a named tradition from an inferred profile. Desks lift component–relation and application–limit tables; an optional source-search profile is made of passages, never a biography.",
+    "tables": [
+      "components_and_relations",
+      "applications_and_limits"
+    ],
+    "repair": "Merge the mapped framework engines. Preserve vocabulary/method profile, architecture, translations and boundaries. Replace fixed school registers, training inference, forgotten metaphors and unsupplied precursors with attributed lenses and explicit hypotheses; inventory components rather than narrating theory construction.",
+    "process": {
+      "key": "dvs",
+      "description": "Which frameworks structure the text's inquiry, and what do their components let it see? One text or a supplied collection; a genealogy profile is a declared output mode with hypotheses tagged.",
+      "framing": "A framework map showing the inquiry, attributed lens, components, relations and one worked application. Lead with what the composition makes visible and a source-evidenced limit; distinguish a named tradition from an inferred profile. Desks lift component–relation and application–limit tables; an optional source-search profile is made of passages, never a biography. Merge the mapped framework engines. Preserve vocabulary/method profile, architecture, translations and boundaries. Replace fixed school registers, training inference, forgotten metaphors and unsupplied precursors with attributed lenses and explicit hypotheses; inventory components rather than narrating theory construction.",
+      "scoped_outcomes": true,
+      "routing": {
+        "cheap": "openrouter/openai/gpt-5.6-luna",
+        "mid": "openrouter/deepseek/deepseek-v4-pro",
+        "strong": "openrouter/openai/gpt-5.6-sol"
+      },
+      "dimensions": [
+        {
+          "key": "attribution",
+          "id_prefix": "D1",
+          "name": "Framework and evidence for attribution",
+          "scope": "document",
+          "load_bearing": true,
+          "questions": [
+            "Which framework does the text name as organizing its inquiry, and what passage enacts it?",
+            "What theoretical register is inferred from vocabulary or method, and what makes that only a hypothesis?"
+          ],
+          "answer_shape": "[D1.F<n>] <one scoped finding> — dim: attribution — framework: <name or descriptive lens> — attribution: <declared or hypothesis> — inquiry: <object> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Attribute named frameworks from passages; an inferred profile needs vocabulary and method evidence. Do not force the text into a school checklist.",
+          "indicators": [
+            "following",
+            "framework",
+            "we approach"
+          ]
+        },
+        {
+          "key": "components",
+          "id_prefix": "D2",
+          "name": "Components and definitions",
+          "scope": "document",
+          "load_bearing": true,
+          "questions": [
+            "What terms does the author coin or use distinctively?",
+            "What key oppositions structure the argument, and what local definition does each component have?"
+          ],
+          "answer_shape": "[D2.F<n>] <one scoped finding> — dim: components — framework: <lens> — component: <concept> — definition: <scope> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Inventory components as the text defines them. Standard usage needs supplied reference material before a deviation can be claimed.",
+          "indicators": [
+            "defined as",
+            "opposed to",
+            "component"
+          ]
+        },
+        {
+          "key": "relations",
+          "id_prefix": "D3",
+          "name": "How the components fit",
+          "scope": "document",
+          "load_bearing": true,
+          "questions": [
+            "Which frameworks are foundational -- everything else depends on them?",
+            "Do any frameworks compete with each other -- offering alternative explanations for the same phenomena?",
+            "What passage links component A to B, and what conclusion relies on that link?"
+          ],
+          "answer_shape": "[D3.F<n>] <one scoped finding> — dim: relations — components: <nodes> — relation: <premise, mechanism, constraint> — support: <passage> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Prove a dependency by the argument route, not frequency. Test competing lenses on the same object and preserve independent routes.",
+          "indicators": [
+            "requires",
+            "constitutes",
+            "alternative explanation"
+          ]
+        },
+        {
+          "key": "method_profile",
+          "id_prefix": "D4",
+          "name": "What the framework counts as evidence",
+          "scope": "document",
+          "load_bearing": false,
+          "questions": [
+            "What types of evidence does the author rely on (historical narrative, data, theoretical derivation, analogy, case study, thought experiment)?",
+            "What analytical move applies these components to the object, and what does it establish?"
+          ],
+          "answer_shape": "[D4.F<n>] <one scoped finding> — dim: method_profile — framework: <lens> — procedure: <move> — evidence: <kind> — result: <claim> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Give an enacted example; keep studied, advocated and used methods apart. Avoid judging a conceptual derivation by an empirical checklist.",
+          "indicators": [
+            "we examine",
+            "derive",
+            "apply"
+          ]
+        },
+        {
+          "key": "translations",
+          "id_prefix": "D5",
+          "name": "Cross-domain imports",
+          "scope": "document",
+          "load_bearing": false,
+          "questions": [
+            "What concepts, methods, or analogies are imported from other fields?",
+            "How have imports been adapted for the current domain -- what was changed and what was preserved?"
+          ],
+          "answer_shape": "[D5.F<n>] <one scoped finding> — dim: translations — import: <component> — source-domain: <stated or hypothesis> — adaptation: <change> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Anchor the origin as stated and the local use. Mark unverified provenance; no inference to training or unconscious influence.",
+          "indicators": [
+            "borrow",
+            "adapt",
+            "analogy with"
+          ]
+        },
+        {
+          "key": "limits",
+          "id_prefix": "D6",
+          "name": "Applications, boundaries and alternatives",
+          "scope": "document",
+          "load_bearing": false,
+          "questions": [
+            "How is the central problem or question framed -- what does this framing make visible and invisible?",
+            "Which supplied application or rival interpretation tests a boundary the framework states?"
+          ],
+          "answer_shape": "[D6.F<n>] <one scoped finding> — dim: limits — framework: <lens> — application: <case> — limit: <qualification> — alternative: <source view> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Ground visibility in an actual finding and limits in a bracket or counter-passage. An unasked question is not automatically impossible within the framework.",
+          "indicators": [
+            "beyond our scope",
+            "cannot explain",
+            "alternative"
+          ]
+        },
+        {
+          "key": "framework_comparison",
+          "id_prefix": "X7",
+          "name": "Comparison across supplied works",
+          "scope": "corpus",
+          "load_bearing": false,
+          "questions": [
+            "Which supplied works use comparable components and what relation or application differs?",
+            "Which paired passage supports continuity, translation or an unresolved framework conflict?"
+          ],
+          "answer_shape": "[X7.F<n>] <one scoped finding> — dim: framework_comparison — relation: <aligned relation> — alignment: <object, sense, owner, scope> — order-basis: <dates, uptake, or unordered> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — anchor-b: \"<verbatim supporting clause B>\" — doc-b: <different source key> — confidence: high|medium|low",
+          "method_card": "Do: Compare local architectures under aligned objects. Preserve uncertainty in inferred attribution and do not turn resemblance into influence.",
+          "indicators": [
+            "explicit reference",
+            "paired formulations",
+            "scope qualification"
+          ]
+        }
+      ],
+      "steps": [
+        {
+          "key": "extract",
+          "kind": "extract",
+          "parallel_over": "dimension_x_document",
+          "model_tier": "cheap",
+          "output": "ledger",
+          "max_rows": 8
+        },
+        {
+          "key": "verify",
+          "kind": "verify",
+          "consumes": [
+            "extract"
+          ],
+          "model_tier": "mid",
+          "output": "ledger",
+          "duties": [
+            "check_anchors_in_context",
+            "reject_biography",
+            "merge_duplicates",
+            "hunt_misses",
+            "name_must_keep",
+            "Judge the warrant appropriate to the claim; preserve owners, scope, modality and counter-passages. Inspect every declared question, not just retained positives.",
+            "Every consequential table cell must cite a final finding whose complete supporting spans contain the attributed fact and qualification. Split compound claims into several rows when <=200 characters cannot carry them. Use a separate [F1] [F2] citation per finding. Include an anchor-b with its doc-b for a second supporting span when needed, even in the same document; corpus relations always retain at least two distinct source keys. Never use a scope record as a positive finding. Use comma-separated full IDs in from:, never space-concatenated IDs. Judge meaning and completeness by reading the sources; code checks only anchors and IDs. Before returning, read the actual final tables against their cited final rows and the source contexts, including each source counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or silent."
+          ]
+        },
+        {
+          "key": "synthesize",
+          "kind": "synthesize",
+          "consumes": [
+            "verify"
+          ],
+          "model_tier": "strong",
+          "output": "prose_ledger",
+          "is_final": true,
+          "reader": "a reader with the supplied texts open who needs to answer: Which frameworks structure the text's inquiry, and what do their components let it see?",
+          "tables": [
+            "components_and_relations",
+            "applications_and_limits"
+          ],
+          "brief": "1. A framework map showing the inquiry, attributed lens, components, relations and one worked application. Lead with what the composition makes visible and a source-evidenced limit; distinguish a named tradition from an inferred profile. Desks lift component–relation and application–limit tables; an optional source-search profile is made of passages, never a biography.\n2. Establish the most consequential local findings and their qualifications; organize the reading by the objects and claims in these texts.\n3. Render the named Markdown tables with final finding IDs in every positive cell. Explain the supported relation and the strongest counter-passage; end with what is settled and the exact remaining question.\n4. With multiple sources, build each work’s inventory before the paired comparison, and state alignment and chronology limits. With one source, label the result a local inventory where a corpus relation would require another work.\nEvery consequential table cell must cite a final finding whose complete supporting spans contain the attributed fact and qualification. Split compound claims into several rows when <=200 characters cannot carry them. Use a separate [F1] [F2] citation per finding. Include an anchor-b with its doc-b for a second supporting span when needed, even in the same document; corpus relations always retain at least two distinct source keys. Never use a scope record as a positive finding. Use comma-separated full IDs in from:, never space-concatenated IDs. Judge meaning and completeness by reading the sources; code checks only anchors and IDs. Before returning, read the actual final tables against their cited final rows and the source contexts, including each source counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or silent."
+        }
+      ]
+    }
+  },
+  "S3": {
+    "id": "S3",
+    "key": "narrative_form_perspective",
+    "old": "narrative_structure_analyzer",
+    "ideal": "A one-page account of how sequence and viewpoint shape this text: local arc or limited narration, presentation order versus narrated time, voices and access, the turn that changes the reader’s understanding, and what the ending settles. Desks lift sequence–effect and perspective–evidence tables. Academic exposition may contain only local narratives.",
+    "tables": [
+      "sequence_and_effect",
+      "perspectives_and_access"
+    ],
+    "repair": "Merge narrative structure and transformation. Preserve turns, closure, register, focalization, devices and temporal questions. Replace closed emplotment labels and deliberate/unconscious shifts with source-specific effects; actants and narrative programs are optional descriptions when supported, not mandatory categories.",
+    "process": {
+      "key": "dvs",
+      "description": "How does the text's sequencing, voice and perspective shape its account? A text or comparable narrative passages, allowing an absent or limited narrative structure.",
+      "framing": "A one-page account of how sequence and viewpoint shape this text: local arc or limited narration, presentation order versus narrated time, voices and access, the turn that changes the reader’s understanding, and what the ending settles. Desks lift sequence–effect and perspective–evidence tables. Academic exposition may contain only local narratives. Merge narrative structure and transformation. Preserve turns, closure, register, focalization, devices and temporal questions. Replace closed emplotment labels and deliberate/unconscious shifts with source-specific effects; actants and narrative programs are optional descriptions when supported, not mandatory categories.",
+      "scoped_outcomes": true,
+      "routing": {
+        "cheap": "openrouter/openai/gpt-5.6-luna",
+        "mid": "openrouter/deepseek/deepseek-v4-pro",
+        "strong": "openrouter/openai/gpt-5.6-sol"
+      },
+      "dimensions": [
+        {
+          "key": "sequence",
+          "id_prefix": "D1",
+          "name": "Sequence and turning points",
+          "scope": "document",
+          "load_bearing": true,
+          "questions": [
+            "Where are the narrative turning points — crises, reversals, revelations?",
+            "What situation opens the account, what changes it, and is there a sustained arc or only a local sequence?"
+          ],
+          "answer_shape": "[D1.F<n>] <one scoped finding> — dim: sequence — sequence: <opening, turn, result> — extent: <local or sustained> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Read the actual order of presentation; distinguish events from the order of an exposition. Do not impose romance, tragedy or a closed plot.",
+          "indicators": [
+            "initially",
+            "then",
+            "turning point"
+          ]
+        },
+        {
+          "key": "perspective",
+          "id_prefix": "D2",
+          "name": "Perspective and access",
+          "scope": "document",
+          "load_bearing": true,
+          "questions": [
+            "Whose perspective does the narrator primarily adopt?",
+            "Where does focalization shift, and what wording or access to experience marks the shift?"
+          ],
+          "answer_shape": "[D2.F<n>] <one scoped finding> — dim: perspective — voice: <speaker> — focalizer: <whose access> — shift: <passage> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Separate narrator, quoted voice and represented experience. Omitted testimony limits access; it does not establish a deliberately excluded viewpoint.",
+          "indicators": [
+            "we",
+            "they experienced",
+            "according to"
+          ]
+        },
+        {
+          "key": "time",
+          "id_prefix": "D3",
+          "name": "Narrated and presented time",
+          "scope": "document",
+          "load_bearing": true,
+          "questions": [
+            "What is the text's dominant temporality?",
+            "What time scales are deployed and for what purposes?",
+            "How does it construct the relationship between past, present, and future?"
+          ],
+          "answer_shape": "[D3.F<n>] <one scoped finding> — dim: time — presented-order: <sequence> — narrated-time: <dates or scale> — effect: <local implication> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Anchor dates, retrospection and anticipation. A sequence can suggest causation without evidencing it; keep those claims distinct.",
+          "indicators": [
+            "before",
+            "by now",
+            "would later"
+          ]
+        },
+        {
+          "key": "register",
+          "id_prefix": "D4",
+          "name": "Voice and register",
+          "scope": "document",
+          "load_bearing": false,
+          "questions": [
+            "What registers does the author deploy and where?",
+            "Do different registers serve different argumentative functions?"
+          ],
+          "answer_shape": "[D4.F<n>] <one scoped finding> — dim: register — register: <passage-specific description> — transition: <where> — function: <work> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Show a wording change and its local function. Do not infer whether the change was deliberate or unconscious.",
+          "indicators": [
+            "irony",
+            "direct address",
+            "technical definition"
+          ]
+        },
+        {
+          "key": "devices",
+          "id_prefix": "D5",
+          "name": "Devices and roles",
+          "scope": "document",
+          "load_bearing": false,
+          "questions": [
+            "What narrative devices does the text deploy?",
+            "Which actor seeks what, with which helper or obstacle, where a narrative program is actually developed?"
+          ],
+          "answer_shape": "[D5.F<n>] <one scoped finding> — dim: devices — device: <device or role> — passage-function: <effect> — evidential-limit: <what it cannot prove> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Use concrete devices such as anticipation, repetition or withheld information only when shown. Narrative agency does not establish causal agency.",
+          "indicators": [
+            "repeated image",
+            "anticipated ending",
+            "obstacle"
+          ]
+        },
+        {
+          "key": "closure",
+          "id_prefix": "D6",
+          "name": "Tension and closure",
+          "scope": "document",
+          "load_bearing": false,
+          "questions": [
+            "How does it achieve or refuse closure?",
+            "Where do the demands of narrative conflict with the demands of argument?"
+          ],
+          "answer_shape": "[D6.F<n>] <one scoped finding> — dim: closure — ending: <settlement or openness> — tension: <source-supported issue> — consequence: <interpretive effect> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Compare the closure with the evidence and stated question. Open-endedness can be the intended textual result; do not manufacture hidden resolution or author intention.",
+          "indicators": [
+            "remains",
+            "finally",
+            "uncertain future"
+          ]
+        },
+        {
+          "key": "narrative_comparison",
+          "id_prefix": "X7",
+          "name": "Comparison across supplied works",
+          "scope": "corpus",
+          "load_bearing": false,
+          "questions": [
+            "How do comparable accounts order the same object or adopt different perspectives?",
+            "Which paired devices explain a difference in presentation without establishing changed historical facts?"
+          ],
+          "answer_shape": "[X7.F<n>] <one scoped finding> — dim: narrative_comparison — relation: <aligned relation> — alignment: <object, sense, owner, scope> — order-basis: <dates, uptake, or unordered> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — anchor-b: \"<verbatim supporting clause B>\" — doc-b: <different source key> — confidence: high|medium|low",
+          "method_card": "Do: Pair the passages and their narrated objects. Report limited comparability; publication order alone is no narrative development.",
+          "indicators": [
+            "explicit reference",
+            "paired formulations",
+            "scope qualification"
+          ]
+        }
+      ],
+      "steps": [
+        {
+          "key": "extract",
+          "kind": "extract",
+          "parallel_over": "dimension_x_document",
+          "model_tier": "cheap",
+          "output": "ledger",
+          "max_rows": 8
+        },
+        {
+          "key": "verify",
+          "kind": "verify",
+          "consumes": [
+            "extract"
+          ],
+          "model_tier": "mid",
+          "output": "ledger",
+          "duties": [
+            "check_anchors_in_context",
+            "reject_biography",
+            "merge_duplicates",
+            "hunt_misses",
+            "name_must_keep",
+            "Judge the warrant appropriate to the claim; preserve owners, scope, modality and counter-passages. Inspect every declared question, not just retained positives.",
+            "Every consequential table cell must cite a final finding whose complete supporting spans contain the attributed fact and qualification. Split compound claims into several rows when <=200 characters cannot carry them. Use a separate [F1] [F2] citation per finding. Include an anchor-b with its doc-b for a second supporting span when needed, even in the same document; corpus relations always retain at least two distinct source keys. Never use a scope record as a positive finding. Use comma-separated full IDs in from:, never space-concatenated IDs. Judge meaning and completeness by reading the sources; code checks only anchors and IDs. Before returning, read the actual final tables against their cited final rows and the source contexts, including each source counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or silent."
+          ]
+        },
+        {
+          "key": "synthesize",
+          "kind": "synthesize",
+          "consumes": [
+            "verify"
+          ],
+          "model_tier": "strong",
+          "output": "prose_ledger",
+          "is_final": true,
+          "reader": "a reader with the supplied texts open who needs to answer: How does the text's sequencing, voice and perspective shape its account?",
+          "tables": [
+            "sequence_and_effect",
+            "perspectives_and_access"
+          ],
+          "brief": "1. A one-page account of how sequence and viewpoint shape this text: local arc or limited narration, presentation order versus narrated time, voices and access, the turn that changes the reader’s understanding, and what the ending settles. Desks lift sequence–effect and perspective–evidence tables. Academic exposition may contain only local narratives.\n2. Establish the most consequential local findings and their qualifications; organize the reading by the objects and claims in these texts.\n3. Render the named Markdown tables with final finding IDs in every positive cell. Explain the supported relation and the strongest counter-passage; end with what is settled and the exact remaining question.\n4. With multiple sources, build each work’s inventory before the paired comparison, and state alignment and chronology limits. With one source, label the result a local inventory where a corpus relation would require another work.\nEvery consequential table cell must cite a final finding whose complete supporting spans contain the attributed fact and qualification. Split compound claims into several rows when <=200 characters cannot carry them. Use a separate [F1] [F2] citation per finding. Include an anchor-b with its doc-b for a second supporting span when needed, even in the same document; corpus relations always retain at least two distinct source keys. Never use a scope record as a positive finding. Use comma-separated full IDs in from:, never space-concatenated IDs. Judge meaning and completeness by reading the sources; code checks only anchors and IDs. Before returning, read the actual final tables against their cited final rows and the source contexts, including each source counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or silent."
+        }
+      ]
+    }
+  },
+  "E12": {
+    "id": "E12",
+    "key": "theory_construction_analyzer",
+    "old": "theory_construction_analyzer",
+    "ideal": "A construction ledger: problem and scope → inputs → move → resulting concept or mechanism → warrant → limit. Lead with how the text earns its proposed contribution, distinguishing claimed novelty from demonstrated work. Desks lift construction moves and theory–evidence articulation tables; a well-supported inventory is sufficient.",
+    "tables": [
+      "construction_moves",
+      "theory_evidence_links"
+    ],
+    "repair": "Reuse v2. Preserve middle-range scope, conceptual transfer, compatible synthesis, innovation and evidence direction. Replace impossible questions, ungrounded alternative paradigms and nature-at-its-joints tests with supplied problems, distinctions and warrants; empirical operationalization is conditional on empirical claims.",
+    "process": {
+      "key": "dvs",
+      "description": "By which moves does the text build and justify its proposed theory? Text proposing, revising or combining theory; empirical measures only where empirical claims are undertaken.",
+      "framing": "A construction ledger: problem and scope → inputs → move → resulting concept or mechanism → warrant → limit. Lead with how the text earns its proposed contribution, distinguishing claimed novelty from demonstrated work. Desks lift construction moves and theory–evidence articulation tables; a well-supported inventory is sufficient. Reuse v2. Preserve middle-range scope, conceptual transfer, compatible synthesis, innovation and evidence direction. Replace impossible questions, ungrounded alternative paradigms and nature-at-its-joints tests with supplied problems, distinctions and warrants; empirical operationalization is conditional on empirical claims.",
+      "scoped_outcomes": true,
+      "routing": {
+        "cheap": "openrouter/openai/gpt-5.6-luna",
+        "mid": "openrouter/deepseek/deepseek-v4-pro",
+        "strong": "openrouter/openai/gpt-5.6-sol"
+      },
+      "dimensions": [
+        {
+          "key": "problem_and_scope",
+          "id_prefix": "D1",
+          "name": "Problem and intended reach",
+          "scope": "document",
+          "load_bearing": true,
+          "questions": [
+            "What specific phenomenon does the theory claim to explain?",
+            "What scope conditions delimit where the theory applies?"
+          ],
+          "answer_shape": "[D1.F<n>] <one scoped finding> — dim: problem_and_scope — problem: <question> — explanandum: <object> — scope: <conditions> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Record the problem the theory undertakes, including a conceptual problem. Do not demand a general theory from a bounded construction.",
+          "indicators": [
+            "explain",
+            "our concern",
+            "applies when"
+          ]
+        },
+        {
+          "key": "inputs",
+          "id_prefix": "D2",
+          "name": "Borrowed and assumed inputs",
+          "scope": "document",
+          "load_bearing": true,
+          "questions": [
+            "What concepts does the text borrow from other domains?",
+            "What premises or earlier results does the construction adopt, revise or provisionally grant?"
+          ],
+          "answer_shape": "[D2.F<n>] <one scoped finding> — dim: inputs — input: <concept or premise> — ownership: <source and status> — use: <job> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Keep inputs attributed and distinguish grants for argument from endorsed foundations. A reference does not import the entire source system.",
+          "indicators": [
+            "following",
+            "assume",
+            "borrow"
+          ]
+        },
+        {
+          "key": "moves",
+          "id_prefix": "D3",
+          "name": "Moves and resulting mechanisms",
+          "scope": "document",
+          "load_bearing": true,
+          "questions": [
+            "What mechanisms are proposed to account for the phenomenon?",
+            "Which passage derives, abstracts, redefines or combines inputs into that mechanism or concept?"
+          ],
+          "answer_shape": "[D3.F<n>] <one scoped finding> — dim: moves — move: <operation> — inputs: <premises> — result: <concept or mechanism> — warrant: <bridge> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Trace construction as a sequence of justified moves. A failed old formulation does not by itself prove the proposed replacement.",
+          "indicators": [
+            "derive",
+            "therefore",
+            "redefine",
+            "combine"
+          ]
+        },
+        {
+          "key": "synthesis",
+          "id_prefix": "D4",
+          "name": "Compatibility of combined frameworks",
+          "scope": "document",
+          "load_bearing": false,
+          "questions": [
+            "What distinct theoretical frameworks does the text combine?",
+            "Are the combined frameworks logically compatible?",
+            "Where do tensions between frameworks remain unresolved?"
+          ],
+          "answer_shape": "[D4.F<n>] <one scoped finding> — dim: synthesis — inputs: <frameworks> — compatibility: <conditions> — result: <new relation> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Judge compatibility at the level of selected components and their actual assumptions. Selective borrowing can be coherent despite disagreement with the originator.",
+          "indicators": [
+            "synthesis",
+            "complement",
+            "tension"
+          ]
+        },
+        {
+          "key": "contribution",
+          "id_prefix": "D5",
+          "name": "What the innovation adds",
+          "scope": "document",
+          "load_bearing": false,
+          "questions": [
+            "What new concepts does the text introduce?",
+            "What existing concepts, if any, does the innovation replace or supplement?",
+            "What analytical work does the new concept enable?"
+          ],
+          "answer_shape": "[D5.F<n>] <one scoped finding> — dim: contribution — contribution: <claimed change> — demonstrated-work: <application> — economy: <what must be retained> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Separate novelty claims from demonstrated use; test parsimony against the text’s own distinctions and fecundity against actual applications. Do not certify field-wide originality.",
+          "indicators": [
+            "we propose",
+            "unlike",
+            "allows us"
+          ]
+        },
+        {
+          "key": "evidence_direction",
+          "id_prefix": "D6",
+          "name": "Theory and evidence articulation",
+          "scope": "document",
+          "load_bearing": false,
+          "questions": [
+            "What is the direction of inference: evidence to theory, theory to evidence, or iterative?",
+            "Where empirical claims are undertaken, how are abstract concepts operationalized into observable indicators?",
+            "Where does a conceptual derivation supply the justification, and which step remains disputed?"
+          ],
+          "answer_shape": "[D6.F<n>] <one scoped finding> — dim: evidence_direction — direction: <inductive, deductive, iterative> — link: <theory to evidence or derivation> — limit: <scope> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Match the warrant to the construction. A conceptual theory need not have measured indicators; existence of a derivation differs from its adequacy.",
+          "indicators": [
+            "indicates",
+            "derive",
+            "illustrate",
+            "test"
+          ]
+        },
+        {
+          "key": "construction_comparison",
+          "id_prefix": "X7",
+          "name": "Comparison across supplied works",
+          "scope": "corpus",
+          "load_bearing": false,
+          "questions": [
+            "Which supplied works construct an aligned concept by different inputs or moves?",
+            "Which paired warrants support continuity, revision or a difference of scope?"
+          ],
+          "answer_shape": "[X7.F<n>] <one scoped finding> — dim: construction_comparison — relation: <aligned relation> — alignment: <object, sense, owner, scope> — order-basis: <dates, uptake, or unordered> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — anchor-b: \"<verbatim supporting clause B>\" — doc-b: <different source key> — confidence: high|medium|low",
+          "method_card": "Do: Compare moves with both local arguments intact. Do not infer development, originality or uptake merely from dates or shared vocabulary.",
+          "indicators": [
+            "explicit reference",
+            "paired formulations",
+            "scope qualification"
+          ]
+        }
+      ],
+      "steps": [
+        {
+          "key": "extract",
+          "kind": "extract",
+          "parallel_over": "dimension_x_document",
+          "model_tier": "cheap",
+          "output": "ledger",
+          "max_rows": 8
+        },
+        {
+          "key": "verify",
+          "kind": "verify",
+          "consumes": [
+            "extract"
+          ],
+          "model_tier": "mid",
+          "output": "ledger",
+          "duties": [
+            "check_anchors_in_context",
+            "reject_biography",
+            "merge_duplicates",
+            "hunt_misses",
+            "name_must_keep",
+            "Judge the warrant appropriate to the claim; preserve owners, scope, modality and counter-passages. Inspect every declared question, not just retained positives.",
+            "Every consequential table cell must cite a final finding whose complete supporting spans contain the attributed fact and qualification. Split compound claims into several rows when <=200 characters cannot carry them. Use a separate [F1] [F2] citation per finding. Include an anchor-b with its doc-b for a second supporting span when needed, even in the same document; corpus relations always retain at least two distinct source keys. Never use a scope record as a positive finding. Use comma-separated full IDs in from:, never space-concatenated IDs. Judge meaning and completeness by reading the sources; code checks only anchors and IDs. Before returning, read the actual final tables against their cited final rows and the source contexts, including each source counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or silent."
+          ]
+        },
+        {
+          "key": "synthesize",
+          "kind": "synthesize",
+          "consumes": [
+            "verify"
+          ],
+          "model_tier": "strong",
+          "output": "prose_ledger",
+          "is_final": true,
+          "reader": "a reader with the supplied texts open who needs to answer: By which moves does the text build and justify its proposed theory?",
+          "tables": [
+            "construction_moves",
+            "theory_evidence_links"
+          ],
+          "brief": "1. A construction ledger: problem and scope → inputs → move → resulting concept or mechanism → warrant → limit. Lead with how the text earns its proposed contribution, distinguishing claimed novelty from demonstrated work. Desks lift construction moves and theory–evidence articulation tables; a well-supported inventory is sufficient.\n2. Establish the most consequential local findings and their qualifications; organize the reading by the objects and claims in these texts.\n3. Render the named Markdown tables with final finding IDs in every positive cell. Explain the supported relation and the strongest counter-passage; end with what is settled and the exact remaining question.\n4. With multiple sources, build each work’s inventory before the paired comparison, and state alignment and chronology limits. With one source, label the result a local inventory where a corpus relation would require another work.\nEvery consequential table cell must cite a final finding whose complete supporting spans contain the attributed fact and qualification. Split compound claims into several rows when <=200 characters cannot carry them. Use a separate [F1] [F2] citation per finding. Include an anchor-b with its doc-b for a second supporting span when needed, even in the same document; corpus relations always retain at least two distinct source keys. Never use a scope record as a positive finding. Use comma-separated full IDs in from:, never space-concatenated IDs. Judge meaning and completeness by reading the sources; code checks only anchors and IDs. Before returning, read the actual final tables against their cited final rows and the source contexts, including each source counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or silent."
+        }
+      ]
+    }
+  },
+  "A3": {
+    "id": "A3",
+    "key": "comparative_reasoning_analyzer",
+    "old": "comparative_reasoning_analyzer",
+    "ideal": "A compact audit ordered by the conclusions that depend on comparison: what is transferred, which correspondence warrants it, where disanalogies matter, and what weaker conclusion survives. The desks lift comparison → conclusion → correspondence → defeating difference → scoped verdict, plus criteria and alternatives. The reading’s categories are the consequential comparisons in this text.",
+    "tables": [
+      "comparison_audit",
+      "criteria_and_alternatives"
+    ],
+    "repair": "Replace the lifted block. Keep text-facing critical questions but regroup them by audit work, not six kinds of device. Replace unsupported case-selection motives, suppressed options and free-floating alternative rankings with source-supported alternatives and explicit analyst tests. Typology, scalar endpoints and dichotomy checks are conditional probes inside the audit.",
+    "process": {
+      "key": "dvs",
+      "description": "Do the text's analogies, classifications and rankings support the conclusions drawn from them? A text making comparisons; source and target material when the comparison relies on facts outside it.",
+      "framing": "A compact audit ordered by the conclusions that depend on comparison: what is transferred, which correspondence warrants it, where disanalogies matter, and what weaker conclusion survives. The desks lift comparison → conclusion → correspondence → defeating difference → scoped verdict, plus criteria and alternatives. The reading’s categories are the consequential comparisons in this text. Replace the lifted block. Keep text-facing critical questions but regroup them by audit work, not six kinds of device. Replace unsupported case-selection motives, suppressed options and free-floating alternative rankings with source-supported alternatives and explicit analyst tests. Typology, scalar endpoints and dichotomy checks are conditional probes inside the audit.",
+      "scoped_outcomes": true,
+      "routing": {
+        "cheap": "openrouter/openai/gpt-5.6-luna",
+        "mid": "openrouter/deepseek/deepseek-v4-pro",
+        "strong": "openrouter/openai/gpt-5.6-sol"
+      },
+      "dimensions": [
+        {
+          "key": "transfer_claim",
+          "id_prefix": "D1",
+          "name": "What the comparison must establish",
+          "scope": "document",
+          "load_bearing": true,
+          "questions": [
+            "What inferential work does the analogy perform—does it generate predictions, explanations, or evaluations?",
+            "Which conclusion depends on which comparison, and is the move illustrative, classificatory or an evidential transfer?"
+          ],
+          "answer_shape": "[D1.F<n>] <one scoped finding> — dim: transfer_claim — comparison: <items> — conclusion: <claim> — job: <function> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Start with the dependent conclusion and its force. An illustration need not prove a general law; an explanatory transfer needs a warrant.",
+          "indicators": [
+            "like",
+            "similarly",
+            "therefore"
+          ]
+        },
+        {
+          "key": "correspondence",
+          "id_prefix": "D2",
+          "name": "The relevant correspondence",
+          "scope": "document",
+          "load_bearing": true,
+          "questions": [
+            "What specific relations are mapped from source to target domain?",
+            "Which attributes of the source domain are transferred versus left behind?"
+          ],
+          "answer_shape": "[D2.F<n>] <one scoped finding> — dim: correspondence — comparison: <items> — correspondence: <mapped relation> — warrant: <why relevant> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Map the relevant relation, not shared adjectives. Give supporting spans for both compared sides; unsupported external facts stay unverified.",
+          "indicators": [
+            "corresponds",
+            "same relation",
+            "unlike"
+          ]
+        },
+        {
+          "key": "defeating_difference",
+          "id_prefix": "D3",
+          "name": "Differences that bear on the conclusion",
+          "scope": "document",
+          "load_bearing": true,
+          "questions": [
+            "Where does the analogy break down—which source domain features have no target domain counterpart?",
+            "Which stated disanalogy changes the transferred conclusion, and does the text answer it or merely acknowledge it?"
+          ],
+          "answer_shape": "[D3.F<n>] <one scoped finding> — dim: defeating_difference — comparison: <items> — difference: <scoped disanalogy> — consequence: <effect> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Test a difference for relevance to this transfer. Preserve disanalogies the text actually discusses; inadequate treatment differs from absence.",
+          "indicators": [
+            "however",
+            "unlike",
+            "only partially"
+          ]
+        },
+        {
+          "key": "criterion",
+          "id_prefix": "D4",
+          "name": "Criteria, scales and category boundaries",
+          "scope": "document",
+          "load_bearing": false,
+          "questions": [
+            "On what criteria are the compared items being evaluated?",
+            "How are the endpoints of the scale defined and anchored?",
+            "How does the typology handle borderline, mixed, or anomalous cases?"
+          ],
+          "answer_shape": "[D4.F<n>] <one scoped finding> — dim: criterion — comparison: <items> — criterion: <stated or reconstructed> — boundary: <endpoints or types> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Run scale and typology probes only when used. Ask whether the same rule governs both items and whether overlap is allowed, without imposing exclusive categories.",
+          "indicators": [
+            "more than",
+            "best",
+            "type",
+            "between"
+          ]
+        },
+        {
+          "key": "alternatives",
+          "id_prefix": "D5",
+          "name": "Alternatives and representative cases",
+          "scope": "document",
+          "load_bearing": false,
+          "questions": [
+            "Are the two options presented as genuinely exhaustive of the possibility space?",
+            "What part, example, or case is made to stand for a larger whole or class?",
+            "Which supplied alternative or counter-case tests exhaustiveness or representativeness, and which proposed test needs more evidence?"
+          ],
+          "answer_shape": "[D5.F<n>] <one scoped finding> — dim: alternatives — comparison: <items> — coverage-claim: <scope> — alternative: <source case or analyst test> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Use the text’s own third cases first. Do not infer case-selection motives or force an illustrative example to be a representative sample.",
+          "indicators": [
+            "either",
+            "all cases",
+            "for example",
+            "exception"
+          ]
+        },
+        {
+          "key": "surviving_conclusion",
+          "id_prefix": "D6",
+          "name": "Supported conclusion and repair",
+          "scope": "document",
+          "load_bearing": false,
+          "questions": [
+            "Once the relevant difference or criterion limit is retained, what conclusion still follows and at what force?",
+            "Which independent route supports the conclusion if this comparison fails?"
+          ],
+          "answer_shape": "[D6.F<n>] <one scoped finding> — dim: surviving_conclusion — comparison: <items> — supported-result: <qualified claim> — repair: <needed premise or comparison> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — confidence: high|medium|low",
+          "method_card": "Do: Keep a failed analogy distinct from a defeated conclusion. State a concrete repair in the text’s terms, or explain why the comparison holds.",
+          "indicators": [
+            "even without",
+            "on other grounds",
+            "at most"
+          ]
+        },
+        {
+          "key": "comparisons_across_works",
+          "id_prefix": "X7",
+          "name": "Comparison across supplied works",
+          "scope": "corpus",
+          "load_bearing": false,
+          "questions": [
+            "Do supplied texts make the same comparison under aligned criteria and conditions?",
+            "Which paired claims agree or diverge once source, target and transfer are matched?"
+          ],
+          "answer_shape": "[X7.F<n>] <one scoped finding> — dim: comparisons_across_works — relation: <aligned relation> — alignment: <object, sense, owner, scope> — order-basis: <dates, uptake, or unordered> — anchor: \"<verbatim supporting clause, <=200 chars>\" — doc: <source key> — anchor-b: \"<verbatim supporting clause B>\" — doc-b: <different source key> — confidence: high|medium|low",
+          "method_card": "Do: Compare audits after each local inference is reconstructed. Paired anchors establish each side; dates alone do not show uptake.",
+          "indicators": [
+            "explicit reference",
+            "paired formulations",
+            "scope qualification"
+          ]
+        }
+      ],
+      "steps": [
+        {
+          "key": "extract",
+          "kind": "extract",
+          "parallel_over": "dimension_x_document",
+          "model_tier": "cheap",
+          "output": "ledger",
+          "max_rows": 8
+        },
+        {
+          "key": "verify",
+          "kind": "verify",
+          "consumes": [
+            "extract"
+          ],
+          "model_tier": "mid",
+          "output": "ledger",
+          "duties": [
+            "check_anchors_in_context",
+            "reject_biography",
+            "merge_duplicates",
+            "hunt_misses",
+            "name_must_keep",
+            "Judge the warrant appropriate to the claim; preserve owners, scope, modality and counter-passages. Inspect every declared question, not just retained positives.",
+            "Every consequential table cell must cite a final finding whose complete supporting spans contain the attributed fact and qualification. Split compound claims into several rows when <=200 characters cannot carry them. Use a separate [F1] [F2] citation per finding. Include an anchor-b with its doc-b for a second supporting span when needed, even in the same document; corpus relations always retain at least two distinct source keys. Never use a scope record as a positive finding. Use comma-separated full IDs in from:, never space-concatenated IDs. Judge meaning and completeness by reading the sources; code checks only anchors and IDs. Before returning, read the actual final tables against their cited final rows and the source contexts, including each source counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or silent."
+          ]
+        },
+        {
+          "key": "synthesize",
+          "kind": "synthesize",
+          "consumes": [
+            "verify"
+          ],
+          "model_tier": "strong",
+          "output": "prose_ledger",
+          "is_final": true,
+          "reader": "a reader with the supplied texts open who needs to answer: Do the text's analogies, classifications and rankings support the conclusions drawn from them?",
+          "tables": [
+            "comparison_audit",
+            "criteria_and_alternatives"
+          ],
+          "brief": "1. A compact audit ordered by the conclusions that depend on comparison: what is transferred, which correspondence warrants it, where disanalogies matter, and what weaker conclusion survives. The desks lift comparison → conclusion → correspondence → defeating difference → scoped verdict, plus criteria and alternatives. The reading’s categories are the consequential comparisons in this text.\n2. Establish the most consequential local findings and their qualifications; organize the reading by the objects and claims in these texts.\n3. Render the named Markdown tables with final finding IDs in every positive cell. Explain the supported relation and the strongest counter-passage; end with what is settled and the exact remaining question.\n4. With multiple sources, build each work’s inventory before the paired comparison, and state alignment and chronology limits. With one source, label the result a local inventory where a corpus relation would require another work.\nEvery consequential table cell must cite a final finding whose complete supporting spans contain the attributed fact and qualification. Split compound claims into several rows when <=200 characters cannot carry them. Use a separate [F1] [F2] citation per finding. Include an anchor-b with its doc-b for a second supporting span when needed, even in the same document; corpus relations always retain at least two distinct source keys. Never use a scope record as a positive finding. Use comma-separated full IDs in from:, never space-concatenated IDs. Judge meaning and completeness by reading the sources; code checks only anchors and IDs. Before returning, read the actual final tables against their cited final rows and the source contexts, including each source counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or silent."
+        }
+      ]
+    }
+  }
+}
