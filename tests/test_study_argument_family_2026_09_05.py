@@ -47,11 +47,19 @@ def offline(runtime, monkeypatch):
     monkeypatch.setattr(runtime.core, 'run_engine_call', no_call)
 
 
+def valid_score(number=8):
+    return {**{key: number for key in study.RUBRIC_KEYS},
+            'reasons': {key: 'A source-specific reason for this fixture.' for key in study.RUBRIC_KEYS},
+            'one_line': 'A limited fixture rating.'}
+
+
 def fake_backend(log, *, override=None):
     def fake(**kwargs):
         log.append(kwargs)
         label, system = kwargs['label'], kwargs['system_prompt']
-        if kwargs['model_hint'] == study.MODELS['judge']:
+        if label.startswith('argument-family score__'):
+            text = json.dumps(valid_score())
+        elif label.startswith('argument-family corroborate__'):
             text = json.dumps({'winner': 'A', 'margin': 'slight', 'why': 'A grounded comparison.',
                                'what_A_has_that_B_lacks': 'One distinction.', 'what_B_has_that_A_lacks': 'One qualification.'})
         elif label.startswith('argument-family ') or ' | synthesize' in label:
@@ -84,19 +92,20 @@ def generate(runtime, prepared, tmp_path, monkeypatch, *, condition='candidate',
 
 def test_exact_matrix():
     gen, judge = study.matrix()
-    assert len(gen) == len(judge) == 24
-    assert len({j['key'] for j in gen + judge}) == 48
+    assert len(gen) == 24 and len(judge) == 48
+    assert len({j['key'] for j in gen + judge}) == 72
     assert sum(j['stage'] == 'initial' for j in gen) == 16
     assert sum(j['stage'] == 'corpus' for j in gen) == 8
-    for engine, source in {(j['engine'], j['source']) for j in judge}:
-        pair = [j for j in judge if (j['engine'], j['source']) == (engine, source)]
-        assert pair[0]['A'] == pair[1]['B'] and pair[0]['B'] == pair[1]['A']
+    for reading in gen:
+        ratings = [j for j in judge if j['reading'] == reading['key']]
+        assert {j['rater'] for j in ratings} == {'sonnet', 'sol'}
+        assert all('A' not in j and 'B' not in j for j in ratings)
 
 
 def test_plan_pins_actual_runtime_candidates_controls_and_overheads(prepared):
     plan, contexts, documents = prepared
     assert plan['runtime_commit'] == study.RUNTIME
-    assert plan['planned_base_calls'] == 136
+    assert plan['planned_base_calls'] == 160
     assert plan['estimated_total_usd'] > 0
     assert plan['calibration']['roles']['critic']['calls'] == 28
     assert plan['calibration']['scope_chars_per_record'] == 1600
@@ -104,7 +113,7 @@ def test_plan_pins_actual_runtime_candidates_controls_and_overheads(prepared):
     for engine in study.ENGINES:
         definition = plan['definitions'][engine]
         assert definition['process']['scoped_outcomes'] and 'Eligibility:' in definition['process']['framing']
-        assert definition['candidate_commit'].startswith('005cee5')
+        assert definition['candidate_commit'] == study.CANDIDATE_COMMIT
         assert definition['baseline_capability_file_sha256']
     corpus = next(j for j in plan['generations'] if j['condition'] == 'candidate' and j['source'] == 'castoriadis')
     assert corpus['base_calls'] == 21
@@ -120,7 +129,7 @@ def test_default_preview_never_calls_or_creates_campaign(runtime, prepared, monk
     out = tmp_path / 'absent'
     assert study.main(['--output-root', str(out)]) == 0
     preview = json.loads(capsys.readouterr().out)
-    assert preview['mode'] == 'NO-CALL PREVIEW' and preview['base_calls'] == 136
+    assert preview['mode'] == 'NO-CALL PREVIEW' and preview['base_calls'] == 160
     assert not out.exists()
 
 
@@ -213,20 +222,98 @@ def test_resume_replays_against_tampering_not_only_updated_hashes(runtime, prepa
         study.validate_completed(job,record,plan,folder,records,contexts,docs,runtime)
 
 
-def test_opposite_judge_orders_map_to_condition_and_split_remains_split(runtime, prepared, tmp_path, monkeypatch):
+def test_independent_scores_replay_and_keep_raters_separate(runtime, prepared, tmp_path, monkeypatch):
     _, folder, records, _ = generate(runtime, prepared, tmp_path, monkeypatch, condition='original')
     _, folder, records, _ = generate(runtime, prepared, tmp_path, monkeypatch, condition='candidate')
-    plan, contexts, docs = prepared; log=[]
-    monkeypatch.setattr(runtime.core,'run_engine_call',fake_backend(log))
-    jobs=[j for j in plan['judgments'] if j['engine']==study.ENGINES[0] and j['source']=='absence']
+    plan, contexts, docs = prepared; log = []
+    def scores(result, kwargs):
+        sonnet = kwargs['model_hint'] == study.MODELS['judge_sonnet']
+        candidate = '__candidate__' in kwargs['label']
+        result['content'] = json.dumps(valid_score(9 if candidate != sonnet else 5))
+        return result
+    monkeypatch.setattr(runtime.core, 'run_engine_call', fake_backend(log, override=scores))
+    jobs = [j for j in plan['judgments'] if j['engine'] == study.ENGINES[0] and j['source'] == 'absence']
     for job in jobs:
-        study.execute_job(job,plan,folder,records,contexts,docs,folder.parent,16,runtime)
-    assert records[jobs[0]['key']]['judgment']['winner']==jobs[0]['A']
-    assert records[jobs[1]['key']]['judgment']['winner']==jobs[1]['A']
-    result=study.report(plan,folder,records,contexts,docs,runtime)
-    pair=next(p for p in result['pairs'] if p['engine']==study.ENGINES[0] and p['source']=='absence')
-    assert pair['outcome']=='split'
-    assert len(log)==2
+        study.execute_job(job, plan, folder, records, contexts, docs, folder.parent, 16, runtime)
+    monkeypatch.setattr(runtime.core, 'run_engine_call', lambda **kw: pytest.fail('Paid scoring replay'))
+    result = study.report(plan, folder, records, contexts, docs, runtime)
+    pair = next(p for p in result['pairs'] if p['engine'] == study.ENGINES[0] and p['source'] == 'absence')
+    assert pair['raters']['sonnet']['mean_delta'] == -4
+    assert pair['raters']['sol']['mean_delta'] == 4
+    assert pair['between_rater_same_output']['candidate']['mean_difference'] == 4
+    assert pair['eligible_for_optional_corroboration']
+    assert pair['group'] == 'absence_control' and 'outcome' not in pair
+    assert result['valid_scores_by_rater'] == {'sonnet': 2, 'sol': 2} and result['validation_errors'] == {}
+    assert len(log) == 4
+    for invocation in log:
+        assert 'ANALYSIS A:' not in invocation['user_message'] and 'ANALYSIS B:' not in invocation['user_message']
+        assert invocation['system_prompt'] == study.SCORE_RUBRIC
+    for job in jobs:
+        assert set(records[job['key']]['inputs_sha256']) == {job['reading']}
+
+
+def test_rating_prompt_contains_only_one_reading_and_no_condition_or_rater_metadata(tmp_path):
+    old = tmp_path / 'old.md'; new = tmp_path / 'new.md'
+    old.write_text('ORIGINAL_SECRET_CONTENT'); new.write_text('CANDIDATE_SECRET_CONTENT')
+    records = {'old': {'output': 'old.md'}, 'new': {'output': 'new.md'}}
+    job = {'kind': 'judge', 'reading': 'old', 'rater': 'sonnet', 'source': 'fixture', 'engine': study.ENGINES[0]}
+    first = study.judge_prompt(job, tmp_path, records, {'fixture': {'doc': 'SOURCE_CONTENT'}})
+    second = study.judge_prompt({**job, 'rater': 'sol'}, tmp_path, records, {'fixture': {'doc': 'SOURCE_CONTENT'}})
+    assert first == second
+    assert study.NEUTRAL_TASKS[job['engine']] in first['user']
+    assert first['user'].count('ORIGINAL_SECRET_CONTENT') == 1 and 'CANDIDATE_SECRET_CONTENT' not in first['user']
+    assert 'sonnet' not in first['user'] and 'sol' not in first['user']
+
+
+@pytest.mark.parametrize('bad', [None, True, '8', 0, 10.1, float('nan'), float('inf')])
+def test_invalid_score_never_becomes_default_or_partial_mean(bad):
+    value = valid_score(); value['specificity'] = bad
+    with pytest.raises(RuntimeError, match='finite numbers'):
+        study.parse_score(json.dumps(value))
+
+
+@pytest.mark.parametrize('change', ['missing_score', 'extra_field', 'missing_reason', 'empty_reason', 'empty_summary', 'extra_reason'])
+def test_exact_complete_rubric_shape_required(change):
+    value = valid_score()
+    if change == 'missing_score': value.pop('anchoring')
+    elif change == 'extra_field': value['winner'] = 'A'
+    elif change == 'missing_reason': value['reasons'].pop('coherence')
+    elif change == 'empty_reason': value['reasons']['coherence'] = ' '
+    elif change == 'empty_summary': value['one_line'] = ''
+    else: value['reasons']['extra'] = 'unexpected'
+    with pytest.raises(RuntimeError):
+        study.parse_score(json.dumps(value))
+
+
+def test_single_json_fence_allowed_but_duplicate_scores_refused():
+    raw = json.dumps(valid_score())
+    assert study.parse_score('```json\n' + raw + '\n```') == valid_score()
+    with pytest.raises(RuntimeError, match='Duplicate'):
+        study.parse_score(raw.replace('"specificity": 8', '"specificity": 4, "specificity": 8', 1))
+
+
+def test_strong_rater_disagreement_is_a_gate_not_an_automatic_call():
+    gen, jobs = study.matrix(); plan = {'judgments': jobs}
+    target = [j for j in jobs if j['engine'] == study.ENGINES[0] and j['source'] == 'absence']
+    records = {}; valid = {}
+    for j in target:
+        candidate = '__candidate__' in j['reading']; sonnet = j['rater'] == 'sonnet'
+        records[j['key']] = {'judgment': valid_score(8 if candidate != sonnet else 6.5)}
+        valid[j['key']] = True
+    pair = next(p for p in study.score_comparisons(plan, records, valid) if p['source'] == 'absence' and p['engine'] == study.ENGINES[0])
+    assert pair['eligible_for_optional_corroboration']
+    for j in target:
+        candidate = '__candidate__' in j['reading']; sonnet = j['rater'] == 'sonnet'
+        records[j['key']]['judgment'] = valid_score(8 if candidate != sonnet else 6.5000004)
+    pair = next(p for p in study.score_comparisons(plan, records, valid) if p['source'] == 'absence' and p['engine'] == study.ENGINES[0])
+    assert not pair['eligible_for_optional_corroboration']  # display rounding must not admit a sub-threshold gap
+    for j in target:
+        records[j['key']]['judgment'] = valid_score(8 if '__candidate__' in j['reading'] else 6)
+    pair = next(p for p in study.score_comparisons(plan, records, valid) if p['source'] == 'absence' and p['engine'] == study.ENGINES[0])
+    assert not pair['eligible_for_optional_corroboration']  # aligned large gaps are not a disagreement
+    valid[target[0]['key']] = False
+    pair = next(p for p in study.score_comparisons(plan, records, valid) if p['source'] == 'absence' and p['engine'] == study.ENGINES[0])
+    assert not pair['eligible_for_optional_corroboration']
 
 
 def test_review_gate_requires_all_exact_outputs_and_unchanged_memo(runtime, prepared, tmp_path, monkeypatch):
@@ -349,3 +436,72 @@ def test_post_call_parser_failure_keeps_raw_receipts_and_cannot_retry(runtime, p
     monkeypatch.setattr(runtime.core,'run_engine_call_auto',lambda **kw:pytest.fail('Paid parser retry'))
     with pytest.raises(RuntimeError,match='no automatic retry'):
         study.execute_job(job,plan,folder,records,contexts,docs,root,16,runtime)
+
+
+def test_corroboration_requires_complete_frozen_review_and_one_pair(runtime, prepared, tmp_path, monkeypatch):
+    plan, contexts, docs = prepared
+    root = tmp_path / 'campaign'; folder = root / plan['identity'][:16]
+    records = {}; log = []
+    def scores(result, kwargs):
+        if kwargs['label'].startswith('argument-family score__'):
+            candidate = '__candidate__' in kwargs['label']
+            sonnet = kwargs['model_hint'] == study.MODELS['judge_sonnet']
+            result['content'] = json.dumps(valid_score(9 if candidate != sonnet else 5))
+        return result
+    backend = fake_backend(log, override=scores)
+    monkeypatch.setattr(runtime.core, 'run_engine_call_auto', backend)
+    monkeypatch.setattr(runtime.core, 'run_engine_call', backend)
+    for job in plan['generations'] + plan['judgments'][:-1]:
+        study.execute_job(job, plan, folder, records, contexts, docs, root, 16, runtime)
+    review = tmp_path / 'review.json'; memo = tmp_path / 'memo.md'
+    memo.write_text('Source review of the eligible disagreement; this is a fake-model test.')
+    selected = {'engine': study.ENGINES[0], 'source': 'absence'}
+    def save_review():
+        study.write_json(review, {'identity': plan['identity'], 'phase': 'corroborate', 'decision': 'proceed',
+            'pair': selected, 'outputs_sha256': {j['key']: records[j['key']]['output_sha256']
+                for j in plan['generations'] + plan['judgments'] if j['key'] in records},
+            'memo_path': str(memo), 'memo_sha256': study.digest(memo.read_bytes())})
+    save_review()
+    with pytest.raises(RuntimeError, match='identity/status'):
+        study.corroboration_gate(review, plan, folder, records, contexts, docs, runtime)
+    study.execute_job(plan['judgments'][-1], plan, folder, records, contexts, docs, root, 16, runtime)
+    with pytest.raises(RuntimeError, match='exact completed prerequisites'):
+        study.corroboration_gate(review, plan, folder, records, contexts, docs, runtime)
+    save_review(); memo.write_text('Changed review')
+    with pytest.raises(RuntimeError, match='memo'):
+        study.corroboration_gate(review, plan, folder, records, contexts, docs, runtime)
+    save_review(); before = len(log)
+    gate, jobs = study.corroboration_gate(review, plan, folder, records, contexts, docs, runtime)
+    assert len(log) == before and len(gate['outputs_sha256']) == 72 and len(jobs) == 2
+    for job in jobs:
+        study.execute_job(job, plan, folder, records, contexts, docs, root, 16, runtime)
+    assert len(log) == before + 2
+    result = study.report(plan, folder, records, contexts, docs, runtime)
+    assert result['valid_generations'] == 24 and result['valid_judgments'] == 48
+    assert result['optional_corroborations'][0]['outcome'] == 'split'
+    selected['source'] = 'ganzinger'; save_review()
+    with pytest.raises(RuntimeError, match='Only one pair'):
+        study.corroboration_gate(review, plan, folder, records, contexts, docs, runtime)
+    assert len(log) == before + 2
+
+
+@pytest.mark.parametrize('failure', [None, 'missing_generation', 'missing_score', 'validation_error', 'running', 'failed'])
+def test_require_complete_checks_scores_and_terminal_states(tmp_path, monkeypatch, capsys, failure):
+    from contextlib import nullcontext
+    gen, scores = study.matrix()
+    plan = {'identity': 'a' * 64, 'generations': gen, 'judgments': scores}
+    result = {'valid_generations': 24, 'valid_judgments': 48, 'validation_errors': {}, 'status_counts': {'complete': 72}}
+    if failure == 'missing_generation': result['valid_generations'] = 23
+    elif failure == 'missing_score': result['valid_judgments'] = 47
+    elif failure == 'validation_error': result['validation_errors'] = {'job': 'changed'}
+    elif failure: result['status_counts'][failure] = 1
+    monkeypatch.setattr(study, 'frozen_runtime', lambda: nullcontext(None))
+    monkeypatch.setattr(study, 'build_plan', lambda *args: (plan, {}, {}))
+    monkeypatch.setattr(study, 'report', lambda *args: result)
+    args = ['--phase', 'report', '--require-complete', '--output-root', str(tmp_path)]
+    if failure:
+        with pytest.raises(RuntimeError, match='Study is not complete'):
+            study.main(args)
+    else:
+        assert study.main(args) == 0
+        assert json.loads(capsys.readouterr().out)['valid_judgments'] == 48

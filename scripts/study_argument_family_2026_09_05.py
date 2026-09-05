@@ -29,7 +29,7 @@ import uuid
 
 REPO = Path(__file__).resolve().parents[1]
 RUNTIME = 'af5861a3be30e5a2b795d6cd20df69662b5ffda7'
-CANDIDATE_COMMIT = '005cee58e4e80947d10ebe4935e3b0d4565c279c'
+CANDIDATE_COMMIT = 'aec1a7fc338726c0d8d8bf7ca32f817430fc5d47'
 ENGINES = ('dialectical_structure', 'counterfactual_analyzer')
 CANDIDATE_PATH = 'communications/study/candidates/argument_family_2026_09_05'
 CONTROL_PATH = 'tests/fixtures/argument_family_2026_09_05'
@@ -43,10 +43,44 @@ CORPORA = {
     'deutschmann': ('deutschmann2001_capitalism_as_religion.md', 'deutschmann2001_promise_of_absolute_wealth.md', 'deutschmann2022_interpretation_of_capitalism_as_religion.md'),
 }
 MODELS = {'read': 'openrouter/openai/gpt-5.6-sol', 'critic': 'openrouter/deepseek/deepseek-v4-pro',
-          'extract': 'openrouter/openai/gpt-5.6-luna', 'synthesize': 'openrouter/openai/gpt-5.6-sol', 'judge': 'claude-sonnet-4-6'}
+          'extract': 'openrouter/openai/gpt-5.6-luna', 'synthesize': 'openrouter/openai/gpt-5.6-sol',
+          'judge_sonnet': 'claude-sonnet-4-6', 'judge_sol': 'openrouter/openai/gpt-5.6-sol',
+          'corroboration': 'claude-sonnet-4-6'}
 ROUTING = {'cheap': MODELS['extract'], 'mid': MODELS['critic'], 'strong': MODELS['read']}
 CAP_USD = 16.0
 SCOPE_CHARS = 1600  # Declared planning envelope per new scope object/report, not source/model content.
+RUBRIC_KEYS = ('specificity', 'anchoring', 'non_obviousness', 'coherence', 'usefulness', 'hallucination_risk')
+RATERS = ('sonnet', 'sol')
+NEUTRAL_TASKS = {
+    'dialectical_structure': "Analyze whether and how tensions, oppositions, contradictions, or their mediation organize the supplied source's reasoning.",
+    'counterfactual_analyzer': 'Analyze conditional or counterfactual assumptions, their inferential work, and what changes or survives under the stated alternatives.',
+}
+CORROBORATION_GAP = 1.5  # Administrative restriction, not a significance threshold.
+SCORE_RUBRIC = '''Score this one ANALYSIS against the supplied SOURCE(S), independently of other analyses or judges.
+Use six 1–10 scores, higher always better:
+specificity: about this source rather than generic;
+anchoring: claims tied to source passages and quotations that actually occur and support the interpretation;
+non_obviousness: what a careful expert finds that a casual reader misses;
+coherence: a connected, internally consistent reading;
+usefulness: would an expert deciding what the source establishes gain a useful distinction or judgment;
+hallucination_risk: 10 means no unsupported claims, including claims about authors' minds or careers.
+
+Evaluate the source's actual genre, attribution, modality, scope and inferential role. A sourced quotation establishes
+occurrence, not the correctness of its interpretation. Do not infer accuracy or paraphrase from check receipts,
+verification flags or formal labels. Credit source-appropriate analytical reconstruction; distinguish an argument's
+inadequacy from its absence.
+
+A well-grounded scoped negative or inconclusive result can satisfy these criteria. Do not require a positive finding,
+invented opposition, counterfactual, numerical probability or missing-context reconstruction. Judge such an outcome by
+the stated inspected scope, source-grounded basis and preserved uncertainty; neither reward nor penalize it merely
+for being negative/inconclusive. Apply the same standard to ordinary prose and structured scope records. Do not
+reward length, row count, special fields or check status. Evaluate substantive insight relative to this source without
+inventing novelty. Provide one concise source-specific reason per criterion, identifying the relevant source passage
+and analysis claim when making a criticism. Assess the entire supplied reading, including prose/ledger inconsistencies.
+Return only this JSON object, with all six numeric scores and six nonempty reasons; no winner or comparison:
+{"specificity": n, "anchoring": n, "non_obviousness": n, "coherence": n, "usefulness": n, "hallucination_risk": n,
+"reasons": {"specificity": "...", "anchoring": "...", "non_obviousness": "...", "coherence": "...",
+"usefulness": "...", "hallucination_risk": "..."}, "one_line": "..."}'''
 JUDGE_RUBRIC = (
     'Two analyses of the same supplied material by the same method. Which is the better reading for an expert '
     'who must decide what this material establishes: more specific, better grounded in actual passages, '
@@ -133,11 +167,48 @@ def matrix():
             for condition in ('original', 'candidate'):
                 generations.append({'key': f'{engine}__{condition}__{source}', 'engine': engine, 'source': source,
                                     'condition': condition, 'kind': 'generation', 'stage': stage})
-            for a, b in (('original', 'candidate'), ('candidate', 'original')):
-                judgments.append({'key': f'judge__{engine}__{source}__{a}_first', 'engine': engine, 'source': source,
-                                  'kind': 'judge', 'stage': 'judge', 'order': a + '_first',
-                                  'A': f'{engine}__{a}__{source}', 'B': f'{engine}__{b}__{source}'})
+            for condition in ('original', 'candidate'):
+                for rater in RATERS:
+                    judgments.append({'key': f'score__{rater}__{engine}__{condition}__{source}',
+                                      'engine': engine, 'source': source, 'rater': rater,
+                                      'kind': 'judge', 'stage': 'judge',
+                                      'reading': f'{engine}__{condition}__{source}'})
     return generations, judgments
+
+
+def corroboration_matrix(generations):
+    jobs = []
+    for engine, source in dict.fromkeys((j['engine'], j['source']) for j in generations):
+        for a, b in (('original', 'candidate'), ('candidate', 'original')):
+            jobs.append({'key': f'corroborate__{engine}__{source}__{a}_first', 'engine': engine, 'source': source,
+                         'kind': 'corroboration', 'stage': 'corroborate', 'order': a + '_first',
+                         'A': f'{engine}__{a}__{source}', 'B': f'{engine}__{b}__{source}'})
+    return jobs
+
+
+def parse_score(raw):
+    def unique(pairs):
+        value = {}
+        for key, item in pairs:
+            require(key not in value, f'Duplicate scoring field: {key}')
+            value[key] = item
+        return value
+    text = raw.strip()
+    if text.startswith('```json\n') and text.endswith('\n```'):
+        text = text[8:-4]
+    value = json.loads(text, object_pairs_hook=unique)
+    require(isinstance(value, dict) and set(value) == set(RUBRIC_KEYS) | {'reasons', 'one_line'}, 'Scoring object fields differ')
+    require(all(type(value[k]) in (int, float) and math.isfinite(value[k]) and 1 <= value[k] <= 10 for k in RUBRIC_KEYS),
+            'All six scores must be finite numbers in [1,10]')
+    reasons = value['reasons']
+    require(isinstance(reasons, dict) and set(reasons) == set(RUBRIC_KEYS)
+            and all(isinstance(v, str) and v.strip() for v in reasons.values()), 'All six source-specific reasons are required')
+    require(isinstance(value['one_line'], str) and value['one_line'].strip(), 'Scoring summary is required')
+    return value
+
+
+def score_mean(score):
+    return sum(score[k] for k in RUBRIC_KEYS) / len(RUBRIC_KEYS)
 
 
 def calibration(rt, directory):
@@ -162,6 +233,13 @@ def calibration(rt, directory):
                              'input_tokens_per_char': max(max(v[0] for v in values) * 1.10, previous.get('input_tokens_per_char', 0)),
                              'output_tokens_envelope': max(math.ceil(max(v[1] for v in values) * 1.25), previous.get('output_tokens_envelope', 0)),
                              'maximum_response_chars': max(max(v[2] for v in values), previous.get('maximum_response_chars', 0))}
+    # Same-model proxies are deliberately labelled; historical Sol rubric tokens were not retained.
+    cal['roles']['judge_sonnet'] = {**cal['roles']['judge'],
+        'output_tokens_envelope': max(1200, cal['roles']['judge']['output_tokens_envelope']),
+        'basis': 'Sonnet saved pairwise input ratio; at least1200 output tokens reserved for six reasons, a planning allowance.'}
+    cal['roles']['judge_sol'] = {**cal['roles']['read'],
+        'basis': 'Conservative same-model Sol reader input/output proxy, not observed absolute-scoring token usage.'}
+    cal['roles']['corroboration'] = {**cal['roles']['judge']}
     cal['scope_chars_per_record'] = SCOPE_CHARS
     cal['method'] = ('Per-role maximum prior input tokens/character ×1.10 and output tokens ×1.25; '
                      'actual static prompts/source bytes, conservative dynamic ledger character envelopes, '
@@ -250,8 +328,19 @@ def build_plan(rt, source_dir, calibration_dir, controls_dir, candidate_dir):
     provenance = source_dir / 'PROVENANCE.md'
     file_bindings[str(provenance.resolve())] = digest(provenance.read_bytes())
     cal = calibration(rt, calibration_dir)
+    absolute_path = project_root() / 'data/study/argument_family_preparation_2026_09_05/absolute_score_calibration.json'
+    absolute_raw = absolute_path.read_bytes()
+    require(digest(absolute_raw) == '92fc5686aaf8e753cc685cc03c4ad64aae3738ba21a31cb08f3e2d3922a0e610', 'Reviewed absolute-score calibration changed')
+    absolute = json.loads(absolute_raw)
+    historical = absolute['sonnet_reason_rubric_receipts']
+    require([r['id'] for r in historical] == list(range(284, 303, 2)) and all(r['model'] == MODELS['judge_sonnet'] for r in historical), 'Absolute-score calibration identity differs')
+    cal['absolute_score_evidence'] = absolute
+    cal['roles']['judge_sonnet']['output_tokens_envelope'] = max(cal['roles']['judge_sonnet']['output_tokens_envelope'], math.ceil(max(r['output_tokens'] for r in historical) * 1.25))
+    cal['roles']['judge_sonnet']['basis'] = 'Saved Sonnet pairwise input ratio; historical absolute six-reason output maximum864 ×1.25, with a conservative1200-token planning floor.'
+    file_bindings[str(absolute_path.resolve())] = digest(absolute_raw)
     definitions, contexts = {}, {}
     generations, judgments = matrix()
+    corroborations = corroboration_matrix(generations)
     candidate_commit = git('rev-parse', CANDIDATE_COMMIT).decode().strip()
     for engine in ENGINES:
         cap = rt.core.get_engine_registry().get_capability_definition(engine)
@@ -279,22 +368,38 @@ def build_plan(rt, source_dir, calibration_dir, controls_dir, candidate_dir):
     for job in judgments:
         count = len(documents[job['source']])
         scopes = 5 * count + int(count > 1)
-        chars = len(JUDGE_RUBRIC) + len(source_block(documents[job['source']])) + 2 * maximum_final + scopes * SCOPE_CHARS + 80
-        job.update(call_envelopes=[estimate(rt, cal, 'judge', chars)], base_calls=1)
+        chars = len(SCORE_RUBRIC) + len(NEUTRAL_TASKS[job['engine']]) + len(source_block(documents[job['source']])) + maximum_final + scopes * SCOPE_CHARS + 100
+        job.update(call_envelopes=[estimate(rt, cal, 'judge_' + job['rater'], chars)], base_calls=1)
         job['estimate_usd'] = job['call_envelopes'][0]['estimate_usd']
+    for job in corroborations:
+        count = len(documents[job['source']])
+        chars = len(JUDGE_RUBRIC) + len(NEUTRAL_TASKS[job['engine']]) + len(source_block(documents[job['source']])) + 2 * maximum_final + (5 * count + int(count > 1)) * SCOPE_CHARS + 100
+        job.update(call_envelopes=[estimate(rt, cal, 'corroboration', chars)], base_calls=1)
+        job['estimate_usd'] = job['call_envelopes'][0]['estimate_usd']
+    corroboration_reserve = round(max(2 * j['estimate_usd'] for j in corroborations), 6)
     role_costs = {role: round(sum(c['estimate_usd'] for j in generations + judgments for c in j['call_envelopes'] if c['role'] == role), 6) for role in MODELS}
     repair_reserve = round(sum(j['reanchor_reserve_usd'] for j in generations), 6)
-    payload = {'study': 'argument_family_2026_09_05', 'version': 1, 'runtime_commit': RUNTIME,
+    payload = {'study': 'argument_family_2026_09_05', 'version': 2, 'runtime_commit': RUNTIME,
                'runtime_archive_sha256': rt.archive_sha256, 'harness_sha256': digest(Path(__file__).read_bytes()),
                'sources': sources, 'source_groups': {k: list(v) for k, v in documents.items()}, 'input_files_sha256': file_bindings,
-               'definitions': definitions, 'models': MODELS, 'judge_rubric': JUDGE_RUBRIC,
-               'judge_rubric_sha256': digest(JUDGE_RUBRIC.encode()), 'original_wrapper_sha256': digest(inspect.getsource(rt.core.old_prompt).encode()),
+               'definitions': definitions, 'models': MODELS, 'score_rubric': SCORE_RUBRIC, 'neutral_tasks': NEUTRAL_TASKS,
+               'score_rubric_sha256': digest(SCORE_RUBRIC.encode()), 'rubric_keys': RUBRIC_KEYS,
+               'rubric_provenance': {'source': 'scripts/study_engine_harness_v3.py',
+                   'file_sha256': digest(git('show', f'{RUNTIME}:scripts/study_engine_harness_v3.py')),
+                   'scale': '1–10; all higher better, hallucination_risk10=no unsupported claims; six-criterion unweighted means reported separately per rater'},
+               'head_to_head_rubric': JUDGE_RUBRIC, 'head_to_head_rubric_sha256': digest(JUDGE_RUBRIC.encode()),
+               'head_to_head_policy': {'maximum_pairs': 1, 'minimum_opposing_mean_gap_each_rater': CORROBORATION_GAP,
+                   'automatic': False, 'role': 'Optional corroboration of strong rater disagreement, only after an explicit source-review record; never overrides the primary reader memos.'},
+               'primary_evidence': 'Full source-based reader memos and controls; model scores are supporting evidence, not certification.',
+               'original_wrapper_sha256': digest(inspect.getsource(rt.core.old_prompt).encode()),
                'shared_anchoring_law_sha256': digest(rt.composer.ANCHORING_LAW.encode()),
-               'calibration': cal, 'generations': generations, 'judgments': judgments,
+               'calibration': cal, 'generations': generations, 'judgments': judgments, 'corroborations': corroborations,
                'planned_base_calls': sum(j['base_calls'] for j in generations + judgments),
                'estimated_cost_by_role': role_costs, 'estimated_base_usd': round(sum(role_costs.values()), 6),
                'maximum_reanchor_calls': sum(j['maximum_reanchor_calls'] for j in generations),
-               'estimated_reanchor_reserve_usd': repair_reserve, 'estimated_total_usd': round(sum(role_costs.values()) + repair_reserve, 6),
+               'estimated_reanchor_reserve_usd': repair_reserve,
+               'estimated_optional_corroboration_reserve_usd': corroboration_reserve,
+               'estimated_total_usd': round(sum(role_costs.values()) + repair_reserve + corroboration_reserve, 6),
                'interpreter': {'python': platform.python_version(), 'pydantic': version('pydantic'), 'yaml': version('PyYAML')},
                'cap_usd': CAP_USD, 'pricing': {r: rt.core.PRICING[m.split('/')[-1]] for r, m in MODELS.items()},
                'transport_environment': {k: os.environ.get(k) for k in ('ENABLE_STREAMING', 'LLM_SYNC_HARD_TIMEOUT_SECONDS', 'ANTHROPIC_EXTRACTION_READ_TIMEOUT_S', 'OPENROUTER_REASONING_EFFORT')},
@@ -326,7 +431,9 @@ def budget_guard(output_root, cap, next_estimate):
 
 def role_for(job, label):
     if job['kind'] == 'judge':
-        return 'judge'
+        return 'judge_' + job['rater']
+    if job['kind'] == 'corroboration':
+        return 'corroboration'
     if job['condition'] == 'original':
         return 'read'
     if ' | extract | ' in label:
@@ -340,7 +447,7 @@ def role_for(job, label):
 
 
 def scope_count(job, role, label):
-    if job['kind'] == 'judge' or job.get('condition') == 'original':
+    if job['kind'] != 'generation' or job.get('condition') == 'original':
         return 0
     if role == 'extract':
         return 1
@@ -350,9 +457,22 @@ def scope_count(job, role, label):
 
 
 def judge_prompt(job, folder, records, documents):
+    task = 'Requested task: ' + NEUTRAL_TASKS[job['engine']] + '\n\n'
+    if job['kind'] == 'judge':
+        content = (folder / records[job['reading']]['output']).read_text()
+        return {'system': SCORE_RUBRIC, 'user': task + source_block(documents[job['source']])
+                + '\n\n=====\n\nANALYSIS:\n\n' + content}
     outputs = [(folder / records[job[side]]['output']).read_text() for side in ('A', 'B')]
-    return {'system': JUDGE_RUBRIC, 'user': source_block(documents[job['source']]) + '\n\n=====\n\nANALYSIS A:\n\n'
+    return {'system': JUDGE_RUBRIC, 'user': task + source_block(documents[job['source']]) + '\n\n=====\n\nANALYSIS A:\n\n'
             + outputs[0] + '\n\n=====\n\nANALYSIS B:\n\n' + outputs[1]}
+
+
+def parent_keys(job):
+    return [job['reading']] if job['kind'] == 'judge' else [job['A'], job['B']]
+
+
+def all_jobs(plan):
+    return plan['generations'] + plan['judgments'] + plan.get('corroborations', [])
 
 
 def run_generation(job, context, rt, invoke):
@@ -415,15 +535,15 @@ def validate_completed(job, record, plan, folder, records, contexts, documents, 
         require(receipt['response_sha256'] == digest(response), 'Raw response JSON hash mismatch')
         position += 1
         return response
-    if job['kind'] == 'judge':
-        for side in ('A', 'B'):
-            parent = next(j for j in plan['generations'] if j['key'] == job[side])
+    if job['kind'] != 'generation':
+        for parent_key in parent_keys(job):
+            parent = next(j for j in plan['generations'] if j['key'] == parent_key)
             validate_completed(parent, records.get(parent['key'], {}), plan, folder, records, contexts, documents, rt)
             require(record['inputs_sha256'][parent['key']] == records[parent['key']]['output_sha256'], 'Judge input binding changed')
         prompt = judge_prompt(job, folder, records, documents)
-        response = replay(prompt['system'], prompt['user'], model_hint=MODELS['judge'], label='argument-family ' + job['key'])
-        verdict = rt.core.parse_judgment(response['content'], job)
-        require(verdict == record['judgment'] == json.loads(output), 'Both-order verdict mapping differs')
+        response = replay(prompt['system'], prompt['user'], model_hint=MODELS[role_for(job, '')], label='argument-family ' + job['key'])
+        verdict = parse_score(response['content']) if job['kind'] == 'judge' else rt.core.parse_judgment(response['content'], job)
+        require(verdict == record['judgment'] == json.loads(output), 'Saved scoring/verdict result differs')
     else:
         content, process = run_generation(job, contexts[job['key']], rt, replay)
         require(content.encode() == output and process_projection(process) == process_projection(record['process']), 'Runtime replay differs from saved output/receipt')
@@ -438,9 +558,9 @@ def execute_job(job, plan, folder, records, contexts, documents, output_root, ca
     require(not records.get(key), f'{key} already has an incomplete logical record; no automatic retry')
     require(not list(output_root.glob(f'*/receipts/{key}/*/call-*')), f'{key} already has logical-job calls; no paid replay')
     guard_inputs(plan)
-    if job['kind'] == 'judge':
-        for side in ('A', 'B'):
-            parent = next(j for j in plan['generations'] if j['key'] == job[side])
+    if job['kind'] != 'generation':
+        for parent_key in parent_keys(job):
+            parent = next(j for j in plan['generations'] if j['key'] == parent_key)
             validate_completed(parent, records.get(parent['key'], {}), plan, folder, records, contexts, documents, rt)
     record = {'key': key, 'kind': job['kind'], 'identity': plan['identity'], 'job_sha256': digest(job),
               'status': 'running', 'attempt': uuid.uuid4().hex[:12], 'started_at': time.time()}
@@ -470,7 +590,7 @@ def execute_job(job, plan, folder, records, contexts, documents, output_root, ca
                    'prompt_sha256': digest(prompt), 'admission': envelope, 'cost_usd': None, 'started_at': time.time()}
         write_json(path.with_name(path.stem + '.prompt.json'), prompt); write_json(path, receipt)
         try:
-            backend = rt.core.run_engine_call if role == 'judge' else rt.core.run_engine_call_auto
+            backend = rt.core.run_engine_call if job['kind'] != 'generation' else rt.core.run_engine_call_auto
             response = backend(system_prompt=system, user_message=user, phase_number=1.0, **kwargs)
             require(isinstance(response, dict), 'Backend response is not an object')
             write_json(path.with_name(path.stem + '.response.json'), response)
@@ -484,7 +604,7 @@ def execute_job(job, plan, folder, records, contexts, documents, output_root, ca
             require(raw.strip() and not response.get('partial') and response.get('stop_reason') not in ('length', 'max_tokens', 'error')
                     and not response.get('error') and not response.get('connection_error'), 'Empty/partial/error response retained; job stops')
             receipt['status'] = 'complete'
-            if role != 'judge':
+            if job['kind'] == 'generation':
                 receipt['raw_quote_diagnostics'] = rt.h.quote_diagnostics(raw, rt, documents[job['source']])
             return response
         except Exception as exc:
@@ -494,11 +614,11 @@ def execute_job(job, plan, folder, records, contexts, documents, output_root, ca
             receipt['duration_ms'] = round((time.time() - receipt['started_at']) * 1000)
             write_json(path, receipt)
     try:
-        if job['kind'] == 'judge':
+        if job['kind'] != 'generation':
             prompt = judge_prompt(job, folder, records, documents)
-            record['inputs_sha256'] = {job[s]: records[job[s]]['output_sha256'] for s in ('A', 'B')}
-            response = invoke(prompt['system'], prompt['user'], model_hint=MODELS['judge'], depth='standard', label='argument-family ' + key)
-            record['judgment'] = rt.core.parse_judgment(response['content'], job)
+            record['inputs_sha256'] = {parent: records[parent]['output_sha256'] for parent in parent_keys(job)}
+            response = invoke(prompt['system'], prompt['user'], model_hint=MODELS[role_for(job, '')], depth='standard', label='argument-family ' + key)
+            record['judgment'] = parse_score(response['content']) if job['kind'] == 'judge' else rt.core.parse_judgment(response['content'], job)
             output = json.dumps(record['judgment'], ensure_ascii=False, indent=2)
         else:
             output, record['process'] = run_generation(job, contexts[key], rt, invoke)
@@ -519,7 +639,9 @@ def execute_job(job, plan, folder, records, contexts, documents, output_root, ca
 
 
 def review_gate(path, phase, plan, folder, records, contexts, documents, rt):
-    required = [j for j in plan['generations'] if phase == 'judge' or j['stage'] == 'initial']
+    required = [j for j in plan['generations'] if phase != 'corpus' or j['stage'] == 'initial']
+    if phase == 'corroborate':
+        required += plan['judgments']
     bindings = {}
     for job in required:
         record = records.get(job['key'], {})
@@ -534,39 +656,96 @@ def review_gate(path, phase, plan, folder, records, contexts, documents, rt):
     return {'record_sha256': digest(path.read_bytes()), 'memo_sha256': review['memo_sha256'], 'outputs_sha256': bindings}
 
 
+def score_comparisons(plan, records, valid):
+    pairs = []
+    for engine, source in dict.fromkeys((j['engine'], j['source']) for j in plan['judgments']):
+        jobs = [j for j in plan['judgments'] if j['engine'] == engine and j['source'] == source]
+        raters, ratings, exact_deltas = {}, {}, {}
+        for rater in RATERS:
+            by_condition = {}
+            for condition in ('original', 'candidate'):
+                job = next(j for j in jobs if j['rater'] == rater and j['reading'] == f'{engine}__{condition}__{source}')
+                score = records[job['key']]['judgment'] if valid.get(job['key']) else None
+                by_condition[condition] = score
+                ratings[rater, condition] = score
+            old, new = by_condition['original'], by_condition['candidate']
+            delta = score_mean(new) - score_mean(old) if old and new else None
+            exact_deltas[rater] = delta
+            raters[rater] = {**by_condition,
+                'original_mean': round(score_mean(old), 6) if old else None,
+                'candidate_mean': round(score_mean(new), 6) if new else None,
+                'criterion_deltas': {k: round(new[k] - old[k], 6) for k in RUBRIC_KEYS} if old and new else None,
+                'mean_delta': round(delta, 6) if delta is not None else None,
+                'direction': 'missing_score' if delta is None else 'equal_scores' if delta == 0 else 'candidate_higher' if delta > 0 else 'original_higher'}
+        between = {}
+        for condition in ('original', 'candidate'):
+            sonnet, sol = ratings['sonnet', condition], ratings['sol', condition]
+            between[condition] = {'sol_minus_sonnet': {k: round(sol[k] - sonnet[k], 6) for k in RUBRIC_KEYS},
+                                  'mean_difference': round(score_mean(sol) - score_mean(sonnet), 6)} if sol and sonnet else None
+        ds = [exact_deltas[r] for r in RATERS]
+        eligible = all(d is not None and abs(d) >= CORROBORATION_GAP for d in ds) and ds[0] * ds[1] < 0
+        group = 'absence_control' if source == 'absence' else 'mixed_control' if source == 'mixed' else 'natural_corpus' if source in CORPORA else 'single_paper'
+        pairs.append({'engine': engine, 'source': source, 'group': group, 'raters': raters,
+                      'between_rater_same_output': between, 'eligible_for_optional_corroboration': eligible})
+    return pairs
+
+
 def report(plan, folder, records, contexts, documents, rt):
     valid, errors = {}, {}
-    for job in plan['generations'] + plan['judgments']:
+    for job in all_jobs(plan):
         valid[job['key']] = False
         if records.get(job['key'], {}).get('status') == 'complete':
             try:
                 valid[job['key']] = validate_completed(job, records[job['key']], plan, folder, records, contexts, documents, rt)
             except Exception as exc:
                 errors[job['key']] = str(exc)
-    pairs = []
-    for engine, source in dict.fromkeys((j['engine'], j['source']) for j in plan['judgments']):
-        jobs = [j for j in plan['judgments'] if j['engine'] == engine and j['source'] == source]
-        winners = [records[j['key']]['judgment']['winner'] for j in jobs if valid[j['key']]]
-        outcome = 'incomplete' if len(winners) != 2 else 'split' if winners[0] != winners[1] else 'tie' if winners[0] == 'tie' else winners[0].split('__')[1]
-        pairs.append({'engine': engine, 'source': source, 'outcome': outcome, 'order_winners': winners})
+    pairs = score_comparisons(plan, records, valid)
+    corroborations = []
+    for pair in pairs:
+        jobs = [j for j in plan.get('corroborations', []) if (j['engine'], j['source']) == (pair['engine'], pair['source'])]
+        active = [j for j in jobs if j['key'] in records]
+        if active:
+            winners = [records[j['key']]['judgment']['winner'] for j in jobs if valid[j['key']]]
+            outcome = 'incomplete' if len(winners) != 2 else 'split' if winners[0] != winners[1] else winners[0]
+            corroborations.append({'engine': pair['engine'], 'source': pair['source'], 'outcome': outcome,
+                                   'orders': [{**j, 'valid': valid[j['key']], 'judgment': records.get(j['key'], {}).get('judgment')} for j in jobs]})
     calls = [read_json(p) for p in folder.glob('receipts/*/*/call-[0-9][0-9][0-9][0-9].json')]
     return {'identity': plan['identity'], 'valid_generations': sum(valid[j['key']] for j in plan['generations']),
-            'valid_judgments': sum(valid[j['key']] for j in plan['judgments']), 'validation_errors': errors,
-            'status_counts': dict(Counter(r['status'] for r in records.values())), 'pairs': pairs,
+            'valid_judgments': sum(valid[j['key']] for j in plan['judgments']),
+            'valid_scores_by_rater': {r: sum(valid[j['key']] for j in plan['judgments'] if j['rater'] == r) for r in RATERS},
+            'validation_errors': errors, 'status_counts': dict(Counter(r['status'] for r in records.values())),
+            'primary_evidence': plan.get('primary_evidence'), 'pairs': pairs, 'optional_corroborations': corroborations,
             'usage': rt.sums.sum_calls(calls), 'usage_by_role': {r: rt.sums.sum_calls([c for c in calls if c['role'] == r]) for r in MODELS},
             'final_walls': {k: r.get('process', {}).get('final_wall') for k, r in records.items() if r['kind'] == 'generation'},
-            'limits': ['A quote match, scoped review or two-order win is not semantic certification.',
+            'limits': ['Source-based reader memos and controls are primary; rubric scores and optional comparisons are supporting evidence.',
+                       'Raters are reported separately; no pooled rater score or automatic verdict follows from a score gap. Control cases remain separate from scholarly cases.',
+                       'Single-output scoring removes the within-call A/B alternative; family associations, calibration differences, visible receipts and other biases remain possible.',
                        'Unknown termination metadata remains unknown. Existing failed/running invocations block paid continuation.',
                        'Budget is an admission envelope, not a guarantee about provider billing or internal backend retries.']}
+
+
+def corroboration_gate(path, plan, folder, records, contexts, documents, rt):
+    gate = review_gate(path, 'corroborate', plan, folder, records, contexts, documents, rt)
+    selected = read_json(path).get('pair')
+    require(isinstance(selected, dict) and set(selected) == {'engine', 'source'}, 'Corroboration review must select exactly one pair')
+    result = report(plan, folder, records, contexts, documents, rt)
+    require(result['valid_judgments'] == len(plan['judgments']) and not result['validation_errors'], 'Complete independent scoring must precede any head-to-head')
+    pair = next((p for p in result['pairs'] if p['engine'] == selected['engine'] and p['source'] == selected['source']), None)
+    require(pair is not None and pair['eligible_for_optional_corroboration'], 'Head-to-head requires opposing mean gaps of at least1.5 for both raters')
+    jobs = [j for j in plan['corroborations'] if j['engine'] == selected['engine'] and j['source'] == selected['source']]
+    require(len(jobs) == 2, 'Expected exactly two corroboration orders')
+    require(all(r['key'] in {j['key'] for j in jobs} for r in records.values() if r['kind'] == 'corroboration'), 'Only one pair may receive optional head-to-head calls')
+    return {**gate, 'pair': selected}, jobs
 
 
 def main(argv=None):
     root = project_root()
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--run', action='store_true')
-    parser.add_argument('--phase', choices=('initial', 'corpus', 'judge', 'report'), default='initial')
+    parser.add_argument('--phase', choices=('initial', 'corpus', 'judge', 'corroborate', 'report'), default='initial')
     parser.add_argument('--budget-usd', type=float)
     parser.add_argument('--review-record', type=Path)
+    parser.add_argument('--require-complete', action='store_true')
     parser.add_argument('--output-root', type=Path, default=root / 'data/study/argument_family_2026_09_05')
     parser.add_argument('--sources-dir', type=Path, default=root / 'data/study/sources_ideas')
     parser.add_argument('--controls-dir', type=Path, default=root / CONTROL_PATH)
@@ -595,10 +774,14 @@ def main(argv=None):
                 write_json(args.output_root / 'campaign.json', {'identity': plan['identity'], 'cap_usd': args.budget_usd})
                 write_json(folder / 'plan.json', plan)
                 records = read_json(folder / 'results.json', {})
+                if args.phase == 'corroborate':
+                    gate, jobs = corroboration_gate(args.review_record, plan, folder, records, contexts, documents, rt)
+                    write_json(folder / 'reviews' / 'corroborate.json', gate)
                 if args.phase in ('corpus', 'judge'):
                     gate = review_gate(args.review_record, args.phase, plan, folder, records, contexts, documents, rt)
                     write_json(folder / 'reviews' / f'{args.phase}.json', gate)
-                jobs = plan['judgments'] if args.phase == 'judge' else [j for j in plan['generations'] if j['stage'] == args.phase]
+                if args.phase != 'corroborate':
+                    jobs = plan['judgments'] if args.phase == 'judge' else [j for j in plan['generations'] if j['stage'] == args.phase]
                 try:
                     for job in jobs:
                         print(f"{args.phase}: {job['key']}", flush=True)
@@ -613,10 +796,16 @@ def main(argv=None):
                       'estimated_total_usd': plan['estimated_total_usd'], 'estimated_base_usd': plan['estimated_base_usd'],
                       'estimated_reanchor_reserve_usd': plan['estimated_reanchor_reserve_usd'], 'maximum_reanchor_calls': plan['maximum_reanchor_calls'], 'cap_usd': CAP_USD, 'fits_cap': plan['estimated_total_usd'] <= CAP_USD,
                       'estimated_cost_by_role': plan['estimated_cost_by_role'],
+                      'estimated_optional_corroboration_reserve_usd': plan['estimated_optional_corroboration_reserve_usd'],
+                      'head_to_head_policy': plan['head_to_head_policy'],
                       'jobs': [{'key': j['key'], 'base_calls': j['base_calls'], 'estimate_usd': j['estimate_usd']} for j in plan['generations'] + plan['judgments']],
                       'calibration': {k: v for k, v in plan['calibration'].items() if k != 'input_hashes'},
                       'review_record_shape': {'identity': plan['identity'], 'phase': 'corpus|judge', 'decision': 'proceed',
                                               'outputs_sha256': '<all exact prerequisite outputs>', 'memo_path': '<review memo>', 'memo_sha256': '<hash>'}}
+        if args.require_complete:
+            require(result.get('valid_generations') == len(plan['generations']) and result.get('valid_judgments') == len(plan['judgments'])
+                    and not result.get('validation_errors') and not any(result.get('status_counts', {}).get(s, 0) for s in ('failed', 'running')),
+                    'Study is not complete: require24 valid generations and48 valid independent scores, with no failed/running jobs')
         print(json.dumps(result, indent=2, ensure_ascii=False))
     return 0
 
