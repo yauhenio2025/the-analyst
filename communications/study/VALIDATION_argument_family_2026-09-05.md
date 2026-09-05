@@ -1,6 +1,6 @@
 # Argument-family validation: concrete no-call plan
 
-**Prepared, not launched.** This plan concerns the two [unregistered candidates](candidates/argument_family_2026_09_05/README.md), `dialectical_structure` and `counterfactual_analyzer`. It neither changes production registration nor adds work or spend to the separate four-engine Hegel trial. Its proposed admission ceiling is **USD 16**, requiring separate launch authorization after a frozen harness preview. The conservative preparation estimate below is **USD 13.63**; it is not a billing guarantee.
+**Prepared, not launched.** This plan concerns the two [unregistered candidates](candidates/argument_family_2026_09_05/README.md), `dialectical_structure` and `counterfactual_analyzer`. It neither changes production registration nor adds work or spend to the separate four-engine Hegel trial. Its proposed admission ceiling is **USD 16**, requiring separate launch authorization after a frozen harness preview. The frozen no-call preview is **USD 11.609048**, including the maximum bounded re-anchor reserve; the earlier coarse estimate below was USD 13.63. Neither is a billing guarantee.
 
 The accepted scoped-outcome runtime makes these candidates executable for an isolated comparison. It does not certify their questions, semantic judgments or reported inspection coverage. Root's source-review feedback has been added as general critic guidance: identify the kind of warrant, allow grounded analytical reconstruction, distinguish inadequate treatment from absence, and preserve the actual quantified/modal claim when testing a counterexample. Paper-specific checks below stay outside the models' prompts.
 
@@ -93,3 +93,53 @@ Before launch, replace this coarse envelope with an exact no-call preview of the
 The new harness must default to no-call preview and bind runtime/composer/walls/normalization, both candidate YAMLs, untouched capability baselines, model routing, source/control bytes, judge rubric and all shared contracts. Every actual dynamic prompt, raw response, token/cost record, requested/used model, partial/error metadata and lineage must be retained. Freeze the accepted runtime including ruling-coverage and scope-outcome behavior. A default source binding or permissively dropped metadata is not a valid frozen treatment.
 
 Use one separate campaign identity and cumulative spend ledger covering its accepted continuations. Admit every invocation against known spend plus its conservative envelope; unknown-cost calls block further paid work. Do not retry or resume a failed/running job into new model calls automatically. Any permitted unstarted continuation must retain frozen conditions and provenance; offline recovery must be separately recorded and cannot silently change treatment or guess IDs. Stop after the initial single-paper and absence generations for root's source/format review before the more expensive corpus phase. Judge only actual completed products after the pre-judge memos are saved. No command in this plan starts a model call.
+
+
+## Prepared harness and exact no-call preview
+
+The harness is [study_argument_family_2026_09_05.py](../../scripts/study_argument_family_2026_09_05.py). It imports the complete `src`/`scripts` archive from runtime `af5861a3be30e5a2b795d6cd20df69662b5ffda7` in a fresh interpreter. Candidate bytes come from committed `005cee5`, separately hashed and checked against the working candidate files. The archive hash binds the original capability definitions, wrapper, runtime, composer, scope/ruling helpers, walls and normalization. The manifest separately binds baseline capability file hashes, candidate contents, source/control/provenance files, judge rubric, transport settings, Python/Pydantic/PyYAML versions and prior calibration artifacts. The current candidates include the shared critic's explicit **normative** warrant category.
+
+The three exact authored bodies are now saved as [inventory](../../tests/fixtures/argument_family_2026_09_05/archive_inventory.txt), [policy](../../tests/fixtures/argument_family_2026_09_05/archive_policy.txt) and [incomplete fragment](../../tests/fixtures/argument_family_2026_09_05/archive_fragment.txt). Their body text matches the controls above, with a terminal newline. They remain synthetic fixtures with fictional shared provenance.
+
+The complete saved [preview manifest](../../data/study/argument_family_preparation_2026_09_05/preview_v3.json) and [concise preview](../../data/study/argument_family_preparation_2026_09_05/preview_v3_summary.json) report identity `893de7c88bb8c93873c71e24af2668e6ebdee3698b8835e39191bce5220d1fc1`. The 12-pair matrix is unchanged. The v3 harness SHA-256 is `285f681623ca3b323758c2e52a29c2d82f778c0aa7b304223abe9fc203649d6b`; the [preparation manifest](../../data/study/argument_family_preparation_2026_09_05/preparation_manifest_v3.json) pins code, tests, controls, documentation and preview hashes. Compared with v2, only the harness hash and resulting identity changed in the plan: prompts, runtime, candidate definitions, matrix and cost envelopes are identical. The change adds the existing-campaign/saved-plan refusal to reports and reuses that check under the paid campaign lock. Earlier v2 artifacts remain preserved.
+
+| Exact preview component | USD |
+|---|---:|
+| Original/candidate single-call reads | 2.490824 |
+| Single and deep critics | 3.196031 |
+| Base deep extraction | 0.454681 |
+| Deep synthesis | 1.322196 |
+| Both-order Sonnet judging | 3.640656 |
+| **136 base calls** | **11.104388** |
+| Up to 64 bounded re-anchor calls | **0.504660** |
+| **Total planning envelope** | **11.609048** |
+| Headroom within the proposed USD 16 ceiling | **4.390952** |
+
+The read/judge calibration uses the 24/24 original baseline receipts, criticism now includes all 12 single-paper and 16 deep reviews, extraction includes all 95 actual Luna receipts (including earlier repairs), and synthesis uses all four completed corpus receipts. Role envelopes use the maximum observed input tokens per character ×1.10 and maximum output tokens ×1.25. Static read and per-document extraction prompts use their exact composed characters. Dynamic critic/corpus-extraction/synthesis/judge inputs use prior maximum response lengths enlarged by 1.25 and multiplied by the number of contributing documents/dimensions. Each new scope object/report adds a separately declared 1,600-character allowance to relevant input and output envelopes. Placeholders are used only to measure preview size; real calls receive actual ledger/scope content.
+
+For each possible extraction, the reserve includes one re-anchor response, the original extraction context, an enlarged failed-ledger envelope and request overhead. This is a bounded planning reserve, not a promise that a provider will never retry internally. Every actual invocation recomputes admission using its exact system/user prompt and the corresponding output/scope envelope. The full-matrix preview must fit the supplied cap before any launch; the harness does not quietly cut the matrix if it does not fit.
+
+Reproduce the no-call preview:
+
+```bash
+python scripts/study_argument_family_2026_09_05.py   --write-preview data/study/argument_family_preparation_2026_09_05/reviewed_preview.json
+```
+
+The default has no `--run` and invokes no provider. Launch commands below are documentation of the gated interface, **not authorization**:
+
+```bash
+# Only after root reviews this frozen preparation and obtains new spend authorization:
+python scripts/study_argument_family_2026_09_05.py --run --phase initial --budget-usd 16
+# After source/format review of all sixteen initial products:
+python scripts/study_argument_family_2026_09_05.py --run --phase corpus --budget-usd 16   --review-record /absolute/path/to/corpus_review.json
+# After pre-judge source review of all twenty-four products:
+python scripts/study_argument_family_2026_09_05.py --run --phase judge --budget-usd 16   --review-record /absolute/path/to/judge_review.json
+# Read-only receipt/output replay and report:
+python scripts/study_argument_family_2026_09_05.py --phase report
+```
+
+A review record must state the exact identity, target phase (`corpus` or `judge`), `decision: proceed`, a complete `outputs_sha256` map for the required 16 or 24 prerequisite products, and `memo_path`/`memo_sha256` for a nonempty reviewed memo. The harness verifies all prerequisites through offline replay before accepting the record; no review record is generated or approved automatically. The campaign stores the accepted review and memo hash bindings.
+
+Paid execution is confined to `data/study/argument_family_2026_09_05`, guarded by one nonblocking campaign lock and one identity marker. Invocations run sequentially, including deep extraction. Every model call first writes its full prompt and a running cost-unknown receipt, then saves the complete backend response JSON and verbatim text before result validation. Partial responses, errors, fallback models and missing usage/retry metadata stop the job with those artifacts retained. Any failed/running invocation prevents further paid continuation, even if its cost is known; a parse failure with complete calls still cannot automatically restart its logical job. Completed jobs re-execute the frozen deterministic process against saved responses and compare the final product and receipt projection, excluding newly measured wall-clock durations. They do not call a provider. A changed identity does not open a new spend window. Read-only reports also refuse an existing campaign identity or saved-plan mismatch; changed source/calibration inputs cannot silently turn the report into an empty new campaign.
+
+Focused validation: **53 tests passed** (37 new harness cases plus 16 unchanged Hegel harness cases). Coverage includes both original and candidate replay, 21-call mixed execution, successful re-anchoring with 22 raw invocations, exact source/scope persistence, altered output/response/receipt refusal, partial/fallback/unknown-cost stops, no automatic paid retries, cumulative cross-identity budget checks, default no-call preview, over-cap launch refusal, exclusive locking, review memo/output bindings, opposite-order verdict mapping and read-only report identity/plan refusal. The existing held-out harness and campaign were unchanged. No paid call, engine registration, commit or push was made by the preparing agent.
