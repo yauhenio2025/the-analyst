@@ -41,7 +41,7 @@ from src.display.enforcement import (
     validate_data,
 )
 from src.dossier import events, findings as ledger
-from src.dossier.common import AUDIENCE_REGISTER, analysis_prose, compact_profiles, job_dir
+from src.dossier.common import AUDIENCE_REGISTER, analysis_ledger, analysis_prose, compact_profiles, job_dir
 from src.dossier.llm import call_json
 from src.dossier.receipts import make_receipt, record
 from src.dossier.schemas import DossierJob, Figure, FigureAnchor, FigureSpec, Finding, SpineSection
@@ -123,9 +123,10 @@ def material_text(job: DossierJob, max_chars: int = MATERIAL_MAX_CHARS) -> str:
     telling = f"{opt.title}\n{opt.telling}" if opt else (job.options.intent or "")
     tables = tables_text(job)
     profiles = compact_profiles(job.profiles)
-    budget = max(20_000, max_chars - len(tables) - min(len(profiles), 12_000) - len(telling))
+    ledger = analysis_ledger(job)[:24_000]   # findings by id with their anchors: labels may quote them, and a finding's relation is a diagram's shape
+    budget = max(20_000, max_chars - len(tables) - min(len(profiles), 12_000) - len(telling) - len(ledger))
     analysis = analysis_prose(job, max_chars_per_phase=budget // max(1, len(job.analysis) or 1))[:budget]
-    return (f"ANGLE (the chosen telling):\n{telling}\n\nTABLES (verified rows):\n{tables}\n\n"
+    return (f"ANGLE (the chosen telling):\n{telling}\n\nTABLES (verified rows):\n{tables}\n\n{ledger}\n\n"
             f"ANALYSIS PROSE:\n{analysis}\n\nPROFILES:\n{profiles[:12_000]}")
 
 

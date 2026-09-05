@@ -28,7 +28,7 @@ import re
 from typing import Any, Optional
 
 from src.dossier import events
-from src.dossier.common import AUDIENCE_REGISTER, analysis_prose, compact_profiles
+from src.dossier.common import AUDIENCE_REGISTER, analysis_ledger, analysis_prose, compact_profiles, ledger_ids
 from src.dossier.llm import call_json
 from src.dossier.schemas import (
     EVIDENCE_KINDS, Anchor, CompositionRead, DossierJob, DossierSpine, ExhibitsBudget,
@@ -83,6 +83,7 @@ SECTION_SCHEMA = {
         "figure": {"anyOf": [FIGURE_SPEC_SCHEMA, {"type": "null"}], "description": "null unless a picture does a job prose and tables cannot"},
         "anchors_planned": {"type": "array", "minItems": 1, "maxItems": 4, "items": ANCHOR_SCHEMA},
         "feeds": {"type": "array", "items": {"type": "string"}, "description": "keys of LATER sections that build on this one"},
+        "finding_ids": {"type": "array", "items": {"type": "string"}, "description": "ids of FINDINGS LEDGER rows this section rests on (e.g. F3, F7); the desks cite them"},
     },
 }
 READ_SCHEMA = {
@@ -148,9 +149,10 @@ Then the SPINE:
   take from the picture in at most two sentences and never carries a number — numbers live in the prose and tables.
 - The exhibits budget is a ceiling, not a target: fewer, load-bearing exhibits beat the budget filled. At most one
   table and one figure per section.
-- Ground everything: every section names 1-4 verified quotes it will lean on, copied character-for-character from the
-  PROFILES' anchors (preferred) or from the documents — a mechanical check refuses anything that is not verbatim. A
-  claim the documents cannot carry is not planned.
+- Build on the FINDINGS LEDGER: it lists what the analysis established, row by row, with anchors already verified.
+  A section's claim rests on findings — name their ids in `finding_ids` — and its planned anchors are copied from those
+  rows (preferred), from the PROFILES' anchors, or from the documents, character-for-character; a mechanical check
+  refuses anything that is not verbatim. A claim neither the ledger nor the documents can carry is not planned.
 - Write headings and claims in the audience's register. For an executive the last section is the one they act on —
   give it the strongest exhibit, not none.
 - The summary and the conclusion do DIFFERENT jobs; declare each in one line (e.g. summary = the finding and the
@@ -207,7 +209,7 @@ def _option_text(job: DossierJob) -> str:
     return "\n".join(lines)
 
 
-def _user(job: DossierJob) -> str:
+def _user(job: DossierJob, docs: Optional[list[Document]] = None) -> str:
     budget = budget_for(job)
     audience = job.options.audience
     return (
@@ -215,6 +217,7 @@ def _user(job: DossierJob) -> str:
         f"EXHIBITS BUDGET (ceiling): {budget.tables} tables, {budget.figures} diagrams. "
         f"Sections: {MIN_SECTIONS}-{MAX_SECTIONS}.\n\n"
         f"PRIMITIVES (for figure specs — the analytical relation a diagram makes visible, and the formats it prefers):\n{primitives_text()}\n\n"
+        f"{analysis_ledger(job, docs)}\n\n"
         f"ANALYSIS PROSE (every phase):\n{analysis_prose(job, max_chars_per_phase=ANALYSIS_CHARS_PER_PHASE)}\n\n"
         f"RECONNAISSANCE PROFILES (their anchors are verified verbatim quotes — copy from here):\n{compact_profiles(job.profiles)}"
     )
@@ -261,6 +264,7 @@ def coerce_spine(raw: dict[str, Any], budget: ExhibitsBudget) -> DossierSpine:
             evidence_kind=str(s.get("evidence_kind", "mechanism")).strip() or "mechanism",
             table=table, figure=figure, anchors_planned=anchors,
             feeds=[_snake(str(k), "") for k in (s.get("feeds") or []) if str(k).strip()],
+            finding_ids=[str(x).strip().strip("[]") for x in (s.get("finding_ids") or []) if str(x).strip()],
         ))
     return DossierSpine(
         read=read, thesis=str(raw.get("thesis", "")).strip(), reader_question=str(raw.get("reader_question", "")).strip(),
@@ -422,7 +426,7 @@ def build_spine(job: DossierJob, docs: list[Document]) -> DossierSpine:
     """The call, the wall, one field-patch round, the code repairs. Raises when no spine can be built."""
     budget = budget_for(job)
     corpus = NormalizedCorpus({d.key: d.text for d in docs}) if docs else None
-    user = _user(job)
+    user = _user(job, docs)
     raw, _ = call_json(job.id, STEP, label="composition read + spine", system=SYSTEM, user=user,
                        tool_name="record_spine", schema=SPINE_SCHEMA, model_cls=None, max_tokens=14000, cache=True)
     spine = coerce_spine(raw, budget)
@@ -443,6 +447,9 @@ def build_spine(job: DossierJob, docs: list[Document]) -> DossierSpine:
         events.emit(job.id, "note", phase=STEP, detail=f"spine wall after patch: {len(per)} sections still failing"
                     + (f"; whole: {' | '.join(glob)}" if glob else ""), payload_json={"kind": "spine_wall", "errors": per, "global": glob, "after_patch": True})
     spine = _repair_by_code(spine, per, budget)
+    known = ledger_ids(job)   # a cited finding id must exist in a ledger (shape only)
+    for s in spine.sections:
+        s.finding_ids = [i for i in s.finding_ids if i in known]
     if glob and _job_key(spine.summary_job) == _job_key(spine.conclusion_job):
         spine.notes.append("summary_job and conclusion_job were identical; the conclusion's job was set by code to 'the decision rule and the question to ask'")
         spine.conclusion_job = "the decision rule and the question to ask next"
@@ -472,7 +479,7 @@ def run_spine(job: DossierJob, docs: list[Document]) -> Optional[DossierSpine]:
     events.emit(job.id, "artifact", phase=STEP, detail=f"spine: {spine.thesis}",
                 payload_json={"kind": "spine", "thesis": spine.thesis, "handle": spine.handle,
                               "sections": [{"key": s.key, "heading": s.heading, "claim": s.claim,
-                                            "table": bool(s.table), "figure": bool(s.figure), "anchors": len(s.anchors_planned)} for s in spine.sections],
+                                            "table": bool(s.table), "figure": bool(s.figure), "anchors": len(s.anchors_planned), "findings": s.finding_ids} for s in spine.sections],
                               "summary_job": spine.summary_job, "conclusion_job": spine.conclusion_job, "notes": spine.notes})
     for n in spine.notes:
         events.emit(job.id, "note", phase=STEP, detail=f"spine repair: {n}", payload_json={"kind": "spine_repair"})

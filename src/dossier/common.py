@@ -189,3 +189,64 @@ def analysis_prose(job: DossierJob, max_chars_per_phase: int = 80_000) -> str:
             text = text[:max_chars_per_phase] + "\n\n[… truncated for the next step …]"
         parts.append(f"### Analysis phase {pn} — {ph.get('engine_name') or ph.get('engine_key')}\n\n{text}")
     return "\n\n---\n\n".join(parts) if parts else "(no analysis prose)"
+
+
+
+# ── The findings ledger as the desks' contract (2026-09-05) ─────────────────
+
+def analysis_ledger(job: DossierJob, docs: Optional[list] = None, max_rows: int = 160) -> str:
+    """Every phase's findings ledger, each row re-verified against the documents by code.
+
+    Citable rows carry a verified verbatim anchor with its doc_key (a desk may copy it as its own anchor and
+    cite the row by id); rows whose quote is a paraphrase are listed apart so a desk cites the finding but
+    finds the sentence itself. Rows the critic rejected are not shown. Shape only: no judgment of the rows.
+    """
+    from src.executor.context_broker import split_ledger
+    from src.executor.ledger_walls import SourceIndex, parse_rows, verify_rows
+
+    index = SourceIndex({d.key: d.text for d in docs}) if docs else None
+    citable, paraphrased, shown = [], [], 0
+    for pn in sorted(job.analysis.keys(), key=lambda k: float(k)):
+        ph = job.analysis[pn]
+        _, ledger = split_ledger(ph.get("final_output") or "")
+        if not ledger:
+            continue
+        for stop in ("### Rejected by the critic", "### Check receipt"):
+            ledger = ledger.split(stop)[0]
+        rows = parse_rows(ledger)
+        if index is not None:
+            verify_rows(rows, index)
+        label = ph.get("engine_name") or ph.get("engine_key") or f"phase {pn}"
+        for r in rows:
+            if shown >= max_rows:
+                break
+            shown += 1
+            if index is None and r.anchor:
+                citable.append(f"- [{r.id}] ({label}) {r.finding} — anchor: \"{r.anchor}\"")
+            elif r.anchor_verified:
+                citable.append(f"- [{r.id}] ({label}) {r.finding} — anchor [{r.anchor_doc}]: \"{r.anchor}\"")
+            elif r.anchor:
+                paraphrased.append(f"- [{r.id}] ({label}) {r.finding} — near: \"{r.anchor[:160]}\"")
+    if not citable and not paraphrased:
+        return "(no findings ledger)"
+    out = ["FINDINGS LEDGER — what the analysis established, by id. "
+           + ("Anchors below are verified verbatim in the documents by code: copy them character-for-character as your own anchors and name the row ids you build on."
+              if index is not None else "Anchors are as the analysis wrote them (not re-verified here); name the row ids you build on.")]
+    out += citable or ["- (no row with a verified anchor)"]
+    if paraphrased:
+        out += ["", "Rows whose quote is a paraphrase (cite the finding by id; find the sentence in the document yourself, never copy these quotes):"] + paraphrased
+    return "\n".join(out)
+
+
+def ledger_ids(job: DossierJob) -> set[str]:
+    """Ids of every findings-ledger row across phases (rejected rows excluded) — the ids a desk may cite."""
+    from src.executor.context_broker import split_ledger
+    from src.executor.ledger_walls import parse_rows
+
+    ids: set[str] = set()
+    for ph in job.analysis.values():
+        _, ledger = split_ledger(ph.get("final_output") or "")
+        for stop in ("### Rejected by the critic", "### Check receipt"):
+            ledger = ledger.split(stop)[0]
+        ids |= {r.id for r in parse_rows(ledger)}
+    return ids

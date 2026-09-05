@@ -513,6 +513,7 @@ class SpineSection(BaseModel):
     figure: Optional[SpineFigureSpec] = None
     anchors_planned: list[Anchor] = Field(default_factory=list)   # verified quotes this section leans on
     feeds: list[str] = Field(default_factory=list)                # later section keys that build on this one
+    finding_ids: list[str] = Field(default_factory=list)          # ledger rows this section rests on (2026-09-05)
 
 
 class ExhibitsBudget(BaseModel):

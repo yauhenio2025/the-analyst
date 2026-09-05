@@ -19,7 +19,7 @@ import re
 from typing import Any, Optional
 
 from src.dossier import events, findings as ledger
-from src.dossier.common import AUDIENCE_REGISTER, analysis_prose, compact_profiles, corpus_text
+from src.dossier.common import AUDIENCE_REGISTER, analysis_ledger, analysis_prose, compact_profiles, corpus_text
 from src.dossier.llm import call_json
 from src.dossier.schemas import Cell, DossierJob, DossierSpine, Finding, Table
 from src.dossier.walls import NormalizedCorpus, verify_table
@@ -68,7 +68,9 @@ EVERY ROW must carry at least one anchor: a quote copied character-for-character
 the analysis prose), 40-200 characters, with the right [doc_key]. A mechanical check drops any row whose anchors are
 not verbatim, so copy exactly — do not fix typography, do not shorten with ellipses. The section's planned anchors are
 good starting points. The number of cells in each row equals the number of columns. Never introduce a fact that is
-not in the documents. Numbers belong in cells, not in captions."""
+not in the documents. Numbers belong in cells, not in captions.
+The FINDINGS LEDGER lists what the analysis established by id with anchors verified verbatim: rows for a section start
+from the findings the spine names for it, and their anchors may be copied character-for-character as row anchors."""
 
 
 # ── Legacy path (no spine) ───────────────────────────────────────────────
@@ -182,9 +184,10 @@ def _specs_text(spine: DossierSpine, only: Optional[set[str]] = None) -> str:
             continue
         t = s.table
         anchors = "\n".join(f"    • [{a.doc_key}] “{a.quote}”" for a in s.anchors_planned) or "    (none planned)"
+        findings = f"\n  findings this section rests on (ledger ids): {', '.join(s.finding_ids)}" if s.finding_ids else ""
         parts.append(
             f"### section_key: {s.key} — “{s.heading}”\n  claim: {s.claim}\n  table intent: {t.intent}\n  one row = {t.row_unit}\n"
-            f"  columns: {' | '.join(t.columns)}\n  the rows must carry: {'; '.join(t.carries_claims)}\n  planned anchors:\n{anchors}"
+            f"  columns: {' | '.join(t.columns)}\n  the rows must carry: {'; '.join(t.carries_claims)}{findings}\n  planned anchors:\n{anchors}"
         )
     return "\n\n".join(parts)
 
@@ -202,6 +205,7 @@ def _spine_user(job: DossierJob, docs: list[Document]) -> str:
         f"ANGLE: {opt.title if opt else (job.options.intent or 'dossier')}\nTHESIS: {spine.thesis}\n"
         f"AUDIENCE: {audience} — {AUDIENCE_REGISTER.get(audience, '')}\n\n"
         f"TABLES COMMISSIONED BY THE SPINE (build exactly these, one per section_key):\n\n{_specs_text(spine)}\n\n"
+        f"{analysis_ledger(job, docs)}\n\n"
         f"ANALYSIS PROSE:\n{analysis_prose(job)}\n\nRECONNAISSANCE PROFILES:\n{compact_profiles(job.profiles)}\n\n{corpus_part}"
     )
 
