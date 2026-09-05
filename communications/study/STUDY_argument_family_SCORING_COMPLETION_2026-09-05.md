@@ -1,0 +1,34 @@
+# Completing independent ratings while preserving syntax failures
+
+After the [first explicit offline recovery](STUDY_argument_family_SCORE_RECOVERY_2026-09-05.md), collection stopped on a second Sol JSON response with the same omitted closing brace before `one_line`. At that point 18 rating calls existed: 16 natively valid scores, one adopted syntax recovery, and one newly failed parse. All 24 generation products remained unchanged. Total saved-response cost was USD 4.248038 across 144 logical calls.
+
+The second response is **Sol / original Dialectical Structure / Castoriadis**, attempt `916e19e78a5c`. Its raw SHA-256 is `a1333d1f5283041b17deb1b342e4eddabc8cdadba485a624346b586ae877e702`. Inserting one `}` at zero-based UTF-8 byte offset **1888** yields `f3447a8f7b4c36b0c34bfb5c04bc496829a72e580f422f5fd3f878cf0b7e8fbc`. Root read the full raw reasons; an independent reviewer confirmed that only this insertion gives the complete frozen schema. The six values remain 9, 9, 9, 9, 9, 8, and all reason text remains unchanged. Its complete call receipt records USD 0.109606, the requested Sol model, 52,308 input tokens, 499 output tokens and zero retries. This syntax review alone does not publish a valid score.
+
+## Collection rule, recorded before remaining calls
+
+The ratings are independent: every job depends only on its generated reading and source, with no other rating as input. Root therefore separates collection from acceptance of a format repair. The separate collection wrapper may defer a failed judge parse only when all of the following hold:
+
+- The original job is preserved as failed, with one complete saved invocation and its exact raw response, error and parent/source/prompt/model/usage bindings.
+- The failure is a JSON decoding error. The unique insertion of one closing brace immediately before the single `,"one_line":` delimiter yields the exact original eight-key object, six valid scores and six nonempty reasons.
+- No score, reason or summary content is supplied or changed. Missing content, other schema failures, partial/error responses and unknown cost remain fatal.
+- An immutable pending entry binds the failed job, original and proposed corrected hashes, insertion offset and collection code. No derived score is accepted or marked complete.
+
+The wrapper then continues the remaining original independent jobs through the unchanged execution, budget, campaign lock and source-review gate. It does not retry the failed call, change its prompt or open another spend window. Resuming collection checks the preserved failed entry before skipping it. The first recovery and its original wrapper remain unchanged.
+
+After all 48 rating calls have been collected, root must review every pending raw response and bind an exact acceptance list before any batch adoption. That later offline step must preserve the failed state and all invocation bytes, validate previous native and recovered products, and report native versus recovered scores separately. The required-complete report must use the explicit recovery adapter; an unmodified strict-parser report cannot certify malformed raw strings. Exclusion of recovered pairs will be reported as a sensitivity check.
+
+This is a recorded amendment to the study's collection procedure, made after two observed serialization failures. The fixed matrix, independent rubric, source memos, prompts, model routes, generation runtime and USD 16 authorization remain unchanged. The rule does not use the score values or preferred treatment to decide which failures to defer. These tools are study utilities; no application parser behavior changes here.
+
+## Collection implementation checks
+
+The [collector](../../scripts/study_argument_family_collect_scores_2026_09_05.py), SHA-256 `2e4a345e5a4e33e1e32d474382dcf70d39fc3f012cef11a6356afe9626560970`, leaves the first recovery wrapper and original harness unchanged. Root reviewed its full code and tests and required a check of every existing pending entry at the original source-review gate, before the next paid call. Unknown keys, changed failed records or snapshots, and inconsistent response bindings stop continuation.
+
+**75 offline tests passed**: 35 collector cases and the 40 unchanged first-recovery cases. These cover the exact second raw response, preservation of failed state and raw bytes, no repeated calls, continued independent success, incomplete/fallback/unknown-response refusal, the original budget and source-review barriers, and tampered pending records stopping before another call. The test file SHA-256 is `f9c320c709050bcc84ba97522ae8f6f547a1297dd2d905ea4cf6872559891063`.
+
+The actual offline preflight reproduces 24 generation products and 17 valid scores, with the second failure still unaccepted. Root separately validates that failure's complete call and proposed syntax correction through the same collector helper, without writing a pending entry or derived score. The [deferral review](../../data/study/argument_family_2026_09_05/530df62823ec1915/reader_notes/score_recovery/root_second_deferral_review.json) binds the exact response and collector. Collection may now continue under the original USD 16 authorization; final acceptance of pending scores remains a separate offline review.
+
+```bash
+python scripts/study_argument_family_collect_scores_2026_09_05.py --run --phase judge --budget-usd 16 --review-record /absolute/path/to/reader_notes/pre_score/judge_review.json
+```
+
+Collection results and final adoption bindings will be recorded below.
