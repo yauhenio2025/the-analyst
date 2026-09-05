@@ -406,9 +406,12 @@ def apply_rulings(rows: list[LedgerRow], rulings: list[LedgerRow], index: Source
             if v.anchor_verified and not r.anchor_verified:   # the critic re-anchored a paraphrased quote
                 r.anchor, r.anchor_verified = v.anchor, True
         if target is kept and not r.anchor_verified:
+            # a paraphrased quote is not a false finding: the row stays in the ledger, tagged, so the reader keeps it
+            # and the desks' walls decide citability (exiling these cost real findings in the 2026-09-05 check study)
             rep["unverified"] += 1; unverified.append(r)
-        else:
-            target.append(r)
+            if "anchor-verified: no" not in r.text:
+                r.text = r.text.rstrip() + " — anchor-verified: no"
+        target.append(r)
     for v in rulings:
         if v.status == "added" and v.id not in {r.id for r in rows}:
             if not v.anchor_verified:
@@ -431,9 +434,7 @@ def assemble_checked_content(prose: str, ledger: str, kept: list[LedgerRow], rej
         parts += ["", tail]
     if rejected:
         parts += ["", "### Rejected by the critic", *(r.render() for r in rejected)]
-    if unverified:
-        parts += ["", "### Unverified anchors (kept for the reader, not citable by the desks)", *(r.render() for r in unverified)]
-    parts += ["", "### Check receipt", f"- critic: {critic}; rows in: {rep['in']}; confirmed {rep['confirmed']} (+{rep['carried']} unmentioned, kept); weakened {rep['weakened']}; rejected {rep['rejected']}; added {rep['added']} (dropped {rep['added_dropped']} whose anchors were not verbatim); unverified anchors {rep['unverified']}"]
+    parts += ["", "### Check receipt", f"- critic: {critic}; rows in: {rep['in']}; confirmed {rep['confirmed']} (+{rep['carried']} unmentioned, kept); weakened {rep['weakened']}; rejected {rep['rejected']}; added {rep['added']} (dropped {rep['added_dropped']} whose anchors were not verbatim); rows kept with a paraphrased quote (tagged anchor-verified: no) {rep['unverified']}"]
     return "\n".join(parts).rstrip() + "\n"
 
 

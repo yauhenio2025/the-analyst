@@ -244,6 +244,10 @@ def test_apply_rulings_keeps_weakens_rejects_and_adds():
     ]))
     kept, rejected, unverified, rep = apply_rulings(rows, rulings, idx)
     assert [r.id for r in kept] == ["F1", "F2", "F4", "F5", "F6"] and [r.id for r in rejected] == ["F3"] and unverified == []
+    # a confirmed row whose quote stays a paraphrase is kept in the ledger, tagged, never exiled
+    rows2 = parse_rows('- [F1] Paraphrase — dim: givens — anchor: "labour feared being wedged on defence" — confidence: medium'); verify_rows(rows2, idx)
+    k2, rej2, unv2, rep2 = apply_rulings(rows2, parse_rows('- [F1] Paraphrase — dim: givens — anchor: "labour feared being wedged on defence" — status: confirmed — reason: ok — confidence: medium'), idx)
+    assert [r.id for r in k2] == ["F1"] and unv2 == k2 and k2[0].text.endswith("— anchor-verified: no") and rep2["unverified"] == 1
     assert kept[1].finding == "Weaker wording" and kept[1].status == "weakened"
     assert kept[2].anchor_verified and kept[2].anchor.startswith("fear of being")        # re-anchored by the critic
     assert kept[4].text.endswith("— from: V.F1") and "status: added" not in kept[4].text

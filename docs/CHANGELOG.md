@@ -5,6 +5,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Added (2026-09-05, morning — read → check → apply)
+- Execution mode per depth (`oneshot` / `oneshot_checked` / `dvs` / `stances`) with `run_oneshot_checked`: one strong call, the critic over its ledger, rulings applied by code, prose untouched; both engines default to one call + check at standard depth on GPT-5.6 Sol with DeepSeek V4 Pro as critic ([src/executor/process_runner.py](../src/executor/process_runner.py), [src/executor/chain_runner.py](../src/executor/chain_runner.py), [src/operationalizations/](../src/operationalizations/)). Check study: 29 readings, checked ledger wins 41 of 58 blind pairs, unsupported rows 0.4 → 0.1, misses 3.2 → 1.2 ([communications/study/STUDY_frontier_SYNTHESIS_2026-09-05.md](../communications/study/STUDY_frontier_SYNTHESIS_2026-09-05.md) §8, [scripts/study_oneshot_check.py](../scripts/study_oneshot_check.py)).
+
 ### Added (2026-09-05, night — the frontier study)
 - Frontier study run and synthesis: 91 runs, two judges, $87.41 ([communications/study/STUDY_frontier_SYNTHESIS_2026-09-05.md](../communications/study/STUDY_frontier_SYNTHESIS_2026-09-05.md), per-run table [STUDY_frontier_runs_2026-09-05.md](../communications/study/STUDY_frontier_runs_2026-09-05.md)); aggregates [scripts/study_frontier_analysis.py](../scripts/study_frontier_analysis.py); study runner gained `--skip`, `--rescan`, a "ran on" column and Kimi K3 ([scripts/study_engine_harness_v3.py](../scripts/study_engine_harness_v3.py)).
 

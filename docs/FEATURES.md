@@ -480,7 +480,19 @@
   - `src/api/routes/operationalizations.py` - `GET /{engine_key}/process`, `POST /{engine_key}/process-preview`
   - `scripts/study_engine_harness_v3.py` - the frontier study (a/b/c/d × 7 models × 2 papers × 2 engines; two judges)
 - **Dependencies**: `src/dossier/walls.normalize`, `src/executor/context_broker.split_ledger`, `src/events/pricing`, OpenRouter key for the cheap and mid tiers
-- **Added**: 2026-09-04
+- **Added**: 2026-09-04 | **Modified**: 2026-09-05
+
+### Execution modes per depth (read → check → apply as the default)
+- **Status**: Active (frontier study 2026-09-05; live for conditions_of_possibility_analyzer and argument_architecture)
+- **Description**: `DepthSequence.mode` chooses how a depth executes: `oneshot` (one call with the process's question sets and method cards, strong tier), `oneshot_checked` (that call, then the mid-tier critic over its findings; code applies the rulings to the ledger and leaves the prose alone; rejected rows become a receipt, paraphrased quotes are tagged `anchor-verified: no`), `dvs` (the full chain), `stances` (the legacy passes). Both engines: surface = oneshot, standard = oneshot_checked, deep = dvs; strong tier GPT-5.6 Sol, critic DeepSeek V4 Pro.
+- **Entry Points**:
+  - `src/operationalizations/schemas.py` - `DepthSequence.mode`, `EngineOperationalization.mode_for_depth`
+  - `src/executor/process_runner.py` - `apply_rulings`, `assemble_checked_content`, `run_oneshot_checked`
+  - `src/executor/chain_runner.py` - `_run_engine_passes` dispatch on mode; `_run_engine_process(mode=...)` persists the applied ledger as the last pass (`stance_key="checked"`)
+  - `src/operationalizations/definitions/*.yaml` - `depth_sequences[].mode`, `process.routing`
+  - `scripts/study_oneshot_check.py` - the check study (29 readings, Sonnet both orders)
+- **Dependencies**: the process shape above
+- **Added**: 2026-09-05
 
 ## Analytical & Presentation Stances (Operations)
 

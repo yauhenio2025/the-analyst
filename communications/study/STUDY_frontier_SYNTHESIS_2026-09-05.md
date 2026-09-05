@@ -118,3 +118,22 @@ Two papers in one field (international political economy); rubric judges are mod
 ## 7. What was fixed during the run (walls, not method)
 
 Four shape bugs in the ledger wall surfaced on live model output and were fixed and tested, with the finished runs rescanned: bolded row ids (Sonnet), page references after the closing quote (DeepSeek), rows without a bullet (DeepSeek), the quote in the finding with no `anchor:` field (DeepSeek), and PDF spaced hyphens in the source ("cross- referenced"). Each would have penalised a verbatim quote for its formatting. `--rescan` recomputes every run with the current parser and reruns any run whose critic output failed to parse or whose stream was truncated.
+
+## 8. Addendum (08:35): one call, then the critic — the check earns its keep
+
+The owner asked why a second pass should depend on who reads the result. It should not; the study had confounded "checking helps" with "checklist extraction hurts". So the shape was rebuilt as **read → check → apply**: one strong call writes the reading with its ledger; the DeepSeek V4 Pro critic rules on every row against the source (confirm, weaken with new wording, reject with a reason, re-anchor a paraphrased quote, add misses); code applies the rulings to the ledger and leaves the prose alone. Rejected rows move to a receipt section with their reasons; rows whose quote stays a paraphrase stay in the ledger tagged `anchor-verified: no` (exiling them, the first policy tried, cost real findings: 12 of the 15 readings where the unchecked ledger won had exiled rows).
+
+Run over all 29 one-call readings of the frontier study (7 models × 2 papers × 2 engines), judged blind on Sonnet, both orders, ledger against ledger with the source in view (`STUDY_check_runs_2026-09-05.md`):
+
+| measure | before the check | after |
+|---|---|---|
+| head-to-head (58 pairs) | 16 wins | **41 wins**, 1 tie |
+| both orders agree (29 readings) | 4 | **16** (9 split or tied) |
+| judge's count of unsupported rows per ledger | 0.4 | 0.1 |
+| judge's count of misses per ledger | 3.2 | 1.2 |
+| quotes verbatim by code | 70–99% by model | every paraphrase re-anchored or tagged |
+| cost, time | — | +$0.05, +2–5 min per reading |
+
+Per model the critic rejected 0.2–1.5 rows and added 4–7 on the strong readers (Sol, Kimi K3, Sonnet, Fable), and rejected 3–8 rows on the DeepSeek readers (Flash: 17 of 28 on one argument map). The check is cheap insurance on a strong reading and a repair on a cheap one. Where the judge still preferred the unchecked ledger the reason was the critic over-rejecting restatements of the paper's own claims (DeepSeek Flash on AUKUS, 7 rejections the judge found supported); those rows remain visible under "Rejected by the critic" with the reason, so a reader can restore them.
+
+**Decision, wired (commit edd4fd2 and after):** execution mode per depth on both engines: `surface` = one call; `standard` = one call + check (the default for any reading); `deep` = the full extract → verify → synthesize chain; the strong tier routes to GPT-5.6 Sol, the critic to DeepSeek V4 Pro. Study runs: $6.62 ($1.48 critic, $5.14 judging).

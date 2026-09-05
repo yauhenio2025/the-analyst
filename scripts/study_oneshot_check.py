@@ -74,7 +74,9 @@ def judge(results, sources, J):
         user = f"SOURCE:\n\n{sources[m['paper']]}\n\n=====\n\nLEDGER A:\n\n{a}\n\n=====\n\nLEDGER B:\n\n{b}"
         try:
             res = run_engine_call(system_prompt=PAIR, user_message=user, phase_number=1.0, model_hint=JUDGE, depth="standard", label=f"check-judge {key} {an}/{bn}")
-            r = parse_llm_json_response(res["content"]); w = r.get("winner"); win = an if w == "A" else bn if w == "B" else "tie"
+            r = parse_llm_json_response(res["content"])
+            if isinstance(r, list): r = next((x for x in r if isinstance(x, dict)), {})   # a judge that wrapped its object in a list
+            w = r.get("winner"); win = an if w == "A" else bn if w == "B" else "tie"
             with lock: J.append({"key": key, "engine": m["engine"], "model": m["model"], "paper": m["paper"], "A": an, "B": bn, "winner": win, "margin": r.get("margin"), "why": r.get("why", ""),
                                  "unsupported": {an: r.get("unsupported_in_A"), bn: r.get("unsupported_in_B")}, "misses": {an: r.get("misses_in_A"), bn: r.get("misses_in_B")},
                                  "cost_usd": estimate_cost(res.get("model_used") or JUDGE, res["input_tokens"], res["output_tokens"]) or 0.0})
