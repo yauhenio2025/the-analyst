@@ -1,0 +1,194 @@
+engine_key: event_timeline_causal
+engine_name: Events and Supported Causal Links
+# The process shape (2026-09-06): communications/study/REDESIGN_events_2026-09-06.md
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: 'A text that reports events makes two kinds of claim a reader can check separately: that things happened
+    in an order, and that some of them caused others. This method inventories the events the text reports, with
+    the date and precision the text gives, the actor, and the report''s source as the text cites it; establishes
+    the order the text asserts and the relative dates it uses; lists the causal links the text claims (trigger,
+    enabling condition, contributing factor, mechanism) with the sentence that claims each and what the text offers
+    in support; distinguishes a link the text asserts from one it implies by juxtaposition; and describes the timeline''s
+    coverage (dated and undated events, gaps, clusters, conflicting dates within the text) as coverage, never as
+    evidence of concealment.'
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: events
+    id_prefix: V1
+    name: Event inventory
+    load_bearing: true
+    questions:
+    - 'What events does the text report? For each: what happened, the date as the text gives it and its precision
+      (day, month, year, approximate, relative, undated), the actors named, the place if given, and the source the
+      text cites for the report. Give each a stable id (E1, E2 …). Quote the sentence.'
+    - Which events are reported from a primary source the text names (a document, an announcement), which from a
+      secondary one (a news report, a scholar), and which without a source?
+    - Which events are reported twice with different dates, actors or descriptions? Quote both.
+    - Which reported 'events' are states or trends rather than events ("has been growing", "remains")? Mark them
+      as such.
+    answer_shape: '[V1.F<n>] E<k>: <what happened> — dim: events — date: <as written> — precision: day|month|year|approximate|relative|undated
+      — actors: <names> — source: <as cited|none> — anchor: "<verbatim sentence>" — confidence: …'
+    method_card: 'Do: record each event as the text reports it, with the date exactly as written and its precision;
+      take the source from the text''s own citation; separate events from states; note duplicates with different
+      details, quoting both.'
+    indicators:
+    - dates, "on", "in", "since", "within 24 hours"
+    - '"announced", "signed", "passed", "acquired"'
+    - (Agency 2023), "according to"
+  - key: order
+    id_prefix: V2
+    name: Order and relative dating
+    load_bearing: true
+    questions:
+    - 'What order does the text put the events in, and by what: absolute dates, relative markers ("following", "a
+      year later", "in the wake of"), or narrative sequence alone? Quote the markers.'
+    - Which relative markers can be resolved to a date from the text's own dates, and which cannot?
+    - Where does the narrative order differ from the dated order? Quote both.
+    - Which events overlap or are simultaneous by the text's own dates?
+    answer_shape: '[V2.F<n>] E<k> before|after|overlaps E<m> — dim: order — by: absolute|relative ("<marker>")|narrative
+      — resolvable: yes|no — anchor: "<verbatim>" — confidence: …'
+    method_card: 'Do: build the order from the text''s dates first, then from its relative markers, and only then
+      from narrative sequence, marking which; resolve relative markers against the text''s own dates and say when
+      you cannot; quote a narrative order that contradicts a dated one.'
+    indicators:
+    - '"following", "after", "in the wake of", "a year later"'
+    - two dated events in reverse narrative order
+  - key: causal_links
+    id_prefix: V3
+    name: Causal links the text claims
+    load_bearing: true
+    questions:
+    - 'Which events does the text say caused, triggered, enabled or contributed to which? For each link: the type
+      as the text''s words support (cause, trigger, enabling condition, contributing factor, correlation), and the
+      sentence that claims it. Give each an id (L1 …).'
+    - Which links does the text assert explicitly ("because", "led to", "in response to", "resulted in") and which
+      does it imply by juxtaposition or sequence alone ("following X, Y")? Quote both kinds.
+    - Where does the text attribute a cause to an actor's intention or motive, and what source does it give for
+      the intention?
+    - Which causal claims does the text qualify or hedge ("arguably", "may have", "partly")? Quote the hedge.
+    answer_shape: '[V3.F<n>] L<k>: E<a> → E<b> — dim: causal_links — type: cause|trigger|enabling|contributing|correlation
+      — claimed: explicit|implied — hedge: <verbatim or none> — anchor: "<verbatim>" — confidence: …'
+    method_card: 'Do: take the link type from the text''s own connective, not from your causal beliefs; separate
+      asserted links from juxtapositions; treat a motive attributed without a source as a claim about a mind and
+      mark it; keep the text''s hedges on the row.'
+    indicators:
+    - '"because", "led to", "in response to", "resulted in", "enabled"'
+    - '"following", "after", "amid" (juxtaposition)'
+    - '"arguably", "may have", "partly"'
+  - key: support
+    id_prefix: V4
+    name: What supports each link
+    load_bearing: true
+    questions:
+    - 'For each causal link, what does the text offer: a mechanism (how A produced B), a source that asserts the
+      link, a sequence only, or an actor''s statement? Quote it.'
+    - Which alternative causes for the same event does the text itself mention, and does it rule them out or leave
+      them standing? Quote them.
+    - Where does the text's own evidence give a different cause from the one its argument needs (a footnote, a concession)?
+      Quote both.
+    - Which links carry the text's central claim, and what would the reader need to accept them?
+    answer_shape: '[V4.F<n>] L<k> supported by: mechanism|source|sequence-only|actor-statement — dim: support —
+      alternatives-in-text: <E or none> — anchor: "<verbatim>" — counter-anchor: "<verbatim, if the text cuts against>"
+      — confidence: …'
+    method_card: 'Do: for each link, name the kind of support the text gives and quote it; list the alternative
+      causes the text itself names and what it does with them; quote the text''s own evidence for a different cause
+      where it exists; never supply a mechanism the text does not.'
+    indicators:
+    - a footnote attributing an event to a different driver
+    - '"other factors", "also", "in part"'
+  - key: coverage
+    id_prefix: V5
+    name: Coverage and integrity of the timeline
+    questions:
+    - Over what span does the timeline run, and where is it dense, sparse or silent by the text's own dates? State
+      the gaps as spans.
+    - Which events are undated, and which dated only relatively? Count them.
+    - Where do dates conflict within the text (the same event dated twice; an effect dated before its cause)? Quote
+      both.
+    - What does the text's own framing make relevant that the timeline does not cover (a period, an actor, a decision)?
+      State it as coverage, never as concealment.
+    answer_shape: '[V5.F<n>] Coverage: <span|gap|cluster|conflict|undated> — dim: coverage — detail: <what> — anchor:
+      "<verbatim>" — anchor-b: "<verbatim, for a conflict>" — confidence: …'
+    method_card: 'Do: describe the timeline''s shape from the text''s dates (span, density, gaps, clusters); count
+      undated and relatively dated events; quote internal conflicts; name uncovered periods or actors relative to
+      the text''s own framing and stop there — a gap is a gap, not a hiding.'
+    indicators:
+    - a jump of years between consecutive dated events
+    - an effect dated before its stated cause
+    - a decisive decision with no date
+  - key: shared_events
+    id_prefix: X6
+    name: The same events across documents
+    scope: corpus
+    questions:
+    - Which events are reported in more than one document? Anchor each; note agreement or conflict in date, actor
+      or description.
+    - Which causal link is asserted in one document and absent, denied or reversed in another? Both anchors.
+    answer_shape: '[X6.F<n>] <event or link> — dim: shared_events — anchor: "<verbatim>" — doc: <A> — anchor-b:
+      "<verbatim>" — doc-b: <B> — relation: agree|conflict (<what>) — confidence: …'
+    method_card: 'Do: match events across documents by what happened, not by wording; state every date or attribution
+      conflict with both anchors; state causal disagreements between documents as disagreements, not as one being
+      right.'
+    indicators:
+    - the same announcement dated differently
+    - a cause asserted in one document and hedged in another
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension
+    model_tier: cheap
+    output: ledger
+    max_rows: 24
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - reject_biography
+    - merge_duplicates
+    - hunt_misses
+    - name_must_keep
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: a reader who needs the sequence of events as the text reports it and must know which causal claims the
+      text actually supports
+    tables:
+    - timeline
+    - causal_links
+    - coverage
+    brief: '1. The span and shape of the timeline the text reports: what it covers, how densely, where it is silent.
+
+      2. The events in order, with the dates and precision the text gives, the actors, and the sources as cited;
+      the states and trends kept apart from events.
+
+      3. The causal links the text claims, each with its connective, its type, whether asserted or implied, and
+      what the text offers in support; the links its central claim rests on.
+
+      4. Where the text''s own evidence names alternative causes or dates an effect before its cause; where a motive
+      is attributed without a source.
+
+      5. The timeline and causal-link tables the reader can lift, every row anchored.
+
+      6. The judgment: which causal claims a reader may take from this text as supported, which as asserted, and
+      which as juxtaposition.'

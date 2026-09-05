@@ -1,0 +1,49 @@
+# Quantities and Their Meaning (2026-09-06): the first-queue method E8; replaces the legacy statistical-evidence catalogue's credibility scores with text-facing questions.
+# Design: communications/study/REDESIGN_quantities_2026-09-06.md
+engine_key: statistical_evidence
+engine_name: Quantities and Their Meaning
+version: 2
+category: evidence
+kind: extraction
+problematique: 'Numbers carry arguments in ways words do not: a figure looks like a fact, a comparison looks like
+  a finding, a percentage hides its denominator. A reader who must rely on a text needs to know which quantities
+  it uses, what each is (a target, an estimate, an observation, a forecast), over what population and period, in
+  what unit and against what denominator, what claim each is made to carry and whether it can carry it, which comparisons
+  the text draws and whether the things compared are commensurable, and which quantities the argument needs and
+  does not have. This method inventories the text''s quantities and their meaning. It does not score credibility;
+  it says what each number is, what it is asked to do, and where the text''s own comparisons or uses outrun it.
+  It replaces the earlier statistical-evidence catalogue (source credibility scores 0-1) with text-facing questions
+  and verbatim anchors, and its rows are the desks'' quantity tables.'
+researcher_question: What quantities support the text's claims, and are their meanings and comparisons preserved?
+intellectual_lineage:
+  primary:
+    name: measurement_discipline
+    description: 'The discipline of measurement and its presentation (Huff, Tufte, Gelman): a quantity is meaningless
+      without its unit, denominator, population, period and status; comparisons require a common base; precision
+      must match provenance.'
+analytical_dimensions:
+- key: quantity_inventory
+  description: Every quantity the text uses, with unit, denominator, population, period and status.
+  probing_questions:
+  - What quantities appear, with what unit, denominator, population and period?
+  - Is each a target, an estimate, an observation or a forecast, as the text states it?
+- key: claims_carried
+  description: What each quantity is asked to establish and whether it can.
+  probing_questions:
+  - Which claim does each quantity support, and does the quantity bear the weight the claim puts on it?
+- key: comparisons
+  description: The comparisons the text draws or implies and their commensurability.
+  probing_questions:
+  - Which quantities does the text compare, and are units, denominators and periods common?
+- key: provenance_precision
+  description: Where each quantity comes from as the text cites it, and its stated precision.
+  probing_questions:
+  - What source and date does the text give for each quantity, and how precise is it?
+- key: missing_quantities
+  description: Quantities the argument needs and lacks.
+  probing_questions:
+  - What denominator, baseline or total does a claim need that the text does not supply?
+apps:
+- critic
+function: logic
+family: analytical

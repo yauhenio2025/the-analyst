@@ -1,0 +1,49 @@
+# Events and Supported Causal Links (2026-09-06): the first-queue method T1; folds temporal_discontinuity_finder as a coverage view without deception inference.
+# Design: communications/study/REDESIGN_events_2026-09-06.md
+engine_key: event_timeline_causal
+engine_name: Events and Supported Causal Links
+version: 2
+category: temporal
+kind: relational
+problematique: 'A text that reports events makes two kinds of claim a reader can check separately: that things happened
+  in an order, and that some of them caused others. This method inventories the events the text reports, with the
+  date and precision the text gives, the actor, and the report''s source as the text cites it; establishes the order
+  the text asserts and the relative dates it uses; lists the causal links the text claims (trigger, enabling condition,
+  contributing factor, mechanism) with the sentence that claims each and what the text offers in support; distinguishes
+  a link the text asserts from one it implies by juxtaposition; and describes the timeline''s coverage (dated and
+  undated events, gaps, clusters, conflicting dates within the text) as coverage, never as evidence of concealment.
+  It replaces the earlier event-and-causal mapper (numeric causal strengths) and the temporal-discontinuity finder
+  (suspicion from gaps) with text-facing questions and verbatim anchors; its rows are the desks'' timeline and causal-link
+  tables.'
+researcher_question: What events does the text report in what order, and which causal links does it support?
+intellectual_lineage:
+  primary:
+    name: source_criticism
+    description: 'Historical source criticism (Bloch, Ginzburg) and process tracing (George and Bennett): date and
+      attribute each reported event as the source gives it, separate sequence from causation, and require a mechanism
+      or a source for a causal claim, not co-occurrence.'
+analytical_dimensions:
+- key: event_inventory
+  description: Every event the text reports, with date, precision, actor and the text's source for it.
+  probing_questions:
+  - What events does the text report, when, with what precision, by whom, from what source?
+- key: order
+  description: The chronological relations the text asserts, absolute and relative.
+  probing_questions:
+  - What order does the text put events in, and by what dates or relative markers?
+- key: causal_links
+  description: The causal links the text claims and the sentence that claims each.
+  probing_questions:
+  - Which events does the text say caused, triggered, enabled or contributed to which?
+- key: support
+  description: What the text offers for each causal link.
+  probing_questions:
+  - 'What does the text give for each link: a mechanism, a source, a sequence only?'
+- key: coverage
+  description: 'The timeline''s coverage: dated and undated events, gaps, clusters, conflicts.'
+  probing_questions:
+  - Where is the timeline dense, sparse, undated or internally inconsistent?
+apps:
+- critic
+function: genealogy
+family: analytical

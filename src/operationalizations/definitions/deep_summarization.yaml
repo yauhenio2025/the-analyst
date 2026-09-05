@@ -92,13 +92,16 @@ stance_operationalizations:
   - detect_foregrounding_suppression
   - map_conceptual_vocabulary
   - assess_downstream_utility
+# 2026-09-06 (first-queue method S1, the reading guide): modes per depth; the stance passes below are reference only
 depth_sequences:
 - depth_key: surface
+  mode: oneshot
   passes:
   - pass_number: 1
     stance_key: integration
     consumes_from: []
 - depth_key: standard
+  mode: oneshot_checked
   passes:
   - pass_number: 1
     stance_key: discovery
@@ -108,6 +111,7 @@ depth_sequences:
     consumes_from:
     - 1
 - depth_key: deep
+  mode: dvs
   passes:
   - pass_number: 1
     stance_key: discovery
@@ -127,3 +131,178 @@ depth_sequences:
     - 1
     - 2
     - 3
+- depth_key: dvs
+  process: dvs
+# The process shape (2026-09-06): communications/study/REDESIGN_reading_guide_2026-09-06.md
+process:
+  key: dvs
+  description: 'An analytical reading guide of the TEXT: what it argues, how its organisation, evidence and vocabulary
+    carry the argument, what it foregrounds and leaves out, and where a deeper reading should start. Every entry
+    anchored; nothing about the authors.'
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: thesis
+    id_prefix: R1
+    name: Thesis and claims
+    load_bearing: true
+    questions:
+    - What is the central thesis in the text's own words, and what kind of claim is it (empirical, interpretive,
+      normative, methodological)? Quote it where it is stated most fully.
+    - Which supporting claims hold the thesis up, and which depend on which? Give each a stable id (T1 the thesis,
+      T2 …) and quote the sentence that states it.
+    - What scope and limits does the text set for itself ("we do not", "beyond", "only")? Quote them.
+    - Which premise does the argument require and never state? Anchor the sentence that leans on it.
+    answer_shape: '[R1.F<n>] T<k>: "<verbatim claim>" — dim: thesis — kind: empirical|interpretive|normative|methodological
+      — supports: T<m> — anchor: "<verbatim>" — confidence: …'
+    method_card: 'Do: write the thesis in the text''s words, not a paraphrase; list the supporting claims with ids
+      and their dependencies; take the scope from the text''s own limits; mark a required premise only where a sentence
+      visibly leans on it.'
+    indicators:
+    - '"we argue", "this paper shows", "our central claim"'
+    - '"beyond the scope", "we do not claim"'
+    - a conclusion drawn without its rule stated
+  - key: route
+    id_prefix: R2
+    name: The route through the text
+    load_bearing: true
+    questions:
+    - What does each section or chapter do for the argument (sets a premise, supplies evidence, handles an objection,
+      restates), and what does it hand to the next? Quote its opening or its stated purpose.
+    - Where does the argument turn — a concession, a change of object, a shift from description to evaluation? Quote
+      the turn.
+    - Which sections carry the load and which could be removed without loss? Say what is lost.
+    - Where does the text announce a structure it does not follow (a promised section, an order changed)? Quote
+      both.
+    answer_shape: '[R2.F<n>] Section <name or number>: does <job> — hands on <what> — dim: route — anchor: "<verbatim>"
+      — confidence: …'
+    method_card: 'Do: read the text as a route with stations: for each section, its job and its hand-off; find the
+      turns; test each section by removal; compare the announced structure with the followed one.'
+    indicators:
+    - '"In this section", "we now turn", "having established"'
+    - a section whose title promises more than its content
+    - a concession at a section boundary
+  - key: evidence_vocabulary
+    id_prefix: R3
+    name: Evidence and vocabulary
+    load_bearing: true
+    questions:
+    - What kinds of evidence does the text use (cases, documents, figures, other scholars, examples, thought experiments)
+      and what is each asked to establish? Quote one use of each.
+    - Where is the evidence thick and where thin relative to the weight the claim carries? Quote a thin spot.
+    - What are the key terms, which are defined and where, which are used undefined, and which are borrowed with
+      a citation? Quote definitions.
+    - What does the argument need a term for and lack? Anchor the passage that circles the missing term.
+    answer_shape: '[R3.F<n>] <evidence kind or term>: <what it establishes | defined|undefined|borrowed> — dim:
+      evidence_vocabulary — anchor: "<verbatim>" — confidence: …'
+    method_card: 'Do: inventory evidence by kind and the claim it carries; find where a heavy claim rests on light
+      evidence; list the key terms with their definitional status and the sentence that defines or first uses them.'
+    indicators:
+    - '"for example", "as X shows", figures and dates'
+    - a term in scare quotes
+    - '"what we call", "we define"'
+  - key: moves_rhetoric
+    id_prefix: R4
+    name: Conceptual moves and rhetoric
+    questions:
+    - Which conceptual operations does the text perform — define, redefine, distinguish, invert, synthesise, analogise?
+      Quote each consequential move.
+    - Which rhetorical devices carry weight — concessions, pre-empted objections, appeals to the reader, striking
+      examples, labels for opponents? Quote them.
+    - Where does rhetoric carry what argument does not (a label in place of an engagement, an example in place of
+      a rule)? Quote it.
+    - Who is the implied reader of each strategy, as the text itself signals ("as any reader of X knows", assumed
+      vocabulary)?
+    answer_shape: '[R4.F<n>] Move|device <name>: <what it does> — dim: moves_rhetoric — anchor: "<verbatim>" — carries-argument:
+      yes|no — confidence: …'
+    method_card: 'Do: name each conceptual operation and the sentence that performs it; name each rhetorical device
+      and what it is doing there; say where a device stands in for an argument, quoting it.'
+    indicators:
+    - '"in other words", "that is to say", "we call"'
+    - '"admittedly", "one might object", "not simply"'
+    - a coined label for an opposing view
+  - key: foregrounding
+    id_prefix: R5
+    name: Foregrounding and omission
+    questions:
+    - What themes, cases, actors or evidence types does the text keep returning to? Quote the returns.
+    - What does it minimise — relegated to a footnote, a single sentence, a parenthesis? Quote the minimisation.
+    - What relevant perspective, counter-case or complication does the text acknowledge and set aside, and what
+      does it never mention at all (state what the text's own framing makes relevant)?
+    - Where does the text's declared limit and its practice diverge (a scope it claims and exceeds, or claims and
+      leaves unused)? Quote both.
+    answer_shape: '[R5.F<n>] Foregrounded|minimised|set aside|absent: <what> — dim: foregrounding — anchor: "<verbatim>"
+      — counter-anchor: "<verbatim, if any>" — confidence: …'
+    method_card: 'Do: count returns and relegations; read footnotes and parentheses as the text''s own demotions;
+      name an absence only relative to what the text''s framing makes relevant; quote both sides of a declared-limit/practice
+      divergence.'
+    indicators:
+    - a footnote carrying a qualification the body does not
+    - a case named once
+    - '"a fuller treatment lies beyond"'
+  - key: shared_reading
+    id_prefix: X6
+    name: Shared theses across the corpus
+    scope: corpus
+    questions:
+    - Which theses or supporting claims recur across documents in the same or different words? Anchor in each document.
+    - On which shared question do documents give different answers? Anchor both.
+    - Which evidence kinds and key terms are shared, and which document defines a shared term differently?
+    answer_shape: '[X6.F<n>] <shared thesis | divergence | shared term> — dim: shared_reading — anchor: "<verbatim>"
+      — doc: <A> — anchor-b: "<verbatim>" — doc-b: <B> — confidence: …'
+    method_card: 'Do: line up the per-document guides on their theses, terms and evidence; state recurrence and
+      divergence with two anchors; hand divergences on shared questions to the reconciliation method rather than
+      settling them here.'
+    indicators:
+    - the same claim in two documents
+    - a term defined differently in two documents
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension
+    model_tier: cheap
+    output: ledger
+    max_rows: 16
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - reject_biography
+    - merge_duplicates
+    - hunt_misses
+    - name_must_keep
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: a reader who has not read the text and must know what it argues, how, and where to look before deciding
+      whether to read it in full
+    tables:
+    - outline
+    - key_terms
+    - evidence_kinds
+    brief: '1. The thesis in the text''s words, its kind, and the two or three supporting claims it rests on, with
+      what depends on what.
+
+      2. The route: what each section does and hands on, where the argument turns, which sections carry the load.
+
+      3. Evidence and vocabulary: the kinds of evidence and what each carries, where it is thin; the key terms,
+      defined, undefined and borrowed.
+
+      4. Moves and rhetoric: the consequential conceptual operations; where rhetoric carries what argument does
+      not.
+
+      5. Foregrounding and omission: what returns, what is minimised, what is set aside or absent relative to the
+      text''s own framing; the declared limit against practice.
+
+      6. Entry points: where a deeper reading should start (the load-bearing section, the thin evidence, the undefined
+      term), each pointing at a finding id.'

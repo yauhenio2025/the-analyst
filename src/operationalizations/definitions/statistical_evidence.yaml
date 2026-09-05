@@ -1,0 +1,189 @@
+engine_key: statistical_evidence
+engine_name: Quantities and Their Meaning
+# The process shape (2026-09-06): communications/study/REDESIGN_quantities_2026-09-06.md
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: 'Numbers carry arguments in ways words do not: a figure looks like a fact, a comparison looks like
+    a finding, a percentage hides its denominator. A reader who must rely on a text needs to know which quantities
+    it uses, what each is (a target, an estimate, an observation, a forecast), over what population and period,
+    in what unit and against what denominator, what claim each is made to carry and whether it can carry it, which
+    comparisons the text draws and whether the things compared are commensurable, and which quantities the argument
+    needs and does not have.'
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: inventory
+    id_prefix: Q1
+    name: Quantity inventory
+    load_bearing: true
+    questions:
+    - 'What quantities does the text use? For each: the value as written, its unit, its denominator or population
+      (a share of what; a count of whom), its period or date, and its status as the text states it (target, pledge,
+      estimate, observation, forecast). Give each a stable id (N1, N2 …). Quote the sentence.'
+    - Which quantities appear in the abstract, title or headings, and do they appear with the same value and status
+      in the body? Quote both.
+    - Which quantities are given twice with different values, units or periods? Quote both.
+    - Which words do quantitative work without a number ("most", "surge", "unprecedented", "a fraction")? Quote
+      them and say what quantity they stand in for.
+    answer_shape: '[Q1.F<n>] N<k>: <value with unit> — dim: inventory — of: <denominator or population> — period:
+      <when> — status: target|pledge|estimate|observation|forecast|unstated — anchor: "<verbatim sentence>" — confidence:
+      …'
+    method_card: 'Do: record every quantity as written, with the five attributes the sentence gives and "unstated"
+      where it does not; take the status from the text''s verbs (pledged, announced, reported, projected); pair
+      headline figures with body figures; treat a quantitative word without a number as a quantity with an unstated
+      value.'
+    indicators:
+    - currency amounts, percentages, counts, dates used as durations
+    - '"pledged", "announced", "expected to", "estimated"'
+    - '"most", "nearly all", "a surge"'
+  - key: claims_carried
+    id_prefix: Q2
+    name: What each quantity is asked to carry
+    load_bearing: true
+    questions:
+    - 'For each quantity, which claim does the text use it for (quote the claim), and does the quantity bear that
+      weight: is it the right kind (a stock for a stock claim, a flow for a flow claim), the right scope (the population
+      the claim is about), the right period?'
+    - Where is a quantity offered as proof of scale or significance without a base to judge scale against? Quote
+      it.
+    - Where does a quantity illustrate a claim the text then generalises (one contract, one firm, one year)? Quote
+      the generalisation.
+    - Which claims are made with no quantity where the text's own framing calls for one ("significant", "substantial")?
+      Quote them.
+    answer_shape: '[Q2.F<n>] N<k> is asked to carry <claim> — dim: claims_carried — bears-it: yes|partly|no — because:
+      <kind|scope|period|base> — anchor: "<verbatim claim>" — confidence: …'
+    method_card: 'Do: pair every quantity with the claim that uses it; test kind, scope and period; treat a number
+      without a base as illustration, not proof of scale; say plainly when a quantity carries its claim.'
+    indicators:
+    - '"attests to", "demonstrates", "shows the scale"'
+    - a single figure followed by a general claim
+    - '"significant", "substantial" with no number'
+  - key: comparisons
+    id_prefix: Q3
+    name: Comparisons and their commensurability
+    load_bearing: true
+    questions:
+    - Which quantities does the text compare, explicitly (A against B, before against after, share of X) or by juxtaposition
+      in the same sentence or table? Quote the comparison.
+    - Are the compared quantities in the same unit, over the same period, against the same denominator, for the
+      same population? Where not, say which differs and quote both.
+    - Where does the text compare a level with a change, a total with a share, a pledge with a disbursement, a nominal
+      with a real amount? Quote it.
+    - Which comparison would the reader make that the text does not (the total against which a figure is small;
+      the baseline before a rise)? State it and anchor the figures it would need.
+    answer_shape: '[Q3.F<n>] Compares N<k> with N<m> — dim: comparisons — commensurable: yes|no (<unit|period|denominator|population|status
+      differs>) — anchor: "<verbatim>" — confidence: …'
+    method_card: 'Do: list every comparison, explicit or by juxtaposition; check the five attributes on both sides;
+      name the mismatch; name the comparison the reader needs and the text withholds, without inventing the missing
+      figure.'
+    indicators:
+    - '"compared with", "up from", "more than", "a fraction of"'
+    - two figures in one sentence
+    - a share beside a total
+  - key: provenance
+    id_prefix: Q4
+    name: Provenance and precision
+    questions:
+    - For each quantity, what source does the text give (a document, an agency, a news report, a scholar, none)
+      and of what date? Quote the citation as written.
+    - How precise is each figure as written (exact, rounded, "about", a range) and does the text's use respect that
+      precision (an "about" figure later treated as exact)? Quote both.
+    - Which quantities are unsourced in the text? List them.
+    - Where does the text give a figure in one currency, unit or scale and use it in another? Quote both.
+    answer_shape: '[Q4.F<n>] N<k>: source <as written> (<date>) — dim: provenance — precision: exact|rounded|about|range|unstated
+      — used-as: <same|firmer> — anchor: "<verbatim>" — confidence: …'
+    method_card: 'Do: record the source and date the text gives, as written, for every quantity; record the precision
+      as written and check the text''s later uses against it; list the unsourced ones without judging them.'
+    indicators:
+    - '"(Agency 2024)", "according to", "reported"'
+    - '"about", "roughly", "up to", a range'
+    - a figure repeated with more precision than its source
+  - key: missing
+    id_prefix: Q5
+    name: Quantities the argument needs and lacks
+    questions:
+    - Which claims need a denominator, a baseline, a total, a comparison figure or a time series that the text does
+      not supply? Quote the claim and name the missing quantity.
+    - Where does the text acknowledge a missing figure ("data are not available", "we cannot estimate")? Quote it.
+    - Which missing quantity, if supplied, would most change the reading of the central claim?
+    answer_shape: '[Q5.F<n>] Claim "<verbatim>" needs <quantity> not supplied — dim: missing — acknowledged: yes|no
+      — would-change: <what> — confidence: …'
+    method_card: 'Do: for each central claim ask what number would settle it and whether the text has it; quote
+      the text''s own admissions; rank the missing quantities by what they would change; never supply the figure
+      yourself.'
+    indicators:
+    - '"significant", "growing", "disproportionate" without a base'
+    - '"data are unavailable"'
+  - key: shared_quantities
+    id_prefix: X6
+    name: The same quantity across documents
+    scope: corpus
+    questions:
+    - Which quantities appear in more than one document? Anchor each occurrence; note agreement or discrepancy in
+      value, unit, period or denominator.
+    - Where do documents use different denominators or periods for the same thing?
+    answer_shape: '[X6.F<n>] <quantity> — dim: shared_quantities — anchor: "<verbatim>" — doc: <A> — anchor-b: "<verbatim>"
+      — doc-b: <B> — relation: agree|differ (<what>) — confidence: …'
+    method_card: 'Do: match quantities across documents by what they measure, not by their value; state every discrepancy
+      with both anchors and its attribute.'
+    indicators:
+    - the same programme's budget in two documents
+    - a share and a total of the same thing in different documents
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension
+    model_tier: cheap
+    output: ledger
+    max_rows: 24
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - reject_summary
+    - merge_duplicates
+    - hunt_misses
+    - name_must_keep
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: a reader who will cite the text's numbers and must know what each one is, what it can carry, and which
+      comparisons hold
+    tables:
+    - quantities
+    - comparisons
+    - missing_quantities
+    brief: '1. The quantities that carry the central claim, each with unit, denominator, period and status, and
+      whether it bears the weight put on it.
+
+      2. The comparisons the text draws and whether they hold: the commensurable ones, the mismatched ones with
+      the attribute that differs, the comparison the reader needs and the text withholds.
+
+      3. Provenance and precision: where the numbers come from as the text says, how precise they are as written,
+      where use outruns precision, which are unsourced.
+
+      4. The quantities the argument needs and lacks, ranked by what they would change.
+
+      5. The inventory as a table the reader can lift: every quantity with its attributes and anchor.
+
+      6. The judgment: how far the text''s numbers support its central claim, and the one figure to check first.'
