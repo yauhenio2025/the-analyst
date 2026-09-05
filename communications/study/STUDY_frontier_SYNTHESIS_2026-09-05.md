@@ -137,3 +137,20 @@ Run over all 29 one-call readings of the frontier study (7 models × 2 papers ×
 Per model the critic rejected 0.2–1.5 rows and added 4–7 on the strong readers (Sol, Kimi K3, Sonnet, Fable), and rejected 3–8 rows on the DeepSeek readers (Flash: 17 of 28 on one argument map). The check is cheap insurance on a strong reading and a repair on a cheap one. Where the judge still preferred the unchecked ledger the reason was the critic over-rejecting restatements of the paper's own claims (DeepSeek Flash on AUKUS, 7 rejections the judge found supported); those rows remain visible under "Rejected by the critic" with the reason, so a reader can restore them.
 
 **Decision, wired (commit edd4fd2 and after):** execution mode per depth on both engines: `surface` = one call; `standard` = one call + check (the default for any reading); `deep` = the full extract → verify → synthesize chain; the strong tier routes to GPT-5.6 Sol, the critic to DeepSeek V4 Pro. Study runs: $6.62 ($1.48 critic, $5.14 judging).
+
+## 9. Addendum (08:55): two more engines under the shape, and the desks read by id
+
+**Desks.** The spine, tables and figures desks now receive the findings ledger of every phase with each row re-verified against the documents by code: citable rows carry their doc_key and verbatim anchor, paraphrased rows are listed apart (cite the finding, find the sentence yourself), rows the critic rejected are not offered. The spine names `finding_ids` per section (unknown ids dropped by code); the tables desk starts each commissioned table from the section's findings and may copy ledger anchors as row anchors; the figure planner grounds on the ledger. Tests: `tests/test_desks_read_ledger_2026_09_05.py`.
+
+**Two more engines.** Inferential Commitment Mapper (Brandom: declared commitments, entailments by the concepts' inferential roles, incompatibilities, dependencies, consequences drawn and stopped short of) and Epistemological Method Detector (evidence kinds, whose testimony is credited, where the text speaks from, professed against practised, self-application) were redesigned as text-facing question sets with method cards (`REDESIGN_inferential_commitment_mapper_2026-09-05.md`, `REDESIGN_epistemological_method_detector_2026-09-05.md`) and given the same modes (surface = one call, standard = one call + critic, deep = the chain) on Sol. Test: the original questions in one call on Sol against the new call + check on Sol, both papers, Sonnet judging both orders (`STUDY_two_engines_runs_2026-09-05.md`, $2.30):
+
+| engine | paper | verdicts (order A first) | reading |
+|---|---|---|---|
+| inferential_commitment_mapper | aukus | new clear / old clear | position split: close |
+| inferential_commitment_mapper | subsea | new slight / old clear | position split: close, leans old |
+| epistemological_method_detector | aukus | new clear / old clear | position split: close |
+| epistemological_method_detector | subsea | **new slight / new clear** | new better in both orders |
+
+Reading: for these two engines the original questions were already mostly about the text (the commitment mapper's five dimensions are Brandom's, not biography), so the gap the conditions engine showed does not recur; the redesign is at least as good on three pairs and better on one, at the same cost per call plus five cents for the check, and with the ledger checked. The judge's reasons credit the new readings with the dependency chain and single point of failure made explicit, inherited versus original commitments labelled, the professed/practised verb shift ("explore" → "demonstrate") and the data-availability tension; they credit the old readings with sharper formulations of a productive tension and with the abductive-method observation. Both are worth keeping: the old dimensions' best questions should fold into the new sets (done for the two named points in the next revision).
+
+**A rule on judging, confirmed again.** With closely matched readings Sonnet chose the first-seen reading in 6 of 8 pairs and called it "clear" both ways; only both-order agreement counts. The 2026-09-04 frontier numbers already followed that rule.

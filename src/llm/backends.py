@@ -961,6 +961,7 @@ class OpenRouterBackend:
         chunk_count = 0
         connection_error = None
         usage_data = None
+        finish_reason = None   # a stream that ends without one was cut off (three of 91 study runs, 2026-09-05)
 
         try:
             stream = client.chat.completions.create(
@@ -981,6 +982,8 @@ class OpenRouterBackend:
                 # Extract content delta
                 if chunk.choices and chunk.choices[0].delta.content:
                     raw_text += chunk.choices[0].delta.content
+                if chunk.choices and getattr(chunk.choices[0], "finish_reason", None):
+                    finish_reason = chunk.choices[0].finish_reason
 
                 # Track usage from final chunk
                 if hasattr(chunk, "usage") and chunk.usage:
@@ -1022,6 +1025,16 @@ class OpenRouterBackend:
 
         if not raw_text.strip():
             raise RuntimeError(f"[{label}] Empty response from {self._model_id}")
+        if connection_error is None and finish_reason is None:
+            # The provider closed the stream without saying why: the text is a fragment, not an answer.
+            # Raising lets run_engine_call retry instead of judging or persisting a truncated reading.
+            raise RuntimeError(
+                f"[{label}] OpenRouter stream from {self._model_id} ended without a finish_reason after "
+                f"{len(raw_text):,} chars — treated as truncated"
+            )
+        if finish_reason == "length":
+            logger.warning(f"[{label}] OpenRouter stream hit the output limit (finish_reason=length) at {len(raw_text):,} chars")
+            connection_error = "finish_reason=length"
 
         # Token counting
         input_tokens = estimated_input_tokens

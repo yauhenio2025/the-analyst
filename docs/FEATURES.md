@@ -482,8 +482,19 @@
 - **Dependencies**: `src/dossier/walls.normalize`, `src/executor/context_broker.split_ledger`, `src/events/pricing`, OpenRouter key for the cheap and mid tiers
 - **Added**: 2026-09-04 | **Modified**: 2026-09-05
 
+### Desks read the findings ledger by id
+- **Status**: Active (2026-09-05)
+- **Description**: `analysis_ledger(job, docs)` renders every phase's ledger rows re-verified against the documents (citable rows with doc_key and verbatim anchor; paraphrases apart; critic-rejected rows hidden); `ledger_ids(job)` is the citable id set. The spine plans sections on findings (`SpineSection.finding_ids`, unknown ids dropped), the tables desk builds from a section's findings and may copy ledger anchors, the figure planner grounds on the ledger.
+- **Entry Points**:
+  - `src/dossier/common.py` - `analysis_ledger`, `ledger_ids`
+  - `src/dossier/spine.py` - `SECTION_SCHEMA.finding_ids`, `SYSTEM` ledger rule, `_user(job, docs)`, `build_spine` id filter
+  - `src/dossier/tables.py` - `SPINE_SYSTEM` ledger rule, `_specs_text` findings line, `_spine_user`
+  - `src/dossier/figures.py` - `material_text` ledger block
+- **Dependencies**: `src/executor/ledger_walls`, `src/executor/context_broker.split_ledger`
+- **Added**: 2026-09-05
+
 ### Execution modes per depth (read → check → apply as the default)
-- **Status**: Active (frontier study 2026-09-05; live for conditions_of_possibility_analyzer and argument_architecture)
+- **Status**: Active (frontier study 2026-09-05; live for conditions_of_possibility_analyzer, argument_architecture, inferential_commitment_mapper, epistemological_method_detector)
 - **Description**: `DepthSequence.mode` chooses how a depth executes: `oneshot` (one call with the process's question sets and method cards, strong tier), `oneshot_checked` (that call, then the mid-tier critic over its findings; code applies the rulings to the ledger and leaves the prose alone; rejected rows become a receipt, paraphrased quotes are tagged `anchor-verified: no`), `dvs` (the full chain), `stances` (the legacy passes). Both engines: surface = oneshot, standard = oneshot_checked, deep = dvs; strong tier GPT-5.6 Sol, critic DeepSeek V4 Pro.
 - **Entry Points**:
   - `src/operationalizations/schemas.py` - `DepthSequence.mode`, `EngineOperationalization.mode_for_depth`

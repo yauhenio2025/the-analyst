@@ -5,6 +5,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Added (2026-09-05, morning — desks by id; two more engines)
+- The desks read the findings ledger by id ([src/dossier/common.py](../src/dossier/common.py) `analysis_ledger`/`ledger_ids`; spine `finding_ids`, tables, figures); tests [tests/test_desks_read_ledger_2026_09_05.py](../tests/test_desks_read_ledger_2026_09_05.py).
+- Inferential Commitment Mapper and Epistemological Method Detector under the shape: text-facing dimensions with method cards, modes per depth, Sol strong tier ([src/operationalizations/definitions/](../src/operationalizations/definitions/)); designs in [communications/study/](../communications/study/); comparison study [scripts/study_two_engines.py](../scripts/study_two_engines.py) (synthesis §9); tests [tests/test_engines_under_shape_2026_09_05.py](../tests/test_engines_under_shape_2026_09_05.py).
+
 ### Added (2026-09-05, morning — read → check → apply)
 - Execution mode per depth (`oneshot` / `oneshot_checked` / `dvs` / `stances`) with `run_oneshot_checked`: one strong call, the critic over its ledger, rulings applied by code, prose untouched; both engines default to one call + check at standard depth on GPT-5.6 Sol with DeepSeek V4 Pro as critic ([src/executor/process_runner.py](../src/executor/process_runner.py), [src/executor/chain_runner.py](../src/executor/chain_runner.py), [src/operationalizations/](../src/operationalizations/)). Check study: 29 readings, checked ledger wins 41 of 58 blind pairs, unsupported rows 0.4 → 0.1, misses 3.2 → 1.2 ([communications/study/STUDY_frontier_SYNTHESIS_2026-09-05.md](../communications/study/STUDY_frontier_SYNTHESIS_2026-09-05.md) §8, [scripts/study_oneshot_check.py](../scripts/study_oneshot_check.py)).
 
