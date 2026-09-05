@@ -193,18 +193,37 @@ async def lifespan(app: FastAPI):
     except Exception as exc:  # recovery must never keep the API from starting
         logger.error(f"Dossier startup recovery failed: {exc}")
 
-    # Register SIGTERM handler for graceful shutdown
-    # Render sends SIGTERM before killing the process — mark running jobs as stoppable
-    # We do NOT call recover_orphaned_jobs here because it would try to RESUME
-    # jobs on a dying instance. Instead, we just let jobs stay in "running" state.
-    # The NEXT instance startup will pick them up and resume properly.
+    # Register SIGTERM handler for a graceful drain.
+    # Render sends SIGTERM to the old instance on every deploy and SIGKILL after maxShutdownDelaySeconds (render.yaml:
+    # 300 s). Dossier jobs run as daemon threads in this process; exiting at once used to kill them mid-call and cost a
+    # whole step. Now: flip the drain flag (no new dossier threads; the profile loop pauses at its next checkpoint),
+    # wait until no dossier thread is running or DRAIN_TIMEOUT_S has passed, then exit. Paused jobs keep their active
+    # status and the NEXT instance's recover_orphaned_dossiers / recover_orphaned_jobs restarts them — we never resume
+    # anything here, on a dying instance.
+    from src.dossier import drain as _drain
+    from src.dossier.runner import running_count as _dossier_running_count
+
+    DRAIN_TIMEOUT_S = 270  # under Render's 300 s grace so the log lines below land before SIGKILL
+
     def _sigterm_handler(signum, frame):
-        logger.warning("SIGTERM received — instance shutting down. Running jobs will resume on next startup.")
-        # Re-raise to let uvicorn handle shutdown
+        if _drain.is_draining():
+            logger.warning("SIGTERM received again while draining — exiting now; unfinished jobs resume on the next instance")
+            raise SystemExit(0)
+        _drain.request_drain()
+        n = _dossier_running_count()
+        if n == 0:
+            logger.warning("SIGTERM: no dossier job running — shutting down; any executor job resumes on the next instance")
+            raise SystemExit(0)
+        logger.warning(f"SIGTERM: draining {n} running dossier job(s), up to {DRAIN_TIMEOUT_S} s")
+        idle = _drain.wait_for_idle(DRAIN_TIMEOUT_S, running_count=_dossier_running_count)
+        if idle:
+            logger.warning("drain complete — every dossier job reached a checkpoint; shutting down")
+        else:
+            logger.warning(f"drain timed out; {_dossier_running_count()} job(s) resume on the next instance")
         raise SystemExit(0)
 
     signal.signal(signal.SIGTERM, _sigterm_handler)
-    logger.info("SIGTERM handler registered for graceful job cleanup")
+    logger.info(f"SIGTERM handler registered: graceful drain of dossier threads, up to {DRAIN_TIMEOUT_S} s")
 
     logger.info("Loading analysis objectives...")
     from src.objectives.registry import list_objectives

@@ -12,7 +12,8 @@ import logging
 from src.dossier import events
 from typing import Callable, Optional
 
-from src.dossier.common import DossierCancelled, compact_profiles, corpus_text, doc_header, documents_index
+from src.dossier.common import DossierCancelled, DossierDraining, compact_profiles, corpus_text, doc_header, documents_index
+from src.dossier.drain import is_draining
 from src.dossier.llm import call_json
 from src.dossier.schemas import CorpusMap, DocumentProfile, DossierJob, Reconnaissance
 from src.dossier.walls import NormalizedCorpus, verify_anchor
@@ -92,7 +93,8 @@ def run_reconnaissance(job: DossierJob, docs: list[Document], *, persist: Option
                        cancel_check: Optional[Callable[[], bool]] = None) -> Reconnaissance:
     """`persist` writes a per-document checkpoint (Reconnaissance with partial=True) after every profile, so a job
     interrupted mid-way — an instance restart on deploy killed one at profile 36/195 on 2026-09-05 — resumes at the
-    next document instead of at 1. `cancel_check` is consulted between documents."""
+    next document instead of at 1. `cancel_check` and the process-wide drain flag are consulted between documents: a
+    SIGTERM mid-run costs at most the profile call in flight, never the step."""
     total_chars = sum(d.char_count for d in docs)
     intent = job.options.intent
     corpus = NormalizedCorpus({d.key: d.text for d in docs})
@@ -120,6 +122,8 @@ def run_reconnaissance(job: DossierJob, docs: list[Document], *, persist: Option
                 continue
             if cancel_check and cancel_check():
                 raise DossierCancelled(f"cancelled at profile {n}/{len(docs)}")
+            if is_draining():
+                raise DossierDraining(f"instance restart before profile {n}/{len(docs)}; {len(profiles)} profiles are on the checkpoint")
             if doc.char_count > PER_DOC_MAX_CHARS:
                 events.emit(job.id, "note", phase=STEP,
                             detail=f"{doc.key}: {doc.char_count:,} chars exceeds the per-document cap; the profile reads the first {PER_DOC_MAX_CHARS:,} chars")
@@ -138,6 +142,8 @@ def run_reconnaissance(job: DossierJob, docs: list[Document], *, persist: Option
                 persist(profiles=Reconnaissance(profiles=profiles, corpus_map=CorpusMap(), partial=True))  # checkpoint: survives a restart
         if cancel_check and cancel_check():
             raise DossierCancelled("cancelled before the corpus map")
+        if is_draining():
+            raise DossierDraining(f"instance restart before the corpus map; all {len(profiles)} profiles are on the checkpoint")
         interim = Reconnaissance(profiles=profiles, corpus_map=CorpusMap())
         cm, _ = call_json(
             job.id, STEP, label="corpus map over profiles", system=SYSTEM,

@@ -15,7 +15,8 @@ from datetime import datetime, timezone
 from typing import Callable, Optional
 
 from src.dossier import events
-from src.dossier.common import DossierCancelled, load_documents
+from src.dossier.common import DossierCancelled, DossierDraining, load_documents
+from src.dossier.drain import is_draining
 from src.dossier.schemas import DossierJob, STEPS
 from src.dossier.store import add_note, get_job, list_jobs, record_step_duration, update_job
 
@@ -55,6 +56,12 @@ def is_cancelled(job_id: str) -> bool:
         return job_id in _cancel
 
 
+def running_count() -> int:
+    """How many dossier threads are running in this process — what the SIGTERM drain waits on."""
+    with _lock:
+        return len(_running)
+
+
 def cancel(job_id: str) -> bool:
     job = get_job(job_id)
     if job is None:
@@ -86,6 +93,11 @@ def _next_step(job: DossierJob) -> Optional[str]:
 
 
 def start(job_id: str) -> bool:
+    if is_draining():
+        # The instance is shutting down for a deploy. The job keeps its active status; the next instance's
+        # recover_orphaned_dossiers starts it — that is the intended path, not a failure.
+        logger.warning(f"dossier {job_id} not started: instance is draining for a restart; it resumes on the next instance")
+        return False
     with _lock:
         if job_id in _running:
             return False
@@ -137,7 +149,23 @@ def recover_orphaned_dossiers(now: Optional[datetime] = None, max_age_hours: Opt
     return out
 
 
+def _pause_for_drain(job_id: str, step: str, why: str, *, record_step: bool = False) -> None:
+    """The instance is shutting down: leave the job in its active status (boot recovery on the next instance restarts
+    it from its checkpoint) and say so on the ledger. `record_step` writes the step about to start so recovery resumes
+    there instead of redoing the finished one."""
+    logger.info(f"dossier {job_id} paused for an instance restart at {step}: {why}")
+    if record_step:
+        try:
+            update_job(job_id, step=step)
+        except Exception as exc:
+            logger.warning(f"dossier {job_id}: could not record step {step} before the pause: {exc}")
+    events.emit(job_id, "note", phase=step,
+                detail=f"paused for an instance restart at {step}; resumes on the next instance from its checkpoint",
+                payload_json={"kind": "drain_pause", "step": step, "why": why})
+
+
 def _run(job_id: str) -> None:
+    step = "start"
     try:
         job = get_job(job_id)
         if job is None:
@@ -151,7 +179,11 @@ def _run(job_id: str) -> None:
         docs = load_documents(job)
         idx = STEPS.index(step)
         for step_name in STEPS[idx:]:
+            step = step_name
             if is_cancelled(job_id):
+                return
+            if is_draining():
+                _pause_for_drain(job_id, step_name, "between steps", record_step=True)
                 return
             job = get_job(job_id) or job
             _run_step(job, step_name, docs)
@@ -170,6 +202,8 @@ def _run(job_id: str) -> None:
     except DossierCancelled as exc:
         logger.info(f"dossier {job_id} cancelled: {exc}")
         events.emit(job_id, "note", detail=f"stopped: {exc}", payload_json={"kind": "cancelled_mid_step"})
+    except DossierDraining as exc:
+        _pause_for_drain(job_id, step, str(exc))  # status untouched: still active, so boot recovery restarts it
     except Exception as exc:
         logger.error(f"dossier {job_id} failed: {exc}\n{traceback.format_exc()}")
         try:

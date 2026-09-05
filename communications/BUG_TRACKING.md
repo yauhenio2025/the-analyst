@@ -2,6 +2,22 @@
 
 Problem classes, root causes, files fixed. See global rules.
 
+## Immediate SystemExit on SIGTERM in a process that hosts job threads (2026-09-05, evening)
+
+**Problem Class**: immediate `SystemExit` on SIGTERM in a process that hosts job threads. The web process runs dossier (and executor) jobs as daemon threads; Render sends SIGTERM to the old instance on every push to master (12 deploys on 2026-09-05) and the handler exited at once, so every thread died mid-LLM-call and boot recovery had to redo the whole step (reconnaissance restarted at 1 of 195 profiles before the checkpoint fix; after it, still lost the call in flight plus any step without a checkpoint).
+
+**Root Cause**: the handler treated SIGTERM as "exit now" instead of "stop taking work, finish the unit in hand, then exit"; nothing in the job loops could observe that a shutdown was coming; `render.yaml` left Render's grace period at its 30 s default, so even a polite drain would have been killed.
+
+**Files Fixed**:
+- `render.yaml` — `maxShutdownDelaySeconds: 300` (Render's maximum) on the API web service.
+- `src/dossier/drain.py` (new) — process-wide flag: `request_drain`, `is_draining`, `reset_drain` (tests), `wait_for_idle(timeout_s, running_count=…)` with a progress log every 15 s; imports nothing from dossier/executor so both can import it.
+- `src/api/main.py` — `_sigterm_handler`: request drain, wait up to 270 s for `runner.running_count()` to reach 0 ("SIGTERM: draining N running dossier job(s), up to 270 s" / "drain complete" / "drain timed out; N job(s) resume on the next instance"), second SIGTERM exits at once.
+- `src/dossier/runner.py` — `running_count`; `start` returns False while draining; `_pause_for_drain` emits the `drain_pause` note and leaves the status alone; `_run` checks the flag between steps (recording the next step) and catches `DossierDraining`.
+- `src/dossier/reconnaissance.py` — drain check between documents and before the corpus map, raising `DossierDraining` right after the per-document checkpoint.
+- `src/dossier/common.py` — `DossierDraining`. Tests: `tests/test_sigterm_drain.py`.
+
+**Pattern to Watch For**: a signal handler that raises `SystemExit` in a process with worker threads; a long loop with no shutdown check between units; a deploy platform's grace period left at default. Every unit of work should be able to see "shutting down" and stop after its checkpoint; the handler should wait for the count of running units to hit zero (bounded under the grace period) and log while it waits. Not done here: the executor's own pass loops do not check the flag yet — they rely on `recover_orphaned_jobs` and per-pass persistence.
+
 ## Dossier threads die with the instance, nothing resumes them (2026-09-05)
 
 **Problem Class**: long-running work in daemon threads of an auto-deployed web process, without startup recovery for that job family. The executor had `recover_orphaned_jobs`; dossiers did not. A deploy (SIGTERM, new instance) left dossier jobs in `reconnaissance` / `analysis` indefinitely; the caller (The Reporter) saw silence and had to nudge or give up.

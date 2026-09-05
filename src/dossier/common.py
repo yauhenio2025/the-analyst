@@ -39,6 +39,12 @@ class DossierCancelled(Exception):
     """Raised inside a long step when the job was cancelled; the runner returns quietly (status is already 'cancelled')."""
 
 
+class DossierDraining(Exception):
+    """Raised inside a long step when the process is draining for an instance restart (SIGTERM on deploy). The step has
+    just written its checkpoint; the runner returns without touching the job's status, so the next instance's boot
+    recovery restarts it from that checkpoint."""
+
+
 def job_dir(job_id: str) -> Path:
     p = DOSSIER_DIR / job_id
     p.mkdir(parents=True, exist_ok=True)
