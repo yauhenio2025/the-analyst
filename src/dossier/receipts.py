@@ -73,6 +73,14 @@ def make_receipt(
     if cost_usd is None and kind == "llm":
         cost_usd = llm_cost(model, input_tokens, output_tokens)
         if cost_usd is None:
+            # the desk's table knows the house models; the events table knows the frontier ids
+            # (`openrouter/<vendor>/<model>`): the live check's nine analysis passes went unpriced (2026-09-06)
+            try:
+                from src.events.pricing import estimate_cost as _events_estimate
+                cost_usd = _events_estimate(model, int(input_tokens or 0), int(output_tokens or 0))
+            except Exception:  # noqa: BLE001 — pricing never blocks a receipt
+                cost_usd = None
+        if cost_usd is None:
             label = (label + " [UNPRICED]").strip()
             cost_usd = 0.0
     return Receipt(

@@ -5,6 +5,17 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Fixed (2026-09-06, live check and consolidation)
+- Dossier receipts price OpenRouter passes (`openrouter/<vendor>/<model>`) by falling back to `src.events.pricing`, instead of writing them as `[UNPRICED]` $0 ([receipts.py](src/dossier/receipts.py)); the live check's nine analysis passes had gone unpriced (~$0.77 of $2.34).
+- Process call narration names the mode actually run (`oneshot`, `oneshot_checked`, `dvs`) instead of the process key ([chain_runner.py](src/executor/chain_runner.py)).
+- Corpus synthesis contract: a row without a `dim:` tag is a wall note (`rows_without_dimension`), no longer a phase failure; `unknown_dimensions` lists only present, undeclared keys ([process_runner.py](src/executor/process_runner.py)).
+
+### Changed (2026-09-06)
+- Process runner consolidated: `_rows_from`, `_recorder`, `_apply_critic` (one critic-application rule for document and corpus ledgers; the corpus branch now records unverified rulings of known rows as rejected and reports `rejected`/`added`); `assemble_checked_content` tags prose citations of rejected rows inline (`[F12, rejected by the check]`) and says so in the receipt; unused `ledger_rows` removed ([process_runner.py](src/executor/process_runner.py), [ledger_walls.py](src/executor/ledger_walls.py)).
+
+### Added (2026-09-06)
+- Live dossier check memo ([LIVE_dossier_check_2026-09-06.md](communications/study/LIVE_dossier_check_2026-09-06.md)); `scripts/live_dossier_check.py` treats `done` as terminal.
+
 ### Fixed (2026-09-06 — P1/P2 evidence handoff and revalidation)
 
 - Corpus ancestry now preserves the two-source anchor duty through synthesis. The runner requests one complete repair for invalid corpus synthesis, then refuses a still-broken output; dotted citation IDs remain whole and F-number lists/ranges are checked. Standard corpus mode reconciles the reading and tables after critic rulings. P1 adds case-specific causal attribution and granular cell support; P2 adds question/source coverage and explicit alignment scope.

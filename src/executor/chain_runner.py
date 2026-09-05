@@ -589,7 +589,7 @@ def _run_engine_process(
                     f"{sc.model_used} {sc.input_tokens}+{sc.output_tokens} tokens, {sc.duration_ms}ms, wall={sc.wall.get('anchor_rate')}")
 
     with _events_context.scope(job_id=job_id, phase=_events_context.phase_key(phase_number), engine=cap_def.engine_key,
-                               pass_name=f"process {spec.key}", stance=None, work_key=work_key or None):
+                               pass_name=f"process {mode}", stance=None, work_key=work_key or None):
         if mode in ("oneshot", "oneshot_checked"):
             run = run_oneshot_checked(
                 cap_def, spec, sources, depth=depth, check=(mode == "oneshot_checked"),
