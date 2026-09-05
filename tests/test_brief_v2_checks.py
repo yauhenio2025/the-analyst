@@ -253,10 +253,13 @@ def test_purpose_catalog_joins_the_runtime_registry():
     c = purpose_catalog("executive", corpus_chars=349_233, n_docs=5, same_author=False)
     engines = [e for g in c["groups"] for e in g["engines"]]
     import json as _json
-    listed = {e["engine_key"] for g in _json.load(open("src/dossier/catalog_purpose.json"))["groups"] for e in g["engines"]}
+    purpose = _json.load(open("src/dossier/catalog_purpose.json"))
+    listed = {e["engine_key"] for g in purpose["groups"] for e in g["engines"]}
+    excluded = {e["engine_key"] for e in purpose["excluded"]}
     offered = {e["engine_key"] for e in engines}
-    # every engine the purpose file lists is offered; unlisted capability engines are auto-offered (the count grows as methods are added: 22 on 2026-09-03, 24 + 2 auto-listed on 2026-09-06)
-    assert listed <= offered and len(engines) == len(offered) >= 22 and len(c["excluded"]) == 6 and len(c["recipes"]) == 7
+    # Eligible purpose entries and unlisted capabilities are offered; explicit exclusions are withheld.
+    assert listed - excluded <= offered and not (excluded & offered)
+    assert len(engines) == len(offered) >= 22 and {e["engine_key"] for e in c["excluded"]} == excluded and len(c["recipes"]) == 7
     assert {e["engine_key"] for e in c["excluded"]} == {"aoi_thematic_synthesis", "aoi_engagement_mapping", "aoi_sin_findings", "aoi_thematic_report",
                                                         "genealogy_relationship_classification", "genealogy_final_synthesis"}
     by = {e["engine_key"]: e for e in engines}

@@ -114,10 +114,13 @@ def engine_catalog(for_dossier: bool = True) -> list[dict]:
     """The EXECUTABLE engines (capability YAML present), enumerated at runtime."""
     from src.engines.registry import get_engine_registry
 
+    from src.dossier.catalog import excluded_reasons
+
     reg = get_engine_registry()
+    excluded = excluded_reasons() if for_dossier else {}
     out = []
     for cap in reg.list_capability_definitions():
-        if for_dossier and cap.engine_key.startswith(EXCLUDED_PREFIXES):
+        if for_dossier and (cap.engine_key.startswith(EXCLUDED_PREFIXES) or cap.engine_key in excluded):
             continue
         depths = {}
         for dl in getattr(cap, "depth_levels", []) or []:

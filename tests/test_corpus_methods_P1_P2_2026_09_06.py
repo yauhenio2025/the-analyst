@@ -165,3 +165,32 @@ def test_reader_memo_binds_exact_completed_output_before_scoring(tmp_path,monkey
 def test_offline_audit_checks_ids_inside_final_citation_ranges():
     from scripts.audit_corpus_methods_P1_P2_2026_09_06 import expanded_final_citations
     assert expanded_final_citations('[F1–F3] and [F5, F7]')=={'F1','F2','F3','F5','F7'}
+
+
+def test_unreleased_corpus_methods_load_but_are_not_offered():
+    from src.dossier.common import engine_catalog
+    from src.dossier.catalog import purpose_catalog, resolve_path_request
+    from src.dossier.schemas import PathRequest, PathStepRequest
+    all_keys={e['engine_key'] for e in engine_catalog(for_dossier=False)}
+    offered_keys={e['engine_key'] for e in engine_catalog()}
+    catalog=purpose_catalog(n_docs=3)
+    picker_keys={e['engine_key'] for g in catalog['groups'] for e in g['engines']}
+    excluded={e['engine_key'] for e in catalog['excluded']}
+    for key in ('compare_supplied_cases','reconcile_sources'):
+        assert key in all_keys and key in excluded
+        assert key not in offered_keys and key not in picker_keys
+        with pytest.raises(ValueError):
+            resolve_path_request(PathRequest(steps=[PathStepRequest(engine_key=key,depth='deep')]))
+    assert {'argument_architecture','conditions_of_possibility_analyzer','inferential_commitment_mapper','epistemological_method_detector'} <= offered_keys
+
+
+def test_explicit_exclusions_also_remove_purpose_entries_and_recipes(monkeypatch):
+    from src.dossier import catalog
+    monkeypatch.setattr(catalog,'engine_catalog',lambda **kw:[{'engine_key':'held','depths':{}},{'engine_key':'visible','depths':{}}])
+    monkeypatch.setattr(catalog,'load_purpose',lambda:{'groups':[{'key':'test','title':'Test','engines':[{'engine_key':'held'}]}]})
+    monkeypatch.setattr(catalog,'excluded_reasons',lambda:{'held':'awaiting validation'})
+    monkeypatch.setattr(catalog,'load_recipes',lambda:[{'key':'held_recipe','steps':[{'engine_key':'held'}]}])
+    result=catalog.purpose_catalog()
+    assert {e['engine_key'] for g in result['groups'] for e in g['engines']}=={'visible'}
+    assert result['recipes']==[]
+    assert result['excluded']==[{'engine_key':'held','why':'awaiting validation'}]

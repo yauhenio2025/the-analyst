@@ -197,7 +197,8 @@ def purpose_catalog(audience: str = "executive", corpus_chars: Optional[int] = N
                     same_author: Optional[bool] = None) -> dict:
     """The picker's source of truth: purpose groups joined with the runtime registry, recipes, exclusions."""
     registry = {e["engine_key"]: e for e in engine_catalog(for_dossier=False)}
-    executable = {k for k in registry if not k.startswith(EXCLUDED_PREFIXES)}
+    reasons = excluded_reasons()
+    executable = {k for k in registry if not k.startswith(EXCLUDED_PREFIXES) and k not in reasons}
     idx = purpose_index()
     groups = []
     placed = set()
@@ -226,7 +227,7 @@ def purpose_catalog(audience: str = "executive", corpus_chars: Optional[int] = N
             })
             placed.add(key)
         groups.append({"key": g["key"], "title": g["title"], "purpose": g.get("purpose", ""), "engines": engines})
-    # executable engines the purpose file does not know: shown, never hidden
+    # Eligible engines without a purpose entry appear in More; explicit exclusions stay excluded.
     more = []
     for key in sorted(executable - placed):
         reg = registry[key]
@@ -238,7 +239,6 @@ def purpose_catalog(audience: str = "executive", corpus_chars: Optional[int] = N
         })
     if more:
         groups.append({"key": "more", "title": "More", "purpose": "executable engines not yet described by purpose", "engines": more})
-    reasons = excluded_reasons()
     excluded = [{"engine_key": k, "why": reasons.get(k, "not for a document dossier")}
                 for k in sorted(registry) if k not in executable]
     recipes = []
