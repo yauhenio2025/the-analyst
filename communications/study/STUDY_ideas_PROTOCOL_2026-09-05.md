@@ -7,7 +7,7 @@ Status: approved and running. The owner authorized the proposed $20 budget on 20
 | Task | Engines | Material | Work |
 |---|---|---|---|
 | Single-paper comparison | Conditions of Possibility, Argument Architecture, Inferential Commitment Mapper, Epistemological Method Detector | Harris 2026, Zambrana 2025, Chen 2025 | 12 original-question one-call readings on Sol, 12 current production one-call + check readings on Sol / DeepSeek V4 Pro |
-| Blind judging | Same four engines | Same three papers | Sonnet 4.6 sees each original/current pair in both orders: 24 judgments |
+| Pairwise judging | Same four engines | Same three papers | Sonnet 4.6 sees each original/current pair in both orders: 24 judgments |
 | Corpus reading | Conditions of Possibility, Inferential Commitment Mapper | Deutschmann 2001/2001/2022; Castoriadis 1984/1990/1997 | Four deep chains: Luna extraction, DeepSeek V4 Pro verification, Sol synthesis |
 
 The complete matrix has 28 generation jobs and 24 judging jobs. Each current corpus specification has five document dimensions and one corpus dimension: 15 document extracts, one corpus extract, three document checks, one corpus check, one synthesis. That is 21 base model calls per corpus job, and 144 base calls for the complete study before re-anchoring, chunking, or retries. The original prompt's estimate is $15–20 for generation and judging; actual usage must be recorded. A receipt-based stop threshold is not a provider billing guarantee: retries or requests that fail without usage can incur additional charges.
@@ -15,6 +15,8 @@ The complete matrix has 28 generation jobs and 24 judging jobs. Each current cor
 Both single-paper conditions use the same full source and requested Sol model. The original condition preserves the capability definition's original probing questions and the existing study's anchoring law. The current condition uses the production operationalization and check. This compares the complete production change, including the critic; it does not isolate the causal effect of rewriting the questions.
 
 Only two valid opposite-order judgments naming the same condition count as a win. Two ties count as a tie; an order split or win/tie pair remains inconclusive. Missing or malformed judgments are incomplete, never ties. Judge reasons are retained with the source and output identities. A fallback model must be visible in receipts and must not be described as the requested model.
+
+The judge receives A/B labels rather than condition names, but formatting and the appended Check receipt can reveal the production treatment. This is not a fully blinded comparison. Reversing order checks order sensitivity; it does not remove these other cues or replace source-grounded reader review.
 
 Corpus readings have no baseline and no pairwise verdict. Review them as genealogies of a position: the commitments or givens retained, the changes and refusals supported by passages, and the relation between the papers. Do not infer a sequence between the two 2001 Deutschmann papers merely from their input order. The local corpus's year labels identify the supplied versions; they alone do not establish when an idea first appeared.
 
