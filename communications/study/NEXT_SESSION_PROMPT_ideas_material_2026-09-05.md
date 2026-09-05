@@ -1,5 +1,7 @@
 # Next session — check the engines on material about ideas, then consolidate the Mastermind's engines (2026-09-05)
 
+**Historical starting handoff; its runs are complete.** Continue from [the current handoff](NEXT_SESSION_PROMPT_after_ideas_2026-09-05.md) and [argument-family results](STUDY_argument_family_RESULTS_2026-09-05.md). The user approved the earlier caps and replaced routine paired judging with source memos plus independent Sonnet/Sol rubric scores. The old ask-before-launch and both-order directions below describe the original plan, not instructions to rerun completed work.
+
 ## Where we are in the overall process
 1. **Study (2026-09-04).** Four stance passes lose to one call; the definitions were the lever. Done.
 2. **Redesign from the ideal output.** Conditions of Possibility, Argument Architecture: text-facing questions, method cards, one shape (extract → verify → synthesize, ledger as hand-off). Done: `REDESIGN_*_2026-09-04.md`, `REDESIGN_method_shape_2026-09-04.md`.

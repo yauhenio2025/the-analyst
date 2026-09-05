@@ -43,4 +43,18 @@ This amendment allows the remaining independent ratings to be collected while fa
 python scripts/study_argument_family_collect_manual_scores_2026_09_05.py --run --phase judge --budget-usd 16 --review-record /absolute/path/to/reader_notes/pre_score/judge_review.json
 ```
 
-Collection results and final adoption bindings will be recorded below.
+## Completed collection and offline adoption
+
+All 48 planned score calls completed under the original approval. Collection ended with 44 native scores, the first adopted recovery and three failed parses, with no unqueued failure. The [final syntax review](STUDY_argument_family_SCORE_BATCH_RECOVERY_2026-09-05.md) binds each complete pending response and its exact insertion list. The final missing-brace case is Sonnet / candidate Counterfactual / Elling, with whitespace before `one_line`; its original raw bytes remain unchanged.
+
+Root's exact approval was created only after all 48 response contents had been read. The offline preview passed and explicit adoption published the three derived scores without a paid call. Batch manifest SHA-256 is `a5c067e804b5586b6ee657aab2022ced6557ae69a7fda9e3c89853bbc0bd89eb`; the prior first-recovery manifest remains unchanged. The final required-complete report validates **24 generations and 48 scores, zero errors**, separating **44 native and four syntax-derived scores**. Report SHA-256 is `ff0875ceae47a6953bf35e4f6856920f1bcc8795212211c928c71f4bee900fc5`.
+
+Total saved-response cost is **USD 6.173507 for 174 logical calls**. Scores account for USD 3.025237. The earlier generation retry's empty attempt has unknown usage/charge, so these receipt totals are not a provider invoice. There were no paid score retries. The [results](STUDY_argument_family_RESULTS_2026-09-05.md) include source findings and a sensitivity view excluding all four affected pairs.
+
+The collection commands above are historical. To verify the completed derived-score campaign, use only the explicit final offline adapter:
+
+```bash
+TMPDIR=/home/evgeny/projects/the-analyst-wt/study-tmp-2026-09-05 python scripts/study_argument_family_score_batch_recovery_2026_09_05.py --phase report --require-complete
+```
+
+The original harness and all adopted recovery/collection code are hash-pinned evidence. Do not edit them or rerun the collection/adoption commands for this completed campaign.
