@@ -1,0 +1,15 @@
+# Next session: begin the argument-family pair
+
+Step 6 is complete: read [the final ideas study](STUDY_ideas_SYNTHESIS_2026-09-05.md), [baseline results](STUDY_ideas_RESULTS_2026-09-05.md), [question revisions](REDESIGN_ideas_TWEAKS_2026-09-05.md), and [runtime audit](STUDY_ideas_ANCHOR_AUDIT_2026-09-05.md). The synthesis records the final cost and validation checks. The original 52-job matrix and four separate corpus syntheses are preserved under ignored `data/study/`; do not rerun them or overwrite their identities. The two parser recoveries were adopted without new generation, and all 24 Sonnet judgments are complete.
+
+The result is six checked agreements and six excluded splits, every split choosing the first-presented reading in both orders. No Commitment pair has an agreed winner. Source memos identify substantive errors that quotation matching and the model judge miss. The check now applies explicit ledger rewrites correctly, but its preceding one-call prose remains unchanged and the receipt discloses that limit. The question tweaks are evidence-led changes; the baseline comparisons do not validate the revised definitions.
+
+Next is Step 7, two engines per session: **Dialectical Structure Mapper** and **Counterfactual Analyzer**. Start from [design preparation](REDESIGN_argument_family_PREPARATION_2026-09-05.md) and [held-out source notes](STUDY_ideas_HELD_OUT_READING_NOTES_2026-09-05.md), then settle their questions, method cards, row formats and synthesis briefs from the completed memos. Neither new engine has been implemented, validated or exposed. Preserve the original capability definitions as the comparison condition.
+
+Use the established surface/standard/deep modes, Sol routing, default check, and ledger handoff. Distinguish owners and scope before alleging contradiction; distinguish conceptual conditionals, concessions and reductios from alternate histories. Do not require a single failing premise when independent support survives, or invent findings where no relevant material is present. Define that absence behavior before wiring.
+
+Prepare a concrete validation matrix and budget, then obtain authorization before new paid validation. The completed study's $20 ceiling is not a continuing allowance for unspecified engine-family experiments. Judge on Sonnet in both orders and count only agreements. Commit and push completed tested phases to `origin/master` as authorized by the original handoff; master deploys to Render. Never Veo.
+
+The workflow corpus-dispatch gap remains open in `communications/BUG_TRACKING.md`: `chain_runner._run_engine_process` still wraps incoming text in one document entry. The direct runner study and repaired desk lineage checks do not certify that adapter. Carry actual document maps through the workflow and test scope before corpus exposure.
+
+Use home-backed temporary storage: `TMPDIR=/home/evgeny/projects/the-analyst-wt/study-tmp-2026-09-05`. The completed audit bundles contain replay scripts and manifests; their evidence does not depend on a scratch `/tmp` worktree surviving.

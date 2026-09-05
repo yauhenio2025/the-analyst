@@ -20,7 +20,9 @@ LEDGER_HEADING = "## Findings ledger"
 
 ANCHORING_LAW = (
     "**Anchoring law**: every row rests on a short verbatim quote from the text (at most 200 characters, "
-    "copied exactly, in double quotation marks, no ellipses, typography untouched). A finding you cannot "
+    "copied exactly, in double quotation marks, no ellipses, typography untouched). "
+    "Write each anchor value as one JSON string, escaping internal double quotation marks and backslashes "
+    "without changing the quoted text. A finding you cannot "
     "anchor is a hypothesis: say so in the row or leave it out. Do not invent citations, dates, names or "
     "numbers that are not in the text. Everything you write is checked against the source by code and by "
     "a critic; a row whose anchor is not verbatim is dropped."
@@ -38,6 +40,24 @@ CORPUS_ANCHORS = (
     "row requires at least two distinct source keys: `anchor: \"<quote A>\" — doc: <A> — "
     "anchor-b: \"<quote B>\" — doc-b: <B>`. For further documents use anchor-c/doc-c, and so on. "
     "Code verifies each quote only in its named document. Keep the corpus dimension key on these rows."
+)
+
+CORPUS_READING = (
+    "## Reading the whole corpus\n\n"
+    "The unit of analysis is the complete supplied collection. Begin with a compact position map: "
+    "name every document, its central claim, distinctive argumentative role, and an important qualification. "
+    "Then develop the main reading through supported cross-document relations, applying the engine's "
+    "questions below to continuities, revisions, divergences and independent argument routes. This "
+    "corpus order governs the section order below. Give each assessed document anchored representation "
+    "in the final findings; explicitly identify any document you cannot assess and why.\n\n"
+    "For each cross-document claim, preserve document-keyed quotations for every document it covers "
+    "(at least two). Identify each passage's object, scope and inferential role, then explain what "
+    "persists or changes. Shared vocabulary alone does not establish "
+    "inheritance or change. Distinguish a repeated or reargued claim from one subsequently presupposed. "
+    "Check earlier formulations before naming an innovation or disappearance. Separate composition "
+    "dates, edition dates and argumentative development; do not infer an order between same-year texts "
+    "from their input order. Where development is not established, describe continuity or divergence "
+    "with that limit. End with a judgment about the position across the collection."
 )
 
 
@@ -161,7 +181,10 @@ DUTY_TEXT = {
         "`confirmed` (the anchor supports the finding as stated), `weakened` (the anchor supports a narrower "
         "or more hedged finding: rewrite the finding to what the text supports) or `rejected` (the anchor does "
         "not support it, or the finding is not about the text). Give one line of reason: what the anchor says, "
-        "what the row claimed."
+        "what the row claimed. Preserve the speaker, negation, conditions and scope. An exhaustive claim "
+        "such as 'only', 'entirely', 'all' or 'never' needs support for that scope, not merely one matching example. "
+        "For a weakened row, put the replacement in the row's finding and in an explicit "
+        '`revised-finding: "<replacement>"` field (a JSON quoted string). Do not put the replacement only in the reason.'
     ),
     "reject_biography": (
         "Reject any row whose finding is about the authors rather than the text: their motives, careers, "
@@ -273,6 +296,7 @@ def compose_synthesize_prompt(
         "confirmed against the source, with the misses the critic added) and the source itself. This is the "
         "engine's product: it is read by the dossier's desks (spine, tables, figures) and by a person, not by "
         "another pass.",
+        CORPUS_READING if len(documents) > 1 else "",
         "## What the reading contains, in order",
         (step.brief or "").strip(),
         "## Method cards (what the tradition asks you to do)",
@@ -330,6 +354,7 @@ def compose_oneshot_prompt(cap_def, spec: ProcessSpec, documents: dict[str, str]
         "## Your task",
         f"Read the source with the question sets below, in your own order, and write the reading for {reader}. "
         "Work through the questions to find the material; do not answer them one by one in the output.",
+        CORPUS_READING if len(documents) > 1 else "",
         "## Dimensions",
         cards,
         "## What the reading contains, in order",

@@ -35,7 +35,7 @@ process:
     questions:
     - 'What is the main claim in the text''s own words, and what is its operative verb? What type of claim is it (classificatory, causal, normative, methodological)?'
     - 'Which sub-claims carry the empirical load, and how does each relate to the main claim (supports it, is it, is presupposed by it)?'
-    - 'Where does the stated strength change between abstract, introduction, body and conclusion? Quote both versions.'
+    - 'Where does the stated strength change between abstract, introduction, body and conclusion? Compare the same claim under the same conditions; quote both full versions, retaining if-clauses and scope.'
     - 'Which claims are disclaimed ("beyond the scope") and then made anyway, for instance through a quoted authority? Quote both.'
     - 'Which hedges are present (anchored), and where would a careful author have hedged and did not?'
     answer_shape: '[A1.F<n>] Claim C<k>: "<verbatim claim>" — dim: claims — type: classificatory|causal|normative|methodological — verb: <operative verb> — relation: <supports|is|presupposed-by C1> — anchor: "<verbatim>" — confidence: high|medium|low'
@@ -43,8 +43,9 @@ process:
       Toulmin, the claim and its qualifiers. Do: write each claim in the text's words with a stable id
       (C1 the main claim, C2, C2.1 …); name its type and its operative verb, because the verb sets the
       standard the evidence must meet ("constitutes" needs more than "is accompanied by"); read the
-      qualifiers off the verbs and note where the strength drifts between the abstract and the body; catch
-      claims disclaimed and then made through someone else's mouth.
+      qualifiers off the verbs and conditions. Compare the same claim under the same conditions before
+      diagnosing drift between abstract and body; distinguish a conditional alternative from an unconditional
+      negative argument. Catch claims disclaimed and then made through someone else's mouth.
     indicators:
     - '"we argue", "constitutes", "is not simply", "marks", "we show"'
     - '"beyond the scope of this paper" followed by a quoted verdict'
@@ -178,10 +179,12 @@ process:
     reader: an argumentation theorist, an editor, or a reader who must decide whether the text proves what it says
     tables: [claims, grounds, suppressed_premises]
     brief: |-
-      1. The lynchpin: the inference on which the whole rests, named with its ids, and why it is the
-         lynchpin. Lead with it.
+      Keep each C/G/S/I identifier's meaning stable across prose, tables and ledger; give each finding one
+      canonical leading id without shorthand aliases.
+      1. The load-bearing inference or independent argument routes, named with their ids. Name a single
+         lynchpin only if the whole argument depends on it.
       2. The claims and their strength: the main claim with its operative verb and type; the sub-claims
-         that carry the load; where the strength drifts; what is disclaimed and then made anyway.
+         that carry the load; any strength drift under the same conditions; what is disclaimed and then made anyway.
       3. The skeleton of the main claim: the grounds inventory; the warrant, stated or reconstructed; the
          backing and whether it is circular; the qualifiers present and missing; the rebuttals acknowledged
          and ignored.

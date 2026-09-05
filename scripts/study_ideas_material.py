@@ -68,7 +68,7 @@ DEFAULT_OUT = ROOT / "data/study/ideas_2026_09_05"
 CODE_FILES = (
     "scripts/study_ideas_material.py", "scripts/study_two_engines.py",
     "src/stages/process_composer.py", "src/executor/process_runner.py",
-    "src/executor/ledger_walls.py", "src/executor/context_broker.py",
+    "src/executor/ledger_walls.py", "src/dossier/walls.py", "src/executor/context_broker.py",
     "src/executor/engine_runner.py", "src/llm/backends.py",
     "src/events/pricing.py", "src/operationalizations/schemas.py",
 )

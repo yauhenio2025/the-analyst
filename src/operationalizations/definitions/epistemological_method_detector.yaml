@@ -27,38 +27,42 @@ process:
     name: What counts as evidence
     load_bearing: true
     questions:
-    - What kinds of evidence does the text use (documents, statutes, press, interviews, other scholars, figures,
-      cases), and what is each kind asked to establish? Quote one use of each.
-    - What does the text say its method or sources are, and what does the evidence actually consist of? Quote both.
-    - What does the text treat as settled knowledge without evidence (a citation in place of evidence, "it is well
-      known")? Quote it.
+    - What is the text trying to establish, and what procedure does it enact? Distinguish a method it studies,
+      a method it advocates, and the method it uses; quote the passages assigning those roles.
+    - What kinds of evidence does the text use (primary passages, historical scholarship, documents, interviews,
+      figures, cases), and what is each asked to establish? Quote one use of each and compare the stated procedure.
+    - What does the text treat as settled without supplying the needed warrant? Distinguish a quotation establishing
+      a source's position from a citation credited for the truth of a substantive claim.
     - Where does the text claim to suspend an assumption, and what is the first assumption it does not suspend?
     answer_shape: '[E1.F<n>] Evidence kind <kind> establishes <what> — dim: evidence — anchor: "<verbatim>" — sufficient-for:
-      <the claim it carries> — confidence: …'
-    method_card: 'Quine and Dewey. Do: treat the text''s knowing as a practice you can inventory — list the evidence
-      kinds and what each is made to carry; compare the method the text professes with the evidence it uses; note
-      what it holds as settled without evidence; if it brackets assumptions (Husserl), quote the bracket and the
-      first assumption left standing.'
+      <the claim it carries> — method-role: studied|advocated|enacted|not applicable — confidence: …'
+    method_card: 'Quine and Dewey. Do: identify the inquiry''s object and inventory its enacted knowing, keeping
+      discussed and advocated methods distinct. Match evidence kinds to the claims they carry. Primary textual
+      passages can establish interpretations; cited historical research supplies historical premises. Assess the
+      actual warrant before demanding another genre of evidence. If the text brackets assumptions, quote the
+      bracket and first assumption left standing; absence of bracketing is not itself a defect.'
     indicators:
     - '"we draw on", "archival", "interviews", "data"'
-    - a citation where evidence would be
+    - a source's position used as evidence for a further substantive claim
     - '"it is well established", "as is widely recognised"'
   - key: testimony
     id_prefix: E2
     name: Whose testimony is credited
     load_bearing: true
     questions:
-    - Who is quoted as an authority, and for what kind of claim? Quote one instance each.
+    - Who is quoted as an authority, and for what kind of claim? Distinguish the position being interpreted or
+      criticized from testimony credited as true. Quote one instance each.
     - Who is dismissed, and by what device (a label, a group citation, "vague", "insider", a single sentence)? Quote
       the device.
     - Whose experience or account does the argument concern and never hears (workers, officials, the actors explained)?
-      Anchor to the claim made about them.
+      Anchor to the claim made about them and specify which kind of knowledge this absence limits.
     - Where does the text credit a source's conclusion while rejecting the source's framework? Quote both.
     answer_shape: '[E2.F<n>] <who> is credited|dismissed|absent for <what> — dim: testimony — device: <label|citation|silence>
       — anchor: "<verbatim>" — confidence: …'
     method_card: 'Fricker. Do: list who speaks with authority in the text and who is spoken about; for every dismissal
-      name the device that does it; ask whose experience the argument concerns and whether it is heard at all; note
-      a conclusion borrowed from a source whose framework the text rejects.'
+      name the device that does it. Distinguish quotations establishing a target''s position from authority credited
+      for a substantive claim. Ask whose experience is heard and which kind of knowledge its absence limits; note
+      selective borrowing from a source whose framework the text rejects.'
     indicators:
     - '"as X argues", "X shows"'
     - '"vague concepts", "insider baseball", "commentary"'
@@ -70,18 +74,21 @@ process:
     questions:
     - What does the text say about where it speaks from — its discipline, its "we", its acknowledged limits? Quote
       it.
-    - Which claims exceed what that position could know — a generalisation from two cases, an intention attributed
-      to an actor without a source, a causal claim from co-occurrence? Quote the claim and the position statement
-      it exceeds.
+    - Which claims exceed what the stated sources and inferences establish — a generalisation from two cases,
+      an attributed intention, an unsupported conceptual bridge? Quote the claim and relevant scope statement;
+      specify whether its missing warrant is interpretive, empirical, constitutive, or normative.
     - Does the text use a standpoint (a position from which others' bias is visible) and does it turn that standpoint
       on itself? Quote both or say where it stops.
     - Where does the text write as if from nowhere (no agent, passive voice, "it is clear") about contested matters?
       Quote it.
-    answer_shape: '[E3.F<n>] The text claims <what> beyond|within its stated position <position> — dim: position
-      — anchor: "<claim>" — anchor-b: "<position statement>" — confidence: …'
-    method_card: 'Haraway and Harding. Do: locate the knower — quote the text''s statements of position and limit;
-      test each large claim against what that position could know; find the standpoint the text uses to see others''
-      bias and ask whether it turns it on itself; mark view-from-nowhere sentences on contested matters.'
+    answer_shape: '[E3.F<n>] Claim <what> is supported|under-supported by <actual sources or inference> — dim: position
+      — warrant-kind: interpretive|empirical|constitutive|normative — position: <stated context or limit>
+      — anchor: "<claim>" — anchor-b: "<scope or evidential passage>" — confidence: …'
+    method_card: 'Haraway and Harding. Do: locate the knower through stated position, sources and limits. Test
+      the warrant appropriate to each claim; disciplinary identity alone does not establish incapacity. Separate
+      claims about actual collective beliefs from claims about what those beliefs constitute. Inspect the context
+      before calling a truth claim unlocated; ask whether the standpoint used to expose others'' bias is also
+      examined when it bears on the text''s own claim.'
     indicators:
     - '"we", "our approach", "this paper"'
     - '"it is clear", "obviously", agentless passives'
@@ -92,16 +99,18 @@ process:
     load_bearing: true
     questions:
     - What epistemic modesty does the text profess — hedges, "partial", "tentative", "only part of the story"? Quote
-      it.
+      it and name the claim it qualifies, including conditions and whether it is a future proposal.
     - What are the text's evidential verbs where it makes its central claims ("we observe", "attests", "clearly",
       "what is discernible")? Quote them.
     - Which framework does the text use in one section and drop in another? Quote both.
     - What would revise the central claim, and does the text say? Quote the closest it comes.
-    answer_shape: '[E4.F<n>] Professed <modesty|method> against practised <certainty|method> — dim: professed_practised
-      — anchor: "<professed>" — anchor-b: "<practised>" — confidence: …'
-    method_card: 'Dewey, warranted assertibility. Do: pair every profession of modesty with the verbs the text actually
-      uses at its central claims; note a framework used and dropped; ask what would revise the claim and whether
-      the text says — a claim held as unrevisable is a commitment, not knowledge.'
+    answer_shape: '[E4.F<n>] Professed <modesty|method> compared with practised <certainty|method> concerning <same claim>
+      — dim: professed_practised — relation: aligned|qualified|in tension — anchor: "<professed>"
+      — anchor-b: "<practised>" — confidence: …'
+    method_card: 'Dewey, warranted assertibility. Do: compare professions and practice concerning the same claim,
+      retaining its conditions. Brief presentation, a tentative extension, and a firm conclusion need not conflict.
+      Distinguish a framework dropped from one selectively revised; ask what would revise the claim. An unstated
+      revision condition does not establish that the author holds a claim unrevisable.'
     indicators:
     - '"tentatively", "partial", "we do not claim"'
     - '"clearly", "attests", "demonstrates", "what is discernible"'
@@ -113,14 +122,16 @@ process:
       it.
     - Applied to the text, does its own central claim meet that standard? Quote the passage where it would fail
       or pass.
-    - Where does the text exempt itself ("this is not to say", "we do not deny") and what does the exemption protect?
-    - Where is reflexivity a gesture — an acknowledgement that changes no claim? Quote the acknowledgement and the
-      unchanged claim.
+    - Does a qualification ("this is not to say", "we do not deny") exempt the text from its own standard, or
+      distinguish claims to which the standard applies differently? Quote the qualification and explain the relation.
+    - Which acknowledgement should qualify an existing claim, and does it? Quote both, explaining whether retaining
+      the claim conflicts with the acknowledgement or expresses selective agreement.
     answer_shape: '[E5.F<n>] Standard <standard> applied to the text: meets|fails|exempted — dim: self_application
       — anchor: "<the standard>" — anchor-b: "<the text’s own passage>" — confidence: …'
-    method_card: 'Harding, strong objectivity. Do: take the standard the text applies to others and apply it to
-      the text''s own central claim, quoting both; find the exemptions and what they protect; distinguish reflexivity
-      that changes a claim from reflexivity that decorates it.'
+    method_card: 'Harding, strong objectivity. Do: identify who owns each standard and whether it is explanatory,
+      normative, or evidential before applying it to comparable claims. A shared normative criterion is not itself
+      an explanatory monism. Distinguish a rival''s concession from self-reflection, a substantive distinction from
+      an exemption, and exposing a defective theory from promising a complete replacement.'
     indicators:
     - a critique of others in the introduction
     - '"this is not to say", "we do not suggest"'
@@ -169,18 +180,19 @@ process:
     - evidence
     - testimony
     - professed_practised
-    brief: '1. How the text knows: the evidence kinds it uses and what each is made to carry, against the method
-      it professes; what it holds as settled without evidence.
+    brief: '1. How the text knows: what it investigates, the procedure it enacts, and any method it studies or
+      advocates; the evidence kinds and claims they carry, against the stated method.
 
       2. Whose word counts: who is credited, who is dismissed and by what device, whose account is never heard.
 
-      3. Where it speaks from: the position and limits the text declares, and the claims that exceed them.
+      3. Where it speaks from: declared position, sources and limits; which claims exceed their warrants and what
+      kind of warrant is missing. Match the evidential requirement to the claim.
 
-      4. Professed and practised: the modesty professed against the verbs used at the central claims; a framework
-      used and dropped; what would revise the claim.
+      4. Professed and practised: compare modesty and verbs concerning the same claim, retaining conditions and
+      programmatic scope; distinguish selective revision from abandonment; what would revise the claim.
 
-      5. Self-application: the standard the text applies to rivals, applied to itself; the exemptions and what they
-      protect.
+      5. Self-application: the text''s own standard applied to comparable claims; distinguish an exemption from
+      a substantive qualification and criticism from a promised replacement.
 
       6. The judgment: the text''s implicit theory of knowledge, where it breaks, and the one question a reader
       should ask before trusting the central claim.'

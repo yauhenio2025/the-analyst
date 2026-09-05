@@ -250,14 +250,16 @@ process:
     questions:
     - 'Which rival explanations does the text name — cited then set aside, or attacked? For each, what would it say about the same evidence?'
     - 'What in the text''s own commitments rules each rival out? Quote the sentence that forbids it.'
-    - 'If the inherited framework were removed, which sections and claims survive unchanged, and which collapse? Name them; give the anchor of one survivor and one casualty.'
+    - 'If the inherited framework were removed, which formulations or argument routes lose support, and which claims retain independent support? Test the surviving evidence before declaring a conclusion defeated; anchor the premise removed and the surviving route, if any.'
     - 'What would the text have to add to hold its strongest claim against its strongest rival — a criterion, a test, a comparison it could have made from its own material?'
-    answer_shape: '[D5.F<n>] Rival <name>, available at "<anchor of citation or dismissal>", would read <evidence> as <reading>; the text forbids it by "<verbatim>" — dim: rivals — confidence: high|medium|low   |   [D5.F<n>] Survives|collapses without the frame: <section or claim> — dim: rivals — anchor: "<verbatim>" — confidence: …'
+    answer_shape: '[D5.F<n>] Rival <name>, available at "<anchor of citation or dismissal>", would read <evidence> as <reading>; the text forbids it by "<verbatim>" — dim: rivals — confidence: high|medium|low   |   [D5.F<n>] Removing <premise> weakens|defeats|leaves intact <formulation or route>; <claim> retains|loses support because <remaining grounds or none shown> — dim: rivals — anchor: "<premise or affected route>" — anchor-b: "<surviving grounds, if present>" — confidence: …'
     method_card: |-
       The counterfactual, disciplined. Do: take the rivals from the text's own references and dismissals,
       not from your preferences; for each, say what it would make of the same evidence and quote the
-      sentence in the text that forbids it; then subtract the inherited frame and sort the text's claims
-      into survivors and casualties, one anchor each. Do not estimate proportions you cannot anchor.
+      sentence in the text that forbids it. Subtract the frame one premise at a time: distinguish losing
+      this formulation or derivation from losing every argument for the conclusion. Inspect independent
+      historical, conceptual and normative grounds before naming a casualty. Anchor each result; do not
+      force a casualty or estimate proportions you cannot anchor.
     indicators:
     - 'a rival cited in one clause and set aside in the next'
     - '"only part of the story", "tells us little about"'
@@ -267,14 +269,29 @@ process:
     name: Path dependence across the corpus
     scope: corpus
     questions:
-    - 'Which premises are argued in an earlier text and presupposed in a later one? Both anchors, with doc keys.'
-    - 'Which terms are defined once and later used undefined or renamed? Both anchors.'
-    - 'Which alternatives are considered in an earlier text and absent later?'
-    - 'How does the self-citation carry change across the texts — what each later text takes from each earlier one?'
-    answer_shape: '[P6.F<n>] <premise or term> argued|defined in <doc A> — anchor: "<verbatim>" — doc: <A> — presupposed|undefined|renamed in <doc B> — anchor-b: "<verbatim>" — doc-b: <B> — dim: path_dependence — confidence: …'
+    - 'Which premises are argued in one text and repeated, reargued, or presupposed in another? Quote both,
+      checking the second text''s reasoning before calling a claim unargued.'
+    - 'Which terms retain their meaning, acquire a new definition, change name, or take a different argumentative
+      role? Identify each use''s object and scope; shared words alone do not establish the same premise.
+      Both anchors, with doc keys.'
+    - 'Which alternative considered in one text is omitted from another treatment of the same problem? Quote
+      the alternative and the relevant second discussion, state the scope inspected, and distinguish omission
+      from a refusal or a change of subject.'
+    - 'Where does self-citation establish uptake, revision, or continuity? Distinguish composition and edition
+      dates; do not infer an order between same-year texts from their input order.'
+    answer_shape: '[P6.F<n>] <premise, term or alternative and its role in each text> — dim: path_dependence
+      — relations: <one or more of repeated, reargued, presupposed, redefined, renamed, omitted within stated scope>
+      — role-or-scope-change: <changed application, inferential role or qualification; none established>
+      — scope: <comparable objects and qualifications; inspected scope for an omission>
+      — anchor: "<verbatim A>" — doc: <A> — anchor-b: "<verbatim B>" — doc-b: <B> — confidence: …'
     method_card: |-
-      Path dependence, evidenced twice. Do: for each premise or term, find where it was argued or defined
-      and where it became a given; measure nothing you cannot anchor in two documents.
+      Path dependence, evidenced twice. Do: compare the same premise, term or alternative under its actual
+      object, speaker and scope. Distinguish reargument from presupposition, changed application from changed
+      meaning, and a scope qualification from replacement. Relations can coexist: self-citation does not
+      preclude reargument. Inspect earlier formulations before naming an innovation; dates and explicit uptake
+      constrain a development claim but do not establish unsupplied links. State the inspected scope of an
+      omission, distinguishing vocabulary, argument and explicit refusal. A quoted passage does not prove
+      absence or abandonment. Anchor both sides; do not force a change or loss.
     indicators:
     - '"as we have argued", "as shown in"'
     - 'a term with a definition in one document and none in another'
@@ -301,7 +318,8 @@ process:
     tables: [givens, inheritance, visibility]
     brief: |-
       1. The givens: the premise(s) the text needs and does not argue here, each with the sentence that
-         relies on it and what collapses without it. If there is one that everything hangs on, lead with it.
+         relies on it and which route loses support without it. Preserve independent routes. If there is one
+         that everything hangs on, lead with it.
       2. The inheritance: what the text declares it builds on, what it dismisses and by what device, and the
          vocabulary it uses without citing, as provenance hypotheses; what the self-citation cluster carries.
       3. The apparatus: what the evidence is and when it is from, what had to happen for the argument to be
@@ -310,7 +328,7 @@ process:
          against the frame — mechanisms it does not own, a definition that inverts its causal order, the
          brackets and what they protect, the renamings and what they gain.
       5. Rivals and the residue: the rivals the text itself names, what each would say of the same evidence,
-         the sentence that forbids each; then the subtraction — what survives without the frame and what
-         collapses.
+         the sentence that forbids each; then subtract the frame premise by premise — which formulation or
+         route fails, what independent evidence survives, and how far that changes the conclusion.
       6. The judgment: enabling or constraining on balance, with the specific gain and the specific cost; the
          one hole if there is one (say plainly if there are two); and the repair in the text's own vocabulary.

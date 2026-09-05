@@ -1,6 +1,6 @@
 # Corpus follow-up: resume and crash limits
 
-The [follow-up runner](../../scripts/study_ideas_corpus_synthesis_followup_2026_09_05.py) has not launched a model during this review. The baseline runtime is unchanged.
+The [follow-up runner](../../scripts/study_ideas_corpus_synthesis_followup_2026_09_05.py) completed all four approved calls under identity `d04d447a6d944d02`, at $0.886604 estimated cost and $7.621792 cumulative study cost. It exited successfully after validating all four recorded completions. No crash or paid retry occurred. The production runtime was updated afterward; the historical frozen-input guards should now refuse a new live plan from that changed checkout. This document records the completed run’s resume contract, not an instruction to launch more calls.
 
 A completed follow-up is reusable only when its record matches the expected follow-up identity, baseline parent, reviewed instruction, and attempt path. Its sole invocation must have complete status, valid usage, the expected requested/used Sol model and label, and the exact planned system/user prompt hashes. The saved raw response must equal the final output byte for byte. The record also pins the invocation receipt's file hash.
 

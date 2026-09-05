@@ -1,6 +1,6 @@
 # Adopting the two offline recoveries
 
-**Prepared; adoption has not been executed.** Wait for live execution session `29306` to end before using the commands below. The live runtime, original failed receipts, and results remain untouched by this preparation.
+**Completed on 2026-09-05.** After the original process exited, preview and adoption both passed in fresh interpreters. The audit is `reader_notes/auxiliary_recovery/adoptions/20260905T064226.572337Z/`. The unchanged judge-only resume then completed exactly four missing judgments, bringing the baseline to 52/52 jobs. Adoption added no model calls or cost; the four resumed judgments added $0.342891, for a baseline total of $6.735188. Original failures remain preserved. The commands below document the executed procedure; they are not instructions to adopt again.
 
 The accepted [recovery manifest](../../data/study/ideas_2026_09_05/374325c24e6b10a1/reader_notes/auxiliary_recovery/20260905T045321.120955Z/manifest.json) pins the two artifacts, original raw responses/prompts, frozen runtime, transformation script, and all 10 byte-identical completed checked outputs. Its SHA-256 is `84b58c975f296dc7c72cb49baacb23e631a06d622c6b6192cf01da4e5f394195`. The transformation bounds `_ledger_text` at exact requested auxiliary headings; it makes no broader quotation or semantic repair.
 
@@ -11,7 +11,7 @@ The new [adoption script](../../scripts/adopt_ideas_auxiliary_recovery_2026_09_0
 - Current code still matches the pinned judge-resume runtime. A temporary `c19513884a5453f54073e38cbabf2c6e7d5cfd28` archive reproduces the complete plan identity and each recovered output from its exact saved prompts, models, responses, usage, and durations.
 - Exactly the four judgments dependent on Argument/Chen and Epistemology/Harris remain incomplete. Other incomplete or stale judgments cause refusal.
 
-Run from the repository root, **after the live session ends**:
+Executed from the repository root after the live session ended, with `TMPDIR=/home/evgeny/projects/the-analyst-wt/study-tmp-2026-09-05` for the frozen archives:
 
 ```bash
 # Offline guard tests; these have passed during preparation.

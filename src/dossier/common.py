@@ -217,23 +217,34 @@ def analysis_ledger(job: DossierJob, docs: Optional[list] = None, max_rows: int 
         rows = parse_rows(ledger)
         if index is not None:
             op = get_operationalization_registry().get(ph.get("engine_key") or "")
-            corpus_dimensions = {d.key for d in op.process.dimensions if d.scope == "corpus"} if op and op.process and len(index.norm) > 1 else set()
-            verify_rows(rows, index, corpus_dimensions=corpus_dimensions)
+            corpus_dims = [d for d in op.process.dimensions if d.scope == "corpus"] if op and op.process and len(index.norm) > 1 else []
+            # The composer encodes corpus extraction/addition provenance in these
+            # namespaces. Preserve it when a final row uses a document dimension.
+            prefixes = {d.id_prefix or d.key.upper() for d in corpus_dims}
+            if corpus_dims:
+                prefixes.add("V.CORPUS")
+            corpus_ids = {rid for r in rows for rid in [r.id, *r.lineage]
+                          if any(rid.startswith(prefix + ".") for prefix in prefixes)}
+            verify_rows(rows, index, corpus_dimensions={d.key for d in corpus_dims}, corpus_ids=corpus_ids)
         label = ph.get("engine_name") or ph.get("engine_key") or f"phase {pn}"
         for r in rows:
             if shown >= max_rows:
                 break
             shown += 1
-            if index is None and r.anchor:
+            malformed = any(a.parse_error for a in r.anchors)
+            if index is None and r.anchor and not malformed:
                 anchors = " — ".join(f'anchor{f" [{a.doc}]" if a.doc else ""}: "{a.quote}"' for a in r.anchors)
                 citable.append(f"- [{r.id}] ({label}) {r.finding} — {anchors}")
             elif r.anchor_verified:
                 anchors = " — ".join(f'anchor [{a.verified_doc}]: "{a.quote}"' for a in r.anchors)
                 citable.append(f"- [{r.id}] ({label}) {r.finding} — {anchors}")
-            elif r.anchor:
-                anchors = " — ".join(f'near{f" [{a.doc}]" if a.doc else ""}: "{a.quote[:160]}"' for a in r.anchors)
+            elif r.anchor or malformed:
+                anchors = " — ".join(
+                    f'near{f" [{a.doc}]" if a.doc else ""}: '
+                    + (f'(unverified quotation: {a.parse_error})' if a.parse_error else f'"{a.quote[:160]}"')
+                    for a in r.anchors)
                 # Preserve the legacy primary `near:` format for single-document findings.
-                if len(r.anchors) == 1:
+                if len(r.anchors) == 1 and not malformed:
                     anchors = f'near: "{r.anchor[:160]}"'
                 paraphrased.append(f"- [{r.id}] ({label}) {r.finding} — {anchors}")
     if not citable and not paraphrased:

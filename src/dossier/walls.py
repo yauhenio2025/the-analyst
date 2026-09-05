@@ -91,6 +91,10 @@ def normalize(text: str) -> str:
     if not text:
         return ""
     text = unicodedata.normalize("NFKC", text)
+    # U+00AD is a discretionary word break. Join its explicit line wrap before
+    # _QUOTE_MAP removes the marker and leaves a false space inside the word.
+    # Ordinary hyphens keep the existing normalization/alternate-index behavior.
+    text = re.sub(r"(?<=\w)\u00ad[ \t]*\r?\n[ \t]*(?=\w)", "", text)
     text = "".join(_QUOTE_MAP.get(ch, ch) for ch in text)
     # join words hyphenated across line breaks ("exploit-\native")
     text = re.sub(r"(\w)-\s*\n\s*(\w)", r"\1\2", text)

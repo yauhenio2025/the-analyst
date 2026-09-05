@@ -113,3 +113,12 @@ Problem classes, root causes, files fixed. See global rules.
 **Work to Do**: After the direct ideas-corpus validation, carry the phase's actual document map through chain and single-engine dispatch, respecting existing target/prior/source-thinker scope. Verify workflow dispatch with real document identities before exposing corpus modes. The ideas study supplies a document map directly and can validate the method, but cannot establish that workflow dispatch is fixed.
 
 **Pattern to Watch For**: an end-to-end test of the inner runner with a dictionary does not test an outer adapter that flattens the dictionary into text.
+
+
+## Ideas ledger parser and critic handoff defects (2026-09-05, fixed)
+
+**Problem**: Saved study responses exposed soft-hyphen wraps becoming false spaces, ignored supported counter-anchors, disappearing trim history, ignored explicit weakened-finding replacements, and auxiliary references treated as duplicate or rejected rulings. The quote parser could accept a prefix ending at an internal quotation mark while leaving the displayed remainder unchecked. Desk re-verification could lose the required pair on a corpus-derived finding whose dimension label changed.
+
+**Fix**: Join explicit discretionary wraps before normalization; tokenize declared fields outside quoted prose; require supported complete quotation forms, preserve malformed findings visibly unverified, verify counter-anchors and retain document bindings; apply and serialize explicit critic replacements with original-finding provenance; stop at the requested auxiliary sections; carry declared corpus namespaces through desk ancestry checks. The receipt states when the ledger changes but preceding prose remains original. Future study fingerprints include the shared normalizer. These changes leave semantic support to models/readers and retain the existing deliberate prefix-trimming policy.
+
+**Validation**: 186 affected-path tests plus 13 study-script guard tests passed after exact combined-patch application. Saved-artifact compatibility covers the baseline's 115 corpus calls and 28 final desk handoffs, with separately documented stricter quotation results. [Full audit and replay evidence](study/STUDY_ideas_ANCHOR_AUDIT_2026-09-05.md). The workflow document-map dispatch issue above remains open.

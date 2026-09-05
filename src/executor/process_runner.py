@@ -15,6 +15,7 @@ Judgment stays with the models; this file holds shape, sequence, arithmetic and 
 """
 from __future__ import annotations
 
+import json
 import logging
 import os
 import re
@@ -439,16 +440,22 @@ def apply_rulings(rows: list[LedgerRow], rulings: list[LedgerRow], index: Source
             rep["rejected"] += 1; r.text = v.text; target = rejected
         elif v.status == "weakened":
             rep["weakened"] += 1; target = kept
+            original_finding = r.finding
             r.text, r.finding = v.text, v.finding
+            r.revised_finding = v.revised_finding
+            if v.revised_finding:
+                r.replace_finding(v.revised_finding)
+            if r.finding != original_finding and not r.has_field("original-finding"):
+                r.text += " — original-finding: " + json.dumps(original_finding, ensure_ascii=False)
             r.copy_anchors_from(v)
             r.confidence, r.status = v.confidence or r.confidence, "weakened"
         else:
             rep["confirmed"] += 1; target = kept
-            if v.anchor_verified and not r.anchor_verified:   # the critic re-anchored a paraphrased quote
+            if v.anchor_verified and not r.anchor_verified:   # the critic supplied a matching anchor
                 r.copy_anchors_from(v)
                 r.text = v.text
         if target is kept and not r.anchor_verified:
-            # a paraphrased quote is not a false finding: the row stays in the ledger, tagged, so the reader keeps it
+            # a failed quote match is not a false finding: the row stays in the ledger, tagged, so the reader keeps it
             # and the desks' walls decide citability (exiling these cost real findings in the 2026-09-05 check study)
             rep["unverified"] += 1; unverified.append(r)
             if "anchor-verified: no" not in r.text:
@@ -476,7 +483,9 @@ def assemble_checked_content(prose: str, ledger: str, kept: list[LedgerRow], rej
         parts += ["", tail]
     if rejected:
         parts += ["", "### Rejected by the critic", *(r.render() for r in rejected)]
-    parts += ["", "### Check receipt", f"- critic: {critic}; rows in: {rep['in']}; confirmed {rep['confirmed']} (+{rep['carried']} unmentioned, kept); weakened {rep['weakened']}; rejected {rep['rejected']}; added {rep['added']} (dropped {rep['added_dropped']} whose anchors were not verbatim); rows kept with a paraphrased quote (tagged anchor-verified: no) {rep['unverified']}"]
+    parts += ["", "### Check receipt", f"- critic: {critic}; rows in: {rep['in']}; confirmed {rep['confirmed']} (+{rep['carried']} unmentioned, kept); weakened {rep['weakened']}; rejected {rep['rejected']}; added {rep['added']} (dropped {rep['added_dropped']} whose anchors did not match the source); rows kept with an unverified or incomplete anchor (tagged anchor-verified: no) {rep['unverified']}"]
+    if any(rep[k] for k in ("weakened", "rejected", "added")):
+        parts.append("- The ledger incorporates the critic's changes; the preceding prose is unchanged from the original reading.")
     return "\n".join(parts).rstrip() + "\n"
 
 

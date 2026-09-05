@@ -149,7 +149,7 @@ process:
     load_bearing: true
     questions:
     - What theses does the text undertake in its own words, and with what verb ("we argue", "constitutes", "we show")?
-      Give each a stable id (C1 the main thesis, C2 …).
+      Give each a stable id (C1 the main thesis, C2 …), preserving conditions and scope.
     - Which commitments does the text present as its own and which does it take from a cited source (quote the sentence
       that takes it)?
     - Which commitments does the text defend at length and which does it assert once and rely on?
@@ -175,13 +175,16 @@ process:
       Quote the use.
     - Which entailments does the text draw from one concept and not from another that carries the same inference
       (an asymmetry)? Quote both.
-    - Which of these entailed commitments would a reader who accepts the main thesis be unable to refuse?
-    answer_shape: '[I2.F<n>] Accepting <concept or C<k>> commits a reader to <commitment> — dim: entailed — drawn|presupposed
+    - Which commitments follow from accepting the main thesis itself, and which require accepting this particular
+      derivation or additional premises? Name those premises and test whether another route leaves them optional.
+    answer_shape: '[I2.F<n>] Accepting <concept, C<k>, or explicitly endorsed derivation plus named premises>
+      entails <commitment> — dim: entailed — basis: conclusion|endorsed derivation — drawn|presupposed
       — anchor: "<verbatim>" — confidence: …'
     method_card: 'Brandom, material inference. Do: for each key concept write the inference the text treats as good
       by the concept''s content rather than by logic ("regulatory control" → interests rearticulated as general
-      interest); anchor the sentence where the text draws it or uses the concept as if it were drawn; mark asymmetries
-      where a parallel inference is not drawn.'
+      interest); anchor the inference and name its additional premises. Do not reverse support: premises used
+      to establish a conclusion need not follow from accepting it. Distinguish a commitment to the conclusion
+      from endorsement of its whole derivation; mark asymmetries where a parallel inference is not drawn.'
     indicators:
     - a concept used as an explanation without the step being argued
     - '"in other words", "that is", "amounts to"'
@@ -197,11 +200,13 @@ process:
     - Which commitment inherited from a cited source conflicts with the text's own position? Quote both.
     - Which incompatibility is productive (the text draws something from the tension) and which is damaging (the
       text needs both sides)?
-    answer_shape: '[I3.F<n>] <commitment A> excludes <commitment B> — dim: incompatibilities — anchor: "<A>" — anchor-b:
-      "<B>" — handled: addressed|bracketed|unnoticed — confidence: …'
+    answer_shape: '[I3.F<n>] <commitment A, owner and scope> relates to <commitment B, owner and scope> — dim:
+      incompatibilities — relation: incompatibility|productive tension|qualified compatibility|opponent contrast
+      — anchor: "<A>" — anchor-b: "<B>" — handled: addressed|bracketed|unnoticed — confidence: …'
     method_card: 'Brandom, incompatibility. Do: for every pair of commitments ask whether holding one precludes
-      entitlement to the other in the text''s own terms (not in yours); quote both sides; quote what the text does
-      with the pair, or say plainly that it does nothing.'
+      entitlement to the other in the text''s own terms (not in yours). Identify each claim''s owner, object and
+      conditions before testing compatibility. Do not turn an appearance/reality distinction, selective borrowing,
+      or a productive tension into contradiction by the answer label. Quote both sides and their handling.'
     indicators:
     - the same phenomenon explained by two mechanisms in different sections
     - '"this is not to say", "beyond the scope"'
@@ -210,16 +215,19 @@ process:
     id_prefix: I4
     name: Dependencies
     questions:
-    - Which commitments does nothing in the text support (asserted, presupposed, or borrowed on authority)? These
-      are foundational.
+    - Which commitments serve as premises for others, and what entitles the text to them (argument, evidence,
+      citation, presupposition)? Distinguish a foundational role from absence of support.
     - What is the chain from the foundational commitments to the main thesis — which commitment is derived from
       which?
-    - Which single commitment, if withdrawn, takes the most with it? Quote it.
+    - If a load-bearing commitment is withdrawn, which argument route loses support and which independent routes
+      survive? Name a single point of failure only if the text's other routes also depend on it. Quote the premise.
     - Where does the chain circle (A supports B supports A)? Quote both.
     answer_shape: '[I4.F<n>] C<k> is foundational|derived from C<m> — dim: dependencies — anchor: "<verbatim>" —
-      failure-takes: <what falls> — confidence: …'
-    method_card: 'Toulmin. Do: for each commitment, find what in the text supports it; what has no support is foundational;
-      follow the chain up to the thesis and name the single point of failure; quote any circle.'
+      failure-takes: <which claims or routes lose support> — survives: <independent support or none shown> — confidence: …'
+    method_card: 'Toulmin. Do: inventory support and trace branching routes to the thesis. Removing a premise
+      defeats the routes that need it, not automatically the conclusion; keep independently supported conclusions
+      and distinguish a failed formulation from a failed historical claim. Name a single point of failure only
+      when warranted; quote any circle.'
     indicators:
     - '"therefore", "it follows", "this means"'
     - an assumption introduced as obvious
@@ -227,17 +235,20 @@ process:
     id_prefix: I5
     name: Consequences drawn and stopped short of
     questions:
-    - What does the text say follows from its commitments for practice, policy or method? Quote it.
+    - What does the text say follows from its commitments for practice, policy or method? Quote it; distinguish
+      necessary capacities from suggested resources and optional examples.
     - Where does a consequence follow from the text's commitments and the text stops? Quote the sentence where it
       stops.
     - Where does normative vocabulary sit inside a descriptive claim ("neatly", "merely", "obscures")? Quote it
       and say what it commits the text to.
     - Which consequence would the text's own evidence not support? Quote the evidence.
-    answer_shape: '[I5.F<n>] From C<k> follows <consequence> — dim: consequences — drawn|stopped — anchor: "<verbatim>"
-      — confidence: …'
+    answer_shape: '[I5.F<n>] C<k> supports <consequence or resource> — dim: consequences
+      — force: required|recommended|illustrative|possible — source: text drawn|analyst extension
+      — anchor: "<verbatim>" — confidence: …'
     method_card: 'Sellars. Do: keep the space of reasons and the space of causes apart — where the text explains
       by causes what it evaluates by reasons (or the reverse), quote it; where a consequence for practice follows
-      and the text stops, quote the stop; read the normative words inside descriptive sentences as commitments.'
+      and the text stops, quote the stop and label your extension. Keep optional remedies distinct from required
+      capacities; read normative words inside descriptive sentences as commitments.'
     indicators:
     - '"beyond the scope", "we leave aside"'
     - evaluative adverbs in descriptive sentences
@@ -246,13 +257,22 @@ process:
     name: The shared score across the corpus
     scope: corpus
     questions:
-    - Which commitments do the texts share? Anchor each in each text.
-    - Which entailment does one text draw and another refuse? Both anchors.
-    - Which incompatibility appears only when two texts are read together?
-    answer_shape: '[X6.F<n>] <shared commitment | divergence> — dim: shared_score — anchor: "<verbatim>" — doc:
+    - Which commitments do the texts share, with what conditions and scope? Anchor each in every text included
+      in the claim. Distinguish a mechanism the author describes from a recommendation the author endorses.
+    - Which entailment does one text draw and another explicitly refuse or qualify? Quote both; an omission
+      does not itself establish refusal. Preserve historical qualifications and additional premises.
+    - Which positions become incompatible, or remain compatible after qualification, when the texts are read
+      together? Align their objects, scope and conditions; state the inference and additional premises that
+      connect different commitments before classifying their relation.
+    answer_shape: '[X6.F<n>] <commitments, owners and scope> — dim: shared_score
+      — relation: shared|qualified continuity|divergence|incompatibility — anchor: "<verbatim>" — doc:
       <A> — anchor-b: "<verbatim>" — doc-b: <B> — confidence: …'
-    method_card: 'The school''s score. Do: reconcile the commitment lists across texts, then list what is shared,
-      what diverges, and what conflicts across texts.'
+    method_card: 'The school''s score. Do: reconcile commitment meanings across texts, preserving owners,
+      conditions and inferential roles. Separate descriptive pressures from endorsed remedies, a changed
+      emphasis from replacement, and a limited systematic account from a claim to total knowledge. Check
+      earlier formulations before naming a later innovation; an edition date alone does not date a position.
+      Report qualified continuity where the texts allow it, and name the additional premise needed for an
+      alleged incompatibility. Every document covered by the finding needs its own anchor.'
     indicators:
     - the same thesis in two documents in different words
   steps:
@@ -288,16 +308,19 @@ process:
     - commitments
     - entailments
     - incompatibilities
-    brief: '1. What you sign up for: the main commitment in the text''s words and the two or three entailed commitments
-      a reader cannot refuse once they accept it, each anchored where the text draws or presupposes the inference.
+    brief: '1. What you sign up for: the main commitment in the text''s words, retaining its conditions, and the
+      commitments a reader cannot refuse once they accept it. State additional premises where needed; distinguish
+      accepting the conclusion from accepting this particular derivation. Do not force a minimum number of entailments.
 
       2. The declared score: the commitments the text undertakes, its own and inherited, defended and merely asserted.
 
-      3. The incompatibilities: the pairs that exclude each other, both sides quoted, and what the text does with
-      each.
+      3. The relations: incompatibilities, productive tensions, qualified compatibilities and contrasts with opponents,
+      both sides attributed and quoted, and what the text does with each.
 
-      4. The dependencies: what is foundational, the chain to the thesis, the single point of failure.
+      4. The dependencies: premises and their entitlement, branching routes to the thesis, what loses support
+      and what survives when a premise is withdrawn. A single point of failure only where warranted.
 
-      5. The consequences: what the text draws for practice and where it stops, with the stop quoted.
+      5. The consequences: required capacities, advocated resources and analyst extensions distinguished; where
+      the text stops, with the stop quoted.
 
       6. The judgment: the price of accepting the position, and the one commitment a reader should test first.'
