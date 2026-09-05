@@ -31,4 +31,16 @@ The actual offline preflight reproduces 24 generation products and 17 valid scor
 python scripts/study_argument_family_collect_scores_2026_09_05.py --run --phase judge --budget-usd 16 --review-record /absolute/path/to/reader_notes/pre_score/judge_review.json
 ```
 
+## Manual-review queue after a second syntax form
+
+At 27 rating calls, a Sonnet response for candidate Counterfactual/Ganzinger contains unescaped ASCII quotation marks inside two reason strings. The one-brace rule correctly stops rather than changing or accepting it. Its raw SHA-256 is `4ebea8c863132426d401b0969f31c34065fa97ad1f54fe68ad4356afbf883ac0`. Root and an independent reviewer confirm that four inserted backslashes at original byte offsets 1055, 1076, 3312 and 3322 produce `48bb1de9a41a879458201e2b10e77d1c34a47c872ac1d052e511d2bdc9eaee46`, preserving every other byte and all scores/reason wording. The six values remain 9, 9, 8, 9, 8, 9. This is still only a reviewed proposal, pending final adoption.
+
+Root now broadens **collection deferral, not score acceptance**, to any native `JSONDecodeError` following the same complete, fully bound call. The [manual collection adapter](../../scripts/study_argument_family_collect_manual_scores_2026_09_05.py) preserves old one-brace entries exactly and gives other syntax failures a manual-review entry with no proposed corrected hash or insertion offset. It does not interpret missing or malformed judgment content as valid. A complete call receipt is distinct from a complete judgment; any missing judgment content remains unresolved and cannot enter the final score matrix without a valid separately reviewed result. Explicit partial/backend errors, unknown usage/cost, and non-JSON schema failures still stop collection.
+
+This amendment allows the remaining independent ratings to be collected while failed parses await review. The exact same matrix, prompts, budget and source gate remain in force; no failed call is retried. The manual adapter SHA-256 is `b6ae90a9bb203e7980ecd55ad49c1eefbfd5e3a1d55bcb709b545c46c2ea3078`. **97 offline tests passed** (22 new manual-queue cases plus the previous 75), and actual-data preflight preserves 24 generations, 25 accepted scores and both current failed parses. Root's [manual-queue acceptance record](../../data/study/argument_family_2026_09_05/530df62823ec1915/reader_notes/score_recovery/root_manual_collection_review.json) verifies the old pending entry and the new complete Sonnet call without correction or publication. Independent review found no further defect.
+
+```bash
+python scripts/study_argument_family_collect_manual_scores_2026_09_05.py --run --phase judge --budget-usd 16 --review-record /absolute/path/to/reader_notes/pre_score/judge_review.json
+```
+
 Collection results and final adoption bindings will be recorded below.
