@@ -11,6 +11,8 @@ Code checks shape only (JSON, keys exist, family names). Rubric: communications/
 
   python scripts/triage_engine_catalogue.py --dry-run     # cards, batches, cost estimate; no calls
   python scripts/triage_engine_catalogue.py --run         # pass A + pass B + report (resumable)
+Note (2026-09-05 22:50): the first run (Sol) is superseded by Codex's independent redo on gpt-6-astra (judgments_codex.json,
+families_codex.json, TRIAGE_engine_catalogue_CODEX_2026-09-05.md); this script carries Codex's rubric-review fixes for any rerun.
   python scripts/triage_engine_catalogue.py --report
 """
 from __future__ import annotations
@@ -38,7 +40,7 @@ def build_cards() -> list[dict]:
     caps = {Path(f).stem: yaml.safe_load(open(f)) for f in glob.glob(str(ROOT / "src/engines/capability_definitions/*.yaml"))}
     cat = json.load(open(ROOT / "src/dossier/catalog_purpose.json"))
     offered = {e["engine_key"]: g["key"] for g in cat.get("groups", []) for e in g.get("engines", [])}
-    excluded = {e.get("engine_key"): e.get("reason", "") for e in cat.get("excluded", []) if isinstance(e, dict)}
+    excluded = {e.get("engine_key"): e.get("why") or e.get("reason", "") for e in cat.get("excluded", []) if isinstance(e, dict)}
     cards = []
     for f in sorted(glob.glob(str(ROOT / "src/engines/definitions/*.json"))):
         d = json.load(open(f))
@@ -55,6 +57,13 @@ def build_cards() -> list[dict]:
             "offered_in_group": offered.get(key, ""), "excluded_reason": excluded.get(key, ""),
             "developed": key in caps, "under_the_shape": key in UNDER_THE_SHAPE,
         }
+        op_path = ROOT / "src/operationalizations/definitions" / f"{key}.yaml"
+        if op_path.exists():
+            op = yaml.safe_load(open(op_path)) or {}
+            proc = op.get("process") or {}
+            if proc.get("dimensions"):
+                card["active_process_questions"] = [{"key": d["key"], "questions": d.get("questions", []), "answer_shape": d.get("answer_shape", ""), "method_card": (d.get("method_card") or "")[:400]} for d in proc["dimensions"]]
+                card["active_process_source"] = str(op_path.relative_to(ROOT))
         if key in caps:
             c = caps[key]
             card["problematique"] = (c.get("problematique") or "").strip()[:900]
@@ -73,6 +82,10 @@ def card_text(c: dict) -> str:
     if c.get("lineage"): lines.append(f"lineage: {c['lineage']}")
     for dm in c.get("dimensions", []) or []:
         lines.append(f"- dimension {dm['key']}: {dm['description']}"); lines += [f"    ? {q}" for q in dm["questions"]]
+    if c.get("active_process_questions"):
+        lines.append(f"ACTIVE QUESTIONS (the ones that run today, from {c['active_process_source']}; the capability dimensions above are the earlier definition):")
+        for d in c["active_process_questions"]:
+            lines.append(f"- {d['key']}: method card: {d['method_card']}"); lines += [f"    ? {q}" for q in d["questions"]]
     return "\n".join(lines)
 
 
@@ -125,7 +138,7 @@ def pass_a(cards, J, all_keys):
             j["verdict"] = j.get("verdict") if j.get("verdict") in VERDICTS else "rewrite"
             j["overlaps_with"] = [k for k in (j.get("overlaps_with") or []) if k in all_keys and k != j["key"]]
             j["merge_into"] = j.get("merge_into") if j.get("merge_into") in all_keys else ""
-            if j["verdict"] == "merge" and not j["merge_into"]: j["verdict"] = "rewrite"; j["reason"] = (j.get("reason") or "") + " [merge target unknown → rewrite]"
+            if j["verdict"] == "merge" and not j["merge_into"]: j["shape_note"] = "merge without a known target (kept as the model returned it; consolidation must name the target)"
             j["cost_share"] = round(cost / max(1, len(keys)), 4); out.append(j)
         log(f"  judged {len(out)}/{len(keys)}: " + ", ".join(f"{j['key']}={j['verdict']}" for j in out))
         return out
@@ -135,13 +148,13 @@ def pass_a(cards, J, all_keys):
 
 
 B_SYSTEM = ("You are consolidating one family of analysis engines from their definition cards and the per-engine triage judgments. Follow the rubric's "
-            "family consolidation, under these constraints: a family has 3 to 8 methods; a method is ONE reader's question that no other method in the family answers; "
-            "EVERY engine in the family folds into exactly one method (or is retired), so list every key once across folds_in and retire; where several engines are "
-            "variants of one question (a concept's causal relations as cause, as effect, bidirectional), they are one method; name the engine whose questions can serve "
-            "as the method's questions, or say new. Critic skills are reading disciplines that recur across the family and belong in the critic's duties, five at most, "
-            "each a single imperative sentence. Return ONE JSON object: {\"family\": …, \"methods\": [{\"name\": …, \"reader_question\": …, \"folds_in\": [engine keys], "
+            "family consolidation. Choose the number of methods warranted by the reader questions and the cards; there is no target count or compression ratio. "
+            "For each proposed combination, say what is shared, what distinct questions remain as dimensions, and what would be lost; for each proposed separation, "
+            "state the distinct reader question. Account for every engine once as a disposition (folds into a method, retired, or unresolved for lack of evidence). "
+            "Revise a pass-A placement or verdict when the fuller comparison warrants it, naming the evidence. Critic skills are reading disciplines that recur across "
+            "the family and belong in the critic's duties, each one imperative sentence. Return ONE JSON object: {\"family\": …, \"methods\": [{\"name\": …, \"reader_question\": …, \"folds_in\": [engine keys], "
             "\"questions_source\": \"<engine key whose questions can serve>\" | \"new\", \"why\": …}], \"critic_skills\": [\"<a reading skill that recurs and belongs in the critic or a shared method card>\", …], "
-            "\"retire\": [{\"key\": …, \"reason\": …}], \"note\": …}. No prose outside the JSON.\n\n" + RUBRIC)
+            "\"retire\": [{\"key\": …, \"reason\": …}], \"unresolved\": [{\"key\": …, \"reason\": …}], \"revisions\": [{\"key\": …, \"field\": …, \"from\": …, \"to\": …, \"evidence\": …}], \"note\": …}. No prose outside the JSON.\n\n" + RUBRIC)
 
 
 def pass_b(cards, J, F):
