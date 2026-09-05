@@ -133,3 +133,35 @@ def test_study_spend_keeps_unknown_invocations_reserved(tmp_path,monkeypatch):
     study.write(tmp_path/'calls'/'job'/'0002.json',{'status':'complete','cost_usd':.2,'reservation_usd':.7})
     assert study.costs()['known_usd']==.2 and study.costs()['reserved_usd']==.8
     assert study.admission('strong','source','reading')>study.LIMITS['strong']*10/1e6
+
+
+def test_study_denies_new_call_when_completed_and_unknown_costs_fill_cap(tmp_path,monkeypatch):
+    from scripts import study_corpus_methods_P1_P2_2026_09_06 as study
+    monkeypatch.setattr(study,'OUT',tmp_path)
+    monkeypatch.setattr(study,'guard',lambda _:None)
+    study.write(tmp_path/'calls'/'prior'/'0001.json',{'status':'complete','cost_usd':7.7,'reservation_usd':.5})
+    study.write(tmp_path/'calls'/'prior'/'0002.json',{'status':'failed','cost_usd':None,'reservation_usd':.2})
+    with pytest.raises(RuntimeError,match='USD8 admission cap'):
+        study.Recorder('never_launched',{})("system","user",model_hint=study.MODELS['strong'],label='new call')
+    assert not (tmp_path/'calls'/'never_launched').exists()
+
+
+def test_reader_memo_binds_exact_completed_output_before_scoring(tmp_path,monkeypatch):
+    from scripts import study_corpus_methods_P1_P2_2026_09_06 as study
+    monkeypatch.setattr(study,'OUT',tmp_path/'data')
+    monkeypatch.setattr(study,'ROOT',tmp_path)
+    key='P1__deep__pair';p=study.OUT/'outputs'/f'{key}.md';p.parent.mkdir(parents=True);p.write_text('Original reading')
+    sha=study.digest(p.read_bytes())
+    study.write(study.OUT/'results'/f'{key}.json',{'status':'complete','output_sha256':sha})
+    memo=tmp_path/'communications/study/corpus_methods_P1_P2_2026_09_06'/f'{key}.md';memo.parent.mkdir(parents=True)
+    memo.write_text('Substantive source reading. '*50)
+    with pytest.raises(RuntimeError,match='Source-read memo'):study.memo_binding(key,{})
+    memo.write_text(sha+'\n'+'Substantive source reading. '*50)
+    assert study.memo_binding(key,{})['output_sha256']==sha
+    p.write_text('Changed output')
+    with pytest.raises(RuntimeError,match='Output changed'):study.memo_binding(key,{})
+
+
+def test_offline_audit_checks_ids_inside_final_citation_ranges():
+    from scripts.audit_corpus_methods_P1_P2_2026_09_06 import expanded_final_citations
+    assert expanded_final_citations('[F1–F3] and [F5, F7]')=={'F1','F2','F3','F5','F7'}
