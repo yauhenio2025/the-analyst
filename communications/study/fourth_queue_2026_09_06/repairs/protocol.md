@@ -1,0 +1,11 @@
+# Fourth queue bounded repairs, frozen before purchase
+
+This is one fresh checked same-paper attempt for each ID listed in amendment.json, plus one replacement of the truncated I13 legacy control with its unchanged frozen prompt and source. The initial failure and USD0.335108 unknown-use reserve remain in the first-pass archive. No partial output is adopted. Original controls for all other methods are reused; no new controls are bought to improve a comparison.
+
+Only unreleased method cards, framing/final brief and critic duties change in response to the recorded defects. Analytical questions, source texts, production runner, anchor wall, routing and mode assignments are unchanged. Every edited card asks for literal spans carrying the actor, predicate and qualification. Grammar reminders guide the model; no semantic wall or deterministic repair is added.
+
+Freeze changed definitions, the amendment, first-pass audit and post-score source adjudication before any invocation. Preserve raw calls and all attempts. A generation failure remains a failure; no implicit retry. Read each complete new output and its actual tables against the paper, write a hash-bound source memo, commit and push every new memo before either independent Sonnet or Sol score. Judges see only the source and one output under the original rubric. Inventory decisions use accurate useful rows, verified anchors and the source read; readings additionally require Sonnet at least the same-paper original.
+
+Release under the first-queue standard. Retained anchors and actual desk/table identities must verify; no fabricated finding, surviving attribution reversal or rejected-row cell. Complete local evidence packets and complete scope records are not a new release veto. A malformed findings check leaving all rows without valid rulings is an explicit failed checked attempt; a genuine source/identity defect is not excused by a high scalar score. Withhold any failed final attempt and name its defect.
+
+USD15 is total queue guidance rather than a hard admission cap. Report initial generation, independent scores, every repair/replacement, and the unreceipted-use reserve separately. This adapter has an isolated ledger to preserve the first freeze; the final report aggregates both ledgers.

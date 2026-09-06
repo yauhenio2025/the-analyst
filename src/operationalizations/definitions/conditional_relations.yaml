@@ -38,7 +38,12 @@ process:
       Select literal spans that together carry the finding’s actor, predicate, object and necessary qualification.
       If one short span cannot do so, use anchor-b/doc-b for a separate span, including within one document. Never
       concatenate separated phrases into a quotation. Keep attribution, modality, status and chronology; re-anchor,
-      narrow or reject a verbatim quote that omits the claimed predicate.'
+      narrow or reject a verbatim quote that omits the claimed predicate. Distinguish A if B (B implies A) from
+      A only if B (A implies B). The fact that a text proves growth under an instrumental definition does not rule
+      out growth under other definitions. Audit necessity words in every prose sentence and table cell, including
+      summaries and exceptions; never insert only, must or requires without an anchored necessity predicate. Give
+      an explicit source only-if condition its own relation when it is central to a counterexample. Use separate
+      contiguous spans shorter than 180 characters when a full conditional would be clipped.'
     indicators:
     - antecedent
     - consequent
@@ -56,7 +61,12 @@ process:
       not as a quotation or biconditional. Select literal spans that together carry the finding’s actor, predicate,
       object and necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span,
       including within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality,
-      status and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+      status and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate. Distinguish
+      A if B (B implies A) from A only if B (A implies B). The fact that a text proves growth under an instrumental
+      definition does not rule out growth under other definitions. Audit necessity words in every prose sentence
+      and table cell, including summaries and exceptions; never insert only, must or requires without an anchored
+      necessity predicate. Give an explicit source only-if condition its own relation when it is central to a counterexample.
+      Use separate contiguous spans shorter than 180 characters when a full conditional would be clipped.'
     indicators:
     - condition
     - conditioned proposition
@@ -74,7 +84,12 @@ process:
       actor, predicate, object and necessary qualification. If one short span cannot do so, use anchor-b/doc-b for
       a separate span, including within one document. Never concatenate separated phrases into a quotation. Keep
       attribution, modality, status and chronology; re-anchor, narrow or reject a verbatim quote that omits the
-      claimed predicate.'
+      claimed predicate. Distinguish A if B (B implies A) from A only if B (A implies B). The fact that a text proves
+      growth under an instrumental definition does not rule out growth under other definitions. Audit necessity
+      words in every prose sentence and table cell, including summaries and exceptions; never insert only, must
+      or requires without an anchored necessity predicate. Give an explicit source only-if condition its own relation
+      when it is central to a counterexample. Use separate contiguous spans shorter than 180 characters when a full
+      conditional would be clipped.'
     indicators:
     - outer condition
     - inner condition
@@ -92,7 +107,12 @@ process:
       and what may happen. Select literal spans that together carry the finding’s actor, predicate, object and necessary
       qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including within one
       document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status and chronology;
-      re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+      re-anchor, narrow or reject a verbatim quote that omits the claimed predicate. Distinguish A if B (B implies
+      A) from A only if B (A implies B). The fact that a text proves growth under an instrumental definition does
+      not rule out growth under other definitions. Audit necessity words in every prose sentence and table cell,
+      including summaries and exceptions; never insert only, must or requires without an anchored necessity predicate.
+      Give an explicit source only-if condition its own relation when it is central to a counterexample. Use separate
+      contiguous spans shorter than 180 characters when a full conditional would be clipped.'
     indicators:
     - implication
     - modal force
@@ -111,7 +131,12 @@ process:
       carry the finding’s actor, predicate, object and necessary qualification. If one short span cannot do so,
       use anchor-b/doc-b for a separate span, including within one document. Never concatenate separated phrases
       into a quotation. Keep attribution, modality, status and chronology; re-anchor, narrow or reject a verbatim
-      quote that omits the claimed predicate.'
+      quote that omits the claimed predicate. Distinguish A if B (B implies A) from A only if B (A implies B). The
+      fact that a text proves growth under an instrumental definition does not rule out growth under other definitions.
+      Audit necessity words in every prose sentence and table cell, including summaries and exceptions; never insert
+      only, must or requires without an anchored necessity predicate. Give an explicit source only-if condition
+      its own relation when it is central to a counterexample. Use separate contiguous spans shorter than 180 characters
+      when a full conditional would be clipped.'
     indicators:
     - conditional tested
     - source case or analyst countermodel
@@ -164,6 +189,20 @@ process:
       necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including
       within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status
       and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+    - Distinguish A if B (B implies A) from A only if B (A implies B). The fact that a text proves growth under
+      an instrumental definition does not rule out growth under other definitions. Audit necessity words in every
+      prose sentence and table cell, including summaries and exceptions; never insert only, must or requires without
+      an anchored necessity predicate. Give an explicit source only-if condition its own relation when it is central
+      to a counterexample. Use separate contiguous spans shorter than 180 characters when a full conditional would
+      be clipped.
+    - 'Before delivery, compare every if/only-if/under condition in the introduction and both tables with the source
+      direction. A stipulated sufficient condition must not silently become necessary. Keep possibility and speaker
+      attribution. Avoid long clipped quotations: use two short predicate-bearing spans and preserve the entire
+      needed conditional across them.'
+    - Output exactly one ruling for each exact input finding ID. A row has exactly one status and at most one revised-finding
+      field. Use one anchor field per suffix, paired with its doc field; never repeat anchor, anchor-b or revised-finding
+      on a row. Keep the valid scope JSON field names dimension_key, finding_ids and coverage (complete, partial
+      or unknown).
   - key: synthesize
     kind: synthesize
     consumes:
@@ -196,4 +235,10 @@ process:
       models judge meaning. Select literal spans that together carry the finding’s actor, predicate, object and
       necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including
       within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status
-      and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+      and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.
+
+
+      5. Before delivery, compare every if/only-if/under condition in the introduction and both tables with the
+      source direction. A stipulated sufficient condition must not silently become necessary. Keep possibility and
+      speaker attribution. Avoid long clipped quotations: use two short predicate-bearing spans and preserve the
+      entire needed conditional across them.'

@@ -39,7 +39,13 @@ process:
       from actual audience research. Select literal spans that together carry the finding’s actor, predicate, object
       and necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including
       within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status
-      and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+      and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate. Recover the
+      source-specific persuasive operations that a simplified appeals map can miss: distinguish a definitional identity
+      claim from an appeal to what an author would have conceded; test the cumulative force of separately named
+      objections rather than treating their count as proof. Read consequential notes and qualifying passages as
+      part of the argument. Preserve changes in the target theory over time and concessions of limited usefulness.
+      A useful borrowing from an author is not automatically a contradiction of rejecting that authors distinctive
+      theory.'
     indicators:
     - stated exigence
     - text-implied reader
@@ -56,7 +62,13 @@ process:
       the appeal, not a checklist of labels. Select literal spans that together carry the finding’s actor, predicate,
       object and necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span,
       including within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality,
-      status and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+      status and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate. Recover
+      the source-specific persuasive operations that a simplified appeals map can miss: distinguish a definitional
+      identity claim from an appeal to what an author would have conceded; test the cumulative force of separately
+      named objections rather than treating their count as proof. Read consequential notes and qualifying passages
+      as part of the argument. Preserve changes in the target theory over time and concessions of limited usefulness.
+      A useful borrowing from an author is not automatically a contradiction of rejecting that authors distinctive
+      theory.'
     indicators:
     - appeal
     - passage
@@ -73,7 +85,13 @@ process:
       from the article’s own invitation. Select literal spans that together carry the finding’s actor, predicate,
       object and necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span,
       including within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality,
-      status and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+      status and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate. Recover
+      the source-specific persuasive operations that a simplified appeals map can miss: distinguish a definitional
+      identity claim from an appeal to what an author would have conceded; test the cumulative force of separately
+      named objections rather than treating their count as proof. Read consequential notes and qualifying passages
+      as part of the argument. Preserve changes in the target theory over time and concessions of limited usefulness.
+      A useful borrowing from an author is not automatically a contradiction of rejecting that authors distinctive
+      theory.'
     indicators:
     - frame/contrast
     - selected aspect
@@ -90,7 +108,13 @@ process:
       a proven emotion or manipulation motive. Select literal spans that together carry the finding’s actor, predicate,
       object and necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span,
       including within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality,
-      status and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+      status and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate. Recover
+      the source-specific persuasive operations that a simplified appeals map can miss: distinguish a definitional
+      identity claim from an appeal to what an author would have conceded; test the cumulative force of separately
+      named objections rather than treating their count as proof. Read consequential notes and qualifying passages
+      as part of the argument. Preserve changes in the target theory over time and concessions of limited usefulness.
+      A useful borrowing from an author is not automatically a contradiction of rejecting that authors distinctive
+      theory.'
     indicators:
     - device
     - repeated/amplified object
@@ -109,7 +133,12 @@ process:
       the finding’s actor, predicate, object and necessary qualification. If one short span cannot do so, use anchor-b/doc-b
       for a separate span, including within one document. Never concatenate separated phrases into a quotation.
       Keep attribution, modality, status and chronology; re-anchor, narrow or reject a verbatim quote that omits
-      the claimed predicate.'
+      the claimed predicate. Recover the source-specific persuasive operations that a simplified appeals map can
+      miss: distinguish a definitional identity claim from an appeal to what an author would have conceded; test
+      the cumulative force of separately named objections rather than treating their count as proof. Read consequential
+      notes and qualifying passages as part of the argument. Preserve changes in the target theory over time and
+      concessions of limited usefulness. A useful borrowing from an author is not automatically a contradiction
+      of rejecting that authors distinctive theory.'
     indicators:
     - linked moves
     - supported reading
@@ -162,6 +191,23 @@ process:
       necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including
       within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status
       and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+    - 'Recover the source-specific persuasive operations that a simplified appeals map can miss: distinguish a definitional
+      identity claim from an appeal to what an author would have conceded; test the cumulative force of separately
+      named objections rather than treating their count as proof. Read consequential notes and qualifying passages
+      as part of the argument. Preserve changes in the target theory over time and concessions of limited usefulness.
+      A useful borrowing from an author is not automatically a contradiction of rejecting that authors distinctive
+      theory.'
+    - Give a full text-specific rhetorical reading, preserving the best questions of the original. In Harris, inspect
+      the refusal-to-concede inference, the eight objections and their dependencies, the occupational and colonial
+      examples, and the qualifications in notes 2 and 5 about changing Honneth and labour. Distinguish the source
+      allowing recognition as a component of a different theory from the claim that its monism cannot be repaired;
+      do not inflate selective agreement into contradiction. Carry a consequential counter-passage through the argument
+      and tables. Avoid invented effects or hidden motives, and keep scope/coverage claims confined to the actual
+      retained findings.
+    - Output exactly one ruling for each exact input finding ID. A row has exactly one status and at most one revised-finding
+      field. Use one anchor field per suffix, paired with its doc field; never repeat anchor, anchor-b or revised-finding
+      on a row. Keep the valid scope JSON field names dimension_key, finding_ids and coverage (complete, partial
+      or unknown).
   - key: synthesize
     kind: synthesize
     consumes:
@@ -194,4 +240,13 @@ process:
       models judge meaning. Select literal spans that together carry the finding’s actor, predicate, object and
       necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including
       within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status
-      and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+      and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.
+
+
+      5. Give a full text-specific rhetorical reading, preserving the best questions of the original. In Harris,
+      inspect the refusal-to-concede inference, the eight objections and their dependencies, the occupational and
+      colonial examples, and the qualifications in notes 2 and 5 about changing Honneth and labour. Distinguish
+      the source allowing recognition as a component of a different theory from the claim that its monism cannot
+      be repaired; do not inflate selective agreement into contradiction. Carry a consequential counter-passage
+      through the argument and tables. Avoid invented effects or hidden motives, and keep scope/coverage claims
+      confined to the actual retained findings.'

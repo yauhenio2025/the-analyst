@@ -39,7 +39,11 @@ process:
       must be labeled and bounded. Select literal spans that together carry the finding’s actor, predicate, object
       and necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including
       within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status
-      and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+      and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate. Keep each finding
+      ID tied to one stable claim. When quoting a final ID in a table, read that final row and confirm that it actually
+      expresses the claim in the cell; existence of the ID is insufficient. Preserve separate observations for procurement,
+      alternative-project development, private finance, selective engagement and ownership. General background or
+      a nearby similarly numbered row cannot substitute for the specific observation.'
     indicators:
     - explanandum
     - source hypotheses
@@ -57,7 +61,11 @@ process:
       as observed evidence. Select literal spans that together carry the finding’s actor, predicate, object and
       necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including
       within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status
-      and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+      and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate. Keep each finding
+      ID tied to one stable claim. When quoting a final ID in a table, read that final row and confirm that it actually
+      expresses the claim in the cell; existence of the ID is insufficient. Preserve separate observations for procurement,
+      alternative-project development, private finance, selective engagement and ownership. General background or
+      a nearby similarly numbered row cannot substitute for the specific observation.'
     indicators:
     - hypothesis
     - expected observation
@@ -74,7 +82,11 @@ process:
       matrix cell its own evidence and reasoning. Select literal spans that together carry the finding’s actor,
       predicate, object and necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate
       span, including within one document. Never concatenate separated phrases into a quotation. Keep attribution,
-      modality, status and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+      modality, status and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.
+      Keep each finding ID tied to one stable claim. When quoting a final ID in a table, read that final row and
+      confirm that it actually expresses the claim in the cell; existence of the ID is insufficient. Preserve separate
+      observations for procurement, alternative-project development, private finance, selective engagement and ownership.
+      General background or a nearby similarly numbered row cannot substitute for the specific observation.'
     indicators:
     - observation
     - provenance
@@ -93,7 +105,11 @@ process:
       the finding’s actor, predicate, object and necessary qualification. If one short span cannot do so, use anchor-b/doc-b
       for a separate span, including within one document. Never concatenate separated phrases into a quotation.
       Keep attribution, modality, status and chronology; re-anchor, narrow or reject a verbatim quote that omits
-      the claimed predicate.'
+      the claimed predicate. Keep each finding ID tied to one stable claim. When quoting a final ID in a table,
+      read that final row and confirm that it actually expresses the claim in the cell; existence of the ID is insufficient.
+      Preserve separate observations for procurement, alternative-project development, private finance, selective
+      engagement and ownership. General background or a nearby similarly numbered row cannot substitute for the
+      specific observation.'
     indicators:
     - rival pair
     - contrasting expectations
@@ -112,7 +128,11 @@ process:
       finding’s actor, predicate, object and necessary qualification. If one short span cannot do so, use anchor-b/doc-b
       for a separate span, including within one document. Never concatenate separated phrases into a quotation.
       Keep attribution, modality, status and chronology; re-anchor, narrow or reject a verbatim quote that omits
-      the claimed predicate.'
+      the claimed predicate. Keep each finding ID tied to one stable claim. When quoting a final ID in a table,
+      read that final row and confirm that it actually expresses the claim in the cell; existence of the ID is insufficient.
+      Preserve separate observations for procurement, alternative-project development, private finance, selective
+      engagement and ownership. General background or a nearby similarly numbered row cannot substitute for the
+      specific observation.'
     indicators:
     - linchpin
     - counter-evidence
@@ -165,6 +185,20 @@ process:
       necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including
       within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status
       and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+    - Keep each finding ID tied to one stable claim. When quoting a final ID in a table, read that final row and
+      confirm that it actually expresses the claim in the cell; existence of the ID is insufficient. Preserve separate
+      observations for procurement, alternative-project development, private finance, selective engagement and ownership.
+      General background or a nearby similarly numbered row cannot substitute for the specific observation.
+    - Set the final ledger identities before writing the reading and tables; preserve those identities throughout
+      delivery. Do not remove a row and shift later IDs after the table has been written. For every citation in
+      the actual final prose and each table cell, reread its final ledger row for actor, action, scope and qualifier.
+      Correct the citation or remove the claim if it refers to a different observation. Duplicate paraphrases do
+      not repair a missing relation. Retain the distinction between shared fit and discrimination; source-reported
+      and analyst-derived predictions stay marked.
+    - Output exactly one ruling for each exact input finding ID. A row has exactly one status and at most one revised-finding
+      field. Use one anchor field per suffix, paired with its doc field; never repeat anchor, anchor-b or revised-finding
+      on a row. Keep the valid scope JSON field names dimension_key, finding_ids and coverage (complete, partial
+      or unknown).
   - key: synthesize
     kind: synthesize
     consumes:
@@ -197,4 +231,12 @@ process:
       models judge meaning. Select literal spans that together carry the finding’s actor, predicate, object and
       necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including
       within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status
-      and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+      and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.
+
+
+      5. Set the final ledger identities before writing the reading and tables; preserve those identities throughout
+      delivery. Do not remove a row and shift later IDs after the table has been written. For every citation in
+      the actual final prose and each table cell, reread its final ledger row for actor, action, scope and qualifier.
+      Correct the citation or remove the claim if it refers to a different observation. Duplicate paraphrases do
+      not repair a missing relation. Retain the distinction between shared fit and discrimination; source-reported
+      and analyst-derived predictions stay marked.'

@@ -1,0 +1,232 @@
+{
+  "cap_usd": 15.0,
+  "jobs": {
+    "C5__checked__chen": {
+      "id": "C5",
+      "engine": "conditional_relations",
+      "papers": [
+        "chen"
+      ],
+      "condition": "checked"
+    },
+    "R2__checked__harris": {
+      "id": "R2",
+      "engine": "persuasive_framing",
+      "papers": [
+        "harris"
+      ],
+      "condition": "checked"
+    },
+    "E3__checked__subsea": {
+      "id": "E3",
+      "engine": "rival_explanations",
+      "papers": [
+        "subsea"
+      ],
+      "condition": "checked"
+    },
+    "I4__checked__rationality": {
+      "id": "I4",
+      "engine": "collective_action_problem_identifier",
+      "papers": [
+        "rationality"
+      ],
+      "condition": "checked"
+    },
+    "I9__checked__rationality": {
+      "id": "I9",
+      "engine": "system_boundary_analyzer",
+      "papers": [
+        "rationality"
+      ],
+      "condition": "checked"
+    },
+    "I11__checked__subsea": {
+      "id": "I11",
+      "engine": "science_studies_network",
+      "papers": [
+        "subsea"
+      ],
+      "condition": "checked"
+    },
+    "I13__old__subsea": {
+      "id": "I13",
+      "engine": "deal_flow_tracker",
+      "papers": [
+        "subsea"
+      ],
+      "condition": "old"
+    },
+    "T5__checked__promise": {
+      "id": "T5",
+      "engine": "feedback_loop_mapper",
+      "papers": [
+        "promise"
+      ],
+      "condition": "checked"
+    }
+  },
+  "models": {
+    "cheap": "openrouter/openai/gpt-5.6-luna",
+    "mid": "openrouter/deepseek/deepseek-v4-pro",
+    "strong": "openrouter/openai/gpt-5.6-sol",
+    "sonnet": "claude-sonnet-4-6",
+    "sol": "openrouter/openai/gpt-5.6-sol"
+  },
+  "prices": {
+    "cheap": [
+      0.2,
+      1.2
+    ],
+    "mid": [
+      1.042,
+      2.085
+    ],
+    "strong": [
+      2,
+      10
+    ],
+    "sonnet": [
+      3,
+      15
+    ],
+    "sol": [
+      2,
+      10
+    ]
+  },
+  "output_limits": {
+    "cheap": 6000,
+    "mid": 32000,
+    "strong": 14000,
+    "sonnet": 1800,
+    "sol": 1800
+  },
+  "rubric": "Score this single ANALYSIS against the supplied SOURCES, independently. No comparison or winner.\nSix integer scores from 1 to 10, higher always better:\nspecificity: captures these sources and their distinct roles rather than generic themes;\nanchoring: quotes occur in the named sources AND support the actual interpretation and scope;\nnon_obviousness: useful expert distinctions a casual reader misses;\ncoherence: consistent source attribution, scope and claims across prose, tables and findings;\nusefulness: the requested reading or inventory and its tables help a reader with these texts open; inventories need accurate useful coverage, not a compulsory novel thesis;\nhallucination_risk: 10 means no unsupported claims, invented consensus, false contradiction, or invented absence.\nRead all sources and all substantive output. A verbatim quote verifies occurrence, not meaning. Judge table cells,\nrelation labels, definitions, quantifiers, dates, attribution, warrants and silence against the actual passages.\nDifferent scope is not contradiction; recurring vocabulary is not agreement. An honest inconclusive or bounded\nnegative cell can be useful. Do not reward length, row count, special fields or asserted verification/check status.\nIdentify any decisive error with the analysis claim and counter-passage. Give a concise source-specific reason\nfor each criterion. Return only JSON with all six scores and nonempty reasons:\n{\"specificity\":n,\"anchoring\":n,\"non_obviousness\":n,\"coherence\":n,\"usefulness\":n,\"hallucination_risk\":n,\n\"reasons\":{\"specificity\":\"...\",\"anchoring\":\"...\",\"non_obviousness\":\"...\",\"coherence\":\"...\",\n\"usefulness\":\"...\",\"hallucination_risk\":\"...\"},\"decisive_errors\":[],\"one_line\":\"...\"}",
+  "frozen_at": 1788672832.9376135,
+  "commit": "d1625ae4a95fb20a633527953dd41eb195af43ce",
+  "inputs": {
+    "communications/study/PROTOCOL_fourth_queue_2026-09-06.md": "ddee5b8be28909cd2b96ed9135e5737123e7ab6ab7947c9b43949a3bf414af58",
+    "communications/study/fourth_queue_2026_09_06/designs.json": "9db25338e05730eabeedeffb267ad168b7b116aeb917c11b7625e91d91e11a33",
+    "communications/study/fourth_queue_2026_09_06/first_pass_audit.json": "a577bdf521f44bbde436526af92c4bf2bd66bd681700bf5d7cf6643a58837db9",
+    "communications/study/fourth_queue_2026_09_06/original_definitions/citation_network.json": "6f91bc3a1ac98eabe60e9e5fbbe36d14e0720cb494543fcec4cd48b0a439cba5",
+    "communications/study/fourth_queue_2026_09_06/original_definitions/collective_action_problem_identifier.json": "d01e97e6bc68a675fecdf216c939f5af7351edc45269640326eac3fcfbef0838",
+    "communications/study/fourth_queue_2026_09_06/original_definitions/competing_explanations_analyzer.json": "58772ce41e36e86932fcded5ad1b4a30ba15d30ac1ee9039933c3cd89c615f9f",
+    "communications/study/fourth_queue_2026_09_06/original_definitions/concept_causal_mechanisms.json": "a2765ab0522febc18ac56ad3c33484b4628df91e720a437770f5f7f5495d8882",
+    "communications/study/fourth_queue_2026_09_06/original_definitions/concept_conditional_web.json": "a17d1ece66f1a19cc54638132446ac42770043bbde91adafe49bad8e420234c1",
+    "communications/study/fourth_queue_2026_09_06/original_definitions/deal_flow_tracker.json": "84db61a54b1dfa230ca8a43a8c6318bf80d85c2192b5de05f8131e6d944cd319",
+    "communications/study/fourth_queue_2026_09_06/original_definitions/feedback_loop_mapper.json": "edc9d0d67c5572fd6d28ac6397e9ffe2532c17365f8f64825035bb55e113f8d0",
+    "communications/study/fourth_queue_2026_09_06/original_definitions/pedagogical_pathway.json": "fadc54250fb8a5e0a803c2644371e990d1a5e457ff00325838149521f5b609c8",
+    "communications/study/fourth_queue_2026_09_06/original_definitions/rhetorical_strategy.json": "b23db9131902fcaf4591916d14235f5b5756a2a7b72ea735c3aec674bc8f59bb",
+    "communications/study/fourth_queue_2026_09_06/original_definitions/science_studies_network.json": "83a4abcfec0a408f8a3c5977a03b99e90e3517ec63bdad0750d085972eb1b9e4",
+    "communications/study/fourth_queue_2026_09_06/original_definitions/system_boundary_analyzer.json": "020bd56544d69ccd18ecf0ef2e87bb315391d1748b3fbecb939359d2a7b8b879",
+    "communications/study/fourth_queue_2026_09_06/original_definitions/value_ethical_framework.json": "d1db0ee89ab9d041abfdbef5abd098046f740c3f13976c6ec33def00765beaa3",
+    "communications/study/fourth_queue_2026_09_06/original_prompts/A7.txt": "c206e52b0b7a599385b4057e3b7c2b377f08c6552ef69274c5713493e6aa2efc",
+    "communications/study/fourth_queue_2026_09_06/original_prompts/C4.txt": "3cb4ffe4b2da20ed553017a3b683938a0d3b4f09c4d658443c498619718cfb8b",
+    "communications/study/fourth_queue_2026_09_06/original_prompts/C5.txt": "d36310379f8070bec4aa472887fdbfd85be72a32a1b911e4fef3f0059905c531",
+    "communications/study/fourth_queue_2026_09_06/original_prompts/E3.txt": "9e4c8bdbfb03dc0979e42d3315c7ecade4cbd7d41a686ed51310a86ee1195ae5",
+    "communications/study/fourth_queue_2026_09_06/original_prompts/G5.txt": "67b72fbeb5cef52433f39544b51fccc1eaa83dc21989cb8f5193bdc9956cee98",
+    "communications/study/fourth_queue_2026_09_06/original_prompts/I11.txt": "dea5972c126eb5b8773c67f6b2b5ebf18ea3cdeb623d2aec8a09942f4dca6008",
+    "communications/study/fourth_queue_2026_09_06/original_prompts/I13.txt": "96b9cd78ee11257a999c0194d1463a00dc8170fe01fa7b76d32a5ff4c11ecb0f",
+    "communications/study/fourth_queue_2026_09_06/original_prompts/I4.txt": "f469c9bb397c068008ab20daaa8524239f50d6e330e8b09a04bf05d1934af130",
+    "communications/study/fourth_queue_2026_09_06/original_prompts/I9.txt": "dd701949e1b31f3f10efdaa61538f4b5a7f2dfb70f842c112c15d5a187f9d8e0",
+    "communications/study/fourth_queue_2026_09_06/original_prompts/R2.txt": "6c8008c4d3318901ab9631a589ac5cddb39668722bb32ee72c71dff8ed62b32b",
+    "communications/study/fourth_queue_2026_09_06/original_prompts/S5.txt": "29c37e26329e7117aea4e7d67bbead302346df0ab9970c9bba048821b5bc9ddc",
+    "communications/study/fourth_queue_2026_09_06/original_prompts/T5.txt": "5ccc4ecb8e77f4c87308c04416ac24c9d2974b01230ff04d036493a86cf2aa6b",
+    "communications/study/fourth_queue_2026_09_06/post_score_adjudication.md": "23fe30a8e688d8bfa2272442ee023409676834b0f73bad0ab99f07e751230950",
+    "communications/study/fourth_queue_2026_09_06/repairs/amendment.json": "fdaf879e052a7b1187c90a9ef30140c1c40d8c89dd3031a7680f22e58f8ea60c",
+    "communications/study/fourth_queue_2026_09_06/repairs/protocol.md": "76a988264ed5a35ad3b5000b260960c450d22574845c649e00166c6fb39abd84",
+    "communications/study/fourth_queue_2026_09_06/scores/A7__checked__rationality__sol.json": "fa9ee674c7b1268e176c6772ead7e0ee4085a875a32e423bf98f782b1062ae42",
+    "communications/study/fourth_queue_2026_09_06/scores/A7__checked__rationality__sonnet.json": "802051546202ea6ada21076ebe02daf4b563ae84ef3a24b35cd9a671c7784473",
+    "communications/study/fourth_queue_2026_09_06/scores/A7__old__rationality__sol.json": "ccfbdda0525a7d3e5b1118d81f6358936e888e3bfffcbecb365ba563852aa5cb",
+    "communications/study/fourth_queue_2026_09_06/scores/A7__old__rationality__sonnet.json": "53db658c53a685d89d74d35d2b242d06d1069f99a1997d799df19e0eb6a3e9fa",
+    "communications/study/fourth_queue_2026_09_06/scores/C4__checked__promise__sol.json": "76f93bf75f1db5d97ac535b93c59c6c0e07f7c7840d0b8bb4685d85b572c15af",
+    "communications/study/fourth_queue_2026_09_06/scores/C4__checked__promise__sonnet.json": "9974dc17ff06097e2786ae37972fe354d8b08858dfd4c4b7d30503d9e9bd3930",
+    "communications/study/fourth_queue_2026_09_06/scores/C4__old__promise__sol.json": "afb92884df5e37752f1f0ce3d5066a846e13dbd0ca1b6971de6ec615bc61a75f",
+    "communications/study/fourth_queue_2026_09_06/scores/C4__old__promise__sonnet.json": "93bfdf50f53cb45321c53c0615807b4f8a8dfbc4e51717437d9cda56220e4a81",
+    "communications/study/fourth_queue_2026_09_06/scores/C5__checked__chen__sol.json": "d4081e808e6760ae054183188fff241a4361242e64dd44491c48a745a2ec4b5b",
+    "communications/study/fourth_queue_2026_09_06/scores/C5__checked__chen__sonnet.json": "f520091c8e7cbd0246d11f64a1495b40ef6184991ceb68008e525756222e2ff0",
+    "communications/study/fourth_queue_2026_09_06/scores/C5__old__chen__sol.json": "794b5a72852a565f7a1bd479068054df4be239ae3c63cc9477488d213fb32c66",
+    "communications/study/fourth_queue_2026_09_06/scores/C5__old__chen__sonnet.json": "8dbe193d74397da6dc93cf80d1ec4e1bcf95db4013baf480dc5067d7efbdee72",
+    "communications/study/fourth_queue_2026_09_06/scores/E3__checked__subsea__sol.json": "13e959f22b69fdd4c3037450dff14a535d3f01275673a63bd38c27f6e8710aef",
+    "communications/study/fourth_queue_2026_09_06/scores/E3__checked__subsea__sonnet.json": "34fd484fc494e285d8e989070069d5157e5f20dfe90237117466e4eead4d54dc",
+    "communications/study/fourth_queue_2026_09_06/scores/E3__old__subsea__sol.json": "e5596a12ebbbf69dd33573806ae2efeebab96d0dd519878b6ee38ec917468c94",
+    "communications/study/fourth_queue_2026_09_06/scores/E3__old__subsea__sonnet.json": "f68c1154d6bdcf9afc0acbcf7332ee299247d2e344af9062d02157a94ab10fdd",
+    "communications/study/fourth_queue_2026_09_06/scores/G5__checked__chen__sol.json": "4488783136be9ae8bfbc0bcc50448cf1472c07808634efd596ec85d369b8d8b8",
+    "communications/study/fourth_queue_2026_09_06/scores/G5__checked__chen__sonnet.json": "cd12976b2471a64186d5acb004fe63aa852e7f403b2a7a3b706bfcc689671227",
+    "communications/study/fourth_queue_2026_09_06/scores/G5__old__chen__sol.json": "02aaee12ec64d25ba01426e457e5b58cdb0d8bba7b727a359a9aa6c35c0a2b56",
+    "communications/study/fourth_queue_2026_09_06/scores/G5__old__chen__sonnet.json": "dd3f22748f4ae698e58df3b39cc4293f1080208633a45c235c651c30015bfa1f",
+    "communications/study/fourth_queue_2026_09_06/scores/I11__checked__subsea__sol.json": "b95ffbbe342253101e047602dbb3e4969e6e563c1fc00b52b92bb030ad457188",
+    "communications/study/fourth_queue_2026_09_06/scores/I11__checked__subsea__sonnet.json": "8e81c8def8c3034a43fe52afdc3ee45edde7fc53430e5162d8eb412308dea9a6",
+    "communications/study/fourth_queue_2026_09_06/scores/I11__old__subsea__sol.json": "f4a4e96ab8d19501ab4520e62d9390befdb389daec572c3e2abd8d890a8620a4",
+    "communications/study/fourth_queue_2026_09_06/scores/I11__old__subsea__sonnet.json": "4461663b6c528c4f48e994451f6620e078fa82094c6de9daf0e04539bbe092b1",
+    "communications/study/fourth_queue_2026_09_06/scores/I13__checked__subsea__sol.json": "b280d916570be454a60f4b8a8e07c46397ff7823f9fdeb4d7de2cc47efb88758",
+    "communications/study/fourth_queue_2026_09_06/scores/I13__checked__subsea__sonnet.json": "b7b7cd627dbf52df28cefd4aae7921443c3a688775f5ba59e524a4e972867fe7",
+    "communications/study/fourth_queue_2026_09_06/scores/I4__checked__rationality__sol.json": "e0027eb5c2e8655db2758b38f8a239ffb432939df458a575084bb0a985764865",
+    "communications/study/fourth_queue_2026_09_06/scores/I4__checked__rationality__sonnet.json": "49926b32ba7240eac61a554ad5e0dd65bd3e4478e2c24d11f1c95220ea06fa4a",
+    "communications/study/fourth_queue_2026_09_06/scores/I4__old__rationality__sol.json": "fec9b2e186b4b546f360fcf5e2208cc579e317f3ae6573353e1ddab0300c3e47",
+    "communications/study/fourth_queue_2026_09_06/scores/I4__old__rationality__sonnet.json": "36814b8a8ff8fd008a98417f9a856504b7e9215947606ea0c815f456dc93e2fa",
+    "communications/study/fourth_queue_2026_09_06/scores/I9__checked__rationality__sol.json": "3f46272eee15415a78e371e31f3fde7497f9f2a2dde8c9212570121702a37aab",
+    "communications/study/fourth_queue_2026_09_06/scores/I9__checked__rationality__sonnet.json": "228995cf8a11927ff931833a42831a0a10998c9b25efacf927a703b3032628c5",
+    "communications/study/fourth_queue_2026_09_06/scores/I9__old__rationality__sol.json": "1f93e7633345890ae4aa2585598263ec17dad8f69342ff6a9a63f967adaf7046",
+    "communications/study/fourth_queue_2026_09_06/scores/I9__old__rationality__sonnet.json": "01e5f78c38d3a389d292bafdb24da5a555b34ce99c55739d7546d388f8582a9d",
+    "communications/study/fourth_queue_2026_09_06/scores/R2__checked__harris__sol.json": "4ca78af5bdda8200722c036cbc9341d71f9f33ad4455130222c41db702d51028",
+    "communications/study/fourth_queue_2026_09_06/scores/R2__checked__harris__sonnet.json": "6070ed88f26ea10cbd685002a3c778746a97f5f341e4b168a9ae0eb3beae83af",
+    "communications/study/fourth_queue_2026_09_06/scores/R2__old__harris__sol.json": "4a6d32c6720dd4ea854cc28c9021560ea736d3f281b417016d2fb0fc6f1151bf",
+    "communications/study/fourth_queue_2026_09_06/scores/R2__old__harris__sonnet.json": "d89a24d4938d56c591cfb04f36beb9338a688383efbbd1df31767666add68af2",
+    "communications/study/fourth_queue_2026_09_06/scores/S5__checked__chen__sol.json": "3877842cd3ec08204dda75a8fcf3550298e63789857ba95c66ce1de04221c465",
+    "communications/study/fourth_queue_2026_09_06/scores/S5__checked__chen__sonnet.json": "46c007f2fd230ad0e74b1c22dd3e1cae4ae3d3a4ca61a4f0770892f74ac3f7b7",
+    "communications/study/fourth_queue_2026_09_06/scores/S5__old__chen__sol.json": "e9babb47bcd163af6400fadfd6bc70ec147a6b33b1f1b501dc74062089849293",
+    "communications/study/fourth_queue_2026_09_06/scores/S5__old__chen__sonnet.json": "e9b50fb3628230bee2716cd78351cbd60fe2c6518f875d08c1d5f79654733671",
+    "communications/study/fourth_queue_2026_09_06/scores/T5__checked__promise__sol.json": "965f78087997f2fd140651e6cf3448a7c7fce090811d4b12c6a41ee6d5f7978f",
+    "communications/study/fourth_queue_2026_09_06/scores/T5__checked__promise__sonnet.json": "5b6599b9c6c78097c84b9bc7c982a7a8853ccdc2d834a04c5df40f2a1c0446e3",
+    "communications/study/fourth_queue_2026_09_06/scores/T5__old__promise__sol.json": "d6a0b57b141d75ed812078e6fa00c9e024e56dffde58ef1e5a5fe9a0b8aa10fe",
+    "communications/study/fourth_queue_2026_09_06/scores/T5__old__promise__sonnet.json": "d4a84b8f34080cca323fa265f912f18fc1a4498a66df29d48be3fe99b574bea3",
+    "data/study/source_subsea.txt": "1c788e8d05dd98d699dc614b9f2e2d3d22794834adf86c5203932451538dcce1",
+    "data/study/sources_ideas/castoriadis1997_rationality_of_capitalism.md": "ef090da9111fa3f4fa435641c7cc3fabda744c1ee939976c3df01021ceaec857",
+    "data/study/sources_ideas/chen2025_progress_without_progress_jaeggi.txt": "c49d69012db5a515f25e20602928768b8621e0ebd1021dce9f9168a8cd685f94",
+    "data/study/sources_ideas/deutschmann2001_promise_of_absolute_wealth.md": "a2d1fe4a0f63ed7da3ac7af395884331a55ddeda6997a09c1fbaeec586d599dc",
+    "data/study/sources_ideas/harris2026_eight_arguments_against_honneth.txt": "6daf2fecf707a3a81b54bde1cd59e1532d733b76365fb6d2acd832b22994c113",
+    "scripts/audit_fourth_queue.py": "3d725e8b03b2966a9b7597430ba5370414a894098b27ee6eb18fad892c690a28",
+    "scripts/study_corpus_methods_P1_P2_2026_09_06.py": "11f059da89c0c681fd8b300757006b70c9fed6ce520acf123de94d166ce627ec",
+    "scripts/study_first_queue.py": "46384e09dd7ecc560373c3ba0e9299e121e17537ec6e754321a93c6c65fd4194",
+    "scripts/study_fourth_queue.py": "f828820cd62ab2748e3d460781f8ac79684498222f9d1da482d6007c6f067865",
+    "scripts/study_fourth_queue_repairs.py": "02966f322f134a1170982d0fc7e903f0588b1c5d0fa383628c90d73a73db0bdc",
+    "scripts/study_second_queue.py": "93639048a2b7f78dc644d611049927beb015f46365bed0aa9dd1705721263f3e",
+    "scripts/study_two_engines.py": "c157c4a1cd88198430670774ba62f1b126eddb292f2ebc66e87a0e6794331f93",
+    "src/engines/capability_definitions/citation_invocation_map.yaml": "f82653e7a8651eb3b9acc28ce00222b00505d9fff24f90fac9eb56370316814e",
+    "src/engines/capability_definitions/collective_action_problem_identifier.yaml": "da0be23c6c05008b254dc029373a3760128e7f550c7880ba191e0ada13d8707a",
+    "src/engines/capability_definitions/concept_causal_mechanisms.yaml": "a38f65a95938da99defe84a6390f511479b652a7026d5952c297537f6f450d8c",
+    "src/engines/capability_definitions/conditional_relations.yaml": "30dfb159be760e851ea68164a0f7dd3163274d4b00d673f3def7ae4b2b308d2d",
+    "src/engines/capability_definitions/deal_flow_tracker.yaml": "bb4aac95a7db0f3de5f4e76c008c2e46e5445518fc6c70a4675a44d2991308b0",
+    "src/engines/capability_definitions/feedback_loop_mapper.yaml": "63f7ea205456c4643892c1be3d8723a2b3f6592f94b34982bab794f201d9b278",
+    "src/engines/capability_definitions/pedagogical_pathway.yaml": "25d3e7c51e240f065e81ab6add903b7a05642e66228215ee6d706ca2f4942f9e",
+    "src/engines/capability_definitions/persuasive_framing.yaml": "17398766b62ae43272010de3a22c0f334a72f3338f5a3f513fc80ef7e70e74a8",
+    "src/engines/capability_definitions/rival_explanations.yaml": "7cb8c523bf7bad21724cac593a3d8e66e29e7b695443e1b38434bc9e6014f0b3",
+    "src/engines/capability_definitions/science_studies_network.yaml": "d13cd005cb00fcf94903becbafc5ec1fd69ca14b1d5f2f98041fa7138a5ad265",
+    "src/engines/capability_definitions/system_boundary_analyzer.yaml": "ebf34b1c766422fbefabcfd3a743c6b427cb605fe1d4289795a7e49fd2ed9355",
+    "src/engines/capability_definitions/value_ethical_framework.yaml": "53a9bc31d34f639144855545e4998e26cb88b3a931598eece63802177c727eb7",
+    "src/engines/schemas_v2.py": "9632ad61727e1f2025c61a83fbd03b8c89f763b70087358b5783b02cf52f9789",
+    "src/events/pricing.py": "142dd59fa7f9185c2d6838745f6049011315079f6270a8f749ca1c8613d11399",
+    "src/executor/context_broker.py": "014ebc6abbc1c9b257306e0d1a1ea9a6fd30ef3fb6c56c7056dd099c46e1543d",
+    "src/executor/ledger_walls.py": "1f6f3afb1043b35fc42f85e94b67274b37e98ad0e700e03a0d755948084d7f13",
+    "src/executor/process_runner.py": "a3d2b5b26e4ca5b9c7cbd36a471ec8fcec30a27889883e4564b33aaf74d89ebd",
+    "src/executor/ruling_coverage.py": "154a6889a61204ede20bca0ede14178ee8116c1f2360626c14cd397b98d9648e",
+    "src/executor/scoped_outcomes.py": "b2f6fdcc7de13be8628e440474fae9de4af7dd3078cb5d82dbfd0cf332634ab7",
+    "src/operationalizations/definitions/citation_invocation_map.yaml": "7e66d5319f17705028f749c6812ee2b5ee9ac7dfbe1230fb4e7f0167a8996744",
+    "src/operationalizations/definitions/collective_action_problem_identifier.yaml": "c544f20fe38152abb8b33a09aec6fd07ab44b3910f7fd74dc54b16a2ccb8a0c6",
+    "src/operationalizations/definitions/concept_causal_mechanisms.yaml": "f8506ec7be02966c5734c914c68aa17318207c7f3274691c3b52ee668adcbcd3",
+    "src/operationalizations/definitions/conditional_relations.yaml": "f0df3928927f60c9bfd90ac04374d34f6b0dfbc8cb03cbed5a53eae8ab7fc4e5",
+    "src/operationalizations/definitions/deal_flow_tracker.yaml": "ec36191728ae05c1995ccc44d71eb27a3c0384da5e33e1fd02b8fa41031c75b1",
+    "src/operationalizations/definitions/feedback_loop_mapper.yaml": "cd45e26f39b73af354beca358ae6e679c51c3212dc719873fd73178c6d320641",
+    "src/operationalizations/definitions/pedagogical_pathway.yaml": "cdaa669e8f8908490a0c8046ddd94755f5bb096a496666069e0caeac25b42f14",
+    "src/operationalizations/definitions/persuasive_framing.yaml": "ab2da8095d4311a53c2f5001d6120dd54692e7b11ad1870325a1cc8d2beecfca",
+    "src/operationalizations/definitions/rival_explanations.yaml": "44354bfd4162d604a1ad84178978a732ecd9066a51d05c5da097fde6b6a393e2",
+    "src/operationalizations/definitions/science_studies_network.yaml": "53bd351e80b44a419ed834bc6b9fc35d7d4d3a9006ceb68a0f6023afef344393",
+    "src/operationalizations/definitions/system_boundary_analyzer.yaml": "bac04c90bffa642227ae0547c776c9d8b624b8afce0ffa9295a279004ee389a7",
+    "src/operationalizations/definitions/value_ethical_framework.yaml": "294d019bc56b852257c1239e5cc12b603f7229008893c58feba84b016a79c120",
+    "src/operationalizations/schemas.py": "b20cdec494a3326d9fac7f3ad8bd8b58446c86e45511c848918148388d767637",
+    "src/stages/process_composer.py": "133e86b8b87e2ae30b37c1d47e35f6394214d2bf733e10fdce79ed929dd32d89"
+  },
+  "identity": "702a730b0e12a18a805d48765f9884732c92b01416c8ee34e48b3898552426a2"
+}

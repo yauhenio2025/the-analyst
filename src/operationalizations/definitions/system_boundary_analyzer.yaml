@@ -40,7 +40,12 @@ process:
       an opponent’s boundary to the author. Select literal spans that together carry the finding’s actor, predicate,
       object and necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span,
       including within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality,
-      status and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+      status and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate. Retain
+      the source distinctions that carry the boundary critique: means versus ends, separate firm attribution versus
+      collective production, given preferences versus socially produced wants, the model treating the economy as
+      separable from social history, provisional national abstraction versus heterogeneous global production, and
+      approximate temporal phases. Identify who draws each boundary and whether it is a criticized exclusion or
+      an explicitly provisional analytical device. Do not infer a hidden agenda from the existence of a beneficiary.'
     indicators:
     - system
     - boundary
@@ -57,7 +62,12 @@ process:
       establish exclusion. Select literal spans that together carry the finding’s actor, predicate, object and necessary
       qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including within one
       document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status and chronology;
-      re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+      re-anchor, narrow or reject a verbatim quote that omits the claimed predicate. Retain the source distinctions
+      that carry the boundary critique: means versus ends, separate firm attribution versus collective production,
+      given preferences versus socially produced wants, the model treating the economy as separable from social
+      history, provisional national abstraction versus heterogeneous global production, and approximate temporal
+      phases. Identify who draws each boundary and whether it is a criticized exclusion or an explicitly provisional
+      analytical device. Do not infer a hidden agenda from the existence of a beneficiary.'
     indicators:
     - included/excluded object
     - rule
@@ -75,7 +85,12 @@ process:
       of material harm. Select literal spans that together carry the finding’s actor, predicate, object and necessary
       qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including within one
       document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status and chronology;
-      re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+      re-anchor, narrow or reject a verbatim quote that omits the claimed predicate. Retain the source distinctions
+      that carry the boundary critique: means versus ends, separate firm attribution versus collective production,
+      given preferences versus socially produced wants, the model treating the economy as separable from social
+      history, provisional national abstraction versus heterogeneous global production, and approximate temporal
+      phases. Identify who draws each boundary and whether it is a criticized exclusion or an explicitly provisional
+      analytical device. Do not infer a hidden agenda from the existence of a beneficiary.'
     indicators:
     - boundary
     - omitted/included consequence
@@ -93,7 +108,12 @@ process:
       fabricating complete system coverage. Select literal spans that together carry the finding’s actor, predicate,
       object and necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span,
       including within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality,
-      status and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+      status and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate. Retain
+      the source distinctions that carry the boundary critique: means versus ends, separate firm attribution versus
+      collective production, given preferences versus socially produced wants, the model treating the economy as
+      separable from social history, provisional national abstraction versus heterogeneous global production, and
+      approximate temporal phases. Identify who draws each boundary and whether it is a criticized exclusion or
+      an explicitly provisional analytical device. Do not infer a hidden agenda from the existence of a beneficiary.'
     indicators:
     - crossing relation
     - endpoints
@@ -111,7 +131,12 @@ process:
       separate from an empirically proven solution. Select literal spans that together carry the finding’s actor,
       predicate, object and necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate
       span, including within one document. Never concatenate separated phrases into a quotation. Keep attribution,
-      modality, status and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+      modality, status and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.
+      Retain the source distinctions that carry the boundary critique: means versus ends, separate firm attribution
+      versus collective production, given preferences versus socially produced wants, the model treating the economy
+      as separable from social history, provisional national abstraction versus heterogeneous global production,
+      and approximate temporal phases. Identify who draws each boundary and whether it is a criticized exclusion
+      or an explicitly provisional analytical device. Do not infer a hidden agenda from the existence of a beneficiary.'
     indicators:
     - alternative
     - source/analyst status
@@ -164,6 +189,22 @@ process:
       necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including
       within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status
       and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+    - 'Retain the source distinctions that carry the boundary critique: means versus ends, separate firm attribution
+      versus collective production, given preferences versus socially produced wants, the model treating the economy
+      as separable from social history, provisional national abstraction versus heterogeneous global production,
+      and approximate temporal phases. Identify who draws each boundary and whether it is a criticized exclusion
+      or an explicitly provisional analytical device. Do not infer a hidden agenda from the existence of a beneficiary.'
+    - 'Make the boundary reading as useful and specific as the best original questions: trace manufactured preferences,
+      regulation versus mobile capital, and periodization where the source supplies them, alongside firm accounting
+      and excluded harms. Test the critique against the author''s acceptance of approximate regularities, provisional
+      national abstraction and effective production; do not mistake a qualified working model for a claim of universal
+      separability. Include only source-supported burdens/bearers and label proposed reframings. Keep complete/partial
+      coverage distinct from semantic approval, use exact scope field names, and do not claim broader findings than
+      the final ledger retains.'
+    - Output exactly one ruling for each exact input finding ID. A row has exactly one status and at most one revised-finding
+      field. Use one anchor field per suffix, paired with its doc field; never repeat anchor, anchor-b or revised-finding
+      on a row. Keep the valid scope JSON field names dimension_key, finding_ids and coverage (complete, partial
+      or unknown).
   - key: synthesize
     kind: synthesize
     consumes:
@@ -195,4 +236,13 @@ process:
       models judge meaning. Select literal spans that together carry the finding’s actor, predicate, object and
       necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including
       within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status
-      and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+      and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.
+
+
+      5. Make the boundary reading as useful and specific as the best original questions: trace manufactured preferences,
+      regulation versus mobile capital, and periodization where the source supplies them, alongside firm accounting
+      and excluded harms. Test the critique against the author''s acceptance of approximate regularities, provisional
+      national abstraction and effective production; do not mistake a qualified working model for a claim of universal
+      separability. Include only source-supported burdens/bearers and label proposed reframings. Keep complete/partial
+      coverage distinct from semantic approval, use exact scope field names, and do not claim broader findings than
+      the final ledger retains.'

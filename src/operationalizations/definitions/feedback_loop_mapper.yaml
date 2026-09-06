@@ -40,7 +40,12 @@ process:
       or change predicate. Select literal spans that together carry the finding’s actor, predicate, object and necessary
       qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including within one
       document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status and chronology;
-      re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+      re-anchor, narrow or reject a verbatim quote that omits the claimed predicate. Use one source-supported directional
+      claim per row, with short separate spans that name both the starting object and the change predicate. Replace
+      anaphoric openings with a second antecedent span when needed. Every anchor field must have a unique suffix:
+      one anchor, one anchor-b, one anchor-c if necessary; never repeat anchor or embed a revised ledger inside
+      an anchor field. Preserve conditional successful communication rather than guaranteeing that every new application
+      diffuses.'
     indicators:
     - stock/capacity
     - inflow/outflow
@@ -57,7 +62,12 @@ process:
       is not a causal edge. Select literal spans that together carry the finding’s actor, predicate, object and
       necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including
       within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status
-      and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+      and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate. Use one source-supported
+      directional claim per row, with short separate spans that name both the starting object and the change predicate.
+      Replace anaphoric openings with a second antecedent span when needed. Every anchor field must have a unique
+      suffix: one anchor, one anchor-b, one anchor-c if necessary; never repeat anchor or embed a revised ledger
+      inside an anchor field. Preserve conditional successful communication rather than guaranteeing that every
+      new application diffuses.'
     indicators:
     - from
     - to
@@ -75,7 +85,12 @@ process:
       reconstruction and preserve open chains. Select literal spans that together carry the finding’s actor, predicate,
       object and necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span,
       including within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality,
-      status and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+      status and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate. Use
+      one source-supported directional claim per row, with short separate spans that name both the starting object
+      and the change predicate. Replace anaphoric openings with a second antecedent span when needed. Every anchor
+      field must have a unique suffix: one anchor, one anchor-b, one anchor-c if necessary; never repeat anchor
+      or embed a revised ledger inside an anchor field. Preserve conditional successful communication rather than
+      guaranteeing that every new application diffuses.'
     indicators:
     - path
     - edge evidence
@@ -93,7 +108,12 @@ process:
       measured velocity or a dated cycle. Select literal spans that together carry the finding’s actor, predicate,
       object and necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span,
       including within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality,
-      status and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+      status and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate. Use
+      one source-supported directional claim per row, with short separate spans that name both the starting object
+      and the change predicate. Replace anaphoric openings with a second antecedent span when needed. Every anchor
+      field must have a unique suffix: one anchor, one anchor-b, one anchor-c if necessary; never repeat anchor
+      or embed a revised ledger inside an anchor field. Preserve conditional successful communication rather than
+      guaranteeing that every new application diffuses.'
     indicators:
     - relation
     - delay/rate/phase
@@ -112,7 +132,11 @@ process:
       finding’s actor, predicate, object and necessary qualification. If one short span cannot do so, use anchor-b/doc-b
       for a separate span, including within one document. Never concatenate separated phrases into a quotation.
       Keep attribution, modality, status and chronology; re-anchor, narrow or reject a verbatim quote that omits
-      the claimed predicate.'
+      the claimed predicate. Use one source-supported directional claim per row, with short separate spans that
+      name both the starting object and the change predicate. Replace anaphoric openings with a second antecedent
+      span when needed. Every anchor field must have a unique suffix: one anchor, one anchor-b, one anchor-c if
+      necessary; never repeat anchor or embed a revised ledger inside an anchor field. Preserve conditional successful
+      communication rather than guaranteeing that every new application diffuses.'
     indicators:
     - intervention/counterforce
     - link affected
@@ -165,6 +189,20 @@ process:
       necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including
       within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status
       and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+    - 'Use one source-supported directional claim per row, with short separate spans that name both the starting
+      object and the change predicate. Replace anaphoric openings with a second antecedent span when needed. Every
+      anchor field must have a unique suffix: one anchor, one anchor-b, one anchor-c if necessary; never repeat
+      anchor or embed a revised ledger inside an anchor field. Preserve conditional successful communication rather
+      than guaranteeing that every new application diffuses.'
+    - Build the dynamic inventory from predicate-bearing evidence packets with each quoted span under 180 characters
+      where possible. Keep the source-described cycle separate from a formally signed feedback loop, and label any
+      missing or conditional return. Do not carry a compound claim under a nearby different ID. Follow the prescribed
+      critic ledger grammar without repeated anchor/revised-finding fields; revise the one row in place using distinct
+      anchor suffixes.
+    - Output exactly one ruling for each exact input finding ID. A row has exactly one status and at most one revised-finding
+      field. Use one anchor field per suffix, paired with its doc field; never repeat anchor, anchor-b or revised-finding
+      on a row. Keep the valid scope JSON field names dimension_key, finding_ids and coverage (complete, partial
+      or unknown).
   - key: synthesize
     kind: synthesize
     consumes:
@@ -197,4 +235,11 @@ process:
       models judge meaning. Select literal spans that together carry the finding’s actor, predicate, object and
       necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including
       within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status
-      and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+      and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.
+
+
+      5. Build the dynamic inventory from predicate-bearing evidence packets with each quoted span under 180 characters
+      where possible. Keep the source-described cycle separate from a formally signed feedback loop, and label any
+      missing or conditional return. Do not carry a compound claim under a nearby different ID. Follow the prescribed
+      critic ledger grammar without repeated anchor/revised-finding fields; revise the one row in place using distinct
+      anchor suffixes.'
