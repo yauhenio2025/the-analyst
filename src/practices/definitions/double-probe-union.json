@@ -1,0 +1,19 @@
+{
+  "key": "double-probe-union",
+  "name": "Run each query twice and union the pages",
+  "task_kinds": [
+    "paper-discovery"
+  ],
+  "when": "every paid Scholar query — Scholar's index view varies between requests and a single page can be a degraded view",
+  "shape": "the same q twice (the second with a forced refresh), results united by cluster id; keep probing while the view is tiny",
+  "ingredients": [
+    "a transport that can force a fresh page"
+  ],
+  "yields": "works the first page omitted; a healthy view after ≥2 probes with ≥10 rows",
+  "misses": "nothing new when the index is stable — the second probe then costs one page for no gain",
+  "origin": "the Referee's url-works and secondary-works probe loops",
+  "owner": "the-referee",
+  "version": "2026-09-06",
+  "evidence": [],
+  "note": ""
+}
