@@ -1,0 +1,21 @@
+{
+  "key": "author-page-as-index",
+  "name": "A venue's author or tag page read as an index",
+  "task_kinds": [
+    "person-harvest",
+    "paper-discovery"
+  ],
+  "when": "a venue lists a person's pieces on an author or tag page",
+  "shape": "site:<venue> \"<name form>\" author OR tag OR contributor; read the page as a list of links to open, not as an article",
+  "ingredients": [
+    "the venue hosts",
+    "the name forms"
+  ],
+  "yields": "the venue's whole inventory of the person in one page; dates and titles for the ledger",
+  "misses": "pieces under a co-author's page only; paginated lists cut after the first page",
+  "origin": "the Reporter marks such pages not_article today; a practice reads them as an index instead (design note §3)",
+  "owner": "the-mastermind",
+  "version": "2026-09-07",
+  "evidence": [],
+  "note": ""
+}

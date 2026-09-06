@@ -1,0 +1,20 @@
+{
+  "key": "venue-first",
+  "name": "The person's venues become the site: lanes",
+  "task_kinds": [
+    "person-harvest"
+  ],
+  "when": "the library holds pieces by the person: their venues are known before any search",
+  "shape": "site:<venue host> \"<name form>\" — one lane per venue, the query budget split across venues by how many pieces each holds",
+  "ingredients": [
+    "the venues of the held pieces, ranked by count",
+    "the name forms"
+  ],
+  "yields": "the pieces the venues hold that the library does not; the venues' author pages",
+  "misses": "everything on a host the library never saw; a venue whose site: index is thin (a podcast, a newsletter platform)",
+  "origin": "the Stacks' press brief builds the venue lanes this way today (stacks/press/brief.py)",
+  "owner": "the-mastermind",
+  "version": "2026-09-07",
+  "evidence": [],
+  "note": ""
+}

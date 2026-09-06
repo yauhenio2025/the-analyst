@@ -1,0 +1,21 @@
+{
+  "key": "compress-to-names",
+  "name": "Compress a dead query to its named terms",
+  "task_kinds": [
+    "person-harvest",
+    "paper-discovery",
+    "institution-harvest"
+  ],
+  "when": "a five-term query returns nothing relevant twice",
+  "shape": "keep the three terms that are proper names or exact phrases; drop the concept words",
+  "ingredients": [
+    "the query's terms, marked which are names"
+  ],
+  "yields": "the page the concept words had pushed out of reach",
+  "misses": "a query whose subject genuinely has no named handle",
+  "origin": "the Reporter's measured rule (its retrospective seat, 139 queries)",
+  "owner": "the-mastermind",
+  "version": "2026-09-07",
+  "evidence": [],
+  "note": ""
+}
