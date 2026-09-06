@@ -1,0 +1,23 @@
+# Source read of the Mastermind's dossier (Riley → Weber), by Claude under the first-queue standard — 2026-09-06, 21:35
+
+Read before any score was opened. Object: `../mastermind_dossier_riley_on_weber.md` (job dossier-bdc5eb48c407; ledgers under `../mastermind_ledgers/`).
+
+## What the walls say (code)
+- Engagement map (deep, dvs): 23 retained rows, 34 of 34 anchors verified verbatim, 3 cross-document rows. Its position map states the corpus as it is: "twenty-seven citing texts plus a duplicated citation index".
+- Fidelity audit (standard, checked): 28 paired rows, one per index pair; verdicts accurate 6 · fair 4 · selective 5 · stretched 1 · unverifiable 12; 51 anchors, 46 verified; five rows (F2, F3, F5, F16, F21) failed the wall and are tagged and dropped by the desks — all five are "unverifiable" verdicts whose `how: search` windows landed in editorial matter of another collection (the E&S/edition problem the family study named), so their exile costs nothing.
+- Reception map (deep, dvs): 26 rows, 33 of 33 anchors verified, 5 cross-document rows.
+- Desks: five spine sections, all with finding ids (23 · 6 · 16 · 13 · 16); three tables through the anchor wall with no row dropped (12 · 20 · 17); the draft's claims all anchored (0 unfootnoted); the crosscheck did not pass it clean (below).
+
+## What I read against the sources
+1. **The one stretched verdict (RW0023).** Riley's census article says the paper "deploys Weber's (1958: 77–78) definition of the state in terms of organizational means — its bureaucratic and infrastructural capacities"; Weber's pages 77–78 (Politics as a Vocation) define the state as the community that "claims the monopoly of the legitimate use of physical force within a given territory". Both anchors verbatim; the verdict is right and the reason names it exactly. A real finding.
+2. **The draft's headline tension: 2018 rejection of estate concepts vs their 2025 application.** The 2018 text is Riley's reply to Burawoy, Heilbron and Steinmetz (em:EJJLVCUC), which says the Bourdieusian programme "applies a conceptual apparatus appropriate to pre-capitalist social formations, namely the idea of a society of estate-type groups, to advanced capitalist societies"; the 2025 chapter says political capitalism's struggles "re-enforce estate-type politics rather than class politics" and that workers organised by closure "form what Max Weber called an 'estate' (Weber 1922, p. 180)". The tension is in the texts and is not reconciled there. "Category error" (Table 1, the section-1 summary) is the draft's paraphrase, not Riley's words; acceptable as a paraphrase, but a reader checking the phrase will not find it. No attribution reversal.
+3. **The rationalization foil (em:EJJLVCUC, F18).** The row anchors Riley's own sentence ("Weber's claim that there are no general laws of history is itself a theory of history — and is contradicted by his own theory of rationalization") and labels it a foil, correctly; the draft then uses it in sections 5–6 as if it were established about Weber. The crosscheck caught this; on my read it is a presentation fault, not a fabrication: the claim is Riley's and is anchored as Riley's.
+4. **"Twelve citing acts" vs 27 texts.** The engagement map read 27 texts and selected twelve major citing acts for Table 1; the draft's subtitle and opening say "twelve citing acts across two decades" without the 27. A number drift the crosscheck flagged; the ledgers are right, the framing is careless.
+5. **Reception rows sampled** (Wright ×2, Swedberg): anchors re-found; the Wright contrast (capitalism eroding status groups vs Riley's estate-type politics) is a fair reading of the supplied Wright text.
+6. **Conclusion restates the decision table** (crosscheck finding 1): true; section 6 adds nothing to section 5.
+
+## Verdict under the standard
+- Anchors verified by code: yes (113 of 118 across the three ledgers; the five failures are unverifiable verdicts, tagged).
+- Fabrication or attribution reversal surviving a source read: none found in the rows and claims I read (the stretched verdict, the estate tension, the foil, the reception contrasts).
+- Defects to carry into the comparison, all in the draft's framing rather than in the evidence: the "twelve"/27 drift; "category error" as an unmarked paraphrase; a foil used as evidence; a conclusion that repeats a table.
+- Cost: $31.11 recorded on the job (engines $10.04 on the final executor job, of which about half is the second attempt's re-run of the extract pass after the 90-minute clock failure; reconnaissance, desks and receipts the rest) plus about $8 of unreceipted calls from the first analysis process whose outputs were never saved. The Stacks' memo 2 cost $0.70.
