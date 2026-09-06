@@ -1,0 +1,112 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "argumentative_roles",
+  "doc": "technique",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 31069,
+  "output_tokens": 1339,
+  "duration_ms": 14812,
+  "cost_usd": 0.0078,
+  "retries": 0,
+  "wall": {
+    "reanchor_receipts": [
+      {
+        "content": "## Findings ledger\n- [D2.DOC1.F1] Technique is presented as a creative mode of making that actualises possible forms through human agency rather than merely imitating nature — dim: argumentative_roles — term: technique — role: premise, mechanism, result — supports: technique constitutes an autonomous dimension of human creation because it brings into being what nature cannot accomplish — anchor: \"Technique creates ‘what nature is not capable of accomplishing’.\" — doc: technique — confidence: high — trimmed-anchor: yes",
+        "partial": false,
+        "stop_reason": "stop",
+        "error": null
+      }
+    ],
+    "rows": 6,
+    "with_anchor": 6,
+    "verified": 5,
+    "trimmed": 0,
+    "anchor_rate": 0.833,
+    "failed_ids": [
+      "D2.DOC1.F1"
+    ],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 6,
+    "verified_anchors": 5,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 5,
+      "with_anchor": 5,
+      "verified": 5,
+      "trimmed": 0,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 5,
+      "verified_anchors": 5,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [
+      {
+        "id": "D2.DOC1.F1",
+        "dimension": "argumentative_roles"
+      }
+    ],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "technique"
+        ],
+        "dimension_key": "argumentative_roles",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "From the opening discussion of language and tools through “Technique in post-revolutionary society”"
+        ],
+        "coverage": "complete",
+        "criterion": "A finding must identify what claim the concept supports, the premise or mechanism connecting it to that claim, and the resulting argumentative role, anchored in a verbatim passage.",
+        "basis": "The supplied document was inspected throughout and contains multiple explicit claims about technique’s premises, mechanisms and consequences, including its relation to language, creation, social organisation, capitalism and politics.",
+        "limitations": [
+          "This outcome concerns argumentative roles within the supplied document and does not establish development across a broader corpus."
+        ],
+        "finding_ids": [
+          "[D2.DOC1.F1]",
+          "[D2.DOC1.F2]",
+          "[D2.DOC1.F3]",
+          "[D2.DOC1.F4]",
+          "[D2.DOC1.F5]",
+          "[D2.DOC1.F6]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "technique": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Findings lost anchor evidence; this does not establish absence",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [
+    "D2.DOC1.F1"
+  ],
+  "chars": 5410
+}

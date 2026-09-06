@@ -1,0 +1,84 @@
+{
+  "step": "verify",
+  "kind": "verify",
+  "dimension": "",
+  "doc": "",
+  "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+  "model_used": "openrouter/deepseek/deepseek-v4-pro",
+  "input_tokens": 31223,
+  "output_tokens": 3193,
+  "duration_ms": 66963,
+  "cost_usd": 0.0392,
+  "retries": 0,
+  "wall": {
+    "rows": 0,
+    "with_anchor": 0,
+    "verified": 0,
+    "trimmed": 0,
+    "anchor_rate": 0.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 0,
+    "verified_anchors": 0,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "carried_forward": 0,
+    "rejected": 0,
+    "added": 0,
+    "ruling_coverage": {
+      "original_count": 0,
+      "explicitly_ruled_count": 0,
+      "missing_or_unruled_ids": [],
+      "unexpected_nonadded_ids": [],
+      "invalid_original_status_ids": [],
+      "duplicate_original_ids": [],
+      "duplicate_ruling_ids": [],
+      "coverage_complete": false
+    },
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "promise",
+          "religion2022"
+        ],
+        "dimension_key": "revision_record",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "promise: complete text",
+          "religion2022: complete text"
+        ],
+        "coverage": "complete",
+        "criterion": "A later supplied text must explicitly present its relationship to an earlier supplied work through continuity, qualification, clarification, extension, correction, concession, or departure, with aligned formulations and an inspectable order basis.",
+        "basis": "The later text (religion2022, 2022) does not mention, cite, or refer to the earlier article (promise, 2001). No explicit statement of continuity, revision, or relationship is present. The two texts share thematic concerns (capitalism as religion, unbounded markets, money as absolute means) but the later text does not position itself in relation to the earlier work. Direct inspection of both complete texts confirms zero explicit cross-references.",
+        "limitations": [
+          "Potential implicit thematic development cannot be captured under the required explicit relationship criterion."
+        ],
+        "finding_ids": [],
+        "review_state": "unchecked",
+        "review_basis": "I have read both full texts. No explicit mention of promise in religion2022; no aligned revision claims found. Therefore outcome is no_relevant_instance.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "promise": "provided",
+            "religion2022": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Ledger contains non-row material instead of an explicitly empty findings section"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 1846
+}

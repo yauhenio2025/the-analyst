@@ -1,0 +1,302 @@
+{
+  "step": "reconcile_checked",
+  "kind": "synthesize",
+  "dimension": "",
+  "doc": "",
+  "model_requested": "openrouter/openai/gpt-5.6-sol",
+  "model_used": "openrouter/openai/gpt-5.6-sol",
+  "input_tokens": 36797,
+  "output_tokens": 5015,
+  "duration_ms": 77569,
+  "cost_usd": 0.1237,
+  "retries": 0,
+  "wall": {
+    "rows": 18,
+    "with_anchor": 18,
+    "verified": 18,
+    "trimmed": 2,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 19,
+    "verified_anchors": 19,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "checked",
+      "scope": "retained_ledger",
+      "missing_rejected_ids": [],
+      "missing_other_ids": []
+    },
+    "synthesis_contract": {
+      "failed_ids": [],
+      "incomplete_cross_document_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "unknown_dimensions": [],
+      "missing_ledger": false,
+      "parse_error": "",
+      "incomplete_invocation": false
+    },
+    "synthesis_repair_attempts": [
+      {
+        "failed_ids": [
+          "F17"
+        ],
+        "incomplete_cross_document_ids": [],
+        "duplicate_ids": [],
+        "missing_cited": [
+          "F17"
+        ],
+        "unknown_dimensions": [],
+        "missing_ledger": false,
+        "parse_error": "",
+        "incomplete_invocation": false
+      }
+    ],
+    "rows_without_dimension": 0,
+    "check_ruling_coverage": {
+      "original_count": 13,
+      "explicitly_ruled_count": 13,
+      "missing_or_unruled_ids": [],
+      "unexpected_nonadded_ids": [],
+      "invalid_original_status_ids": [],
+      "duplicate_original_ids": [],
+      "duplicate_ruling_ids": [],
+      "coverage_complete": true
+    },
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "attribution",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Abstract",
+          "Introduction",
+          "AUKUS and militarised neoliberalism",
+          "Conclusion"
+        ],
+        "coverage": "complete",
+        "criterion": "A named framework must be attributed from a passage; an inferred profile requires vocabulary and method evidence.",
+        "basis": "Verified: F1 explicitly declares MN lens; F2 (revised) states premise of reconnecting geopolitical economy and social relations. No undeclared tradition asserted.",
+        "limitations": [
+          "Broader political-economy profile is descriptive and not attributed to a named school."
+        ],
+        "finding_ids": [
+          "F1",
+          "F2"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "Anchors checked and support the findings; F2 weakened to remove unsupported profile inference.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "components",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Introduction",
+          "AUKUS and militarised neoliberalism",
+          "AUKUS, bipartisanship, and the regulatory control",
+          "State interventions and politico-business coalitions",
+          "The emergence of a new business class",
+          "Conclusion"
+        ],
+        "coverage": "complete",
+        "criterion": "Components must be inventoried according to their local definitions and oppositions.",
+        "basis": "Verified: F3 and F4 define MN and state transformation; added V.F1 and V.F2 for bipartisanship and geopolitical fetishism definitions.",
+        "limitations": [
+          "Some components are explained through argumentative use rather than compact formal definitions."
+        ],
+        "finding_ids": [
+          "F3",
+          "F4",
+          "F14",
+          "F15"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "Anchors checked; added missing component definitions from text.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "relations",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Introduction",
+          "AUKUS and militarised neoliberalism",
+          "AUKUS, bipartisanship, and the regulatory control",
+          "State interventions and politico-business coalitions",
+          "The emergence of a new business class",
+          "Conclusion"
+        ],
+        "coverage": "complete",
+        "criterion": "A relation requires an argument route showing a premise, mechanism, dependency, or constraint.",
+        "basis": "Verified: F5, F7, F8 show relations; added V.F3 for regulatory control coupling with state transformation.",
+        "limitations": [
+          "Document-internal conceptual relations, not cross-document framework comparisons."
+        ],
+        "finding_ids": [
+          "F5",
+          "F7",
+          "F8",
+          "F16"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "Anchors checked; added missing relation from text.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "method_profile",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Introduction",
+          "AUKUS, bipartisanship, and the regulatory control",
+          "State interventions and politico-business coalitions",
+          "The emergence of a new business class"
+        ],
+        "coverage": "complete",
+        "criterion": "The method profile must identify the evidence used and an enacted analytical application.",
+        "basis": "Verified: F9 states data sources; F10 provides a worked application; added V.F4 for the three-feature analytical structure.",
+        "limitations": [
+          "No statistical causal design; analysis is institutional and case-based."
+        ],
+        "finding_ids": [
+          "F9",
+          "F10",
+          "F17"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "Anchors checked; added structural method finding.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "translations",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "AUKUS, bipartisanship, and the regulatory control",
+          "The emergence of a new business class"
+        ],
+        "coverage": "complete",
+        "criterion": "A translation must state the imported concept's source or prior formulation and explain its local adaptation.",
+        "basis": "Verified: F6 narrows regulatory control; added V.F5 for spatial fix import.",
+        "limitations": [
+          "Only two imports captured; others (e.g., 'power to structure') exist but not added."
+        ],
+        "finding_ids": [
+          "F6",
+          "F18"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "Anchors checked; added spatial fix import.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "limits",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "AUKUS, bipartisanship, and the regulatory control",
+          "The emergence of a new business class",
+          "Conclusion"
+        ],
+        "coverage": "complete",
+        "criterion": "Limits must be grounded in an explicit scope bracket, qualification, counter-passage, or bounded application.",
+        "basis": "Verified: F12 brackets conflict assessment; F13 notes implementation risks; F11 shows bounded effect of export controls.",
+        "limitations": [
+          "Comprehensive outcome assessment not provided."
+        ],
+        "finding_ids": [
+          "F11",
+          "F12",
+          "F13"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "Anchors checked; F11 anchor corrected.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Findings in this scope lost anchor evidence; this does not establish absence",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 24962
+}

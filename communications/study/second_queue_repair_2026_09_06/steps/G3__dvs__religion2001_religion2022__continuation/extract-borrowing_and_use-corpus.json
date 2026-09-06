@@ -1,0 +1,110 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "borrowing_and_use",
+  "doc": "",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 12778,
+  "output_tokens": 1985,
+  "duration_ms": 0,
+  "cost_usd": 0.0049,
+  "retries": 0,
+  "wall": {
+    "rows": 4,
+    "with_anchor": 4,
+    "verified": 4,
+    "trimmed": 0,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 8,
+    "verified_anchors": 8,
+    "cross_document_rows": 4,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 4,
+      "with_anchor": 4,
+      "verified": 4,
+      "trimmed": 0,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 8,
+      "verified_anchors": 8,
+      "cross_document_rows": 4,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "religion2001",
+          "religion2022"
+        ],
+        "dimension_key": "borrowing_and_use",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "religion2001: Abstract",
+          "religion2001: The Paradoxes of Religion and Money",
+          "religion2001: Simmel and Marx",
+          "religion2001: Entrepreneurs and Economic Myths",
+          "religion2001: Conclusions",
+          "religion2001: References",
+          "religion2022: Religious and Secular Critique of Money",
+          "religion2022: The Unbounding of Markets as the Basis of Modern Capitalism",
+          "religion2022: The Intransparency of World Society to Itself: Luhmann and Hayek",
+          "religion2022: The Religious Worldview and the Consequences of Its Dethronement",
+          "religion2022: Universalism and the Contingency of the World: A Comparative Perspective on Capitalism and Religion",
+          "religion2022: Conclusions",
+          "religion2022: Notes",
+          "religion2022: Bibliography"
+        ],
+        "coverage": "complete",
+        "criterion": "A cross-document finding must align a concept’s full local use in at least two supplied works, identify what changed or remained, and distinguish explicit transmission evidence from resemblance or unresolved provenance.",
+        "basis": "The supplied per-document findings contain anchored uses, acknowledgments, changed purposes and representation limits for shared Weberian, Marxian and Benjaminian concepts across religion2001 and religion2022. The comparison supports adapted parallel uses, while no supplied evidence establishes direct transmission between the two works.",
+        "limitations": [
+          "This is a synthesis of reader reports rather than direct inspection of every source.",
+          "The cited original works and any intermediary transmission evidence were not supplied.",
+          "The reports describe coverage as complete for their inspected sections but state that source bytes do not independently establish inspection or completeness."
+        ],
+        "finding_ids": [
+          "[X6.F1]",
+          "[X6.F2]",
+          "[X6.F3]",
+          "[X6.F4]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "religion2001": "provided",
+            "religion2022": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ],
+          "basis_material": "Per-document ledgers and scope reports; no direct source inspection in this invocation"
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 8198
+}

@@ -1,0 +1,95 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "concept_trajectories",
+  "doc": "",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 16196,
+  "output_tokens": 1001,
+  "duration_ms": 14282,
+  "cost_usd": 0.0044,
+  "retries": 0,
+  "wall": {
+    "rows": 1,
+    "with_anchor": 1,
+    "verified": 1,
+    "trimmed": 0,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 2,
+    "verified_anchors": 2,
+    "cross_document_rows": 1,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 1,
+      "with_anchor": 1,
+      "verified": 1,
+      "trimmed": 0,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 2,
+      "verified_anchors": 2,
+      "cross_document_rows": 1,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "technique",
+          "rationality"
+        ],
+        "dimension_key": "concept_trajectories",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Technique: “The neutrality of technique” and related discussions of technique’s social and historical scale",
+          "Rationality: “The Rationality of Capitalism” and the discussion of instrumental rationality"
+        ],
+        "coverage": "partial",
+        "criterion": "A relevant cross-document instance requires the same or explicitly aligned concept, object and argumentative role to be supported by anchored passages in at least two supplied works; development requires dates or uptake evidence.",
+        "basis": "Anchored passages in both supplied works support an unordered comparison between efficiency-based technical neutrality and means-oriented instrumental rationality. The comparison identifies a shared qualification while preserving differences in object and scope.",
+        "limitations": [
+          "No dates or uptake evidence were supplied, so no ordered development can be claimed.",
+          "The reports do not establish explicit reference or borrowing between the works.",
+          "The comparison is limited to the inspected passages and does not establish corpus-wide absence or persistence."
+        ],
+        "finding_ids": [
+          "[X7.F1]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "technique": "provided",
+            "rationality": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ],
+          "basis_material": "Per-document ledgers and scope reports; no direct source inspection in this invocation"
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 3344
+}

@@ -1,0 +1,94 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "concession_consequence",
+  "doc": "promise",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 17992,
+  "output_tokens": 1686,
+  "duration_ms": 21786,
+  "cost_usd": 0.0056,
+  "retries": 0,
+  "wall": {
+    "rows": 6,
+    "with_anchor": 6,
+    "verified": 6,
+    "trimmed": 1,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 6,
+    "verified_anchors": 6,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 6,
+      "with_anchor": 6,
+      "verified": 6,
+      "trimmed": 1,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 6,
+      "verified_anchors": 6,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "promise"
+        ],
+        "dimension_key": "concession_consequence",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Abstract",
+          "Sections I–IV",
+          "Notes"
+        ],
+        "coverage": "complete",
+        "criterion": "A scoped concession, limitation or qualification must identify what is conceded, the response or preserved claim, and the consequence for the argument.",
+        "basis": "The source contains multiple explicit concessions and qualifications, including revisions of Marx, Schumpeter, Simmel and Benjamin, with stated consequences for the article’s account of money, labour, entrepreneurship, myth and capitalism.",
+        "limitations": [
+          "The source does not supply the full texts of the earlier works it cites, so changes relative to those works cannot be independently verified beyond the present text’s own declarations."
+        ],
+        "finding_ids": [
+          "D5.DOC1.F1",
+          "D5.DOC1.F2",
+          "D5.DOC1.F3",
+          "D5.DOC1.F4",
+          "D5.DOC1.F5",
+          "D5.DOC1.F6"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "promise": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 7432
+}

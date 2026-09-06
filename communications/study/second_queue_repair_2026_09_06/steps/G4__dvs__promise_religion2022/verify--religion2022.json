@@ -1,0 +1,266 @@
+{
+  "step": "verify",
+  "kind": "verify",
+  "dimension": "",
+  "doc": "religion2022",
+  "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+  "model_used": "openrouter/deepseek/deepseek-v4-pro",
+  "input_tokens": 19321,
+  "output_tokens": 19019,
+  "duration_ms": 275428,
+  "cost_usd": 0.0598,
+  "retries": 0,
+  "wall": {
+    "rows": 34,
+    "with_anchor": 34,
+    "verified": 34,
+    "trimmed": 5,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 39,
+    "verified_anchors": 39,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "carried_forward": 0,
+    "rejected": 6,
+    "added": 9,
+    "ruling_coverage": {
+      "original_count": 25,
+      "explicitly_ruled_count": 25,
+      "missing_or_unruled_ids": [],
+      "unexpected_nonadded_ids": [],
+      "invalid_original_status_ids": [],
+      "duplicate_original_ids": [],
+      "duplicate_ruling_ids": [],
+      "coverage_complete": true
+    },
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "religion2022"
+        ],
+        "dimension_key": "position",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Religious and Secular Critique of Money",
+          "The Unbounding of Markets as the Basis of Modern Capitalism",
+          "The Intransparency of World Society to Itself: Luhmann and Hayek",
+          "The Religious Worldview and the Consequences of Its Dethronement",
+          "Universalism and the Contingency of the World: A Comparative Perspective on Capitalism and Religion",
+          "Conclusions"
+        ],
+        "coverage": "complete",
+        "criterion": "A position is eligible when the text itself undertakes a scoped proposition about an object, including its conditions, rather than merely attributing that proposition to a cited work or opponent.",
+        "basis": "Verified anchors confirm the text undertakes explicit positions on secular sociology, capitalism as unbounded markets, market liberalism as self-description, money replacing God, and a rejection of new totalizing narratives. One row was weakened and two new rows were added to capture the full scope of the text's positions.",
+        "limitations": [
+          "The assessment concerns the supplied text and does not independently inspect the cited works."
+        ],
+        "finding_ids": [
+          "[D1.DOC2.F1]",
+          "[D1.DOC2.F2]",
+          "[D1.DOC2.F3]",
+          "[D1.DOC2.F4]",
+          "[D1.DOC2.F5]",
+          "[V.DOC2.F1]",
+          "[V.DOC2.F9]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "Anchors were verified against the source; D1.DOC2.F5 was weakened because the anchor only supported the rejection, and the positive prescription was added as V.DOC2.F9. All other rows are confirmed or added with proper support.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "religion2022": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "religion2022"
+        ],
+        "dimension_key": "claimed_relation",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Religious and Secular Critique of Money",
+          "The Unbounding of Markets as the Basis of Modern Capitalism",
+          "The Religious Worldview and the Consequences of Its Dethronement",
+          "Universalism and the Contingency of the World: A Comparative Perspective on Capitalism and Religion",
+          "Conclusions"
+        ],
+        "coverage": "complete",
+        "criterion": "Explicit statements presenting a move as a clarification, extension, correction, concession, departure, or continuity claim in relation to earlier positions or cited works",
+        "basis": "Verified anchors support claims of departure from theological critique, clarification of capitalism, continuity with Marx, extension of Weber, correction of instrumental reason, and drawing on Economic Theology. Two rows were rejected because their anchors did not support the claimed relation, and one new row was added.",
+        "limitations": [
+          "The source does not provide a systematic comparison with an identifiable earlier work by the same author."
+        ],
+        "finding_ids": [
+          "[D2.DOC2.F1]",
+          "[D2.DOC2.F2]",
+          "[D2.DOC2.F4]",
+          "[D2.DOC2.F5]",
+          "[D2.DOC2.F6]",
+          "[V.DOC2.F2]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "D2.DOC2.F3 and D2.DOC2.F7 were rejected for insufficient anchoring; V.DOC2.F2 was added to capture the text's relation to the Economic Theology field. The remaining rows are confirmed.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "religion2022": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "religion2022"
+        ],
+        "dimension_key": "scope_and_force",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Religious and Secular Critique of Money",
+          "The Unbounding of Markets as the Basis of Modern Capitalism",
+          "The Religious Worldview and the Consequences of Its Dethronement",
+          "Universalism and the Contingency of the World: A Comparative Perspective on Capitalism and Religion",
+          "Conclusions"
+        ],
+        "coverage": "complete",
+        "criterion": "A finding must identify a qualified quantifier, modality, time or domain condition and explain how that condition affects the proposition’s argumentative force.",
+        "basis": "Verified anchors confirm domain restrictions on religion, qualified capability and categorical limit for capitalism, and a prohibition of a new totalizing narrative. One row was weakened to match the anchor, and one new row was added for the stoppability of capitalism's dynamic.",
+        "limitations": [
+          "The assessment concerns the supplied text and does not compare it with other works or editions."
+        ],
+        "finding_ids": [
+          "[D3.DOC2.F1]",
+          "[D3.DOC2.F2]",
+          "[D3.DOC2.F3]",
+          "[V.DOC2.F3]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "D3.DOC2.F3 was weakened to remove the unsupported positive prescription; V.DOC2.F3 was added to capture the qualified impossibility claim. The other rows are confirmed.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "religion2022": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "religion2022"
+        ],
+        "dimension_key": "support",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Religious and Secular Critique of Money",
+          "The Unbounding of Markets as the Basis of Modern Capitalism",
+          "The Intransparency of World Society to Itself: Luhmann and Hayek",
+          "The Religious Worldview and the Consequences of Its Dethronement",
+          "Universalism and the Contingency of the World: A Comparative Perspective on Capitalism and Religion",
+          "Conclusions"
+        ],
+        "coverage": "complete",
+        "criterion": "Evidence or derivation is offered for a position, including any identified new evidence or new argument as a reason for changing its formulation.",
+        "basis": "Verified anchors confirm support for claims about unbounded markets, epistemological analogy, self-description, money replacing God, moral minimalism, and private property rights. One new row was added to capture the crisis evidence list.",
+        "limitations": [
+          "No earlier supplied work is available in the source, so declared continuity, revision, or change-reason claims cannot be assessed.",
+          "Cited sources were not independently inspected."
+        ],
+        "finding_ids": [
+          "D4.DOC2.F1",
+          "D4.DOC2.F2",
+          "D4.DOC2.F3",
+          "D4.DOC2.F4",
+          "D4.DOC2.F5",
+          "D4.DOC2.F6",
+          "[V.DOC2.F4]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "All original support rows are confirmed; V.DOC2.F4 was added to capture the specific crisis support. Anchors all match the source.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "religion2022": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "religion2022"
+        ],
+        "dimension_key": "concession_consequence",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Religious and Secular Critique of Money",
+          "The Unbounding of Markets as the Basis of Modern Capitalism",
+          "The Intransparency of World Society to Itself: Luhmann and Hayek",
+          "The Religious Worldview and the Consequences of Its Dethronement",
+          "Universalism and the Contingency of the World: A Comparative Perspective on Capitalism and Religion",
+          "Conclusions"
+        ],
+        "coverage": "complete",
+        "criterion": "A finding must identify an acknowledged limit, qualification, or concession and explain whether the text answers, distinguishes, preserves, or leaves open the affected conclusion.",
+        "basis": "All original rows were rejected because their anchors did not support the full concession-response pair. Four new rows were added with properly anchored concession and response pairs, covering the market-liberal model's success, capitalism's worldly performance, reconciliation, and the open society.",
+        "limitations": [
+          "The assessment concerns the supplied text and its cited positions; no additional works were inspected."
+        ],
+        "finding_ids": [
+          "[V.DOC2.F5]",
+          "[V.DOC2.F6]",
+          "[V.DOC2.F7]",
+          "[V.DOC2.F8]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "The original rows were rejected for insufficient anchoring; V.DOC2.F5–F8 were added with explicit anchors for both concession and response. The text contains multiple concession-consequence structures.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "religion2022": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 38165
+}

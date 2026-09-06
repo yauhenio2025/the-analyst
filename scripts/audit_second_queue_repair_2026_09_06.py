@@ -4,6 +4,7 @@ from pathlib import Path
 import re
 import subprocess
 import sys
+import shutil
 ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT))
 from scripts.study_second_queue_repair_2026_09_06 import study as s
 from src.dossier.common import analysis_ledger
@@ -67,6 +68,19 @@ def audit():
                    'desk_citable_ids':sorted(desk_ids),'table_ids_not_citable_at_desk':bad_desk,
                    'inventory_exception':job['id'] in ('A6','C1','E12','S3'),
                    'source_memo':binding['memo_path'],'process_steps':[c['step'] for c in result['process']['calls']]}
+    responses=[]
+    for cp in sorted((s.OUT/'calls').glob('*/*.json')):
+        if '.prompt.' in cp.name:continue
+        call=s.budget.read(cp);raw=cp.with_suffix('.md');prompt=cp.with_name(cp.stem+'.prompt.json')
+        if not raw.exists() or s.budget.digest(raw.read_bytes())!=call.get('output_sha256'):
+            errors.append(str(cp.relative_to(s.OUT))+': response custody failure');continue
+        if s.budget.digest(s.budget.read(prompt))!=call['prompt_sha256']:
+            errors.append(str(cp.relative_to(s.OUT))+': prompt custody failure')
+        dest=s.ARCHIVE/'model_outputs'/cp.parent.name/raw.name;dest.parent.mkdir(parents=True,exist_ok=True)
+        shutil.copy2(raw,dest)
+        responses.append({'receipt':str(cp.relative_to(s.OUT)), 'output':str(dest.relative_to(s.ARCHIVE)),
+                          'output_sha256':call['output_sha256'], 'status':call['status']})
+    s.budget.write(s.ARCHIVE/'model_outputs.json',responses)
     c=s.budget.costs();review=s.budget.read(s.ARCHIVE/'claude_review_receipt.json')
     report={'plan_identity':plan['identity'],'jobs':jobs,'costs':c,'direct_claude_review_usd':review['cost_usd'],
             'known_round_usd':round(c['known_usd']+review['cost_usd'],6),

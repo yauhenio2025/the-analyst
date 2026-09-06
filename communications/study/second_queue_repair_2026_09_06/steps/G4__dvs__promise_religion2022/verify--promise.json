@@ -1,0 +1,292 @@
+{
+  "step": "verify",
+  "kind": "verify",
+  "dimension": "",
+  "doc": "promise",
+  "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+  "model_used": "openrouter/deepseek/deepseek-v4-pro",
+  "input_tokens": 26290,
+  "output_tokens": 16417,
+  "duration_ms": 307150,
+  "cost_usd": 0.0616,
+  "retries": 0,
+  "wall": {
+    "rows": 0,
+    "with_anchor": 0,
+    "verified": 0,
+    "trimmed": 0,
+    "anchor_rate": 0.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 0,
+    "verified_anchors": 0,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "carried_forward": 31,
+    "rejected": 0,
+    "added": 0,
+    "ruling_coverage": {
+      "original_count": 31,
+      "explicitly_ruled_count": 0,
+      "missing_or_unruled_ids": [
+        "D1.DOC1.F1",
+        "D1.DOC1.F2",
+        "D1.DOC1.F3",
+        "D1.DOC1.F4",
+        "D1.DOC1.F5",
+        "D1.DOC1.F6",
+        "D1.DOC1.F7",
+        "D1.DOC1.F8",
+        "D2.DOC1.F1",
+        "D2.DOC1.F2",
+        "D2.DOC1.F3",
+        "D2.DOC1.F4",
+        "D2.DOC1.F5",
+        "D2.DOC1.F6",
+        "D2.DOC1.F7",
+        "D2.DOC1.F8",
+        "D3.DOC1.F1",
+        "D3.DOC1.F2",
+        "D3.DOC1.F3",
+        "D3.DOC1.F4",
+        "D3.DOC1.F5",
+        "D4.DOC1.F1",
+        "D4.DOC1.F2",
+        "D4.DOC1.F3",
+        "D4.DOC1.F4",
+        "D5.DOC1.F1",
+        "D5.DOC1.F2",
+        "D5.DOC1.F3",
+        "D5.DOC1.F4",
+        "D5.DOC1.F5",
+        "D5.DOC1.F6"
+      ],
+      "unexpected_nonadded_ids": [],
+      "invalid_original_status_ids": [],
+      "duplicate_original_ids": [],
+      "duplicate_ruling_ids": [],
+      "coverage_complete": false
+    },
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "promise"
+        ],
+        "dimension_key": "position",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Abstract",
+          "Sections I–IV",
+          "Notes"
+        ],
+        "coverage": "complete",
+        "criterion": "A position the text itself undertakes, including its object, conditions, owner and any explicit continuity, qualification or revision of attributed positions",
+        "basis": "All anchored findings confirmed, plus one additional methodological position (V.DOC1.F1) verified in the source.",
+        "limitations": [
+          "Earlier works were not directly supplied; positions attributed to them are taken from the present text."
+        ],
+        "finding_ids": [
+          "D1.DOC1.F1",
+          "D1.DOC1.F2",
+          "D1.DOC1.F3",
+          "D1.DOC1.F4",
+          "D1.DOC1.F5",
+          "D1.DOC1.F6",
+          "D1.DOC1.F7",
+          "D1.DOC1.F8",
+          "V.DOC1.F1"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "Each finding was checked against its verbatim anchor and surrounding context; all anchors support the stated claims after minor augmentations (added anchor-b pairs for completeness). One miss added.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "promise": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Malformed findings ledger: Ledger row D4.DOC1.F4 has repeated anchor fields; use distinct anchor/doc suffixes",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "promise"
+        ],
+        "dimension_key": "claimed_relation",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Abstract",
+          "Sections I–IV",
+          "Notes"
+        ],
+        "coverage": "complete",
+        "criterion": "Explicitly stated clarification, extension, correction, concession, departure, or continuity claim concerning positions in earlier supplied works",
+        "basis": "Seven out of eight original rows confirmed; one row (D2.DOC1.F3) rejected because its anchor pertained to Marx and Simmel, not to the article’s self-characterization. No misses added.",
+        "limitations": [
+          "Earlier Deutschmann works were unavailable."
+        ],
+        "finding_ids": [
+          "D2.DOC1.F1",
+          "D2.DOC1.F2",
+          "D2.DOC1.F4",
+          "D2.DOC1.F5",
+          "D2.DOC1.F6",
+          "D2.DOC1.F7",
+          "D2.DOC1.F8"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "All retained rows are tightly anchored in explicit statements of the article’s relationship to earlier positions.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "promise": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence",
+            "Malformed findings ledger: Ledger row D4.DOC1.F4 has repeated anchor fields; use distinct anchor/doc suffixes"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "promise"
+        ],
+        "dimension_key": "scope_and_force",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Abstract",
+          "Sections I–IV",
+          "Notes"
+        ],
+        "coverage": "complete",
+        "criterion": "A finding qualifies a proposition by quantifier, modality, time or domain, or records a local change in wording that alters its argumentative force or scope.",
+        "basis": "All five rows confirmed, with added anchor-b pairs where needed to capture temporal and structural qualifications. No misses required.",
+        "limitations": [
+          "The earlier textual positions (e.g., Benjamin’s exact wording) were not independently available."
+        ],
+        "finding_ids": [
+          "D3.DOC1.F1",
+          "D3.DOC1.F2",
+          "D3.DOC1.F3",
+          "D3.DOC1.F4",
+          "D3.DOC1.F5"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "Each row’s primary and secondary anchors explicitly show the claimed continuity, restriction, or causal qualification within the source.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "promise": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence",
+            "Malformed findings ledger: Ledger row D4.DOC1.F4 has repeated anchor fields; use distinct anchor/doc suffixes"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "promise"
+        ],
+        "dimension_key": "support",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Abstract",
+          "Sections I–IV",
+          "Notes"
+        ],
+        "coverage": "complete",
+        "criterion": "Support is present where the text offers evidence, derivation or an explicitly identified new argument for a position.",
+        "basis": "Three original rows confirmed; one row (D4.DOC1.F4) weakened to align with its actual evidential anchors; one miss (V.DOC1.F2) added from Reddy’s quotation.",
+        "limitations": [
+          "Support is conceptual and cited, not independently empirical; the full earlier works are not available for comparison."
+        ],
+        "finding_ids": [
+          "D4.DOC1.F1",
+          "D4.DOC1.F2",
+          "D4.DOC1.F3",
+          "D4.DOC1.F4",
+          "V.DOC1.F2"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "All support claims now correspond to explicit textual derivations or cited evidence in the verified anchors.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "promise": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence",
+            "Malformed findings ledger: Ledger row D4.DOC1.F4 has repeated anchor fields; use distinct anchor/doc suffixes"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "promise"
+        ],
+        "dimension_key": "concession_consequence",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Abstract",
+          "Sections I–IV",
+          "Notes"
+        ],
+        "coverage": "complete",
+        "criterion": "A scoped concession, limitation or qualification must identify what is conceded, the response or preserved claim, and the consequence for the argument.",
+        "basis": "All six rows confirmed, with added anchor-b pairs to secure the response and consequence elements.",
+        "limitations": [
+          "The earlier arguments of Marx, Schumpeter and Simmel referenced in the concessions are not directly supplied."
+        ],
+        "finding_ids": [
+          "D5.DOC1.F1",
+          "D5.DOC1.F2",
+          "D5.DOC1.F3",
+          "D5.DOC1.F4",
+          "D5.DOC1.F5",
+          "D5.DOC1.F6"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "Concessions and their argumentative consequences are explicitly stated and fully anchored in the source.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "promise": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Malformed findings ledger: Ledger row D4.DOC1.F4 has repeated anchor fields; use distinct anchor/doc suffixes"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 35700
+}

@@ -1,0 +1,103 @@
+{
+  "step": "verify",
+  "kind": "verify",
+  "dimension": "",
+  "doc": "",
+  "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+  "model_used": "openrouter/deepseek/deepseek-v4-pro",
+  "input_tokens": 27560,
+  "output_tokens": 9177,
+  "duration_ms": 58882,
+  "cost_usd": 0.0479,
+  "retries": 0,
+  "wall": {
+    "rows": 5,
+    "with_anchor": 5,
+    "verified": 5,
+    "trimmed": 4,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 10,
+    "verified_anchors": 10,
+    "cross_document_rows": 5,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "carried_forward": 0,
+    "rejected": 0,
+    "added": 1,
+    "ruling_coverage": {
+      "original_count": 4,
+      "explicitly_ruled_count": 4,
+      "missing_or_unruled_ids": [],
+      "unexpected_nonadded_ids": [],
+      "invalid_original_status_ids": [],
+      "duplicate_original_ids": [],
+      "duplicate_ruling_ids": [],
+      "coverage_complete": true
+    },
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "religion2001",
+          "religion2022"
+        ],
+        "dimension_key": "borrowing_and_use",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "religion2001: Abstract",
+          "religion2001: The Paradoxes of Religion and Money",
+          "religion2001: Simmel and Marx",
+          "religion2001: Entrepreneurs and Economic Myths",
+          "religion2001: Conclusions",
+          "religion2001: References",
+          "religion2022: Religious and Secular Critique of Money",
+          "religion2022: The Unbounding of Markets as the Basis of Modern Capitalism",
+          "religion2022: The Intransparency of World Society to Itself: Luhmann and Hayek",
+          "religion2022: The Religious Worldview and the Consequences of Its Dethronement",
+          "religion2022: Universalism and the Contingency of the World: A Comparative Perspective on Capitalism and Religion",
+          "religion2022: Conclusions",
+          "religion2022: Notes",
+          "religion2022: Bibliography"
+        ],
+        "coverage": "complete",
+        "criterion": "A cross-document finding must align a concept’s full local use in at least two supplied works, identify what changed or remained, and distinguish explicit transmission evidence from resemblance or unresolved provenance.",
+        "basis": "Verified each finding’s anchors against the source texts, corrected truncated anchors to verbatim quotations, and added one supported cross-document finding (Simmel’s ‘absolute means’). All retained findings are supported by the texts.",
+        "limitations": [
+          "The 2001 paper is not cited in the 2022 paper; transmission between these two specific documents remains unresolved and may reflect the author’s ongoing work rather than direct borrowing.",
+          "Only these two texts were supplied; the author’s 2019 book (Deutschmann 2019) was not reviewed."
+        ],
+        "finding_ids": [
+          "[X6.F1]",
+          "[X6.F2]",
+          "[X6.F3]",
+          "[X6.F4]",
+          "[V.CORPUS.F5]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "Direct inspection of both source documents; all anchors verified or corrected; one miss added.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "religion2001": "provided",
+            "religion2022": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 10116
+}

@@ -1,0 +1,107 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "concession_consequence",
+  "doc": "religion2022",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 23335,
+  "output_tokens": 1469,
+  "duration_ms": 19475,
+  "cost_usd": 0.0064,
+  "retries": 0,
+  "wall": {
+    "reanchor_receipts": [
+      {
+        "content": "## Findings ledger\n- [D5.DOC2.F4] The conclusion concedes that the open society may solve social problems, but preserves a critique of its systemic consequences and rejects a renewed totalizing solution — dim: concession_consequence — concession: “The ‘open society’” may be capable of solving social problems — response: the text stresses that its realization generates new social and ecological problems and calls instead for sober containment of unplanned effects — consequence: problem-solving capacity is retained as a limited possibility, while any promise of final freedom, happiness, or reconciliation is rejected — anchor: \"The \\\"open society\\\"—to return to the formula coined by Karl Popper—may well be capable of solving social problems.\" — doc: religion2022 — confidence: high — trimmed-anchor: yes",
+        "partial": false,
+        "stop_reason": "stop",
+        "error": null
+      }
+    ],
+    "rows": 4,
+    "with_anchor": 4,
+    "verified": 3,
+    "trimmed": 0,
+    "anchor_rate": 0.75,
+    "failed_ids": [
+      "D5.DOC2.F4"
+    ],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 4,
+    "verified_anchors": 3,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 4,
+      "with_anchor": 4,
+      "verified": 4,
+      "trimmed": 1,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 4,
+      "verified_anchors": 4,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "religion2022"
+        ],
+        "dimension_key": "concession_consequence",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Religious and Secular Critique of Money",
+          "The Unbounding of Markets as the Basis of Modern Capitalism",
+          "The Intransparency of World Society to Itself: Luhmann and Hayek",
+          "The Religious Worldview and the Consequences of Its Dethronement",
+          "Universalism and the Contingency of the World: A Comparative Perspective on Capitalism and Religion",
+          "Conclusions"
+        ],
+        "coverage": "complete",
+        "criterion": "A finding must identify an acknowledged limit, qualification, or concession and explain whether the text answers, distinguishes, preserves, or leaves open the affected conclusion.",
+        "basis": "The text repeatedly acknowledges capitalism’s historical efficacy and worldly performance while narrowing claims about fulfilled expectations, ultimate religious meaning, reconciliation, and final problem-solving.",
+        "limitations": [
+          "The assessment concerns the supplied text and its cited positions; no additional works were inspected."
+        ],
+        "finding_ids": [
+          "[D5.DOC2.F1]",
+          "[D5.DOC2.F2]",
+          "[D5.DOC2.F3]",
+          "[D5.DOC2.F4]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "religion2022": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 1,
+  "dropped_ids": [],
+  "chars": 5506
+}

@@ -1,0 +1,88 @@
+{
+  "step": "verify",
+  "kind": "verify",
+  "dimension": "",
+  "doc": "",
+  "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+  "model_used": "openrouter/deepseek/deepseek-v4-pro",
+  "input_tokens": 33569,
+  "output_tokens": 3900,
+  "duration_ms": 84588,
+  "cost_usd": 0.0431,
+  "retries": 0,
+  "wall": {
+    "rows": 1,
+    "with_anchor": 1,
+    "verified": 1,
+    "trimmed": 0,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 2,
+    "verified_anchors": 2,
+    "cross_document_rows": 1,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "carried_forward": 0,
+    "rejected": 0,
+    "added": 0,
+    "ruling_coverage": {
+      "original_count": 1,
+      "explicitly_ruled_count": 1,
+      "missing_or_unruled_ids": [],
+      "unexpected_nonadded_ids": [],
+      "invalid_original_status_ids": [],
+      "duplicate_original_ids": [],
+      "duplicate_ruling_ids": [],
+      "coverage_complete": true
+    },
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "technique",
+          "rationality"
+        ],
+        "dimension_key": "concept_trajectories",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Technique: “The neutrality of technique” section around “In this respect, technique does appear as value-free…”",
+          "Rationality: passage around “This rationality that is confined to means…” and discussion of instrumental rationality"
+        ],
+        "coverage": "partial",
+        "criterion": "A relevant cross-document instance requires the same or explicitly aligned concept, object and argumentative role to be supported by anchored passages in at least two supplied works; development requires dates or uptake evidence.",
+        "basis": "Anchored passages in both works support an unordered comparison between efficiency-based technical neutrality and means‑oriented instrumental rationality. The comparison identifies a shared qualification while preserving differences in object and scope.",
+        "limitations": [
+          "No dates or uptake evidence were supplied, so no ordered development can be claimed.",
+          "The comparison is limited to the inspected passages and does not establish corpus‑wide absence or persistence.",
+          "The finding captures only one aligned qualification; other possible alignments remain unexplored."
+        ],
+        "finding_ids": [
+          "[X7.F1]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "Inspected the source passages surrounding the quoted anchors in both works. The technique anchor shows technique appears value‑free only when considered in and for itself, and the rationality anchor declares instrumental rationality confined to means has no value. Together they support the finding’s claim of a shared restriction to means‑oriented evaluation and denial of its adequacy for social ends.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "technique": "provided",
+            "rationality": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 3711
+}

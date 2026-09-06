@@ -1,0 +1,312 @@
+{
+  "step": "check",
+  "kind": "verify",
+  "dimension": "",
+  "doc": "",
+  "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+  "model_used": "openrouter/deepseek/deepseek-v4-pro",
+  "input_tokens": 20295,
+  "output_tokens": 13352,
+  "duration_ms": 85022,
+  "cost_usd": 0.049,
+  "retries": 0,
+  "wall": {
+    "rows": 16,
+    "with_anchor": 16,
+    "verified": 16,
+    "trimmed": 3,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 19,
+    "verified_anchors": 19,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "checked",
+      "scope": "retained_ledger",
+      "missing_rejected_ids": [],
+      "missing_other_ids": []
+    },
+    "check_in": 16,
+    "check_confirmed": 0,
+    "check_weakened": 0,
+    "check_rejected": 0,
+    "check_added": 0,
+    "check_added_dropped": 0,
+    "check_carried": 16,
+    "check_unverified": 0,
+    "check_ruling_coverage": {
+      "original_count": 16,
+      "explicitly_ruled_count": 0,
+      "missing_or_unruled_ids": [
+        "F1",
+        "F2",
+        "F3",
+        "F4",
+        "F5",
+        "F6",
+        "F7",
+        "F8",
+        "F9",
+        "F10",
+        "F11",
+        "F12",
+        "F13",
+        "F14",
+        "F15",
+        "F16"
+      ],
+      "unexpected_nonadded_ids": [],
+      "invalid_original_status_ids": [],
+      "duplicate_original_ids": [],
+      "duplicate_ruling_ids": [],
+      "coverage_complete": false
+    },
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "senses",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Abstract",
+          "Introduction",
+          "Speculative thinking",
+          "Commodity fetishism",
+          "Self-valorization",
+          "Final reﬂections"
+        ],
+        "coverage": "complete",
+        "criterion": "Inventory each locally supported sense using definitions, predicates, examples, and attributed ownership.",
+        "basis": "Verified anchors; added V.F2 for 'Essence must appear' principle. All listed findings are supported by verbatim passages.",
+        "limitations": [
+          "Some inferences (e.g., lack of identity as gap) rely on the surrounding argument."
+        ],
+        "finding_ids": [
+          "F2",
+          "F3",
+          "F4",
+          "F8",
+          "V.F2"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "Audited each anchor against the source; corrected truncated anchors in other dimensions; added one missing row (V.F2) to capture the article’s central Hegelian principle.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Malformed findings ledger: revised-finding must be a quoted string",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "neighbors",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Introduction",
+          "Speculative thinking",
+          "Commodity fetishism",
+          "Self-valorization"
+        ],
+        "coverage": "complete",
+        "criterion": "Identify supported synonyms, contrasts, and neighboring terms only where the relation is established in context.",
+        "basis": "F1 and F7 are anchored verbatim and directly state contrasts.",
+        "limitations": [
+          "Other neighbor relations (e.g., representational vs speculative thinking) are present in the article but not captured here; the existing findings are sufficient for the dimension."
+        ],
+        "finding_ids": [
+          "F1",
+          "F7"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "Confirmed each anchor; no missing neighbor relations essential to the reading.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Malformed findings ledger: revised-finding must be a quoted string"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "boundaries",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Speculative thinking",
+          "Commodity fetishism",
+          "Self-valorization",
+          "Final reﬂections"
+        ],
+        "coverage": "complete",
+        "criterion": "Retain explicit membership and contrast criteria, including complete dependence predicates and acknowledged qualifications.",
+        "basis": "F5, F6, F10, and added V.F3 provide clear boundaries with verbatim support.",
+        "limitations": [
+          "The exact taxonomic boundary between fetishism and mystification remains open."
+        ],
+        "finding_ids": [
+          "F5",
+          "F6",
+          "F10",
+          "V.F3"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "Rejected F11 for truncated anchors; added V.F3 with full anchors. All retained rows now carry the required predicates.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Malformed findings ledger: revised-finding must be a quoted string",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "paired_usage",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Introduction",
+          "Commodity fetishism",
+          "Self-valorization",
+          "Final reﬂections"
+        ],
+        "coverage": "complete",
+        "criterion": "Pair literal passages before diagnosing ambiguity, distinguishing changes of voice, object, quotation, and scope.",
+        "basis": "F12, F13, and added V.F4 are anchored verbatim and correctly attribute voices.",
+        "limitations": [
+          "F14 was rejected; replaced with V.F4. The dimension is now well-supported."
+        ],
+        "finding_ids": [
+          "F12",
+          "F13",
+          "V.F4"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "Confirmed voice pairings; replaced truncated anchor row with a complete one.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Malformed findings ledger: revised-finding must be a quoted string",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "connotations",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Commodity fetishism",
+          "Self-valorization",
+          "Final reﬂections"
+        ],
+        "coverage": "complete",
+        "criterion": "Locate evaluation in explicit modifiers and contrasts without predicting reader response.",
+        "basis": "F16 is anchored verbatim and captures evaluative language within a Marx quotation.",
+        "limitations": [
+          "The evaluative wording is attributed to Marx; the article endorses it by using it to characterize mystification."
+        ],
+        "finding_ids": [
+          "F16"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "Anchor verified; no missing evaluative associations.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Malformed findings ledger: revised-finding must be a quoted string"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "literalization",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Speculative thinking",
+          "Commodity fetishism",
+          "Self-valorization",
+          "Final reﬂections"
+        ],
+        "coverage": "complete",
+        "criterion": "For causal predicates assigned to abstractions, inspect whether surrounding passages specify agents, relations, or mechanisms.",
+        "basis": "Added V.F1 and V.F5 with full anchors; both now specify mechanisms: value as organizing subject and the trade‑plantation circuit with coerced labor.",
+        "limitations": [
+          "The circuit anchor still only captures the final stage; the full passage enumerates earlier commodity conversions."
+        ],
+        "finding_ids": [
+          "V.F1",
+          "V.F5"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "Rejected F9 and F15 for truncated anchors; replaced with fully anchored rows that include the necessary mechanism language.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Malformed findings ledger: revised-finding must be a quoted string",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 16957
+}
