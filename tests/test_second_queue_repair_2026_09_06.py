@@ -62,7 +62,8 @@ def test_single_document_tables_receive_applied_rulings_and_prose_stays_two_call
 
 def test_single_document_table_with_unverified_final_anchor_gets_bounded_repair():
     read = 'A claim [F1].\n\n## Findings ledger\n' + row('F1', 'Transfer.', 'The committee also transferred money.')
-    critic = read.replace('money."', 'money." — status: confirmed')
+    # the check must touch a cited row for the reconcile to run at all (a confirmed-everywhere check stays at two calls)
+    critic = read.replace('money."', 'money." — status: weakened — revised-finding: "Transfer occurred."')
     bad = '| Claim |\n|---|\n| Invented [F1] |\n\n## Findings ledger\n' + row('F1', 'Invented.', 'This string is absent.')
     replies = iter([read, critic, bad, bad]); calls = []
     def fake(system, user, **kwargs):

@@ -29,7 +29,8 @@ from src.executor.context_broker import split_ledger
 from src.executor.engine_runner import FALLBACK_MODEL, run_engine_call_auto
 # check_citations remains re-exported for the saved corpus-followup audit helper.
 from src.executor.ledger_walls import (
-    LedgerRow, SourceIndex, WallReport, check_citations, parse_rows, reanchor_request, render_rows, verify_rows,
+    LedgerRow, SourceIndex, WallReport, check_citations, cited_ids, citing_text, parse_rows, reanchor_request, render_rows,
+    verify_rows,
 )
 from src.executor.ruling_coverage import critic_ruling_coverage
 from src.executor.scoped_outcomes import (
@@ -814,6 +815,12 @@ def run_oneshot_checked(
     vc = _invoke(call_fn, vprompt, critic, depth=depth, big=big, cancellation_check=cancellation_check)
     rulings = _rows_from(vc, spec.scoped_outcomes)
     kept, rejected, unverified, rep = apply_rulings(rows, rulings, index, corpus_dimensions=corpus_dimensions)
+    # Reconcile the reading's tables on the strong tier only when the check touched a row the reading cites (a rejection,
+    # a weakening, a quote the wall could not verify). When every cited row stands, the code-assembled output is the
+    # reading with its checked ledger, at two calls, as the 2026-09-05 check study measured. Corpus methods always reconcile.
+    touched = ({r.id for r in rejected} | {r.id for r in unverified} | {r.id for r in kept if r.status == "weakened"})
+    cited = set(cited_ids(citing_text(clean_reading)))
+    needs_reconcile = bool(corpus_dimensions) or (reconcile_tables and bool(touched & cited))
     final_rows = kept
     rep_final = verify_rows(final_rows, index, corpus_dimensions=corpus_dimensions, corpus_ids=corpus_ids)
     rep_final.check_prose_citations(prose, {r.id for r in kept}, rejected_ids={r.id for r in rejected})
@@ -823,7 +830,7 @@ def run_oneshot_checked(
                                       reviewing=True, previous=reader_scopes,
                                       failed_rows=[r for r in rulings if not r.anchor_verified])
     _record(vc)
-    if reconcile_tables:
+    if needs_reconcile:
         # The critic changes evidence and may find a cell unsupported even when its
         # old ID still exists. Reconcile the reading with the applied ledger once.
         synthesis_step = spec.final_step

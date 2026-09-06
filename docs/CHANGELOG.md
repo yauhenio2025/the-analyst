@@ -5,6 +5,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Changed (2026-09-06, after the second-queue release)
+- `run_oneshot_checked` reconciles the reading's tables on the strong tier only when the check touched a row the reading cites (rejected, weakened, or unverified); when every cited row stands, the two-call code-assembled output is kept. Corpus methods always reconcile. `ledger_walls.citing_text` strips ledger rows before collecting citations, so tables after the ledger count ([process_runner.py](src/executor/process_runner.py), [ledger_walls.py](src/executor/ledger_walls.py)).
+
 ### Changed (2026-09-06 — second queue release under the first-queue standard)
 
 - Released all eleven second-queue methods in Follow the words, Test a position, See the structure and Read it properly. Released `reconcile_sources` from its unchanged P2 third-round output; `compare_supplied_cases` stays withheld after its failed final repair. Picker, planner and ordinary paths now expose the released methods.

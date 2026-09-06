@@ -513,6 +513,12 @@ def cited_ids(text: str) -> list[str]:
     return out
 
 
+def citing_text(content: str) -> str:
+    """Everything in a reading that can cite a finding: the prose and any tables before or after the ledger, with the
+    ledger rows themselves removed (a row's own `[F1]` is its id, not a citation)."""
+    return "\n".join(line for line in (content or "").splitlines() if not _ROW_RE.match(line))
+
+
 def check_citations(prose: str, ledger_ids: set[str], also_ok: Optional[set[str]] = None) -> list[str]:
     """Ids the prose cites that exist in neither the final ledger nor the earlier ledgers."""
     ok = set(ledger_ids) | set(also_ok or ())

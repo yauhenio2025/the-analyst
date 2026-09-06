@@ -324,3 +324,33 @@ def test_markdown_emphasis_inside_anchor_does_not_break_the_wall():
     assert [r.id for r in rows] == ["F1", "F2"]
     verify_rows(rows, SourceIndex({"doc": src}))
     assert all(r.anchor_verified for r in rows), [(r.id, r.anchor_verified) for r in rows]
+
+
+def test_reconcile_runs_only_when_the_check_touched_a_cited_row():
+    """Tables declared: a check that confirms every cited row leaves the two-call assembled output (no third call);
+    a rejection of a cited row, even one cited only in a table after the ledger, triggers the reconcile call."""
+    from src.engines.registry import get_engine_registry
+    from src.operationalizations.registry import get_operationalization_registry
+    from src.executor.process_runner import run_oneshot_checked
+    cap = get_engine_registry().get_capability_definition("statistical_evidence")
+    spec = get_operationalization_registry().get(cap.engine_key).process
+    assert spec.final_step.tables, "the fixture engine must declare tables"
+    quote = "The budget rose to 4.1 billion in the second year of the programme."
+    read = f'# Reading\n\nThe budget rose [F1].\n\n## Findings ledger\n- [F1] The budget rose. — dim: inventory — anchor: "{quote}"\n'
+    confirm = f'## Findings ledger\n- [F1] The budget rose. — dim: inventory — anchor: "{quote}" — status: confirmed'
+    calls = []
+    def fake_confirm(system, user, **kw):
+        calls.append(user); return {"content": [read, confirm][len(calls) - 1], "model_used": kw["model_hint"]}
+    res = run_oneshot_checked(cap, spec, {"doc": quote}, call_fn=fake_confirm)
+    assert len(calls) == 2 and res.calls[-1].step_key == "check" and "### Check receipt" in res.final_content
+    # a rejected row cited only in a table placed after the ledger still triggers the reconcile
+    read2 = (f'# Reading\n\nThe budget rose [F1].\n\n## Findings ledger\n- [F1] The budget rose. — dim: inventory — anchor: "{quote}"\n'
+             f'- [F2] It fell later. — dim: inventory — anchor: "{quote}"\n\n### Table\n| Claim |\n|---|\n| It fell later [F2] |\n')
+    reject = (f'## Findings ledger\n- [F1] The budget rose. — dim: inventory — anchor: "{quote}" — status: confirmed\n'
+              f'- [F2] It fell later. — dim: inventory — anchor: "{quote}" — status: rejected')
+    final = f'# Reading\n\nThe budget rose [F1].\n\n## Findings ledger\n- [F1] The budget rose. — dim: inventory — anchor: "{quote}" — from: CHECK.F1\n'
+    calls2 = []
+    def fake_reject(system, user, **kw):
+        calls2.append(user); return {"content": [read2, reject, final][len(calls2) - 1], "model_used": kw["model_hint"]}
+    res2 = run_oneshot_checked(cap, spec, {"doc": quote}, call_fn=fake_reject)
+    assert len(calls2) == 3 and res2.calls[-1].step_key == "reconcile_checked" and "It fell later" not in res2.final_content
