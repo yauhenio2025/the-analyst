@@ -160,15 +160,14 @@ def main():
         else:
             for index in (2, 4, 5):
                 edits.append((('process', 'dimensions', index, 'method_card'), lambda s: s + '\n' + FIDELITY + '\n' + RENDITION))
-            for index in (4, 5):
-                edits.append((('process', 'dimensions', index, 'answer_shape'), lambda s: s + ' — work-uid: <supplied identity or unresolved> — rendition: <supplied identity> — section-uid: <supplied or unknown>'))
-            # Make the released framing's required how field explicit in the relational shape.
+            provenance = ' — work-uid: <supplied identity or unresolved> — rendition: <supplied identity> — section-uid: <supplied or unknown>'
+            edits.append((('process', 'dimensions', 4, 'answer_shape'), lambda s: s + provenance))
+            # Make the released framing's required how field explicit before YAML wrapping.
+            edits.append((('process', 'dimensions', 5, 'answer_shape'), lambda s: s + provenance + ' — how: page|section|search (only when retrieved) — retrieval-status: retrieved|unheld|unresolved — section-title: <supplied or unknown>'))
             edits.append((('process', 'dimensions', 2, 'answer_shape'), lambda s: s.replace('<printed/PDF pages>', '<supplied printed/PDF pages or registry section UID/title; edition>')))
         op_after = scalar_edits(op, edits)
         if short == 'engagement_map':
             op_after = op_after.replace('    - passage_move_stance_locus\n', '    - passage_move_stance_locus\n    - verified_passage_inventory\n', 1)
-        if short == 'fidelity_audit':
-            op_after = op_after.replace('— edition-locus: <limit>', '— how: page|section|search (only when retrieved) — retrieval-status: retrieved|unheld|unresolved — section-title: <supplied or unknown> — edition-locus: <limit>', 1)
         # Existing questions, dimensions, routes and depth selection are preserved.
         old, new = yaml.safe_load(op), yaml.safe_load(op_after)
         assert old['depth_sequences'] == new['depth_sequences']

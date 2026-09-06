@@ -269,7 +269,7 @@ diff --git a/src/operationalizations/definitions/citation_fidelity_audit.yaml b/
      indicators:
      - paired attribution
      - what P says
-@@ -168,11 +261,14 @@
+@@ -168,11 +261,15 @@
      scope: corpus
      load_bearing: false
      id_prefix: X6
@@ -285,11 +285,12 @@ diff --git a/src/operationalizations/definitions/citation_fidelity_audit.yaml b/
 +      edition-locus: <limit> — anchor: "<verbatim clause from A, <=200 chars>" — doc: <A source key> —
 +      anchor-b: "<verbatim clause from W or reader B, <=200 chars>" — doc-b: <different actual supplied
 +      source key> — confidence: high|medium|low — work-uid: <supplied identity or unresolved> — rendition:
-+      <supplied identity> — section-uid: <supplied or unknown>
++      <supplied identity> — section-uid: <supplied or unknown> — how: page|section|search (only when
++      retrieved) — retrieval-status: retrieved|unheld|unresolved — section-title: <supplied or unknown>
    - key: sample_practice
      name: Practice across the checked sample
      questions:
-@@ -226,8 +322,31 @@
+@@ -226,8 +323,31 @@
        attribution, negation, modality, edition and chronology. Re-anchor, narrow or reject a claim whose quotation
        omits its predicate. Code checks only anchors and IDs; the model must judge the reading against the supplied
        text.'
@@ -323,7 +324,7 @@ diff --git a/src/operationalizations/definitions/citation_fidelity_audit.yaml b/
    - key: synthesize
      kind: synthesize
      consumes:
-@@ -239,31 +358,63 @@
+@@ -239,31 +359,63 @@
      tables:
      - paired_citation_fidelity
      - checked_sample_coverage
