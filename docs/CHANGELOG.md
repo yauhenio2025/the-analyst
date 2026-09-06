@@ -5,6 +5,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Added (2026-09-06 night — fourth queue)
+
+- Released G5, A7, C4, C5, S5, R2, I4, I11, I13 and T5 in their fitting purpose groups. All twelve selected methods have capability/process definitions, predicate-bearing cards, three depth modes and UNDER_THE_SHAPE coverage. E3 remains excluded after its bounded final fails an anchor/citation check; I9 remains excluded because Sonnet 8.333 is below original 8.500. T2's earlier identity hold remains.
+- One paper each, twelve complete original controls, seven fresh checked repair attempts, and 60 independent scores after committed source reads. Selected outputs retain 193 findings and 270 verified anchors with citable actual desk/table IDs. Inventory exceptions and selective/inconclusive coverage are disclosed. Known actual USD11.283037 plus USD0.335108 unknown-use reserve; conservative known ledger USD11.519438 against USD15 guidance. Exact suite: 1310 passed, 2 skipped, unchanged 11 failures and 8 old collection errors; no runner or released-question edits. [Study and artifacts](../communications/study/STUDY_fourth_queue_2026-09-06.md).
+
 ### Added (2026-09-06, P1 released)
 - `compare_supplied_cases` (P1) offered under "See the structure": its final candidate verifies 24/24 rows once the parser keeps a row together across a line break inside its anchor ([catalog_purpose.json](src/dossier/catalog_purpose.json); addendum in `communications/study/STUDY_P1_repair_2026-09-06.md`).
 
