@@ -354,3 +354,17 @@ def test_reconcile_runs_only_when_the_check_touched_a_cited_row():
         calls2.append(user); return {"content": [read2, reject, final][len(calls2) - 1], "model_used": kw["model_hint"]}
     res2 = run_oneshot_checked(cap, spec, {"doc": quote}, call_fn=fake_reject)
     assert len(calls2) == 3 and res2.calls[-1].step_key == "reconcile_checked" and "It fell later" not in res2.final_content
+
+
+def test_a_quoted_anchor_broken_across_lines_still_parses_and_verifies():
+    """P1's final candidate put a line break inside a long anchor; the closing quote and doc: landed on the next line
+    and the anchor parsed empty. A continuation line joins the row while a quote is open."""
+    from src.executor.ledger_walls import SourceIndex, parse_rows, verify_rows
+    src = "PEACE became operational in 2022, linking Pakistan to France\nthrough Kenya and Egypt with a reported capacity of 96 terabits."
+    ledger = ('## Findings ledger\n- [D1.F1] PEACE was operational in 2022. — dim: cases — anchor: "PEACE became operational in 2022, linking Pakistan to France\n'
+              'through Kenya and Egypt with a reported capacity of 96 terabits." — doc: subsea — confidence: high\n'
+              '- [D1.F2] A second row. — dim: cases — anchor: "with a reported capacity of 96 terabits" — doc: subsea\n')
+    rows = parse_rows(ledger)
+    assert [r.id for r in rows] == ["D1.F1", "D1.F2"] and rows[0].doc == "subsea" and rows[0].anchor.startswith("PEACE became")
+    verify_rows(rows, SourceIndex({"subsea": src}))
+    assert all(r.anchor_verified for r in rows)

@@ -5,6 +5,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Fixed (2026-09-06, multiline rows)
+- Ledger parser: a physical line break inside a row's quoted anchor no longer splits the row; a continuation line joins the row while a quote is open ([ledger_walls.py](src/executor/ledger_walls.py)). P1's final candidate had lost its two long anchors this way.
+
 ### Fixed (2026-09-06, duplicate ledger ids)
 - Duplicate ledger ids across merged ledgers (a document's critic and the corpus critic both adding `V.DOC2.F1`; two extraction calls ignoring the namespace) are re-keyed to the next free number and recorded (`rekeyed_ids` on the synthesis wall, `rekeyed-from:` on the row) instead of failing the phase; a critic ruling twice on one id keeps the first ruling and records the drop ([process_runner.py](src/executor/process_runner.py)). A live deep phase had died on this after 33 minutes.
 

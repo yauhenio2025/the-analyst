@@ -231,11 +231,30 @@ class LedgerRow:
         return f"- [{self.id}] {text}".rstrip()
 
 
+def _unbalanced_quotes(text: str) -> bool:
+    return text.count('"') % 2 == 1 or text.count("“") > text.count("”") or text.count("‘") > text.count("’")
+
+
+def _logical_lines(ledger_text: str) -> list[str]:
+    """Rows are one line by grammar, but a model breaks a long quoted anchor across physical lines (P1's PEACE/EMA
+    rows, 2026-09-06: the closing quote and the doc: value landed on the next line and the anchor parsed empty).
+    A line that starts no row and no heading, while the previous row still has an open quote, continues that row."""
+    out: list[str] = []
+    for line in (ledger_text or "").splitlines():
+        stripped = line.strip()
+        if (out and stripped and not _ROW_RE.match(line) and not stripped.startswith("#")
+                and _unbalanced_quotes(out[-1])):
+            out[-1] = out[-1].rstrip() + " " + stripped
+        else:
+            out.append(line)
+    return out
+
+
 def parse_rows(ledger_text: str) -> list[LedgerRow]:
     """Finding rows in order; requested auxiliary sections contain references, not rulings."""
     rows: list[LedgerRow] = []
     auxiliary = False
-    for line in (ledger_text or "").splitlines():
+    for line in _logical_lines(ledger_text):
         if _LEDGER_SECTION_RE.match(line):
             auxiliary = False
             continue
