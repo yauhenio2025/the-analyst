@@ -224,10 +224,10 @@ def test_p1_stays_withheld_and_p2_is_offered_after_source_adjudication():
     catalog=purpose_catalog(n_docs=3)
     picker_keys={e['engine_key'] for g in catalog['groups'] for e in g['engines']}
     excluded={e['engine_key'] for e in catalog['excluded']}
-    key='compare_supplied_cases'
-    assert key in all_keys and key in excluded
-    assert key not in offered_keys and key not in picker_keys
-    with pytest.raises(ValueError):
+    # P1 released 2026-09-06 evening: its last blocker was the parser splitting a row at a line break inside the anchor
+    for key in ('compare_supplied_cases', 'reconcile_sources'):
+        assert key in all_keys and key not in excluded
+        assert key in offered_keys and key in picker_keys
         resolve_path_request(PathRequest(steps=[PathStepRequest(engine_key=key,depth='deep')]))
     key='reconcile_sources'
     assert key in all_keys and key not in excluded

@@ -5,6 +5,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Added (2026-09-06, P1 released)
+- `compare_supplied_cases` (P1) offered under "See the structure": its final candidate verifies 24/24 rows once the parser keeps a row together across a line break inside its anchor ([catalog_purpose.json](src/dossier/catalog_purpose.json); addendum in `communications/study/STUDY_P1_repair_2026-09-06.md`).
+
 ### Fixed (2026-09-06, multiline rows)
 - Ledger parser: a physical line break inside a row's quoted anchor no longer splits the row; a continuation line joins the row while a quote is open ([ledger_walls.py](src/executor/ledger_walls.py)). P1's final candidate had lost its two long anchors this way.
 
