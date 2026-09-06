@@ -108,8 +108,8 @@ class PracticeRegistry:
 def packet_block(practices: list[Practice]) -> list[dict]:
     """The PRACTICES block a planner's packet carries: records, not prose (the family's measured lesson is that feeds and
     schema fields change an agent's behaviour where prompt prose barely does)."""
-    return [{"practice": p.key, "when": p.when, "shape": p.shape, "ingredients": p.ingredients, "yields": p.yields, "misses": p.misses,
-             "evidence": p.yield_totals()} for p in practices]
+    return [{"practice": p.key, "name": p.name, "task_kinds": p.task_kinds, "owner": p.owner, "when": p.when, "shape": p.shape,
+             "ingredients": p.ingredients, "yields": p.yields, "misses": p.misses, "evidence": p.yield_totals()} for p in practices]
 
 
 _registry: Optional[PracticeRegistry] = None

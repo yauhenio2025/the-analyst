@@ -1,0 +1,20 @@
+{
+  "key": "intitle-or-group",
+  "name": "intitle: with an OR group, never space-separated terms",
+  "task_kinds": [
+    "paper-discovery"
+  ],
+  "when": "a query restricts to titles with more than one candidate term",
+  "shape": "intitle:(<term1> OR <term2> OR \"<phrase>\") <context term> — space-separated terms inside intitle: are an implicit AND",
+  "ingredients": [
+    "2-5 title-likely terms or phrases",
+    "one context term outside the group"
+  ],
+  "yields": "title-focused pages that a space-separated intitle: stack returns empty",
+  "misses": "works whose titles use none of the listed terms; OR groups over ~6 terms dilute the page",
+  "origin": "gs_revamp query-craft study (2026-07-08): the space-AND class returned ~0 and vanished after the OR-group rule; the query-craft gate refuses malformed OR groups",
+  "owner": "gs-revamp",
+  "version": "2026-09-06",
+  "evidence": [],
+  "note": ""
+}

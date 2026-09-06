@@ -1,0 +1,22 @@
+{
+  "key": "named-works-before-search",
+  "name": "Resolve the plan's named works before spending topical queries",
+  "task_kinds": [
+    "paper-discovery",
+    "work-identity"
+  ],
+  "when": "the plan names works (anchors, canon candidates, seeds) and the archive or a lookup can resolve them",
+  "shape": "title → archive (held identity) → OpenAlex → one plain-title Scholar lookup; then walk citers from the resolved ids",
+  "ingredients": [
+    "the named works with surnames",
+    "an archive of held identities",
+    "OpenAlex"
+  ],
+  "yields": "rankable rows and walkable cites_ids at query one; on a Referee-rich topic 201 works resolved, 188 uncharged (neoliberalism run 1)",
+  "misses": "works the archive never held and OpenAlex mis-titles (comma-titled books needed a guard); generic titles resolve to the wrong work without a surname check",
+  "origin": "gs_revamp PRs #179/#181/#187 (2026-08-27..29): named-works resolution at execution start, author-surname verification",
+  "owner": "gs-revamp",
+  "version": "2026-09-06",
+  "evidence": [],
+  "note": ""
+}

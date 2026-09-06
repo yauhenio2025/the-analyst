@@ -1,0 +1,21 @@
+{
+  "key": "plain-title-surname",
+  "name": "Plain quoted title plus surname (books)",
+  "task_kinds": [
+    "paper-discovery",
+    "work-identity"
+  ],
+  "when": "a known book must be found by name; intitle: and author:\"X*\" shapes return zero for it",
+  "shape": "\"<exact title>\" <surname> — no intitle:, no author:, no year filter",
+  "ingredients": [
+    "the plan's named works",
+    "the first author's surname"
+  ],
+  "yields": "the book's Scholar record (cites_id, cited-by count) where operator-shaped lookups return nothing",
+  "misses": "titles too generic to be a phrase; editions and translations under other titles",
+  "origin": "gs_revamp track A (2026-08-27): 18/20 missed canon works were named in the plan and lost to intitle:/author: shapes; PR #179 named-works lookup 5/5 hits with this shape",
+  "owner": "gs-revamp",
+  "version": "2026-09-06",
+  "evidence": [],
+  "note": ""
+}

@@ -2,7 +2,8 @@
 search, held in the Mastermind beside the engines (Evgeny, 2026-09-07). A planner asks for its task kind and carries the
 records in its packet as a PRACTICES block; a retrospective seat posts the yield of each practice a run deployed, so a
 practice carries its own evidence across organs. On Render the write-back is committed through GitHub like a
-definition edit (GITHUB_TOKEN + GITHUB_REPO); without them it lives until the next deploy."""
+definition edit (GITHUB_TOKEN + GITHUB_REPO), with [skip render] so a write does not redeploy the API (eight
+records registered by gs_revamp at 01:20 would otherwise have been eight deploys); without them it lives until the next deploy."""
 from typing import Optional
 
 from fastapi import APIRouter, HTTPException
@@ -74,7 +75,7 @@ async def create_practice(body: PracticeIn):
         raise HTTPException(status_code=400, detail=str(e))
     except PermissionError as e:
         raise HTTPException(status_code=403, detail=str(e))
-    persisted = await _persist(reg, p.key, f"Practice {p.key}: {'updated' if existed else 'registered'} by {p.owner}")
+    persisted = await _persist(reg, p.key, f"Practice {p.key}: {'updated' if existed else 'registered'} by {p.owner} [skip render]")
     return {**p.model_dump(), "totals": p.yield_totals(), "created": not existed, "persisted": persisted}
 
 
@@ -94,5 +95,5 @@ async def post_evidence(key: str, body: EvidenceIn):
         p = reg.add_evidence(key, PracticeEvidence(**body.model_dump()))
     except KeyError:
         raise HTTPException(status_code=404, detail=f"no practice {key}")
-    persisted = await _persist(reg, key, f"Practice {key}: yield from {body.organ or 'a run'} {body.run}")
+    persisted = await _persist(reg, key, f"Practice {key}: yield from {body.organ or 'a run'} {body.run} [skip render]")
     return {"key": key, "totals": p.yield_totals(), "evidence": [e.model_dump() for e in p.evidence], "persisted": persisted}

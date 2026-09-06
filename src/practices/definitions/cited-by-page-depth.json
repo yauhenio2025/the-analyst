@@ -1,0 +1,20 @@
+{
+  "key": "cited-by-page-depth",
+  "name": "Walk a canonical anchor's citers past page one",
+  "task_kinds": [
+    "paper-discovery"
+  ],
+  "when": "the anchor is a field-defining work with hundreds of citers and the sought works are books adjacent to the concept",
+  "shape": "cites:<anchor> pages 2-3 (depth-weighted: top-3 anchors × 3 pages), optionally with a within-set filter term",
+  "ingredients": [
+    "the top 3 anchors by centrality",
+    "a within-set filter term when the citer set is large"
+  ],
+  "yields": "the adjacent books search never ranks (Rodgers' Age of Fracture sat at #119 of Harvey's citers — page 3)",
+  "misses": "cited-by pages are unstable request to request; deep pages of a 10k-citer anchor are noise without a filter",
+  "origin": "gs_revamp PR #192 forward canon (2026-09-01); PR #170 unstable cited-by pages",
+  "owner": "gs-revamp",
+  "version": "2026-09-06",
+  "evidence": [],
+  "note": ""
+}

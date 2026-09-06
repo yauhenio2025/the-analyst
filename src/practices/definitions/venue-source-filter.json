@@ -1,0 +1,19 @@
+{
+  "key": "venue-source-filter",
+  "name": "source: with the Scholar-indexed source name",
+  "task_kinds": [
+    "paper-discovery"
+  ],
+  "when": "a curated venue carries the field and a topical query should be confined to it",
+  "shape": "source:\"<exact Scholar-indexed source name>\" <topic terms> — the indexed name, never the abbreviation",
+  "ingredients": [
+    "the venue's Scholar source name (from a journal roster or a held row's venue field)"
+  ],
+  "yields": "the venue's own run of the topic, dated; a quick census of what a field's journal carries",
+  "misses": "abbreviations return zero (source:\"TSEG\"); venues Scholar indexes under several names",
+  "origin": "gs_revamp vocabulary rent audit (2026-08/09): venue-slot zeros were abbreviations; PR #194 venue intelligence",
+  "owner": "gs-revamp",
+  "version": "2026-09-06",
+  "evidence": [],
+  "note": ""
+}

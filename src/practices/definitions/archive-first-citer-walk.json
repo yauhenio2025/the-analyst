@@ -1,0 +1,20 @@
+{
+  "key": "archive-first-citer-walk",
+  "name": "Read held citer pages before paying for cited-by",
+  "task_kinds": [
+    "paper-discovery"
+  ],
+  "when": "an anchor is resolved and the archive already holds its forward citations",
+  "shape": "serve the archive's first citer page uncharged for the top anchors at execution start; pay for live cited-by only for anchors the archive lacks or where recency matters",
+  "ingredients": [
+    "resolved anchor ids",
+    "an archive of forward-citation pages with freshness"
+  ],
+  "yields": "hundreds of uncharged rows at query one (400 on EIC run 4); cb50 citer recall .235 → .995 on a citation-first run (EIC run 5)",
+  "misses": "citers newer than the archive's harvest; anchors with thin holdings (served 1 of 21 walks on a Referee-thin topic)",
+  "origin": "gs_revamp PR #184 archive-citer pass (2026-08-27); runs 4-5 measurements",
+  "owner": "gs-revamp",
+  "version": "2026-09-06",
+  "evidence": [],
+  "note": ""
+}

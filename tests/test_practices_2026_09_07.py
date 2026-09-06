@@ -26,7 +26,8 @@ def test_practices_are_served_by_task_kind_as_records():
     assert "filetype-pdf" not in {p.key for p in person} and "filetype-pdf" in {p.key for p in reg.for_task("pdf-fetch")}
     assert "proper-noun-anchor" in {p.key for p in reg.for_task("anything-at-all")}
     block = packet_block(person)
-    assert all(set(b) == {"practice", "when", "shape", "ingredients", "yields", "misses", "evidence"} for b in block)
+    assert all(set(b) == {"practice", "name", "task_kinds", "owner", "when", "shape", "ingredients", "yields", "misses", "evidence"} for b in block)
+    assert all(len(b["shape"]) <= 400 for b in block)     # gs_revamp clips a field past 400 chars before it touches a prompt
     assert reg.task_kinds() == ["institution-harvest", "paper-discovery", "pdf-fetch", "person-harvest", "work-identity"]
 
 

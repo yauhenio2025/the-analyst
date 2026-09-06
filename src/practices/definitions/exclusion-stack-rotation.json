@@ -1,0 +1,20 @@
+{
+  "key": "exclusion-stack-rotation",
+  "name": "Exclusion stacks, rotated across queries",
+  "task_kinds": [
+    "paper-discovery"
+  ],
+  "when": "a productive query is dominated by a few prolific authors, venues or a homonym",
+  "shape": "<query> -author:<A> -author:<B> … or -source:<S> …; budget ≤10 -author: or ≤8 -source: per query and rotate the exclusion set across follow-ups instead of cramming",
+  "ingredients": [
+    "the dominating authors/venues from the last page",
+    "the homonym's marker terms"
+  ],
+  "yields": "the second tier of the same query — works the prolific few had pushed off the page",
+  "misses": "exclusions do not count toward the 32-word cap but long stacks still narrow the page; a homonym shared by the wanted works",
+  "origin": "gs_revamp query-craft doctrine memo (2026-07); exclusions cap-exempt by live probe",
+  "owner": "gs-revamp",
+  "version": "2026-09-06",
+  "evidence": [],
+  "note": ""
+}
