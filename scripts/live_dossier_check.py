@@ -36,7 +36,10 @@ def create():
 def wait(job_id):
     seen = set(); t0 = time.time()
     while time.time() - t0 < 60 * 60:
-        j = http("GET", f"/v1/dossier/jobs/{job_id}")
+        try:
+            j = http("GET", f"/v1/dossier/jobs/{job_id}")
+        except Exception as exc:  # a transient 5xx or a redeploy in progress: the job runs server-side, keep polling
+            log("poll error (retrying):", str(exc)[:120]); time.sleep(30); continue
         st, step = j.get("status"), j.get("step")
         if (st, step) not in seen: seen.add((st, step)); log("status", st, "step", step)
         if st == "awaiting_brief":
