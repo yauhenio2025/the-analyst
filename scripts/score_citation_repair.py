@@ -13,6 +13,13 @@ s = study.s; OUT = study.OUT / "repairs"; ARCHIVE = study.ARCHIVE / "repairs"
 s.budget.OUT = OUT
 
 
+def _guard(plan):
+    # the repair's plan freezes its inputs by hash (no identity field): verify those, as the repair script does
+    for path, sha in plan['inputs'].items():
+        s.budget.require(s.budget.digest((ROOT / path).read_bytes()) == sha, 'Repair input changed ' + path)
+s.budget.guard = _guard
+
+
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument("--key", default="G6__index_only_repair"); a = ap.parse_args()
     from dotenv import load_dotenv; load_dotenv(ROOT / ".env", override=False)

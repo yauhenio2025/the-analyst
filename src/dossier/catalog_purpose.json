@@ -876,6 +876,22 @@
           "fit_note": "two or more citing texts; the Stacks' evidence index as context when available"
         },
         {
+          "engine_key": "citation_fidelity_audit",
+          "plain_name": "fidelity audit",
+          "use_when": "a thinker cites another's works at specific places and you hold those works (or the Stacks supplies an evidence index of passages and page windows): is the treatment justified by what the cited text says there",
+          "yields": "pair table: what A attributes · what P says (verbatim, with how the place was found) · verdict accurate/fair/selective/stretched/misattributed/unverifiable · edition and locus notes; the checked sample's practice conclusion",
+          "row_unit": "one row per citation pair",
+          "deliverable_kinds": [
+            "briefing",
+            "case_file"
+          ],
+          "pairs_with": [
+            "citation_engagement_map"
+          ],
+          "fit": "ok",
+          "fit_note": "reads an evidence index alone (single-engine call) or the citing texts with the cited works' page windows; unheld works stay unverifiable"
+        },
+        {
           "engine_key": "citation_reception_map",
           "plain_name": "reception map",
           "use_when": "you hold secondary texts on the cited thinker and want where the citing thinker's reading sits among them: consonant, argued against, never engaged",
@@ -930,10 +946,6 @@
     {
       "engine_key": "system_boundary_analyzer",
       "why": "Fourth queue: Source-correct repaired reading scores Sonnet 8.333333333333334 below the original 8.5; remaining depth misses concern historical contingency and the hypothetical autonomous society. See communications/study/STUDY_fourth_queue_2026-09-06.md."
-    },
-    {
-      "engine_key": "citation_fidelity_audit",
-      "why": "Fidelity audit: repaired framing with card rules re-running on the evidence index (2026-09-06 evening); released on that run's read."
     }
   ],
   "deliverable_hints": {

@@ -482,6 +482,18 @@
 - **Dependencies**: `src/dossier/walls.normalize`, `src/executor/context_broker.split_ledger`, `src/events/pricing`, OpenRouter key for the cheap and mid tiers
 - **Added**: 2026-09-04 | **Modified**: 2026-09-06
 
+### The citation family (engagement map, fidelity audit, reception map)
+- **Status**: Active (2026-09-06); fidelity audit released on the card-rules re-run
+- **Description**: One thinker's engagement with another across held texts, as three corpus methods under the process shape, seeded by the Stacks' Citation Universe prompts: the engagement map (per-passage move and stance with anchors, a trajectory across the work), the fidelity audit (passage/page pairs from an evidence index; verdict accurate · fair · selective · stretched · misattributed · unverifiable, `how: page | section | search`), the reception map (held readers of the cited thinker; the plan's themes as spine, readers' themes as labelled additions; the citing thinker among the readers).
+- **Entry Points**:
+  - `src/operationalizations/definitions/citation_engagement_map.yaml`, `citation_fidelity_audit.yaml`, `citation_reception_map.yaml` - `process:` blocks
+  - `src/sources/citation_evidence.py` - unpacks an evidence index (`role: evidence_index`) into the audit's witness pairs; context envelopes for the other two
+  - `src/sources/schemas.py` - `SourceSpec.role`; `src/executor/document_ids.py` `CONTEXT_DOCUMENT_PREFIX`; `src/executor/phase_runner.py` `_with_context_documents`
+  - `src/dossier/catalog_purpose.json` - group `trace_citations`
+  - `scripts/study_citation_family.py`, `scripts/resume_citation_family.py`, `scripts/study_citation_fidelity_repair.py`, `scripts/score_citation_repair.py`, `scripts/pilot_dossier_inprocess.py`
+- **Dependencies**: the process shape; the Stacks bridge (`communications/INTEGRATION_stacks_citation_universe_2026-09-06.md`)
+- **Added**: 2026-09-06
+
 ### Desks read the findings ledger by id
 - **Status**: Active (2026-09-05)
 - **Description**: `analysis_ledger(job, docs)` renders every phase's ledger rows re-verified against the documents (citable rows with doc_key and verbatim anchor; paraphrases apart; critic-rejected rows hidden); `ledger_ids(job)` is the citable id set. The spine plans sections on findings (`SpineSection.finding_ids`, unknown ids dropped), the tables desk builds from a section's findings and may copy ledger anchors, the figure planner grounds on the ledger.

@@ -5,6 +5,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Added (2026-09-06, the citation family)
+- Three citation engines seeded by the Stacks' Citation Universe prompts: `citation_engagement_map` and `citation_reception_map` offered under the new purpose group "Trace the citations"; `citation_fidelity_audit` (reads an evidence index of passage/page pairs; verdicts with `how: page | section | search`) released on its re-run with card rules (see the study report). Study: [STUDY_citation_family_2026-09-06.md](communications/study/STUDY_citation_family_2026-09-06.md); pilot corpus and next-session prompt under `communications/study/`; memory snapshot under `communications/memory_snapshot_2026-09-06/` for the new machine.
+
 ### Changed (2026-09-06, evening)
 - Anchor wall: quotation marks are stripped on both sides before the membership test (a model writes ‘Power’ where the page has Power) ([walls.py](src/dossier/walls.py)).
 - Corpus synthesis contract: after the bounded repair, remaining wall failures are recorded (`synthesis_contract_failed_after_repair`, `unverified_after_repair`), the failing rows tagged `anchor-verified: no` and their citations `unverified`, and the paid output kept; the run no longer aborts ([process_runner.py](src/executor/process_runner.py)).

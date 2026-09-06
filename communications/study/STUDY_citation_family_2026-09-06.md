@@ -9,7 +9,7 @@ Owner's go (15:30): the three questions the Stacks' Citation Universe answers wi
 | ENG__dvs | engagement map · deep · 27 Riley texts citing Weber | 24 at the synthesis (320 extracted, 315 verified through the critic) | 24/24; 3 corpus rows with two keys | 7.50 / 7.33 | Claude: release | $4.97 |
 | G8__dvs | reception map · deep · 8 held Weber readers + Riley's texts | 30 | 30/30; 4 corpus rows with two keys | 7.33 / 6.50 | Claude: release | $6.59 |
 | G6__index_only | fidelity audit · standard · evidence index only, original framing | 25 | 24/25 (F4: OCR window) | 7.67 / 6.50 | Claude: superseded by the repair | $0.71 + recovery |
-| G6__index_only_repair | fidelity audit · standard · index only, repaired framing | 29 | 26/29 (three tagged and dropped by the desks: two OCR windows, one memory quote) | (re-run with card rules pending at the time of writing; see the addendum) | Claude: release after card rules | $1.77 |
+| G6__index_only_repair | fidelity audit · standard · index only, repaired framing | 29 | 26/29 (three tagged and dropped by the desks: two OCR windows, one memory quote) | attempt 2 unscored; the card-rules re-run: 8.33 / 7.83 | Claude: release (re-run 27/28 anchors, verdict and how as fields) | $1.77 + $2.06 |
 | G6__checked | fidelity audit · standard · full sources, original framing | 0 findings | — | 6.83 / 2.83 | Codex: withhold (the reader refused; per-document scope JSON) | $8.87 |
 
 Known cost of the family through the ratings: $30.87 plus $1.67 reserved for calls whose usage was not returned (`calls.json`), of which $8.87 is the refused full-source condition and about $5 is the two recoveries' re-paid calls after the temp-filesystem failure. Guidance was $20; the owner's rule is that caps are guidance.
@@ -25,12 +25,16 @@ Known cost of the family through the ratings: $30.87 plus $1.67 reserved for cal
 ## Decisions (Claude, under the owner's standard; Codex absent)
 
 - **Released and offered** under a new purpose group "Trace the citations": `citation_engagement_map`, `citation_reception_map`.
-- **Fidelity audit**: released on the re-run with the card rules if its walls hold and the read finds no new defect (addendum below); otherwise stays excluded with the reason.
+- **Fidelity audit**: released on the re-run with the card rules (27/28 anchors, every pair with `verdict:` and `how:`, the once memory-judged pair now unverifiable; Sonnet 8.33, Sol 7.83, the highest in the family; read in `source_memos/G6__index_only_repair.md`). Offered under "Trace the citations" beside the other two.
 - **Design notes for the next revision**: the passage inventory as a table in the engagement map's synthesis; reference-point rows marked in the reception table; the ledger's citation counts for "never engages"; a cohort dimension for one-to-many runs (`TASK_stacks_cohort_citation_flow_2026-09-06.md`); the Stacks' `digest_check` as the fidelity audit's second input.
 
 ## Plumbing changed by this family's runs
 
 Walls strip quotation marks (a model writes ‘Power’ where the page has Power); the corpus synthesis contract records and tags after its bounded repair instead of aborting (a paid fidelity audit had died on three legitimately unverifiable quotes); duplicate ids re-keyed; the study plan re-frozen with a revision note when the runner changed under it. Two lessons for the bridge: page windows from pdftotext are OCR-noisy on Economy and Society (two of three anchor failures), so the Stacks' page-marked rendition matters; and a retrieval that lands in a volume's notes section must be reported as no witness.
+
+## Addendum: the card-rules re-run
+
+The two card rules (verdict and how as fields; no witness → unverifiable, never from memory) were applied to the operationalization and the condition re-run at $2.06: 28 pairs, 27 anchors verified, verdicts accurate 5 · fair 9 · selective 5 · stretched 1 · unverifiable 8, `how` page 21 · search 7. The one wall failure is an OCR-corrected quote the wall rightly refuses; the row is tagged and dropped by the desks.
 
 ## The pilot both ways
 
