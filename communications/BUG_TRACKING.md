@@ -202,3 +202,16 @@ Problem classes, root causes, files fixed. See global rules.
 - `tests/test_plan_durability_2026_09_06.py`
 
 **Pattern to Watch For**: any `Path(__file__).parent / "..."` store written at runtime (plans, planning_decisions, figures, plates) that a later step must read; on Render only the database and blob store persist across deploys.
+
+## Wall that fails a run on a shape collision it could repair (2026-09-06)
+
+**Problem Class**: A shape check raising a fatal error for a condition that arithmetic can resolve.
+
+**Root Cause**: `_require_unique_ids` raised whenever merged ledgers shared an id. Independent critics (per document and across the corpus) both add misses under `V.DOC<n>.F<m>`, so a collision is ordinary. Live job `dossier-8577d8159b38` lost a 33-minute deep phase to `duplicate ledger ids: V.DOC2.F1`.
+
+**Files Fixed**:
+- `src/executor/process_runner.py:_dedupe_ids` - later duplicates re-keyed to the next free number of their prefix, `rekeyed-from:` on the row, pairs on the synthesis wall
+- `src/executor/process_runner.py:_drop_duplicate_rulings` - a second ruling on one id is dropped and recorded
+- `tests/test_corpus_ledger_2026_09_05.py`, `tests/test_anchor_repairs_2026_09_05.py`
+
+**Pattern to Watch For**: any `raise` in a wall for a condition that code could resolve by renaming, dropping or tagging; walls decide shape, they do not abort paid work.

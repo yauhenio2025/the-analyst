@@ -157,15 +157,21 @@ def test_deep_corpus_chain_reanchors_both_pairs_and_preserves_them_for_desks(key
     assert f'anchor [middle-2001]: "{QUOTES[1]}"' in desk
 
 
-def test_duplicate_ids_from_different_documents_stop_before_an_ambiguous_handoff():
+def test_duplicate_ids_from_different_documents_are_rekeyed_not_fatal():
+    """Two extraction calls (one per document) ignoring the namespace both return D1.F1: the second is re-keyed to the
+    next free number and the run continues (a live deep phase died on this after 33 minutes, 2026-09-06)."""
     cap, spec = _engine("conditions_of_possibility_analyzer")
+    seen_ids = []
     def fake(system, user, *, model_hint, label, **_):
-        assert "| extract |" in label
-        doc_key = re.search(r"SOURCE \[([^]]+)\]", user).group(1)
-        return {"content": f'## Findings ledger\n- [D1.F1] Ignored namespace — anchor: "{DOCS[doc_key]}"',
-                "model_used": model_hint}
-    with pytest.raises(RuntimeError, match="duplicate ledger ids: D1.F1"):
-        run_process(cap, spec, DOCS, call_fn=fake, reanchor=False, parallelism=1)
+        m = re.search(r"SOURCE \[([^]]+)\]", user) if "| extract |" in label else None
+        if m:
+            return {"content": f'## Findings ledger\n- [D1.F1] Ignored namespace — anchor: "{DOCS[m.group(1)]}"',
+                    "model_used": model_hint}
+        seen_ids.extend(re.findall(r"^- \[([A-Za-z0-9.]+)\]", user, re.M))
+        return {"content": "## Findings ledger\n" + "\n".join(l for l in user.splitlines() if l.startswith("- [")) + "\n", "model_used": model_hint}
+    result = run_process(cap, spec, DOCS, call_fn=fake, reanchor=False, parallelism=1)
+    assert "D1.F1" in seen_ids and "D1.F2" in seen_ids
+    assert any(c.wall.get("rekeyed_ids") for c in result.calls if c.kind == "synthesize") or result.final_wall.get("rekeyed_ids") is not None
 
 
 def test_final_lineage_and_critic_rulings_cannot_lose_the_second_anchor():

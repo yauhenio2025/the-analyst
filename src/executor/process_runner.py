@@ -247,15 +247,45 @@ def _identity(records):
     return [{"document_keys": r["document_keys"], "dimension_key": r["dimension_key"]} for r in records]
 
 
-def _require_unique_ids(rows: list[LedgerRow], context: str) -> None:
-    """Ambiguous ids cannot be passed to a critic or synthesis as an evidence reference."""
-    seen, duplicates = set(), set()
+def _dedupe_ids(rows: list[LedgerRow], context: str) -> list[tuple[str, str]]:
+    """Two independently produced ledgers (a document's critic and the corpus critic, two extraction calls) can add rows
+    under the same id; the first keeps it and every later one is re-keyed to the next free number of its prefix, so
+    an ambiguous reference never reaches a critic or a synthesis and never fails a run (live job dossier-8577d8159b38
+    lost a 33-minute deep phase to `duplicate ledger ids: V.DOC2.F1`, 2026-09-06). Returns the (old, new) pairs."""
+    taken = {r.id for r in rows}
+    seen: set[str] = set()
+    rekeyed: list[tuple[str, str]] = []
     for row in rows:
-        if row.id in seen:
-            duplicates.add(row.id)
-        seen.add(row.id)
-    if duplicates:
-        raise RuntimeError(f"{context}: duplicate ledger ids: {', '.join(sorted(duplicates))}")
+        if row.id not in seen:
+            seen.add(row.id)
+            continue
+        m = re.match(r"^(.*?)(\d+)$", row.id)
+        prefix, n = (m.group(1), int(m.group(2))) if m else (row.id + "-", 1)
+        new_id = f"{prefix}{n + 1}"
+        while new_id in taken or new_id in seen:
+            n += 1
+            new_id = f"{prefix}{n + 1}"
+        rekeyed.append((row.id, new_id))
+        row.text = row.text.rstrip() + f" — rekeyed-from: {row.id}"
+        row.id = new_id
+        seen.add(new_id); taken.add(new_id)
+    if rekeyed:
+        logger.warning(f"{context}: duplicate ledger ids re-keyed: " + ", ".join(f"{a}→{b}" for a, b in rekeyed))
+    return rekeyed
+
+
+def _drop_duplicate_rulings(rulings: list[LedgerRow]) -> list[str]:
+    """A critic that rules twice on one id is ambiguous; the first ruling stands and the rest are dropped (recorded)."""
+    seen: set[str] = set()
+    dropped: list[str] = []
+    keep: list[LedgerRow] = []
+    for r in rulings:
+        if r.id in seen:
+            dropped.append(r.id)
+            continue
+        seen.add(r.id); keep.append(r)
+    rulings[:] = keep
+    return dropped
 
 
 def _wall_extraction(sc: StepCall, prompt: ProcessPrompt, index: SourceIndex, call_fn: CallFn, model: str, *,
@@ -287,7 +317,7 @@ def _wall_extraction(sc: StepCall, prompt: ProcessPrompt, index: SourceIndex, ca
                 })
                 if again.partial or again.invocation_error or again.stop_reason in ("length", "max_tokens", "error"):
                     sc.scope_parse_error = "Re-anchoring invocation was partial or failed"
-            _require_unique_ids(fixed_rows, f"{prompt.label} re-anchor")
+            _dedupe_ids(fixed_rows, f"{prompt.label} re-anchor")
             fixed = {r.id: r for r in fixed_rows}
             for row in fixed.values():
                 row.doc = row.doc or prompt.doc_key
@@ -398,6 +428,7 @@ def run_process(
     # Ledgers by step key: {step_key: {doc_key: [rows]}}; "" is the corpus-level doc key
     ledgers: dict[str, dict[str, list[LedgerRow]]] = {}
     rejected_by_doc: dict[str, list[LedgerRow]] = {}
+    rekeyed_extraction: list[tuple[str, str]] = []
     scopes_by_step: dict[str, dict[str, list[dict]]] = {}
 
     _record = _recorder(result, on_call)
@@ -442,7 +473,7 @@ def run_process(
                     step_ledgers.setdefault(dk, []).extend(kept)
                     if spec.scoped_outcomes:
                         step_scopes.setdefault(dk, []).extend(sc.wall["scope_outcomes"])
-            _require_unique_ids([r for rows in step_ledgers.values() for r in rows], f"process {spec.key} extraction")
+            rekeyed_extraction += _dedupe_ids([r for rows in step_ledgers.values() for r in rows], f"process {spec.key} extraction")
             # corpus dimensions read the per-document ledgers, not the sources
             if corpus_dims:
                 merged = "\n\n".join(
@@ -470,7 +501,7 @@ def run_process(
                         step_ledgers.setdefault("", []).extend(kept)
                         if spec.scoped_outcomes:
                             step_scopes.setdefault("", []).extend(sc.wall["scope_outcomes"])
-            _require_unique_ids([r for rows in step_ledgers.values() for r in rows], f"process {spec.key} extraction")
+            rekeyed_extraction += _dedupe_ids([r for rows in step_ledgers.values() for r in rows], f"process {spec.key} extraction")
             ledgers[step.key] = step_ledgers
             scopes_by_step[step.key] = step_scopes
 
@@ -545,7 +576,7 @@ def run_process(
                     all_rows.extend(rows)
             if not all_rows and not spec.scoped_outcomes:
                 raise RuntimeError(f"process {spec.key}: nothing survived the walls before {step.key}; no rows to synthesize from")
-            _require_unique_ids(all_rows, f"process {spec.key} before {step.key}")
+            rekeyed_before_synthesis = _dedupe_ids(all_rows, f"process {spec.key} before {step.key}")
             verified_text = render_rows(all_rows)
             final_scopes = [r for ck in consumed for rs in scopes_by_step.get(ck, {}).values() for r in rs]
             if spec.scoped_outcomes:
@@ -572,7 +603,8 @@ def run_process(
                                       rejected_ids={r.id for r in rejected_rows})
             missing_lineage = sorted({rid for row in frows for rid in row.lineage if rid not in earlier})
             sc.wall = {**sc.wall, **rep.as_dict(), "has_ledger": bool(ledger), "prose_chars": len(prose),
-                       "missing_lineage": missing_lineage}
+                       "missing_lineage": missing_lineage,
+                       "rekeyed_ids": [list(pair) for pair in rekeyed_extraction + rekeyed_before_synthesis]}
             reviews = [{"step": c.step_key, "document": c.doc_key, **c.wall["ruling_coverage"]}
                        for c in result.calls if "ruling_coverage" in c.wall]
             if reviews:
@@ -632,13 +664,17 @@ def apply_rulings(rows: list[LedgerRow], rulings: list[LedgerRow], index: Source
                   corpus_dimensions: Iterable[str] = ()) -> tuple[list[LedgerRow], list[LedgerRow], list[LedgerRow], dict]:
     """(kept rows, rejected rows, unverified rows, report). Rows the critic did not mention are kept as confirmed."""
     corpus_dimensions = set(corpus_dimensions)
-    _require_unique_ids(rows, "reading before critic rulings")
-    _require_unique_ids(rulings, "critic rulings")
+    rekeyed_reading = _dedupe_ids(rows, "reading before critic rulings")
+    dropped_rulings = _drop_duplicate_rulings(rulings)
     corpus_ids = {r.id for r in rows if r.dim in corpus_dimensions or len({a.doc for a in r.anchors if a.doc}) > 1}
     verify_rows(rulings, index, corpus_dimensions=corpus_dimensions, corpus_ids=corpus_ids)
     by_id = {r.id: r for r in rulings}
     kept, rejected, unverified = [], [], []
     rep = {"in": len(rows), "confirmed": 0, "weakened": 0, "rejected": 0, "added": 0, "added_dropped": 0, "carried": 0, "unverified": 0}
+    if rekeyed_reading:
+        rep["rekeyed_reading"] = [list(pair) for pair in rekeyed_reading]
+    if dropped_rulings:
+        rep["duplicate_rulings_dropped"] = dropped_rulings
     rep["ruling_coverage"] = critic_ruling_coverage(rows, rulings)
     next_n = max([int(m) for r in rows for m in [re.sub(r"^[A-Za-z.]*?(\d+)$", r"\1", r.id)] if m.isdigit()] or [0]) + 1
     for r in rows:

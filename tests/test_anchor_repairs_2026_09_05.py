@@ -292,8 +292,9 @@ def test_auxiliary_references_are_not_duplicate_rulings_and_raw_tail_is_preserve
     assert 'Original question stays.' in result.final_content
     assert result.final_wall['duplicate_ids'] == [] and result.final_wall['check_confirmed'] == 1
     duplicate = critic.split('### Must keep')[0] + f'- [F1] Conflicting ruling — anchor: "{quote}" — status: rejected'
-    with pytest.raises(RuntimeError, match="duplicate ledger ids"):
-        apply_rulings(parse_rows(reading), parse_rows(duplicate), SourceIndex({"paper": quote}))
+    # a critic ruling twice on one id: the first ruling stands, the second is dropped and recorded (never fatal)
+    kept, rejected, unverified, rep = apply_rulings(parse_rows(reading), parse_rows(duplicate), SourceIndex({"paper": quote}))
+    assert [r.id for r in kept] == ["F1"] and rejected == [] and rep["duplicate_rulings_dropped"] == ["F1"]
 
 
 def test_a_new_explicit_ledger_resumes_after_an_auxiliary_section():

@@ -5,6 +5,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Fixed (2026-09-06, duplicate ledger ids)
+- Duplicate ledger ids across merged ledgers (a document's critic and the corpus critic both adding `V.DOC2.F1`; two extraction calls ignoring the namespace) are re-keyed to the next free number and recorded (`rekeyed_ids` on the synthesis wall, `rekeyed-from:` on the row) instead of failing the phase; a critic ruling twice on one id keeps the first ruling and records the drop ([process_runner.py](src/executor/process_runner.py)). A live deep phase had died on this after 33 minutes.
+
 ### Changed (2026-09-06 evening — P1 repair, still withheld)
 
 - P1 v4 cards preserve PEACE's complete operational-date wording and separate the June Eximbank proposal from the December differently named decree. One natural-pair deep run corrects those meanings, but the final PEACE/EMA fields contain physical newlines and fail the existing ledger parser after its bounded repair. The exclusion now names that defect; no failed candidate is promoted to a production output.
