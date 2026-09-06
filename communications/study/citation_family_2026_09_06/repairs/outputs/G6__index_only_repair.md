@@ -1,0 +1,189 @@
+# Citation-pair reading
+
+## Position map and scope
+
+The collection contains an evidence index, **27 citing texts**, and five held Weber editions or collections. The index supplies routes, locations, and counts rather than independent substantive evidence. Its **28 eligible citation pairs occur in 15 citing texts**; the other twelve citing texts have only unchecked or linked name windows.
+
+The fifteen texts represented by assessable pairs have these positions:
+
+- **Privilege and Property** (2003) argues that political society independently shapes class formation. Weber distinguishes parties from class and status locations, but “political society” is Riley’s extension.
+- **Civic Associations and Authoritarian Regimes** (2005) combines Millian comparison with suppressed historical alternatives. Neither Weber citation can be settled because cited English p. 172 is not mapped to the held German edition.
+- **Waves of Historical Sociology** (2006) presents historical sociology as advancing through productive returns. The attribution is nested—Riley reports Gorski’s explicitly “creative reading”—and the retrieved Weber passage does not establish its prognosis.
+- **Tony Judt: A Cooler Look** (2011) opposes political responsibility to moral distance. One retrieval reaches editorial biography; the other supports Riley’s emphasis on foreseeable consequences and political violence.
+- **Routes or Rivals?** (2013) gives imperialism a material, political-capitalist dynamic. Weber supports comparatively superior politically secured profit opportunities, but not Riley’s declining-profit-rate reconstruction.
+- **The Racialization of Legal Categories in the First U.S. Census** (2015), by Rebecca Jean Emigh, Dylan Riley, and Patricia Ahmed, argues that state and social processes jointly constitute census categories. Its Weber citation foregrounds bureaucratic and infrastructural capacity more than Weber’s coercive definition does.
+- **The New Durkheim: Bourdieu and the State** (2015) argues that Bourdieu neglects democracy and repression. Weber’s parliamentary argument supports Riley’s claim that representative institutions can strengthen the state.
+- **What Is Trump?** (2018) interprets Trump’s personal administration as patrimonial rule lodged within a bureaucratic state. This is the collection’s closest conceptual and textual match.
+- **Faultlines** (2020) diagnoses returns increasingly secured through political power and expressly identifies “political capitalism” as an adaptation of Weber’s Roman “imperialist capitalism.”
+- **The Social Foundations of Positivism** (2021), by Riley, Emigh, and Ahmed, explains Italian positivism through a traditional intelligentsia rather than industrial capitalism. Weber supports calculability and science’s inability to prescribe ultimate values, but “calculating worldview” generalizes beyond the cited pages.
+- **Science and Politics: Reflections on Wendy Brown’s Nihilistic Times** (2023) historicizes Weber’s fact/value distinction through nationalism. Its Machiavellian example is exact but cannot by itself establish that larger interpretation.
+- **Introduction: Relational Power Theory** (2024), by Emigh and Riley, constructs a relational taxonomy of power. Its direct definitions are reliable, but several composite or cross-edition citations do not retrieve the propositions attributed.
+- **The Rise of Political Capitalism** (2025) argues that defensive market-position strategies can produce estates rather than class politics. Weber supports the class/status distinction while expressly denying that status is reducible to class.
+- **The Long Downturn and Its Political Results** (2025), by Riley and Robert Brenner, recasts political capitalism as politically supported, rent-like accumulation. Its tax-farming account closely follows Weber.
+- **The Thesis of Political Capitalism** (date unknown) describes political influence as internal to value expansion. The cited pages support politically enabled tax-farming profits but do not contain the term “political capitalism.”
+
+The twelve texts outside the paired sample nonetheless have identifiable roles. **Back to Weber!** advocates intensive interpretation through ideal types but warns against assimilating Foucault to Weber. **The Third Reich as Rogue Regime** calls a separation of instrumental and substantive rationality “Weberian.” **Politics as Theatre?** invokes conviction and responsibility in discussing representative politics. **Bourdieu’s Class Theory** tests Bourdieu against the explanatory range of Marx, Weber, and Durkheim. **Science and Politics: A Response to Burawoy, Heilbron, and Steinmetz** argues that Weber’s rejection of historical laws conflicts with his rationalization thesis. **Real Utopia or Abstract Empiricism?** associates Weber with comparative study of social diversity. **Notes on the Curriculum** rejects a purely curricular account of Weber’s canonical standing. **Seven Theses on American Politics**, by Riley and Brenner, contrasts Marxian class with Weberian status-group politics. **Hidden Dogmatism** challenges the Weberian rejection of grand narratives. **The Sociology of Sociological Interventions**, by Patricia Ahmed, Rebecca Jean Emigh, Dylan Riley, and Nancy Wang Yuen, reports a Weber–Gramsci synthesis. **Angles of Vision** contrasts Marx’s standpoint of wage labour with Weber’s standpoint of the firm. **First Principles** treats market-position interests as a source of fractures within wage labour. None receives a paired-fidelity verdict because the index supplies no resolved pair for it; this is a sampling limit, not evidence of citation absence.
+
+The primary documents also have distinct roles. **From Max Weber: Essays in Sociology** supplies passages on class, status, parties, the state, vocation, and responsibility, but its held 1948 impression does not automatically establish identity with every cited 1946 or 1958 impression. **Economy and Society** supplies most definitions and institutional arguments. **Zur Logik und Methodik der Sozialwissenschaften** is a different-language scholarly edition whose retrieved pages do not map securely to cited English p. 172. **Weber: Political Writings** yields only an editor’s introduction for the relevant search. **Wirtschaft und Gesellschaft. Soziologie. Unvollendet 1919–1920** supplies the estate definition at marginal A180; that locus is MWG I/23 pp. 598–599, not printed MWG p. 180.
+
+## What the pairings establish
+
+### Political society, estates, and closure
+
+Riley’s earliest checked use of Weber is a conceptual extension. *Privilege and Property* says that “political society is reducible neither to interests in civil society, nor to the state,” while Weber says parties “need be neither purely ‘class’ nor purely ‘status’ parties.” Weber therefore supports a relatively autonomous arena of organized power, though not Riley’s exact terminology [F1].
+
+The later estate argument is likewise an application rather than a quotation-equivalent. *The Rise of Political Capitalism* says that workers organizing through race, ethnicity, or credentials form what Weber called an “estate.” Weber’s A180 discussion permits status position to rest on class position but insists that class does not determine it by itself [F26]. Riley preserves the distinction while adding his own account of defensive labour-market closure.
+
+The continuity lies in treating political organization as irreducible to economic location. The objects nevertheless differ: the 2003 text concerns political society as a filter in class formation, whereas the 2025 text concerns estate organization as an alternative form of material-interest politics. These pairings do not establish a general fusion of market closure and status honour.
+
+### Patrimonialism and organizational power
+
+*What Is Trump?* supplies the tightest match. Riley quotes the absence of bureaucratic separation between private and official spheres, and Weber’s cited pages state that distinction while grounding patrimonial office in personal submission [F10]. The application to a patrimonial structure inserted into a bureaucratic state is Riley’s argument, but its Weberian premise is accurate.
+
+The 2024 relational-power introduction broadens the institutional vocabulary. Its definition of power reproduces Weber accurately [F17], and its claim that authority depends at least partly on legitimacy preserves Weber’s qualification [F25]. Its use of Weber to distinguish organizational command from ownership is fair [F22], as is its reformulation of bureaucracy’s informational advantage as leadership dependence on information held lower in an organization [F23]. The stronger claim that capitalist organizations are managerial hierarchies directed toward profit is only selectively supported at the cited locus, which directly establishes strict bureaucratic organization rather than the entire managerial relation [F24].
+
+Three further propositions remain unverifiable. The first cited pages discuss regulated bureaucratic jurisdictions, personal patriarchal loyalty, and charisma rather than stating a distinction between delegated power and informal influence [F19, unverified]. The second set of the same composite loci does not state a cooperative/conflictual polarity [F20]. The resources citation lands on monetary policy while leaving its other cited German works unchecked [F21]. These are retrieval limits, not evidence that Weber rejected the propositions.
+
+### Political capitalism: prognosis, adaptation, and tax-farming
+
+The political-capitalism sequence contains both the largest stretch and the clearest acknowledged adaptation. In 2013 Riley concludes that imperialism follows declining returns on investment under interstate competition. Weber’s retrieved text instead compares profit opportunities and says force-based imperialist capitalism offered greater profits than peaceful export enterprise [F7]. The passage supports materially interested imperialism but not a general declining-profit-rate theory.
+
+In 2020 Riley marks the conceptual move: “Adapting Weber’s concept of Roman ‘imperialist capitalism’,” he names returns secured through political power. Weber directly says that the relevant opportunities rest on exploitation of political power directed toward expansion [F11]. The attribution is accurate because Riley presents the contemporary category as an adaptation.
+
+The 2025 Riley–Brenner reply then reconstructs the historical mechanism through tax-farming. Its entrepreneur advances revenue to the sovereign and retains the extractable surplus; Weber likewise says the tax-farmer’s profit consists in a share of the surplus over his fee [F27]. “Politically constituted rent” is the coauthors’ reformulation, but the mechanism is fairly represented.
+
+The undated *Thesis of Political Capitalism* makes a stronger genealogical statement: Weber allegedly “originally deployed” the term for profit-oriented activity relying mainly on political means. The cited pages describe a private capitalist exploiting transferred fiscal authority, but they do not use “political capitalism” [F28]. The mechanism is present; the terminological-origin claim is not demonstrated at this locus.
+
+This is revision in formulation rather than mere repetition. The 2013 text attributes a broad causal theory to Weber; the 2020 text acknowledges adaptation; the 2025 reply reargues the concept through tax-farming; and the undated essay overstates what its locus proves about terminology. Because the last document’s date is unknown, it cannot securely be placed before or after the 2025 publications.
+
+### Science, values, and political responsibility
+
+Riley’s criticism of Judt fairly captures Weber’s contrast between ultimate ends and responsibility for foreseeable consequences [F6]. The separate report of Judt’s “Weberian calculus” cannot be compared with Weber because the retrieved Weber-side pages are Gerth and Mills’s biographical introduction, whose own discussion only anticipates Weber’s later distinction [F5].
+
+In the positivism article, Weberian calculability is fairly used as one component of an externalist account [F12], but the claim that capitalism produces a “calculating and rationalized worldview” exceeds the local treatment of capital accounting [F13]. The article’s quotation of Weber’s question—“What shall we do, and, how shall we arrange our lives?”—is accurate, and Weber answers that science cannot supply ultimate direction [F14]. The coauthors’ discussion of Italian positivists is thus deliberately contrastive: those intellectuals claimed scientific authority over ends where Weber limits science to clarification.
+
+The 2023 Brown review cites Weber’s Florentine citizens who place civic greatness above salvation. The example is exact [F15]. Yet the cited pages do not establish Riley’s larger interpretation that Weber’s fact/value distinction was specifically a response to German nationalism, socialism, and Anglo-French power. That wider historical reconstruction remains unsettled by this window.
+
+### Method and reported readings
+
+Both suppressed-alternative citations in *Civic Associations* remain unresolved. One held window is an editorial reconstruction of Weber’s relation to Menger and Wundt rather than the cited English proposition [F2]. The other contains Weber’s discussion of Roscher but does not contain the claim about possibilities intrinsic to historical sequences [F3]. Edition and locus equivalence have not been established.
+
+Likewise, *Waves* reports that Gorski’s creative reading makes Weber presage post-Axial pluralism. The retrieved Weber passage discusses religious rationalization and status stratification, not that prognosis [F4]. The result is unverifiable, not negative.
+
+## Sample judgment
+
+All **28 eligible pair IDs** were checked independently against **five held Weber source keys**. **Twenty pairs are settled**: **5 accurate, 9 fair, 5 selective, and 1 stretched**. **Eight are unverifiable** because the supplied window is editorial, irrelevant, edition-mismatched, or does not contain the attributed proposition. No pair is demonstrably misattributed in the supplied windows.
+
+Within this checked sample, direct definitions, close quotations, and expressly marked adaptations are generally reliable. The main slippage occurs when a local distinction is made to bear a wider causal or historical thesis: comparative imperial profit becomes declining profitability [F7], capital accounting becomes a generalized worldview [F13], and a Machiavellian illustration is recruited into a full nationalist interpretation [F15]. This judgment applies only to the checked sample, not to Riley’s complete citation practice, his coauthors’ complete work, or Weber’s wider reception.
+
+## Read-first route
+
+Read [F7], [F11], [F27], and [F28] first for the changing political-capitalism genealogy; [F1] and [F26] for parties, estates, and class formation; [F10] for patrimonialism; and [F6], [F14], and [F15] for responsibility, science, and value.
+
+The central unsettled question is whether Riley’s declining-profit interpretation of Weberian imperialism and nationalist specification of the fact/value problem receive support elsewhere in the cited works beyond the supplied windows.
+
+## Findings ledger
+- [F1] RW0001: Riley’s political-society claim is a fair extension of Weber’s separation of parties from class and status locations. — dim: paired_fidelity — verdict: fair — how: page — anchor: "political society is reducible neither to interests in civil society, nor to the state" — doc: em:BEFGGK6M — anchor-b: "But they need be neither purely 'class' nor purely 'status' parties." — doc-b: em:VGJ3KBBJ — edition-locus: cited Weber 1946 p. 194; held 1948 pp. 193–95 — from: CHECK.F1 — confidence: high
+- [F2] RW0002: The suppressed-alternatives attribution is unverifiable because the retrieved German pages are editorial discussion rather than the cited English proposition. — dim: paired_fidelity — verdict: unverifiable — how: search — anchor: "an analysis of suppressed alternatives embedded in historical sequences" — doc: em:AKVCVFYG — anchor-b: "Weber sollte diese analytisch-synthetische Methode übernehmen" — doc-b: em:QM343SXS — edition-locus: cited English 1949 p. 172; held MWG I/7 pp. 16–18; no locus equivalence established — from: CHECK.F2 — confidence: high
+- [F3] RW0003: The repeated attribution concerning possibilities intrinsic to historical sequences is unverifiable because the retrieved Weber passage addresses Roscher’s causal method instead. — dim: paired_fidelity — verdict: unverifiable — how: search — anchor: "This methodological strategy uses possibilities intrinsic to the historical sequences themselves to establish the importance of the conditions identified" — doc: em:AKVCVFYG — anchor-b: "Roscher hingegen lehnt diese Auffassung ab" — doc-b: em:QM343SXS — edition-locus: cited English p. 172; held MWG I/7 pp. 87–89; no locus equivalence established — from: CHECK.F3 — confidence: high
+- [F4] RW0008: Riley reports Gorski’s creative post-Axial reading, but the Weber window discusses religious status stratification rather than its pluralism prognosis. — dim: paired_fidelity — verdict: unverifiable — how: search — anchor: "Weber presages the emergence of a ‘post-Axial’ civilization characterized by the rebirth of ‘. . . religious pluralism" — doc: em:BWDEURC8 — anchor-b: "all intensive religiosity has a tendency toward a sort of status stratification" — doc-b: em:VGJ3KBBJ — edition-locus: held 1948 pp. 286–88; no cited page — from: CHECK.F4 — confidence: high
+- [F5] RW0010: Judt’s reported “Weberian calculus” is unverifiable because the retrieved Weber-side pages are Gerth and Mills’s biographical introduction. — dim: paired_fidelity — verdict: unverifiable — how: search — anchor: "The ‘Weberian calculus’, as he glossed it, entailed ‘the sense that we can behave responsibly without making partisan commitments" — doc: em:H6GGBV9I — anchor-b: "His early letters and the experiences at Strassburg clearly point to his later distinction between an ethic of responsibility and an ethic of absolute ends." — doc-b: em:VGJ3KBBJ — edition-locus: held pp. 8–10; editorial voice rather than Weber’s own — from: CHECK.F5 — confidence: high
+- [F6] RW0011: Riley fairly contrasts Judt with Weber by emphasizing foreseeable consequences and political violence. — dim: paired_fidelity — verdict: fair — how: search — anchor: "the ethic of responsibility was embodied by the political actor who took responsibility for the use of ‘legitimate violence’" — doc: em:H6GGBV9I — anchor-b: "conduct that follows the maxim of an ethic of responsibility, in which case one has to give an account of the foreseeable results of one's action." — doc-b: em:VGJ3KBBJ — edition-locus: held pp. 119–21 — from: CHECK.F6 — confidence: high
+- [F7] RW0016: Riley stretches Weber’s comparative account of imperial profit into a declining-profit-rate theory. — dim: paired_fidelity — verdict: stretched — how: page — anchor: "Imperialism was a consequence of declining rates of return on investment in a context of intense interstate competition." — doc: em:PSYPHAPS — anchor-b: "imperialist capitalism, especially colonial booty capitalism based on direct force and compuhory Jabor, has offered by far the greatest opportunities for profit." — doc-b: em:NEVNCMNY — edition-locus: *Economy and Society* pp. 918–20 — from: CHECK.F7 — confidence: high
+- [F8] RW0023: Emigh, Riley, and Ahmed selectively redescribe Weber’s coercive state definition as bureaucratic and infrastructural capacity. — dim: paired_fidelity — verdict: selective — how: page — anchor: "It deploys Weber’s (1958: 77–78) definition of the state in terms of organizational means—its bureaucratic and infrastructural capacities." — doc: em:8AX3TFK3 — anchor-b: "a state is a human community that (successfully) claims the monopoly of the legitimate use of physical force within a given territory." — doc-b: em:VGJ3KBBJ — edition-locus: held 1948 pp. 77–88; cited impressions differ — from: CHECK.F8 — confidence: high
+- [F9] RW0029: Riley fairly attributes to Weber the view that parliamentary government can strengthen the state by curbing uncontrolled bureaucracy. — dim: paired_fidelity — verdict: fair — how: page — anchor: "representative government strengthens, rather than weakens the state." — doc: em:EBSFFE5N — anchor-b: "would have preserved the dynasty, destroyed the naked rule" — doc-b: em:NEVNCMNY — edition-locus: *Economy and Society* pp. 1406–11 — from: CHECK.F9 — confidence: high — trimmed-anchor-b: yes
+- [F10] RW0042: Riley’s patrimonial description closely follows Weber’s contrast between personal government and bureaucratic separation. — dim: paired_fidelity — verdict: accurate — how: page — anchor: "The patrimonial office lacks above all the bureaucratic separation of the ‘private’ and the ‘official’ sphere." — doc: em:3YLGA6BQ — anchor-b: "The patrimonial office lades above all the bureaucratic separation of the \"private\" and the \"official\" sphere." — doc-b: em:NEVNCMNY — edition-locus: *Economy and Society* pp. 1027–32 — from: CHECK.F10 — confidence: high
+- [F11] RW0045: Riley accurately marks political capitalism as an adaptation of Weber’s Roman imperialist capitalism and preserves its political basis of profit. — dim: paired_fidelity — verdict: accurate — how: page — anchor: "Adapting Weber’s concept of Roman ‘imperialist capitalism’, this could perhaps be termed ‘political capitalism’" — doc: em:CX58SV9M — anchor-b: "The profit opportunities of all these groups rest upon the direct exploitation of political power directed towards expansion." — doc-b: em:NEVNCMNY — edition-locus: *Economy and Society* pp. 916–18 — from: CHECK.F11 — confidence: high
+- [F12] RW0048: The coauthors fairly use Weberian calculability within their externalist account of positivism, though Weber does not discuss positivism at this locus. — dim: paired_fidelity — verdict: fair — how: page — anchor: "The notion that modern capitalist society generates positivism also has roots in Marx’s (1977 [1867]: 149, 165–66, 168–69) theory of commodity fetishism, Weber’s (1978: 91–93" — doc: em:89QVNXT8 — anchor-b: "The term \"formal rationality of econom'ic action\" will be used to designate the extent of quantitative calculation or accounting which is technically possible" — doc-b: em:NEVNCMNY — edition-locus: *Economy and Society* pp. 85–91 — from: CHECK.F12 — confidence: medium
+- [F13] RW0049: “Calculating and rationalized worldview” selectively generalizes Weber’s account of capital accounting; the additional cited work is unassessed. — dim: paired_fidelity — verdict: selective — how: page — anchor: "He combined this with the claim that capitalism also produced a calculating and rationalized worldview." — doc: em:89QVNXT8 — anchor-b: "There is a form of monetary accounting which is peculiar to rational economic profit-making; namely, \"capital accounting.\"" — doc-b: em:NEVNCMNY — edition-locus: pp. 90–94; *General Economic History* pp. 275–77 unheld — from: CHECK.F13 — confidence: high
+- [F14] RW0050: The quotation of Weber’s question about how to live is accurate, and Weber’s context denies that science can provide the ultimate answer. — dim: paired_fidelity — verdict: accurate — how: page — anchor: "“What shall we do, and, how shall we arrange our lives?”" — doc: em:89QVNXT8 — anchor-b: "then one can say that only a prophet or a savior can give the answers." — doc-b: em:VGJ3KBBJ — edition-locus: *From Max Weber* pp. 151–54 — from: CHECK.F14 — confidence: high
+- [F15] RW0064: Riley accurately cites Weber’s Machiavellian example but selectively uses it for a broader nationalist interpretation of the vocation essays. — dim: paired_fidelity — verdict: selective — how: page — anchor: "Weber instances as the most compelling example of the “called” politician “those citizens [discussed in Machiavelli’s History of Florence]" — doc: em:SBN4ZVXW — anchor-b: "those citizens who deemed the greatness of their native city higher than the salvation of their souls." — doc-b: em:VGJ3KBBJ — edition-locus: *From Max Weber* pp. 125–27 — from: CHECK.F15 — confidence: high
+- [F16] RW0074: The analogy between Mosca’s political formula and Weberian legitimacy is unverifiable because the retrieved window is an editor’s introduction in another collection. — dim: paired_fidelity — verdict: unverifiable — how: search — anchor: "The role of the political formula is somewhat analogous to Weber’s (1921, p. 398) concept of legitimacy" — doc: em:QASWYLCG — anchor-b: "Weber’s overriding concern was with the survival of the German state and nation." — doc-b: em:GUWLLR3M — edition-locus: cited German 1921 p. 398; held English 1994 PDF 20–22, editorial voice — from: CHECK.F16 — confidence: high
+- [F17] RW0076: Emigh and Riley accurately reproduce Weber’s definition of power. — dim: paired_fidelity — verdict: accurate — how: page — anchor: "the probability that one actor within a social relationship will be in a position to carry out his own will despite resistance" — doc: em:QASWYLCG — anchor-b: "A \"Power\" (Macht) is the probability that one actor within a social relationship will be in a position to carry out his own will despite resistance" — doc-b: em:NEVNCMNY — edition-locus: *Economy and Society* pp. 52–54 — from: CHECK.F17 — confidence: high
+- [F18] RW0077: The claim that persons can hold power is fairly supported, though Weber’s passages concern legitimate and charismatic authority more specifically. — dim: paired_fidelity — verdict: fair — how: page — anchor: "Power can be held by people (Weber, 1921/1978, pp. 954, 1112)" — doc: em:QASWYLCG — anchor-b: "every single bearer of powers of command is legitimated by that system of rational noms" — doc-b: em:NEVNCMNY — edition-locus: pp. 953–55 and 1111–13 — from: CHECK.F18 — confidence: medium
+- [F19] RW0078: The cited pages do not verify the claimed distinction between explicitly delegated power and informal influence or persuasion. — dim: paired_fidelity — verdict: unverifiable — how: page — anchor: "Power can be explicitly delegated or invested; alternatively, it may be held implicitly or informally as inﬂuence or persuasion" — doc: em:QASWYLCG — anchor-b: "There is the prillcipk ,)f official jurisdictional ar-eas, which arc generally ordered by rules" — doc-b: em:NEVNCMNY — edition-locus: pp. 956, 1006, 1112; retrieved passages classify bureaucratic, patriarchal, and charismatic structures — from: CHECK.F19 — confidence: high — anchor-verified: no — trimmed-anchor-b: yes
+- [F20] RW0079: The same composite loci do not verify a Weberian polarity between cooperative and conflictual power. — dim: paired_fidelity — verdict: unverifiable — how: page — anchor: "The fourth polarity, consensuality, concerns the degree to which power is cooperative or conﬂictual" — doc: em:QASWYLCG — anchor-b: "Essentially it is based not on the official's COlT'\":1.itment to an impersonal purpose and not on obedience to abstract Tlonns, but on n strictly personal loyalty." — doc-b: em:NEVNCMNY — edition-locus: pp. 956, 1006, 1112; the retrieved text concerns types of domination — from: CHECK.F20 — confidence: high
+- [F21] RW0080: The resources attribution is unverifiable because the search tests only an unrelated monetary-policy window and leaves the other cited works unchecked. — dim: paired_fidelity — verdict: unverifiable — how: search — anchor: "Control over tangible material resources, such as means of production, coercion, worship or salvation, or intellectual resources, such as books and laboratories" — doc: em:QASWYLCG — anchor-b: "Lytrische Politik kann also, insbesondere bei akzessorischem Metallsperrgeld oder bei Papierwährung[,] auch Inflationspolitik" — doc-b: em:NFJUV484 — edition-locus: multiple German loci cited; retrieved MWG I/23 pp. 412–14 concerns monetary policy — from: CHECK.F21 — confidence: high — trimmed-anchor-b: yes
+- [F22] RW0081: Emigh and Riley fairly use Weber to distinguish organizational command from ownership of resources. — dim: paired_fidelity — verdict: fair — how: page — anchor: "Organizations allow individuals in high-level positions, such as managers and bureaucrats, to control resources and the labor of others within the organization" — doc: em:QASWYLCG — anchor-b: "Not every position of economic power, however, represents domination in our sense of the word." — doc-b: em:NEVNCMNY — edition-locus: pp. 941–43 and 972–76 — from: CHECK.F22 — confidence: medium
+- [F23] RW0082: The coauthors fairly infer leaders’ informational dependence from Weber’s account of bureaucratic expertise and official-information monopolies. — dim: paired_fidelity — verdict: fair — how: page — anchor: "the leadership often depends on information embedded in lower levels of the organization that can be hard to extract" — doc: em:QASWYLCG — anchor-b: "the bureaucrat has official information, which is only available through administrative channels" — doc-b: em:NEVNCMNY — edition-locus: pp. 955–59 and 1416–19 — from: CHECK.F23 — confidence: high
+- [F24] RW0083: The managerial-hierarchy claim is selectively supported because Weber’s locus establishes strict bureaucratic organization rather than the full profit-directed command relation. — dim: paired_fidelity — verdict: selective — how: page — anchor: "Economic organizations, especially ones common to capitalist economies, are set up hierarchically" — doc: em:QASWYLCG — anchor-b: "the very large modern capitalist enterprises are" — doc-b: em:NEVNCMNY — edition-locus: pp. 973–75 — from: CHECK.F24 — confidence: high — trimmed-anchor-b: yes
+- [F25] RW0084: Emigh and Riley accurately state that authority normally depends at least partly on belief in legitimacy. — dim: paired_fidelity — verdict: accurate — how: page — anchor: "following any authority at least in part depends on the belief in its legitimacy" — doc: em:QASWYLCG — anchor-b: "In addition every such system attempts to establish and to cultivate the belief in its legitimacy." — doc-b: em:NEVNCMNY — edition-locus: pp. 212–14 — from: CHECK.F25 — confidence: high
+- [F26] RW0085: Riley fairly applies Weber’s estate concept to culturally marked, materially grounded closure while preserving its nonidentity with class. — dim: paired_fidelity — verdict: fair — how: page — anchor: "When workers organise in this second way they do not form a class, they form what Max Weber called an “estate”" — doc: em:QKSXS3VW — anchor-b: "Ständische Lage kann auf Klassenlage bestimmter oder mehrdeutiger Art ruhen. Aber sie ist nicht durch sie allein bestimmt" — doc-b: em:NFJUV484 — edition-locus: cited 1922 marginal A180; MWG I/23 pp. 598–600 — from: CHECK.F26 — confidence: high
+- [F27] RW0088: Riley and Brenner fairly represent Weberian tax-farming as a fixed return to the ruler plus a politically enabled surplus retained by the farmer. — dim: paired_fidelity — verdict: fair — how: page — anchor: "Their ‘profit’ consisted in the difference between the money that they advanced to the ruler for the right to tax and what they could extract from the population" — doc: em:VE9TU4JA — anchor-b: "The farmer's profit consisted only in a share of the potential surplus over and above his fee" — doc-b: em:NEVNCMNY — edition-locus: pp. 964–67 — from: CHECK.F27 — confidence: high
+- [F28] RW0096: The tax-farming locus supports politically based profit but not the claim that Weber originally deployed “political capitalism” there. — dim: paired_fidelity — verdict: selective — how: page — anchor: "The term was originally deployed by Max Weber to describe economic activity that is profit-oriented but relies predominantly on political means" — doc: em:GEFERFPB — anchor-b: "As in Hellas and in Rome, the tax-farmer was still a private capitalist." — doc-b: em:NEVNCMNY — edition-locus: pp. 965–66 — from: CHECK.F28 — confidence: high
+
+### Counter-evidence
+
+No supplied passage establishes a verdict of misattribution. The principal limiting evidence is internal to the pairs: Weber’s comparative profit argument does not state a declining-profit-rate mechanism [F7], and the tax-farming pages do not contain the term whose origin is claimed [F28].
+
+### Open questions
+
+- Do other passages in Weber support Riley’s declining-profit interpretation of imperialism?
+- Does the fuller historical context of the vocation lectures support Riley’s nationalist specification of the fact/value problem?
+- What do cited English p. 172 and the cited German political-writing locus say in the unresolved cross-edition pairs?
+- How should the undated *Thesis of Political Capitalism* be placed relative to the two 2025 texts?
+- What do the twelve documents represented only by unchecked name windows contribute to Riley’s citation practice once specific Weber loci are resolved?
+
+### Tables
+
+#### paired_citation_fidelity
+
+| Pair | Citing text | Attribution kind | Verdict | Weber work and locus |
+|---|---|---|---|---|
+| RW0001 | *Privilege and Property* | direct | fair [F1] | *From Max Weber*, pp. 193–95 |
+| RW0002 | *Civic Associations* | direct | unverifiable [F2] | English p. 172 not mapped to editorial MWG I/7 window |
+| RW0003 | *Civic Associations* | direct | unverifiable [F3] | second unmatched window concerns Roscher |
+| RW0008 | *Waves* | reported, Riley→Gorski→Weber | unverifiable [F4] | search candidate, pp. 286–88 |
+| RW0010 | *Tony Judt* | reported, Riley→Judt→Weber | unverifiable [F5] | editorial biography, pp. 8–10 |
+| RW0011 | *Tony Judt* | contrast | fair [F6] | *From Max Weber*, pp. 119–21 |
+| RW0016 | *Routes or Rivals?* | direct | stretched [F7] | *Economy and Society*, pp. 918–20 |
+| RW0023 | *Racialization* | direct | selective [F8] | *From Max Weber*, pp. 77–88 |
+| RW0029 | *New Durkheim* | direct | fair [F9] | *Economy and Society*, pp. 1406–11 |
+| RW0042 | *What Is Trump?* | direct | accurate [F10] | *Economy and Society*, pp. 1027–32 |
+| RW0045 | *Faultlines* | acknowledged adaptation | accurate [F11] | *Economy and Society*, pp. 916–18 |
+| RW0048 | *Social Foundations* | direct theoretical use | fair [F12] | *Economy and Society*, pp. 85–91 |
+| RW0049 | *Social Foundations* | direct theoretical use | selective [F13] | pp. 90–94; additional work unheld |
+| RW0050 | *Social Foundations* | direct quotation | accurate [F14] | *From Max Weber*, pp. 151–54 |
+| RW0064 | *Science and Politics* | direct | selective [F15] | *From Max Weber*, pp. 125–27 |
+| RW0074 | *Relational Power Theory* | analogy | unverifiable [F16] | editor’s introduction; different collection |
+| RW0076 | *Relational Power Theory* | direct quotation | accurate [F17] | *Economy and Society*, pp. 52–54 |
+| RW0077 | *Relational Power Theory* | direct | fair [F18] | pp. 953–55 and 1111–13 |
+| RW0078 | *Relational Power Theory* | direct | unverifiable [F19] | loci discuss types of domination, not stated polarity |
+| RW0079 | *Relational Power Theory* | direct | unverifiable [F20] | same composite-locus problem |
+| RW0080 | *Relational Power Theory* | direct | unverifiable [F21] | monetary-policy search; other cited works unchecked |
+| RW0081 | *Relational Power Theory* | direct | fair [F22] | pp. 941–43 and 972–76 |
+| RW0082 | *Relational Power Theory* | direct | fair [F23] | pp. 955–59 and 1416–19 |
+| RW0083 | *Relational Power Theory* | direct | selective [F24] | pp. 973–75 |
+| RW0084 | *Relational Power Theory* | direct | accurate [F25] | pp. 212–14 |
+| RW0085 | *Rise of Political Capitalism* | direct application | fair [F26] | marginal A180; MWG I/23 pp. 598–600 |
+| RW0088 | *Long Downturn Reply* | direct | fair [F27] | *Economy and Society*, pp. 964–67 |
+| RW0096 | *Thesis of Political Capitalism* | direct genealogy | selective [F28] | pp. 965–66 |
+
+#### checked_sample_coverage
+
+| Measure | Result |
+|---|---:|
+| Supplied citing texts | 27 |
+| Citing texts containing eligible pairs | 15 |
+| Citing texts outside paired sample | 12 |
+| Candidate name windows | 98 |
+| Eligible citation-pair IDs | 28 |
+| Independently checked pair IDs | 28 |
+| Settled pairs | 20 |
+| Accurate | 5 |
+| Fair | 9 |
+| Selective | 5 |
+| Stretched | 1 |
+| Unverifiable | 8 |
+| Misattributed | 0 |
+| Unchecked or linked name windows | 70 |
+| Linked duplicate windows | 6 |
+| Held Weber source keys checked | 5 |
+| Additional cited work explicitly unassessed | *General Economic History*, pp. 275–77 [F13] |
+| Scholarly citation counts | unavailable |
+
+- paired_citation_fidelity: rows F1–F28
+- checked_sample_coverage: rows F1–F28
+
+### Synthesis contract
+- The bounded repair did not clear every wall failure; rows F19 are tagged `anchor-verified: no` and their citations `unverified`. Desks drop them; the receipt keeps both attempts.

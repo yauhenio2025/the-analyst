@@ -1,10 +1,565 @@
 {
-  "status": "failed",
+  "status": "complete",
   "job": {
     "id": "G6",
     "engine": "citation_fidelity_audit",
     "condition": "checked",
     "index_only": true
   },
-  "error": "Corpus synthesis contract failed after bounded repair: {\"failed_ids\": [\"F7\", \"F10\", \"F12\", \"F14\", \"F17\", \"F19\"], \"incomplete_cross_document_ids\": [], \"duplicate_ids\": [], \"missing_cited\": [\"F7\", \"F10\", \"F12\", \"F14\", \"F17\", \"F19\"], \"unknown_dimensions\": [], \"missing_ledger\": false, \"parse_error\": \"\", \"incomplete_invocation\": false}"
+  "output_sha256": "011654d0e2ae968ecb65478efb5854d02267cb76b387aecce7eb8c2670348de9",
+  "process": {
+    "engine": "citation_fidelity_audit",
+    "process": "dvs",
+    "cost_usd": 2.0648,
+    "input_tokens": 922318,
+    "output_tokens": 50358,
+    "seconds": 527.4,
+    "final_model": "openrouter/openai/gpt-5.6-sol",
+    "final_wall": {
+      "rows": 28,
+      "with_anchor": 28,
+      "verified": 27,
+      "trimmed": 3,
+      "anchor_rate": 0.964,
+      "failed_ids": [
+        "F19"
+      ],
+      "duplicate_ids": [],
+      "missing_cited": [
+        "F19"
+      ],
+      "anchors": 56,
+      "verified_anchors": 55,
+      "cross_document_rows": 28,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "checked",
+        "scope": "retained_ledger",
+        "missing_rejected_ids": [],
+        "missing_other_ids": [
+          "F19"
+        ]
+      },
+      "synthesis_contract": {
+        "failed_ids": [
+          "F19"
+        ],
+        "incomplete_cross_document_ids": [],
+        "duplicate_ids": [],
+        "missing_cited": [
+          "F19"
+        ],
+        "unknown_dimensions": [],
+        "missing_ledger": false,
+        "parse_error": "",
+        "incomplete_invocation": false
+      },
+      "synthesis_repair_attempts": [
+        {
+          "failed_ids": [
+            "F2",
+            "F3",
+            "F5",
+            "F9",
+            "F16",
+            "F19",
+            "F20",
+            "F21"
+          ],
+          "incomplete_cross_document_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [
+            "F19",
+            "F20",
+            "F21",
+            "F5",
+            "F2",
+            "F3"
+          ],
+          "unknown_dimensions": [],
+          "missing_ledger": false,
+          "parse_error": "",
+          "incomplete_invocation": false
+        }
+      ],
+      "rows_without_dimension": 0,
+      "synthesis_contract_failed_after_repair": true,
+      "unverified_after_repair": [
+        "F19"
+      ],
+      "check_ruling_coverage": {
+        "original_count": 28,
+        "explicitly_ruled_count": 28,
+        "missing_or_unruled_ids": [],
+        "unexpected_nonadded_ids": [],
+        "invalid_original_status_ids": [],
+        "duplicate_original_ids": [],
+        "duplicate_ruling_ids": [],
+        "coverage_complete": true
+      }
+    },
+    "calls": [
+      {
+        "step": "read",
+        "kind": "synthesize",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/openai/gpt-5.6-sol",
+        "model_used": "openrouter/openai/gpt-5.6-sol",
+        "input_tokens": 170102,
+        "output_tokens": 9679,
+        "duration_ms": 138342,
+        "cost_usd": 0.437,
+        "retries": 0,
+        "wall": {
+          "rows": 28,
+          "with_anchor": 28,
+          "verified": 20,
+          "trimmed": 3,
+          "anchor_rate": 0.714,
+          "failed_ids": [
+            "F2",
+            "F3",
+            "F5",
+            "F9",
+            "F16",
+            "F19",
+            "F20",
+            "F21"
+          ],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 56,
+          "verified_anchors": 48,
+          "cross_document_rows": 28,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "has_ledger": true,
+          "prose_chars": 8604
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 37519
+      },
+      {
+        "step": "check",
+        "kind": "verify",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+        "model_used": "openrouter/deepseek/deepseek-v4-pro",
+        "input_tokens": 180745,
+        "output_tokens": 13936,
+        "duration_ms": 178156,
+        "cost_usd": 0.2174,
+        "retries": 0,
+        "wall": {
+          "rows": 28,
+          "with_anchor": 28,
+          "verified": 20,
+          "trimmed": 3,
+          "anchor_rate": 0.714,
+          "failed_ids": [
+            "F2",
+            "F3",
+            "F5",
+            "F9",
+            "F16",
+            "F19",
+            "F20",
+            "F21"
+          ],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 56,
+          "verified_anchors": 48,
+          "cross_document_rows": 28,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "checked",
+            "scope": "retained_ledger",
+            "missing_rejected_ids": [],
+            "missing_other_ids": []
+          },
+          "check_in": 28,
+          "check_confirmed": 28,
+          "check_weakened": 0,
+          "check_rejected": 0,
+          "check_added": 0,
+          "check_added_dropped": 0,
+          "check_carried": 0,
+          "check_unverified": 8,
+          "check_ruling_coverage": {
+            "original_count": 28,
+            "explicitly_ruled_count": 28,
+            "missing_or_unruled_ids": [],
+            "unexpected_nonadded_ids": [],
+            "invalid_original_status_ids": [],
+            "duplicate_original_ids": [],
+            "duplicate_ruling_ids": [],
+            "coverage_complete": true
+          }
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 29914
+      },
+      {
+        "step": "reconcile_checked",
+        "kind": "synthesize",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/openai/gpt-5.6-sol",
+        "model_used": "openrouter/openai/gpt-5.6-sol",
+        "input_tokens": 184779,
+        "output_tokens": 8553,
+        "duration_ms": 109980,
+        "cost_usd": 0.4551,
+        "retries": 0,
+        "wall": {
+          "rows": 28,
+          "with_anchor": 28,
+          "verified": 20,
+          "trimmed": 1,
+          "anchor_rate": 0.714,
+          "failed_ids": [
+            "F2",
+            "F3",
+            "F5",
+            "F9",
+            "F16",
+            "F19",
+            "F20",
+            "F21"
+          ],
+          "duplicate_ids": [],
+          "missing_cited": [
+            "F19",
+            "F20",
+            "F21",
+            "F5",
+            "F2",
+            "F3"
+          ],
+          "anchors": 56,
+          "verified_anchors": 48,
+          "cross_document_rows": 28,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "checked",
+            "scope": "retained_ledger",
+            "missing_rejected_ids": [],
+            "missing_other_ids": [
+              "F19",
+              "F20",
+              "F21",
+              "F5",
+              "F2",
+              "F3"
+            ]
+          },
+          "synthesis_contract": {
+            "failed_ids": [
+              "F2",
+              "F3",
+              "F5",
+              "F9",
+              "F16",
+              "F19",
+              "F20",
+              "F21"
+            ],
+            "incomplete_cross_document_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [
+              "F19",
+              "F20",
+              "F21",
+              "F5",
+              "F2",
+              "F3"
+            ],
+            "unknown_dimensions": [],
+            "missing_ledger": false,
+            "parse_error": "",
+            "incomplete_invocation": false
+          },
+          "synthesis_repair_attempts": [],
+          "rows_without_dimension": 0
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 35145
+      },
+      {
+        "step": "reconcile_checked",
+        "kind": "synthesize",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/openai/gpt-5.6-sol",
+        "model_used": "openrouter/openai/gpt-5.6-sol",
+        "input_tokens": 193346,
+        "output_tokens": 9095,
+        "duration_ms": 100643,
+        "cost_usd": 0.4776,
+        "retries": 0,
+        "wall": {
+          "rows": 28,
+          "with_anchor": 28,
+          "verified": 27,
+          "trimmed": 3,
+          "anchor_rate": 0.964,
+          "failed_ids": [
+            "F19"
+          ],
+          "duplicate_ids": [],
+          "missing_cited": [
+            "F19"
+          ],
+          "anchors": 56,
+          "verified_anchors": 55,
+          "cross_document_rows": 28,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "checked",
+            "scope": "retained_ledger",
+            "missing_rejected_ids": [],
+            "missing_other_ids": [
+              "F19"
+            ]
+          },
+          "synthesis_contract": {
+            "failed_ids": [
+              "F19"
+            ],
+            "incomplete_cross_document_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [
+              "F19"
+            ],
+            "unknown_dimensions": [],
+            "missing_ledger": false,
+            "parse_error": "",
+            "incomplete_invocation": false
+          },
+          "synthesis_repair_attempts": [
+            {
+              "failed_ids": [
+                "F2",
+                "F3",
+                "F5",
+                "F9",
+                "F16",
+                "F19",
+                "F20",
+                "F21"
+              ],
+              "incomplete_cross_document_ids": [],
+              "duplicate_ids": [],
+              "missing_cited": [
+                "F19",
+                "F20",
+                "F21",
+                "F5",
+                "F2",
+                "F3"
+              ],
+              "unknown_dimensions": [],
+              "missing_ledger": false,
+              "parse_error": "",
+              "incomplete_invocation": false
+            }
+          ],
+          "rows_without_dimension": 0,
+          "synthesis_contract_failed_after_repair": true,
+          "unverified_after_repair": [
+            "F19"
+          ],
+          "check_ruling_coverage": {
+            "original_count": 28,
+            "explicitly_ruled_count": 28,
+            "missing_or_unruled_ids": [],
+            "unexpected_nonadded_ids": [],
+            "invalid_original_status_ids": [],
+            "duplicate_original_ids": [],
+            "duplicate_ruling_ids": [],
+            "coverage_complete": true
+          }
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 36719
+      },
+      {
+        "step": "reconcile_checked",
+        "kind": "synthesize",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/openai/gpt-5.6-sol",
+        "model_used": "openrouter/openai/gpt-5.6-sol",
+        "input_tokens": 193346,
+        "output_tokens": 9095,
+        "duration_ms": 100643,
+        "cost_usd": 0.4776,
+        "retries": 0,
+        "wall": {
+          "rows": 28,
+          "with_anchor": 28,
+          "verified": 27,
+          "trimmed": 3,
+          "anchor_rate": 0.964,
+          "failed_ids": [
+            "F19"
+          ],
+          "duplicate_ids": [],
+          "missing_cited": [
+            "F19"
+          ],
+          "anchors": 56,
+          "verified_anchors": 55,
+          "cross_document_rows": 28,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "checked",
+            "scope": "retained_ledger",
+            "missing_rejected_ids": [],
+            "missing_other_ids": [
+              "F19"
+            ]
+          },
+          "synthesis_contract": {
+            "failed_ids": [
+              "F19"
+            ],
+            "incomplete_cross_document_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [
+              "F19"
+            ],
+            "unknown_dimensions": [],
+            "missing_ledger": false,
+            "parse_error": "",
+            "incomplete_invocation": false
+          },
+          "synthesis_repair_attempts": [
+            {
+              "failed_ids": [
+                "F2",
+                "F3",
+                "F5",
+                "F9",
+                "F16",
+                "F19",
+                "F20",
+                "F21"
+              ],
+              "incomplete_cross_document_ids": [],
+              "duplicate_ids": [],
+              "missing_cited": [
+                "F19",
+                "F20",
+                "F21",
+                "F5",
+                "F2",
+                "F3"
+              ],
+              "unknown_dimensions": [],
+              "missing_ledger": false,
+              "parse_error": "",
+              "incomplete_invocation": false
+            }
+          ],
+          "rows_without_dimension": 0,
+          "synthesis_contract_failed_after_repair": true,
+          "unverified_after_repair": [
+            "F19"
+          ],
+          "check_ruling_coverage": {
+            "original_count": 28,
+            "explicitly_ruled_count": 28,
+            "missing_or_unruled_ids": [],
+            "unexpected_nonadded_ids": [],
+            "invalid_original_status_ids": [],
+            "duplicate_original_ids": [],
+            "duplicate_ruling_ids": [],
+            "coverage_complete": true
+          }
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 36719
+      }
+    ]
+  },
+  "audit": {
+    "rows": 28,
+    "wall": {
+      "rows": 28,
+      "with_anchor": 28,
+      "verified": 27,
+      "trimmed": 3,
+      "anchor_rate": 0.964,
+      "failed_ids": [
+        "F19"
+      ],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 56,
+      "verified_anchors": 55,
+      "cross_document_rows": 28,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "source_keys": [
+      "em:BEFGGK6M",
+      "em:AKVCVFYG",
+      "em:BWDEURC8",
+      "em:H6GGBV9I",
+      "em:PSYPHAPS",
+      "em:C9LPBLYH",
+      "em:VF5R7DTE",
+      "em:8AX3TFK3",
+      "em:EBSFFE5N",
+      "em:2Z7GD9IM",
+      "em:X7K39J6C",
+      "em:3YLGA6BQ",
+      "em:EJJLVCUC",
+      "em:CX58SV9M",
+      "em:LD5QCGT4",
+      "em:89QVNXT8",
+      "em:YYJU2VB6",
+      "em:V68V5D49",
+      "em:ARJ6E4AC",
+      "em:SBN4ZVXW",
+      "em:EZWD7IBR",
+      "em:QASWYLCG",
+      "em:QKSXS3VW",
+      "em:VE9TU4JA",
+      "em:9Z9GMMNI",
+      "em:DNWPMR2Y",
+      "em:GEFERFPB",
+      "em:VGJ3KBBJ",
+      "em:QM343SXS",
+      "em:NEVNCMNY",
+      "em:GUWLLR3M",
+      "em:NFJUV484"
+    ],
+    "anchors": 56,
+    "raw_exact": 6,
+    "table_rows": 0,
+    "passage_ids_in_prose_or_tables": [],
+    "missing_table_ids": [],
+    "missing_prose_ids": []
+  }
 }
