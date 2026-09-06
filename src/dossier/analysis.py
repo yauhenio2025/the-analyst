@@ -142,7 +142,13 @@ def _fallback_mirror_outputs(job_id: str, sub_job_id: str, seen: set[str]) -> No
         )
 
 
-def _collect(job: DossierJob, sub_job_id: str, plan_phases: list[dict]) -> dict:
+def _already_folded(job: DossierJob, sub_job_id: str) -> bool:
+    """True when this executor job's receipts are already on the dossier (a resume re-enters the analysis step by name
+    and reuses the completed executor job; recording its rows again doubled a job's totals on 2026-09-06)."""
+    return any(getattr(r, "source_job_id", None) == sub_job_id for r in (getattr(job, "receipts", None) or []))
+
+
+def _collect(job: DossierJob, sub_job_id: str, plan_phases: list[dict], *, record_receipts: bool = True) -> dict:
     from src.executor.output_store import load_all_job_outputs
 
     names = {float(p["phase_number"]): p for p in plan_phases}
@@ -194,13 +200,14 @@ def _collect(job: DossierJob, sub_job_id: str, plan_phases: list[dict]) -> dict:
             from src.executor.db import _json_loads
             metadata = _json_loads(metadata) or {}
         entry["final_wall"] = metadata.get("wall")
-        receipt = make_receipt(
-            step=STEP, kind="llm", model=row.get("model_used") or "",
-            label=f"{row.get('engine_key')} pass {row.get('pass_number')}" + (f" ({row.get('stance_key')})" if row.get("stance_key") else ""),
-            input_tokens=int(row.get("input_tokens") or 0), output_tokens=int(row.get("output_tokens") or 0),
-            result_text=content, source_job_id=sub_job_id,
-        )
-        record(job.id, receipt)
+        if record_receipts:
+            receipt = make_receipt(
+                step=STEP, kind="llm", model=row.get("model_used") or "",
+                label=f"{row.get('engine_key')} pass {row.get('pass_number')}" + (f" ({row.get('stance_key')})" if row.get("stance_key") else ""),
+                input_tokens=int(row.get("input_tokens") or 0), output_tokens=int(row.get("output_tokens") or 0),
+                result_text=content, source_job_id=sub_job_id,
+            )
+            record(job.id, receipt)
     return analysis
 
 
@@ -215,8 +222,10 @@ def run_analysis(job: DossierJob, docs: list[Document], *, cancel_check: Optiona
 
     sub_job_id = job.analysis_job_id
     sub = get_job(sub_job_id) if sub_job_id else None
+    folded = bool(sub_job_id) and _already_folded(job, sub_job_id)
     if sub and sub.get("status") == "completed":
-        events.emit(job.id, "note", phase=STEP, detail=f"reusing completed executor job {sub_job_id}")
+        events.emit(job.id, "note", phase=STEP, detail=f"reusing completed executor job {sub_job_id}"
+                    + ("; its receipts and events are already on the record" if folded else ""))
     elif sub and sub.get("status") in ("pending", "running"):
         if _is_live(sub_job_id):
             events.emit(job.id, "note", phase=STEP, detail=f"re-attaching to running executor job {sub_job_id}")
@@ -256,12 +265,13 @@ def run_analysis(job: DossierJob, docs: list[Document], *, cancel_check: Optiona
         sub = get_job(sub_job_id) or {}
         status = sub.get("status")
         try:
-            after_seq = _mirror_events(job.id, sub_job_id, after_seq)
+            after_seq = after_seq if folded else _mirror_events(job.id, sub_job_id, after_seq)
         except Exception as exc:
             logger.debug(f"event mirroring failed: {exc}")
         if fallback:
             try:
-                _fallback_mirror_outputs(job.id, sub_job_id, seen_outputs)
+                if not folded:
+                    _fallback_mirror_outputs(job.id, sub_job_id, seen_outputs)
                 progress = sub.get("progress") or {}
                 detail = f"phase {progress.get('current_phase')} {progress.get('phase_name') or ''}: {progress.get('detail') or ''}".strip()
                 if detail and detail != last_detail:
@@ -279,7 +289,7 @@ def run_analysis(job: DossierJob, docs: list[Document], *, cancel_check: Optiona
             raise AnalysisFailed(f"executor job {sub_job_id} exceeded {TIMEOUT_S}s")
         time.sleep(POLL_S)
 
-    analysis = _collect(job, sub_job_id, plan_phases)
+    analysis = _collect(job, sub_job_id, plan_phases, record_receipts=not folded)
     if not analysis:
         raise AnalysisFailed(f"executor job {sub_job_id} completed but produced no phase outputs")
     total_chars = sum(len(v.get("final_output") or "") for v in analysis.values())
