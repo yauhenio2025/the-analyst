@@ -20,15 +20,14 @@ def field(row: str, name: str) -> str:
 
 
 def main():
-    d = Path(sys.argv[1]); merged = (d / "merged.md").read_text()
-    rows = [l for l in merged.splitlines() if ROW.match(l) and "dim: paired_fidelity" in l]
+    d = Path(sys.argv[1])
+    pairs = json.load(open(d / "pairs.json"))
     ours: dict[int, list] = {}
-    for r in rows:
-        ref = field(r, "pair-ref"); m = re.match(r"st(\d+)/(\S+)", ref)
+    for p in pairs:
+        m = re.match(r"st(\d+)/(\S+)", p["pair"])
         if not m:
             continue
-        v = field(r, "verdict").split("|")[0].strip().lower()
-        ours.setdefault(int(m.group(1)), []).append({"pair": ref, "verdict": v, "reason": field(r, "reason")[:200], "id": ROW.match(r).group(0)})
+        ours.setdefault(int(m.group(1)), []).append({"pair": p["pair"], "verdict": p["verdict"], "reason": (p.get("reason") or p.get("comparison") or "")[:200], "id": p["finding"], "source": p["source"]})
     stacks = json.load(open(d.parent / "stacks_runs_verdicts.json"))
     runs = {k: v for k, v in stacks["runs"].items()}
     table, agree = [], Counter()

@@ -237,6 +237,9 @@ def ledger_line(job_id: str) -> str:
     return summary_line(fresh.findings) if fresh else "?"
 
 
+OWN_PATH_KEY = "own_path"   # the API's key for "I know the analysis I want" (src/api/routes/dossier.py)
+
+
 def _persist_factory(job_id: str) -> Callable[..., None]:
     def persist(**fields) -> None:
         update_job(job_id, **fields)
@@ -270,6 +273,22 @@ def _run_step(job: DossierJob, step: str, docs) -> None:
         brief = run_brief(job, docs, context_documents=context_docs) if context_docs else run_brief(job, docs)
         job.brief = brief
         fields = {"brief": brief}
+        if job.options.entry == "chosen" and job.options.path and not job.chosen_option:
+            # lane 2 from the request itself (the Stacks' per-pair jobs, the pilot script): the requester already
+            # chose the path, so the brief is written for the record and the run does not pause for a choice
+            # (2026-09-06; before this, a chosen-path job posted without a later brief call sat at awaiting_brief)
+            from src.dossier.schemas import BriefOption, Path as BriefPath, Shape
+
+            if brief.option(OWN_PATH_KEY) is None:
+                brief.options.append(BriefOption(
+                    key=OWN_PATH_KEY, title="Your own path", deliverable_kind="case_file", use_kind="learn",
+                    deliverable="A dossier along the path you chose; the desk writes its shape from what the engines return.",
+                    shape=Shape(), path=BriefPath(), best_when="Pick this when you know the analysis you want.",
+                    notes=["own path: chosen on the request; no deliverable framing was written by the brief desk"]))
+            job.chosen_option = OWN_PATH_KEY
+            fields["chosen_option"] = OWN_PATH_KEY
+            events.emit(job_id, "note", phase=step, detail="brief chosen on the request: your own path (entry chosen with a fixed path)",
+                        payload_json={"kind": "material_decided", "option_key": OWN_PATH_KEY})
         if job.options.autopilot and not job.chosen_option:
             job.chosen_option = brief.autopilot_key()  # the recommendation (brief v2), else option 1
             fields["chosen_option"] = job.chosen_option

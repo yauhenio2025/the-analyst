@@ -29,7 +29,9 @@ def test_the_translation_makes_the_memo_the_citing_text_and_each_source_a_held_w
     idx = statements_to_evidence_index(FILE)
     assert idx["role"] == "evidence_index" and idx["mode"] == "memo_against_sources"
     memo, = idx["texts"]
-    assert memo["uid"] == "em:U3HITB25" and memo["text"].startswith("# Memo") and len(memo["passages"]) == 4
+    assert memo["uid"] == "em:U3HITB25" and len(memo["passages"]) == 4
+    assert memo["text"].startswith("THE STATEMENTS UNDER AUDIT") and "[st1] (core finding; cites S1, S4) Weber's concepts arose" in memo["text"]
+    assert "[st3] (open; cites nothing) A statement citing nothing." in memo["text"] and memo["text"].rstrip().endswith("comparative economic history.")
     assert memo["passages"][0]["cites"] == ["em:RJRLLVLQ", "em:NQZYBP6Y"] and memo["passages"][0]["locus"] == "statement 1"
     assert memo["passages"][0]["pair_ids"] == ["st1/S1", "st1/S4"] and memo["passages"][0]["ref_id"] == "st1"
     assert [(p["pair_id"], p["held"]) for p in idx["pairs"]] == [("st1/S1", True), ("st1/S4", False), ("st2/S2", True)]

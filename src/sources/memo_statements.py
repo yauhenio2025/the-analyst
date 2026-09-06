@@ -57,7 +57,15 @@ def statements_to_evidence_index(obj: dict) -> dict:
         passages.append({"ref_id": f"st{s.get('no')}", "no": s.get("no"), "section": s.get("section", ""),
                          "hit": " ".join(str(s.get("statement", "")).split()), "cites": cited, "locus": f"statement {s.get('no')}",
                          "pair_ids": [f"st{s.get('no')}/{labels_by_uid.get(u, u)}" for u in cited]})
-    body = memo.get("markdown") or "\n\n".join(f"[{p['no']}] ({p['section']}) {p['hit']}" for p in passages)
+    # The citing text A is the numbered statement list itself: those are the claims under audit and the words an
+    # anchor from A must be found in. The memo's markdown follows as context (a batch of the first run treated the
+    # absence of statement markers in the memo as "unverifiable" because the statements travelled only as index
+    # passages whose text the metadata strips).
+    listing = "\n\n".join(f"[{p['ref_id']}] ({p['section']}; cites {', '.join(labels_by_uid.get(u, u) for u in p['cites']) or 'nothing'}) {p['hit']}"
+                          for p in passages)
+    body = ("THE STATEMENTS UNDER AUDIT (each is A's attribution; quote from these lines as A's anchor)\n\n" + listing
+            + ("\n\nTHE MEMO THEY WERE TAKEN FROM (context for a statement's meaning; not a second witness)\n\n" + memo["markdown"]
+               if memo.get("markdown") else ""))
     texts = [{"uid": memo_uid, "title": memo_title, "year": memo.get("date") or "", "kind": "memo",
               "text": body, "passages": passages}]
     checks = []
@@ -87,7 +95,9 @@ def statements_to_evidence_index(obj: dict) -> dict:
             "stacks_check_runs": [{k: v for k, v in r.items() if k != "check"} for r in (obj.get("stacks_check_runs") or [])][:8]}
     plan["pair_ids"] = ("Every statement × cited-source pair has an index ID of the form st<statement no>/<source label> "
                         "(listed under pairs); use it as pair-ref. Audit every pair whose source is held; a pair whose source "
-                        "is not held is unverifiable. A statement citing no source is checked against every held source once.")
+                        "is not held is unverifiable. A statement citing no source is checked against every held source once. "
+                        "The statements are the numbered [st<no>] lines at the head of the memo document; the memo's prose "
+                        "carries no markers, and their absence there is never a reason for unverifiable.")
     return {"role": "evidence_index", "mode": "memo_against_sources", "author": memo_title, "person": "the cited sources",
             "texts": texts, "checks": checks, "unchecked": unresolved, "plan": plan, "pairs": pairs,
             "settings": {"statements": len(passages), "sources": len(checks), "pairs": len(pairs), "source": "stacks digest_check inputs"}}

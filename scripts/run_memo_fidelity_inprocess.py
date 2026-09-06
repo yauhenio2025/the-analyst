@@ -15,14 +15,16 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]; sys.path.insert(0, str(ROOT))
 OUT = ROOT / "data/study/memo_fidelity_2026_09_06"
-ROW = re.compile(r"^\[([A-Z]\d)\.F(\d+)\]", re.M)
+ROW = re.compile(r"^(?:- |\* )?\[(?:[A-Z]\d\.)?F(\d+)\]", re.M)          # a ledger row: "- [F6] …" or "[X6.F6] …"
+TABLE_ROW = re.compile(r"^\| *(st\d+/\S+?) *\|(.*?)\|(.*?)\|([^|]*?\b(accurate|fair|selective|stretched|misattributed|unverifiable)\b[^|]*)\|(.*?)\|\s*$", re.M | re.I)
 
 
 def renumber(content: str, batch: int) -> str:
-    def sub(m):
-        return f"[{m.group(1)}.F{batch * 100 + int(m.group(2))}]"
-    content = ROW.sub(sub, content)
-    return re.sub(r"\b([DX]\d)\.F(\d{1,2})\b", lambda m: f"{m.group(1)}.F{batch * 100 + int(m.group(2))}", content)
+    """Fold the batch into every finding id: F6 of batch 2 → F206, wherever the id appears."""
+    return re.sub(r"\[((?:[A-Z]\d\.)?)F(\d{1,2})\]", lambda m: f"[{m.group(1)}F{batch * 100 + int(m.group(2))}]", content)
+
+
+VERDICTS = ("accurate", "fair", "selective", "stretched", "misattributed", "unverifiable")
 
 
 def field(row: str, name: str) -> str:
@@ -30,8 +32,59 @@ def field(row: str, name: str) -> str:
     return (m.group(1).strip() if m else "")
 
 
+def audit_rows(content: str, batch: int) -> list[dict]:
+    """Every pair verdict in an assembled reading: first the ledger rows of the paired_fidelity dimension (pair-ref and
+    verdict as fields, the canonical form), then the paired-audit table where a batch rendered one; one entry per pair,
+    the ledger row preferred."""
+    out, seen = [], set()
+    for line in content.splitlines():
+        m = ROW.match(line)
+        if not m or "dim: paired_fidelity" not in line:
+            continue
+        pair, verdict = field(line, "pair-ref"), field(line, "verdict").split("|")[0].strip().lower()
+        if pair and verdict in VERDICTS and pair not in seen:
+            seen.add(pair)
+            out.append({"pair": pair, "verdict": verdict, "finding": f"F{int(m.group(1))}", "source": "ledger", "batch": batch,
+                        "a_attributes": field(line, "a-attributes")[:240], "p_says": field(line, "p-says")[:240], "reason": field(line, "reason")[:300],
+                        "anchor": field(line, "anchor")[:200], "anchor_b": field(line, "anchor-b")[:200], "confidence": field(line, "confidence")})
+    for m in TABLE_ROW.finditer(content):
+        if m.group(1) not in seen:
+            seen.add(m.group(1))
+            fid = re.search(r"\[(?:[A-Z]\d\.)?(F\d+)\]", m.group(4))
+            out.append({"pair": m.group(1), "verdict": m.group(5).lower(), "finding": fid.group(1) if fid else "", "source": "table", "batch": batch,
+                        "claim": m.group(2).strip()[:240], "comparison": m.group(3).strip()[:300], "locus": m.group(6).strip()[:120]})
+    return out
+
+
+def merge(out: Path, parts: list[dict], results: dict, start: float) -> dict:
+    merged, rows, pairs, cost, all_pairs = [], [], [], 0.0, []
+    for n in sorted(results):
+        content, proc, index_pairs = results[n]; cost += float(proc.get("cost_usd") or 0); all_pairs += index_pairs
+        renum = renumber(content, n)
+        merged.append(f"\n\n<!-- batch {n}: statements {parts[n-1]['batch']['statements']} -->\n\n" + renum)
+        rows += [l for l in renum.splitlines() if ROW.match(l)]
+        pairs += audit_rows(renum, n)
+    (out / "merged.md").write_text("".join(merged))
+    (out / "pairs.json").write_text(json.dumps(pairs, indent=1, ensure_ascii=False))
+    counts = {}
+    for p in pairs:
+        counts[p["verdict"]] = counts.get(p["verdict"], 0) + 1
+    refs = {p["pair"] for p in pairs}
+    held_pairs = [p["pair_id"] for p in all_pairs if p["held"]]
+    summary = {"status": "complete" if len(results) == len(parts) else "partial", "batches": len(parts), "batches_done": sorted(results),
+               "seconds": round(time.time() - start), "cost_usd": round(cost, 4), "ledger_rows": len(rows), "audit_rows": len(pairs),
+               "verdicts": counts, "pairs_in_index": len(all_pairs), "held_pairs": len(held_pairs),
+               "held_pairs_with_verdict": sum(1 for p in held_pairs if p in refs),
+               "pairs_without_verdict": [p for p in held_pairs if p not in refs][:30],
+               "unreferenced_pair_refs": sorted(refs - set(p["pair_id"] for p in all_pairs))[:20]}
+    (out / "verdicts.json").write_text(json.dumps(summary, indent=1))
+    (out / "run.json").write_text(json.dumps({**summary, "process": {n: results[n][1] for n in results}}, indent=1, default=str))
+    return summary
+
+
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument("file"); ap.add_argument("--batch", type=int, default=8); ap.add_argument("--parallel", type=int, default=4)
+    ap.add_argument("--merge-only", action="store_true", help="re-merge the batch outputs on disk; no model calls")
     a = ap.parse_args()
     from dotenv import load_dotenv; load_dotenv(ROOT / ".env", override=False)
     from src.engines.registry import get_engine_registry
@@ -41,6 +94,14 @@ def main():
     src = Path(a.file); out = OUT / src.stem; out.mkdir(parents=True, exist_ok=True)
     obj = json.loads(src.read_text())
     parts = batches(obj, size=a.batch)
+    if a.merge_only:
+        results = {}
+        for part in parts:
+            n = part["batch"]["index"]; bout = out / f"batch_{n}"
+            if (bout / "output.md").exists():
+                results[n] = ((bout / "output.md").read_text(), json.loads((bout / "run.json").read_text()), statements_to_evidence_index(part)["pairs"])
+        summary = merge(out, parts, results, time.time())
+        print(time.strftime("%H:%M:%S"), "MERGED", json.dumps(summary), flush=True); return
     cap = get_engine_registry().get_capability_definition("citation_fidelity_audit")
     spec = get_operationalization_registry().get("citation_fidelity_audit").process
     print(time.strftime("%H:%M:%S"), f"{len(obj['statements'])} statements, {len(obj['sources'])} sources → {len(parts)} batches of {a.batch}", flush=True)
@@ -70,26 +131,7 @@ def main():
                 print(time.strftime("%H:%M:%S"), f"batch {n} done: {len(content)} chars, ${proc.get('cost_usd', 0):.2f}", flush=True)
             except BaseException as exc:
                 print(time.strftime("%H:%M:%S"), f"batch {futs[f]} FAILED {type(exc).__name__}: {str(exc)[:300]}", flush=True)
-    merged, rows, cost, all_pairs = [], [], 0.0, []
-    for n in sorted(results):
-        content, proc, pairs = results[n]; cost += float(proc.get("cost_usd") or 0); all_pairs += pairs
-        renum = renumber(content, n)
-        merged.append(f"\n\n<!-- batch {n}: statements {parts[n-1]['batch']['statements']} -->\n\n" + renum)
-        rows += [l for l in renum.splitlines() if ROW.match(l)]
-    (out / "merged.md").write_text("".join(merged))
-    verdict_rows = [r for r in rows if "dim: paired_fidelity" in r]
-    counts = {}
-    for r in verdict_rows:
-        v = field(r, "verdict").split("|")[0].strip().lower() or "?"
-        counts[v] = counts.get(v, 0) + 1
-    refs = {field(r, "pair-ref") for r in verdict_rows}
-    held_pairs = [p["pair_id"] for p in all_pairs if p["held"]]
-    summary = {"status": "complete" if len(results) == len(parts) else "partial", "batches": len(parts), "batches_done": sorted(results),
-               "seconds": round(time.time() - start), "cost_usd": round(cost, 4), "rows": len(rows), "verdict_rows": len(verdict_rows),
-               "verdicts": counts, "pairs_in_index": len(all_pairs), "held_pairs": len(held_pairs),
-               "held_pairs_with_verdict": sum(1 for p in held_pairs if p in refs), "unreferenced_pair_refs": sorted(refs - set(p["pair_id"] for p in all_pairs))[:20]}
-    (out / "verdicts.json").write_text(json.dumps(summary, indent=1))
-    (out / "run.json").write_text(json.dumps({**summary, "process": {n: results[n][1] for n in results}}, indent=1, default=str))
+    summary = merge(out, parts, results, start)
     print(time.strftime("%H:%M:%S"), "DONE", json.dumps(summary), flush=True)
 
 

@@ -36,3 +36,20 @@ def test_a_job_under_its_cap_runs_and_the_receipts_step_is_never_blocked(monkeyp
     assert steps == ["receipts"]
     runner._over_cap(_job(50.0, 8.0), "receipts")                                          # over the cap, still allowed
     runner._over_cap(_job(50.0, None), "spine")                                            # no cap, no ceiling
+
+
+def test_a_chosen_path_job_does_not_pause_at_the_brief(monkeypatch):
+    """entry chosen + a fixed path on the request: the brief is written for the record, own_path is chosen, the run goes on."""
+    from src.dossier.schemas import Brief, BriefOption, DossierJob, DossierOptions, PathRequest
+    import src.dossier.brief as brief_mod
+    seen = []
+    job = DossierJob(id="d-chosen", status="reconnaissance", step="brief",
+                     options=DossierOptions(intent="x", entry="chosen", path=PathRequest(steps=[{"engine_key": "citation_engagement_map", "depth": "standard"}])))
+    monkeypatch.setattr(brief_mod, "run_brief", lambda job, docs, **kw: Brief(options=[BriefOption(key="a", title="A")]))
+    monkeypatch.setattr(runner, "update_job", lambda job_id, **f: seen.append(f))
+    monkeypatch.setattr(runner.events, "emit", lambda job_id, kind, **kw: seen.append((kind, kw.get("detail", ""))))
+    monkeypatch.setattr(runner, "record_step_duration", lambda *a, **k: None, raising=False)
+    runner._run_step(job, "brief", [])
+    assert job.chosen_option == "own_path" and job.brief.option("own_path") is not None
+    assert any(isinstance(f, dict) and f.get("chosen_option") == "own_path" for f in seen)
+    assert not any(isinstance(f, dict) and f.get("status") == "awaiting_brief" for f in seen)
