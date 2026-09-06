@@ -226,3 +226,8 @@ instance's disk only and is wiped by the next deploy. Found 2026-09-07 01:30 whe
 pulled out of the live API and committed by hand (0967238). Fix: the owner sets `GITHUB_TOKEN` (fine-grained PAT, contents: write on
 yauhenio2025/the-analyst) and `GITHUB_REPO=yauhenio2025/the-analyst` on the service. Mitigation shipped tonight: the practices registry also
 writes to the executor database (Postgres on Render), which survives deploys, and reads it over the files on load.
+
+RESOLVED 2026-09-07 02:20: at Evgeny's ask the gs_revamp session set `GITHUB_TOKEN` (his gh login token, scope repo) and
+`GITHUB_REPO=yauhenio2025/the-analyst` on Render service srv-dacfq315efls73e9hohg and redeployed; `/v1/meta/definitions-version`
+reports github_enabled true, and a no-change re-register answered persisted.success with commit a2c648d on master. Env changes on
+that service need a manual deploy. A fine-grained PAT can replace the login token later (PUT on the service's GITHUB_TOKEN + redeploy).
