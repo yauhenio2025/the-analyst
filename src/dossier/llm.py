@@ -301,7 +301,48 @@ def _parse_embedded_json(text: str) -> Any:
 
         return json.loads(repair_json(text), strict=False)
     except Exception:
+        pass
+    return _salvage_array(text)
+
+
+def _salvage_array(text: str) -> Any:
+    """Last resort for a stringified array whose tail is malformed (2026-09-06: Sonnet returned a spine's `sections` as a
+    10K-char string with a broken quote near its end, and the desks got a string): keep the elements that parse, cut at
+    the last complete element. Shape only; nothing is invented."""
+    body = text.lstrip()
+    if not body.startswith("["):
         return None
+    cut = body.rfind("}")
+    tries = 0
+    while cut > 0 and tries < 40:
+        candidate = body[:cut + 1].rstrip().rstrip(",") + "]"
+        try:
+            parsed = json.loads(candidate, strict=False)
+            if isinstance(parsed, list) and parsed:
+                return parsed
+        except Exception:
+            pass
+        cut = body.rfind("}", 0, cut)
+        tries += 1
+    return None
+
+
+def stringified_fields(value: Any, schema: Optional[dict], path: str = "") -> list[str]:
+    """Paths where the schema expects an array/object and the value is still a string (after unstringify)."""
+    schema = schema or {}
+    stype = schema.get("type")
+    if isinstance(value, str):
+        return [path or "$"] if stype in ("array", "object") else []
+    out: list[str] = []
+    if isinstance(value, dict):
+        props = schema.get("properties") or {}
+        for k, v in value.items():
+            out += stringified_fields(v, props.get(k), f"{path}.{k}" if path else k)
+    elif isinstance(value, list):
+        items = schema.get("items") if isinstance(schema.get("items"), dict) else None
+        for i, v in enumerate(value):
+            out += stringified_fields(v, items, f"{path}[{i}]")
+    return out
 
 
 def unstringify(value: Any, schema: Optional[dict]) -> Any:
@@ -365,6 +406,19 @@ def call_json(
                 raw = repaired
         except Exception as exc:  # repair never blocks
             logger.debug(f"unstringify failed: {exc}")
+        still = stringified_fields(raw, schema) if isinstance(raw, dict) else []
+        if still and attempt < repair_attempts:
+            # a field the schema declares as an array/object arrived as a string that no parser could unpack:
+            # re-ask rather than hand a desk a string (the spine coerces it to no sections; compose crashed on it)
+            last_errors = "these fields must be JSON arrays/objects, not strings: " + ", ".join(still[:8])
+            logger.warning(f"[{label}] stringified fields after repair: {last_errors[:300]}")
+            events.emit(job_id, "note", phase=step, detail=f"{label}: {last_errors[:200]}; re-asking")
+            tail = ((user_tail + "\n\n" if user_tail else "")
+                    + "---\nYOUR PREVIOUS ANSWER FAILED VALIDATION: " + last_errors
+                    + ". Return the complete object with those fields as real JSON arrays of objects, never as strings.")
+            continue
+        if still:
+            raise LLMError(f"{label}: fields arrived as strings after repair: {', '.join(still[:8])}")
         if model_cls is None:
             return raw, meta
         try:

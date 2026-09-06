@@ -112,9 +112,16 @@ def write_sections(job: DossierJob, docs: list[Document]) -> Sections:
     corpus = NormalizedCorpus({d.key: d.text for d in docs})
     sections: list[Section] = []
     unanchored = 0
-    for i, s in enumerate(raw.get("sections", []), start=1):
+    raw_sections = raw.get("sections", []) or []
+    if isinstance(raw_sections, str):
+        raw_sections = []
+    for i, s in enumerate(raw_sections, start=1):
+        if not isinstance(s, dict):          # a section that arrived as a string: kept as one paragraph, never a crash
+            s = {"heading": f"Section {i}", "paragraphs": [str(s)], "claims": []}
         claims: list[Claim] = []
         for c in s.get("claims", []) or []:
+            if not isinstance(c, dict):
+                continue
             anchor = None
             try:
                 a = c.get("anchor") or {}
