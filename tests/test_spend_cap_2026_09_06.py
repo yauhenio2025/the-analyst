@@ -9,33 +9,37 @@ def _job(cost, cap, status="analysis", step="analysis"):
                       totals=Totals(cost_usd=cost, llm_calls=3))
 
 
-def test_a_job_over_its_cap_fails_before_the_next_step_and_the_error_names_the_amounts(monkeypatch):
+def test_the_engines_are_refused_when_spent_plus_the_plans_estimate_exceeds_the_cap(monkeypatch):
+    from src.dossier.schemas import DossierPlan
     seen, steps = [], []
-    monkeypatch.setattr(runner, "get_job", lambda job_id: _job(9.5, 8.0, status="analysis", step="analysis"))
+    job = _job(1.8, 8.0, status="planning", step="plan")
+    job.plan = DossierPlan(plan_id="p1", estimated_cost_usd=7.5)
+    monkeypatch.setattr(runner, "get_job", lambda job_id: job)
+    monkeypatch.setattr(runner, "load_documents", lambda job: [])
+    monkeypatch.setattr(runner, "_next_step", lambda job: "analysis")
+    monkeypatch.setattr(runner, "_run_step", lambda job, step, docs: steps.append(step))
+    monkeypatch.setattr(runner, "update_job", lambda job_id, **f: seen.append(f))
+    monkeypatch.setattr(runner.events, "emit", lambda job_id, kind, **kw: seen.append((kind, kw.get("detail", ""))))
+    runner._run("d-cap")
+    assert steps == []                                                                   # the engines never started
+    failed = [f for f in seen if isinstance(f, dict) and f.get("status") == "failed"]
+    assert failed and failed[0]["error"] == "RuntimeError: spend cap: $1.80 spent and the plan estimates $7.50 more for the engines, over the cap of $8.00; raise the cap or shorten the path"
+
+
+def test_after_paid_engines_the_desks_finish_and_the_overrun_is_noted_once(monkeypatch):
+    """The Stacks' first pair (2026-09-06): $9.59 of engines against a cap of 8; the desks must not be refused."""
+    seen, steps = [], []
+    monkeypatch.setattr(runner, "get_job", lambda job_id: _job(9.59, 8.0, status="analysis", step="analysis"))
     monkeypatch.setattr(runner, "load_documents", lambda job: [])
     monkeypatch.setattr(runner, "_next_step", lambda job: "spine")
     monkeypatch.setattr(runner, "_run_step", lambda job, step, docs: steps.append(step))
     monkeypatch.setattr(runner, "update_job", lambda job_id, **f: seen.append(f))
     monkeypatch.setattr(runner.events, "emit", lambda job_id, kind, **kw: seen.append((kind, kw.get("detail", ""))))
     runner._run("d-cap")
-    assert steps == []                                                                   # spine never started
-    failed = [f for f in seen if isinstance(f, dict) and f.get("status") == "failed"]
-    assert failed and failed[0]["error"] == "RuntimeError: spend cap reached: $9.50 of $8.00 before spine"
-    assert any(k == "job_failed" for k, _ in [x for x in seen if isinstance(x, tuple)])
-
-
-def test_a_job_under_its_cap_runs_and_the_receipts_step_is_never_blocked(monkeypatch):
-    steps = []
-    monkeypatch.setattr(runner, "get_job", lambda job_id: _job(7.9, 8.0, status="crosscheck", step="crosscheck"))
-    monkeypatch.setattr(runner, "load_documents", lambda job: [])
-    monkeypatch.setattr(runner, "_next_step", lambda job: "receipts")
-    monkeypatch.setattr(runner, "_run_step", lambda job, step, docs: steps.append(step))
-    monkeypatch.setattr(runner, "update_job", lambda job_id, **f: None)
-    monkeypatch.setattr(runner.events, "emit", lambda *a, **k: None)
-    runner._run("d-cap")
-    assert steps == ["receipts"]
-    runner._over_cap(_job(50.0, 8.0), "receipts")                                          # over the cap, still allowed
-    runner._over_cap(_job(50.0, None), "spine")                                            # no cap, no ceiling
+    assert steps[:2] == ["spine", "tables"] and "receipts" in steps                         # every desk ran
+    notes = [d for k, d in [x for x in seen if isinstance(x, tuple)] if k == "note" and d.startswith("over the spend cap")]
+    assert len(notes) == 1 and "$9.59 of $8.00" in notes[0]
+    assert not any(isinstance(f, dict) and f.get("status") == "failed" for f in seen)
 
 
 def test_a_chosen_path_job_does_not_pause_at_the_brief(monkeypatch):

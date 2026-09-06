@@ -218,16 +218,24 @@ def _run(job_id: str) -> None:
 
 
 def _over_cap(job: DossierJob, next_step: str) -> None:
-    """The spend cap, enforced between steps (2026-09-06, promised to the Stacks): a job whose receipts already exceed
-    `spend_cap_usd` does not start another model-bearing step. `receipts` costs nothing and always runs so the
-    appendix carries the final totals. The step in flight is never interrupted: the cap is a ceiling on starting work,
-    not a kill switch mid-call."""
+    """The spend cap (2026-09-06, revised the same evening after the Stacks' first pair): a ceiling on starting the
+    engines, not a reason to abandon paid work. Before `analysis`, refuse when what is spent plus the plan's own estimate
+    for the engines exceeds the cap (the requester learns before the money goes). After the engines, the desks always
+    finish — they are bounded and small beside the engines — and an overrun is noted once, at `spine`, and carried by
+    the receipts. The step in flight is never interrupted."""
     cap = job.options.spend_cap_usd
-    if not cap or next_step == "receipts":
+    if not cap:
         return
     spent = float(job.totals.cost_usd or 0)
-    if spent > cap:
-        raise RuntimeError(f"spend cap reached: ${spent:.2f} of ${cap:.2f} before {next_step}")
+    if next_step == "analysis":
+        est = float(getattr(job.plan, "estimated_cost_usd", 0) or 0) if job.plan is not None else 0.0
+        if spent + est > cap:
+            raise RuntimeError(f"spend cap: ${spent:.2f} spent and the plan estimates ${est:.2f} more for the engines, "
+                               f"over the cap of ${cap:.2f}; raise the cap or shorten the path")
+    elif next_step == "spine" and spent > cap:
+        events.emit(job.id, "note", phase=next_step,
+                    detail=f"over the spend cap after the engines: ${spent:.2f} of ${cap:.2f}; the desks finish (bounded) and the receipts carry the overrun",
+                    payload_json={"kind": "over_cap", "spent_usd": round(spent, 4), "cap_usd": cap})
 
 
 def ledger_line(job_id: str) -> str:
