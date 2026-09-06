@@ -1,0 +1,5 @@
+- [Engine redesign: the process shape](engine-redesign-process-shape.md) — studies settled it: one call default, `dvs` chain for desk-facing runs, Sol the value model; decisions await wiring (tracker §11)
+- [Study model facts](study-model-facts.md) — model ids, prices, refusal/tool-choice/truncation/formatting quirks, judge position bias
+- [Owner working rules](owner-working-rules.md) — LLM-first, walls never judge meaning, commit per phase, ask before spend, tracker and memory
+- [Zotero and idea texts](zotero-and-idea-texts.md) — where the papers live (Zotero sqlite + storage, markdown essays in ~/projects) and the assembled ideas corpus for engine checks
+- [Catalogue consolidation strategy](catalogue-consolidation-strategy.md) — Codex's 81-question map, the queues, lifting is not a quality lever, Codex designs / Claude plumbs, deploys don't kill live jobs

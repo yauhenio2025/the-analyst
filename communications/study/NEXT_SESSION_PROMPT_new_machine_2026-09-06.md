@@ -1,0 +1,23 @@
+# Next session (a new machine, beside the zotero-stacks agents) — read this first
+
+Read `CLAUDE.md`, then `communications/IMPLEMENTATION_TRACKER.md` §11 from "CATALOGUE TRIAGE" to the end, then this file. Your memory directory on this machine is empty: the previous machine's memory files are copied at `communications/memory_snapshot_2026-09-06/` — read them (`MEMORY.md` is the index) and re-create them under your memory directory as your first act, so the rules and the state survive.
+
+## Where the work stands (2026-09-06, evening)
+
+- **The catalogue consolidation**: 53 engines offered under the process shape on the live desk (https://the-analyst-kcuc.onrender.com, health reports the deployed commit); four queues done; the citation family (three engines seeded by the Stacks' prompts) is the fifth, validated tonight: engagement map released, reception map released, fidelity audit released with card rules (see `STUDY_citation_family_2026-09-06.md`). 37 of the map's 81 questions remain (`data/study/triage/families_codex.json` is in the repo; `TRIAGE_engine_catalogue_CODEX_2026-09-05.md`).
+- **Codex** (gpt-6-astra, xhigh; `codex exec --yolo -m gpt-6-astra -c model_reasoning_effort=xhigh "<prompt>"`) is at its weekly usage limit (message said September 13th; earlier resets came sooner — try). The division of labour: Codex designs questions and corpus methods, Claude plumbs, validates and writes memos; when Codex is out, Claude does the source reads and judges under the first-queue standard and says so in the report.
+- **The release standard** (owner's decision): anchors verified by code; no fabrication or attribution reversal surviving a source read; Sonnet at or above the original questions where an original exists (inventories by rows, anchors and the source read); no rejected row in a table cell. Caps are guidance; report actual cost.
+- **The Stacks bridge**: `INTEGRATION_stacks_citation_universe_2026-09-06.md` (the assessment), `REPLY_stacks_to_mastermind_integration_2026-09-06.md` (their reply), `REPLY_mastermind_to_stacks_2026-09-06.md` (ours), `SURVEY_stacks_engine_candidates_2026-09-06.md` + `REPLY_mastermind_on_engine_candidates_2026-09-06.md`, `TASK_stacks_cohort_citation_flow_2026-09-06.md` (the one-to-many cohort flow, for the Stacks session). Plumbing on our side: `SourceSpec.role` (`source | evidence_index | plan`), context documents bound under `context:` and appended to every phase's upstream context; `src/sources/citation_evidence.py` unpacks an evidence index into the fidelity audit's pairs; inline `stacks_export` text is accepted. The Stacks pushes; there is no Stacks on Render.
+
+## What to do next, in order
+
+1. **The Riley → Weber pilot both ways.** The pilot corpus is in the repo at `communications/study/citation_family_2026_09_06/pilot_corpus/` (copy it to `data/study/sources_citation/` — the study scripts read from there). Run the Mastermind memo in-process: `TMPDIR=data/tmp python3 -u -m scripts.pilot_dossier_inprocess` (one dossier through the three engines, 30–45 min, about $12). The Stacks' memo is with the Stacks session (their "memo 2" on Riley–Weber; the estates memo `2026-09-03_riley_weber_estates.md` is the fallback). Owner reads both first; then Sonnet in both orders, agreements only. Report `STUDY_citation_pilot_riley_weber_2026-09-06.md`.
+2. **The cohort dimension** for the engagement map (A's uses across a cohort of Ps) and `role: profile` for the Stacks' work profiles: design with Codex when it is back, else write it yourself from `TASK_stacks_cohort_citation_flow_2026-09-06.md` §5 and the engagement map's YAML.
+3. **The fidelity check of a memo against its sources** (the Stacks' `digest_check`) as the fidelity audit's second input mode; run both ways on their record em:U3HITB25.
+4. **The sixth queue** from the remaining 37 map questions, same recipe.
+5. Keep the habits: commit and push per phase (pushes deploy the desk; in-flight dossier jobs survive), one live dossier per queue release, `/tmp` is a 14 GB tmpfs that other sessions fill (use `TMPDIR=data/tmp` for study runs), never `pkill` with a literal that appears in your own command line.
+
+## Traps learned today
+- A study's frozen-input guard hashes the runner and the engine YAMLs: do not edit them while a run is in progress; re-freeze the plan with a revision note if you must (`plan['identity'] = digest(plan minus identity)`).
+- The corpus synthesis contract now records and tags after its bounded repair instead of aborting; the walls strip markdown emphasis and quotation marks and close split words with a space on either side of the hyphen.
+- The Stacks' export text has no page markers; page windows for cited loci come from the PDFs (`pdftotext -f N -l M`) until `markers=1` lands.

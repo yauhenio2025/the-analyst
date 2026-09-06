@@ -1,4 +1,3 @@
-# Citation family: Stacks prompts preserved in the study seed archive.
 engine_key: citation_fidelity_audit
 engine_name: Citation fidelity audit
 stance_operationalizations: []
@@ -14,8 +13,14 @@ depth_sequences:
 process:
   key: dvs
   description: Does each attribution hold against the supplied page window of the work it cites?
-  framing: 'A paired audit of the evidence index: for every indexed attribution, A''s actual claim and anchor beside
-    P''s own words and anchor, attribution kind, accurate/fair/selective/stretched/misattributed/unverifiable verdict
+  framing: 'This engine audits citation pairs only. The upstream plan supplies context, not tasks from the engagement
+    or reception engines. Do not demand reception readers. Every paired_fidelity row carries `verdict:` and `how:` as fields; a verdict folded into the finding sentence is malformed. When the supplied window for the cited place does not carry the matter (wrong pages retrieved, editorial matter, OCR loss), the verdict is unverifiable: never supply the cited author''s words from memory; `p-says` and `anchor-b` come from the window or stay empty. Audit every eligible pair independently: an unresolved
+    work, search result or edition makes that pair unverifiable; it never prevents checks of other pairs. Account
+    for the unchecked/linked name windows separately. Use one paired_fidelity finding per assessable pair; its fields
+    can carry the document dimensions, so separate repetitive rows per dimension are unnecessary. Report unassessed
+    documents explicitly. No requirement that every pair be settled or every name window be a substantive citation.
+    A paired audit of the evidence index: for every indexed attribution, A''s actual claim and anchor beside P''s
+    own words and anchor, attribution kind, accurate/fair/selective/stretched/misattributed/unverifiable verdict
     with a reason, and edition/locus notes. State how many pairs and works were checked, unresolved and outside
     the sample. A practice conclusion applies only to the checked sample. Use the supplied author/person identities
     and source roles. If a document is an evidence index, treat its routing, locations and counts as metadata; its
@@ -25,7 +30,7 @@ process:
     that scope explicitly. Do not turn an incomplete check into a source''s silence. The held sample is not the
     author''s complete work or the thinker''s entire reception. Dates missing from metadata stay unknown unless
     stated in the source.'
-  scoped_outcomes: true
+  scoped_outcomes: false
   routing:
     cheap: openrouter/openai/gpt-5.6-luna
     mid: openrouter/deepseek/deepseek-v4-pro
@@ -234,28 +239,31 @@ process:
     tables:
     - paired_citation_fidelity
     - checked_sample_coverage
-    brief: '1. A paired audit of the evidence index: for every indexed attribution, A''s actual claim and anchor
-      beside P''s own words and anchor, attribution kind, accurate/fair/selective/stretched/misattributed/unverifiable
-      verdict with a reason, and edition/locus notes. State how many pairs and works were checked, unresolved and
-      outside the sample. A practice conclusion applies only to the checked sample.
-
-      2. Give the source-specific reading with qualifications, then render the named Markdown tables. Every positive
-      cell cites its final supporting finding ID; unknown cells state the actual limit.
-
-      3. Preserve granular evidence through reconciliation: inspect each final table cell against its cited final
-      row and source context. Renumber citations with rows; no old ID may silently acquire a new meaning. Count
-      passage/pair IDs, not findings, for coverage.
-
-      4. Give a short read-first route and the unsettled question. No claim of exhaustive coverage without a complete
-      supplied inventory and actual inspection. Use the supplied author/person identities and source roles. If a
-      document is an evidence index, treat its routing, locations and counts as metadata; its duplicated quotations
-      do not create an independent source. Anchor substantive claims in the actual citing text, held primary window
-      or secondary text. Keep coauthorship and nested quotations. Read the body, not just titles, bibliographies
-      or headers. A document outside a dimension''s role gets no positive row in that dimension. Report that scope
-      explicitly. Do not turn an incomplete check into a source''s silence. The held sample is not the author''s
-      complete work or the thinker''s entire reception. Dates missing from metadata stay unknown unless stated in
-      the source. Select literal spans that carry the actor, predicate, object and necessary qualification. A name
-      or topic alone cannot support a reading. Use separate anchor-b/doc-b for a second span; never stitch quotations.
-      Keep attribution, negation, modality, edition and chronology. Re-anchor, narrow or reject a claim whose quotation
-      omits its predicate. Code checks only anchors and IDs; the model must judge the reading against the supplied
-      text.'
+    brief: "1. Complete the eligible-pair audit even when some pairs remain unverifiable. This engine audits citation\
+      \ pairs only. The upstream plan supplies context, not tasks from the engagement or reception engines. Do not\
+      \ demand reception readers. Audit every eligible pair independently: an unresolved work, search result or\
+      \ edition makes that pair unverifiable; it never prevents checks of other pairs. Account for the unchecked/linked\
+      \ name windows separately. Use one paired_fidelity finding per assessable pair; its fields can carry the document\
+      \ dimensions, so separate repetitive rows per dimension are unnecessary. Report unassessed documents explicitly.\
+      \ No requirement that every pair be settled or every name window be a substantive citation. \n1. A paired\
+      \ audit of the evidence index: for every indexed attribution, A's actual claim and anchor beside P's own words\
+      \ and anchor, attribution kind, accurate/fair/selective/stretched/misattributed/unverifiable verdict with\
+      \ a reason, and edition/locus notes. State how many pairs and works were checked, unresolved and outside the\
+      \ sample. A practice conclusion applies only to the checked sample.\n2. Give the source-specific reading with\
+      \ qualifications, then render the named Markdown tables. Every positive cell cites its final supporting finding\
+      \ ID; unknown cells state the actual limit.\n3. Preserve granular evidence through reconciliation: inspect\
+      \ each final table cell against its cited final row and source context. Renumber citations with rows; no old\
+      \ ID may silently acquire a new meaning. Count passage/pair IDs, not findings, for coverage.\n4. Give a short\
+      \ read-first route and the unsettled question. No claim of exhaustive coverage without a complete supplied\
+      \ inventory and actual inspection. Use the supplied author/person identities and source roles. If a document\
+      \ is an evidence index, treat its routing, locations and counts as metadata; its duplicated quotations do\
+      \ not create an independent source. Anchor substantive claims in the actual citing text, held primary window\
+      \ or secondary text. Keep coauthorship and nested quotations. Read the body, not just titles, bibliographies\
+      \ or headers. A document outside a dimension's role gets no positive row in that dimension. Report that scope\
+      \ explicitly. Do not turn an incomplete check into a source's silence. The held sample is not the author's\
+      \ complete work or the thinker's entire reception. Dates missing from metadata stay unknown unless stated\
+      \ in the source. Select literal spans that carry the actor, predicate, object and necessary qualification.\
+      \ A name or topic alone cannot support a reading. Use separate anchor-b/doc-b for a second span; never stitch\
+      \ quotations. Keep attribution, negation, modality, edition and chronology. Re-anchor, narrow or reject a\
+      \ claim whose quotation omits its predicate. Code checks only anchors and IDs; the model must judge the reading\
+      \ against the supplied text."

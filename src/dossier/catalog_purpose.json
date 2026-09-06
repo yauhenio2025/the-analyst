@@ -852,6 +852,46 @@
           "fit_note": "Uses dated transaction reporting; announcements and completed transfers remain distinct."
         }
       ]
+    },
+    {
+      "key": "trace_citations",
+      "title": "Trace the citations",
+      "purpose": "one thinker's engagement with another across the texts we hold: how the citations are used, whether the treatment is justified by the cited works, and where the reading sits among the cited thinker's readers",
+      "engines": [
+        {
+          "engine_key": "citation_engagement_map",
+          "plain_name": "engagement map",
+          "use_when": "you hold a thinker's texts that cite or name another thinker and want, per passage, what is cited, the move and the stance, and the arc of the engagement across the work",
+          "yields": "position map of the citing texts, per-passage engagement rows with anchors, trajectory rows across the work",
+          "row_unit": "one row per citing passage or trajectory",
+          "deliverable_kinds": [
+            "briefing",
+            "case_file"
+          ],
+          "pairs_with": [
+            "citation_fidelity_audit",
+            "citation_reception_map"
+          ],
+          "fit": "ok",
+          "fit_note": "two or more citing texts; the Stacks' evidence index as context when available"
+        },
+        {
+          "engine_key": "citation_reception_map",
+          "plain_name": "reception map",
+          "use_when": "you hold secondary texts on the cited thinker and want where the citing thinker's reading sits among them: consonant, argued against, never engaged",
+          "yields": "reader × theme × position table with anchors, the citing thinker among the readers",
+          "row_unit": "one row per reader position or reader pairing",
+          "deliverable_kinds": [
+            "briefing",
+            "case_file"
+          ],
+          "pairs_with": [
+            "citation_engagement_map"
+          ],
+          "fit": "ok",
+          "fit_note": "the plan's themes are the spine; readers' themes are labelled additions"
+        }
+      ]
     }
   ],
   "excluded": [
@@ -892,16 +932,8 @@
       "why": "Fourth queue: Source-correct repaired reading scores Sonnet 8.333333333333334 below the original 8.5; remaining depth misses concern historical contingency and the hypothetical autonomous society. See communications/study/STUDY_fourth_queue_2026-09-06.md."
     },
     {
-      "engine_key": "citation_engagement_map",
-      "why": "Citation family research definition; withheld pending source-read validation."
-    },
-    {
       "engine_key": "citation_fidelity_audit",
-      "why": "Citation family research definition; withheld pending source-read validation."
-    },
-    {
-      "engine_key": "citation_reception_map",
-      "why": "Citation family research definition; withheld pending source-read validation."
+      "why": "Fidelity audit: repaired framing with card rules re-running on the evidence index (2026-09-06 evening); released on that run's read."
     }
   ],
   "deliverable_hints": {

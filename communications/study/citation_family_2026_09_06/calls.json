@@ -1,10 +1,10 @@
 {
   "costs": {
-    "calls": 412,
-    "known_usd": 27.32958,
+    "calls": 420,
+    "known_usd": 30.874507,
     "reserved_usd": 1.669949,
     "incomplete_calls": 17,
-    "provider_reported_usd": 25.095106
+    "provider_reported_usd": 26.610558
   },
   "calls": [
     {
@@ -856,6 +856,310 @@
       "output_sha256": "01d3a4066c8a9cbe0ec2a27447eec7d6cd4c47f02876d74dc4d61fb15cc3da3b",
       "duration_ms": 10353,
       "error": "OSError: [Errno 28] No space left on device"
+    },
+    {
+      "path": "calls/judge__ENG__dvs__sol/0001.json",
+      "status": "complete",
+      "model_requested": "openrouter/openai/gpt-5.6-sol",
+      "role": "sol",
+      "label": "independent bibliographic inventory rating",
+      "started_at": 1788683436.096797,
+      "reservation_usd": 1.123474,
+      "cost_usd": 0.313953,
+      "prompt_sha256": "daea3c5f34adf61cb6c472b0275a903ab770b8e812a90af278fca624526b3432",
+      "max_output_tokens": 2400,
+      "provider_cost_usd": 0.3139535,
+      "provider_usage": {
+        "completion_tokens": 1370,
+        "prompt_tokens": 120102,
+        "total_tokens": 121472,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 673,
+          "rejected_prediction_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 120099,
+          "video_tokens": 0
+        },
+        "cost": 0.3139535,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.3139535,
+          "upstream_inference_prompt_cost": 0.3002535,
+          "upstream_inference_completions_cost": 0.0137
+        }
+      },
+      "input_tokens": 120102,
+      "output_tokens": 1370,
+      "model_used": "openai/gpt-5.6-sol",
+      "stop_reason": "stop",
+      "output_sha256": "00af33c9c507879cf347eaacab72b8f1fc39d8403ddd50f769de91709fb464ac",
+      "duration_ms": 27840
+    },
+    {
+      "path": "calls/judge__ENG__dvs__sonnet/0001.json",
+      "status": "complete",
+      "model_requested": "claude-sonnet-4-6",
+      "role": "sonnet",
+      "label": "independent bibliographic inventory rating",
+      "started_at": 1788683436.038361,
+      "reservation_usd": 1.6852110000000002,
+      "cost_usd": 0.416058,
+      "prompt_sha256": "daea3c5f34adf61cb6c472b0275a903ab770b8e812a90af278fca624526b3432",
+      "max_output_tokens": 2400,
+      "provider_usage": {
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "inference_geo": "global",
+        "input_tokens": 132031,
+        "output_tokens": 1331,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": "standard"
+      },
+      "input_tokens": 132031,
+      "output_tokens": 1331,
+      "model_used": "claude-sonnet-4-6",
+      "stop_reason": "end_turn",
+      "output_sha256": "8d89a3558a859617567dc38ac764068e24c16aa423c9ac501fb9b5dce4df1389",
+      "duration_ms": 40743
+    },
+    {
+      "path": "calls/judge__G6__checked__sol/0001.json",
+      "status": "complete",
+      "model_requested": "openrouter/openai/gpt-5.6-sol",
+      "role": "sol",
+      "label": "independent bibliographic inventory rating",
+      "started_at": 1788683464.2518842,
+      "reservation_usd": 1.5376592000000002,
+      "cost_usd": 0.426754,
+      "prompt_sha256": "167f16edfb61dc74e2125093185d837e032f52f04154545d0cbeb686547cf24c",
+      "max_output_tokens": 2400,
+      "provider_cost_usd": 0.4267535,
+      "provider_usage": {
+        "completion_tokens": 854,
+        "prompt_tokens": 167286,
+        "total_tokens": 168140,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 88,
+          "rejected_prediction_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 167283,
+          "video_tokens": 0
+        },
+        "cost": 0.4267535,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.4267535,
+          "upstream_inference_prompt_cost": 0.4182135,
+          "upstream_inference_completions_cost": 0.00854
+        }
+      },
+      "input_tokens": 167286,
+      "output_tokens": 854,
+      "model_used": "openai/gpt-5.6-sol",
+      "stop_reason": "stop",
+      "output_sha256": "3197fd8cab916824aaac35997a37ed026587c2153d02948a6442719e41efc47e",
+      "duration_ms": 17910
+    },
+    {
+      "path": "calls/judge__G6__checked__sonnet/0001.json",
+      "status": "complete",
+      "model_requested": "claude-sonnet-4-6",
+      "role": "sonnet",
+      "label": "independent bibliographic inventory rating",
+      "started_at": 1788683436.1499803,
+      "reservation_usd": 2.3064888000000003,
+      "cost_usd": 0.576372,
+      "prompt_sha256": "167f16edfb61dc74e2125093185d837e032f52f04154545d0cbeb686547cf24c",
+      "max_output_tokens": 2400,
+      "provider_usage": {
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "inference_geo": "global",
+        "input_tokens": 185584,
+        "output_tokens": 1308,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": "standard"
+      },
+      "input_tokens": 185584,
+      "output_tokens": 1308,
+      "model_used": "claude-sonnet-4-6",
+      "stop_reason": "end_turn",
+      "output_sha256": "e8af0c720f50ac553d509d31bfd832fbbb07e526c3f836dc79dcc5610916740c",
+      "duration_ms": 37454
+    },
+    {
+      "path": "calls/judge__G6__index_only__sol/0001.json",
+      "status": "complete",
+      "model_requested": "openrouter/openai/gpt-5.6-sol",
+      "role": "sol",
+      "label": "independent bibliographic inventory rating",
+      "started_at": 1788683499.2130885,
+      "reservation_usd": 1.4980350000000002,
+      "cost_usd": 0.419003,
+      "prompt_sha256": "c272b634594fe1e869ef6a517673402a79c9e8b8b84f20b6db372eaf6036f412",
+      "max_output_tokens": 2400,
+      "provider_cost_usd": 0.4190035,
+      "provider_usage": {
+        "completion_tokens": 1298,
+        "prompt_tokens": 162410,
+        "total_tokens": 163708,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 450,
+          "rejected_prediction_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 162407,
+          "video_tokens": 0
+        },
+        "cost": 0.4190035,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.4190035,
+          "upstream_inference_prompt_cost": 0.4060235,
+          "upstream_inference_completions_cost": 0.01298
+        }
+      },
+      "input_tokens": 162410,
+      "output_tokens": 1298,
+      "model_used": "openai/gpt-5.6-sol",
+      "stop_reason": "stop",
+      "output_sha256": "f6e8145ea952747a7607b9ff39b1f886a8c38b55c22a78e0e4f8a84dfb835856",
+      "duration_ms": 26011
+    },
+    {
+      "path": "calls/judge__G6__index_only__sonnet/0001.json",
+      "status": "complete",
+      "model_requested": "claude-sonnet-4-6",
+      "role": "sonnet",
+      "label": "independent bibliographic inventory rating",
+      "started_at": 1788683482.2761576,
+      "reservation_usd": 2.2470525,
+      "cost_usd": 0.559827,
+      "prompt_sha256": "c272b634594fe1e869ef6a517673402a79c9e8b8b84f20b6db372eaf6036f412",
+      "max_output_tokens": 2400,
+      "provider_usage": {
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "inference_geo": "global",
+        "input_tokens": 179209,
+        "output_tokens": 1480,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": "standard"
+      },
+      "input_tokens": 179209,
+      "output_tokens": 1480,
+      "model_used": "claude-sonnet-4-6",
+      "stop_reason": "end_turn",
+      "output_sha256": "a2d9b378c13712dad1fc8a907fa95e8c6e5f114300f938c2a850aeabcd29538d",
+      "duration_ms": 50627
+    },
+    {
+      "path": "calls/judge__G8__dvs__sol/0001.json",
+      "status": "complete",
+      "model_requested": "openrouter/openai/gpt-5.6-sol",
+      "role": "sol",
+      "label": "independent bibliographic inventory rating",
+      "started_at": 1788683477.122004,
+      "reservation_usd": 1.3038894,
+      "cost_usd": 0.355741,
+      "prompt_sha256": "b43b8a4d7a291483b076b92b3461bb3236b364820789dd00cb3ccf47b3e2dd14",
+      "max_output_tokens": 2400,
+      "provider_cost_usd": 0.355741,
+      "provider_usage": {
+        "completion_tokens": 1188,
+        "prompt_tokens": 137545,
+        "total_tokens": 138733,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 338,
+          "rejected_prediction_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 137542,
+          "video_tokens": 0
+        },
+        "cost": 0.355741,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.355741,
+          "upstream_inference_prompt_cost": 0.343861,
+          "upstream_inference_completions_cost": 0.01188
+        }
+      },
+      "input_tokens": 137545,
+      "output_tokens": 1188,
+      "model_used": "openai/gpt-5.6-sol",
+      "stop_reason": "stop",
+      "output_sha256": "1200a6b645cf234197db29ad513ebdb591514890ef45e7c9c31bdb34c817f875",
+      "duration_ms": 21977
+    },
+    {
+      "path": "calls/judge__G8__dvs__sonnet/0001.json",
+      "status": "complete",
+      "model_requested": "claude-sonnet-4-6",
+      "role": "sonnet",
+      "label": "independent bibliographic inventory rating",
+      "started_at": 1788683473.96638,
+      "reservation_usd": 1.9558341000000001,
+      "cost_usd": 0.477219,
+      "prompt_sha256": "b43b8a4d7a291483b076b92b3461bb3236b364820789dd00cb3ccf47b3e2dd14",
+      "max_output_tokens": 2400,
+      "provider_usage": {
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "inference_geo": "global",
+        "input_tokens": 151008,
+        "output_tokens": 1613,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": "standard"
+      },
+      "input_tokens": 151008,
+      "output_tokens": 1613,
+      "model_used": "claude-sonnet-4-6",
+      "stop_reason": "end_turn",
+      "output_sha256": "178e70a1a64e685fecaa30cf5aca774bf50cd009fa23d1756bb579677b948de7",
+      "duration_ms": 68223
     },
     {
       "path": "calls/resume__ENG__dvs/0001.json",

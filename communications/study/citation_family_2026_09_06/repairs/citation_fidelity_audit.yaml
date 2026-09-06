@@ -14,7 +14,7 @@ process:
   key: dvs
   description: Does each attribution hold against the supplied page window of the work it cites?
   framing: 'This engine audits citation pairs only. The upstream plan supplies context, not tasks from the engagement
-    or reception engines. Do not demand reception readers. Audit every eligible pair independently: an unresolved
+    or reception engines. Do not demand reception readers. Every paired_fidelity row carries `verdict:` and `how:` as fields; a verdict folded into the finding sentence is malformed. When the supplied window for the cited place does not carry the matter (wrong pages retrieved, editorial matter, OCR loss), the verdict is unverifiable: never supply the cited author''s words from memory; `p-says` and `anchor-b` come from the window or stay empty. Audit every eligible pair independently: an unresolved
     work, search result or edition makes that pair unverifiable; it never prevents checks of other pairs. Account
     for the unchecked/linked name windows separately. Use one paired_fidelity finding per assessable pair; its fields
     can carry the document dimensions, so separate repetitive rows per dimension are unnecessary. Report unassessed
