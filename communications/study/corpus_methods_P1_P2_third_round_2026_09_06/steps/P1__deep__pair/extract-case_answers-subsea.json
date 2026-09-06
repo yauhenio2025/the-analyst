@@ -1,0 +1,137 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "case_answers",
+  "doc": "subsea",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 41532,
+  "output_tokens": 2732,
+  "duration_ms": 17105,
+  "cost_usd": 0.0116,
+  "retries": 0,
+  "wall": {
+    "reanchor_receipts": [
+      {
+        "content": "## Findings ledger\n- [C2.DOC2.F2] The United States answers which instrument and mechanism it used: regulatory pressure, incentives and threats of sanctions shifted the SeaMeWe-  6 contract from HMN Tech to SubCom; the reported result was partial effectiveness, including declining HMN Tech market share — dim: case_answers — anchor: \"In late 2021, the consortium held a decisive vote, with a majority opting to award the contract to SubCom.\" — doc: subsea — criterion: Which instrument and mechanism did the case actor use, and what consequence was reported? — value-kind: qualitative — evidence-role: reported result — scope: United States; SeaMeWe-  6; late 2021 and subsequent market effects — causal-attribution: United States — confidence: high. Additional support uses anchor-b: \"Recent declines in HMN Tech's global market share suggest that the US campaign has been at least partially effective\" — doc-b: subsea\n- [C2.DOC2.F3] France answers which instrument and mechanism it used to retain national influence and resilience: the state acquired 80% of ASN for €350 million, intending to acquire the remaining 20% after a transition period — dim: case_answers — anchor: \"the French state, via its public holding agency APE (Agence des participations de l'État), would acquire 80% of ASN for €350 million, with the intention to buy the remaining 20% from Nokia after a transition period\" — doc: subsea — criterion: Which instrument did the case actor use to reshape network capacity, and what was its stated purpose? — value-kind: quantitative — evidence-role: reported result — scope: France; ASN; November 2024 acquisition; ownership share and purchase price — causal-attribution: France — confidence: high. Additional support uses anchor-b: \"With a now- nationalized ASN and its stake in Orange Marine, France controls a significant share of global cable manufactur- ing and laying capacity.\" — doc-b: subsea\n- [C2.DOC2.F4] PEACE answers which distinct parallel project followed SeaMeWe-  6 and what status it has: it became operational in 2022, follows a similar France–Singapore route, and was built by HMN Tech — dim: case_answers — anchor: \"The cable has been built by HMN Tech and is owned by Peace Cable International Network Co. Ltd., a subsidiary of Hengtong, which also partners with China Mobile, China Telecom, and China Unicom.\" — doc: subsea — criterion: Which distinct parallel project has a separately stated date and what instrument or status is attributed to it? — value-kind: qualitative — evidence-role: reported result — scope: PEACE cable; France–Singapore route; operational in 2022 — causal-attribution: not established — confidence: high. Additional support uses anchor-b: \"The PEACE cable, which be- came operational in 2022.\" — doc-b: subsea\n- [C2.DOC2.F5] EMA answers which distinct parallel project followed China's exclusion from SeaMeWe-  6 and what status it has: reports attribute its development to that exclusion; HMN Tech reportedly received a $500 million Chinese-government-subsidized contract, but the text does not state that EMA became operational — dim: case_answers — anchor: \"Following its exclusion from SeaMeWe-  6, China reportedly began developing another proj- ect, the Europe- Middle East- Asia (EMA) cable.\" — doc: subsea — criterion: Which distinct parallel project has a separately stated chronology and causal or reactive status? — value-kind: qualitative — evidence-role: mechanism — scope: EMA cable; following the SeaMeWe-  6 exclusion; operational status not stated — causal-attribution: China — confidence: high. Additional support uses anchor-b: \"According to reports, HMN Tech received a $500 million contract for EMA, heavily subsidized by the Chinese government\" — doc-b: subsea",
+        "partial": false,
+        "stop_reason": "stop",
+        "error": null
+      }
+    ],
+    "rows": 6,
+    "with_anchor": 6,
+    "verified": 2,
+    "trimmed": 0,
+    "anchor_rate": 0.333,
+    "failed_ids": [
+      "C2.DOC2.F2",
+      "C2.DOC2.F3",
+      "C2.DOC2.F4",
+      "C2.DOC2.F5"
+    ],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 10,
+    "verified_anchors": 6,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 2,
+      "with_anchor": 2,
+      "verified": 2,
+      "trimmed": 0,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 2,
+      "verified_anchors": 2,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [
+      {
+        "id": "C2.DOC2.F2",
+        "dimension": "case_answers"
+      },
+      {
+        "id": "C2.DOC2.F3",
+        "dimension": "case_answers"
+      },
+      {
+        "id": "C2.DOC2.F4",
+        "dimension": "case_answers"
+      },
+      {
+        "id": "C2.DOC2.F5",
+        "dimension": "case_answers"
+      }
+    ],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "subsea"
+        ],
+        "dimension_key": "case_answers",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Abstract",
+          "1 | Reconciling Market Dynamics and State Strategy in Global Networks",
+          "3 | Case Studies and Methods",
+          "4 | Case 1: The US–Chinese Conflict Over SeaMeWe-6",
+          "5 | Case 2: France's Nationalization of Alcatel Submarine Networks",
+          "6 | Conclusion"
+        ],
+        "coverage": "complete",
+        "criterion": "A case-specific answer to a justified common criterion concerning instruments, mechanisms, capacity, reported consequences, or the separately attributed chronology and status of parallel projects",
+        "basis": "The inspected sections provide anchored case-specific answers for China, the United States, France, PEACE and EMA, including instruments, mechanisms, reported results, quantitative values and qualifications.",
+        "limitations": [
+          "The source does not supply a uniform quantitative evaluative standard across cases.",
+          "EMA's operational status is not established.",
+          "Some causal relationships are reported rather than independently demonstrated in the article."
+        ],
+        "finding_ids": [
+          "[C2.DOC2.F1]",
+          "[C2.DOC2.F2]",
+          "[C2.DOC2.F3]",
+          "[C2.DOC2.F4]",
+          "[C2.DOC2.F5]",
+          "[C2.DOC2.F6]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "subsea": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Findings lost anchor evidence; this does not establish absence",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [
+    "C2.DOC2.F2",
+    "C2.DOC2.F3",
+    "C2.DOC2.F4",
+    "C2.DOC2.F5"
+  ],
+  "chars": 7653
+}

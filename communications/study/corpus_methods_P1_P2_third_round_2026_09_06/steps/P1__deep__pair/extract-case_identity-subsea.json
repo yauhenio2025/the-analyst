@@ -1,0 +1,99 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "case_identity",
+  "doc": "subsea",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 20030,
+  "output_tokens": 1521,
+  "duration_ms": 16988,
+  "cost_usd": 0.0058,
+  "retries": 0,
+  "wall": {
+    "rows": 5,
+    "with_anchor": 5,
+    "verified": 5,
+    "trimmed": 3,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 5,
+    "verified_anchors": 5,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 5,
+      "with_anchor": 5,
+      "verified": 5,
+      "trimmed": 3,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 5,
+      "verified_anchors": 5,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "subsea"
+        ],
+        "dimension_key": "case_identity",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Abstract",
+          "Section 1: Reconciling Market Dynamics and State Strategy in Global Networks",
+          "Section 3: Case Studies and Methods",
+          "Section 4: Case 1: The US–Chinese Conflict Over SeaMeWe-6",
+          "Section 5: Case 2: France's Nationalization of Alcatel Submarine Networks",
+          "Section 6: Conclusion"
+        ],
+        "coverage": "complete",
+        "criterion": "The source must identify a documented case or conceptual approach, its actors and object-time-scope, and a justified shared comparison question or criterion.",
+        "basis": "The source explicitly identifies two case studies, states their selection criteria, describes their boundaries and actors, and frames both as cases of state realignment of a predominantly privately owned global subsea cable network.",
+        "limitations": [
+          "The two cases concern different intervention objects: a cable-project contract in SeaMeWe-6 and ownership of a cable supplier in France.",
+          "The source provides uneven detail across cases and does not establish fully equivalent temporal boundaries."
+        ],
+        "finding_ids": [
+          "[C1.DOC2.F1]",
+          "[C1.DOC2.F2]",
+          "[C1.DOC2.F3]",
+          "[C1.DOC2.F4]",
+          "[C1.DOC2.F5]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "subsea": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 6757
+}

@@ -1,0 +1,123 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "source_answers",
+  "doc": "subsea",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 40517,
+  "output_tokens": 1948,
+  "duration_ms": 22491,
+  "cost_usd": 0.0104,
+  "retries": 0,
+  "wall": {
+    "reanchor_receipts": [
+      {
+        "content": "## Findings ledger\n- [R2.DOC2.F4] The article presents the United States as relying mainly on coercive and regulatory measures to block Chinese firms, while China uses industrial strategies and financial resources to promote domestic cable firms — dim: source_answers — anchor: \"The United States has arguably been more successful thus far.\" — doc: subsea — question: What answer does this source give about the differing state strategies and their effectiveness? — attribution: own — warrant: empirical — object-time-scope: US–Chinese competition over the SeaMeWe-6 cable and the subsea cable supply market — confidence: high Additional support uses anchor-b: \"China leverages its vast financial resources for industrial strategies that push domestic champions and drive network development, whereas the United States deploys its regulatory and sanctioning power to block Chinese firms\" — doc-b: subsea\n- [R2.DOC2.F5] The article answers whether middle powers can realign networks by arguing that strategically positioned, highly connected states can pursue autonomous strategies, provided they possess relevant industrial capacity and financial means — dim: source_answers — anchor: \"This opens up the space for other actors to pursue autonomous network realignment strategies.\" — doc: subsea — question: Can middle powers and network hubs pursue autonomous network realignment? — attribution: own — warrant: causal — object-time-scope: highly connected states and network hubs, especially France, within global subsea cable networks — confidence: high Additional support uses anchor-b: \"France serves as a prototypical example of the room for maneuver available to strategically positioned states within largely privatized global networks.\" — doc-b: subsea",
+        "partial": false,
+        "stop_reason": "stop",
+        "error": null
+      }
+    ],
+    "rows": 5,
+    "with_anchor": 5,
+    "verified": 3,
+    "trimmed": 2,
+    "anchor_rate": 0.6,
+    "failed_ids": [
+      "R2.DOC2.F4",
+      "R2.DOC2.F5"
+    ],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 7,
+    "verified_anchors": 4,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 3,
+      "with_anchor": 3,
+      "verified": 3,
+      "trimmed": 2,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 3,
+      "verified_anchors": 3,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [
+      {
+        "id": "R2.DOC2.F4",
+        "dimension": "source_answers"
+      },
+      {
+        "id": "R2.DOC2.F5",
+        "dimension": "source_answers"
+      }
+    ],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "subsea"
+        ],
+        "dimension_key": "source_answers",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Abstract",
+          "1 | Reconciling Market Dynamics and State Strategy in Global Networks",
+          "2 | Non-Alignment and Re-Alignment of Privately Owned Networks",
+          "3 | Case Studies and Methods",
+          "4 | Case 1: The US–Chinese Conflict Over SeaMeWe-6",
+          "5 | Case 2: France's Nationalization of Alcatel Submarine Networks",
+          "6 | Conclusion"
+        ],
+        "coverage": "complete",
+        "criterion": "Retain explicit source-attributed answers to the questions about the source's position, attribution, warrant, conditions, negations and degree of commitment.",
+        "basis": "The inspected article sections explicitly state the article's own theoretical claims, distinguish market-driven corporate development from state intervention, explain differing US, Chinese and French strategies, and qualify their effectiveness.",
+        "limitations": [
+          "The assessment concerns the supplied article text and does not independently verify its cited sources or interview evidence."
+        ],
+        "finding_ids": [
+          "R2.DOC2.F1",
+          "R2.DOC2.F2",
+          "R2.DOC2.F3",
+          "R2.DOC2.F4",
+          "R2.DOC2.F5"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "subsea": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Findings lost anchor evidence; this does not establish absence",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [
+    "R2.DOC2.F4",
+    "R2.DOC2.F5"
+  ],
+  "chars": 6361
+}

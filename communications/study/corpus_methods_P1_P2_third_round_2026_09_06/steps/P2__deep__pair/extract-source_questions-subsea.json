@@ -1,0 +1,100 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "source_questions",
+  "doc": "subsea",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 20015,
+  "output_tokens": 1266,
+  "duration_ms": 13078,
+  "cost_usd": 0.0055,
+  "retries": 0,
+  "wall": {
+    "rows": 5,
+    "with_anchor": 5,
+    "verified": 5,
+    "trimmed": 3,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 5,
+    "verified_anchors": 5,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 5,
+      "with_anchor": 5,
+      "verified": 5,
+      "trimmed": 3,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 5,
+      "verified_anchors": 5,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "subsea"
+        ],
+        "dimension_key": "source_questions",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Abstract",
+          "1 | Reconciling Market Dynamics and State Strategy in Global Networks",
+          "2 | Non- Alignment and Re- Alignment of Privately Owned Networks",
+          "3 | Case Studies and Methods",
+          "4 | Case 1: The US–Chinese Conflict Over SeaMeWe- 6",
+          "5 | Case 2: France's Nationalization of Alcatel Submarine Networks",
+          "6 | Conclusion"
+        ],
+        "coverage": "complete",
+        "criterion": "Passages that identify themes and state substantive questions the source asks or answers, including the objects, scope, concepts and connections organizing its inquiry.",
+        "basis": "The inspected article identifies private network realignment, market-driven infrastructure development, great-power competition and middle-power network strategy as organizing themes, and explicitly states the questions, cases and conceptual relationships investigated.",
+        "limitations": [
+          "The findings summarize the supplied article and do not independently assess the cited literature or source materials.",
+          "The article's empirical focus is limited to two case studies in the subsea cable sector."
+        ],
+        "finding_ids": [
+          "[R1.DOC2.F1]",
+          "[R1.DOC2.F2]",
+          "[R1.DOC2.F3]",
+          "[R1.DOC2.F4]",
+          "[R1.DOC2.F5]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "subsea": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 5850
+}

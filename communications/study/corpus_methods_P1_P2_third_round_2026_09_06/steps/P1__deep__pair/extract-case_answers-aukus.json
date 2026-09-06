@@ -1,0 +1,113 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "case_answers",
+  "doc": "aukus",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 43350,
+  "output_tokens": 2137,
+  "duration_ms": 16760,
+  "cost_usd": 0.0112,
+  "retries": 0,
+  "wall": {
+    "reanchor_receipts": [
+      {
+        "content": "## Findings ledger\n- [C2.DOC1.F1] AUKUS answers how security and economic institutions are coordinated: it links market coordination to security institutions and specific alliances, with state transformation layering security imperatives onto economic institutions — dim: case_answers — anchor: \"militarised neoliberalism, which is a new system of market coordination that is now linked to security institutions and specific alliances.\" — doc: aukus — case: AUKUS — criterion: How are security and economic institutions coordinated? — value-kind: qualitative — evidence-role: conceptual claim — scope: AUKUS and its partner-state institutional arrangements — causal-attribution: AUKUS — anchor-b: \"One important point to note is that MN entails the gradual process of state transformation which is marked by the layering of security imperatives on economic institutions and vice versa.\" — doc-b: aukus — confidence: high",
+        "partial": false,
+        "stop_reason": "stop",
+        "error": null
+      }
+    ],
+    "rows": 6,
+    "with_anchor": 6,
+    "verified": 5,
+    "trimmed": 3,
+    "anchor_rate": 0.833,
+    "failed_ids": [
+      "C2.DOC1.F1"
+    ],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 6,
+    "verified_anchors": 5,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 6,
+      "with_anchor": 6,
+      "verified": 6,
+      "trimmed": 3,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 7,
+      "verified_anchors": 7,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "aukus"
+        ],
+        "dimension_key": "case_answers",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Abstract",
+          "Introduction",
+          "AUKUS and militarised neoliberalism",
+          "AUKUS, bipartisanship, and the regulatory control",
+          "State interventions and politico-business coalitions",
+          "The emergence of a new business class",
+          "Conclusion",
+          "Notes"
+        ],
+        "coverage": "complete",
+        "criterion": "A case-specific answer to a justified common criterion concerning instruments, mechanisms, capacities, institutions, markets, definitions or reported consequences",
+        "basis": "The source supplies attributable answers for AUKUS and separately identified Australia, South Korea, Japan and United Kingdom cases, including regulatory instruments, financial constraints, institutional arrangements and reported consequences.",
+        "limitations": [
+          "The article is interpretive and often reports policy commitments or mechanisms rather than independently verified outcomes.",
+          "The cases do not share consistent units, dates or denominators, limiting direct quantitative comparison.",
+          "The source discusses the United States and United Kingdom unevenly and does not establish all candidate criteria for each actor."
+        ],
+        "finding_ids": [
+          "[C2.DOC1.F1]",
+          "[C2.DOC1.F2]",
+          "[C2.DOC1.F3]",
+          "[C2.DOC1.F4]",
+          "[C2.DOC1.F5]",
+          "[C2.DOC1.F6]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "aukus": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 1,
+  "dropped_ids": [],
+  "chars": 7677
+}
