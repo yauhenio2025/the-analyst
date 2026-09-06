@@ -505,6 +505,14 @@
 - **Dependencies**: the process shape
 - **Added**: 2026-09-06
 
+### Third-queue single-document methods
+
+- **Status**: Eleven released in the purpose picker (2026-09-06); `chronology_simultaneity` remains excluded because the final source read still finds an unsupported proposal/decree identity.
+- **Offered**: Follow the words — `metaphorical_mappings`, `categories_boundaries`; Read it properly — `quote_attribution_voice`, `claim_provenance`, `exemplar_catalog`; See the structure — `stakeholder_power_interest`, `resource_distribution`, `entity_extraction`; Test a position — `incentives_constrained_choices`; Count and date — `rules_and_responses`, `periodization_critic`.
+- **Shape**: Capability YAML, predicate-bearing answer shapes and method cards, operationalization `process:`, surface oneshot / standard oneshot_checked / deep dvs, Sol / DeepSeek V4 Pro / Luna. Single-paper inventories are supported; extra-source relations require actual supplied documents. No runner or released-question changes.
+- **Validation**: One paper per method, twelve original controls, four bounded same-paper repairs, 52 independent Sonnet/Sol ratings after committed source reads. The eleven selected outputs retain 200 findings and 272 verified anchors; actual table and desk citation checks pass. Inventories remain selective, with some incomplete local packets and inconclusive scope records disclosed. Actual cost USD10.372542; conservative ledger USD10.539357 against USD15 guidance. [Per-method decisions, source memos and receipts](../communications/study/STUDY_third_queue_2026-09-06.md).
+- **Entry Points**: `src/dossier/catalog_purpose.json`; capability and operationalization YAMLs for these keys; `scripts/study_third_queue.py`, `scripts/study_third_queue_final_repairs.py`, `scripts/audit_third_queue.py`; `tests/test_engines_under_shape_2026_09_05.py`.
+
 ### Corpus methods: compare cases and reconcile sources
 
 - **Status**: `reconcile_sources` released in See the structure under the first-queue standard; `compare_supplied_cases` remains withheld after its failed final PEACE repair (2026-09-06).

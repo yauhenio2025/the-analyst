@@ -5,6 +5,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Added (2026-09-06 evening — third queue)
+
+- Released eleven methods across six question families for single-paper reading and inventories: metaphor mappings, attributed voices, actors/influence, resource flows, constrained choices, reported rules/responses, period boundaries, category boundaries, claim provenance, entities and examples. Each is explicitly offered in its fitting purpose group with all three depth modes. T2 parallel timelines remains excluded: it still joins a June Eximbank proposal and a separately named December decree as linked stages.
+- One paper per method, twelve original controls and four bounded repairs; 52 independent Sonnet/Sol ratings after committed source reads. Selected outputs: 200 findings, 272 verified anchors, valid table and actual desk citations. Actual USD10.372542 (conservative ledger USD10.539357) against USD15 guidance, no unknown reserve. Required suite:1309 passed,2 skipped, the same11 failures and8 old collection errors. No runner or released-question changes. [Study and limitations](../communications/study/STUDY_third_queue_2026-09-06.md).
+
 ### Fixed (2026-09-06, plans survive a deploy)
 - `load_plan` falls back to the plan_data the executor stored with the job created from the plan when the plan file is missing (the plan directory is on an ephemeral disk; a deploy wipes it), and writes the file back ([planner.py](src/orchestrator/planner.py), `job_manager.find_job_by_plan`). A dossier whose executor sub-job failed mid-way now resumes that sub-job through the executor (completed passes kept) instead of starting a new one from the missing plan ([analysis.py](src/dossier/analysis.py)). Tests: `tests/test_plan_durability_2026_09_06.py`.
 

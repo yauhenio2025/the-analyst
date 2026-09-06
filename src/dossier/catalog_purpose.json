@@ -109,6 +109,20 @@
           "pairs_with": [],
           "fit": "ok",
           "fit_note": ""
+        },
+        {
+          "engine_key": "incentives_constrained_choices",
+          "plain_name": "choices under constraints",
+          "use_when": "explain documented choices through incentives, constraints and available alternatives",
+          "yields": "choice and constraint tables with supported explanations",
+          "row_unit": "one row per choice or constraint",
+          "deliverable_kinds": [
+            "briefing",
+            "case_file"
+          ],
+          "pairs_with": [],
+          "fit": "ok",
+          "fit_note": ""
         }
       ]
     },
@@ -261,6 +275,48 @@
           "pairs_with": [],
           "fit": "ok",
           "fit_note": ""
+        },
+        {
+          "engine_key": "stakeholder_power_interest",
+          "plain_name": "actors and influence",
+          "use_when": "identify the actors, their interests and their documented ways of exercising influence",
+          "yields": "actor inventory and supported influence relations",
+          "row_unit": "one row per actor or influence relation",
+          "deliverable_kinds": [
+            "briefing",
+            "case_file"
+          ],
+          "pairs_with": [],
+          "fit": "ok",
+          "fit_note": ""
+        },
+        {
+          "engine_key": "resource_distribution",
+          "plain_name": "resource flows",
+          "use_when": "follow who supplies, receives and controls resources, preserving amount and delivery status",
+          "yields": "resource inventory and distribution relations",
+          "row_unit": "one row per resource flow or control",
+          "deliverable_kinds": [
+            "briefing",
+            "case_file"
+          ],
+          "pairs_with": [],
+          "fit": "ok",
+          "fit_note": ""
+        },
+        {
+          "engine_key": "entity_extraction",
+          "plain_name": "named entities",
+          "use_when": "inventory named actors, organizations and projects with source-supported roles and aliases",
+          "yields": "entity register and relationship table",
+          "row_unit": "one row per entity or documented relation",
+          "deliverable_kinds": [
+            "briefing",
+            "case_file"
+          ],
+          "pairs_with": [],
+          "fit": "ok",
+          "fit_note": ""
         }
       ]
     },
@@ -394,6 +450,34 @@
           "pairs_with": [],
           "fit": "ok",
           "fit_note": ""
+        },
+        {
+          "engine_key": "metaphorical_mappings",
+          "plain_name": "metaphor map",
+          "use_when": "see how a text uses images and comparisons to frame an idea",
+          "yields": "metaphor inventory and mappings with limits",
+          "row_unit": "one row per metaphor or mapping",
+          "deliverable_kinds": [
+            "briefing",
+            "case_file"
+          ],
+          "pairs_with": [],
+          "fit": "ok",
+          "fit_note": ""
+        },
+        {
+          "engine_key": "categories_boundaries",
+          "plain_name": "categories and boundaries",
+          "use_when": "identify how a text classifies things and handles difficult or conditional membership",
+          "yields": "category inventory and boundary cases",
+          "row_unit": "one row per category or boundary case",
+          "deliverable_kinds": [
+            "briefing",
+            "case_file"
+          ],
+          "pairs_with": [],
+          "fit": "ok",
+          "fit_note": ""
         }
       ]
     },
@@ -498,6 +582,48 @@
           "pairs_with": [],
           "fit": "ok",
           "fit_note": ""
+        },
+        {
+          "engine_key": "quote_attribution_voice",
+          "plain_name": "who says what",
+          "use_when": "separate the author’s voice from quotations and attributed positions",
+          "yields": "speaker and quotation tables with attribution chains",
+          "row_unit": "one row per attributed passage",
+          "deliverable_kinds": [
+            "briefing",
+            "case_file"
+          ],
+          "pairs_with": [],
+          "fit": "ok",
+          "fit_note": ""
+        },
+        {
+          "engine_key": "claim_provenance",
+          "plain_name": "where claims come from",
+          "use_when": "trace each claim to its immediate attribution and mark upstream sources that were not supplied",
+          "yields": "claim provenance and access limits",
+          "row_unit": "one row per claim and its attributed source",
+          "deliverable_kinds": [
+            "briefing",
+            "case_file"
+          ],
+          "pairs_with": [],
+          "fit": "ok",
+          "fit_note": ""
+        },
+        {
+          "engine_key": "exemplar_catalog",
+          "plain_name": "examples and their jobs",
+          "use_when": "find the examples a text uses and distinguish their argumentative roles and limits",
+          "yields": "example inventory and use table",
+          "row_unit": "one row per example or argumentative use",
+          "deliverable_kinds": [
+            "briefing",
+            "case_file"
+          ],
+          "pairs_with": [],
+          "fit": "ok",
+          "fit_note": ""
         }
       ]
     },
@@ -540,6 +666,34 @@
           ],
           "fit": "ok",
           "fit_note": "needs dated reporting; a gap is reported as a gap, never as concealment"
+        },
+        {
+          "engine_key": "rules_and_responses",
+          "plain_name": "rules and responses",
+          "use_when": "inventory the rules a document reports and distinguish their status from observed responses",
+          "yields": "dated rule inventory and response table",
+          "row_unit": "one row per reported rule or response",
+          "deliverable_kinds": [
+            "briefing",
+            "case_file"
+          ],
+          "pairs_with": [],
+          "fit": "ok",
+          "fit_note": ""
+        },
+        {
+          "engine_key": "periodization_critic",
+          "plain_name": "period boundaries",
+          "use_when": "test where an account divides history into periods and what alternative cuts change",
+          "yields": "period boundary audit and alternatives",
+          "row_unit": "one row per boundary or alternative period",
+          "deliverable_kinds": [
+            "briefing",
+            "case_file"
+          ],
+          "pairs_with": [],
+          "fit": "ok",
+          "fit_note": ""
         }
       ]
     }
@@ -574,52 +728,8 @@
       "why": "Research v3; withheld after P1/P2 third round (2026-09-06): PEACE/EMA attribution improves, but the PEACE finding fails after bounded synthesis repair; consequential cell spans and the Korean amendment chronology remain incomplete. See communications/study/STUDY_corpus_methods_P1_P2_third_round_2026-09-06.md."
     },
     {
-      "engine_key": "metaphorical_mappings",
-      "why": "Third queue research definition; withheld pending source-read validation. See communications/study/REDESIGN_third_queue_2026-09-06.md."
-    },
-    {
-      "engine_key": "quote_attribution_voice",
-      "why": "Third queue research definition; withheld pending source-read validation. See communications/study/REDESIGN_third_queue_2026-09-06.md."
-    },
-    {
-      "engine_key": "stakeholder_power_interest",
-      "why": "Third queue research definition; withheld pending source-read validation. See communications/study/REDESIGN_third_queue_2026-09-06.md."
-    },
-    {
-      "engine_key": "resource_distribution",
-      "why": "Third queue research definition; withheld pending source-read validation. See communications/study/REDESIGN_third_queue_2026-09-06.md."
-    },
-    {
-      "engine_key": "incentives_constrained_choices",
-      "why": "Third queue research definition; withheld pending source-read validation. See communications/study/REDESIGN_third_queue_2026-09-06.md."
-    },
-    {
-      "engine_key": "rules_and_responses",
-      "why": "Third queue research definition; withheld pending source-read validation. See communications/study/REDESIGN_third_queue_2026-09-06.md."
-    },
-    {
       "engine_key": "chronology_simultaneity",
-      "why": "Third queue research definition; withheld pending source-read validation. See communications/study/REDESIGN_third_queue_2026-09-06.md."
-    },
-    {
-      "engine_key": "periodization_critic",
-      "why": "Third queue research definition; withheld pending source-read validation. See communications/study/REDESIGN_third_queue_2026-09-06.md."
-    },
-    {
-      "engine_key": "categories_boundaries",
-      "why": "Third queue research definition; withheld pending source-read validation. See communications/study/REDESIGN_third_queue_2026-09-06.md."
-    },
-    {
-      "engine_key": "claim_provenance",
-      "why": "Third queue research definition; withheld pending source-read validation. See communications/study/REDESIGN_third_queue_2026-09-06.md."
-    },
-    {
-      "engine_key": "entity_extraction",
-      "why": "Third queue research definition; withheld pending source-read validation. See communications/study/REDESIGN_third_queue_2026-09-06.md."
-    },
-    {
-      "engine_key": "exemplar_catalog",
-      "why": "Third queue research definition; withheld pending source-read validation. See communications/study/REDESIGN_third_queue_2026-09-06.md."
+      "why": "Third-queue source check: June Eximbank proposal and December differently named decree still treated as linked stages without established identity; withheld after bounded repair."
     }
   ],
   "deliverable_hints": {
