@@ -1,0 +1,20 @@
+{
+  "key": "quoted-title-plus-plain-title",
+  "name": "Quoted title for precision, plain title for recall",
+  "task_kinds": [
+    "work-identity"
+  ],
+  "when": "resolving a free-text title to the canonical Scholar record before harvesting its citations",
+  "shape": "\"<title>\" then <title> — the author is NOT a query term (it demotes the canonical record) but goes to the judge as a signal",
+  "ingredients": [
+    "the title as the user typed it",
+    "author and year as disambiguation context for the judge"
+  ],
+  "yields": "the authoritative high-citation edition on the quoted probe, mirrors and variant records on the plain one; merged by scholar id, 20 deep per probe",
+  "misses": "translations whose catalogue title differs; a title that is also a common phrase without the quoted probe",
+  "origin": "the Referee's seed-title resolver (Cross-Citation Finder, step 1)",
+  "owner": "the-referee",
+  "version": "2026-09-06",
+  "evidence": [],
+  "note": ""
+}
