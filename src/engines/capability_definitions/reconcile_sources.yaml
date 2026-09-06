@@ -1,11 +1,21 @@
 engine_key: reconcile_sources
 engine_name: Reconcile sources on shared questions
-version: 2
-problematique: Reconcile how supplied sources answer shared questions. Discover recurring themes, then align each
-  source's attributed answer by object, time, definition and warrant before judging agreement, qualification or
+version: 3
+problematique: 'Reconcile how supplied sources answer shared questions. Discover recurring themes, then align each
+  source''s attributed answer by object, time, definition and warrant before judging agreement, qualification or
   contradiction. Different scope and inspected silence are distinct from disagreement; insufficient material remains
   unresolved. The product is an answer reconciliation table and a theme coverage table, preserving source voices
   and unanswerable cells. Frequency of a theme is never evidence of substantive consensus.
+
+
+  Evidence must travel with the claim. One finding carries one consequential answer, or a tightly linked answer
+  and its qualification. Select exact spans of about 80–160 characters each, below 200, retaining the named subject,
+  complete predicate, attribution, negation and conditional force. Use anchor-b/doc-b and further pairs for additional
+  exact spans, including from the same document; never concatenate separated source text into one quote. Preserve
+  literal bracketed letters, hyphens and line breaks; choose separate spans around page headers. A quotation ending
+  mid-word, at a conjunction, or before its essential object cannot carry the completed claim. Narrow the finding
+  or add evidence. Two spans from one source remain single-source evidence; a corpus relation needs distinct source
+  keys.'
 category: evidence
 kind: synthesis
 researcher_question: How do the supplied sources address shared questions and differ in their answers?
@@ -48,12 +58,27 @@ analytical_dimensions:
   - What object, time, definition, translation or warrant difference could make an apparent conflict a different-scope
     relation? Which rival interpretation remains possible from the text?
 - key: question_reconciliation
-  description: Reconcile answers on shared questions. Align questions before reconciling answers; judge each relation
+  description: 'Reconcile answers on shared questions. Align questions before reconciling answers; judge each relation
     rather than counting shared words. Give both attributed sides, their scopes and the exact reason for the relation.
     Count theme presence only over named inspected sources and never equate frequency with consensus. Preserve an
     unresolved conflict or scoped silence instead of manufacturing an integrated position; corpus extraction sees
-    earlier reports, so the critic must inspect all relevant source passages.
-    State the scope of every alignment explicitly — same object, same time, same qualification, or identify the mismatch in each. Alliance-linked engagement and selective nonalignment do not establish the same autonomous positioning. Preserve earlier qualifications before calling a later formulation new; label an integrated causal reconstruction as an analyst inference.
+    earlier reports, so the critic must inspect all relevant source passages. State the scope of every alignment
+    explicitly — same object, same time, same qualification, or identify the mismatch in each. Alliance-linked engagement
+    and selective nonalignment do not establish the same autonomous positioning. Preserve earlier qualifications
+    before calling a later formulation new; label an integrated causal reconstruction as an analyst inference.
+
+    For every coverage-table row, list each source key with its own final finding ID supporting discussion of that
+    exact question; calculate n/N from those named, evidenced sources. One source''s finding cannot support another
+    source''s presence. Give every positive answer cell a separate local evidence route even when a paired relation
+    is also cited. Keep discussion, endorsement, compatible scope and common answer distinct. Inspect qualifications
+    in both sources before aligning autonomy, market formation or effectiveness. For conceptual sources, inspect
+    relevant automation/robotization passages before concluding that human agency or organizational dependence is
+    absent.
+
+    Write from: as exact earlier IDs separated by comma and space, for example D1.C2.F1, V.D2.F3. Never join IDs
+    with spaces alone. Preserve corpus ancestry and both distinct source keys; do not disguise a corpus descendant
+    as a one-source finding. A genuinely new final source-read finding has no invented antecedent: omit from: and
+    mark evidence-origin: final_source_read.'
   probing_questions:
   - Which questions can actually be aligned across sources after object, time, definition and warrant are compared?
     Retain source-specific questions and unanswerable cells.
@@ -64,6 +89,8 @@ analytical_dimensions:
     document list and denominator, separately from substantive agreement.
   - What defensible synthesis preserves the strongest qualification and unresolved conflict? Which thematic connections
     are supported across sources, and what evidence would settle the residual question?
+  - For each named source counted in a final question-coverage numerator, which source-specific finding and complete
+    span establishes that presence, distinct from an endorsed answer or common position?
 capabilities:
 - key: source_questions
   description: Themes, shared questions and source scope

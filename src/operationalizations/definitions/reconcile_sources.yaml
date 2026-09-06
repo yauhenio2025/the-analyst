@@ -16,11 +16,21 @@ process:
     contradiction. Different scope and inspected silence are distinct from disagreement; insufficient material remains
     unresolved. The product is an answer reconciliation table and a theme coverage table, preserving source voices
     and unanswerable cells. Frequency of a theme is never evidence of substantive consensus.
-  framing: Reconcile how supplied sources answer shared questions. Discover recurring themes, then align each source's
+  framing: 'Reconcile how supplied sources answer shared questions. Discover recurring themes, then align each source''s
     attributed answer by object, time, definition and warrant before judging agreement, qualification or contradiction.
     Different scope and inspected silence are distinct from disagreement; insufficient material remains unresolved.
     The product is an answer reconciliation table and a theme coverage table, preserving source voices and unanswerable
     cells. Frequency of a theme is never evidence of substantive consensus.
+
+
+    Evidence must travel with the claim. One finding carries one consequential answer, or a tightly linked answer
+    and its qualification. Select exact spans of about 80–160 characters each, below 200, retaining the named subject,
+    complete predicate, attribution, negation and conditional force. Use anchor-b/doc-b and further pairs for additional
+    exact spans, including from the same document; never concatenate separated source text into one quote. Preserve
+    literal bracketed letters, hyphens and line breaks; choose separate spans around page headers. A quotation ending
+    mid-word, at a conjunction, or before its essential object cannot carry the completed claim. Narrow the finding
+    or add evidence. Two spans from one source remain single-source evidence; a corpus relation needs distinct source
+    keys.'
   scoped_outcomes: true
   routing:
     cheap: openrouter/openai/gpt-5.6-luna
@@ -41,7 +51,8 @@ process:
       supporting explanation, incidental mention, or reported rival?'
     answer_shape: '[R1.F<n>] <source> addresses <question> under <theme>, about <object/time/scope> — dim: source_questions
       — theme: <label> — question: <substantive question> — role: central|supporting|incidental|reported rival —
-      anchor: "<verbatim>" — doc: <source key> — confidence: high|medium|low'
+      anchor: "<verbatim>" — doc: <source key> — confidence: high|medium|low Additional support uses anchor-b: "<exact
+      span>" — doc-b: <its source key>, and further pairs as needed; keep all spans short and complete.'
     method_card: Discover themes by the questions and connections the text makes. Distinguish discussing a theme
       from answering a question, and reporting a view from endorsing it. Preserve definitions and scope before normalizing
       labels; prevalence later counts named documents in this supplied set only.
@@ -67,7 +78,8 @@ process:
     answer_shape: '[R2.F<n>] <source/speaker> answers <question>: <position with condition and modality> — dim:
       source_answers — question: <question> — attribution: own|reported other|analyst reconstruction — warrant:
       conceptual|empirical|causal|interpretive|normative — object-time-scope: <scope> — anchor: "<verbatim>" — doc:
-      <source key> — confidence: high|medium|low'
+      <source key> — confidence: high|medium|low Additional support uses anchor-b: "<exact span>" — doc-b: <its
+      source key>, and further pairs as needed; keep all spans short and complete.'
     method_card: Write source-attributed answers, preserving their strongest qualification. Separate the text's
       own commitments from a quoted opponent and an analyst reconstruction. Compare propositions at the same object
       and warrant level; a normative demand does not contradict an empirical description merely because their verbs
@@ -96,7 +108,8 @@ process:
     answer_shape: '[R3.F<n>] <source answer> is limited by <qualification/different scope/unresolved issue> — dim:
       answer_limits — question: <question> — inspected-scope: <sections> — limit: <reason> — anchor: "<verbatim>"
       — doc: <source key> — confidence: high|medium|low. For silence or insufficient material use a separate scope
-      report; no invented anchor or automatic whole-source absence.'
+      report; no invented anchor or automatic whole-source absence. Additional support uses anchor-b: "<exact span>"
+      — doc-b: <its source key>, and further pairs as needed; keep all spans short and complete.'
     method_card: Look for conditions and counter-passages before naming disagreement. Make a silence claim only
       about stated inspected sections with a relevant question and adequate coverage. Keep insufficient material
       and a change of subject visible. A partial fragment or failed anchor cannot support absence; do not turn an
@@ -124,17 +137,36 @@ process:
       the document list and denominator, separately from substantive agreement.
     - What defensible synthesis preserves the strongest qualification and unresolved conflict? Which thematic connections
       are supported across sources, and what evidence would settle the residual question?
+    - For each named source counted in a final question-coverage numerator, which source-specific finding and complete
+      span establishes that presence, distinct from an endorsed answer or common position?
     answer_shape: '[RM.F<n>] On <shared scoped question>, <source A answer> and <source B answer> stand in <relation
       and reason> — dim: question_reconciliation — question: <question> — relation: agreement|qualification|contradiction|different
-      scope — scope-test: <same object? same time? same qualification? definition/warrant match or mismatch> — anchor: "<A>" — doc: <A key> — anchor-b:
-      "<B>" — doc-b: <distinct B key> — confidence: high|medium|low. Add anchor-c/doc-c for a third source covered.
-      Silence/insufficient cells are separate scoped assessments, never fabricated paired findings.'
-    method_card: Align questions before reconciling answers; judge each relation rather than counting shared words.
+      scope — scope-test: <same object? same time? same qualification? definition/warrant match or mismatch> — anchor:
+      "<A>" — doc: <A key> — anchor-b: "<B>" — doc-b: <distinct B key> — confidence: high|medium|low. Add anchor-c/doc-c
+      for a third source covered. Silence/insufficient cells are separate scoped assessments, never fabricated paired
+      findings. Additional support uses anchor-b: "<exact span>" — doc-b: <its source key>, and further pairs as
+      needed; keep all spans short and complete.'
+    method_card: 'Align questions before reconciling answers; judge each relation rather than counting shared words.
       Give both attributed sides, their scopes and the exact reason for the relation. Count theme presence only
       over named inspected sources and never equate frequency with consensus. Preserve an unresolved conflict or
       scoped silence instead of manufacturing an integrated position; corpus extraction sees earlier reports, so
-      the critic must inspect all relevant source passages.
-      State the scope of every alignment explicitly — same object, same time, same qualification, or identify the mismatch in each. Alliance-linked engagement and selective nonalignment do not establish the same autonomous positioning. Preserve earlier qualifications before calling a later formulation new; label an integrated causal reconstruction as an analyst inference.
+      the critic must inspect all relevant source passages. State the scope of every alignment explicitly — same
+      object, same time, same qualification, or identify the mismatch in each. Alliance-linked engagement and selective
+      nonalignment do not establish the same autonomous positioning. Preserve earlier qualifications before calling
+      a later formulation new; label an integrated causal reconstruction as an analyst inference.
+
+      For every coverage-table row, list each source key with its own final finding ID supporting discussion of
+      that exact question; calculate n/N from those named, evidenced sources. One source''s finding cannot support
+      another source''s presence. Give every positive answer cell a separate local evidence route even when a paired
+      relation is also cited. Keep discussion, endorsement, compatible scope and common answer distinct. Inspect
+      qualifications in both sources before aligning autonomy, market formation or effectiveness. For conceptual
+      sources, inspect relevant automation/robotization passages before concluding that human agency or organizational
+      dependence is absent.
+
+      Write from: as exact earlier IDs separated by comma and space, for example D1.C2.F1, V.D2.F3. Never join IDs
+      with spaces alone. Preserve corpus ancestry and both distinct source keys; do not disguise a corpus descendant
+      as a one-source finding. A genuinely new final source-read finding has no invented antecedent: omit from:
+      and mark evidence-origin: final_source_read.'
     indicators:
     - same question
     - qualification
@@ -163,11 +195,23 @@ process:
     - hunt_misses
     - Audit the shared criteria/questions, source attribution, object/time/definition/warrant alignment and each
       claimed relation. Preserve empty or incommensurable cells as scoped assessments; never invent anchors for
-      absence. A corpus verification may add single-source misses under a declared document dimension and a V.D<n> prefix;
-      use V.CORPUS only for cross-document rows with distinct keyed quotes from all related sources. A per-document verification retains the source inventory without asserting cross-source agreement.
+      absence. A corpus verification may add single-source misses under a declared document dimension and a V.D<n>
+      prefix; use V.CORPUS only for cross-document rows with distinct keyed quotes from all related sources. A per-document
+      verification retains the source inventory without asserting cross-source agreement.
     - Check all stated coverage and silence claims against the named inspected sections. Keep partial fragments
       inconclusive. Report contrary passages and exceptions before confirming a pattern or consensus.
     - name_must_keep
+    - Check each retained span for the complete subject, predicate, attribution and qualification of its finding;
+      add separate exact spans instead of a clipped long quotation.
+    - When merging duplicates, keep the distinct concrete evidence needed by cells; do not replace it with a generic
+      summary. Check comma-separated lineage IDs and correct single-source versus corpus scope.
+    - For every coverage-table row, list each source key with its own final finding ID supporting discussion of
+      that exact question; calculate n/N from those named, evidenced sources. One source's finding cannot support
+      another source's presence. Give every positive answer cell a separate local evidence route even when a paired
+      relation is also cited. Keep discussion, endorsement, compatible scope and common answer distinct. Inspect
+      qualifications in both sources before aligning autonomy, market formation or effectiveness. For conceptual
+      sources, inspect relevant automation/robotization passages before concluding that human agency or organizational
+      dependence is absent.
   - key: synthesize
     kind: synthesize
     consumes:
@@ -210,4 +254,46 @@ process:
       citations use F1..Fn; from: carries earlier ids. The desks lift the reconciliation and coverage tables directly,
       including all unresolved and unanswerable cells.
 
-      Each matrix cell cites a finding whose keyed anchor contains the cell''s fact, including its actor, amount, timing and qualification. Generic typologies or scope exclusions cannot carry concrete acquisition terms or delivery delays. Split composite findings/cells or add granular anchored findings. Use only declared dimension keys. A corpus descendant keeps two distinct document keys; to relabel it single-source, narrow the claim, use a document dimension and document-only antecedents in from:, with no corpus lineage. Use separate [F1] [F2] citations rather than lists/ranges. State the scope of every alignment explicitly — same object, same time, same qualification, or identify the mismatch in each. Alliance-linked engagement and selective nonalignment do not establish the same autonomous positioning. Preserve earlier qualifications before calling a later formulation new; label an integrated causal reconstruction as an analyst inference.'
+      Each matrix cell cites a finding whose keyed anchor contains the cell''s fact, including its actor, amount,
+      timing and qualification. Generic typologies or scope exclusions cannot carry concrete acquisition terms or
+      delivery delays. Split composite findings/cells or add granular anchored findings. Use only declared dimension
+      keys. A corpus descendant keeps two distinct document keys; to relabel it single-source, narrow the claim,
+      use a document dimension and document-only antecedents in from:, with no corpus lineage. Use separate [F1]
+      [F2] citations rather than lists/ranges. State the scope of every alignment explicitly — same object, same
+      time, same qualification, or identify the mismatch in each. Alliance-linked engagement and selective nonalignment
+      do not establish the same autonomous positioning. Preserve earlier qualifications before calling a later formulation
+      new; label an integrated causal reconstruction as an analyst inference.
+
+
+      FINAL ARTIFACT CHECK, performed by you before emitting the answer: draft the actual tables and final numbered
+      ledger first, then inspect every positive cell, source-map assertion, counter-evidence claim and each named
+      source counted in n/N against the final IDs it cites. Read only those retained quoted spans for this check:
+      do they carry every consequential actor, role, amount, timing, mechanism and qualification in that cell? A
+      fact found elsewhere in the source is not supplied evidence until a retained finding quotes it. Add separate
+      exact source spans/findings from the full sources, split or narrow the cell, or state the bounded evidential
+      insufficiency. After any edit, check the changed table again. Do not emit cells pointing to rejected IDs or
+      pre-revision claims. Retain concrete spans when merging duplicate findings; a generic announcement cannot
+      replace evidence of the components it announces. Keep the substantive map and two tables compact, avoiding
+      duplicate prose restatements. This is your final self-check, not an independent review after synthesis.
+
+
+      Write from: as exact earlier IDs separated by comma and space, for example D1.C2.F1, V.D2.F3. Never join IDs
+      with spaces alone. Preserve corpus ancestry and both distinct source keys; do not disguise a corpus descendant
+      as a one-source finding. A genuinely new final source-read finding has no invented antecedent: omit from:
+      and mark evidence-origin: final_source_read.
+
+
+      Report the inherited scope and review statuses with their limitations in compact plain language. Keep source
+      meaning separate from record integrity: an unavailable evidence record, failed quotation or malformed review
+      state means that record is inconclusive, not that the source lacks an answer. Do not turn these diagnostics
+      into a methodological objection to the source. A new source-anchored final finding may coexist with the older
+      inconclusive scope record; preserve that history without claiming complete or independently verified coverage.
+
+
+      For every coverage-table row, list each source key with its own final finding ID supporting discussion of
+      that exact question; calculate n/N from those named, evidenced sources. One source''s finding cannot support
+      another source''s presence. Give every positive answer cell a separate local evidence route even when a paired
+      relation is also cited. Keep discussion, endorsement, compatible scope and common answer distinct. Inspect
+      qualifications in both sources before aligning autonomy, market formation or effectiveness. For conceptual
+      sources, inspect relevant automation/robotization passages before concluding that human agency or organizational
+      dependence is absent.'

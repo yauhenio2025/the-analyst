@@ -1,0 +1,9 @@
+# Source check of the named conceptual misses (no paid control)
+
+Read the relevant full paragraphs in the supplied Castoriadis texts before freezing the third round.
+
+Technique's work-organization discussion expressly distinguishes management's formal/official organization from workers' informal organization. The following paragraph states that different actual organizations can arise on the same material basis, with Fiat counter-management and work-to-rule as examples. Thus a formal/effective comparison cell is positively available at the workplace level. It does not by itself establish the same object or political scope as Democracy's public/private/institutional distinctions. P1's additional question must inspect this evidence before reporting absence and then test equivalence separately.
+
+What Democracy's enterprise paragraph says robotization defers or displaces the contradictions toward still-unrobotized parts of enterprises and the system. Technique separately calls total production automation doubly utopian because the objective would also require consumption automation. These are actual answers about the limits of removing human activity, with different arguments and scope. P2's prompt now explicitly inspects relevant automation passages; recurring terms alone cannot prove identical answers.
+
+Source locations: `data/study/sources_ideas/castoriadis1984_technique.md`, paragraphs beginning “They want to depend”, the formal/informal organization passage and “The results of this conflict”; `castoriadis1990_what_democracy.md`, paragraph beginning “I hope, too”. This is a human-style source read by Codex, not a generated output or a semantic code test. The third-round paid conditions remain only AUKUS/subsea. No claim of successful conceptual-control generation follows from these prompt repairs.
