@@ -186,6 +186,11 @@ def _run(job_id: str) -> None:
                 _pause_for_drain(job_id, step_name, "between steps", record_step=True)
                 return
             job = get_job(job_id) or job
+            if step_name in DESK_STEPS and _engines_only(job):
+                if step_name == "spine":
+                    events.emit(job_id, "note", phase=step_name, detail="engines only: no text, tables, figures or plates were asked for; the desks are skipped and the job ends with its ledgers and receipts",
+                                payload_json={"kind": "engines_only"})
+                continue
             _over_cap(job, step_name)
             _run_step(job, step_name, docs)
             if step_name == "brief" and not job.options.autopilot:
@@ -215,6 +220,16 @@ def _run(job_id: str) -> None:
     finally:
         with _lock:
             _running.discard(job_id)
+
+
+DESK_STEPS = ("spine", "tables", "figures", "plates", "compose", "crosscheck")
+
+
+def _engines_only(job: DossierJob) -> bool:
+    """A job that asked for no text, tables, figures or plates wants its engines' ledgers and nothing else (the Stacks'
+    one-engine calls: the fidelity audit over an index, the evidential frame over a memo; 2026-09-06)."""
+    o = job.options.output
+    return not o.text and not o.tables and int(o.figures or 0) == 0 and int(o.plates or 0) == 0
 
 
 def _over_cap(job: DossierJob, next_step: str) -> None:

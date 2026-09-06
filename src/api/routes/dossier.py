@@ -208,6 +208,19 @@ def get_profiles(job_id: str, shape: str = "shared"):
             "profiles": [to_shared(p, docs.get(p.doc_key) or {}).model_dump() for p in job.profiles.profiles]}
 
 
+@router.get("/jobs/{job_id}/frame")
+def get_frame(job_id: str):
+    """The evidential frame of a hypothesis test (engine hypothesis_evidential_frame) as JSON, rendered from the
+    job's ledger rows by code: strengthen, weaken, form, decisive_tests, residual, works."""
+    from src.dossier.frame import render_frame
+
+    job = _load(job_id)
+    frame = render_frame(job.model_dump(mode="json"))
+    if frame is None:
+        raise HTTPException(status_code=409, detail=f"no finished hypothesis_evidential_frame phase on this job (status={job.status}, step={job.step})")
+    return {**frame, "status": job.status}
+
+
 @router.get("/jobs/{job_id}/brief")
 def get_brief(job_id: str):
     job = _load(job_id)

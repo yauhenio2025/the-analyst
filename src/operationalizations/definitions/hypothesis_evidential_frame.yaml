@@ -1,0 +1,159 @@
+# The evidential frame of a hypothesis test (2026-09-06).
+engine_key: hypothesis_evidential_frame
+engine_name: What would change this verdict
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: What evidence and what argument would change this verdict, and which tests would settle it?
+  framing: The document is a memo that tested a hypothesis and reached a verdict; its findings (F1…Fn) carry verified
+    quotations from the held works, and a plan block names the hypothesis, the verdict and the coverage (held, not
+    held, partial). Read the findings as the evidence in hand. Say what would change the verdict. Name works as
+    citable strings (Author, Title (year)), passages or datasets, never wishes ("more Brenner" is not a line). Separate
+    what the corpus lacks (a work not held) from what the argument lacks (a step no held text supplies). Never
+    restate the verdict. Every row anchors in the memo's own words or in a held work; a row with no anchor is marked
+    a conjecture and is not citable. Keep the verdict vocabulary as supplied (holds · holds in part · does not hold
+    · unclear).
+  scoped_outcomes: true
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: strengthen
+    name: Evidence that would strengthen the hypothesis
+    questions:
+    - What evidence, in which named work, passage or dataset, would count for the hypothesis, and is it held?
+    method_card: 'Do: Start from the memo''s findings and its "not held" list. For each line name what would count
+      (a claim in a text, a derivation, a dataset) and where it would be found — a work as a citable string, a passage,
+      a dataset — and whether it is held (yes | no | unknown) from the coverage block. Prefer the evidence the memo
+      itself says is missing. Anchor in the memo''s words (a finding, the objections, the "what the texts do not say"
+      section) or in a held work; a row without an anchor is a conjecture. Code checks only anchors and IDs; the model
+      must judge what would count.'
+    indicators:
+    - would show
+    - if
+    - not held
+    scope: document
+    load_bearing: true
+    id_prefix: S1
+    answer_shape: '[S1.F<n>] <what would count, one sentence> — dim: strengthen — kind: primary text|secondary reading|data|argument
+      — where: <Author, Title (year); passage or dataset when known> — held: yes|no|unknown — anchor: "<verbatim from the
+      memo or a held work, <=200 chars>" — doc: <actual supplied source key> — confidence: high|medium|low'
+  - key: weaken
+    name: Evidence that would weaken the hypothesis
+    questions:
+    - What evidence, in which named work, passage or dataset, would count against the hypothesis, and is it held?
+    method_card: 'Do: The mirror of strengthen: what would count against, where, held or not. Do not repeat the
+      verdict''s own grounds as "weaken" unless a further, unheld source would sharpen them. Anchor in the memo''s
+      words or a held work; a row without an anchor is a conjecture. Code checks only anchors and IDs.'
+    indicators:
+    - against
+    - unless
+    - would refute
+    scope: document
+    load_bearing: true
+    id_prefix: S2
+    answer_shape: '[S2.F<n>] <what would count against, one sentence> — dim: weaken — kind: primary text|secondary reading|data|argument
+      — where: <Author, Title (year); passage or dataset when known> — held: yes|no|unknown — anchor: "<verbatim, <=200 chars>"
+      — doc: <actual supplied source key> — confidence: high|medium|low'
+  - key: form
+    name: The form the argument must take
+    questions:
+    - What would the hypothesis have to claim, and what would each account have to grant, for it to hold?
+    method_card: 'Do: State the reformulation the evidence would license as conditions: what the hypothesis must
+      claim (narrowed or widened), what the first account must grant, what the second must grant. At most three rows,
+      each one condition; the paragraph that joins them belongs to the synthesis prose. Anchor each condition in the
+      memo''s words (the steelman, the objections, a finding). Code checks only anchors and IDs.'
+    indicators:
+    - would have to
+    - grant
+    - only if
+    scope: document
+    load_bearing: true
+    id_prefix: S3
+    answer_shape: '[S3.F<n>] <one condition> — dim: form — account: hypothesis|<first account>|<second account> — anchor: "<verbatim, <=200 chars>"
+      — doc: <actual supplied source key> — confidence: high|medium|low'
+  - key: decisive_test
+    name: The tests that would settle it
+    questions:
+    - Which question, answered from which sources, would move the verdict most, and can it be decided now?
+    method_card: 'Do: A test is a question with the evidence that answers it and the sources that hold that evidence.
+      Rank the tests by how far a clear answer would move the verdict (rank 1 moves it most). Say whether each is
+      decidable now from the held works (yes) or waits on a work not held (no), and why. Anchor in the memo or a held
+      work. Code checks only anchors and IDs.'
+    indicators:
+    - would settle
+    - decisive
+    - test
+    scope: document
+    load_bearing: true
+    id_prefix: S4
+    answer_shape: '[S4.F<n>] <the test, one sentence> — dim: decisive_test — question: <the question> — evidence-needed: <what
+      would answer it> — sources: <Author, Title (year); passages> — decidable-now: yes|no — why: <one clause> — rank: <1 = moves
+      the verdict most> — anchor: "<verbatim, <=200 chars>" — doc: <actual supplied source key> — confidence: high|medium|low'
+  - key: residual
+    name: What no available evidence decides
+    questions:
+    - What remains undecidable because the corpus lacks it, or because the argument itself is under-determined?
+    method_card: 'Do: Name what stays open and say why: coverage (a work not held, a text unread) or argument (a
+      concept the accounts use differently, an under-determined mechanism). One row per residual. Anchor in the
+      memo''s "what the texts do not say", coverage or objections. Code checks only anchors and IDs.'
+    indicators:
+    - cannot decide
+    - under-determined
+    - not held
+    scope: document
+    load_bearing: false
+    id_prefix: S5
+    answer_shape: '[S5.F<n>] <what stays open, one sentence> — dim: residual — because: coverage|argument — anchor: "<verbatim, <=200 chars>"
+      — doc: <actual supplied source key> — confidence: high|medium|low'
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension_x_document
+    model_tier: cheap
+    output: ledger
+    max_rows: 8
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - merge_duplicates
+    - hunt_misses
+    - name_must_keep
+    - A work must be a citable string (Author, Title (year)), never a wish; strike "more of X" lines. Separate a
+      corpus gap (not held) from an argument gap. A row that restates the verdict is struck. A row without a verbatim
+      anchor is kept only when marked a conjecture.
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: the person who voiced the hypothesis, deciding what to read or fetch next
+    tables:
+    - evidence_that_would_change_the_verdict
+    - decisive_tests
+    brief: '1. Open with the form the argument must take: one paragraph joining the S3 conditions — what the hypothesis
+      must claim and what each account must grant for it to hold. Then the evidence that would strengthen and weaken
+      it as a table (evidence · kind · where · held · finding), the decisive tests as a table ordered by rank (test ·
+      evidence needed · sources · decidable now · why · finding), and the residual as a short list. Never restate the
+      verdict; the reader has it.
+
+      2. Every positive cell cites its final supporting finding ID; a named work is written as a citable string. Keep
+      the verdict vocabulary as supplied. Say what is held and what is not in the tables themselves, from the coverage
+      block, never from memory.'
