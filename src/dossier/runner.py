@@ -246,7 +246,7 @@ def _run_step(job: DossierJob, step: str, docs) -> None:
     if step == "reconnaissance":
         from src.dossier.reconnaissance import run_reconnaissance
 
-        recon = run_reconnaissance(job, docs, persist=persist, cancel_check=lambda: is_cancelled(job_id))
+        recon = run_reconnaissance(job, docs, persist=persist, cancel_check=lambda: is_cancelled(job_id), context_documents=context_docs)
         job.profiles = recon
         persist(profiles=recon)
         summary = f"{len(recon.profiles)} profiles, {sum(len(p.key_claims) for p in recon.profiles)} anchored claims"

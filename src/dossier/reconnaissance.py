@@ -13,6 +13,7 @@ from src.dossier import events
 from typing import Callable, Optional
 
 from src.dossier.common import DossierCancelled, DossierDraining, compact_profiles, corpus_text, doc_header, documents_index
+from src.sources.profiles import match_profiles, profile_documents, to_document_profile
 from src.dossier.drain import is_draining
 from src.dossier.llm import call_json
 from src.dossier.schemas import CorpusMap, DocumentProfile, DossierJob, Reconnaissance
@@ -90,7 +91,8 @@ def _verify_profiles(profiles: list[DocumentProfile], corpus: NormalizedCorpus) 
 
 
 def run_reconnaissance(job: DossierJob, docs: list[Document], *, persist: Optional[Callable[..., None]] = None,
-                       cancel_check: Optional[Callable[[], bool]] = None) -> Reconnaissance:
+                       cancel_check: Optional[Callable[[], bool]] = None,
+                       context_documents: Optional[list[Document]] = None) -> Reconnaissance:
     """`persist` writes a per-document checkpoint (Reconnaissance with partial=True) after every profile, so a job
     interrupted mid-way — an instance restart on deploy killed one at profile 36/195 on 2026-09-05 — resumes at the
     next document instead of at 1. `cancel_check` and the process-wide drain flag are consulted between documents: a
@@ -98,8 +100,15 @@ def run_reconnaissance(job: DossierJob, docs: list[Document], *, persist: Option
     total_chars = sum(d.char_count for d in docs)
     intent = job.options.intent
     corpus = NormalizedCorpus({d.key: d.text for d in docs})
+    # `role: profile` context documents (the Stacks' work profiles, or the desk's own from an earlier job): a matched
+    # document starts from its profile instead of a read; the anchor wall below treats its claims like any other.
+    supplied = match_profiles(profile_documents(context_documents or []), docs)
+    if supplied:
+        events.emit(job.id, "note", phase=STEP,
+                    detail=f"{len(supplied)} of {len(docs)} documents arrive with a work profile; taken as the starting point, claims through the anchor wall",
+                    payload_json={"kind": "profiles_supplied", "supplied": sorted(supplied)})
 
-    if total_chars <= SINGLE_CALL_MAX_CHARS:
+    if total_chars <= SINGLE_CALL_MAX_CHARS and not supplied:
         result, _ = call_json(
             job.id, STEP, label=f"reconnaissance over {len(docs)} documents ({total_chars:,} chars)",
             system=SYSTEM, user=_user_prompt(docs, intent, map_too=True),
@@ -117,6 +126,10 @@ def run_reconnaissance(job: DossierJob, docs: list[Document], *, persist: Option
             done_keys = {p.doc_key for p in profiles}
             events.emit(job.id, "note", phase=STEP, detail=f"resuming reconnaissance from the checkpoint: {len(done_keys)} of {len(docs)} profiles already on the record",
                         payload_json={"kind": "reconnaissance_resumed", "profiled": len(done_keys), "total": len(docs)})
+        for doc in docs:
+            if doc.key in supplied and doc.key not in done_keys:
+                profiles.append(to_document_profile(supplied[doc.key], doc))
+                done_keys.add(doc.key)
         for n, doc in enumerate(docs, start=1):
             if doc.key in done_keys:
                 continue

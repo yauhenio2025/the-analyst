@@ -191,6 +191,23 @@ def get_one(job_id: str):
     return _load(job_id).model_dump()
 
 
+@router.get("/jobs/{job_id}/profiles")
+def get_profiles(job_id: str, shape: str = "shared"):
+    """The reconnaissance desk's document profiles. `shape=shared` (default) returns them in the shared work-profile
+    shape (the Stacks' WorkProfile plus a verified anchor per claim), so they can travel back as `role: profile`
+    sources; `shape=native` returns the desk's own DocumentProfile records."""
+    from src.sources.profiles import to_shared
+
+    job = _load(job_id)
+    if job.profiles is None:
+        raise HTTPException(status_code=409, detail=f"profiles not ready (status={job.status}, step={job.step})")
+    if shape == "native":
+        return {"job_id": job_id, "shape": "native", **job.profiles.model_dump()}
+    docs = {d.get("key"): d for d in (job.documents or []) if isinstance(d, dict)}
+    return {"job_id": job_id, "shape": "shared", "partial": job.profiles.partial,
+            "profiles": [to_shared(p, docs.get(p.doc_key) or {}).model_dump() for p in job.profiles.profiles]}
+
+
 @router.get("/jobs/{job_id}/brief")
 def get_brief(job_id: str):
     job = _load(job_id)

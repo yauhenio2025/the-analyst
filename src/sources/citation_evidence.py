@@ -38,6 +38,8 @@ def plan_context(documents: dict[str, str]) -> str:
 def prepare_citation_sources(engine_key: str, documents: dict[str, str]) -> tuple[dict[str, str], str]:
     if engine_key not in FAMILY:
         return documents, ""
+    from src.sources.memo_statements import statements_documents
+    documents = statements_documents(documents)   # a memo's statements against its sources arrive as an index (2026-09-06)
     indexes = evidence_indexes(documents)
     if not indexes:
         return documents, ""
