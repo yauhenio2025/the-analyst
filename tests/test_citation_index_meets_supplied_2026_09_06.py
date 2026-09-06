@@ -45,3 +45,14 @@ def test_without_a_supplied_text_the_index_still_builds_its_witnesses():
     sources, _ = prepare_citation_sources("citation_fidelity_audit", _docs())
     assert set(sources) == {"em:BEFGGK6M", "em:Q4WEBER1"}
     assert sources["em:Q4WEBER1"].startswith("SOURCE ROLE: primary_window")
+
+
+def test_a_sliced_citing_text_says_so_in_its_header():
+    idx = json.loads(json.dumps(INDEX))
+    idx["texts"][0]["scope"] = {"sliced": True, "pages_kept": 5, "pages": 384, "chars": 21000, "of_chars": 1260000}
+    docs = {"index": json.dumps(idx), "BEFGGK6M": "SOURCE ROLE: citing_author\nTITLE: Privilege\n\nThe pages kept. Weber is cited here."}
+    sources, _ = prepare_citation_sources("citation_engagement_map", docs)
+    head = sources["BEFGGK6M"].split("\n")
+    assert head[0] == "SOURCE ROLE: citing_author" and head[1].startswith("COVERAGE: sliced — 5 of 384 pages kept")
+    unsliced, _ = prepare_citation_sources("citation_engagement_map", {"index": json.dumps(INDEX), "BEFGGK6M": "SOURCE ROLE: citing_author\n\nWhole."})
+    assert "COVERAGE:" not in unsliced["BEFGGK6M"]

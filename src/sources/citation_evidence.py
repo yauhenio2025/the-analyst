@@ -96,6 +96,15 @@ def prepare_citation_sources(engine_key: str, documents: dict[str, str]) -> tupl
             met = _meet(supplied, text.get("uid"), text.get("key"))
             if met:
                 text["supplied_as"] = met
+                scope = text.get("scope") or {}
+                if scope.get("sliced") and "COVERAGE:" not in sources[met][:800]:
+                    # a sliced citing text (the Stacks send the pages around the located citations for long texts,
+                    # 2026-09-06) is a witness of those pages, not of the whole text: say so in the header the engines read
+                    line = (f"COVERAGE: sliced — {scope.get('pages_kept') or '?'} of {scope.get('pages') or '?'} pages kept around the located "
+                            f"citations ({scope.get('chars') or '?'} of {scope.get('of_chars') or '?'} chars); the argument of the whole text is "
+                            f"not in evidence here unless a work profile supplies it")
+                    body = sources[met]
+                    sources[met] = (body.replace("\n", "\n" + line + "\n", 1) if body.startswith("SOURCE ROLE:") else line + "\n" + body)
             if not met and key not in sources:
                 parts = [p.get("section") or p.get("window") or
                          "\n".join(p.get(n, "") for n in ("before", "hit", "after"))
