@@ -229,7 +229,14 @@ def _persist_factory(job_id: str) -> Callable[..., None]:
     return persist
 
 
+def source_docs(docs):
+    """The documents the desks read: role `source`. Context documents (an evidence index, a plan) go to the engines only."""
+    return [d for d in docs if getattr(d, "role", "source") == "source"]
+
+
 def _run_step(job: DossierJob, step: str, docs) -> None:
+    context_docs = [d for d in docs if getattr(d, "role", "source") != "source"]
+    all_docs, docs = docs, source_docs(docs)
     job_id = job.id
     update_job(job_id, status=STATUS_FOR_STEP[step], step=step)
     events.emit(job_id, "phase_started", phase=step, detail=STEP_WHY[step])
@@ -266,7 +273,7 @@ def _run_step(job: DossierJob, step: str, docs) -> None:
     elif step == "analysis":
         from src.dossier.analysis import run_analysis
 
-        sub_id, analysis = run_analysis(job, docs, cancel_check=lambda: is_cancelled(job_id), persist=persist)
+        sub_id, analysis = run_analysis(job, all_docs, cancel_check=lambda: is_cancelled(job_id), persist=persist)
         job.analysis_job_id = sub_id
         job.analysis = analysis
         persist(analysis_job_id=sub_id, analysis=analysis)

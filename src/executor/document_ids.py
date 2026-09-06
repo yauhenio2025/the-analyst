@@ -5,6 +5,9 @@ from typing import Optional
 # Explicit original-source bindings alongside a legacy flattened target. These
 # survive job serialization/resume; they are never inferred from text headers.
 CORPUS_DOCUMENT_PREFIX = "corpus:"
+# a document supplied with the job as context (an evidence index, a plan), never a source: not profiled, not a
+# member of the corpus, appended to every phase's upstream context (the Stacks bridge, 2026-09-06)
+CONTEXT_DOCUMENT_PREFIX = "context:"
 
 
 def extract_target_title(plan_data: Optional[dict]) -> Optional[str]:

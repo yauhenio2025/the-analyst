@@ -66,6 +66,7 @@ def load_documents(job: DossierJob) -> list[Document]:
         docs.append(Document(
             key=meta.get("key", "doc"), title=meta.get("title", ""), creators=meta.get("creators", ""),
             year=meta.get("year", ""), publication=meta.get("publication", ""), library=meta.get("library", ""),
+            role=meta.get("role", "source") or "source",
             stacks_key=meta.get("stacks_key", ""), text=text, char_count=len(text),
         ))
     return docs

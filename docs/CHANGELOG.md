@@ -5,6 +5,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Added (2026-09-06, the Stacks bridge)
+- Sources carry a `role` (`source` | `evidence_index` | `plan`): a context document is not profiled by reconnaissance, not counted in the corpus, and is bound under `context:` so every executor phase receives it as upstream context ([schemas.py](src/sources/schemas.py), [resolve.py](src/sources/resolve.py), [runner.py](src/dossier/runner.py), [analysis.py](src/dossier/analysis.py), [phase_runner.py](src/executor/phase_runner.py)). Tests: `tests/test_source_roles_2026_09_06.py`. Assessment and the Stacks' reply: `communications/INTEGRATION_stacks_citation_universe_2026-09-06.md`, `REPLY_*`.
+
 ### Fixed (2026-09-06, split words)
 - Anchor wall: a space before a hyphen at a line end (`con -\nnects`) joins like a hyphen at the line end, and the closed-hyphen index closes spaces on either side of a hyphen (`SeaMeWe - 6`, `market -driven`); E3's candidate had failed its anchor on this ([walls.py](src/dossier/walls.py), [ledger_walls.py](src/executor/ledger_walls.py)).
 

@@ -38,6 +38,7 @@ class AnalysisFailed(RuntimeError):
 def _store_corpus(job: DossierJob, docs: list[Document]) -> tuple[str, str]:
     from src.executor.document_store import store_document
 
+    docs = [d for d in docs if getattr(d, "role", "source") == "source"]
     title = corpus_title(docs, job.options.intent)
     text = corpus_text(docs)
     doc_id = store_document(title=title, text=text, author=f"dossier {job.id}", role="target")
@@ -46,7 +47,7 @@ def _store_corpus(job: DossierJob, docs: list[Document]) -> tuple[str, str]:
 
 def _store_source_bindings(job: DossierJob, docs: list[Document]) -> dict[str, str]:
     """Keep desk source keys through the executor and its persisted resume inputs."""
-    from src.executor.document_ids import CORPUS_DOCUMENT_PREFIX
+    from src.executor.document_ids import CONTEXT_DOCUMENT_PREFIX, CORPUS_DOCUMENT_PREFIX
     from src.executor.document_store import store_document
 
     if len({doc.key for doc in docs}) != len(docs):
@@ -57,7 +58,10 @@ def _store_source_bindings(job: DossierJob, docs: list[Document]) -> dict[str, s
         doc_id = stored.get(doc.key)
         if not doc_id:
             doc_id = store_document(title=doc.title, text=doc.text, author=doc.creators, role="target")
-        bindings[CORPUS_DOCUMENT_PREFIX + doc.key] = doc_id
+        # a context document (an evidence index, a plan) is bound under its own prefix: every engine receives it as
+        # upstream context; no engine reads it as a source
+        prefix = CORPUS_DOCUMENT_PREFIX if getattr(doc, "role", "source") == "source" else CONTEXT_DOCUMENT_PREFIX
+        bindings[prefix + doc.key] = doc_id
     return bindings
 
 

@@ -87,9 +87,11 @@ def resolve_sources(specs: list[SourceSpec]) -> list[Document]:
         doc.key = key
         used.add(key)
         doc.char_count = len(doc.text)
+        doc.role = role
         docs.append(doc)
 
     for idx, spec in enumerate(specs, start=1):
+        role = getattr(spec, "role", "source") or "source"
         if spec.kind in ("paste", "upload", "stacks_export"):
             text = (spec.text or "").strip()
             if not text:
@@ -100,7 +102,12 @@ def resolve_sources(specs: list[SourceSpec]) -> list[Document]:
                     add(d)
             else:
                 title = spec.title or _title_from_text(text, f"Pasted document {idx}")
-                add(Document(key=_slug(spec.title or f"doc{idx}"), title=title, text=text))
+                if spec.key and spec.key in used:
+                    raise ValueError(f"duplicate explicit source key: {spec.key}")
+                if spec.role and spec.role != "evidence_index" and not text.startswith("SOURCE ROLE:"):
+                    text = f"SOURCE ROLE: {spec.role}\n{text}"
+                add(Document(key=spec.key or _slug(spec.title or f"doc{idx}"), title=title,
+                             role=spec.role or "", text=text))
         elif spec.kind == "exemplar":
             if not spec.name:
                 raise ValueError("exemplar source needs `name`")

@@ -21,7 +21,7 @@ from typing import Callable, Optional
 from src.aoi.contract import is_aoi_workflow_key
 from src.executor.chain_runner import run_chain, run_single_engine
 from src.executor.context_broker import assemble_phase_context
-from src.executor.document_ids import CORPUS_DOCUMENT_PREFIX, resolve_target_doc_id
+from src.executor.document_ids import CONTEXT_DOCUMENT_PREFIX, CORPUS_DOCUMENT_PREFIX, resolve_target_doc_id
 from src.executor.document_inputs import ProcessDocumentInput
 from src.executor.document_store import get_document_text
 from src.executor.job_manager import get_job
@@ -149,6 +149,8 @@ def run_phase(
                 context_emphasis=plan_phase.context_emphasis,
                 phase_max_chars_override=context_char_overrides,
             )
+
+        upstream_context = _with_context_documents(upstream_context, document_ids or {})
 
         # Determine if this is a per-work phase
         is_per_work = _is_per_work_phase(phase_number, prior_work_titles, plan_phase)
@@ -935,6 +937,19 @@ def _work_source_key(title: str, document_ids: dict[str, str], plan_data: dict) 
     # Storage identities avoid sanitized-title collisions. The deterministic
     # missing-source key is only diagnostic: an empty selected source cannot run.
     return document_ids.get(title) or "missing-" + hashlib.sha256(title.encode()).hexdigest()[:16]
+
+
+def _with_context_documents(upstream_context: str, document_ids: dict[str, str]) -> str:
+    """Documents bound under `context:` (an evidence index, a plan supplied with the job) join every phase's upstream
+    context, after the upstream phases' prose; they are never sources and never enter the walls' index."""
+    parts = [upstream_context] if upstream_context else []
+    for key, doc_id in (document_ids or {}).items():
+        if not key.startswith(CONTEXT_DOCUMENT_PREFIX) or not doc_id:
+            continue
+        text = get_document_text(doc_id) or ""
+        if text.strip():
+            parts.append(f"CONTEXT SUPPLIED WITH THE JOB [{key[len(CONTEXT_DOCUMENT_PREFIX):]}]:\n{text.strip()}")
+    return "\n\n=====\n\n".join(parts)
 
 
 def _get_process_sources(
