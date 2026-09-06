@@ -530,6 +530,7 @@ def _citation_context_envelopes(engine_key, sources, upstream):
     after restoring its literal, separately keyed witnesses.
     """
     from src.sources.citation_evidence import FAMILY, evidence_indexes
+    from src.sources.memo_statements import is_statements_file
     if engine_key not in FAMILY:
         return sources, upstream
     sources = dict(sources)
@@ -541,7 +542,9 @@ def _citation_context_envelopes(engine_key, sources, upstream):
         except ValueError:
             continue
         raw = payload[:end]
-        if not evidence_indexes({match[1]: raw}):
+        # An evidence index, or a statements file (a memo's or a reader's statements against the works they cite;
+        # the family's process adapter turns it into an index): both are witnesses, not context (2026-09-07).
+        if not evidence_indexes({match[1]: raw}) and not is_statements_file(obj):
             continue
         key = "citation-envelope:" + match[1]
         if key in sources:

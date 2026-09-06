@@ -95,3 +95,21 @@ def test_the_light_call_and_the_job_route_serve_the_reread(monkeypatch):
     assert out["wall"]["verified"] >= 4     # the anchors sit in the comment and in Sewell's text
     assert rows_from_job({"analysis": {"4.1": {"engine_key": "reference_reread", "final_output": FINAL, "final_wall": {"failed_ids": ["X4.F2"]}}}}) == (FINAL, {"X4.F2"})
     assert rows_from_job({"analysis": {}}) is None
+
+
+def test_a_statements_source_reaches_the_engine_on_the_job_path_too():
+    """On a dossier job a role=statements source travels as CONTEXT SUPPLIED WITH THE JOB; the chain runner restores it as
+    a witness for the family's engines (it restored evidence indexes only, which would have left an engines-only job
+    with no source at all, 2026-09-07)."""
+    from src.executor.chain_runner import _citation_context_envelopes
+    from src.sources.citation_evidence import prepare_citation_sources
+    obj = {"memo": {"uid": "turn-8", "title": "Evgeny on part 1, turn 8"},
+           "statements": [{"no": 1, "section": "part 1", "statement": "Sewell's critique of Brenner turns on the Dutch case.", "sources": ["SEWELL"], "kind": "attribution"}],
+           "sources": [{"label": "SEWELL", "uid": "em:KXEL24MY", "title": "On the Emergence of Capitalism", "year": "2024", "creators": "Sewell, William H.", "text": SEWELL}]}
+    upstream = "CONTEXT SUPPLIED WITH THE JOB [statements]:\n" + json.dumps(obj) + "\n\n---\n\nOTHER CONTEXT"
+    sources, rest = _citation_context_envelopes("reference_reread", {}, upstream)
+    assert set(sources) == {"citation-envelope:statements"} and rest.strip().endswith("OTHER CONTEXT") and "turn-8" not in rest
+    docs, context = prepare_citation_sources("reference_reread", sources)
+    assert set(docs) == {"turn-8", "em:KXEL24MY"} and "st1/SEWELL" in context
+    # an engine outside the family keeps the envelope as context
+    assert _citation_context_envelopes("argument_architecture", {"d": "x"}, upstream) == ({"d": "x"}, upstream)
