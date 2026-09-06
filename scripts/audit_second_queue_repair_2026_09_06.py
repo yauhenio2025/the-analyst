@@ -13,7 +13,7 @@ from src.sources.schemas import Document
 from scripts.audit_corpus_methods_P1_P2_2026_09_06 import expanded_final_citations
 
 
-def audit():
+def audit(prior_known_usd=0.0, review_receipt=None):
     plan=s.budget.read(s.OUT/'plan.json');s.guard(plan)
     order_path=s.OUT/'all_memos_before_scores.json'
     order=s.budget.read(order_path) if order_path.exists() else None
@@ -61,6 +61,7 @@ def audit():
             op=ROOT/'communications/study/second_queue_2026_09_06/scores'/f'{job["id"]}__old__{job["papers"][0]}__{rater}.json'
             if op.exists():original[rater]=s.budget.read(op)['mean']
         supplement=s.OUT/'baseline_scores/A3__old__aukus__sonnet.json'
+        if not supplement.exists():supplement=s.OUT.parent/'baseline_scores/A3__old__aukus__sonnet.json'
         baseline_supplement=s.budget.read(supplement) if job['id']=='A3' and supplement.exists() else None
         jobs[key]={'status':'complete','output_sha256':sha,**computed,'supplied_anchors_needing_existing_wall_trimming':supplied_missing,
                    'ineligible_table_ids':bad_table,'scores':scores,'frozen_original_scores':original,
@@ -81,9 +82,10 @@ def audit():
         responses.append({'receipt':str(cp.relative_to(s.OUT)), 'output':str(dest.relative_to(s.ARCHIVE)),
                           'output_sha256':call['output_sha256'], 'status':call['status']})
     s.budget.write(s.ARCHIVE/'model_outputs.json',responses)
-    c=s.budget.costs();review=s.budget.read(s.ARCHIVE/'claude_review_receipt.json')
+    c=s.budget.costs();review=s.budget.read(review_receipt or s.ARCHIVE/'claude_review_receipt.json')
     report={'plan_identity':plan['identity'],'jobs':jobs,'costs':c,'direct_claude_review_usd':review['cost_usd'],
-            'known_round_usd':round(c['known_usd']+review['cost_usd'],6),
+            'prior_known_usd':prior_known_usd,
+            'known_round_usd':round(prior_known_usd+c['known_usd']+review['cost_usd'],6),
             'monetary_guidance_usd':10,'guidance_is_gate':False,'terminated_cli_cost':'unknown; no usage receipt',
             'mechanics_only':True,'errors':errors}
     s.budget.write(s.ARCHIVE/'audit.json',report)

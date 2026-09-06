@@ -1,0 +1,15 @@
+# S3__checked__subsea — final-repair source read before scores
+
+Output SHA256: 3a2e1070e05b2b38ddf84ced68e2713508acb6cf699cc892e7086143bf6786db
+
+Read the complete final account, both actual tables, all nineteen findings and the final source contexts. In particular, reread the source's last two substantive paragraphs in page order, across the PDF page break, plus the SeaMeWe-6/EMA account, French acquisition chronology, official attributions, methods and policy-implications box. No rating of this final repair has been requested or consulted.
+
+The confirmed first-pass ending reversal is cured. Both the final prose and sequence table now give comparative synthesis → scholarly task → capacity advice → conditional public investment. F16 retains separate literal spans for the scholarly task and the later investment condition. The source puts the scholarly task before policy advice and ends with the conditional investment sentence; the final reading now follows that order. Its own last open question is explicitly the analyst's remaining question, not a claim that the source itself ends with that question.
+
+The expanded temporal inventory also distinguishes selection, US pressure, vote, withdrawal, and subsequent EMA development. The post-exclusion project is EMA; PEACE is mentioned only in the source's shared future sales restriction. The output does not attribute EMA's post-exclusion origin to PEACE. “Reportedly,” “expected,” and the absence of a shared motive among consortium members are preserved. The French sequence now retains the 2023 sale signal and June/November 2024 steps in separate spans, and resource constraints qualify the autonomy claim in prose and cells.
+
+Official security wording and Armand's strategic/profitable evaluation remain attributed to documents and the minister. The narrative does not promote them into an unqualified analyst verdict. Ideal types remain combinable; decoupling and duplication are treated as simultaneous processes, not a falsely ordered sequence. Triangulated documentary/interview access is distinguished from knowledge of every consortium member's private deliberation. The global/regional governance proposal remains a conditional prescription, not an accomplished arrangement.
+
+One bounded structural repair was required after the first reconciliation; its failed candidate and receipts remain archived. All nineteen final rows and twenty-eight anchors verify under the existing normalized wall, with four rows using existing trimming. The source context supplies the layout-affected France, methods and governance passages. No matcher change was made. Every actual table citation resolves to retained eligible evidence, and the rejected or narrowed claims are not restored as valid cells.
+
+No fabricated finding or surviving attribution reversal was found in this final output. This memo supersedes the first-pass source recommendation only for the selected S3 artifact and explicitly corrects the earlier missed sequence error. Release is recommended in Read it properly under the inventory exception, with the final independent ratings still pending and citation/scope limitations disclosed.

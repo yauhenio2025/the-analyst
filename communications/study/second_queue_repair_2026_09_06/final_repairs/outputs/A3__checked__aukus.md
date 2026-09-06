@@ -1,0 +1,166 @@
+# Reading
+
+## Local inventory: the conclusions that depend on comparison
+
+This is a local inventory of one article, not a comparison across works. The article’s main comparisons support a qualified political-economic interpretation of AUKUS. They do not establish that geopolitical explanations are false, that neoliberalism has ended, that present industrial development will reproduce Cold War outcomes, or that the documented beneficiaries capture AUKUS as a whole.
+
+| ID | Comparison → conclusion | Relevant correspondence | Defeating difference | Scoped verdict |
+|---|---|---|---|---|
+| CA1 | State-centric accounts → AUKUS must also be examined within the emerging geoeconomic order. [F1] | Militarised neoliberalism (MN) identifies reciprocal layering of security and economic functions; bipartisanship supplies an institutional setting for regulatory changes joining group interests. [F2] [F20] | The article denies that AUKUS is completely reducible to geopolitical fetishism. [F3] | MN supports an expansion of explanatory scope, not the elimination of geopolitical or security analysis. [F4] |
+| CA2 | Washington Consensus and present policy fusion → AUKUS is a mutation of neoliberalism, not merely a security partnership. [F5] | The older endpoint stresses market-led liberalisation and deregulation; the newer formation securitises economic policy and economises strategic policy. [F6] [F7] | The crisis of neoliberal legitimacy is described as only partial. [F8] | The category supports selective market reconstruction through security institutions, not a clean post-neoliberal break. [F9] |
+| CA3 | Cold War military-industrial development and AUKUS-linked development → military institutions again organise accumulation. [F10] | The historical relation connects US assistance and military offshore procurement with Japanese and Korean industrial development. [F11] | The present trajectory “only partially resembles” Cold War institutions. [F12] | The analogy supports the narrower claim that security agencies now pilot industrial policy; it does not transfer Cold War scale or developmental outcomes. [F13] |
+| CA4 | Defence-trade justification and critical-minerals policy effects → security policy changes the allocation and control roles of state financiers. [F14] | Public finance and regulatory authority are reorganised through the economic-security nexus. [F14] | The cited programmes do not by themselves measure the aggregate distribution of AUKUS resources. [F16] | The evidence establishes a state-backed beneficiary channel, not its system-wide predominance. [F16] |
+| CA5 | Technological-sovereignty claims and venture-capital effects → state resources can increase VC’s intermediary power. [F15] | The state supplies capital, start-ups operate as accumulation vehicles, and VC mediates between them. [F15] | The examples do not establish that VC dominates all AUKUS spending or that public benefits are absent. [F16] | The application identifies selected beneficiaries and a control mechanism; aggregate capture remains unproved. [F16] |
+
+## Geopolitics and political economy
+
+The foundational contrast concerns explanatory scope. The article says that a state-centric focus “omits how AUKUS” engages in the emerging geoeconomic order [F1]. This supports adding an account of economic institutions to alliance and deterrence analysis. By itself, however, the omission claim does not prove every stronger assertion about internal social forces.
+
+The relevant warrant is institutional rather than a loose resemblance. MN describes state transformation through “the layering of security imperatives on economic institutions and vice versa” [F2]. The article also supplies a political mechanism: bipartisan support becomes an institutional setting for regulatory changes that bring together the interests of different groups [F20]. Critical-minerals finance, export-control reform, procurement, grants and research partnerships are presented as applications of that reciprocal transformation.
+
+The article expressly preserves the strongest competing consideration: “This is not to say that AUKUS as a security partnership is completely geopolitically fetishist” [F3]. Its defensible conclusion is therefore supplementation. AUKUS remains a security partnership while also standing within a geopolitical-economic conjuncture that embeds social relations and capitalist transformation [F4]. The comparison does not justify treating deterrence or strategic competition as mere disguises.
+
+The text also records, but does not decide on a common measure between, two economic alternatives: AUKUS may catalyse deglobalisation or instead globalise military production [F17]. MN reframes this dispute by asking which institutions, capital flows and groups are reconnected. That is an explanatory redirection, not a conclusive ranking of the two aggregate globalisation claims.
+
+## A mutation of neoliberalism, with a permeable boundary
+
+The headline classification calls AUKUS both a security partnership and “a mutation of neoliberalism” [F5]. Its before-and-after comparison has an identifiable basis. The Washington Consensus endpoint is associated with fiscal discipline, liberalisation and deregulation [F6]. The newer setting is characterised by “the simultaneous securitisation of economic policy and economisation of strategic policy” [F7]. The transferred relation is thus a reorganisation of market coordination through security priorities, not simply an increase in government activity.
+
+Two limits prevent the classification from establishing a complete historical rupture. First, the article calls the crisis of neoliberal legitimacy “partial” [F8]. Second, it says the new arrangements reconnect rather than deconstruct the global economy, favouring selected political and economic interests [F9]. Industrial policy, subsidy and regulatory control therefore do not function here as sufficient evidence that markets, private capital or global accumulation have disappeared.
+
+The article’s three “salient features” are bipartisanship and regulatory control, combined capitalist development, and incorporation of a new business class. Because the text presents them as salient features rather than necessary and sufficient conditions, they form an organising inventory, not an exhaustive classification rule [F18]. The classification is strongest when “mutation” means a security-mediated reorganisation of continuing market relations. It is weaker if read as a claim that every AUKUS activity displays all three features or that neoliberalism has been superseded.
+
+| ID | Criterion or alternative | What it supports | Boundary or analyst test |
+|---|---|---|---|
+| CR1 | The older Washington Consensus is identified through market-led liberalisation and deregulation. [F6] | It supplies one historical endpoint for the mutation comparison. [F6] | Test whether present arrangements replace those instruments or selectively recombine them with security policy. [F7] [F9] |
+| CR2 | MN is organised through three “salient features.” [F18] | The features guide analysis of AUKUS applications. [F18] | Do not treat them as necessary or sufficient conditions without an explicit boundary rule. [F18] |
+| CR3 | The text presents deglobalisation and globalisation of military production as competing interpretations. [F17] | Both remain available descriptions of different possible aggregate effects. [F17] | Compare them using common measures of production location, trade, investment and military supply chains; the article does not supply that resolution. [F17] |
+| CR4 | Japan and South Korea are the stated non-member extension cases. [F19] | They test whether the proposed mechanism can appear beyond the three AUKUS members. [F19] | They do not establish representativeness across all external or prospective partners. [F19] |
+| CR5 | VC and start-ups are described as among the main beneficiaries. [F16] | The examples support the existence of a selected beneficiary channel. [F16] | Compare those benefits with total expenditure, other recipients, unsuccessful applicants, risks and measurable public outputs before claiming predominance. [F16] |
+
+## The Cold War analogy
+
+The principal historical analogy is explicit: current war-industry development “reminds us” of the industrial-military complex formed during the Cold War [F10]. Its relevant correspondence is a resource-and-control relation. In the historical account, US assistance and offshore military procurement opened channels for Japanese and South Korean industrial development [F11]. In the present account, defence demand, public funding and procurement connect state agencies with defence contractors, civilian conglomerates, research institutions and technology firms.
+
+The article also states the analogy’s defeating difference: current development “only partially resembles” Cold War military-economic institutions [F12]. The present setting includes Global North state developmentalism, dual-use technologies, academic research and venture capital. Consequently, the analogy cannot establish that AUKUS will recreate the earlier scale, class formation or national industrial outcomes.
+
+What survives is more limited but still consequential: security apparatuses increasingly act as pilot agencies controlling industrial policy [F13]. The analogy therefore supports recognition of renewed military organisation of industrial accumulation. It does not support historical equivalence or a prediction that earlier developmental outcomes will recur.
+
+## Critical minerals: justification, resources and control
+
+The critical-minerals application separately compares official policy justification with institutional effects. Its actors include governments, export-credit and financing agencies, critical-minerals firms and manufacturers. Its resources include grants, loans, eligibility for public funds and export-control exceptions. Supply-chain resilience, manufacturing support and defence-trade cooperation supply the stated justification.
+
+The article’s political-economic conclusion is that the resulting policy confluence “repurposed state financing agencies and delegated the regulatory control to these agencies” [F14]. This correspondence warrants the claim that security policy changes who allocates capital and exercises regulatory authority. It is stronger than merely observing that critical-minerals firms receive money because it identifies the institutional mechanism joining security goals to economic control.
+
+The evidence nevertheless consists of identified arrangements and beneficiaries rather than an aggregate account of AUKUS. It establishes that a state-backed allocation channel exists. It does not establish its share of total expenditure, its net distributional consequences, or whether public manufacturing and security benefits outweigh the gains to selected firms [F16].
+
+## Venture capital: innovation claims and financial power
+
+The venture-capital application compares technological-sovereignty and innovation claims with changes in financial power. The relevant actors are the state, VC firms and defence-technology start-ups. The state supplies subsidies and military expenditure; start-ups become investment vehicles; VC firms mediate access between public capital and those firms. The article captures the mechanism by describing VC as an intermediary “between capital providers (the state) and start-ups within the AUKUS investment chain” [F15].
+
+That relation supports a concrete inference: state-backed military technology programmes can enlarge VC’s role in selecting and structuring investment. It does not follow that technological development has no public value, that all start-ups depend on the same mechanism, or that VC controls AUKUS generally. Although the article calls VC and start-ups “among the main beneficiaries,” it supplies no denominator that would establish predominance across the partnership [F16].
+
+The appropriate repair is to compare VC-backed recipients with total Pillar II expenditure, established contractors, public research bodies, programmes lacking private beneficiaries, unsuccessful applicants and realised public outputs. Until then, the application demonstrates a beneficiary and financial-power channel rather than comprehensive capture.
+
+## External cases and limits of generalisation
+
+Japan and South Korea are explicit extension cases: the analysis “extends to Japan and South Korea” beyond the AUKUS member states [F19]. Their regulatory reforms, industrial partnerships and procurement relationships provide tests of whether the proposed economic-security mechanism can travel outside the formal membership.
+
+These cases are not identified as a representative sample of all partners. They therefore support possibility and cross-border extension, not prevalence across every state that may engage with Pillar II. Nor does the article establish chronological uptake from one supplied work by another: only one work is available, and the external literature is represented through this article’s citations rather than independently audited sources.
+
+## What is settled and what remains open
+
+The comparisons support four scoped conclusions.
+
+1. State-centric analysis leaves AUKUS’s engagement in the emerging geoeconomic order underexplained, so political-economic analysis is a warranted supplement [F1] [F4].
+2. AUKUS combines continuing market coordination with security institutions in a manner consistent with a mutation—not an abolition—of neoliberalism [F5] [F9].
+3. Current military-led industrial policy resembles Cold War arrangements in the relation among public resources, military demand and accumulation, but not necessarily in scale, setting or outcome [F12] [F13].
+4. Critical-minerals and venture-capital applications identify state-backed allocation and beneficiary channels, but do not establish their aggregate predominance [F14] [F15] [F16].
+
+The exact remaining question is: **Do the documented programmes constitute the predominant structure and distributional effect of AUKUS, or are they consequential but selected instances within a security partnership whose aggregate expenditure, risks and public benefits follow a more mixed pattern?**
+
+## Scope assessments
+
+This is a one-document local inventory. A corpus relation, including influence or uptake between works, would require at least one additional supplied work.
+
+For **transfer claims**, the recorded outcome is findings present and the review status is supported within the stated scope. The assessment covered the Abstract, Introduction, “AUKUS and militarised neoliberalism,” “State interventions and politico-business coalitions,” and Conclusion. Its criterion was whether a comparison generates an explanation, classification, prediction or evaluation. The basis is the article’s use of geopolitical, neoliberal and Cold War comparisons for explanatory and classificatory conclusions. The limitations are that this is not a corpus comparison and that external sources were assessed only as represented in the article. The foundational omission claim has been kept at its narrower, text-supported force.
+
+For **correspondence**, the recorded outcome is findings present and supported within the stated scope. Coverage included the conceptual section, the bipartisanship and regulatory-control section, the state-intervention section and the venture-capital section. The criterion required a relevant mapped relation and a reason that relation warrants the conclusion. The basis is the article’s mapping of reciprocal security-economic transformation, bipartisan regulatory change, military procurement and industrial development, and state finance and VC power. The limitation is that some empirical claims depend on cited reports not independently verified here.
+
+For **defeating differences**, the recorded outcome is findings present and supported within the stated scope. The conceptual and state-intervention sections were covered. The criterion was whether a difference limits or defeats the transferred conclusion. The basis is the article’s denial that AUKUS is wholly geopolitically fetishist, its description of neoliberalism’s crisis as partial, and its express limitation of the Cold War resemblance. The limitation is that the article does not systematically test every possible disanalogy between present and Cold War institutions.
+
+For **criteria**, the recorded outcome is findings present and supported within the stated scope. The Introduction and conceptual section were covered. The criterion required classifications and scales to rest on stated or reconstructable rules while distinguishing feature lists from sufficient conditions. The basis is the definition of the older Washington Consensus through policy features and the presentation of three salient MN features. The limitation is that necessary and sufficient conditions for MN are not expressly supplied.
+
+For **alternatives**, the recorded outcome is findings present and supported within the stated scope. The Introduction, bipartisanship and regulatory-control section, and Conclusion were covered. The criterion included competing interpretations and third cases that test exhaustiveness or representativeness. The basis is the deglobalisation/globalisation alternative and the extension to Japan and South Korea. The limitations are that the alternatives are not compared through a common outcome measure and the two external cases cannot represent all prospective partners.
+
+For **surviving conclusions**, the recorded outcome is findings present and supported within the stated scope. The conceptual, state-intervention, venture-capital and concluding sections were covered. The criterion required stating what remains after relevant differences and category limits are retained. The basis is the narrowing of the argument to explanatory supplementation, selective market reconstruction, limited Cold War resemblance and demonstrated rather than predominant beneficiary channels. The limitation is that aggregate expenditure and outcome data are needed to establish system-wide predominance or net effects.
+
+## Findings ledger
+
+- [F1] The text moves from state-centric geopolitical analysis to AUKUS’s engagement in the emerging geoeconomic order. — dim: transfer_claim — anchor: "A common state-centric focus omits how AUKUS, as both a security partnership and a military alliance, engages in the emerging geoeconomic order." — from: CHECK.F1 — confidence: high
+- [F2] MN’s relevant correspondence is the reciprocal layering of security imperatives and economic institutions. — dim: correspondence — anchor: "MN entails the gradual process of state transformation which is marked by the layering of security imperatives on economic institutions and vice versa." — from: CHECK.F2 — confidence: high
+- [F3] The text denies that AUKUS is wholly reducible to geopolitical fetishism. — dim: defeating_difference — anchor: "This is not to say that AUKUS as a security partnership is completely geopolitically fetishist." — from: CHECK.F3 — confidence: high
+- [F4] MN situates AUKUS within a broader geopolitical-economic conjuncture rather than eliminating geopolitical analysis. — dim: surviving_conclusion — anchor: "Rather, it stands at the heart of a geopolitical economic conjuncture that embeds complex social relations and patterns of capitalist transformation" — from: CHECK.F4 — confidence: high
+- [F5] The headline classification presents AUKUS as both a security partnership and a mutation of neoliberalism. — dim: transfer_claim — anchor: "AUKUS is distinctive in that it is both a security partnership and a mutation of neoliberalism emerging from the context of geoeconomic conflict and bipartisan politics." — from: CHECK.F5 — confidence: high
+- [F6] The older Washington Consensus endpoint is identified with market-led liberalisation and deregulation. — dim: criterion — anchor: "The term ‘Washington Consensus’ has for decades been used in reference to market-led neoliberal policies, such as fiscal discipline, trade and interest-rate liberalisation, and deregulation" — from: CHECK.F6 — confidence: high
+- [F7] The new formation is distinguished by reciprocal securitisation of economic policy and economisation of strategic policy. — dim: correspondence — anchor: "being characterised by ‘the simultaneous securitisation of economic policy and economisation of strategic policy’" — from: CHECK.F7 — confidence: high
+- [F8] The text limits the scale of change by describing neoliberalism’s legitimacy crisis as partial. — dim: defeating_difference — anchor: "‘a partial crisis of the legitimacy of neoliberalism’." — from: CHECK.F8 — confidence: high
+- [F9] The surviving classification is selective global-economic reconnection rather than deconstruction. — dim: surviving_conclusion — anchor: "reconnects, rather than deconstructs, the global economy in a way that favours certain interests of political and economic groups" — from: CHECK.F9 — confidence: high
+- [F10] The article invokes the Cold War industrial-military complex as a historical comparison. — dim: transfer_claim — anchor: "this reminds us of the dynamics of the industrial-military complex taking shape during the Cold War period." — from: CHECK.F10 — confidence: high
+- [F11] The historical correspondence joins US assistance and military offshore procurement. — dim: correspondence — anchor: "These events see a combination of US-led economic assistance packages and opportunities for offshore procurement (OSP) from the US military during the Korean and Vietnam Wars." — from: CHECK.F11 — confidence: high
+- [F12] The present development trajectory only partially resembles Cold War military-economic institutions. — dim: defeating_difference — anchor: "However, it is important to recognise that the current development trajectory only partially resembles the Cold War military-economic institutions." — from: CHECK.F12 — confidence: high
+- [F13] The narrower surviving Cold War comparison concerns security agencies piloting industrial policy. — dim: surviving_conclusion — anchor: "security apparatuses have increasingly assigned themselves the role of a pilot agency controlling industrial policy" — from: CHECK.F13 — confidence: high
+- [F14] The critical-minerals application identifies repurposed state financiers and delegated regulatory control. — dim: correspondence — anchor: "the upshot is a confluence of policies which has simultaneously repurposed state financing agencies and delegated the regulatory control to these agencies." — from: CHECK.F14 — confidence: high
+- [F15] The VC application identifies VC as an intermediary between the state as capital provider and start-ups. — dim: correspondence — anchor: "they are no longer acting patiently—a key qualifier for financing start-ups—but rather as intermediaries between capital providers (the state) and start-ups within the AUKUS investment chain." — from: CHECK.F15 — confidence: high
+- [F16] The applications support a beneficiary channel but do not quantify its system-wide predominance. — dim: surviving_conclusion — anchor: "Venture capital and start-ups have been among the main beneficiaries, taking advantage of different modes of warfare promoted by security apparatuses linked to AUKUS." — from: CHECK.F16 — confidence: medium
+- [F17] The article presents deglobalisation and globalisation of military production as competing interpretations. — dim: alternatives — anchor: "Economists complicate the perspective in debating whether AUKUS catalyses de-globalisation or rather drives the globalisation of military production" — from: CHECK.F17 — confidence: high
+- [F18] The article presents three salient MN features without stating necessary and sufficient category conditions. — dim: criterion — anchor: "In the following sections, we analyse three salient features of MN embedded in AUKUS." — from: CHECK.F18 — confidence: high
+- [F19] Japan and South Korea are the article’s stated non-member extension cases. — dim: alternatives — anchor: "Our analysis is not only limited to AUKUS member states, but also extends to Japan and South Korea." — from: CHECK.F19 — confidence: high
+- [F20] Bipartisanship supplies an institutional setting for regulatory changes that bring together group interests. — dim: correspondence — anchor: "serves as an institutional setting for promoting significant regulatory changes that bring together the interests of various groups." — from: CHECK.F20 — confidence: high
+
+### Counter-evidence
+
+- The text preserves AUKUS’s security character: “This is not to say that AUKUS as a security partnership is completely geopolitically fetishist.” [F3]
+- It limits claims of a post-neoliberal rupture to “‘a partial crisis of the legitimacy of neoliberalism’.” [F8]
+- It expressly restricts the historical analogy: “the current development trajectory only partially resembles the Cold War military-economic institutions.” [F12]
+
+### Open questions
+
+- Do the documented programmes constitute the predominant structure and distributional effect of AUKUS, or are they consequential but selected instances within a more mixed aggregate pattern?
+- What share of Pillar II expenditure reaches VC-backed start-ups, established contractors, public research bodies and other recipients?
+- What measurable security, industrial, employment and technological outputs result from the identified public financing?
+- Would the MN mechanism hold across external partners other than Japan and South Korea?
+- Which common outcome measure would resolve the deglobalisation versus globalisation-of-military-production alternative?
+
+### Tables
+
+- comparison_audit: rows CA1, CA2, CA3, CA4, CA5
+- criteria_and_alternatives: rows CR1, CR2, CR3, CR4, CR5
+
+## Scope assessment
+
+These are reader/reviewer assessments of the stated sections, not proofs of absence elsewhere.
+
+- Scope doc / transfer_claim: inconclusive; not supported by a completed scope review. Inspected sections: Abstract, Introduction, AUKUS and militarised neoliberalism, State interventions and politico-business coalitions, Conclusion. Reported coverage: complete. Criterion: A comparison must perform inferential work by generating an explanation, classification, prediction, or evaluation. Basis: The article uses geopolitical, neoliberal and Cold War comparisons to support explanatory and classificatory conclusions.
+  Limits: This is a one-document local inventory, not a corpus comparison.; Referenced external sources were assessed only as represented in the supplied article.
+  Evidence/record limits: Malformed/missing scope records: malformed scope JSON fence
+
+- Scope doc / correspondence: inconclusive; not supported by a completed scope review. Inspected sections: AUKUS and militarised neoliberalism, AUKUS, bipartisanship, and the regulatory control, State interventions and politico-business coalitions, The emergence of a new business class. Reported coverage: complete. Criterion: A consequential comparison must map a relevant relation between the compared domains and identify why that relation warrants the conclusion. Basis: The article maps reciprocal security-economic institutional change, military procurement to industrial development, and state finance to venture-capital power.
+  Limits: Some empirical claims rely on cited reports that were not independently verified.
+  Evidence/record limits: Malformed/missing scope records: malformed scope JSON fence
+
+- Scope doc / defeating_difference: inconclusive; not supported by a completed scope review. Inspected sections: AUKUS and militarised neoliberalism, State interventions and politico-business coalitions. Reported coverage: complete. Criterion: A difference is relevant when it limits or defeats the conclusion transferred from the comparison. Basis: The article denies that AUKUS is wholly geopolitically fetishist, calls neoliberalism's crisis partial, and limits the Cold War resemblance.
+  Limits: The article does not systematically test every possible disanalogy between current and Cold War institutions.
+  Evidence/record limits: Malformed/missing scope records: malformed scope JSON fence
+
+- Scope doc / criterion: inconclusive; not supported by a completed scope review. Inspected sections: Introduction, AUKUS and militarised neoliberalism. Reported coverage: complete. Criterion: A classification or scale requires stated or reconstructable criteria, with feature lists distinguished from sufficient conditions. Basis: The article defines the older Washington Consensus through policy features and organises MN through three salient features without stating an exhaustive classification rule.
+  Limits: Necessary and sufficient conditions for militarised neoliberalism are not expressly supplied.
+  Evidence/record limits: Malformed/missing scope records: malformed scope JSON fence
+
+- Scope doc / alternatives: inconclusive; not supported by a completed scope review. Inspected sections: Introduction, AUKUS, bipartisanship, and the regulatory control, Conclusion. Reported coverage: complete. Criterion: Alternatives include supplied competing interpretations and third cases that test exhaustiveness or representativeness. Basis: The text supplies competing globalisation interpretations and uses Japan and South Korea as non-member extension cases.
+  Limits: The article does not compare all alternatives using a single outcome measure.; The two external cases cannot establish representativeness across all prospective partners.
+  Evidence/record limits: Malformed/missing scope records: malformed scope JSON fence
+
+- Scope doc / surviving_conclusion: inconclusive; not supported by a completed scope review. Inspected sections: AUKUS and militarised neoliberalism, State interventions and politico-business coalitions, The emergence of a new business class, Conclusion. Reported coverage: complete. Criterion: After retaining relevant differences and criterion limits, the audit states the weaker conclusion that remains and the premise or evidence needed for a stronger one. Basis: The retained findings narrow the claims to explanatory supplementation, selective market reconstruction, limited Cold War resemblance, and demonstrated rather than predominant beneficiary channels.
+  Limits: Aggregate expenditure and outcome data would be needed to establish system-wide predominance or net effects.
+  Evidence/record limits: Malformed/missing scope records: malformed scope JSON fence
