@@ -182,6 +182,23 @@
      ],
      "fit": "ok",
      "fit_note": "reads a memo that tested a hypothesis (its findings with quotes) and a plan block with the hypothesis, verdict and coverage"
+    },
+    {
+     "engine_key": "reference_reread",
+     "plain_name": "your references, re-read",
+     "use_when": "you commented on a memo and named works from memory; the works are now held and you want your recollection read against them, and the questions the texts license",
+     "yields": "per reference: what you said the work argues, what it says (quoted), holds / holds in part / diverges / not in text / unverifiable, the implication for the part; at most three follow-up questions ranked, each anchored in a work",
+     "row_unit": "one row per statement × work pair, plus the follow-ups",
+     "deliverable_kinds": [
+      "stress_test",
+      "briefing"
+     ],
+     "pairs_with": [
+      "citation_fidelity_audit",
+      "hypothesis_evidential_frame"
+     ],
+     "fit": "ok",
+     "fit_note": "reads a statements file (the comment as numbered statements, the named works as sources); the Stacks' references lane calls it through POST /v1/engines/reference_reread/call or an engines-only job"
     }
    ]
   },

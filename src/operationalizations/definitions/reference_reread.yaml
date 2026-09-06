@@ -1,0 +1,151 @@
+# The owner's references re-read against the texts (2026-09-06). Input: a `role: statements` source (the Stacks'
+# statements file: the comment as the memo, one statement per named reference, the fetched works as sources), read
+# through the citation family's index machinery; A is the comment, the works are primary windows.
+engine_key: reference_reread
+engine_name: Your references, re-read against the texts
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: Do the reader's recollections of the works they named hold against those works, and what should the desk ask them next?
+  framing: The citing document is a reader's comment on a memo, supplied as numbered statements ([st<no>] lines at
+    its head, each naming the works it cites and the part of the memo it bears on) followed by the comment's own words.
+    The other documents are the named works, held in full as primary windows. Read each statement × work pair. Say
+    what the reader says the work argues (from the statement, in the reader's words), what the work says on that
+    matter (verbatim, with where and in whose voice), and whether the recollection holds, holds in part, diverges,
+    is not in the text, or is unverifiable (the work not held, or the matter not in the held pages). Say what the
+    verdict implies for the part the statement bears on. Then the follow-up questions the sources license, at most
+    three, ranked by how much an answer would change the part, each anchored in a work. Never supply what a work
+    says from memory; keep the work's voice separate from a quoted other's; an unheld work stays unverifiable and
+    never blocks the other pairs, and it still gets its reread row (verdict unverifiable) so every statement has
+    a verdict. Do not turn a recollection's divergence into a judgment of the reader.
+  scoped_outcomes: true
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: claude-sonnet-5
+  dimensions:
+  - key: recollection
+    name: What the reader says the work argues
+    questions:
+    - For each statement, what does the reader say the named work argues, on what clue, and which part of the memo does it bear on?
+    method_card: 'Do: One row per statement × cited work, from the comment document only. Copy the reader''s claim
+      as one proposition, the clue they give (a case, a phrase, an issue), and the part of the memo it bears on from
+      the statement''s section. Anchor in the statement''s own words. Code checks only anchors and IDs; the model
+      must judge the reading against the supplied comment.'
+    indicators:
+    - argues
+    - critique
+    - the case of
+    scope: document
+    load_bearing: true
+    id_prefix: R1
+    answer_shape: '[R1.F<n>] <what the reader says the work argues, one sentence> — dim: recollection — pair-ref: <index
+      ID st<no>/<label>> — says: <the proposition> — clue: <the reader''s clue> — part: <the memo part it bears on>
+      — anchor: "<verbatim from the comment, <=200 chars>" — doc: <the comment''s source key> — confidence: high|medium|low'
+  - key: source_says
+    name: What the work says on that matter
+    questions:
+    - What does the held text argue on the matter the reader raises, where, and in whose voice?
+    method_card: 'Do: On a held work only. Find the passages that bear on the matter the statement raises and state
+      the work''s position in two or three sentences, with where it sits (section, pages) and whose voice it is (the
+      author, a quoted other, an editor). A work that does not treat the matter gets a row saying so with the nearest
+      passage. Anchor verbatim in the work. Code checks only anchors and IDs.'
+    indicators:
+    - I argue
+    - contrary to
+    - the Dutch
+    scope: document
+    load_bearing: true
+    id_prefix: R2
+    answer_shape: '[R2.F<n>] <what the work says on the matter, one sentence> — dim: source_says — pair-ref: <index ID
+      st<no>/<label>> — p-says: <the position in two or three sentences> — where: <section; printed/PDF pages> — voice:
+      <author, quoted other, editor or unresolved> — anchor: "<verbatim from the work, <=200 chars>" — doc: <the work''s
+      source key> — confidence: high|medium|low'
+  - key: reread
+    name: Whether the recollection holds, and what it implies
+    questions:
+    - Does the recollection hold, hold in part, diverge, fall outside the text or stay unverifiable; and what does that imply for the part it bears on?
+    method_card: 'Do: One row per pair, unheld works included, joining the R1 and R2 rows. The verdict compares the reader''s proposition
+      with the work''s position: holds (the work argues it), holds_in_part (the work argues part of it or with a
+      qualification the reader omits), diverges (the work argues otherwise), not_in_text (the work does not treat the
+      matter), unverifiable (the work is not held or the held pages do not carry it). Give the specific warrant. Then
+      the implication for the part the statement bears on: what the memo''s part must now say, drop or qualify.
+      Anchor in the comment and anchor-b in the work. Code checks only anchors and IDs.'
+    indicators:
+    - however
+    - in fact
+    - rather
+    scope: corpus
+    load_bearing: true
+    id_prefix: X3
+    answer_shape: '[X3.F<n>] <the verdict in one sentence> — dim: reread — pair-ref: <index ID st<no>/<label>> — verdict:
+      holds|holds_in_part|diverges|not_in_text|unverifiable — reason: <the specific warrant> — implication: <what the
+      part must now say, drop or qualify> — anchor: "<verbatim from the comment, <=200 chars>" — doc: <the comment''s
+      source key> — anchor-b: "<verbatim from the work, <=200 chars>" — doc-b: <the work''s source key> — confidence: high|medium|low'
+  - key: follow_up
+    name: What the desk should ask next
+    questions:
+    - Which questions do the divergences and the texts license, and which would change the part most?
+    method_card: 'Do: At most three rows. A follow-up is a question to the reader that a divergence, a qualification
+      or a passage in a work licenses; it names what in the text prompts it. Rank by how much an answer would change
+      the part (rank 1 changes it most). Anchor-b in the work that prompts it; anchor in the comment when a statement
+      does. Code checks only anchors and IDs.'
+    indicators:
+    - would you
+    - does this
+    - which
+    scope: corpus
+    load_bearing: true
+    id_prefix: X4
+    answer_shape: '[X4.F<n>] <the question to the reader, one sentence> — dim: follow_up — licensed-by: <pair-ref or
+      the passage> — part: <the memo part it would change> — rank: <1 = changes the part most> — anchor: "<verbatim
+      from the comment, <=200 chars>" — doc: <the comment''s source key> — anchor-b: "<verbatim from the work, <=200
+      chars>" — doc-b: <the work''s source key> — confidence: high|medium|low'
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension_x_document
+    model_tier: cheap
+    output: ledger
+    max_rows: 8
+  - key: verify
+    kind: verify
+    parallel_over: document
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - merge_duplicates
+    - hunt_misses
+    - name_must_keep
+    - Every reread row carries `verdict:` as a field and both anchors; a verdict folded into the sentence is malformed.
+      A p-says supplied from memory (no anchor-b in the work) is struck. An unheld work is unverifiable, never diverges.
+      At most three follow_up rows; strike the rest by rank.
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    max_rows: 3
+    reader: the desk that will put the follow-up questions to the reader, with the memo part open
+    tables:
+    - reread_by_reference
+    brief: '1. Open with one paragraph per reference: what the reader said the work argues, what the work says (with
+      the quotation), the verdict and what it implies for the part. Then the follow-up questions, at most three, in
+      rank order, each with the passage that prompts it. Never say what a work argues without its quotation.
+
+      2. Then the ledger: R1 and R2 rows per pair, one X3 row per pair with the verdict as a field, at most three X4
+      rows. Every paragraph cites its supporting row IDs. Keep the verdict vocabulary as supplied.'

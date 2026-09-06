@@ -8,7 +8,7 @@ from __future__ import annotations
 import json
 import re
 
-FAMILY = {"citation_engagement_map", "citation_fidelity_audit", "citation_reception_map"}
+FAMILY = {"citation_engagement_map", "citation_fidelity_audit", "citation_reception_map", "reference_reread"}
 
 
 def evidence_indexes(documents: dict[str, str]) -> list[tuple[str, dict]]:
@@ -151,7 +151,8 @@ def prepare_citation_sources(engine_key: str, documents: dict[str, str]) -> tupl
         metadata.append(slim)
     allowed = {"citation_engagement_map": {"citing_author"},
                "citation_fidelity_audit": {"citing_author", "primary_window"},
-               "citation_reception_map": {"citing_author", "secondary_reader"}}[engine_key]
+               "citation_reception_map": {"citing_author", "secondary_reader"},
+               "reference_reread": {"citing_author", "primary_window"}}[engine_key]
     def in_scope(body):
         role = re.match(r"SOURCE ROLE: (\w+)", body)
         return not role or role[1] in allowed

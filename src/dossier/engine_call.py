@@ -34,7 +34,9 @@ RENDERERS: dict[str, Callable[..., Optional[dict]]] = {}
 def _renderers() -> dict[str, Callable[..., Optional[dict]]]:
     if not RENDERERS:
         from src.dossier.explainer import render_explanation
+        from src.dossier.reread import render_reread
         RENDERERS["citation_explainer"] = render_explanation
+        RENDERERS["reference_reread"] = render_reread
     return RENDERERS
 
 
@@ -95,11 +97,14 @@ def call_engine(engine_key: str, sources: list[SourceSpec], *, packet: Optional[
     if cap_def is None or op is None or op.process is None:
         raise KeyError(f"no engine with a process named {engine_key!r}")
     spec = op.process
+    from src.sources.citation_evidence import FAMILY, prepare_citation_sources
+
     docs = resolve_sources(sources)
-    documents = {d.key: d.text for d in docs if (getattr(d, "role", "source") or "source") == "source" and d.text}
+    unpacked_roles = {"statements", "evidence_index"} if engine_key in FAMILY else set()   # the family unpacks these into witnesses
+    documents = {d.key: d.text for d in docs if (getattr(d, "role", "source") or "source") in unpacked_roles | {"source"} and d.text}
     if not documents:
         raise ValueError("no source with text was supplied (a source needs kind=paste and text)")
-    upstream = _context_block(packet, docs)
+    upstream = _context_block(packet, [d for d in docs if (getattr(d, "role", "source") or "source") not in unpacked_roles])
     chars = sum(len(v) for v in documents.values()) + len(upstream)
     if chars > MAX_CHARS:
         raise ValueError(f"{chars:,} chars supplied; this route takes at most {MAX_CHARS:,} (a dossier job takes more)")
@@ -113,7 +118,8 @@ def call_engine(engine_key: str, sources: list[SourceSpec], *, packet: Optional[
                                  tier_overrides={"strong": strong} if model else None, call_fn=call_fn, upstream_context=upstream)
     prose, ledger = split_ledger(result.final_content or "")
     rows = parse_rows(ledger or result.final_content or "")
-    rep = verify_rows(rows, SourceIndex(documents))
+    witnesses = prepare_citation_sources(engine_key, documents)[0] if engine_key in FAMILY else documents   # the wall reads what the engine read
+    rep = verify_rows(rows, SourceIndex(witnesses))
     failed = set(rep.failed_ids)
     row_dicts = []
     for r in rows:

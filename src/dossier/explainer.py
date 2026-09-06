@@ -36,8 +36,9 @@ def rows_with_fields(final_output: str, failed: Iterable[str] = ()) -> list[dict
         f = fields_of(raw)
         head = re.sub(r"^\s*(?:[-*]\s+)?\[[^\]]+\]\s*", "", raw.split(" — ", 1)[0]).strip()
         anchor = (f.get("anchor") or "").strip().strip('"“”')
+        anchored = bool(anchor) or bool((f.get("anchor-b") or "").strip().strip('"“”'))
         out.append({"id": r.id, "dim": r.dim or f.get("dim", ""), "text": head, "fields": f, "anchor": anchor,
-                    "doc": r.doc or f.get("doc", ""), "conjecture": (not anchor) or (r.id in failed),
+                    "doc": r.doc or f.get("doc", ""), "conjecture": (not anchored) or (r.id in failed),
                     "confidence": f.get("confidence", "")})
     return out
 

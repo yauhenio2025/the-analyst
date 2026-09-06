@@ -246,6 +246,19 @@ def get_frame(job_id: str):
     return {**frame, "status": job.status}
 
 
+@router.get("/jobs/{job_id}/reread")
+def get_reread(job_id: str):
+    """The owner's references re-read against the texts (engine reference_reread) as JSON, rendered from the job's
+    ledger rows by code: references (verdict, implication, quotes) and the follow-up questions."""
+    from src.dossier.reread import render_reread, rows_from_job
+
+    job = _load(job_id)
+    found = rows_from_job(job.model_dump(mode="json"))
+    if found is None:
+        raise HTTPException(status_code=409, detail=f"no finished reference_reread phase on this job (status={job.status}, step={job.step})")
+    return {**render_reread(found[0], found[1]), "status": job.status, "job_id": job.id}
+
+
 @router.get("/jobs/{job_id}/brief")
 def get_brief(job_id: str):
     job = _load(job_id)

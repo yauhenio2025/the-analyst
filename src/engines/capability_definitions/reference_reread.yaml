@@ -1,0 +1,41 @@
+# The owner's references re-read against the texts (Evgeny, 2026-09-06 23:31, on a hunch memo: "I hope our system
+# is smart enough to fetch both texts … and then re-read my answer in light of them … the system should be steering
+# this"). The Stacks extract the references he names and fetch the works; this engine reads his words against them:
+# the fidelity audit turned around, with the implication for the part he commented on and the follow-ups the sources
+# license. Designed with zotero-stacks-26.
+engine_key: reference_reread
+engine_name: Your references, re-read against the texts
+version: 1
+category: scholarly
+kind: comparison
+problematique: A reader commented on a memo and named works from memory ("Sewell's critique of Brenner on the Dutch
+  case"). The comment is the document under test, as numbered statements each citing the works it names; the works
+  are held in full. For each statement say what the reader says the work argues, what the work says on that matter
+  in its own words, whether the recollection holds, holds in part, diverges, is not in the text or cannot be checked,
+  and what that implies for the part of the memo the statement bears on. Then the follow-up questions the sources
+  license, at most three, each anchored in a text, ranked by how much an answer would change the part. Never supply
+  what a work says from memory; an unheld work stays unverifiable. Precise about voice, edition and scope.
+researcher_question: Do the reader's recollections of the works they named hold against those works, and what should the desk ask them next?
+intellectual_lineage:
+  primary: source_criticism
+analytical_dimensions:
+- key: recollection
+  description: What the reader says the work argues
+  probing_questions:
+  - For each statement, what does the reader say the named work argues, on what clue, and which part of the memo does it bear on?
+- key: source_says
+  description: What the work says on that matter
+  probing_questions:
+  - What does the held text argue on the matter the reader raises, where, and in whose voice?
+- key: reread
+  description: Whether the recollection holds, and what it implies
+  probing_questions:
+  - Does the recollection hold, hold in part, diverge, fall outside the text or stay unverifiable; and what does that imply for the part it bears on?
+- key: follow_up
+  description: What the desk should ask next
+  probing_questions:
+  - Which questions do the divergences and the texts license, and which would change the part most?
+apps:
+- critic
+function: logic
+family: analytical
