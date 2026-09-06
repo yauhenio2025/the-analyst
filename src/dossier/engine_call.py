@@ -59,9 +59,10 @@ def normalize_model(model: Optional[str]) -> Optional[str]:
 def estimate_usd(model: str, chars: int, *, depth: str, mid_model: str = "") -> float:
     """What the call will cost before it runs: the reading on `model`, plus the critic on `mid_model` at standard depth."""
     tokens_in = int(chars / 3.5) + SYSTEM_TOKENS
-    cost = estimate_cost(model, tokens_in, OUTPUT_TOKENS) or 0.0
+    tokens_out = max(OUTPUT_TOKENS, int(tokens_in * 0.4))   # a one-call reading writes about 0.4 tokens per input token (explainer 7K→2.8K; reread 116K→46K, 2026-09-07)
+    cost = estimate_cost(model, tokens_in, tokens_out) or 0.0
     if depth == "standard":
-        cost += estimate_cost(mid_model or model, tokens_in + OUTPUT_TOKENS, OUTPUT_TOKENS) or 0.0
+        cost += estimate_cost(mid_model or model, tokens_in + tokens_out, tokens_out) or 0.0
     return round(cost, 4)
 
 
