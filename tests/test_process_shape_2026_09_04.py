@@ -368,3 +368,14 @@ def test_a_quoted_anchor_broken_across_lines_still_parses_and_verifies():
     assert [r.id for r in rows] == ["D1.F1", "D1.F2"] and rows[0].doc == "subsea" and rows[0].anchor.startswith("PEACE became")
     verify_rows(rows, SourceIndex({"subsea": src}))
     assert all(r.anchor_verified for r in rows)
+
+
+def test_split_words_with_a_space_before_the_hyphen_verify():
+    """E3's candidate (fourth queue) failed its anchor because the PDF text reads "con -\nnects" and "SeaMeWe - 6" while
+    the model wrote "connects" and "SeaMeWe-6"; a space before the hyphen is the same PDF artefact as one after it."""
+    from src.executor.ledger_walls import SourceIndex, verify_quote
+    src = "The PEACE cable con -\nnects Pakistan to France; after the SeaMeWe - 6 vote the consortium chose SubCom, a market -driven choice."
+    idx = SourceIndex({"doc": src})
+    assert verify_quote("The PEACE cable connects Pakistan to France", idx)[0] == "doc"
+    assert verify_quote("after the SeaMeWe-6 vote the consortium chose SubCom", idx)[0] == "doc"
+    assert verify_quote("a market-driven choice", idx)[0] == "doc"

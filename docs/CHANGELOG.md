@@ -5,6 +5,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Fixed (2026-09-06, split words)
+- Anchor wall: a space before a hyphen at a line end (`con -\nnects`) joins like a hyphen at the line end, and the closed-hyphen index closes spaces on either side of a hyphen (`SeaMeWe - 6`, `market -driven`); E3's candidate had failed its anchor on this ([walls.py](src/dossier/walls.py), [ledger_walls.py](src/executor/ledger_walls.py)).
+
 ### Added (2026-09-06 night — fourth queue)
 
 - Released G5, A7, C4, C5, S5, R2, I4, I11, I13 and T5 in their fitting purpose groups. All twelve selected methods have capability/process definitions, predicate-bearing cards, three depth modes and UNDER_THE_SHAPE coverage. E3 remains excluded after its bounded final fails an anchor/citation check; I9 remains excluded because Sonnet 8.333 is below original 8.500. T2's earlier identity hold remains.

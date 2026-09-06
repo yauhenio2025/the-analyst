@@ -335,7 +335,7 @@ def parse_rows(ledger_text: str) -> list[LedgerRow]:
     return rows
 
 
-_SPACED_HYPHEN = re.compile(r"(\w)-\s+(\w)")
+_SPACED_HYPHEN = re.compile(r"(\w)\s*-\s+(\w)|(\w)\s+-\s*(\w)")  # "market- driven", "market-\ndriven", "SeaMeWe - 6", "market -driven"
 
 
 class SourceIndex:
@@ -348,7 +348,7 @@ class SourceIndex:
 
     def __init__(self, documents: dict[str, str]):
         self.norm = {k: normalize(v) for k, v in documents.items()}
-        self.norm_closed = {k: normalize(_SPACED_HYPHEN.sub(r"\1-\2", v)) for k, v in documents.items()}
+        self.norm_closed = {k: normalize(_SPACED_HYPHEN.sub(lambda m: (m.group(1) or m.group(3)) + "-" + (m.group(2) or m.group(4)), v)) for k, v in documents.items()}
 
     def _has(self, doc_key: str, q: str) -> bool:
         return q in self.norm[doc_key] or q in self.norm_closed[doc_key]
