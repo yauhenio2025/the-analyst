@@ -114,7 +114,9 @@ def render_explanation(final_output: str, failed: Iterable[str] = (), *, refs: O
             e["doc"] = r["doc"]
     explanations = [by_ref[k] for k in order]
     for e in explanations:
-        e.pop("seen", None)
+        seen = e.pop("seen", set())
+        e["missing_fields"] = [k for k, dim in (("move", "how"), ("stance", "how"), ("place", "in_argument")) if dim in seen and not e.get(k)] + \
+                              [f"row:{d}" for d in ("how", "why_here", "in_argument") if d not in seen]
     if len(explanations) == 1:   # one citation: the reading's own parts are the fuller prose, the rows their labels
         e = explanations[0]
         for key, name in (("how", "how"), ("why", "why"), ("fit", "fit")):

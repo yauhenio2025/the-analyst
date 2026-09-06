@@ -126,6 +126,20 @@ def _method_card(dim: ProcessDimension, prefix: str = "") -> str:
     return "\n".join(lines).rstrip()
 
 
+def _row_shapes(spec: ProcessSpec) -> str:
+    """The dimensions' answer shapes repeated where the rows are written: a row carries every field of its shape.
+    Part of the compact-ledger contract (a final step with max_rows < 12): few rows, each complete. The generic
+    skeleton above it is what a model copies when the shapes sit only in the method cards (the Stacks' first explainer
+    call came back without move, stance and place, 2026-09-06). Released engines keep their prompts byte-identical."""
+    shaped = [d for d in spec.dimensions if d.answer_shape]
+    if not shaped:
+        return ""
+    lines = ["Each row takes its dimension's answer shape exactly, with every field the shape names, in that order; "
+             "a row that drops a field is incomplete. The shapes:"]
+    lines += [f"- `{d.answer_shape.strip()}`" for d in shaped]
+    return "\n".join(lines)
+
+
 def _source_block(documents: dict[str, str]) -> str:
     if len(documents) == 1:
         (k, v), = documents.items()
@@ -487,16 +501,17 @@ def compose_oneshot_prompt(cap_def, spec: ProcessSpec, documents: dict[str, str]
         "Use only these declared dimension keys: " + ", ".join(d.key for d in spec.dimensions),
         TEXT_NOT_AUTHORS,
         "## Output",
-        "\n".join([
+        "\n".join(line for line in [
             "The reading (one line of argument, headed sections in the reader's terms, verbatim quotes where the sentence needs them), then:",
             LEDGER_HEADING,
             "- [F1] <finding> — dim: <key> — anchor: \"<verbatim>\""
             + (" — doc: <doc_key>" if len(documents) > 1 else "") + " — confidence: high|medium|low",
             (f"(at most {final.max_rows} rows per dimension, in the order the reading uses them; no positive minimum)"
              if final and final.max_rows < 12 else "(12-30 rows in the order the reading uses them)"),
+            _row_shapes(spec) if final and final.max_rows < 12 else "",
             "### Counter-evidence",
             "### Open questions",
-        ]),
+        ] if line),
     ]
     system = "\n\n".join(s for s in sections if s)
     if spec.scoped_outcomes:

@@ -85,6 +85,11 @@ def test_the_light_call_runs_the_engine_through_the_walls_in_the_request():
     assert seen["model"] == "claude-sonnet-5" and "CITATION PACKET" in seen["user"] and "SOURCE [em:C9LPBLYH]" in seen["user"]
     assert "One citation explained" in seen["system"] or "citation_explainer" in seen["system"]
     assert "at most 2 rows per dimension" in seen["system"]     # the one-call ledger honours the final step's max_rows
+    assert seen["system"].count("— move: authority|evidence|") == 2   # the answer shapes sit in the Output section too, not only in the method cards
+    assert out["shaped"]["explanation"]["missing_fields"] == [] and out["model_requested"] == "anthropic/claude-sonnet-5"
+    dropped = FINAL.replace(" — move: authority — stance: adopts", "")
+    out3 = call_engine("citation_explainer", src, packet=packet, call_fn=lambda *a, **k: {"content": dropped, "model_used": "m"})
+    assert out3["shaped"]["explanation"]["missing_fields"] == ["move", "stance"] and out3["shaped"]["explanation"]["intent"] == ""
     assert out["engine_key"] == "citation_explainer" and out["depth"] == "surface" and out["model"] == "claude-sonnet-5"
     assert [r["id"] for r in out["rows"]] == ["E1.F1", "E1.F2", "E2.F1", "E3.F1"]
     assert out["wall"] == {"anchors": 4, "verified": 4, "failed_ids": []} and out["rows"][0]["fields"]["move"] == "authority"

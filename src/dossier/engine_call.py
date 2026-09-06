@@ -123,7 +123,7 @@ def call_engine(engine_key: str, sources: list[SourceSpec], *, packet: Optional[
                           "anchor_verified": bool(r.anchor_verified), "status": r.status, "confidence": r.confidence})
     renderer = _renderers().get(engine_key)
     shaped = renderer(result.final_content or "", failed, refs=refs) if renderer else None
-    out = {"engine_key": engine_key, "depth": depth, "model": result.final_model or strong, "seconds": round(time.time() - t0, 1),
+    out = {"engine_key": engine_key, "depth": depth, "model": result.final_model or strong, "model_requested": model or "", "seconds": round(time.time() - t0, 1),
            "cost_usd": result.cost_usd, "estimated_usd": est, "chars": chars, "calls": [c.as_receipt() for c in result.calls],
            "wall": {"anchors": len(rows), "verified": sum(1 for r in rows if r.anchor_verified), "failed_ids": sorted(failed)},
            "prose": prose, "final_output": result.final_content, "rows": row_dicts, "shaped": shaped}
