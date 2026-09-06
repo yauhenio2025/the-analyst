@@ -13,6 +13,17 @@ def http(method, path, body=None, timeout=120):
         raw = r.read(); ct = r.headers.get("Content-Type", "")
         return json.loads(raw) if "json" in ct else raw.decode("utf-8", "replace")
 
+def create_deutschmann():
+    """Second live check (2026-09-06 evening): a same-author pair through two second-queue corpus methods."""
+    a = (ROOT / "data/study/sources_ideas/deutschmann2001_promise_of_absolute_wealth.md").read_text()
+    b = (ROOT / "data/study/sources_ideas/deutschmann2022_interpretation_of_capitalism_as_religion.md").read_text()
+    body = {"sources": [{"kind": "paste", "title": "Deutschmann 2001 — The Promise of Absolute Wealth", "text": a},
+                        {"kind": "paste", "title": "Deutschmann 2022 — The interpretation of capitalism as religion", "text": b}],
+            "intent": "How does Deutschmann's reading of capitalism as a religion travel from 2001 to 2022: which concepts persist, which change their role, and how does the later text present its relation to the earlier one?",
+            "audience": "researcher", "depth": "medium", "output": {"tables": True, "figures": 0, "plates": 0}, "spend_cap_usd": 8.0,
+            "entry": "chosen", "path": {"steps": [{"engine_key": "compare_concept_trajectories", "depth": "standard"}, {"engine_key": "revision_presentation", "depth": "deep"}]}}
+    r = http("POST", "/v1/dossier/jobs", body); log("created", r); return r["job_id"]
+
 def create():
     aukus = (ROOT / "data/study/source_aukus.txt").read_text(); subsea = (ROOT / "data/study/source_subsea.txt").read_text()
     body = {"sources": [{"kind": "paste", "title": "Wijaya and Hayes 2025 — AUKUS behind the scenes", "text": aukus},
@@ -56,5 +67,5 @@ def report(job_id, j):
     log("job:", j.get("status"), "| cost:", j.get("cost_usd") or j.get("spend_usd") or (j.get("options") or {}).get("spend_cap_usd"))
 
 if __name__ == "__main__":
-    ap = argparse.ArgumentParser(); ap.add_argument("--job", default=""); a = ap.parse_args()
-    job_id = a.job or create(); j = wait(job_id); report(job_id, j); log("DONE", job_id)
+    ap = argparse.ArgumentParser(); ap.add_argument("--job", default=""); ap.add_argument("--set", default="aukus", choices=["aukus", "deutschmann"]); a = ap.parse_args()
+    job_id = a.job or (create_deutschmann() if a.set == "deutschmann" else create()); j = wait(job_id); report(job_id, j); log("DONE", job_id)
