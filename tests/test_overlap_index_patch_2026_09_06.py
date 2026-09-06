@@ -7,7 +7,7 @@ ROOT=Path(__file__).resolve().parents[1];STUDY=ROOT/'communications/study/overla
 spec=importlib.util.spec_from_file_location('overlap_patch_builder',STUDY/'build_patches.py');builder=importlib.util.module_from_spec(spec);spec.loader.exec_module(builder)
 _,_,CANDIDATE=builder.candidate_sources()
 # Execute real unchanged memo-statements adapter in memory, without src imports.
-MEMO={};exec(compile((ROOT/'src/sources/memo_statements.py').read_text(),'memo_statements_snapshot','exec'),MEMO)
+MEMO={};exec(compile(subprocess.check_output(['git','show',builder.BASE+':src/sources/memo_statements.py'],cwd=ROOT,text=True),'memo_statements_snapshot','exec'),MEMO)
 NS={'statements_documents':MEMO['statements_documents']}
 exec(compile(CANDIDATE.replace('    from src.sources.memo_statements import statements_documents\n',''),'candidate_citation_evidence','exec'),NS)
 prepare=NS['prepare_citation_sources'];slice_index=NS['slice_overlap_index']
@@ -89,3 +89,14 @@ def test_existing_memo_statement_mode_survives():
  o={'memo':{'uid':'fixture:memo','title':'Fixture memo'},'statements':[{'no':1,'section':'test','statement':'A statement.','sources':['S1']}],'sources':[{'uid':'fixture:source','label':'S1','title':'A source','text':'Source words.'}]}
  s,_=prepare('citation_fidelity_audit',{'statements':json.dumps(o)})
  assert set(s)=={'fixture:memo','fixture:source'}
+
+def test_uid_and_key_cannot_resolve_to_different_supplied_documents():
+ i=index();i['texts'][0]['key']='ANOTHER';i['roles']['ANOTHER']='citing_author'
+ with pytest.raises(ValueError,match='different physical'):
+  prepare('citation_overlap_map',docs(i,ATEXT='A source',ANOTHER='Different source'))
+
+def test_claimed_held_check_without_source_or_windows_refuses():
+ i=index()
+ for c in i['checks']:c['windows']=[]
+ with pytest.raises(ValueError,match='neither supplied copy'):
+  prepare('citation_overlap_map',docs(i))

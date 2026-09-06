@@ -1,4 +1,4 @@
-# Deferred proposal. Base: 7b0f4b7a9c94d8a599607dfe221e2363807852b8. Recheck newer HEAD before applying.
+# Deferred proposal. Base: 6e37527bf75fd32fc24bbd59c52f9bf611cf1b33. Recheck newer HEAD before applying.
 --- a/src/sources/citation_evidence.py
 +++ b/src/sources/citation_evidence.py
 @@ -8,7 +8,7 @@
@@ -21,7 +21,7 @@
      if not indexes:
          return documents, ""
      sources = {k: v for k, v in documents.items() if k not in {k for k, _ in indexes}}
-@@ -160,3 +164,204 @@
+@@ -160,3 +164,213 @@
      def call(system, user, **kwargs):
          return call_fn(system, context + "\n\n=====\n\n" + user, **kwargs)
      return call
@@ -46,6 +46,13 @@
 +                raise ValueError('duplicate physical document alias: ' + name)
 +            aliases[name] = key
 +    return aliases
++
++
++def _overlap_meet(aliases, *names):
++    matches={_meet(aliases, n) for n in names if n}-{''}
++    if len(matches)>1:
++        raise ValueError('index uid/key aliases meet different physical sources')
++    return next(iter(matches), '')
 +
 +
 +def _validate_overlap_index(obj):
@@ -174,7 +181,7 @@
 +            raise ValueError('SOURCE ROLE must be the first header')
 +    occupied = set()
 +    for entry in obj['texts']:
-+        met = _meet(aliases, entry.get('uid'), entry.get('key'))
++        met = _overlap_meet(aliases, entry.get('uid'), entry.get('key'))
 +        key = met or entry.get('uid') or entry['key']
 +        if key in occupied:
 +            raise ValueError('two index texts meet the same physical source')
@@ -199,7 +206,7 @@
 +    aliases = _strict_aliases(supplied)
 +    for check in obj['checks']:
 +        copy = check['copy']
-+        met = _meet(aliases, copy.get('uid'), copy.get('key'))
++        met = _overlap_meet(aliases, copy.get('uid'), copy.get('key'))
 +        key = met or copy['uid']
 +        if key in occupied:
 +            raise ValueError('primary copy alias collides with citing source')
@@ -208,6 +215,8 @@
 +            if window.get('how') not in {'page', 'section', 'search'} or not isinstance(window.get('text'), str) or not window['text'].strip():
 +                raise ValueError('window needs literal text and page/section/search how')
 +            parts.append(window['text'])
++        if not met and not parts:
++            raise ValueError('held check has neither supplied copy nor literal windows')
 +        if not met and parts:
 +            supplied[key] = f"SOURCE ROLE: primary_window\nTITLE: {check.get('title', key)}\nCOPY: {json.dumps(copy, ensure_ascii=False)}\n\n"+'\n\n'.join(dict.fromkeys(parts))
 +            aliases = _strict_aliases(supplied)

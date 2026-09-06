@@ -1,6 +1,6 @@
 """Generate proposed diffs from pinned git blobs without editing protected files."""
 from pathlib import Path
-import difflib,hashlib,json,subprocess
+import difflib,hashlib,json,re,subprocess
 HERE=Path(__file__).resolve().parent
 ROOT=HERE.parents[2]
 BASE=json.loads((HERE/'input_receipt.json').read_text())['base_commit']
@@ -27,9 +27,12 @@ def build():
   entries.append({'patch':name,'path':path,'base_commit':BASE,'base_sha256':hashlib.sha256(before.encode()).hexdigest(),'candidate_sha256':hashlib.sha256(after.encode()).hexdigest()})
  emit('010_two_author_evidence_index.patch',*candidate_sources())
  path='src/sources/schemas.py'; before=subprocess.check_output(['git','show',f'{BASE}:{path}'],cwd=ROOT,text=True)
- old='SourceRole = Literal["source", "evidence_index", "plan", "profile", "statements"]'
- assert old in before
- emit('020_source_roles.patch',path,before,before.replace(old,old[:-1]+', "cohort", "cohort_table", "overlap_table"]'))
+ old=re.search(r'^SourceRole = Literal\[.*\]$',before,re.M).group(0)
+ values=json.loads('['+old.split('[',1)[1])
+ for role in ['cohort','cohort_table','overlap_table']:
+  if role not in values:values.append(role)
+ after=before.replace(old,'SourceRole = Literal['+', '.join(json.dumps(v) for v in values)+']')
+ emit('020_source_roles.patch',path,before,after)
  path='src/dossier/catalog_purpose.json'; before=subprocess.check_output(['git','show',f'{BASE}:{path}'],cwd=ROOT,text=True)
  data=json.loads(before)
  def visit(obj):

@@ -17,6 +17,7 @@ Do: Preserve the ordered authors axis as UIDs, never infer the side from prose, 
 
 ```text
 [O1.F<n>] <one bounded finding> — dim: works_overlap — person: <P_uid> — claim-kind: bibliographic|interpretive — work-rule: key|registry_work|edition — works-a: <keys> — works-b: <keys> — intersection: <keys> — unresolved: <entries> — metadata-refs: <rows> — author-a: <A_uid> — pair-row-a: <immutable ref or direct map row> — anchor: "<A exact passage>" — doc: <A original key> — locus: <A locus> — author-b: <B_uid> — pair-row-b: <immutable ref or direct map row> — anchor-b: "<B exact passage>" — doc-b: <B distinct original key> — locus-b: <B locus>; repeat labelled groups for every additional endpoint and qualification — confidence: high|medium|low
+For an inventory-only row use: [O1.F<n>] <bounded bibliographic report> — dim: works_overlap — person: <P_uid> — work-rule: <rule> — works-a/b: <keys> — intersection: <keys> — unresolved: <entries> — basis: overlap_metadata — metadata-refs: <exact table row IDs> — anchor: "<verbatim rendered metadata row>" — doc: context:overlap — limit: <scope> — confidence: high|medium|low
 ```
 
 #### O2 — Move and stance in the passage

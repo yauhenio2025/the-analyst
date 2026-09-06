@@ -101,6 +101,8 @@ def build():
   for dk,prefix,scope,title,qs,card,fields,suffix in dims:
    method='Do: '+card+'\n\n'+LAW+ ('\n\n'+INHERIT if is_syn else '')
    shape=f'[{prefix}.F<n>] <one bounded finding> — dim: {dk} — '+fields+suffix
+   if dk=='works_overlap':
+    shape+='\nFor an inventory-only row use: ['+prefix+'.F<n>] <bounded bibliographic report> — dim: works_overlap — person: <P_uid> — work-rule: <rule> — works-a/b: <keys> — intersection: <keys> — unresolved: <entries>'+META
    ds.append(dict(key=dk,name=title,questions=qs,method_card=method,indicators=[],scope=scope,load_bearing=True,id_prefix=prefix,answer_shape=shape))
    cap['analytical_dimensions'].append(dict(key=dk,description=title,probing_questions=qs))
    appendix += ['#### '+prefix+' — '+title,'',f'`{dk}`; scope `{scope}`; load-bearing.', '']+['- '+q for q in qs]+['',method,'','```text',shape,'```','']

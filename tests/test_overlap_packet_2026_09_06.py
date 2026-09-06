@@ -84,3 +84,43 @@ def test_top_n_is_explicit_and_below_threshold_is_not_residue():
  p['overlap_table']['settings']['min_events_per_side']=3;p['overlap_table']['selected']=[];p['overlap_table']['below_threshold']=['fixture:P','fixture:Q'];p['pairs']=[];p['shared_maps']=[]
  guard.validate_packet(p)
  assert p['overlap_table']['residues']['fixture:A']['person_uids']==['fixture:R_A']
+
+def test_residue_metadata_needs_ledger_coverage_but_not_unrequested_pair_source_blobs():
+ p=packet()
+ for k in list(p['source_documents']):
+  if ':fixture:R_' in k:del p['source_documents'][k]
+ assert guard.validate_output(p,output())
+
+def audited_fixture():
+ p=packet();o=output();refs=[];anchors=[]
+ for pair in p['pairs']:
+  person=pair['member_uid'];k=person+':primary';text='Fixture primary witness for '+person
+  p['source_documents'][k]={'text':text,'sha256':guard.digest(text),'author_uid':None,'role':'primary_window','year':None,'coauthors':[],'fixture_only':True}
+  l=deepcopy(pair['ledgers'][0]);l['engine_key']='citation_fidelity_audit';l['artifact_id']+=':audit';l['rows']=l['rows'][:1]
+  r=l['rows'][0];r['ref']=r['ref'].replace('citation_overlap_map','citation_fidelity_audit');r['dimension']='paired_fidelity';r['fields'].update(verdict='fair',how='page',edition='fixture')
+  r['anchors'].append({'text':text,'source_doc_key':k,'voice':'P','locus':{'printed_page':'1','edition':'fixture','how':'page'}})
+  r['raw_row']+=' | '+text;l['artifact_text']=r['raw_row'];l['artifact_sha256']=guard.digest(l['artifact_text'])
+  pair['ledgers'].append(l);pair['lens_status']['citation_fidelity_audit']='run';refs.append(r['ref']);anchors+=r['anchors']
+ f=o['findings'][0];f.update(dimension='side_fidelity',kind='fidelity',row_refs=refs,anchors=anchors)
+ return p,o
+
+def test_per_side_fidelity_with_all_author_and_primary_witnesses():
+ p,o=audited_fixture();assert guard.validate_output(p,o)
+ # A single-side inventory is permitted but does not imply cross-author fidelity.
+ f=o['findings'][0];f.update(kind='side_report',person_uids=['fixture:P'],author_uids=['fixture:A'],row_refs=f['row_refs'][:1],anchors=f['anchors'][:2])
+ assert guard.validate_output(p,o)
+
+def test_partial_audit_export_losing_p_witness_refuses_even_if_hashes_are_recomputed():
+ p,o=audited_fixture();l=p['pairs'][0]['ledgers'][1];r=l['rows'][0];r['anchors']=r['anchors'][:1]
+ with pytest.raises(ValueError,match='author and P witnesses'):guard.validate_packet(p)
+
+def test_period_dimension_cannot_evade_endpoint_guard_by_changing_kind():
+ p=packet();o=output();o['findings'][0]['dimension']='convergence_periods'
+ with pytest.raises(ValueError,match='period dimension'):guard.validate_output(p,o)
+
+def test_unresolved_registry_work_ids_cannot_report_complete_works_denominator():
+ p=packet();p['overlap_table']['settings']['work_rule']='registry_work'
+ p['overlap_table']['metrics']['works']={'intersection':0,'union':0,'complete':False}
+ guard.validate_packet(p)
+ p['overlap_table']['metrics']['works']['complete']=True
+ with pytest.raises(ValueError,match='works intersection/union'):guard.validate_packet(p)

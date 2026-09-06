@@ -20,19 +20,19 @@ def schemas():
  identity=obj({'uid':S,'name':S})
  event=obj({'event_id':S,'ref_id':{'type':['string','integer']},'text_key':S,'year':nullable('integer'),'kind':enum('reference','footnote','intext','mention','bibliography_only'),'work_keys':arr(S)})
  work=obj({'key':S,'title':S,'registry_work_id':nullable('string'),'edition_id':nullable('string'),'event_ids':arr(S),'held':B,'fetched':B,'wanted':B,'copies':arr(obj({'key':S,'edition':nullable('string'),'how':enum('works','library','resolve','editions')}))})
- side=obj({'count':nullable('integer'),'events':arr(event),'works':arr(work)})
+ side=obj({'count':nullable('integer'),'events':arr(event),'works':arr(work),'materials':{'type':'object'},'jobs':arr(obj({'job_id':S,'status':enum('queued','running','done','failed'),'engine_keys':arr(S),'canonical_uri':nullable('string')}))},optional=('materials','jobs'))
  per= {'type':'object','additionalProperties':side}
  member=obj({'uid':S,'name':S,'fixture_only':B,'by_author':per,'common_work_keys':arr(S)})
  coverage=obj({'held':arr(S),'inspected':arr(S),'missing':arr(S),'unknown_years':arr(S),'ledger_complete':B,'aliases_resolved':B,'snapshot':S})
  residue=obj({'person_uids':arr(S),'total':N,'completeness':enum('all','top_n','unknown'),'top_n':nullable('integer'),'omitted':N})
  collective=obj({'terms':arr(S),'events':arr(obj({'event_id':S,'source_doc_key':S,'anchor':S,'locus':{'type':'object'}})),'analysis_status':enum('not_run','unavailable')})
- metrics=obj({'intersection':N,'union':N})
+ metrics=obj({'intersection':N,'union':N,'complete':B})
  table=obj({'role':{'const':'overlap_table'},'doc_key':{'const':'context:overlap'},'uid':S,'approved':B,'complete_union':B,'authors':arr(identity),'settings':obj({'min_events_per_side':{'type':'integer','minimum':1},'work_rule':enum('key','registry_work','edition'),'coauthored_policy':{'const':'exclude_both'},'kinds':arr(S),'types':arr(S),'self_citations':B}), 'rows':arr(member),'selected':arr(S),'selection_changes':arr(obj({'person_uid':S,'action':enum('add','strike'),'reason':S})), 'below_threshold':arr(S),'unselected_shared':arr(S),'coverage':{'type':'object','additionalProperties':coverage},'residues':{'type':'object','additionalProperties':residue},'collective':{'type':'object','additionalProperties':collective},'excluded_coauthored':arr(obj({'key':S,'author_uids':arr(S),'events':N})), 'metrics':obj({'persons':metrics,'works':metrics}), 'costs':obj({'total_usd':nullable('number'),'status':enum('measured','unmeasured')})})
  src=obj({'text':S,'sha256':{'type':'string','pattern':'^[a-f0-9]{64}$'},'author_uid':nullable('string'),'role':enum('citing_author','primary_window','secondary_reader'),'year':nullable('integer'),'coauthors':arr(S),'fixture_only':B})
  shared=obj({'person_uid':S,'map_key':S,'doc_key':S,'fixture_only':B,'ledger':ledger,'memo':pair['properties']['memo']})
  schema=obj({'schema_version':{'const':'overlap-packet/v1'},'packet_id':S,'revision':N,'fixture_only':B,'authors':dict(arr(identity),minItems=2,maxItems=2),'overlap_table':table,'plan':cohort['properties']['plan'],'pairs':arr(pair),'shared_maps':arr(shared),'source_documents':{'type':'object','additionalProperties':src}})
  schema['$schema']='https://json-schema.org/draft/2020-12/schema';dump('overlap_packet.schema.json',schema)
- finding=obj({'id':S,'dimension':S,'kind':enum('single_person','cross_person','period','fidelity','metadata'),'claim':S,'person_uids':arr(S),'author_uids':arr(S),'row_refs':arr(S),'anchors':arr(anchor),'metadata_refs':arr(S)})
+ finding=obj({'id':S,'dimension':S,'kind':enum('side_report','single_person','cross_person','period','fidelity','metadata'),'claim':S,'person_uids':arr(S),'author_uids':arr(S),'row_refs':arr(S),'anchors':arr(anchor),'metadata_refs':arr(S)})
  output=obj({'schema_version':{'const':'overlap-output/v1'},'packet_id':S,'revision':N,'fixture_only':B,'findings':arr(finding),'tables':arr(obj({'key':S,'cells':arr(obj({'value':S,'finding_ids':arr(S),'metadata_refs':arr(S)}))}))})
  dump('overlap_output.schema.json',output)
  return pair
@@ -76,7 +76,7 @@ def build():
    mk='fixture:universe__'+person; ref=mk+'::citation_overlap_map::O5.F1'
    r=row(ref,'Fixture A adopts what fixture B disputes.',[a for s in supports for a in s['anchors']],[e for s in supports for e in s['event_ids']],dict(support_refs=[s['ref'] for s in supports],verdict='authority_vs_foil'),dim='asymmetry_verdict')
    p['shared_maps'].append(dict(person_uid=person,map_key=mk,doc_key='shared::'+mk,fixture_only=True,ledger=ledger([r],mk),memo=dict(markdown='Synthetic comparison.',canonical_uri='fixture://'+mk)))
- table=dict(role='overlap_table',doc_key='context:overlap',uid='fixture:universe',approved=True,complete_union=True,authors=authors,settings=dict(min_events_per_side=1,work_rule='key',coauthored_policy='exclude_both',kinds=['footnote'],types=['article'],self_citations=False),rows=rows,selected=['fixture:P','fixture:Q'],selection_changes=[],below_threshold=[],unselected_shared=[],coverage={},residues={},collective={},excluded_coauthored=[dict(key='fixture:joint',author_uids=aids,events=4)],metrics={'persons':{'intersection':2,'union':4},'works':{'intersection':1,'union':5}},costs=dict(total_usd=None,status='unmeasured'))
+ table=dict(role='overlap_table',doc_key='context:overlap',uid='fixture:universe',approved=True,complete_union=True,authors=authors,settings=dict(min_events_per_side=1,work_rule='key',coauthored_policy='exclude_both',kinds=['footnote'],types=['article'],self_citations=False),rows=rows,selected=['fixture:P','fixture:Q'],selection_changes=[],below_threshold=[],unselected_shared=[],coverage={},residues={},collective={},excluded_coauthored=[dict(key='fixture:joint',author_uids=aids,events=4)],metrics={'persons':{'intersection':2,'union':4,'complete':True},'works':{'intersection':1,'union':5,'complete':True}},costs=dict(total_usd=None,status='unmeasured'))
  for i,a in enumerate(aids):
   keys=[k for k,v in p['source_documents'].items() if v['author_uid']==a]
   table['coverage'][a]=dict(held=keys,inspected=keys,missing=[],unknown_years=[k for k in keys if p['source_documents'][k]['year'] is None],ledger_complete=True,aliases_resolved=True,snapshot='fixture:snapshot')

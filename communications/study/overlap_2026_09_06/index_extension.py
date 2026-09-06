@@ -19,6 +19,13 @@ def _strict_aliases(sources):
     return aliases
 
 
+def _overlap_meet(aliases, *names):
+    matches={_meet(aliases, n) for n in names if n}-{''}
+    if len(matches)>1:
+        raise ValueError('index uid/key aliases meet different physical sources')
+    return next(iter(matches), '')
+
+
 def _validate_overlap_index(obj):
     if 'author' in obj or not isinstance(obj.get('authors'), list) or len(obj['authors']) != 2:
         raise ValueError('overlap index needs authors[2], never singular author')
@@ -145,7 +152,7 @@ def _prepare_overlap_sources(documents, indexes):
             raise ValueError('SOURCE ROLE must be the first header')
     occupied = set()
     for entry in obj['texts']:
-        met = _meet(aliases, entry.get('uid'), entry.get('key'))
+        met = _overlap_meet(aliases, entry.get('uid'), entry.get('key'))
         key = met or entry.get('uid') or entry['key']
         if key in occupied:
             raise ValueError('two index texts meet the same physical source')
@@ -170,7 +177,7 @@ def _prepare_overlap_sources(documents, indexes):
     aliases = _strict_aliases(supplied)
     for check in obj['checks']:
         copy = check['copy']
-        met = _meet(aliases, copy.get('uid'), copy.get('key'))
+        met = _overlap_meet(aliases, copy.get('uid'), copy.get('key'))
         key = met or copy['uid']
         if key in occupied:
             raise ValueError('primary copy alias collides with citing source')
@@ -179,6 +186,8 @@ def _prepare_overlap_sources(documents, indexes):
             if window.get('how') not in {'page', 'section', 'search'} or not isinstance(window.get('text'), str) or not window['text'].strip():
                 raise ValueError('window needs literal text and page/section/search how')
             parts.append(window['text'])
+        if not met and not parts:
+            raise ValueError('held check has neither supplied copy nor literal windows')
         if not met and parts:
             supplied[key] = f"SOURCE ROLE: primary_window\nTITLE: {check.get('title', key)}\nCOPY: {json.dumps(copy, ensure_ascii=False)}\n\n"+'\n\n'.join(dict.fromkeys(parts))
             aliases = _strict_aliases(supplied)

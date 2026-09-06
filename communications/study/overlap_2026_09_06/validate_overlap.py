@@ -43,7 +43,7 @@ def validate_packet(p,release=False):
         require(set(cv['inspected'])<=set(cv['held']),'inspected outside held')
         require(not set(cv['held'])&set(cv['missing']),'held/missing overlap')
         require(not (set(cv['held'])|set(cv['inspected']))&excluded,'coauthors leaked into universe')
-        for k in cv['unknown_years']: require(k in sources and sources[k]['year'] is None,'false unknown year')
+        for k in cv['unknown_years']: require(k in cv['held'] and (k not in sources or sources[k]['year'] is None),'false unknown year')
     threshold=t['settings']['min_events_per_side']; eligible=set(); below=set()
     for person,r in people.items():
         require(set(r['by_author'])==set(aids),'person missing author counts')
@@ -56,9 +56,10 @@ def validate_packet(p,release=False):
             if side['count']==0:require(t['coverage'][a]['ledger_complete'] and t['coverage'][a]['aliases_resolved'],'zero without checked aliases/corpus')
             for e in events:
                 require(e['event_id'].startswith(a+'::'),'foreign event author')
-                k=e['text_key']; require(k in sources and sources[k]['author_uid']==a and sources[k]['role']=='citing_author','event wrong author/source')
+                k=e['text_key']
+                if k in sources:require(sources[k]['author_uid']==a and sources[k]['role']=='citing_author','event wrong author/source')
                 require(k in t['coverage'][a]['inspected'],'event outside inspected coverage')
-                require(e['year']==sources[k]['year'],'event/source year mismatch')
+                if k in sources:require(e['year']==sources[k]['year'],'event/source year mismatch')
                 require(e['kind'] in t['settings']['kinds'],'event outside selected kinds')
                 evmeta=(k,e['year'],e['kind'],str(e['ref_id']))
                 require(e['event_id'] not in all_event_docs or all_event_docs[e['event_id']]==evmeta,'canonical event identity conflict across persons')
@@ -99,7 +100,11 @@ def validate_packet(p,release=False):
             k=e['source_doc_key'];require(e['event_id'].startswith(a+'::') and e['event_id'] not in all_events[a],'collective allocated to person')
             require(k in sources and sources[k]['author_uid']==a and e['anchor'] in sources[k]['text'],'collective anchor/side mismatch')
     for field,sets in [('persons',known_persons),('works',work_sets)]:
-        expected={'intersection':len(sets[aids[0]]&sets[aids[1]]),'union':len(sets[aids[0]]|sets[aids[1]])}
+        complete=all(r['by_author'][a]['count'] is not None for r in people.values() for a in aids) and all(t['coverage'][a]['ledger_complete'] and t['coverage'][a]['aliases_resolved'] for a in aids)
+        if field=='works':
+            fld={'key':'key','registry_work':'registry_work_id','edition':'edition_id'}[t['settings']['work_rule']]
+            complete=complete and all(w[fld] is not None for r in people.values() for a in aids for w in r['by_author'][a]['works'])
+        expected={'intersection':len(sets[aids[0]]&sets[aids[1]]),'union':len(sets[aids[0]]|sets[aids[1]]),'complete':complete}
         require(t['metrics'][field]==expected,'wrong '+field+' intersection/union')
     refs={}; owners={}; pairkeys=set(); doc_keys=set()
     def check_ledger(l,owner_key,author=None,person=None):
@@ -120,6 +125,12 @@ def validate_packet(p,release=False):
                 require(set(r['event_ids'])<=universe,'row event outside author-person universe')
                 if citable(r) and l['engine_key'] in {'citation_engagement_map','citation_overlap_map'}:
                     require(r['event_ids'] and any(sources[x['source_doc_key']]['author_uid']==author for x in r['anchors']),'side row lacks author event/anchor')
+            if author and citable(r) and l['engine_key']=='citation_fidelity_audit':
+                verdict=r['fields'].get('verdict')
+                require(verdict in {'accurate','fair','selective','stretched','misattributed','unverifiable'},'invalid audit verdict')
+                if verdict!='unverifiable':
+                    require(any(sources[x['source_doc_key']]['author_uid']==author for x in r['anchors']) and any(sources[x['source_doc_key']]['role']=='primary_window' for x in r['anchors']),'assessed audit needs author and P witnesses')
+                    require(r['fields'].get('how') in {'page','section','search'},'assessed audit lacks retrieval how')
             refs[r['ref']]=r;owners[r['ref']]=(author,person,l['engine_key'])
     for pair in p['pairs']:
         a,person=pair['author_uid'],pair['member_uid'];key=pair['pair_key'];uid(a);uid(person)
@@ -183,7 +194,13 @@ def validate_output(p,out,release=False):
         grid={(owners[r][0],owners[r][1]) for r in expanded}
         persons={v[1] for v in grid}; authors={v[0] for v in grid}
         require(set(f['person_uids'])==persons and set(f['author_uids'])==authors,'output identity declaration differs from witnesses')
-        require(authors==aids and grid=={(a,b) for a in aids for b in persons},'incomplete author-person support grid')
+        if f['kind']=='side_report':
+            require(len(authors)==1 and len(persons)==1,'side report must stay on one author-person pair')
+        else:
+            require(authors==aids and grid=={(a,b) for a in aids for b in persons},'incomplete author-person support grid')
+        if f['kind']=='single_person':require(len(persons)==1,'single-person report spans multiple persons')
+        if f['dimension']=='convergence_periods':require(f['kind']=='period','period dimension needs period endpoint guard')
+        if f['dimension']=='side_fidelity':require(f['kind'] in {'fidelity','side_report'},'fidelity dimension needs audit guard')
         if f['kind'] in {'cross_person','period','fidelity'}:require(len(persons)>=2,'two shared persons required')
         for a,person in grid:
             keys={x['source_doc_key'] for r in expanded if owners[r][:2]==(a,person) for x in refs[r]['anchors'] if p['source_documents'][x['source_doc_key']]['author_uid']==a}
@@ -191,7 +208,7 @@ def validate_output(p,out,release=False):
             if f['kind']=='period':
                 years={p['source_documents'][k]['year'] for k in keys}-{None}
                 require(len(keys)>=2 and len(years)>=2,'period lacks distinct dated endpoints for each author-person pair')
-        if f['kind']=='fidelity':
+        if f['kind']=='fidelity' or f['dimension']=='side_fidelity':
             for ref in expanded:
                 r=refs[ref];a,person,engine=owners[ref]
                 require(engine=='citation_fidelity_audit' and r['fields'].get('verdict') in {'accurate','fair','selective','stretched','misattributed'},'fidelity needs assessed audit rows')

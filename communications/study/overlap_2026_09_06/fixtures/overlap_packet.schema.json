@@ -290,6 +290,49 @@
                         ],
                         "additionalProperties": false
                       }
+                    },
+                    "materials": {
+                      "type": "object"
+                    },
+                    "jobs": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "job_id": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "status": {
+                            "enum": [
+                              "queued",
+                              "running",
+                              "done",
+                              "failed"
+                            ]
+                          },
+                          "engine_keys": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "canonical_uri": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "job_id",
+                          "status",
+                          "engine_keys",
+                          "canonical_uri"
+                        ],
+                        "additionalProperties": false
+                      }
                     }
                   },
                   "required": [
@@ -566,11 +609,15 @@
                 "union": {
                   "type": "integer",
                   "minimum": 0
+                },
+                "complete": {
+                  "type": "boolean"
                 }
               },
               "required": [
                 "intersection",
-                "union"
+                "union",
+                "complete"
               ],
               "additionalProperties": false
             },
@@ -584,11 +631,15 @@
                 "union": {
                   "type": "integer",
                   "minimum": 0
+                },
+                "complete": {
+                  "type": "boolean"
                 }
               },
               "required": [
                 "intersection",
-                "union"
+                "union",
+                "complete"
               ],
               "additionalProperties": false
             }
