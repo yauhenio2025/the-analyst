@@ -128,6 +128,23 @@ def get_job(job_id: str) -> Optional[dict]:
     return row
 
 
+def find_job_by_plan(plan_id: str) -> Optional[dict]:
+    """The most recent executor job created from a plan, with its stored plan_data (the durable copy of a plan:
+    plan files live on an ephemeral disk and vanish on a deploy, 2026-09-06)."""
+    row = execute(
+        "SELECT * FROM executor_jobs WHERE plan_id = %s ORDER BY created_at DESC LIMIT 1",
+        (plan_id,),
+        fetch="one",
+    )
+    if row is None:
+        return None
+    for key in ("progress", "phase_results", "plan_data", "document_ids"):
+        if isinstance(row.get(key), str):
+            row[key] = _json_loads(row[key])
+    _normalize_timestamps(row)
+    return row
+
+
 def update_job_plan_id(job_id: str, plan_id: str) -> None:
     """Update the plan_id on an existing job (used by async pipeline)."""
     execute(

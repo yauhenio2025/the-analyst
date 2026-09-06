@@ -216,13 +216,34 @@ def _save_plan(plan: WorkflowExecutionPlan) -> None:
 
 
 def load_plan(plan_id: str) -> Optional[WorkflowExecutionPlan]:
-    """Load a plan from disk."""
+    """Load a plan from disk; when the file is gone (the disk is ephemeral: a deploy wipes it, and a dossier that
+    spans a deploy lost its plan on resume, 2026-09-06), fall back to the plan_data the executor stored with the
+    job it created from this plan, and write the file back."""
     plan_path = PLANS_DIR / f"{plan_id}.json"
-    if not plan_path.exists():
+    if plan_path.exists():
+        with open(plan_path, "r") as f:
+            data = json.load(f)
+        return WorkflowExecutionPlan.model_validate(data)
+    try:
+        from src.executor.job_manager import find_job_by_plan
+        row = find_job_by_plan(plan_id)
+    except Exception as exc:  # noqa: BLE001 — no DB, no fallback
+        logger.warning(f"plan {plan_id}: file missing and the executor lookup failed: {exc}")
         return None
-    with open(plan_path, "r") as f:
-        data = json.load(f)
-    return WorkflowExecutionPlan.model_validate(data)
+    data = (row or {}).get("plan_data")
+    if not data:
+        return None
+    try:
+        plan = WorkflowExecutionPlan.model_validate(data)
+    except Exception as exc:  # noqa: BLE001 — a legacy or partial plan_data is not a plan; behave as before (missing)
+        logger.warning(f"plan {plan_id}: executor job {row.get('job_id')} holds plan_data that does not validate: {exc}")
+        return None
+    try:
+        _save_plan(plan)
+    except Exception as exc:  # noqa: BLE001
+        logger.warning(f"plan {plan_id}: recovered from the executor job but could not be written back: {exc}")
+    logger.info(f"plan {plan_id} recovered from executor job {row.get('job_id')} (plan file was missing)")
+    return plan
 
 
 def list_plans() -> list[dict]:

@@ -221,6 +221,13 @@ def run_analysis(job: DossierJob, docs: list[Document], *, cancel_check: Optiona
                         detail=f"executor job {sub_job_id} is recorded running but not live in this process; resuming it through the executor (completed passes are kept)",
                         payload_json={"source_job_id": sub_job_id, "kind": "sub_job_resumed"})
             _resume_sub_job(sub)
+    elif sub and sub.get("status") == "failed" and sub.get("plan_data") and not _is_live(sub_job_id):
+        # a phase failed (a pool error, a provider outage): resume the same executor job so the completed phases and
+        # their persisted calls are kept; a fresh sub-job would need the plan file, which a deploy may have wiped
+        events.emit(job.id, "note", phase=STEP,
+                    detail=f"executor job {sub_job_id} failed earlier ({str(sub.get('error') or '')[:120]}); resuming it through the executor (completed passes are kept)",
+                    payload_json={"source_job_id": sub_job_id, "kind": "sub_job_resumed_after_failure"})
+        _resume_sub_job(sub)
     else:
         doc_id, title = _store_corpus(job, docs)
         document_ids = {"target": doc_id, title: doc_id}

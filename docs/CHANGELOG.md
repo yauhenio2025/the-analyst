@@ -5,6 +5,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Fixed (2026-09-06, plans survive a deploy)
+- `load_plan` falls back to the plan_data the executor stored with the job created from the plan when the plan file is missing (the plan directory is on an ephemeral disk; a deploy wipes it), and writes the file back ([planner.py](src/orchestrator/planner.py), `job_manager.find_job_by_plan`). A dossier whose executor sub-job failed mid-way now resumes that sub-job through the executor (completed passes kept) instead of starting a new one from the missing plan ([analysis.py](src/dossier/analysis.py)). Tests: `tests/test_plan_durability_2026_09_06.py`.
+
 ### Fixed (2026-09-06, live desk)
 - Postgres connection pool: 20 connections (`DB_POOL_MAX`) and a bounded wait (`DB_POOL_WAIT_SECONDS`, 60 s) instead of failing the instant the pool is empty; a deep process run's five extraction threads plus API polling exhausted the old 5-connection pool and failed a live dossier job at the analysis step ([db.py](src/executor/db.py); test `tests/test_db_pool_wait_2026_09_06.py`).
 

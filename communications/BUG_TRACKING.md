@@ -189,3 +189,16 @@ Problem classes, root causes, files fixed. See global rules.
 - `tests/test_db_pool_wait_2026_09_06.py` - regression tests
 
 **Pattern to Watch For**: any per-call `with get_connection()` inside a `ThreadPoolExecutor` worker; any pool or semaphore whose acquire fails fast rather than waiting; a job status that flips to failed with a resource error while the model calls themselves succeeded.
+
+## Plan lost across a deploy (2026-09-06)
+
+**Problem Class**: State kept on an ephemeral filesystem that a durable record depends on.
+
+**Root Cause**: `src/orchestrator/plans/*.json` is the only store the dossier's analysis step read a plan from (`load_plan`), while Render wipes the disk on every deploy. Live job `dossier-8577d8159b38` failed at phase 4.2 (pool), was resumed after a redeploy, and died with `executor plan not found: plan-b9f1f866bb40` although the executor job row held the full `plan_data`.
+
+**Files Fixed**:
+- `src/orchestrator/planner.py:load_plan` - falls back to the executor job's `plan_data` (`job_manager.find_job_by_plan`) and re-materializes the file; invalid data behaves as missing
+- `src/dossier/analysis.py:run_analysis` - a failed sub-job with `plan_data` is resumed through `start_resume_thread` (completed passes kept) instead of a fresh sub-job
+- `tests/test_plan_durability_2026_09_06.py`
+
+**Pattern to Watch For**: any `Path(__file__).parent / "..."` store written at runtime (plans, planning_decisions, figures, plates) that a later step must read; on Render only the database and blob store persist across deploys.
