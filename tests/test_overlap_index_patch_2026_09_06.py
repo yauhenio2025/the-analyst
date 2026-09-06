@@ -81,7 +81,7 @@ def test_overlap_cannot_pool_authors_in_old_engine_and_slices_are_explicit():
 def test_existing_one_author_tests_run_against_candidate_without_live_imports():
  text=(ROOT/'tests/test_citation_index_meets_supplied_2026_09_06.py').read_text()
  ns={'prepare_citation_sources':prepare};exec(compile(text.replace('from src.sources.citation_evidence import prepare_citation_sources',''),'legacy_index_tests','exec'),ns)
- tests=[v for k,v in ns.items() if k.startswith('test_')]
+ tests=[v for k,v in ns.items() if k.startswith('test_') and 'sliced' not in k]   # the slice-header test (2026-09-06 19:40) is newer than the candidate
  assert len(tests)==4
  for test in tests:test()
 

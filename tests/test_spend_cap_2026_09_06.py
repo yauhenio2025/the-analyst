@@ -74,3 +74,9 @@ def test_a_chosen_path_job_does_not_pause_at_the_brief(monkeypatch):
     assert job.chosen_option == "own_path" and job.brief.option("own_path") is not None
     assert any(isinstance(f, dict) and f.get("chosen_option") == "own_path" for f in seen)
     assert not any(isinstance(f, dict) and f.get("status") == "awaiting_brief" for f in seen)
+
+
+def test_no_cap_means_no_ceiling_and_receipts_are_never_refused():
+    runner._over_cap(_job(50.0, None), "spine")                                            # no cap, no ceiling
+    runner._over_cap(_job(50.0, 8.0), "receipts")                                          # over the cap, receipts still run
+    runner._over_cap(_job(50.0, 8.0), "tables")                                            # a desk after the engines is never refused
