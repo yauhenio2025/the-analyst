@@ -8,7 +8,7 @@ from pydantic import BaseModel, Field
 SourceKind = Literal["paste", "upload", "stacks_export", "stacks_view", "stacks_uids", "exemplar"]
 # source: a text the desks read and the engines analyse. evidence_index / plan: supplied with the job as context
 # (the Stacks bridge, 2026-09-06): not profiled, not counted in the corpus, handed to every engine as upstream context.
-SourceRole = Literal["source", "evidence_index", "plan", "profile", "statements"]
+SourceRole = Literal["source", "evidence_index", "plan", "profile", "statements", "cohort"]
 
 
 class SourceSpec(BaseModel):

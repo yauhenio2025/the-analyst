@@ -1,0 +1,97 @@
+"""Assemble a frozen fixture from completed normalized pair exports (no API calls).
+
+Each --pair-export is {job_id, author, pair, source_documents}. Pair and source
+shapes are cohort-packet/v1. --identities is {author: {uid,name}, weber_uid,
+lachmann_uid}; the latter may be null. --cohort and --plan contain their context
+objects. --pilot-dir must contain job.json with status done and matching id.
+"""
+from __future__ import annotations
+import argparse
+import copy
+import hashlib
+import json
+from pathlib import Path
+import sys
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+from scripts.validate_citation_cohort_2026_09_06 import ContractError, need, validate_packet
+
+
+def read(path):
+    return json.loads(path.read_text())
+
+
+def assemble(job, exports, identities, cohort, plan, synthetic_template=None):
+    need(job.get('status')=='done' and job.get('id'), 'pilot not completed/exported')
+    author=identities['author']
+    allowed={identities['weber_uid'],identities.get('lachmann_uid')} - {None}
+    pairs, sources, seen = [], {}, set()
+    for export in exports:
+        need(export['author']==author, 'pair export uses different author identity')
+        pair=copy.deepcopy(export['pair'])
+        need(pair['member_uid'] in allowed, 'only Riley-Weber and Riley-Lachmann real pairs are eligible')
+        need(not pair['fixture_only'], 'real export is already synthetic')
+        if pair['member_uid']==identities['weber_uid']:
+            need(export['job_id']==job['id'], 'Weber export is not this pilot')
+        need(pair['pair_key'] not in seen, 'duplicate pair; Weber repeated is not another member')
+        seen.add(pair['pair_key']); pairs.append(pair)
+        for key,source in export['source_documents'].items():
+            need(key not in sources or sources[key]==source, 'same source key with different rendition')
+            sources[key]=copy.deepcopy(source)
+    need(any(p['member_uid']==identities['weber_uid'] for p in pairs), 'pilot Weber engagement export missing')
+    packet={'schema_version':'cohort-packet/v1','packet_id':'pilot-cohort-'+job['id'],'revision':1,'fixture_only':False,'author':copy.deepcopy(author),'cohort':copy.deepcopy(cohort),'plan':copy.deepcopy(plan),'pairs':pairs,'source_documents':sources}
+    validate_packet(packet)
+    if synthetic_template is not None:
+        need(len(pairs)==1, 'synthetic comparator only needed with one real pair')
+        template=copy.deepcopy(synthetic_template)
+        fake=template['pairs'][1]
+        member=template['cohort']['members'][1]
+        need(member['uid'] not in {m['uid'] for m in packet['cohort']['members']}, 'fixture UID collision')
+        old=fake['pair_key']; new=author['uid']+'__'+fake['member_uid']
+        fake.update(author_uid=author['uid'],pair_key=new,doc_key='pair::'+new,fixture_only=True)
+        for ledger in fake['ledgers']:
+            for row in ledger['rows']:
+                row['ref']=row['ref'].replace(old+'::',new+'::',1)
+                if row['canonical_ref'] is not None:
+                    row['canonical_ref']=row['canonical_ref'].replace(old+'::',new+'::',1)
+        for table in fake['tables']:
+            table['row_refs']=[r.replace(old+'::',new+'::',1) for r in table['row_refs']]
+        member['name']='Fixture comparator (invented; never release evidence)'
+        member['row_id']='COHORT.FIXTURE_COMPARATOR'
+        packet['cohort']['members'].append(member)
+        packet['pairs'].append(fake)
+        for key,source in template['source_documents'].items():
+            if key in {a['source_doc_key'] for ledger in fake['ledgers'] for row in ledger['rows'] for a in row['anchors']}:
+                need(key not in packet['source_documents'], 'synthetic source key collision')
+                packet['source_documents'][key]=source
+        packet['fixture_only']=True
+        packet['plan']['warnings'].append('Fixture comparator is invented and proves shape only; no release or historical claims.')
+        packet['cohort']['coverage']['held_texts']+=['fixture:textQ']
+        packet['cohort']['coverage']['inspected_texts']+=['fixture:textQ']
+    validate_packet(packet)
+    return packet
+
+
+def main():
+    ap=argparse.ArgumentParser(description=__doc__)
+    ap.add_argument('--pilot-dir',type=Path,required=True)
+    ap.add_argument('--pair-export',type=Path,action='append',required=True)
+    ap.add_argument('--identities',type=Path,required=True)
+    ap.add_argument('--cohort',type=Path,required=True)
+    ap.add_argument('--plan',type=Path,required=True)
+    ap.add_argument('--add-fixture-comparator',action='store_true')
+    ap.add_argument('--out',type=Path,required=True)
+    a=ap.parse_args()
+    paths=[a.pilot_dir/'job.json',*a.pair_export,a.identities,a.cohort,a.plan]
+    template=ROOT/'communications/study/cohort_2026_09_06/fixtures/synthetic_packet.json'
+    packet=assemble(read(paths[0]),[read(p) for p in a.pair_export],read(a.identities),read(a.cohort),read(a.plan),read(template) if a.add_fixture_comparator else None)
+    if a.add_fixture_comparator: paths.append(template)
+    a.out.mkdir(parents=True,exist_ok=False)
+    (a.out/'packet.json').write_text(json.dumps(packet,indent=2,ensure_ascii=False)+'\n')
+    receipt={'inputs':[{'path':str(p.resolve()),'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for p in paths],'fixture_only':packet['fixture_only'],'provider_calls':0,'semantic_release':False}
+    (a.out/'receipt.json').write_text(json.dumps(receipt,indent=2)+'\n')
+    print(a.out/'packet.json')
+
+
+if __name__=='__main__': main()
