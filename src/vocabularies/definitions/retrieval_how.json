@@ -1,0 +1,29 @@
+{
+  "key": "retrieval_how",
+  "name": "How the cited place was retrieved in the held copy",
+  "family": "citation",
+  "owner": "the-mastermind",
+  "version": "2026-09-06",
+  "values": [
+    {
+      "value": "page",
+      "gloss": "the copy's printed page markers carry the cited page"
+    },
+    {
+      "value": "section",
+      "gloss": "the works registry places the citation in a section of a registered edition"
+    },
+    {
+      "value": "search",
+      "gloss": "the copy's best-matching pages taken by content-word overlap; a search hit is not a confirmed cited page"
+    }
+  ],
+  "used_by": [
+    {
+      "engine_key": "citation_fidelity_audit",
+      "dimension": "*",
+      "field": "how"
+    }
+  ],
+  "note": "The `how` field appears on the edition_locus rows by answer shape and on the paired_fidelity rows by the card rule (verdict and how as fields, 2026-09-06)."
+}

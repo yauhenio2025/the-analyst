@@ -226,6 +226,8 @@ GET  /v1/engines/{key}/doctrine          # hash-pinned prompt/doctrine files (mi
 POST /v1/story/jobs · GET /v1/story/jobs/{id} · GET|POST /v1/story/jobs/{id}/brief · GET /v1/story/jobs/{id}/handoff
 GET  /v1/story/handoff-schema · /v1/story/demands
 GET  /v1/dossier/jobs/{id}/profiles?shape=shared|native   # reconnaissance profiles in the shared work-profile shape (2026-09-06)
+GET  /v1/dossier/jobs/{id}/ledger · /v1/dossier/jobs/{id}/frame   # every phase's ledger rows parsed by code; the evidential frame as JSON
+GET  /v1/vocabularies · /v1/vocabularies/{key} · /v1/vocabularies/for-engine/{engine_key}   # the enumerated values the engines answer in (moves, stances, verdicts, kinds, circles), with glosses; consumers read columns from here, never from copies (src/vocabularies/)
 # Dossier source roles: source | evidence_index | plan | profile (a Stacks WorkProfile: the desk starts from it) | statements (a memo's numbered statements against the sources they cite: the fidelity audit's second input)
 PUT  /v1/dossier/admin/blobs/{key} · /v1/dossier/admin/jobs/{id}   # re-hydration (X-Admin-Token)
 
