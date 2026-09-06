@@ -27,6 +27,16 @@ def is_statements_file(obj: Any) -> bool:
             and bool(obj["statements"]) and all(isinstance(s, dict) and "statement" in s for s in obj["statements"]))
 
 
+def _kind_from_section(section: str) -> str:
+    """The memo shape's section names when the Stacks' file carries no `kind` (files before 2026-09-06 18:40)."""
+    sec = (section or "").lower()
+    if sec.startswith(("still open", "open")):
+        return "question"
+    if sec.startswith(("next", "reading")):
+        return "suggestion"
+    return "attribution"
+
+
 def _label_map(sources: list[dict]) -> dict[str, str]:
     out = {}
     for s in sources:
@@ -54,14 +64,15 @@ def statements_to_evidence_index(obj: dict) -> dict:
                 cited.append(uid)
             else:
                 unresolved.append({"no": s.get("no"), "label": lab})
-        passages.append({"ref_id": f"st{s.get('no')}", "no": s.get("no"), "section": s.get("section", ""),
+        kind = s.get("kind") or _kind_from_section(s.get("section", ""))
+        passages.append({"ref_id": f"st{s.get('no')}", "no": s.get("no"), "section": s.get("section", ""), "kind": kind,
                          "hit": " ".join(str(s.get("statement", "")).split()), "cites": cited, "locus": f"statement {s.get('no')}",
                          "pair_ids": [f"st{s.get('no')}/{labels_by_uid.get(u, u)}" for u in cited]})
     # The citing text A is the numbered statement list itself: those are the claims under audit and the words an
     # anchor from A must be found in. The memo's markdown follows as context (a batch of the first run treated the
     # absence of statement markers in the memo as "unverifiable" because the statements travelled only as index
     # passages whose text the metadata strips).
-    listing = "\n\n".join(f"[{p['ref_id']}] ({p['section']}; cites {', '.join(labels_by_uid.get(u, u) for u in p['cites']) or 'nothing'}) {p['hit']}"
+    listing = "\n\n".join(f"[{p['ref_id']}] ({p['section']}; {p['kind']}; cites {', '.join(labels_by_uid.get(u, u) for u in p['cites']) or 'nothing'}) {p['hit']}"
                           for p in passages)
     body = ("THE STATEMENTS UNDER AUDIT (each is A's attribution; quote from these lines as A's anchor)\n\n" + listing
             + ("\n\nTHE MEMO THEY WERE TAKEN FROM (context for a statement's meaning; not a second witness)\n\n" + memo["markdown"]
@@ -82,8 +93,9 @@ def statements_to_evidence_index(obj: dict) -> dict:
     if not checks:
         raise ValueError("a statements file needs at least one source with text")
     held = {c["copy"]["uid"] for c in checks}
-    pairs = [{"pair_id": pid, "statement": p["no"], "source": u, "label": labels_by_uid.get(u, u), "held": u in held}
+    pairs = [{"pair_id": pid, "statement": p["no"], "source": u, "label": labels_by_uid.get(u, u), "held": u in held, "kind": p["kind"]}
              for p in passages for pid, u in zip(p["pair_ids"], p["cites"])]
+    kinds = {k: sum(1 for p in passages if p["kind"] == k) for k in ("attribution", "question", "suggestion")}
     plan = {"purpose": f"Check every statement of '{memo_title}' against the sources it cites; a statement that cites no source is checked against all supplied sources and marked so.",
             "questions": ["Does the source say what the statement attributes to it, at the cited place or anywhere in the held text?",
                           "Is the attribution accurate, fair, selective, stretched, misattributed, or unverifiable in the held text?"],
@@ -98,6 +110,11 @@ def statements_to_evidence_index(obj: dict) -> dict:
                         "is not held is unverifiable. A statement citing no source is checked against every held source once. "
                         "The statements are the numbered [st<no>] lines at the head of the memo document; the memo's prose "
                         "carries no markers, and their absence there is never a reason for unverifiable.")
+    plan["kinds"] = ("Each statement carries a kind. attribution: A claims the source says or shows something; audit it as an attribution. "
+                     "question (an open question) or suggestion (a next step, a reading): not an attribution; set attribution: none and judge "
+                     "grounding only — accurate when the sources supply what the line presupposes, fair when partly, unverifiable when the "
+                     "held texts do not; never stretched or misattributed for a question or a suggestion. "
+                     f"Counts: {kinds}.")
     return {"role": "evidence_index", "mode": "memo_against_sources", "author": memo_title, "person": "the cited sources",
             "texts": texts, "checks": checks, "unchecked": unresolved, "plan": plan, "pairs": pairs,
             "settings": {"statements": len(passages), "sources": len(checks), "pairs": len(pairs), "source": "stacks digest_check inputs"}}

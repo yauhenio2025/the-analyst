@@ -30,12 +30,16 @@ def test_the_translation_makes_the_memo_the_citing_text_and_each_source_a_held_w
     assert idx["role"] == "evidence_index" and idx["mode"] == "memo_against_sources"
     memo, = idx["texts"]
     assert memo["uid"] == "em:U3HITB25" and len(memo["passages"]) == 4
-    assert memo["text"].startswith("THE STATEMENTS UNDER AUDIT") and "[st1] (core finding; cites S1, S4) Weber's concepts arose" in memo["text"]
-    assert "[st3] (open; cites nothing) A statement citing nothing." in memo["text"] and memo["text"].rstrip().endswith("comparative economic history.")
+    assert memo["text"].startswith("THE STATEMENTS UNDER AUDIT") and "[st1] (core finding; attribution; cites S1, S4) Weber's concepts arose" in memo["text"]
+    assert "[st3] (open; question; cites nothing) A statement citing nothing." in memo["text"] and memo["text"].rstrip().endswith("comparative economic history.")
     assert memo["passages"][0]["cites"] == ["em:RJRLLVLQ", "em:NQZYBP6Y"] and memo["passages"][0]["locus"] == "statement 1"
     assert memo["passages"][0]["pair_ids"] == ["st1/S1", "st1/S4"] and memo["passages"][0]["ref_id"] == "st1"
     assert [(p["pair_id"], p["held"]) for p in idx["pairs"]] == [("st1/S1", True), ("st1/S4", False), ("st2/S2", True)]
     assert idx["settings"]["pairs"] == 3 and "pair-ref" in idx["plan"]["pair_ids"]
+    assert [p["kind"] for p in memo["passages"]] == ["attribution", "attribution", "question", "suggestion"]   # from the section names
+    assert "[st3] (open; question; cites nothing)" in memo["text"] and "Counts: {'attribution': 2, 'question': 1, 'suggestion': 1}" in idx["plan"]["kinds"]
+    kinded = statements_to_evidence_index({**FILE, "statements": [{**FILE["statements"][0], "kind": "suggestion"}]})
+    assert kinded["texts"][0]["passages"][0]["kind"] == "suggestion"                                        # an explicit kind wins
     assert [c["copy"]["uid"] for c in idx["checks"]] == ["em:RJRLLVLQ", "em:YASGM27U"]          # the empty text is no witness
     assert idx["checks"][0]["cited_by"] == [1] and idx["checks"][0]["windows"][0]["how"] == "section"
     assert idx["unchecked"] == [{"no": 4, "label": "S9"}]
