@@ -1,0 +1,92 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "cites_author",
+  "doc": "em:89QVNXT8",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 54911,
+  "output_tokens": 974,
+  "duration_ms": 9213,
+  "cost_usd": 0.0122,
+  "retries": 0,
+  "wall": {
+    "rows": 2,
+    "with_anchor": 2,
+    "verified": 2,
+    "trimmed": 1,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 2,
+    "verified_anchors": 2,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 2,
+      "with_anchor": 2,
+      "verified": 2,
+      "trimmed": 1,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 2,
+      "verified_anchors": 2,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:89QVNXT8"
+        ],
+        "dimension_key": "cites_author",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Supplied article body, pp. 813–837 (PDF pp. 1–25)",
+          "Supplied references and appendix, pp. 838–842 (PDF pp. 26–30)"
+        ],
+        "coverage": "complete",
+        "criterion": "The reader’s text must name or cite Max Weber and make a substantive claim or use concerning that citation.",
+        "basis": "The coauthored article explicitly cites Weber in two substantive passages: Weber’s account of rationalization is used in its discussion of positivism and capitalism, and Weber’s question about how to arrange one’s life is used in its discussion of positivism as teleological knowledge.",
+        "limitations": [
+          "This assessment concerns the supplied article only, not the authors’ complete reception of Weber.",
+          "Bibliographic mentions and uncited thematic affinities were not counted as additional findings."
+        ],
+        "finding_ids": [
+          "[D4.DOC16.F1]",
+          "[D4.DOC16.F2]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:89QVNXT8": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 3213
+}

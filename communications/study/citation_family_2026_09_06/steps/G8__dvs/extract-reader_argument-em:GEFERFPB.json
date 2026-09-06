@@ -1,0 +1,93 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "reader_argument",
+  "doc": "em:GEFERFPB",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 36430,
+  "output_tokens": 949,
+  "duration_ms": 11167,
+  "cost_usd": 0.0084,
+  "retries": 0,
+  "wall": {
+    "rows": 2,
+    "with_anchor": 2,
+    "verified": 2,
+    "trimmed": 1,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 2,
+    "verified_anchors": 2,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 2,
+      "with_anchor": 2,
+      "verified": 2,
+      "trimmed": 1,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 2,
+      "verified_anchors": 2,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:GEFERFPB"
+        ],
+        "dimension_key": "reader_argument",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Main essay, PDF pages 1–5",
+          "Notes 4–5 on PDF page 6"
+        ],
+        "coverage": "complete",
+        "criterion": "A supplied citing text may provide a reference reading of the thinker when it explicitly attributes a substantive argument to the thinker and states the argument in its own body.",
+        "basis": "The essay explicitly attributes the original political-capitalism concept to Max Weber and develops Riley’s adaptation of that concept into a contemporary thesis.",
+        "limitations": [
+          "This is the citing author’s text and is treated as an A reference point, not as an independent secondary reader in the reception sample.",
+          "The source date is missing.",
+          "The supplied text does not reproduce the cited Weber passages."
+        ],
+        "finding_ids": [
+          "[D1.DOC27.F1]",
+          "[D1.DOC27.F2]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:GEFERFPB": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 3745
+}

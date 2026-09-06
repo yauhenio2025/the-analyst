@@ -1,0 +1,90 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "reception_scope",
+  "doc": "em:EBSFFE5N",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 43570,
+  "output_tokens": 684,
+  "duration_ms": 8220,
+  "cost_usd": 0.0095,
+  "retries": 0,
+  "wall": {
+    "rows": 1,
+    "with_anchor": 1,
+    "verified": 1,
+    "trimmed": 0,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 1,
+    "verified_anchors": 1,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 1,
+      "with_anchor": 1,
+      "verified": 1,
+      "trimmed": 0,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 1,
+      "verified_anchors": 1,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:EBSFFE5N"
+        ],
+        "dimension_key": "reception_scope",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Full article, pp. 261–279"
+        ],
+        "coverage": "complete",
+        "criterion": "A supplied citing-author text must have a stated date, be inspected over the supplied article or bounded excerpt, and contain an anchored engagement relevant to the thinker; citation-count claims require a supplied scholarly count record.",
+        "basis": "The full 2015 article by Dylan Riley was supplied and inspected. It explicitly discusses Max Weber and cites Weber’s work, while no scholarly citation-count record is supplied.",
+        "limitations": [
+          "The source is one supplied article, not Riley’s complete work or Weber’s entire reception.",
+          "No scholarly citation count or most-cited ranking can be established from the supplied metadata."
+        ],
+        "finding_ids": [
+          "[D5.DOC9.F1]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:EBSFFE5N": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 2101
+}

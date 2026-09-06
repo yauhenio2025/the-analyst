@@ -1,0 +1,236 @@
+{
+  "step": "verify",
+  "kind": "verify",
+  "dimension": "",
+  "doc": "em:BEFGGK6M",
+  "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+  "model_used": "openrouter/deepseek/deepseek-v4-pro",
+  "input_tokens": 54441,
+  "output_tokens": 5174,
+  "duration_ms": 68365,
+  "cost_usd": 0.0675,
+  "retries": 0,
+  "wall": {
+    "rows": 7,
+    "with_anchor": 7,
+    "verified": 7,
+    "trimmed": 0,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 7,
+    "verified_anchors": 7,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "carried_forward": 0,
+    "rejected": 0,
+    "added": 0,
+    "ruling_coverage": {
+      "original_count": 7,
+      "explicitly_ruled_count": 7,
+      "missing_or_unruled_ids": [],
+      "unexpected_nonadded_ids": [],
+      "invalid_original_status_ids": [],
+      "duplicate_original_ids": [],
+      "duplicate_ruling_ids": [],
+      "coverage_complete": true
+    },
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:BEFGGK6M"
+        ],
+        "dimension_key": "place_in_text",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "pp. 190–213: introduction, concepts and theories, case analysis, discussion, and references"
+        ],
+        "coverage": "complete",
+        "criterion": "A retained finding must state what the citing text argues and identify the named thinker’s evidenced place as framework, evidence, foil, dialogue, courtesy, or qualified role, supported by a verbatim predicate-bearing passage.",
+        "basis": "The whole supplied citing article was inspected. Riley explicitly identifies a Gramscian and Weberian tradition, cites Weber’s essay on class, status, and parties in support of the political-society argument, and later distinguishes his own institutional research program from prior treatments of political struggle.",
+        "limitations": [
+          "This is one citing text and does not represent Riley’s complete work or Weber’s entire reception.",
+          "The supplied text does not provide a detailed reconstruction of Weber’s position beyond the cited opening claim."
+        ],
+        "finding_ids": [
+          "[D1.DOC1.F1]",
+          "[D1.DOC1.F2]",
+          "[D1.DOC1.F3]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": false,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:BEFGGK6M": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Malformed/missing scope records: 6 validation errors for ScopeOutcome\nbasis\n  Field required [type=missing, input_value={'document_keys': ['em:BE...rts the claimed place.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\nfinding_ids\n  Field required [type=missing, input_value={'document_keys': ['em:BE...rts the claimed place.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\nbais\n  Extra inputs are not permitted [type=extra_forbidden, input_value='All findings are verbati...institutional analysis.', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden\nfining_ids\n  Extra inputs are not permitted [type=extra_forbidden, input_value=['[D1.DOC1.F1]', '[D1.DOC1.F2]', '[D1.DOC1.F3]'], input_type=list]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden\nreviev_state\n  Extra inputs are not permitted [type=extra_forbidden, input_value='supported_within_stated_scope', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden\nreviev_basis\n  Extra inputs are not permitted [type=extra_forbidden, input_value='Each anchor is a literal...orts the claimed place.', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "em:BEFGGK6M"
+        ],
+        "dimension_key": "cited_object",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Introduction, p. 190",
+          "References, p. 213"
+        ],
+        "coverage": "complete",
+        "criterion": "A literal passage-level citation must identify a work, idea, or named thinker and provide a cited locus when present.",
+        "basis": "The introduction explicitly names Max Weber, identifies the essay as concerning class, status and parties, and gives the cited page as 194; the bibliography identifies the work as Weber’s “Class, Status, Party” in From Max Weber: Essays in Sociology.",
+        "limitations": [
+          "This outcome covers the supplied text, not Riley’s complete work or the whole corpus of Riley’s reception of Weber.",
+          "The passage does not establish the full content or provenance of Weber’s argument."
+        ],
+        "finding_ids": [
+          "[D2.DOC1.F1]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": false,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:BEFGGK6M": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Malformed/missing scope records: 6 validation errors for ScopeOutcome\nbasis\n  Field required [type=missing, input_value={'document_keys': ['em:BE...rts the claimed place.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\nfinding_ids\n  Field required [type=missing, input_value={'document_keys': ['em:BE...rts the claimed place.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\nbais\n  Extra inputs are not permitted [type=extra_forbidden, input_value='All findings are verbati...institutional analysis.', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden\nfining_ids\n  Extra inputs are not permitted [type=extra_forbidden, input_value=['[D1.DOC1.F1]', '[D1.DOC1.F2]', '[D1.DOC1.F3]'], input_type=list]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden\nreviev_state\n  Extra inputs are not permitted [type=extra_forbidden, input_value='supported_within_stated_scope', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden\nreviev_basis\n  Extra inputs are not permitted [type=extra_forbidden, input_value='Each anchor is a literal...orts the claimed place.', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "em:BEFGGK6M"
+        ],
+        "dimension_key": "citation_move",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "pp. 190–213, especially pp. 190–191"
+        ],
+        "coverage": "complete",
+        "criterion": "A passage must show what argumentative act Riley performs with a citation to Weber, supported by a verbatim clause carrying the relevant predicate and qualification.",
+        "basis": "The supplied article identifies Weber as part of the Gramscian and Weberian tradition Riley follows and uses that tradition as the basis for his own theoretical argument about political society and group formation.",
+        "limitations": [
+          "The assessment is limited to the supplied 2003 article and does not represent Riley's complete work or Weber's entire reception."
+        ],
+        "finding_ids": [
+          "[D3.DOC1.F1]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": false,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:BEFGGK6M": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Malformed/missing scope records: 6 validation errors for ScopeOutcome\nbasis\n  Field required [type=missing, input_value={'document_keys': ['em:BE...rts the claimed place.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\nfinding_ids\n  Field required [type=missing, input_value={'document_keys': ['em:BE...rts the claimed place.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\nbais\n  Extra inputs are not permitted [type=extra_forbidden, input_value='All findings are verbati...institutional analysis.', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden\nfining_ids\n  Extra inputs are not permitted [type=extra_forbidden, input_value=['[D1.DOC1.F1]', '[D1.DOC1.F2]', '[D1.DOC1.F3]'], input_type=list]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden\nreviev_state\n  Extra inputs are not permitted [type=extra_forbidden, input_value='supported_within_stated_scope', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden\nreviev_basis\n  Extra inputs are not permitted [type=extra_forbidden, input_value='Each anchor is a literal...orts the claimed place.', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "em:BEFGGK6M"
+        ],
+        "dimension_key": "citation_stance",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Introduction, p. 190",
+          "Concepts and theories, pp. 191–194",
+          "Main body and discussion, pp. 195–212",
+          "References, p. 213"
+        ],
+        "coverage": "complete",
+        "criterion": "A passage must express Riley’s stance toward a proposition attributed to or drawn from Weber, distinguishing adoption, building on, qualification, dispute, and mere mention.",
+        "basis": "The introduction explicitly places Riley’s argument in a Weberian tradition and states that the paper develops the claim that political society’s structure affects group formation.",
+        "limitations": [
+          "This outcome concerns the supplied 2003 article only, not Riley’s complete work or Weber’s entire reception.",
+          "The passage jointly attributes the starting tradition to Gramsci and Weber, so the extent of the specifically Weberian contribution remains partly unsettled.",
+          "The cited Weber text was not supplied as a complete primary window."
+        ],
+        "finding_ids": [
+          "[D4.DOC1.F1]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": false,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:BEFGGK6M": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Malformed/missing scope records: 6 validation errors for ScopeOutcome\nbasis\n  Field required [type=missing, input_value={'document_keys': ['em:BE...rts the claimed place.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\nfinding_ids\n  Field required [type=missing, input_value={'document_keys': ['em:BE...rts the claimed place.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\nbais\n  Extra inputs are not permitted [type=extra_forbidden, input_value='All findings are verbati...institutional analysis.', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden\nfining_ids\n  Extra inputs are not permitted [type=extra_forbidden, input_value=['[D1.DOC1.F1]', '[D1.DOC1.F2]', '[D1.DOC1.F3]'], input_type=list]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden\nreviev_state\n  Extra inputs are not permitted [type=extra_forbidden, input_value='supported_within_stated_scope', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden\nreviev_basis\n  Extra inputs are not permitted [type=extra_forbidden, input_value='Each anchor is a literal...orts the claimed place.', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "em:BEFGGK6M"
+        ],
+        "dimension_key": "passage_reading",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Introduction and concepts and theories, pp. 190–193",
+          "Full supplied body, pp. 190–213"
+        ],
+        "coverage": "complete",
+        "criterion": "A retained row must identify a specific claim, evidence, or distinction that Riley advances through Weber and support it with a verbatim anchor from the citing text.",
+        "basis": "The supplied source explicitly attributes a distinction concerning political society to Max Weber and uses that distinction to frame Riley’s theoretical argument about class formation.",
+        "limitations": [
+          "This is a finding about Riley’s use of Weber in the supplied citing text, not a certification of Weber’s own position.",
+          "The held sample is one source and does not establish Riley’s complete reception or development across other texts."
+        ],
+        "finding_ids": [
+          "[D5.DOC1.F1]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": false,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:BEFGGK6M": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Malformed/missing scope records: 6 validation errors for ScopeOutcome\nbasis\n  Field required [type=missing, input_value={'document_keys': ['em:BE...rts the claimed place.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\nfinding_ids\n  Field required [type=missing, input_value={'document_keys': ['em:BE...rts the claimed place.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\nbais\n  Extra inputs are not permitted [type=extra_forbidden, input_value='All findings are verbati...institutional analysis.', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden\nfining_ids\n  Extra inputs are not permitted [type=extra_forbidden, input_value=['[D1.DOC1.F1]', '[D1.DOC1.F2]', '[D1.DOC1.F3]'], input_type=list]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden\nreviev_state\n  Extra inputs are not permitted [type=extra_forbidden, input_value='supported_within_stated_scope', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden\nreviev_basis\n  Extra inputs are not permitted [type=extra_forbidden, input_value='Each anchor is a literal...orts the claimed place.', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 11446
+}

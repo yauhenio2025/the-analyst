@@ -1,0 +1,116 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "citation_move",
+  "doc": "em:QASWYLCG",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 135795,
+  "output_tokens": 1745,
+  "duration_ms": 19341,
+  "cost_usd": 0.0293,
+  "retries": 0,
+  "wall": {
+    "reanchor_receipts": [
+      {
+        "content": "## Findings ledger\n- [D3.DOC22.F5] The authors use Weber’s cited material as evidence for distinguishing formal from informal power and cooperative from conflictual expressions — dim: citation_move — ref: RW0077 — move: evidence — supports: Weber is cited alongside other theorists for the distinction between formal and informal power and between cooperative and conflictual power — anchor: \"Power can be held formally or informally as inﬂuence or persuasion (Gramsci, 1971, p. 12; Weber, 1921/1978, pp. 956, 1006, 1112).\" — anchor-b: \"The fourth polarity, consensuality, concerns the degree to which power is cooperative or conﬂictual (Gramsci, 1971, p. 12; Hegel, 1821/1991, p. 343; Weber, 1921/1978, pp. 956, 1006, 1112).\" — doc: em:QASWYLCG — doc-b: em:QASWYLCG — confidence: high",
+        "partial": false,
+        "stop_reason": "stop",
+        "error": null
+      }
+    ],
+    "rows": 5,
+    "with_anchor": 5,
+    "verified": 4,
+    "trimmed": 3,
+    "anchor_rate": 0.8,
+    "failed_ids": [
+      "D3.DOC22.F5"
+    ],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 6,
+    "verified_anchors": 5,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 4,
+      "with_anchor": 4,
+      "verified": 4,
+      "trimmed": 3,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 4,
+      "verified_anchors": 4,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [
+      {
+        "id": "D3.DOC22.F5",
+        "dimension": "citation_move"
+      }
+    ],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:QASWYLCG"
+        ],
+        "dimension_key": "citation_move",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "pp. 18–19, “Conceptualizing Power”",
+          "pp. 22–23, discussion of expressions of power",
+          "pp. 25–26, “Organizational Power: Powers to Direct and Coordinate”",
+          "p. 31, “Ideational Power”",
+          "Weber-citing passages RW0076–RW0079 and RW0083"
+        ],
+        "coverage": "partial",
+        "criterion": "A retained row must identify an argumentative act performed with a Weber citation and anchor that act in the citing text.",
+        "basis": "The inspected passages use Weber as an authority, as supporting evidence, and as an illustration in the chapter’s account of power, organizational domination, dependence, and legitimacy.",
+        "limitations": [
+          "The full chapter was supplied, but inspection for this dimension concentrated on the Weber-citing passages and their immediate argumentative contexts rather than every citation in the bibliography.",
+          "The evidence-index metadata was used only for routing and passage identification; it was not treated as an independent source."
+        ],
+        "finding_ids": [
+          "[D3.DOC22.F1]",
+          "[D3.DOC22.F2]",
+          "[D3.DOC22.F3]",
+          "[D3.DOC22.F4]",
+          "[D3.DOC22.F5]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:QASWYLCG": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Findings lost anchor evidence; this does not establish absence",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [
+    "D3.DOC22.F5"
+  ],
+  "chars": 5671
+}

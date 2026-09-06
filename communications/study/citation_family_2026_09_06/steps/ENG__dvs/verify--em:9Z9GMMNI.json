@@ -1,0 +1,251 @@
+{
+  "step": "verify",
+  "kind": "verify",
+  "dimension": "",
+  "doc": "em:9Z9GMMNI",
+  "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+  "model_used": "openrouter/deepseek/deepseek-v4-pro",
+  "input_tokens": 40802,
+  "output_tokens": 12165,
+  "duration_ms": 154790,
+  "cost_usd": 0.0679,
+  "retries": 0,
+  "wall": {
+    "rows": 21,
+    "with_anchor": 21,
+    "verified": 21,
+    "trimmed": 5,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 25,
+    "verified_anchors": 25,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "carried_forward": 0,
+    "rejected": 0,
+    "added": 0,
+    "ruling_coverage": {
+      "original_count": 21,
+      "explicitly_ruled_count": 21,
+      "missing_or_unruled_ids": [],
+      "unexpected_nonadded_ids": [],
+      "invalid_original_status_ids": [],
+      "duplicate_original_ids": [],
+      "duplicate_ruling_ids": [],
+      "coverage_complete": true
+    },
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:9Z9GMMNI"
+        ],
+        "dimension_key": "place_in_text",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Full supplied body, pages 1–2",
+          "Opening comparison of Marx and Weber",
+          "Discussion of standpoints and perspectives",
+          "Discussion of Lukács, immediacy, and mediation",
+          "Concluding paragraph"
+        ],
+        "coverage": "complete",
+        "criterion": "Retain a finding when the citing text makes an anchored argument about what Weber does in its argument, distinguishing Riley’s claims from Lukács’s reported position.",
+        "basis": "The supplied citing text directly argues that Weber represents an owner- or firm-based standpoint, converges with Marx on wage labour for a different reason, and is incorporated into a Marxist-Lukácsian framework as an account of capitalism’s immediate experience.",
+        "limitations": [
+          "This outcome concerns only the supplied text em:9Z9GMMNI, not Riley’s complete work or Weber’s entire reception.",
+          "The text contains no specific Weber bibliographic citation, so the place assigned to Weber is reconstructed from Riley’s argument rather than verified against a cited Weber passage.",
+          "The source is dated 2026 in the supplied metadata; no broader trajectory is established here."
+        ],
+        "finding_ids": [
+          "[D1.DOC25.F1]",
+          "[D1.DOC25.F2]",
+          "[D1.DOC25.F3]",
+          "[D1.DOC25.F4]",
+          "[D1.DOC25.F5]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": false,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:9Z9GMMNI": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Malformed/missing scope records: 1 validation error for ScopeOutcome\nreview_baisis\n  Extra inputs are not permitted [type=extra_forbidden, input_value='Anchors checked and support the findings.', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "em:9Z9GMMNI"
+        ],
+        "dimension_key": "cited_object",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Angles of Vision, PDF pp. 1–2",
+          "RW0090–RW0094"
+        ],
+        "coverage": "complete",
+        "criterion": "Retain explicit citations or named thinkers, works, and ideas that the passage attributes, discusses, or directs the reader to, while recording unknown loci rather than supplying them.",
+        "basis": "The complete supplied two-page article was inspected. It explicitly discusses Weber, Marx, and Lukács, attributes a standpoint analysis to Weber, presents the Lukácsian wager, and gives a further-reading citation to Lukács’s “Lukács on His Life and Work.”",
+        "limitations": [
+          "No specific Weber work or page is supplied in the passage.",
+          "The article’s discussion of Marx is not retained as a separate row because this scope is keyed to the supplied target thinker, Max Weber.",
+          "The held sample is this supplied article, not Riley’s complete work or the entire reception of Weber."
+        ],
+        "finding_ids": [
+          "[D2.DOC25.F1]",
+          "[D2.DOC25.F2]",
+          "[D2.DOC25.F3]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": false,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:9Z9GMMNI": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Malformed/missing scope records: 1 validation error for ScopeOutcome\nreview_baisis\n  Extra inputs are not permitted [type=extra_forbidden, input_value='Anchors checked and support the findings.', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "em:9Z9GMMNI"
+        ],
+        "dimension_key": "citation_move",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Full supplied body, pp. 1–2 / PDF pp. 1–2"
+        ],
+        "coverage": "complete",
+        "criterion": "A retained finding must identify an argumentative act performed with the citation to Weber and be supported by a verbatim passage from the citing text.",
+        "basis": "The supplied full text contains multiple explicit uses of Weber in comparison with Marx and Lukács, including contrast, attribution, evidentiary pairing, and Riley’s own positioning of the comparison.",
+        "limitations": [
+          "This outcome concerns only the supplied citing text and does not represent Riley’s complete work or Weber’s entire reception.",
+          "The specific Weber primary works underlying the characterization are not identified in the supplied text."
+        ],
+        "finding_ids": [
+          "D3.DOC25.F1",
+          "D3.DOC25.F2",
+          "D3.DOC25.F3",
+          "D3.DOC25.F4",
+          "D3.DOC25.F5"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": false,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:9Z9GMMNI": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Malformed/missing scope records: 1 validation error for ScopeOutcome\nreview_baisis\n  Extra inputs are not permitted [type=extra_forbidden, input_value='Anchors checked and support the findings.', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "em:9Z9GMMNI"
+        ],
+        "dimension_key": "citation_stance",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Angles of Vision, pp. 1–2 / complete supplied body"
+        ],
+        "coverage": "complete",
+        "criterion": "A finding qualifies when Riley’s text adopts, builds on, qualifies, disputes, or explicitly mentions a proposition attributed to Weber or to a cited reader’s interpretation of Weber.",
+        "basis": "The complete supplied two-page text was inspected and contains anchored treatments of Weber’s standpoint, wage-labour calculation, and Lukács’s interpretation of Weber.",
+        "limitations": [
+          "This is one supplied 2026 text and does not establish Riley’s stance across his complete work.",
+          "Several claims about Weber are mediated through Riley’s report of Lukács rather than directly cited to a Weber passage."
+        ],
+        "finding_ids": [
+          "[D4.DOC25.F1]",
+          "[D4.DOC25.F2]",
+          "[D4.DOC25.F3]",
+          "[D4.DOC25.F4]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": false,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:9Z9GMMNI": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Malformed/missing scope records: 1 validation error for ScopeOutcome\nreview_baisis\n  Extra inputs are not permitted [type=extra_forbidden, input_value='Anchors checked and support the findings.', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "em:9Z9GMMNI"
+        ],
+        "dimension_key": "passage_reading",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Angles of Vision, PDF pp. 1–2"
+        ],
+        "coverage": "complete",
+        "criterion": "A retained row must show, in the citing text, a specific interpretive move that uses, reads, qualifies, contrasts, or reframes Max Weber, supported by a verbatim anchor.",
+        "basis": "The complete supplied two-page source was inspected. It explicitly contrasts Marx’s and Weber’s standpoints, assigns Weber a firm-and-capital-owner perspective, distinguishes Weber’s and Marx’s uses of wage labour, and presents Lukács’s immediacy/mediation reading of Weber.",
+        "limitations": [
+          "This outcome concerns only the supplied source and passage_reading dimension, not Riley’s complete work or the entire reception of Weber.",
+          "The source does not identify the specific Weber editions or passages behind Riley’s reconstruction."
+        ],
+        "finding_ids": [
+          "[D5.DOC25.F1]",
+          "[D5.DOC25.F2]",
+          "[D5.DOC25.F3]",
+          "[D5.DOC25.F4]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": false,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:9Z9GMMNI": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Malformed/missing scope records: 1 validation error for ScopeOutcome\nreview_baisis\n  Extra inputs are not permitted [type=extra_forbidden, input_value='Anchors checked and support the findings.', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 23170
+}

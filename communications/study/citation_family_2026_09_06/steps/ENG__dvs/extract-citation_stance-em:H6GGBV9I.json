@@ -1,0 +1,90 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "citation_stance",
+  "doc": "em:H6GGBV9I",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 51348,
+  "output_tokens": 1166,
+  "duration_ms": 13130,
+  "cost_usd": 0.0117,
+  "retries": 0,
+  "wall": {
+    "rows": 3,
+    "with_anchor": 3,
+    "verified": 3,
+    "trimmed": 1,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 3,
+    "verified_anchors": 3,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 3,
+      "with_anchor": 3,
+      "verified": 3,
+      "trimmed": 1,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 3,
+      "verified_anchors": 3,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:H6GGBV9I"
+        ],
+        "dimension_key": "citation_stance",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "pp. 46–47, including the discussion of Judt’s use of Weber’s ethic of responsibility and the cited passage from Politics as a Vocation"
+        ],
+        "coverage": "complete",
+        "criterion": "A finding requires an explicit proposition-level stance by Riley toward a cited Weberian position, supported by a verbatim passage carrying the relevant actor, predicate, object and qualification.",
+        "basis": "Riley explicitly says that Weber’s actual view was different from Judt’s gloss, reconstructs Weber’s account of political responsibility, and endorses Weber’s rejection of moralizing.",
+        "limitations": [
+          "This outcome concerns the supplied citing text and the citation-stance dimension only; it does not represent Riley’s complete work or Weber’s entire reception.",
+          "Other Weber references in the article were not treated as positive findings where the supplied passage did not establish a proposition-level stance."
+        ],
+        "finding_ids": [
+          "D4.DOC4.F1",
+          "D4.DOC4.F2",
+          "D4.DOC4.F3"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:H6GGBV9I": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 3893
+}

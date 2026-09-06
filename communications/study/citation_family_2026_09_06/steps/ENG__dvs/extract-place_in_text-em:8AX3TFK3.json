@@ -1,0 +1,94 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "place_in_text",
+  "doc": "em:8AX3TFK3",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 61664,
+  "output_tokens": 1063,
+  "duration_ms": 11663,
+  "cost_usd": 0.0136,
+  "retries": 0,
+  "wall": {
+    "rows": 3,
+    "with_anchor": 3,
+    "verified": 3,
+    "trimmed": 1,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 3,
+    "verified_anchors": 3,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 3,
+      "with_anchor": 3,
+      "verified": 3,
+      "trimmed": 1,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 3,
+      "verified_anchors": 3,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:8AX3TFK3"
+        ],
+        "dimension_key": "place_in_text",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Abstract and introduction",
+          "Conceptualizing the First US Census",
+          "Conclusions",
+          "Full supplied article body"
+        ],
+        "coverage": "complete",
+        "criterion": "Retain literal passages showing what place Max Weber has in the citing text’s argument, including an adopted framework, opponent, foil, dialogue, or qualified role.",
+        "basis": "The full supplied body was inspected and contains explicit discussion of Weberian roots, the neo-Weberian state-centered consensus, Weber’s definition of the state, and the paper’s qualified treatment of state-centered approaches.",
+        "limitations": [
+          "This outcome concerns only the supplied article and does not establish Weber’s place in the authors’ complete body of work or in the full reception history."
+        ],
+        "finding_ids": [
+          "[D1.DOC8.F1]",
+          "[D1.DOC8.F2]",
+          "[D1.DOC8.F3]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:8AX3TFK3": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 4428
+}

@@ -1,0 +1,91 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "reader_stance",
+  "doc": "em:TDSPYHWK",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 40027,
+  "output_tokens": 819,
+  "duration_ms": 7848,
+  "cost_usd": 0.009,
+  "retries": 0,
+  "wall": {
+    "rows": 2,
+    "with_anchor": 2,
+    "verified": 2,
+    "trimmed": 0,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 2,
+    "verified_anchors": 2,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 2,
+      "with_anchor": 2,
+      "verified": 2,
+      "trimmed": 0,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 2,
+      "verified_anchors": 2,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:TDSPYHWK"
+        ],
+        "dimension_key": "reader_stance",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Marked-text excerpt, character range [71399, 111399), especially pp. 23–33 of the supplied passage"
+        ],
+        "coverage": "partial",
+        "criterion": "A supplied secondary reader must defend, reconstruct, criticize, apply, or survey a proposition concerning the target thinker, anchored in the reader’s own text.",
+        "basis": "The excerpt explicitly reconstructs Weber’s account of ancient capitalism and criticizes its conceptual equivocation and attempted synthesis.",
+        "limitations": [
+          "The supplied material is only a partial excerpt of the 1991 work.",
+          "The excerpt does not directly establish Love’s relation to Dylan Riley."
+        ],
+        "finding_ids": [
+          "[D2.DOC32.F1]",
+          "[D2.DOC32.F2]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:TDSPYHWK": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 2673
+}

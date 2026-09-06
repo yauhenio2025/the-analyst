@@ -1,0 +1,93 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "reader_stance",
+  "doc": "em:8AX3TFK3",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 61673,
+  "output_tokens": 1128,
+  "duration_ms": 11437,
+  "cost_usd": 0.0137,
+  "retries": 0,
+  "wall": {
+    "rows": 2,
+    "with_anchor": 2,
+    "verified": 2,
+    "trimmed": 1,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 2,
+    "verified_anchors": 2,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 2,
+      "with_anchor": 2,
+      "verified": 2,
+      "trimmed": 1,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 2,
+      "verified_anchors": 2,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:8AX3TFK3"
+        ],
+        "dimension_key": "reader_stance",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Opening framing and literature review, PDF pp. 1–4",
+          "Conceptualizing the First US Census, PDF pp. 4–6",
+          "Conclusions, PDF pp. 24–28"
+        ],
+        "coverage": "complete",
+        "criterion": "A reader’s text must defend, reconstruct, criticize, apply, or survey a proposition concerning Max Weber, anchored in the text’s own predicates.",
+        "basis": "The paper explicitly characterizes the neo-Weberian state-centered approach, criticizes its analytic privilege for state processes, and reconstructs state–society relations as historically variable and interactive.",
+        "limitations": [
+          "The stance concerns the neo-Weberian state-centered approach and does not establish a wholesale rejection of Weber.",
+          "This is a coauthored text; the findings are attributed to the paper rather than assigned separately to individual authors."
+        ],
+        "finding_ids": [
+          "[D2.DOC8.F1]",
+          "[D2.DOC8.F2]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:8AX3TFK3": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 3417
+}

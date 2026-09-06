@@ -1,0 +1,101 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "cited_object",
+  "doc": "em:QASWYLCG",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 67739,
+  "output_tokens": 2482,
+  "duration_ms": 24395,
+  "cost_usd": 0.0165,
+  "retries": 0,
+  "wall": {
+    "rows": 9,
+    "with_anchor": 9,
+    "verified": 9,
+    "trimmed": 4,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 10,
+    "verified_anchors": 10,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 9,
+      "with_anchor": 9,
+      "verified": 9,
+      "trimmed": 4,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 10,
+      "verified_anchors": 10,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:QASWYLCG"
+        ],
+        "dimension_key": "cited_object",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "pp. 18–19, Conceptualizing Power",
+          "pp. 22–23, expressions of power",
+          "pp. 24–26, Material Resources and Organizational Power",
+          "p. 31, Ideational Power",
+          "refs RW0074–RW0084"
+        ],
+        "coverage": "partial",
+        "criterion": "Retain a row when the supplied citing text directly cites or explicitly attributes a work, idea, or named thinker to Weber and gives a cited locus or identifiable cited object.",
+        "basis": "The inspected passages contain multiple direct citations to Weber’s works, including Economy and Society, Weber: Political Writings, and Grundriss der Sozialökonomik, with explicit page loci.",
+        "limitations": [
+          "The assessment is limited to the supplied source and the inspected passages.",
+          "The citation-index metadata is routing information, not independent evidence.",
+          "Some cited German works and loci were not directly held or fully verified in the supplied materials."
+        ],
+        "finding_ids": [
+          "D2.DOC22.F1",
+          "D2.DOC22.F2",
+          "D2.DOC22.F3",
+          "D2.DOC22.F4",
+          "D2.DOC22.F5",
+          "D2.DOC22.F6",
+          "D2.DOC22.F7",
+          "D2.DOC22.F8",
+          "D2.DOC22.F9"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:QASWYLCG": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 8123
+}

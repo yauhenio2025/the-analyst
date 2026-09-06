@@ -1,0 +1,153 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "engagement_trajectory",
+  "doc": "",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 129970,
+  "output_tokens": 2558,
+  "duration_ms": 21131,
+  "cost_usd": 0.0291,
+  "retries": 0,
+  "wall": {
+    "rows": 6,
+    "with_anchor": 6,
+    "verified": 6,
+    "trimmed": 0,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 12,
+    "verified_anchors": 12,
+    "cross_document_rows": 6,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 6,
+      "with_anchor": 6,
+      "verified": 6,
+      "trimmed": 0,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 12,
+      "verified_anchors": 12,
+      "cross_document_rows": 6,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:BEFGGK6M",
+          "em:AKVCVFYG",
+          "em:BWDEURC8",
+          "em:H6GGBV9I",
+          "em:PSYPHAPS",
+          "em:C9LPBLYH",
+          "em:VF5R7DTE",
+          "em:8AX3TFK3",
+          "em:EBSFFE5N",
+          "em:2Z7GD9IM",
+          "em:X7K39J6C",
+          "em:3YLGA6BQ",
+          "em:EJJLVCUC",
+          "em:CX58SV9M",
+          "em:LD5QCGT4",
+          "em:89QVNXT8",
+          "em:YYJU2VB6",
+          "em:V68V5D49",
+          "em:ARJ6E4AC",
+          "em:SBN4ZVXW",
+          "em:EZWD7IBR",
+          "em:QASWYLCG",
+          "em:QKSXS3VW",
+          "em:VE9TU4JA",
+          "em:9Z9GMMNI",
+          "em:DNWPMR2Y",
+          "em:GEFERFPB"
+        ],
+        "dimension_key": "engagement_trajectory",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Retained per-document findings for Weber-related place, cited object, citation move, citation stance and passage reading across the supplied citing texts",
+          "Anchored paired passages from 2003, 2011, 2013, 2018, 2020, 2022, 2023, 2025 and 2026 texts"
+        ],
+        "coverage": "partial",
+        "criterion": "A cross-document trajectory requires at least two distinct supplied citing-text source keys, paired predicate-bearing anchors, dated texts where dates are supplied, and an explicit relation limited to the inspected sample.",
+        "basis": "Six cross-document findings retain distinct source keys and verbatim anchors. They support limited claims about continuity, change, and qualification in Riley’s supplied Weber engagements, including political society, imperialism, patrimonialism, political capitalism, estates, responsibility, and standpoint.",
+        "limitations": [
+          "This is a supplied sample and not Riley’s complete work or Weber’s entire reception.",
+          "The evidence index is routing metadata and does not constitute an independent source.",
+          "Input order and same-year publication do not establish sequence; the unordered relation in X6.F6 is stated explicitly.",
+          "Several cited Weber passages were not independently inspected as complete primary texts.",
+          "The 2025 and 2026 dates are retained only where supplied in metadata; em:GEFERFPB remains undated and is not used as a dated trajectory anchor.",
+          "Coauthored texts remain coauthored in the findings."
+        ],
+        "finding_ids": [
+          "[X6.F1]",
+          "[X6.F2]",
+          "[X6.F3]",
+          "[X6.F4]",
+          "[X6.F5]",
+          "[X6.F6]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:BEFGGK6M": "provided",
+            "em:AKVCVFYG": "provided",
+            "em:BWDEURC8": "provided",
+            "em:H6GGBV9I": "provided",
+            "em:PSYPHAPS": "provided",
+            "em:C9LPBLYH": "provided",
+            "em:VF5R7DTE": "provided",
+            "em:8AX3TFK3": "provided",
+            "em:EBSFFE5N": "provided",
+            "em:2Z7GD9IM": "provided",
+            "em:X7K39J6C": "provided",
+            "em:3YLGA6BQ": "provided",
+            "em:EJJLVCUC": "provided",
+            "em:CX58SV9M": "provided",
+            "em:LD5QCGT4": "provided",
+            "em:89QVNXT8": "provided",
+            "em:YYJU2VB6": "provided",
+            "em:V68V5D49": "provided",
+            "em:ARJ6E4AC": "provided",
+            "em:SBN4ZVXW": "provided",
+            "em:EZWD7IBR": "provided",
+            "em:QASWYLCG": "provided",
+            "em:QKSXS3VW": "provided",
+            "em:VE9TU4JA": "provided",
+            "em:9Z9GMMNI": "provided",
+            "em:DNWPMR2Y": "provided",
+            "em:GEFERFPB": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ],
+          "basis_material": "Per-document ledgers and scope reports; no direct source inspection in this invocation"
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 10149
+}

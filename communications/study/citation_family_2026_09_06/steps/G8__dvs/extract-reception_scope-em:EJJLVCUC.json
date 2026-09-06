@@ -1,0 +1,91 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "reception_scope",
+  "doc": "em:EJJLVCUC",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 53548,
+  "output_tokens": 659,
+  "duration_ms": 6364,
+  "cost_usd": 0.0115,
+  "retries": 0,
+  "wall": {
+    "rows": 1,
+    "with_anchor": 1,
+    "verified": 1,
+    "trimmed": 0,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 1,
+    "verified_anchors": 1,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 1,
+      "with_anchor": 1,
+      "verified": 1,
+      "trimmed": 0,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 1,
+      "verified_anchors": 1,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:EJJLVCUC"
+        ],
+        "dimension_key": "reception_scope",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "full article, pp. 89–132"
+        ],
+        "coverage": "complete",
+        "criterion": "A supplied citing-author text must delimit the reader’s date, inspected excerpt or article coverage, and any supplied scholarly citation-count basis relevant to A.",
+        "basis": "The full supplied article was inspected; it identifies Riley as the author, is dated 2018 in the supplied metadata, and explicitly states the organization and coverage of the response.",
+        "limitations": [
+          "No scholarly citation counts are supplied, so no most-cited ranking can be made.",
+          "Composition and publication dates are not separately established in the text.",
+          "The held article is not Riley’s complete work or Weber’s entire reception."
+        ],
+        "finding_ids": [
+          "[D5.DOC13.F1]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:EJJLVCUC": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 2204
+}

@@ -1,0 +1,117 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "reader_stance",
+  "doc": "em:PL4C6Y9V",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 82645,
+  "output_tokens": 1519,
+  "duration_ms": 18971,
+  "cost_usd": 0.0184,
+  "retries": 0,
+  "wall": {
+    "reanchor_receipts": [
+      {
+        "content": "## Findings ledger\n- [D2.DOC31.F1] Reinhard Bendix reconstructs Weber’s work by privileging its empirical studies over its methodological writings as the basis for understanding his sociology — dim: reader_stance — reader: Reinhard Bendix — stance: reconstructs — object: Weber’s empirical investigations as the primary route to understanding his sociological work — anchor: \"the present study approaches Weber’s work with a major emphasis on his empirical rather than his methodological writings.\" — doc: em:PL4C6Y9V — confidence: high — trimmed-anchor: yes",
+        "partial": false,
+        "stop_reason": "stop",
+        "error": null
+      }
+    ],
+    "rows": 6,
+    "with_anchor": 6,
+    "verified": 5,
+    "trimmed": 2,
+    "anchor_rate": 0.833,
+    "failed_ids": [
+      "D2.DOC31.F1"
+    ],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 6,
+    "verified_anchors": 5,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 5,
+      "with_anchor": 5,
+      "verified": 5,
+      "trimmed": 2,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 5,
+      "verified_anchors": 5,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [
+      {
+        "id": "D2.DOC31.F1",
+        "dimension": "reader_stance"
+      }
+    ],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:PL4C6Y9V"
+        ],
+        "dimension_key": "reader_stance",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Bibliographical Note",
+          "Introduction",
+          "Chapter I: Career and Personal Orientation",
+          "Chapter II opening passage: Weber’s Early Studies and the Definition of His Intellectual Perspective"
+        ],
+        "coverage": "partial",
+        "criterion": "A supplied secondary reader substantively defends, reconstructs, criticizes, applies, or surveys propositions concerning Max Weber.",
+        "basis": "The inspected excerpt explicitly describes Bendix’s reconstructive and expository method, identifies the empirical and political emphases of his reading, and states his defense of Weber’s enduring value.",
+        "limitations": [
+          "The supplied source is a contiguous excerpt rather than the complete book.",
+          "The excerpt does not demonstrate engagement with Dylan Riley.",
+          "No claim is made about Bendix’s complete treatment of all engagement themes."
+        ],
+        "finding_ids": [
+          "D2.DOC31.F1",
+          "D2.DOC31.F2",
+          "D2.DOC31.F3",
+          "D2.DOC31.F4",
+          "D2.DOC31.F5",
+          "D2.DOC31.F6"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:PL4C6Y9V": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Findings lost anchor evidence; this does not establish absence",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [
+    "D2.DOC31.F1"
+  ],
+  "chars": 5270
+}

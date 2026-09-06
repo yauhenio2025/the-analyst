@@ -1,0 +1,98 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "reader_stance",
+  "doc": "em:QASWYLCG",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 67733,
+  "output_tokens": 1395,
+  "duration_ms": 16100,
+  "cost_usd": 0.0152,
+  "retries": 0,
+  "wall": {
+    "rows": 5,
+    "with_anchor": 5,
+    "verified": 5,
+    "trimmed": 2,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 5,
+    "verified_anchors": 5,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 5,
+      "with_anchor": 5,
+      "verified": 5,
+      "trimmed": 2,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 5,
+      "verified_anchors": 5,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:QASWYLCG"
+        ],
+        "dimension_key": "reader_stance",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Abstract and introduction, pp. 3–6",
+          "The Tradition of Elite Theory: From Pareto to Lachmann, pp. 6–17",
+          "Conceptualizing Power, pp. 18–23",
+          "The Relational Power of Elites and Nonelites, pp. 24–33",
+          "Elites, Nonelites, and Historical Change, pp. 34–39"
+        ],
+        "coverage": "complete",
+        "criterion": "The reader must defend, reconstruct, criticize, apply, or survey a proposition associated with Max Weber, anchored in the reader's own text.",
+        "basis": "The chapter explicitly defines Weber's account of power, criticizes Weberian views as narrowly agentic and subjectivist, and applies Weberian concepts of domination, legitimacy, bureaucracy, and organizational power within its proposed relational power theory.",
+        "limitations": [
+          "This is a coauthored chapter, so the supplied text does not distinguish Rebecca Jean Emigh's and Dylan Riley's individual stances.",
+          "The assessment covers the supplied chapter, not the authors' complete work or the thinker's entire reception."
+        ],
+        "finding_ids": [
+          "[D2.DOC22.F1]",
+          "[D2.DOC22.F2]",
+          "[D2.DOC22.F3]",
+          "[D2.DOC22.F4]",
+          "[D2.DOC22.F5]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:QASWYLCG": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 5624
+}

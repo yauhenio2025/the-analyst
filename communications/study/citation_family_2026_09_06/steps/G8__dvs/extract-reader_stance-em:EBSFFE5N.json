@@ -1,0 +1,90 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "reader_stance",
+  "doc": "em:EBSFFE5N",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 43541,
+  "output_tokens": 756,
+  "duration_ms": 9473,
+  "cost_usd": 0.0096,
+  "retries": 0,
+  "wall": {
+    "rows": 1,
+    "with_anchor": 1,
+    "verified": 1,
+    "trimmed": 1,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 1,
+    "verified_anchors": 1,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 1,
+      "with_anchor": 1,
+      "verified": 1,
+      "trimmed": 1,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 1,
+      "verified_anchors": 1,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:EBSFFE5N"
+        ],
+        "dimension_key": "reader_stance",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "The New Durkheim: Bourdieu and the State, pp. 261–279, especially pp. 270–271 and the conclusion on p. 279"
+        ],
+        "coverage": "complete",
+        "criterion": "A substantive passage must show the reader defending, reconstructing, criticizing, applying or surveying a proposition concerning Max Weber.",
+        "basis": "Riley explicitly praises Weber’s account of the affinity between modern industrial capitalism and mass suffrage and his claim that representative government strengthens the state.",
+        "limitations": [
+          "This is a single article and does not establish Riley’s stance across his complete work.",
+          "The finding concerns specific Weberian propositions rather than Weber’s entire sociology."
+        ],
+        "finding_ids": [
+          "[D2.DOC9.F1]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:EBSFFE5N": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 2160
+}

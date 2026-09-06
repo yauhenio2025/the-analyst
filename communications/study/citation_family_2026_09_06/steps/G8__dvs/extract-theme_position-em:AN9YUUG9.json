@@ -1,0 +1,89 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "theme_position",
+  "doc": "em:AN9YUUG9",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 32966,
+  "output_tokens": 964,
+  "duration_ms": 11002,
+  "cost_usd": 0.0077,
+  "retries": 0,
+  "wall": {
+    "rows": 2,
+    "with_anchor": 2,
+    "verified": 2,
+    "trimmed": 1,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 2,
+    "verified_anchors": 2,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 2,
+      "with_anchor": 2,
+      "verified": 2,
+      "trimmed": 1,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 2,
+      "verified_anchors": 2,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:AN9YUUG9"
+        ],
+        "dimension_key": "theme_position",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Chapter 2, “On the Work of Max Weber,” pp. 32–33 in the supplied excerpt"
+        ],
+        "coverage": "partial",
+        "criterion": "Retain a row when the secondary reader text makes an anchored interpretive claim about a supplied engagement theme or introduces an anchored additional theme.",
+        "basis": "The supplied Castoriadis passage explicitly interprets Weber’s concept of social meaning, sociology’s interpretive mission, and the unity of method across diverse historical material; these support two retained findings.",
+        "limitations": [
+          "The supplied material is an excerpt of the held text rather than the complete document body for this inspection.",
+          "No absence of engagement with the other plan themes can be inferred from the excerpt."
+        ],
+        "finding_ids": [
+          "D3.DOC35.F1",
+          "D3.DOC35.F2"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:AN9YUUG9": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 3570
+}

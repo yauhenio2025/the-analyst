@@ -1,0 +1,93 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "reception_scope",
+  "doc": "em:QKSXS3VW",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 46076,
+  "output_tokens": 1128,
+  "duration_ms": 11322,
+  "cost_usd": 0.0106,
+  "retries": 0,
+  "wall": {
+    "rows": 2,
+    "with_anchor": 2,
+    "verified": 2,
+    "trimmed": 0,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 2,
+    "verified_anchors": 2,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 2,
+      "with_anchor": 2,
+      "verified": 2,
+      "trimmed": 0,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 2,
+      "verified_anchors": 2,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:QKSXS3VW"
+        ],
+        "dimension_key": "reception_scope",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "bounded book-section excerpt, pp. 79–103",
+          "passages discussing Weber, estates, class politics, and political capitalism"
+        ],
+        "coverage": "partial",
+        "criterion": "A positive reception-scope finding requires a supplied date, bounded excerpt coverage, or supplied citation-count basis that delimits the author’s relevance to Weber.",
+        "basis": "The supplied source identifies Riley’s text as a 2025 book section and the inspected excerpt explicitly cites Weber 1922 p. 180 and characterizes a contemporary political order as a Weberian estate-group world.",
+        "limitations": [
+          "The held material is a bounded excerpt, not Riley’s complete work or complete reception.",
+          "No scholarly citation counts are supplied, so no most-cited ranking can be made.",
+          "Composition, translation, and publication dates are not separately established beyond the supplied 2025 source metadata."
+        ],
+        "finding_ids": [
+          "[D5.DOC23.F1]",
+          "[D5.DOC23.F2]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:QKSXS3VW": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 3155
+}

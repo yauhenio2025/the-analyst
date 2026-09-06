@@ -1,0 +1,86 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "cites_author",
+  "doc": "em:SNF5KW47",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 51697,
+  "output_tokens": 491,
+  "duration_ms": 7196,
+  "cost_usd": 0.0109,
+  "retries": 0,
+  "wall": {
+    "rows": 0,
+    "with_anchor": 0,
+    "verified": 0,
+    "trimmed": 0,
+    "anchor_rate": 0.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 0,
+    "verified_anchors": 0,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 0,
+      "with_anchor": 0,
+      "verified": 0,
+      "trimmed": 0,
+      "anchor_rate": 0.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 0,
+      "verified_anchors": 0,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:SNF5KW47"
+        ],
+        "dimension_key": "cites_author",
+        "outcome": "no_relevant_instance",
+        "sections_inspected": [
+          "Full held text, pp. 648–674, including the article body, notes, and references"
+        ],
+        "coverage": "complete",
+        "criterion": "A positive citation requires Dylan Riley’s name in the reader’s text and an anchored passage showing what the citation does.",
+        "basis": "The full supplied text of Venelin I. Ganev’s article was inspected. It discusses Max Weber and cites other authors, but it contains no located occurrence of Dylan Riley’s name or an anchored citation to Riley.",
+        "limitations": [
+          "This is a finding about the supplied article only, not about Ganev’s complete work or the entire reception of Weber.",
+          "The citation-index metadata is not an anchor source and was not treated as evidence of engagement."
+        ],
+        "finding_ids": [],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:SNF5KW47": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 1440
+}

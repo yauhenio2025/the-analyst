@@ -1,0 +1,243 @@
+{
+  "step": "verify",
+  "kind": "verify",
+  "dimension": "",
+  "doc": "em:ZYGH3ALE",
+  "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+  "model_used": "openrouter/deepseek/deepseek-v4-pro",
+  "input_tokens": 59844,
+  "output_tokens": 13786,
+  "duration_ms": 182549,
+  "cost_usd": 0.0911,
+  "retries": 0,
+  "wall": {
+    "rows": 21,
+    "with_anchor": 21,
+    "verified": 21,
+    "trimmed": 11,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 21,
+    "verified_anchors": 21,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "carried_forward": 0,
+    "rejected": 4,
+    "added": 6,
+    "ruling_coverage": {
+      "original_count": 15,
+      "explicitly_ruled_count": 15,
+      "missing_or_unruled_ids": [],
+      "unexpected_nonadded_ids": [],
+      "invalid_original_status_ids": [],
+      "duplicate_original_ids": [],
+      "duplicate_ruling_ids": [],
+      "coverage_complete": true
+    },
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:ZYGH3ALE"
+        ],
+        "dimension_key": "reader_argument",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Full held text, pp. 832–852, including the abstract, sections on Weber’s class analysis, Weber and Marx, class and status, the shadow of exploitation, and ramifications"
+        ],
+        "coverage": "complete",
+        "criterion": "A held secondary reader must make an anchored argument about Max Weber, with a substantive thesis rather than a mere name or citation",
+        "basis": "Erik Olin Wright’s 2002 article explicitly reconstructs Weber’s class analysis, compares it with Marx’s, and argues that Weber marginalizes exploitation by treating labor extraction mainly as a problem of rationalization, discipline, and efficiency.",
+        "limitations": [
+          "This is one supplied secondary reader and not the complete reception of Max Weber.",
+          "The text does not directly discuss Dylan Riley, so no reader-to-Riley engagement finding is established here.",
+          "Review state is unchecked as required."
+        ],
+        "finding_ids": [
+          "[D1.DOC28.F1]",
+          "[D1.DOC28.F2]",
+          "[D1.DOC28.F3]",
+          "[D1.DOC28.F4]",
+          "[D1.DOC28.F5]",
+          "[D1.DOC28.F6]",
+          "[D1.DOC28.F7]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": false,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:ZYGH3ALE": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Malformed/missing scope records: 3 validation errors for ScopeOutcome\nsections_inspected\n  Field required [type=missing, input_value={'document_keys': ['em:ZY...ed', 'review_basis': ''}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\ncoverage\n  Input should be 'complete', 'partial' or 'unknown' [type=literal_error, input_value='compllete', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/literal_error\nsctions_inspected\n  Extra inputs are not permitted [type=extra_forbidden, input_value=['Full held text, pp. 832...tnotes, and references'], input_type=list]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "em:ZYGH3ALE"
+        ],
+        "dimension_key": "reader_stance",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Full held text, pp. 832–853, including the body discussion of Weber and Marx and the references"
+        ],
+        "coverage": "complete",
+        "criterion": "The supplied secondary reader must explicitly defend, reconstruct, criticize, apply, or survey Dylan Riley's position.",
+        "basis": "Wright's article develops its own comparison of Weber and Marx on class, status, rationalization, and exploitation. No passage in the supplied full text names, cites, or otherwise demonstrably engages Dylan Riley, so no reader-stance row about Riley can be retained.",
+        "limitations": [
+          "This is a finding about no demonstrated engagement in the supplied text, not proof that Wright never encountered Riley's work.",
+          "The supplied source is one article and does not represent Wright's complete reception of Riley."
+        ],
+        "finding_ids": [],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": false,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:ZYGH3ALE": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Malformed/missing scope records: 3 validation errors for ScopeOutcome\nsections_inspected\n  Field required [type=missing, input_value={'document_keys': ['em:ZY...ed', 'review_basis': ''}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\ncoverage\n  Input should be 'complete', 'partial' or 'unknown' [type=literal_error, input_value='compllete', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/literal_error\nsctions_inspected\n  Extra inputs are not permitted [type=extra_forbidden, input_value=['Full held text, pp. 832...tnotes, and references'], input_type=list]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "em:ZYGH3ALE"
+        ],
+        "dimension_key": "theme_position",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Full held text, pp. 832-853",
+          "The Location of Class Analysis in Weber's Work",
+          "Weber and Marx on Class: Convergences",
+          "Class and Status",
+          "Weber and Marx on Class: Central Differences",
+          "The Shadow of Exploitation in Weber",
+          "Ramifications"
+        ],
+        "coverage": "complete",
+        "criterion": "A secondary reader must substantively interpret the thinker on at least one supplied engagement theme or introduce a clearly supported additional theme, with a verbatim anchor.",
+        "basis": "The full held article substantively interprets Weber’s class, status, honor, closure, market relations, subjective interests, class formation and relation to Marx, and introduces exploitation as a central additional theme.",
+        "limitations": [
+          "This is one reader’s article, not the complete reception of Max Weber or the complete work of Erik Olin Wright.",
+          "The article does not address every engagement theme, including political capitalism, imperialism and tax-farming.",
+          "The supplied plan is guide-derived and reconstructed rather than the missing original plan."
+        ],
+        "finding_ids": [
+          "D3.DOC28.F1",
+          "D3.DOC28.F2",
+          "D3.DOC28.F3",
+          "D3.DOC28.F4",
+          "D3.DOC28.F5",
+          "D3.DOC28.F6",
+          "D3.DOC28.F7"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": false,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:ZYGH3ALE": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Malformed/missing scope records: 3 validation errors for ScopeOutcome\nsections_inspected\n  Field required [type=missing, input_value={'document_keys': ['em:ZY...ed', 'review_basis': ''}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\ncoverage\n  Input should be 'complete', 'partial' or 'unknown' [type=literal_error, input_value='compllete', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/literal_error\nsctions_inspected\n  Extra inputs are not permitted [type=extra_forbidden, input_value=['Full held text, pp. 832...tnotes, and references'], input_type=list]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "em:ZYGH3ALE"
+        ],
+        "dimension_key": "cites_author",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Full held text, pp. 832–853, including the article body, footnotes, and references"
+        ],
+        "coverage": "complete",
+        "criterion": "A positive citation requires the secondary reader's text to name or cite Dylan Riley.",
+        "basis": "No literal occurrence of Riley or Dylan Riley appears in the inspected text. The article cites and discusses Weber, Marx, Wright, and other authors, but shared themes or the supplied metadata's reference-author field do not establish engagement with Riley.",
+        "limitations": [
+          "This finding is limited to the supplied full held text and does not establish global absence from Wright's complete work or other editions."
+        ],
+        "finding_ids": [],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": false,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:ZYGH3ALE": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Malformed/missing scope records: 3 validation errors for ScopeOutcome\nsections_inspected\n  Field required [type=missing, input_value={'document_keys': ['em:ZY...ed', 'review_basis': ''}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\ncoverage\n  Input should be 'complete', 'partial' or 'unknown' [type=literal_error, input_value='compllete', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/literal_error\nsctions_inspected\n  Extra inputs are not permitted [type=extra_forbidden, input_value=['Full held text, pp. 832...tnotes, and references'], input_type=list]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "em:ZYGH3ALE"
+        ],
+        "dimension_key": "reception_scope",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Full article body, pp. 832-852",
+          "References, p. 853"
+        ],
+        "coverage": "complete",
+        "criterion": "A reader must provide a dated, textually anchored instance relevant to Dylan Riley’s reception of Max Weber; a source that predates Riley’s supplied writings or does not engage Riley does not qualify as demonstrated reception.",
+        "basis": "The full supplied article is dated 2002, and its stated objectives and substantive discussion concern Weber, Marx, class, status, rationalization, and exploitation; no passage identifies or discusses Dylan Riley.",
+        "limitations": [
+          "The article’s date predates the supplied Riley corpus and cannot establish later engagement.",
+          "No scholarly citation-count record is supplied.",
+          "This outcome concerns only the held article, not Wright’s complete work or the thinker’s entire reception."
+        ],
+        "finding_ids": [
+          "D5.DOC28.F1"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": false,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:ZYGH3ALE": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Malformed/missing scope records: 3 validation errors for ScopeOutcome\nsections_inspected\n  Field required [type=missing, input_value={'document_keys': ['em:ZY...ed', 'review_basis': ''}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\ncoverage\n  Input should be 'complete', 'partial' or 'unknown' [type=literal_error, input_value='compllete', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/literal_error\nsctions_inspected\n  Extra inputs are not permitted [type=extra_forbidden, input_value=['Full held text, pp. 832...tnotes, and references'], input_type=list]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden",
+            "Negative claim conflicts with retained findings in this scope"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 24314
+}

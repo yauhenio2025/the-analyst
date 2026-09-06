@@ -1,0 +1,94 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "citation_stance",
+  "doc": "em:BWDEURC8",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 36801,
+  "output_tokens": 1385,
+  "duration_ms": 13945,
+  "cost_usd": 0.009,
+  "retries": 0,
+  "wall": {
+    "rows": 4,
+    "with_anchor": 4,
+    "verified": 4,
+    "trimmed": 1,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 5,
+    "verified_anchors": 5,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 4,
+      "with_anchor": 4,
+      "verified": 4,
+      "trimmed": 1,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 5,
+      "verified_anchors": 5,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:BWDEURC8"
+        ],
+        "dimension_key": "citation_stance",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Full supplied body of Waves of Historical Sociology, pp. 379–386, especially the discussion of Marx and Weber, actorhood and agency, visions of history and society, and conclusion"
+        ],
+        "coverage": "complete",
+        "criterion": "A retained finding must identify Riley’s stance toward a proposition attributed to or associated with Weber and be supported by a verbatim passage from the citing text.",
+        "basis": "The full supplied article body contains four anchored instances in which Riley reports, evaluates, or builds on Weber-related propositions.",
+        "limitations": [
+          "This assessment covers only the supplied citing text, not Riley’s complete work or Weber’s entire reception.",
+          "Several Weber-related propositions are mediated through Gorski or the reviewed editors rather than directly argued from Weber’s text.",
+          "The evidence index and candidate citation windows were treated as metadata, not as independent evidence."
+        ],
+        "finding_ids": [
+          "[D4.DOC3.F1]",
+          "[D4.DOC3.F2]",
+          "[D4.DOC3.F3]",
+          "[D4.DOC3.F4]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:BWDEURC8": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 4988
+}

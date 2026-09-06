@@ -1,0 +1,90 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "citation_stance",
+  "doc": "em:V68V5D49",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 43062,
+  "output_tokens": 583,
+  "duration_ms": 6819,
+  "cost_usd": 0.0093,
+  "retries": 0,
+  "wall": {
+    "rows": 1,
+    "with_anchor": 1,
+    "verified": 1,
+    "trimmed": 0,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 1,
+    "verified_anchors": 1,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 1,
+      "with_anchor": 1,
+      "verified": 1,
+      "trimmed": 0,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 1,
+      "verified_anchors": 1,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:V68V5D49"
+        ],
+        "dimension_key": "citation_stance",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "pp. 5–27, including Thesis One, the discussion of status groups on p. 10, and the concluding theses"
+        ],
+        "coverage": "complete",
+        "criterion": "A retained finding requires an explicit passage in the citing text that adopts, builds on, qualifies, disputes, or mentions a proposition attributed to Max Weber, supported by a verbatim anchor.",
+        "basis": "The text explicitly attributes the concept of status groups to Weber and applies it to the organization of competing fractions of the American working class.",
+        "limitations": [
+          "The supplied text identifies Weber but does not give a specific Weber work, edition, or page.",
+          "This outcome concerns only the supplied citing text, not Riley and Brenner’s complete work or Weber’s entire reception."
+        ],
+        "finding_ids": [
+          "[D4.DOC18.F1]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:V68V5D49": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 2354
+}

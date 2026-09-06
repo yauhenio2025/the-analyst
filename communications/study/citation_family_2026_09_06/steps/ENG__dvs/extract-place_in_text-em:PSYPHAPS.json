@@ -1,0 +1,113 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "place_in_text",
+  "doc": "em:PSYPHAPS",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 85035,
+  "output_tokens": 1224,
+  "duration_ms": 13606,
+  "cost_usd": 0.0185,
+  "retries": 0,
+  "wall": {
+    "reanchor_receipts": [
+      {
+        "content": "## Findings ledger\n- [D1.DOC5.F1] Riley uses Weber as a qualified counter-framework to Mann’s account of imperialism: Weber recognizes prestige conflicts but also explains imperialism through material dynamics and political capitalism — dim: place_in_text — text-argument: Riley argues that Mann’s emphasis on militaristic status ideology is inadequate because Weber’s account joins interstate prestige competition to materially driven imperialist expansion — place: adopted analytical counterpoint and qualified framework — anchor: \"But Weber’s actual account of imperialism was quite different from Mann’s. It is true that Weber insisted that inter-state competition was saturated with conflicts over prestige.\" — anchor-b: \"Imperialist adventures, investments in arms manufacture, and state loans (phenomena that Weber grouped under the term political capitalism) tended in contrast to have higher rates of return\" — doc: em:PSYPHAPS — doc-b: em:PSYPHAPS — confidence: high — trimmed-anchor-b: yes",
+        "partial": false,
+        "stop_reason": "stop",
+        "error": null
+      }
+    ],
+    "rows": 1,
+    "with_anchor": 1,
+    "verified": 0,
+    "trimmed": 0,
+    "anchor_rate": 0.0,
+    "failed_ids": [
+      "D1.DOC5.F1"
+    ],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 2,
+    "verified_anchors": 1,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 0,
+      "with_anchor": 0,
+      "verified": 0,
+      "trimmed": 0,
+      "anchor_rate": 0.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 0,
+      "verified_anchors": 0,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [
+      {
+        "id": "D1.DOC5.F1",
+        "dimension": "place_in_text"
+      }
+    ],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:PSYPHAPS"
+        ],
+        "dimension_key": "place_in_text",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Introduction",
+          "Summary of the Volume",
+          "Assessment",
+          "Capitalism and War",
+          "pp. 491–492 discussion of Weber",
+          "pp. 492–494 concluding argument"
+        ],
+        "coverage": "complete",
+        "criterion": "The citing text must contain a substantive argument that assigns Max Weber an evidentiary, framework, opponent, dialogue, courtesy or qualified role in the text’s argument.",
+        "basis": "The complete supplied text was inspected. Riley explicitly contrasts Weber’s account of imperialism with Mann’s and uses Weber to support a materially grounded interpretation of imperialism alongside prestige competition.",
+        "limitations": [
+          "This outcome concerns only the supplied 2013 text and does not establish Riley’s place for Weber across his complete corpus.",
+          "The assessment does not independently verify the cited Weber passages or edition pagination."
+        ],
+        "finding_ids": [
+          "[D1.DOC5.F1]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:PSYPHAPS": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Findings lost anchor evidence; this does not establish absence",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [
+    "D1.DOC5.F1"
+  ],
+  "chars": 2708
+}

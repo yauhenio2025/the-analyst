@@ -1,0 +1,93 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "cited_object",
+  "doc": "em:GEFERFPB",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 36431,
+  "output_tokens": 679,
+  "duration_ms": 8837,
+  "cost_usd": 0.0081,
+  "retries": 0,
+  "wall": {
+    "rows": 1,
+    "with_anchor": 1,
+    "verified": 1,
+    "trimmed": 1,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 1,
+    "verified_anchors": 1,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 1,
+      "with_anchor": 1,
+      "verified": 1,
+      "trimmed": 1,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 1,
+      "verified_anchors": 1,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:GEFERFPB"
+        ],
+        "dimension_key": "cited_object",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Main text, PDF pp. 1–5",
+          "Footnotes, PDF pp. 6–7",
+          "Cited passage on PDF p. 2 and footnote 4"
+        ],
+        "coverage": "complete",
+        "criterion": "A finding requires a supplied passage that names or directly cites a work, idea, or thinker and identifies a cited locus when present.",
+        "basis": "The source directly attributes a definition of political capitalism to Max Weber and identifies Economy and Society, pp. 965–966, in footnote 4.",
+        "limitations": [
+          "This assessment concerns only the supplied source em:GEFERFPB, not Riley’s complete work or the entire reception of Weber.",
+          "The source publication year is missing from the supplied metadata.",
+          "The finding does not establish the original German edition or work behind the English citation."
+        ],
+        "finding_ids": [
+          "[D2.DOC27.F1]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:GEFERFPB": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 2460
+}

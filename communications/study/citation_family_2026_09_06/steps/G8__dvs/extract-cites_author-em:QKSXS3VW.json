@@ -1,0 +1,89 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "cites_author",
+  "doc": "em:QKSXS3VW",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 46063,
+  "output_tokens": 768,
+  "duration_ms": 9335,
+  "cost_usd": 0.0101,
+  "retries": 0,
+  "wall": {
+    "rows": 1,
+    "with_anchor": 1,
+    "verified": 1,
+    "trimmed": 0,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 1,
+    "verified_anchors": 1,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 1,
+      "with_anchor": 1,
+      "verified": 1,
+      "trimmed": 0,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 1,
+      "verified_anchors": 1,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:QKSXS3VW"
+        ],
+        "dimension_key": "cites_author",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Supplied chapter text, pp. 79–103, including the discussion of estate-type politics on pp. 97–99 and the conclusion on p. 102",
+          "Supplied references section"
+        ],
+        "coverage": "complete",
+        "criterion": "A positive citation requires the reader’s text to name or cite A and to state what the citation does.",
+        "basis": "The supplied chapter explicitly names Max Weber and attributes the concept of an estate to Weber (1922, p. 180), supporting finding D4.DOC23.F1.",
+        "limitations": [
+          "Coverage is complete for the supplied source text, not for Riley’s complete work or the thinker’s entire reception.",
+          "The citation-index metadata is routing metadata and does not add an independent citation event."
+        ],
+        "finding_ids": [
+          "D4.DOC23.F1"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:QKSXS3VW": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 2263
+}

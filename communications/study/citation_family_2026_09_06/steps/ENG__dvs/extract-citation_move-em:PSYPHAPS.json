@@ -1,0 +1,94 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "citation_move",
+  "doc": "em:PSYPHAPS",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 42403,
+  "output_tokens": 789,
+  "duration_ms": 11132,
+  "cost_usd": 0.0094,
+  "retries": 0,
+  "wall": {
+    "rows": 1,
+    "with_anchor": 1,
+    "verified": 1,
+    "trimmed": 0,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 1,
+    "verified_anchors": 1,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 1,
+      "with_anchor": 1,
+      "verified": 1,
+      "trimmed": 0,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 1,
+      "verified_anchors": 1,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:PSYPHAPS"
+        ],
+        "dimension_key": "citation_move",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Introduction",
+          "Summary of the Volume",
+          "Assessment",
+          "Capitalism and War",
+          "pp. 491–492 discussion of Weber and imperialism"
+        ],
+        "coverage": "complete",
+        "criterion": "A finding requires an anchored passage in which Riley performs an argumentative act with the citation to Weber, such as authority, evidence, foil, dialogue, genealogy, illustration, courtesy, or self-positioning.",
+        "basis": "The complete supplied text was inspected and contains an explicit, anchored discussion in which Riley contrasts Weber’s account with Mann’s and uses Weber as a theoretical interlocutor.",
+        "limitations": [
+          "This outcome concerns only the supplied citing text and does not represent Riley’s complete work or Weber’s entire reception.",
+          "The citation index and held-source metadata were not treated as independent evidence of additional moves."
+        ],
+        "finding_ids": [
+          "[D3.DOC5.F1]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:PSYPHAPS": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 2385
+}

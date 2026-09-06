@@ -1,0 +1,123 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "theme_position",
+  "doc": "em:PL4C6Y9V",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 83009,
+  "output_tokens": 2035,
+  "duration_ms": 21703,
+  "cost_usd": 0.019,
+  "retries": 0,
+  "wall": {
+    "reanchor_receipts": [
+      {
+        "content": "## Findings ledger\n- [D3.DOC31.F5] Bendix reads Weber’s scholarship as combining political and moral commitment with analytic detachment, rather than as value-free indifference — dim: theme_position — anchor: \"This combination of commitment and detachment was yet another aspect of the personal and intellectual tensions that marred his life and made it creative.\" — doc: em:PL4C6Y9V — reader: Reinhard Bendix — theme-origin: plan_spine — theme: Science, political values and responsibility — plan-theme-link: Science, political values and responsibility — position: Weber’s scientific work is presented as simultaneously committed to reason and freedom and disciplined by detachment from immediate political identification — confidence: high — trimmed-anchor: yes\n- [D3.DOC31.F6] Bendix adds empirical reconstruction as a methodological concern, arguing that Weber’s substantive investigations should take priority over isolated methodological definitions when interpreting his sociology — dim: theme_position — anchor: \"the present study approaches Weber’s work with a major emphasis on his empirical rather than his methodological writings.\" — doc: em:PL4C6Y9V — reader: Reinhard Bendix — theme-origin: reader_addition — theme: Empirical reconstruction over methodological abstraction — plan-theme-link: outside-spine — position: Bendix’s reading privileges Weber’s empirical studies as the primary route to understanding his concepts and comparative arguments — confidence: high — trimmed-anchor: yes",
+        "partial": false,
+        "stop_reason": "stop",
+        "error": null
+      }
+    ],
+    "rows": 6,
+    "with_anchor": 6,
+    "verified": 4,
+    "trimmed": 0,
+    "anchor_rate": 0.667,
+    "failed_ids": [
+      "D3.DOC31.F5",
+      "D3.DOC31.F6"
+    ],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 6,
+    "verified_anchors": 4,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 4,
+      "with_anchor": 4,
+      "verified": 4,
+      "trimmed": 0,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 4,
+      "verified_anchors": 4,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [
+      {
+        "id": "D3.DOC31.F5",
+        "dimension": "theme_position"
+      },
+      {
+        "id": "D3.DOC31.F6",
+        "dimension": "theme_position"
+      }
+    ],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:PL4C6Y9V"
+        ],
+        "dimension_key": "theme_position",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Bibliographical Note on the Writings of Max Weber",
+          "Introduction",
+          "Chapter I: Career and Personal Orientation",
+          "Contents and opening of Chapter II: Weber’s Early Studies and the Definition of His Intellectual Perspective"
+        ],
+        "coverage": "partial",
+        "criterion": "A secondary reader must make an anchored interpretive claim about Max Weber on a supplied engagement theme or a clearly labelled reader-added theme.",
+        "basis": "The inspected excerpt contains anchored interpretations by Reinhard Bendix concerning class and status-group concepts, domination and political organization, bureaucracy and patrimonial rule, subjective meaning, science, values, commitment, detachment, and empirical reconstruction.",
+        "limitations": [
+          "The source is a bounded excerpt rather than the complete book.",
+          "The excerpt does not directly address political capitalism, imperialism, or tax-farming.",
+          "No claim is made about Bendix’s complete treatment of the remaining themes outside the inspected sections."
+        ],
+        "finding_ids": [
+          "[D3.DOC31.F1]",
+          "[D3.DOC31.F2]",
+          "[D3.DOC31.F3]",
+          "[D3.DOC31.F4]",
+          "[D3.DOC31.F5]",
+          "[D3.DOC31.F6]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:PL4C6Y9V": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Findings lost anchor evidence; this does not establish absence",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [
+    "D3.DOC31.F5",
+    "D3.DOC31.F6"
+  ],
+  "chars": 7128
+}

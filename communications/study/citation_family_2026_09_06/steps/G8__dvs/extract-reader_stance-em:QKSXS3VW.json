@@ -1,0 +1,91 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "reader_stance",
+  "doc": "em:QKSXS3VW",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 46047,
+  "output_tokens": 778,
+  "duration_ms": 10734,
+  "cost_usd": 0.0101,
+  "retries": 0,
+  "wall": {
+    "rows": 1,
+    "with_anchor": 1,
+    "verified": 1,
+    "trimmed": 0,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 1,
+    "verified_anchors": 1,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 1,
+      "with_anchor": 1,
+      "verified": 1,
+      "trimmed": 0,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 1,
+      "verified_anchors": 1,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:QKSXS3VW"
+        ],
+        "dimension_key": "reader_stance",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "pp. 97–99, discussion of class, estate-type politics, education, race, citizenship status, ethnicity, and Weber 1922 p. 180",
+          "pp. 100–102, discussion of estate-type struggle, redistribution, and the Weberian estate-group world of political capitalism"
+        ],
+        "coverage": "partial",
+        "criterion": "A retained row must show what the supplied reader does with a proposition associated with Max Weber through an anchored textual act of defending, reconstructing, criticizing, applying, or surveying it.",
+        "basis": "Riley explicitly invokes Weber’s estate concept and applies it to contemporary worker organization around credentials, race, ethnicity, and related forms of closure.",
+        "limitations": [
+          "Only the supplied chapter and the inspected passages were assessed, not Riley’s complete work or complete reception of Weber.",
+          "The evidence supports an application of one Weberian distinction; it does not settle Riley’s stance toward Weber’s wider sociology."
+        ],
+        "finding_ids": [
+          "[D2.DOC23.F1]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:QKSXS3VW": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 2335
+}

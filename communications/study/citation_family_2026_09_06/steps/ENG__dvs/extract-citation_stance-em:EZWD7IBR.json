@@ -1,0 +1,100 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "citation_stance",
+  "doc": "em:EZWD7IBR",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 108490,
+  "output_tokens": 1382,
+  "duration_ms": 19441,
+  "cost_usd": 0.0234,
+  "retries": 0,
+  "wall": {
+    "reanchor_receipts": [
+      {
+        "content": "## Findings ledger\n- [D4.DOC21.F1] The chapter builds on Weber indirectly by reporting that Emigh et al. combined Weber with Gramsci to analyse intellectual interventions across micro-, meso-, and macro-levels — dim: citation_stance — anchor: \"by combining Weber with Gramsci, investigated the micro-level social interactional backdrop to common sense as well as the macro-level political effects of intellectuals’ alignment\" — doc: em:EZWD7IBR — ref: p. 29 — stance: builds_on — object: Emigh et al.’s combination of Weber with Gramsci to investigate the micro-level interactional and macro-level political effects of intellectuals — anchor-b: \"Their work then showed how intellectual interventions have implications at various levels of the social structure (micro, meso, and macro).\" — doc-b: em:EZWD7IBR — confidence: high — trimmed-anchor: yes",
+        "partial": false,
+        "stop_reason": "stop",
+        "error": null
+      }
+    ],
+    "rows": 1,
+    "with_anchor": 1,
+    "verified": 0,
+    "trimmed": 0,
+    "anchor_rate": 0.0,
+    "failed_ids": [
+      "D4.DOC21.F1"
+    ],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 1,
+    "verified_anchors": 0,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 1,
+      "with_anchor": 1,
+      "verified": 1,
+      "trimmed": 1,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 2,
+      "verified_anchors": 2,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:EZWD7IBR"
+        ],
+        "dimension_key": "citation_stance",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Chapter 2, pp. 25–50, especially pp. 29–30 and the reference list"
+        ],
+        "coverage": "complete",
+        "criterion": "A passage must state how the citing text adopts, builds on, qualifies, disputes, or merely mentions a proposition attributed to Weber.",
+        "basis": "The chapter reports that Emigh et al. combined Weber with Gramsci to investigate intellectuals’ micro-level interactions and macro-level political effects, presenting the cited work as a basis for its literature review.",
+        "limitations": [
+          "The passage attributes the combination to Emigh et al. rather than presenting a detailed Weberian proposition developed directly by the four chapter authors.",
+          "This assessment covers the supplied chapter text, not the authors’ complete work or Weber’s entire reception."
+        ],
+        "finding_ids": [
+          "[D4.DOC21.F1]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:EZWD7IBR": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 1,
+  "dropped_ids": [],
+  "chars": 2141
+}

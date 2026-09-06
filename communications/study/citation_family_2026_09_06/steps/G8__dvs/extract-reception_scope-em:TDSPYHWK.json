@@ -1,0 +1,91 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "reception_scope",
+  "doc": "em:TDSPYHWK",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 40056,
+  "output_tokens": 731,
+  "duration_ms": 9178,
+  "cost_usd": 0.0089,
+  "retries": 0,
+  "wall": {
+    "rows": 1,
+    "with_anchor": 1,
+    "verified": 1,
+    "trimmed": 0,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 1,
+    "verified_anchors": 1,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 1,
+      "with_anchor": 1,
+      "verified": 1,
+      "trimmed": 0,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 1,
+      "verified_anchors": 1,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:TDSPYHWK"
+        ],
+        "dimension_key": "reception_scope",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Bounded 40000-character excerpt, marked-text range [71399, 111399)"
+        ],
+        "coverage": "partial",
+        "criterion": "A supplied secondary reader is eligible when the inspected text directly engages Max Weber in a way relevant to the reception-spine questions, with dates and citation-count authority reported separately.",
+        "basis": "The excerpt directly analyzes Weber’s explanations of ancient capitalism, compares them with Marx, and tracks shifts in Weber’s treatment of capitalism; the supplied metadata dates the source to 1991, while no scholarly citation-count record is supplied.",
+        "limitations": [
+          "The excerpt is not the complete book.",
+          "No supplied scholarly citation-count table supports a prominence ranking.",
+          "Composition, translation, and publication dates are not separately established in the inspected text."
+        ],
+        "finding_ids": [
+          "[D5.DOC32.F1]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:TDSPYHWK": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 2369
+}

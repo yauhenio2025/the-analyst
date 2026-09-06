@@ -1,0 +1,92 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "passage_reading",
+  "doc": "em:GEFERFPB",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 36424,
+  "output_tokens": 761,
+  "duration_ms": 10731,
+  "cost_usd": 0.0082,
+  "retries": 0,
+  "wall": {
+    "rows": 1,
+    "with_anchor": 1,
+    "verified": 1,
+    "trimmed": 1,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 1,
+    "verified_anchors": 1,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 1,
+      "with_anchor": 1,
+      "verified": 1,
+      "trimmed": 1,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 1,
+      "verified_anchors": 1,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:GEFERFPB"
+        ],
+        "dimension_key": "passage_reading",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "pp. 1–5, main essay",
+          "pp. 6–7, notes 4–5"
+        ],
+        "coverage": "complete",
+        "criterion": "A substantive passage must explain what Riley’s citation of Weber accomplishes in the text, including the cited thinker’s attributed claim and Riley’s qualification or adaptation.",
+        "basis": "The essay explicitly attributes a definition of political capitalism to Max Weber, uses that definition to distinguish political capitalism from competing interpretations, and then develops the concept into Riley’s own account of politically engineered asset-price inflation.",
+        "limitations": [
+          "The primary Weber passage was not independently checked here.",
+          "The document’s publication year is unknown.",
+          "This outcome concerns only the supplied document and the passage_reading dimension."
+        ],
+        "finding_ids": [
+          "[D5.DOC27.F1]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:GEFERFPB": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 3260
+}

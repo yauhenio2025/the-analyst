@@ -1,0 +1,230 @@
+{
+  "step": "verify",
+  "kind": "verify",
+  "dimension": "",
+  "doc": "em:BEFGGK6M",
+  "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+  "model_used": "openrouter/deepseek/deepseek-v4-pro",
+  "input_tokens": 55132,
+  "output_tokens": 10460,
+  "duration_ms": 141638,
+  "cost_usd": 0.0793,
+  "retries": 0,
+  "wall": {
+    "rows": 12,
+    "with_anchor": 12,
+    "verified": 12,
+    "trimmed": 1,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 13,
+    "verified_anchors": 13,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "carried_forward": 0,
+    "rejected": 1,
+    "added": 1,
+    "ruling_coverage": {
+      "original_count": 11,
+      "explicitly_ruled_count": 11,
+      "missing_or_unruled_ids": [],
+      "unexpected_nonadded_ids": [],
+      "invalid_original_status_ids": [],
+      "duplicate_original_ids": [],
+      "duplicate_ruling_ids": [],
+      "coverage_complete": true
+    },
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:BEFGGK6M"
+        ],
+        "dimension_key": "reader_argument",
+        "outcome": "no_relevant_instance",
+        "sections_inspected": [
+          "Entire supplied text: pp. 190–213, including introduction, concepts and theories, substantive sections, discussion, and references"
+        ],
+        "coverage": "complete",
+        "criterion": "A positive row requires a held secondary reader text that argues about the thinker; the citing author's own text is an A reference point, not a secondary reader in the reception sample.",
+        "basis": "The supplied document is Dylan Riley's 2003 article and is identified as a citing_author source. It argues about political society and class formation while citing Max Weber, but it does not constitute a reader's secondary argument about Riley.",
+        "limitations": [
+          "This outcome concerns only the supplied document and does not establish the absence of reader arguments in the thinker's wider reception.",
+          "No secondary reader texts were supplied for this dimension."
+        ],
+        "finding_ids": [],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "The text is a primary research article by Riley, not a secondary reading of Weber; the dimension's criterion is correctly not met.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:BEFGGK6M": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "em:BEFGGK6M"
+        ],
+        "dimension_key": "reader_stance",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "pp. 190–212, especially the introduction, concepts and theories, discussion, and the references to Weber’s Class, Status, Party"
+        ],
+        "coverage": "complete",
+        "criterion": "The reader explicitly defends, reconstructs, criticizes, applies, or surveys a proposition of the thinker in the supplied text.",
+        "basis": "Riley explicitly identifies his argument as following a Weberian tradition and applies that framework to political society and group formation. The verified finding (D2.DOC1.F1) captures this application.",
+        "limitations": [
+          "This is one supplied article and does not represent Riley’s complete work or the thinker’s entire reception.",
+          "No comparative stance among other readers can be established from this source alone."
+        ],
+        "finding_ids": [
+          "[D2.DOC1.F1]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "The finding’s anchor directly supports the application claim; the row was weakened to match the anchor’s scope but still constitutes a valid stance.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:BEFGGK6M": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "em:BEFGGK6M"
+        ],
+        "dimension_key": "theme_position",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Introduction",
+          "Concepts and theories",
+          "Agrarian capitalism in eighteenth-century Lombardy",
+          "From a society of orders to enlightened absolutism",
+          "Discussion"
+        ],
+        "coverage": "complete",
+        "criterion": "The supplied citing-author text must substantively interpret one or more engagement-spine themes or introduce a clearly supported additional theme.",
+        "basis": "The article directly positions estates, status privileges, class formation, political organization, fiscal extraction, Marxian and Weberian approaches, and the added concept of political society. Verified findings (D3.DOC1.F1–F6, F8, plus the added V.DOC1.F1) cover these aspects.",
+        "limitations": [
+          "This is one article by Riley, not Riley’s complete work or the thinker’s entire reception.",
+          "The article does not settle Riley’s later positions on political capitalism, imperialism, or tax-farming."
+        ],
+        "finding_ids": [
+          "[D3.DOC1.F1]",
+          "[D3.DOC1.F2]",
+          "[D3.DOC1.F3]",
+          "[D3.DOC1.F4]",
+          "[D3.DOC1.F5]",
+          "[D3.DOC1.F6]",
+          "[D3.DOC1.F8]",
+          "[V.DOC1.F1]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "Each retained finding is anchored in the text; the one rejected row (D3.DOC1.F7) was replaced by a more precisely anchored addition. The scope coverage is complete.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:BEFGGK6M": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "em:BEFGGK6M"
+        ],
+        "dimension_key": "cites_author",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Supplied full text, pp. 190–213"
+        ],
+        "coverage": "complete",
+        "criterion": "A positive citation requires Max Weber’s name in the reader’s text together with a substantive claim about what Weber’s cited work establishes.",
+        "basis": "The text names Max Weber, identifies his essay on class, status, and parties, and attributes to it a substantive claim about political society. The verified finding (D4.DOC1.F1) captures this.",
+        "limitations": [
+          "This assessment concerns only the supplied source and does not establish the extent of Riley’s engagement with Weber across his complete work."
+        ],
+        "finding_ids": [
+          "[D4.DOC1.F1]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "The anchor is verbatim and directly supports the citation claim.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:BEFGGK6M": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "em:BEFGGK6M"
+        ],
+        "dimension_key": "reception_scope",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "full article, pp. 190–213, including references"
+        ],
+        "coverage": "complete",
+        "criterion": "A supplied reader-text must have an inspectable date, excerpt or coverage boundary, and any supplied citation-count basis relevant to its reception scope.",
+        "basis": "The article is explicitly marked © 2003 and spans pp. 190–213; the supplied materials provide no scholarly citation-count record. The verified finding (D5.DOC1.F1) reflects this.",
+        "limitations": [
+          "No composition date, translation date, or scholarly citation count is supplied.",
+          "The held article is one text by Dylan Riley, not the author's complete work or Max Weber's entire reception."
+        ],
+        "finding_ids": [
+          "[D5.DOC1.F1]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "The anchor from the article header confirms publication year and page range; the absence of a citation-count record is correctly reported.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:BEFGGK6M": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 16269
+}

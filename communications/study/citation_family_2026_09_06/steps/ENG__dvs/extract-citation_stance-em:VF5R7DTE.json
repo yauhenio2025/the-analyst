@@ -1,0 +1,92 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "citation_stance",
+  "doc": "em:VF5R7DTE",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 44347,
+  "output_tokens": 723,
+  "duration_ms": 8342,
+  "cost_usd": 0.0097,
+  "retries": 0,
+  "wall": {
+    "rows": 1,
+    "with_anchor": 1,
+    "verified": 1,
+    "trimmed": 0,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 1,
+    "verified_anchors": 1,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 1,
+      "with_anchor": 1,
+      "verified": 1,
+      "trimmed": 0,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 1,
+      "verified_anchors": 1,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:VF5R7DTE"
+        ],
+        "dimension_key": "citation_stance",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Abstract",
+          "Summary",
+          "pp. 330–350, especially p. 334 / PDF p. 5"
+        ],
+        "coverage": "complete",
+        "criterion": "A retained finding requires an explicit passage in which Riley adopts, builds on, qualifies, disputes, or merely mentions a proposition attributed to Weber.",
+        "basis": "The article explicitly describes Tooze’s interpretative structure as “deeply Weberian” and identifies the rationality distinction invoked by that characterization.",
+        "limitations": [
+          "This outcome concerns only the supplied citing text, not Riley’s complete work or the entire reception of Weber.",
+          "The passage does not specify a Weber work or independently settle Riley’s stance toward the underlying Weberian proposition."
+        ],
+        "finding_ids": [
+          "[D4.DOC7.F1]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:VF5R7DTE": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 2352
+}

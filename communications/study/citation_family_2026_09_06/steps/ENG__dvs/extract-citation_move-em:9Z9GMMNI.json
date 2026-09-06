@@ -1,0 +1,92 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "citation_move",
+  "doc": "em:9Z9GMMNI",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 32671,
+  "output_tokens": 1257,
+  "duration_ms": 10532,
+  "cost_usd": 0.008,
+  "retries": 0,
+  "wall": {
+    "rows": 5,
+    "with_anchor": 5,
+    "verified": 5,
+    "trimmed": 2,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 5,
+    "verified_anchors": 5,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 5,
+      "with_anchor": 5,
+      "verified": 5,
+      "trimmed": 2,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 5,
+      "verified_anchors": 5,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:9Z9GMMNI"
+        ],
+        "dimension_key": "citation_move",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Full supplied body, pp. 1–2 / PDF pp. 1–2"
+        ],
+        "coverage": "complete",
+        "criterion": "A retained finding must identify an argumentative act performed with the citation to Weber and be supported by a verbatim passage from the citing text.",
+        "basis": "The supplied full text contains multiple explicit uses of Weber in comparison with Marx and Lukács, including contrast, attribution, evidentiary pairing, and Riley’s own positioning of the comparison.",
+        "limitations": [
+          "This outcome concerns only the supplied citing text and does not represent Riley’s complete work or Weber’s entire reception.",
+          "The specific Weber primary works underlying the characterization are not identified in the supplied text."
+        ],
+        "finding_ids": [
+          "D3.DOC25.F1",
+          "D3.DOC25.F2",
+          "D3.DOC25.F3",
+          "D3.DOC25.F4",
+          "D3.DOC25.F5"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:9Z9GMMNI": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 5526
+}

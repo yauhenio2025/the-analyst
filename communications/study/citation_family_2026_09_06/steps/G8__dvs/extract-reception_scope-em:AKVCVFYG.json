@@ -1,0 +1,93 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "reception_scope",
+  "doc": "em:AKVCVFYG",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 56272,
+  "output_tokens": 1077,
+  "duration_ms": 14032,
+  "cost_usd": 0.0125,
+  "retries": 0,
+  "wall": {
+    "rows": 1,
+    "with_anchor": 1,
+    "verified": 1,
+    "trimmed": 1,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 1,
+    "verified_anchors": 1,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 1,
+      "with_anchor": 1,
+      "verified": 1,
+      "trimmed": 1,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 1,
+      "verified_anchors": 1,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:AKVCVFYG"
+        ],
+        "dimension_key": "reception_scope",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Full article, including title and publication header",
+          "Theoretical and methodological discussion citing Weber 1949:172",
+          "References"
+        ],
+        "coverage": "complete",
+        "criterion": "A supplied citing-author text is eligible when its dated publication, inspected coverage and demonstrated engagement with Max Weber can be anchored in the text; citation-count claims require a supplied scholarly count record.",
+        "basis": "The full supplied article is available and explicitly cites Weber 1949:172; its publication header supplies 2005, while no scholarly citation count is supplied.",
+        "limitations": [
+          "The held article is not evidence of Riley’s complete work or of the thinker's entire reception.",
+          "No supplied citation-count table permits a most-cited ranking.",
+          "Composition, translation and publication dates for the cited Weber edition are not all separately established."
+        ],
+        "finding_ids": [
+          "[D5.DOC2.F1]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:AKVCVFYG": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 2809
+}

@@ -1,0 +1,97 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "citation_stance",
+  "doc": "em:VE9TU4JA",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 57693,
+  "output_tokens": 1460,
+  "duration_ms": 15560,
+  "cost_usd": 0.0133,
+  "retries": 0,
+  "wall": {
+    "rows": 5,
+    "with_anchor": 5,
+    "verified": 5,
+    "trimmed": 1,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 5,
+    "verified_anchors": 5,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 5,
+      "with_anchor": 5,
+      "verified": 5,
+      "trimmed": 1,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 5,
+      "verified_anchors": 5,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:VE9TU4JA"
+        ],
+        "dimension_key": "citation_stance",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "pp. 53–57, sections “Political capitalism redefined” and “Political reconfigurations”",
+          "RW0088",
+          "RW0089"
+        ],
+        "coverage": "partial",
+        "criterion": "A proposition-level statement in which the citing text adopts, builds on, qualifies, disputes, or merely mentions a cited position by Max Weber.",
+        "basis": "The inspected passage explicitly names Max Weber as an origin of the term “political capitalism,” presents tax-farming as its historical archetype, develops the tax-farming analogy into an account of politically constituted rent, and qualifies the analogy by distinguishing the contemporary mechanism.",
+        "limitations": [
+          "Only the supplied source window was assessed for this dimension; the article’s other Weber references were not inspected.",
+          "The cited Weber pages 965–66 are referenced but not reproduced in the citing passage.",
+          "The source is coauthored, and the passage does not assign the stance separately to Riley or Brenner."
+        ],
+        "finding_ids": [
+          "[D4.DOC24.F1]",
+          "[D4.DOC24.F2]",
+          "[D4.DOC24.F3]",
+          "[D4.DOC24.F4]",
+          "[D4.DOC24.F5]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:VE9TU4JA": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 5632
+}

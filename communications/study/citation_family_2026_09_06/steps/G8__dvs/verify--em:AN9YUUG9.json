@@ -1,0 +1,230 @@
+{
+  "step": "verify",
+  "kind": "verify",
+  "dimension": "",
+  "doc": "em:AN9YUUG9",
+  "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+  "model_used": "openrouter/deepseek/deepseek-v4-pro",
+  "input_tokens": 38401,
+  "output_tokens": 6970,
+  "duration_ms": 93869,
+  "cost_usd": 0.0545,
+  "retries": 0,
+  "wall": {
+    "rows": 8,
+    "with_anchor": 8,
+    "verified": 7,
+    "trimmed": 6,
+    "anchor_rate": 0.875,
+    "failed_ids": [
+      "V.DOC35.F1"
+    ],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 8,
+    "verified_anchors": 7,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "carried_forward": 0,
+    "rejected": 0,
+    "added": 1,
+    "ruling_coverage": {
+      "original_count": 7,
+      "explicitly_ruled_count": 7,
+      "missing_or_unruled_ids": [],
+      "unexpected_nonadded_ids": [],
+      "invalid_original_status_ids": [],
+      "duplicate_original_ids": [],
+      "duplicate_ruling_ids": [],
+      "coverage_complete": true
+    },
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:AN9YUUG9"
+        ],
+        "dimension_key": "reader_argument",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "On the Work of Max Weber, pp. 32–33, PDF pp. 1–2, supplied passage"
+        ],
+        "coverage": "complete",
+        "criterion": "A held secondary reader must make an anchored argument about Max Weber, including the problem that the reading addresses.",
+        "basis": "The supplied secondary text explicitly reconstructs Weber’s intellectual unity, methodological foundations, and systematic sociology, with three retained findings anchored in its own wording.",
+        "limitations": [
+          "The held text is a secondary reading of Weber, not evidence of Weber’s own position.",
+          "No argument about Riley specifically is retained because the supplied Castoriadis passage does not name or discuss Riley."
+        ],
+        "finding_ids": [
+          "D1.DOC35.F1",
+          "D1.DOC35.F2",
+          "D1.DOC35.F3"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": false,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:AN9YUUG9": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Malformed/missing scope records: 2 validation errors for ScopeOutcome\nbasis\n  Field required [type=missing, input_value={'document_keys': ['em:AN...and a reader addition.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\nbais\n  Extra inputs are not permitted [type=extra_forbidden, input_value='The supplied Castoriadis... two findings retained.', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "em:AN9YUUG9"
+        ],
+        "dimension_key": "reader_stance",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Chapter 2, “On the Work of Max Weber,” PDF pp. 1–2"
+        ],
+        "coverage": "complete",
+        "criterion": "A secondary reader must defend, reconstruct, criticize, apply, or survey a proposition concerning Max Weber, anchored in the supplied text.",
+        "basis": "The inspected full held text explicitly reconstructs Weber’s methodological commitments and positively evaluates the systematic sociology in Wirtschaft und Gesellschaft.",
+        "limitations": [
+          "The source does not mention Dylan Riley, so it cannot establish direct engagement with Riley.",
+          "The findings concern Castoriadis’s reading of Weber generally, not the source’s position on Riley’s specific reception themes."
+        ],
+        "finding_ids": [
+          "[D2.DOC35.F1]",
+          "[D2.DOC35.F2]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": false,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:AN9YUUG9": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Malformed/missing scope records: 2 validation errors for ScopeOutcome\nbasis\n  Field required [type=missing, input_value={'document_keys': ['em:AN...and a reader addition.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\nbais\n  Extra inputs are not permitted [type=extra_forbidden, input_value='The supplied Castoriadis... two findings retained.', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "em:AN9YUUG9"
+        ],
+        "dimension_key": "theme_position",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Chapter 2, “On the Work of Max Weber,” pp. 32–33 in the supplied excerpt"
+        ],
+        "coverage": "partial",
+        "criterion": "Retain a row when the secondary reader text makes an anchored interpretive claim about a supplied engagement theme or introduces an anchored additional theme.",
+        "basis": "The supplied Castoriadis passage explicitly interprets Weber’s concept of social meaning, sociology’s interpretive mission, and the unity of method across diverse historical material; these support two retained findings.",
+        "limitations": [
+          "The supplied material is an excerpt of the held text rather than the complete document body for this inspection.",
+          "No absence of engagement with the other plan themes can be inferred from the excerpt."
+        ],
+        "finding_ids": [
+          "D3.DOC35.F1",
+          "D3.DOC35.F2"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": false,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:AN9YUUG9": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Malformed/missing scope records: 2 validation errors for ScopeOutcome\nbasis\n  Field required [type=missing, input_value={'document_keys': ['em:AN...and a reader addition.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\nbais\n  Extra inputs are not permitted [type=extra_forbidden, input_value='The supplied Castoriadis... two findings retained.', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "em:AN9YUUG9"
+        ],
+        "dimension_key": "cites_author",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Full held text supplied, including the methodological introduction and biographical/interpretive discussion on PDF pp. 1–2"
+        ],
+        "coverage": "complete",
+        "criterion": "A positive citation requires the secondary reader's text to name Dylan Riley and substantively cite or engage with him.",
+        "basis": "The inspected held text names Max Weber and other authors but contains no occurrence of Dylan Riley's name and no citation or engagement with Riley.",
+        "limitations": [
+          "This outcome concerns only the supplied held text and does not establish absence from other editions, translations, or texts by Castoriadis."
+        ],
+        "finding_ids": [],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": false,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:AN9YUUG9": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Malformed/missing scope records: 2 validation errors for ScopeOutcome\nbasis\n  Field required [type=missing, input_value={'document_keys': ['em:AN...and a reader addition.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\nbais\n  Extra inputs are not permitted [type=extra_forbidden, input_value='The supplied Castoriadis... two findings retained.', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "em:AN9YUUG9"
+        ],
+        "dimension_key": "reception_scope",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Full held text, chapter 2, “On the Work of Max Weber,” including the methodological introduction and pages 32–33 excerpt"
+        ],
+        "coverage": "complete",
+        "criterion": "A reader must be supported by the supplied text as a dated, bounded reader of the thinker, with any citation-count claim grounded in a supplied scholarly count record.",
+        "basis": "The full held text was inspected and establishes a 2014 secondary text about Max Weber, but the supplied text does not substantively engage Dylan Riley, and no scholarly citation-count record is supplied.",
+        "limitations": [
+          "The source metadata supplies the year and full-text coverage, while the body does not provide a clean publication-date clause.",
+          "No citation-count table is available.",
+          "The held sample is not the author's complete work or the thinker's entire reception."
+        ],
+        "finding_ids": [],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": false,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:AN9YUUG9": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Malformed/missing scope records: 2 validation errors for ScopeOutcome\nbasis\n  Field required [type=missing, input_value={'document_keys': ['em:AN...and a reader addition.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\nbais\n  Extra inputs are not permitted [type=extra_forbidden, input_value='The supplied Castoriadis... two findings retained.', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden",
+            "Findings in this scope lost anchor evidence; this does not establish absence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [
+    "V.DOC35.F1"
+  ],
+  "chars": 13863
+}

@@ -1,0 +1,248 @@
+{
+  "step": "verify",
+  "kind": "verify",
+  "dimension": "",
+  "doc": "em:PSYPHAPS",
+  "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+  "model_used": "openrouter/deepseek/deepseek-v4-pro",
+  "input_tokens": 48006,
+  "output_tokens": 8632,
+  "duration_ms": 113335,
+  "cost_usd": 0.068,
+  "retries": 0,
+  "wall": {
+    "rows": 8,
+    "with_anchor": 8,
+    "verified": 7,
+    "trimmed": 3,
+    "anchor_rate": 0.875,
+    "failed_ids": [
+      "D3.DOC5.F3"
+    ],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 8,
+    "verified_anchors": 7,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "carried_forward": 0,
+    "rejected": 1,
+    "added": 0,
+    "ruling_coverage": {
+      "original_count": 8,
+      "explicitly_ruled_count": 8,
+      "missing_or_unruled_ids": [],
+      "unexpected_nonadded_ids": [],
+      "invalid_original_status_ids": [],
+      "duplicate_original_ids": [],
+      "duplicate_ruling_ids": [],
+      "coverage_complete": true
+    },
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:PSYPHAPS"
+        ],
+        "dimension_key": "reader_argument",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Introduction",
+          "The New Imperialism",
+          "Capitalism and War, pp. 490–492"
+        ],
+        "coverage": "complete",
+        "criterion": "A held secondary or reference text must make an anchored argument about Max Weber rather than merely name or cite him.",
+        "basis": "Riley’s 2013 article explicitly reconstructs and evaluates Weber’s account of imperialism, including its relation to prestige, political capitalism, declining returns, and the Lenin/Hobson thesis.",
+        "limitations": [
+          "Riley is treated as an A reference point, not as a second member of the supplied reception sample.",
+          "This assessment covers the supplied article, not Riley’s complete work or the entirety of Weber’s reception."
+        ],
+        "finding_ids": [
+          "[D1.DOC5.F1]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": false,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:PSYPHAPS": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Malformed/missing scope records: 4 validation errors for ScopeOutcome\nbasis\n  Field required [type=missing, input_value={'document_keys': ['em:PS...t; no misses detected.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\nlimitations\n  Field required [type=missing, input_value={'document_keys': ['em:PS...t; no misses detected.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\nbasiss\n  Extra inputs are not permitted [type=extra_forbidden, input_value='Riley’s 2013 article e...account of imperialism.', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden\nlimitationns\n  Extra inputs are not permitted [type=extra_forbidden, input_value=['Riley is treated as an ...f Weber’s reception.'], input_type=list]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "em:PSYPHAPS"
+        ],
+        "dimension_key": "reader_stance",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Introduction",
+          "Summary of the Volume",
+          "Assessment",
+          "Capitalism and War",
+          "pages 491–492 of the supplied source"
+        ],
+        "coverage": "complete",
+        "criterion": "The citing text directly defends, reconstructs, criticizes, applies, or surveys a proposition associated with Max Weber.",
+        "basis": "Riley explicitly reconstructs Weber’s theory of imperialism, distinguishes it from Mann’s account, and states the proposition attributed to Weber.",
+        "limitations": [
+          "This finding concerns the supplied 2013 article, not Riley’s complete work or the thinker’s entire reception.",
+          "The citation-index metadata is routing information and was not treated as an independent substantive source."
+        ],
+        "finding_ids": [
+          "D2.DOC5.F1"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": false,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:PSYPHAPS": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Malformed/missing scope records: 4 validation errors for ScopeOutcome\nbasis\n  Field required [type=missing, input_value={'document_keys': ['em:PS...t; no misses detected.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\nlimitations\n  Field required [type=missing, input_value={'document_keys': ['em:PS...t; no misses detected.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\nbasiss\n  Extra inputs are not permitted [type=extra_forbidden, input_value='Riley’s 2013 article e...account of imperialism.', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden\nlimitationns\n  Extra inputs are not permitted [type=extra_forbidden, input_value=['Riley is treated as an ...f Weber’s reception.'], input_type=list]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "em:PSYPHAPS"
+        ],
+        "dimension_key": "theme_position",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Introduction",
+          "Summary of the Volume",
+          "Assessment",
+          "Capitalism and Social Citizenship",
+          "Capitalism and War",
+          "pp. 491–494 / PDF pp. 8–11"
+        ],
+        "coverage": "complete",
+        "criterion": "The citing author must address at least one supplied engagement theme or introduce a clearly supported additional theme in the supplied text.",
+        "basis": "The article explicitly discusses Weber’s account of imperialism, political capitalism, prestige and status, Marxian explanations, historical totalization, and the conditions of social citizenship.",
+        "limitations": [
+          "The finding concerns this 2013 article only, not Riley’s complete work.",
+          "Tax-farming and a sustained treatment of patrimonialism or bureaucracy are not established in the inspected text."
+        ],
+        "finding_ids": [
+          "D3.DOC5.F1",
+          "D3.DOC5.F2",
+          "D3.DOC5.F3",
+          "D3.DOC5.F4",
+          "D3.DOC5.F5",
+          "D3.DOC5.F6"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": false,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:PSYPHAPS": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Malformed/missing scope records: 4 validation errors for ScopeOutcome\nbasis\n  Field required [type=missing, input_value={'document_keys': ['em:PS...t; no misses detected.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\nlimitations\n  Field required [type=missing, input_value={'document_keys': ['em:PS...t; no misses detected.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\nbasiss\n  Extra inputs are not permitted [type=extra_forbidden, input_value='Riley’s 2013 article e...account of imperialism.', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden\nlimitationns\n  Extra inputs are not permitted [type=extra_forbidden, input_value=['Riley is treated as an ...f Weber’s reception.'], input_type=list]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden",
+            "Findings lost anchor evidence; this does not establish absence",
+            "One or more declared finding references lack retained verified evidence",
+            "Findings in this scope lost anchor evidence; this does not establish absence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "em:PSYPHAPS"
+        ],
+        "dimension_key": "cites_author",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Complete supplied article body, Introduction through References"
+        ],
+        "coverage": "complete",
+        "criterion": "A positive citation requires Riley's name in the reader's text; a shared theme or citation to Weber does not qualify.",
+        "basis": "The supplied article body is by Dylan Riley and does not name or cite Riley as an external author. Its explicit engagement is with Max Weber and other authors, not with Riley as A.",
+        "limitations": [
+          "The article's author identity and title metadata were not treated as a citation.",
+          "This assessment covers only the supplied text and does not establish absence from Riley's complete works or from the wider reception."
+        ],
+        "finding_ids": [],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": false,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:PSYPHAPS": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Malformed/missing scope records: 4 validation errors for ScopeOutcome\nbasis\n  Field required [type=missing, input_value={'document_keys': ['em:PS...t; no misses detected.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\nlimitations\n  Field required [type=missing, input_value={'document_keys': ['em:PS...t; no misses detected.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\nbasiss\n  Extra inputs are not permitted [type=extra_forbidden, input_value='Riley’s 2013 article e...account of imperialism.', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden\nlimitationns\n  Extra inputs are not permitted [type=extra_forbidden, input_value=['Riley is treated as an ...f Weber’s reception.'], input_type=list]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "em:PSYPHAPS"
+        ],
+        "dimension_key": "reception_scope",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Full article, including Introduction, Assessment, Capitalism and War, and References"
+        ],
+        "coverage": "complete",
+        "criterion": "A reader must be demonstrably relevant to Max Weber through an explicit, textually anchored engagement with Weber, while dates, excerpt coverage, and citation-count authority are kept distinct.",
+        "basis": "The article explicitly discusses Weber’s account of imperialism and cites Weber’s Economy and Society, including a quoted prognosis concerning imperialist capitalism.",
+        "limitations": [
+          "The supplied source establishes publication year but not a separate composition date.",
+          "No scholarly citation-count record is supplied.",
+          "The inspected article is one bounded reception text, not Dylan Riley’s complete work or Max Weber’s entire reception."
+        ],
+        "finding_ids": [
+          "[D5.DOC5.F1]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": false,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:PSYPHAPS": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Malformed/missing scope records: 4 validation errors for ScopeOutcome\nbasis\n  Field required [type=missing, input_value={'document_keys': ['em:PS...t; no misses detected.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\nlimitations\n  Field required [type=missing, input_value={'document_keys': ['em:PS...t; no misses detected.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\nbasiss\n  Extra inputs are not permitted [type=extra_forbidden, input_value='Riley’s 2013 article e...account of imperialism.', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden\nlimitationns\n  Extra inputs are not permitted [type=extra_forbidden, input_value=['Riley is treated as an ...f Weber’s reception.'], input_type=list]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [
+    "D3.DOC5.F3"
+  ],
+  "chars": 13002
+}

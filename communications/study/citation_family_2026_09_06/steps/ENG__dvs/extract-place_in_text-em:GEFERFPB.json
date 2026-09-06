@@ -1,0 +1,93 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "place_in_text",
+  "doc": "em:GEFERFPB",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 36416,
+  "output_tokens": 1151,
+  "duration_ms": 13463,
+  "cost_usd": 0.0087,
+  "retries": 0,
+  "wall": {
+    "rows": 3,
+    "with_anchor": 3,
+    "verified": 3,
+    "trimmed": 1,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 4,
+    "verified_anchors": 4,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 3,
+      "with_anchor": 3,
+      "verified": 3,
+      "trimmed": 1,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 4,
+      "verified_anchors": 4,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:GEFERFPB"
+        ],
+        "dimension_key": "place_in_text",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Main essay, pp. 1–5 (PDF pages 1–5)",
+          "Footnotes, pp. 6–7 (PDF pages 6–7)"
+        ],
+        "coverage": "complete",
+        "criterion": "A retained finding must state the argument of the citing text and the named thinker's place in it, supported by a literal passage that carries the relevant actor, predicate, object and qualification.",
+        "basis": "The complete supplied source was inspected. Riley explicitly attributes the political-capitalism term to Max Weber, distinguishes his own definition, and uses the reformulated concept to explain contemporary value expansion, status conflict and democratic crisis.",
+        "limitations": [
+          "The source's publication year is unknown.",
+          "The supplied text does not reproduce Weber's cited pp. 965–966, so the exact adequacy of Riley's attribution cannot be assessed from this source alone."
+        ],
+        "finding_ids": [
+          "[D1.DOC27.F1]",
+          "[D1.DOC27.F2]",
+          "[D1.DOC27.F3]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:GEFERFPB": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 4722
+}

@@ -1,0 +1,113 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "citation_stance",
+  "doc": "em:8AX3TFK3",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 123590,
+  "output_tokens": 1515,
+  "duration_ms": 16772,
+  "cost_usd": 0.0265,
+  "retries": 0,
+  "wall": {
+    "reanchor_receipts": [
+      {
+        "content": "## Findings ledger\n- [D4.DOC8.F3] The paper qualifies the Weberian state-centered view by treating state-centered and society-centered approaches as historically contingent heuristics rather than general explanations — dim: citation_stance — ref: RW0023 — stance: qualifies — object: the Weberian state-centered view as a general explanation of state–society relations — anchor: \"the Weberian state-centered view transcendent.\" — doc: em:8AX3TFK3 — anchor-b: \"Thus, the state-centered and society-centered approaches are best understood as heuristics suggesting certain lines of inquiry whose fruitfulness will depend on the precise historical configuration under discussion.\" — doc-b: em:8AX3TFK3 — confidence: medium",
+        "partial": false,
+        "stop_reason": "stop",
+        "error": null
+      }
+    ],
+    "rows": 3,
+    "with_anchor": 3,
+    "verified": 2,
+    "trimmed": 0,
+    "anchor_rate": 0.667,
+    "failed_ids": [
+      "D4.DOC8.F3"
+    ],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 3,
+    "verified_anchors": 2,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 2,
+      "with_anchor": 2,
+      "verified": 2,
+      "trimmed": 0,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 2,
+      "verified_anchors": 2,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [
+      {
+        "id": "D4.DOC8.F3",
+        "dimension": "citation_stance"
+      }
+    ],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:8AX3TFK3"
+        ],
+        "dimension_key": "citation_stance",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Opening theoretical framing, PDF pp. 1–4",
+          "Conceptualizing the First US Census, PDF pp. 4–6",
+          "Conclusions, PDF pp. 25–28",
+          "References entry for Weber, PDF p. 35"
+        ],
+        "coverage": "complete",
+        "criterion": "A retained finding requires an explicit proposition attributed to Weber or to a Weberian position, together with a supported adoption, qualification, dispute, or mention in the citing text.",
+        "basis": "The inspected body explicitly attributes a definition of the state to Weber, characterizes Weberian and neo-Weberian approaches, and qualifies the state-centered approach as a general account.",
+        "limitations": [
+          "The paper does not separately establish the authors’ individual stances within the coauthorship.",
+          "The supplied text gives more direct discussion of Weberian traditions than of a sustained close reading of Weber’s original work."
+        ],
+        "finding_ids": [
+          "[D4.DOC8.F1]",
+          "[D4.DOC8.F2]",
+          "[D4.DOC8.F3]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:8AX3TFK3": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Findings lost anchor evidence; this does not establish absence",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [
+    "D4.DOC8.F3"
+  ],
+  "chars": 4404
+}

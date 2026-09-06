@@ -1,0 +1,94 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "citation_stance",
+  "doc": "em:SBN4ZVXW",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 36215,
+  "output_tokens": 1745,
+  "duration_ms": 16344,
+  "cost_usd": 0.0093,
+  "retries": 0,
+  "wall": {
+    "rows": 8,
+    "with_anchor": 8,
+    "verified": 8,
+    "trimmed": 2,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 8,
+    "verified_anchors": 8,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 8,
+      "with_anchor": 8,
+      "verified": 8,
+      "trimmed": 2,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 8,
+      "verified_anchors": 8,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:SBN4ZVXW"
+        ],
+        "dimension_key": "citation_stance",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "pp. 447–453, including the sections “Fact and Value in Weber” and “Where Do Values Come From?”"
+        ],
+        "coverage": "complete",
+        "criterion": "A substantive passage must attribute a proposition to Weber or develop, adopt, qualify, or dispute a Weberian proposition.",
+        "basis": "The complete supplied article was inspected and contains directly anchored instances in which Riley adopts, builds on, qualifies, and disputes propositions attributed to Weber.",
+        "limitations": [
+          "This assessment covers only the supplied article, not Riley’s complete work or the full reception of Weber."
+        ],
+        "finding_ids": [
+          "D4.DOC20.F1",
+          "D4.DOC20.F2",
+          "D4.DOC20.F3",
+          "D4.DOC20.F4",
+          "D4.DOC20.F5",
+          "D4.DOC20.F6",
+          "D4.DOC20.F7",
+          "D4.DOC20.F8"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:SBN4ZVXW": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 6668
+}

@@ -1,0 +1,236 @@
+{
+  "step": "verify",
+  "kind": "verify",
+  "dimension": "",
+  "doc": "em:AKVCVFYG",
+  "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+  "model_used": "openrouter/deepseek/deepseek-v4-pro",
+  "input_tokens": 62058,
+  "output_tokens": 9928,
+  "duration_ms": 135752,
+  "cost_usd": 0.0854,
+  "retries": 0,
+  "wall": {
+    "rows": 14,
+    "with_anchor": 14,
+    "verified": 14,
+    "trimmed": 11,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 18,
+    "verified_anchors": 18,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "carried_forward": 0,
+    "rejected": 5,
+    "added": 6,
+    "ruling_coverage": {
+      "original_count": 8,
+      "explicitly_ruled_count": 8,
+      "missing_or_unruled_ids": [],
+      "unexpected_nonadded_ids": [],
+      "invalid_original_status_ids": [],
+      "duplicate_original_ids": [],
+      "duplicate_ruling_ids": [],
+      "coverage_complete": true
+    },
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:AKVCVFYG"
+        ],
+        "dimension_key": "place_in_text",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Article argument and introduction",
+          "Theorizing Capitalist Authoritarianism, Civic Associationism, and Hegemony",
+          "Case Selection and Method",
+          "Discussion"
+        ],
+        "coverage": "complete",
+        "criterion": "The citing text must state an argument in which Max Weber has an identifiable evidentiary, methodological, framework, foil or dialogue role, supported by a literal passage carrying the relevant predicate.",
+        "basis": "The complete supplied article was inspected. Riley cites Weber 1949 in the methodological discussion of suppressed alternatives and uses that citation within a bounded argument against covering-law explanation.",
+        "limitations": [
+          "The role identified is methodological and qualified; the supplied text does not establish a substantive Weberian framework for Riley’s account of civic associationism or authoritarianism.",
+          "The assessment concerns this supplied citing text only, not Riley’s complete work or Weber’s entire reception."
+        ],
+        "finding_ids": [
+          "[D1.DOC2.F1]",
+          "[D1.DOC2.F2]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": false,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:AKVCVFYG": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Malformed/missing scope records: 3 validation errors for ScopeOutcome\ncoverage\n  Input should be 'complete', 'partial' or 'unknown' [type=literal_error, input_value='complite', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/literal_error\nfinding_ids\n  Field required [type=missing, input_value={'document_keys': ['em:AK...entified and verified.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\nfindings_ids\n  Extra inputs are not permitted [type=extra_forbidden, input_value=['[D1.DOC2.F2]', '[V.DOC2.F1]', '[V.DOC2.F2]'], input_type=list]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "em:AKVCVFYG"
+        ],
+        "dimension_key": "cited_object",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Main article text, PDF p. 3",
+          "References, PDF p. 23"
+        ],
+        "coverage": "complete",
+        "criterion": "A passage must explicitly cite or identify a work, idea, or named thinker and provide a recoverable cited locus where present.",
+        "basis": "The article’s methodological discussion explicitly cites Weber 1949:172 twice, and the bibliography identifies Weber 1949 as The Methodology of the Social Sciences.",
+        "limitations": [
+          "The cited Weber edition and page were not independently checked against the held Weber PDF.",
+          "This outcome concerns the supplied citing text, not Riley’s complete work or the full reception of Weber."
+        ],
+        "finding_ids": [
+          "[D2.DOC2.F1]",
+          "[D2.DOC2.F2]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": false,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:AKVCVFYG": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Malformed/missing scope records: 3 validation errors for ScopeOutcome\ncoverage\n  Input should be 'complete', 'partial' or 'unknown' [type=literal_error, input_value='complite', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/literal_error\nfinding_ids\n  Field required [type=missing, input_value={'document_keys': ['em:AK...entified and verified.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\nfindings_ids\n  Extra inputs are not permitted [type=extra_forbidden, input_value=['[D1.DOC2.F2]', '[V.DOC2.F1]', '[V.DOC2.F2]'], input_type=list]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "em:AKVCVFYG"
+        ],
+        "dimension_key": "citation_move",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Civic Associations and Authoritarian Regimes in Interwar Europe: Italy and Spain in Comparative Perspective, pp. 288–310, especially pp. 290–291"
+        ],
+        "coverage": "complete",
+        "criterion": "A retained finding must identify an argumentative act performed by the citing text through its citation of Weber and anchor that act in a verbatim passage containing the relevant predicate.",
+        "basis": "The article’s methodological discussion cites Weber 1949:172 twice while explicitly explaining its use of suppressed alternatives and possibilities intrinsic to historical sequences.",
+        "limitations": [
+          "The article does not quote Weber’s cited passage.",
+          "This assessment concerns the supplied article only, not Riley’s complete work or the full reception of Weber."
+        ],
+        "finding_ids": [
+          "[D3.DOC2.F1]",
+          "[D3.DOC2.F2]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": false,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:AKVCVFYG": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Malformed/missing scope records: 3 validation errors for ScopeOutcome\ncoverage\n  Input should be 'complete', 'partial' or 'unknown' [type=literal_error, input_value='complite', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/literal_error\nfinding_ids\n  Field required [type=missing, input_value={'document_keys': ['em:AK...entified and verified.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\nfindings_ids\n  Extra inputs are not permitted [type=extra_forbidden, input_value=['[D1.DOC2.F2]', '[V.DOC2.F1]', '[V.DOC2.F2]'], input_type=list]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "em:AKVCVFYG"
+        ],
+        "dimension_key": "citation_stance",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Full supplied article, pp. 1–23, including the body text and references"
+        ],
+        "coverage": "complete",
+        "criterion": "A substantive proposition attributed to or cited from Max Weber must be classified according to Riley’s treatment of that proposition as adopted, built on, qualified, disputed, or merely mentioned.",
+        "basis": "The article explicitly cites Weber (1949:172) while incorporating an analysis of suppressed alternatives into its own comparative-historical method.",
+        "limitations": [
+          "The source gives only a brief methodological citation to Weber and does not reproduce or fully characterize Weber’s argument.",
+          "This outcome concerns the supplied article only, not Riley’s complete work or the full reception of Weber."
+        ],
+        "finding_ids": [
+          "[D4.DOC2.F1]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": false,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:AKVCVFYG": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Malformed/missing scope records: 3 validation errors for ScopeOutcome\ncoverage\n  Input should be 'complete', 'partial' or 'unknown' [type=literal_error, input_value='complite', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/literal_error\nfinding_ids\n  Field required [type=missing, input_value={'document_keys': ['em:AK...entified and verified.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\nfindings_ids\n  Extra inputs are not permitted [type=extra_forbidden, input_value=['[D1.DOC2.F2]', '[V.DOC2.F1]', '[V.DOC2.F2]'], input_type=list]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "em:AKVCVFYG"
+        ],
+        "dimension_key": "passage_reading",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Full supplied article body, especially “CASE SELECTION AND METHOD” (PDF pp. 3–4)"
+        ],
+        "coverage": "complete",
+        "criterion": "A passage must show Riley using or reading Weber to advance, qualify, support, or delimit a claim, distinction, method, or piece of evidence.",
+        "basis": "The article explicitly cites Weber 1949:172 while describing its analysis of suppressed alternatives embedded in historical sequences, and the surrounding text qualifies this methodological use by rejecting a covering-law generalization.",
+        "limitations": [
+          "The cited Weber primary passage was not independently inspected here.",
+          "This outcome concerns only the supplied 2005 article, not Riley’s complete work or Weber’s entire reception."
+        ],
+        "finding_ids": [
+          "[D5.DOC2.F1]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": false,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:AKVCVFYG": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Malformed/missing scope records: 3 validation errors for ScopeOutcome\ncoverage\n  Input should be 'complete', 'partial' or 'unknown' [type=literal_error, input_value='complite', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/literal_error\nfinding_ids\n  Field required [type=missing, input_value={'document_keys': ['em:AK...entified and verified.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\nfindings_ids\n  Extra inputs are not permitted [type=extra_forbidden, input_value=['[D1.DOC2.F2]', '[V.DOC2.F1]', '[V.DOC2.F2]'], input_type=list]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 17611
+}

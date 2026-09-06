@@ -1,0 +1,91 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "citation_stance",
+  "doc": "em:PSYPHAPS",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 42396,
+  "output_tokens": 1027,
+  "duration_ms": 13632,
+  "cost_usd": 0.0097,
+  "retries": 0,
+  "wall": {
+    "rows": 3,
+    "with_anchor": 3,
+    "verified": 3,
+    "trimmed": 0,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 3,
+    "verified_anchors": 3,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 3,
+      "with_anchor": 3,
+      "verified": 3,
+      "trimmed": 0,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 3,
+      "verified_anchors": 3,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:PSYPHAPS"
+        ],
+        "dimension_key": "citation_stance",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Assessment: Capitalism and War",
+          "Imperialism and war discussion on PDF pages 8–9 / printed pages 491–492"
+        ],
+        "coverage": "complete",
+        "criterion": "A finding requires an explicit passage in which Riley adopts, builds on, qualifies, disputes, or merely mentions a proposition attributed to Max Weber.",
+        "basis": "The inspected passage explicitly attributes propositions about prestige, material dynamics, political capitalism, and imperialism to Weber, qualifies Weber’s development of the argument, and uses the reconstruction to contrast Weber with Mann.",
+        "limitations": [
+          "This outcome covers the supplied citing text only, not Riley’s complete work or the entire reception of Weber.",
+          "The evidence index is routing metadata; substantive findings are based on the supplied body text."
+        ],
+        "finding_ids": [
+          "D4.DOC5.F1",
+          "D4.DOC5.F2",
+          "D4.DOC5.F3"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:PSYPHAPS": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 3566
+}

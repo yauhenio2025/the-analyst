@@ -1,0 +1,91 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "cited_object",
+  "doc": "em:EZWD7IBR",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 54115,
+  "output_tokens": 896,
+  "duration_ms": 10148,
+  "cost_usd": 0.0119,
+  "retries": 0,
+  "wall": {
+    "rows": 1,
+    "with_anchor": 1,
+    "verified": 1,
+    "trimmed": 1,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 1,
+    "verified_anchors": 1,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 1,
+      "with_anchor": 1,
+      "verified": 1,
+      "trimmed": 1,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 1,
+      "verified_anchors": 1,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:EZWD7IBR"
+        ],
+        "dimension_key": "cited_object",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Main text, pp. 25–44, especially p. 29",
+          "References, pp. 44–49"
+        ],
+        "coverage": "complete",
+        "criterion": "A passage must name Weber or identify a Weber work or idea as a cited object; direct work-level citations are distinguished from secondary reports or mentions without a work.",
+        "basis": "The main text names Weber in a report of Emigh et al.’s theoretical combination with Gramsci, but gives no specific Weber work or locus. The references were inspected for a standalone Weber entry.",
+        "limitations": [
+          "The finding is a named-thinker mention reported through a secondary source, not a direct citation of a specific Weber work.",
+          "This assessment concerns the supplied source and held passage window, not the author’s complete work or Weber’s entire reception."
+        ],
+        "finding_ids": [
+          "[D2.DOC21.F1]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:EZWD7IBR": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 2449
+}

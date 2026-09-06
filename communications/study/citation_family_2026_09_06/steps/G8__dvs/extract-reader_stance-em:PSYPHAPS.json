@@ -1,0 +1,92 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "reader_stance",
+  "doc": "em:PSYPHAPS",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 42393,
+  "output_tokens": 728,
+  "duration_ms": 10398,
+  "cost_usd": 0.0094,
+  "retries": 0,
+  "wall": {
+    "rows": 1,
+    "with_anchor": 1,
+    "verified": 1,
+    "trimmed": 1,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 1,
+    "verified_anchors": 1,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 1,
+      "with_anchor": 1,
+      "verified": 1,
+      "trimmed": 1,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 1,
+      "verified_anchors": 1,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:PSYPHAPS"
+        ],
+        "dimension_key": "reader_stance",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Introduction",
+          "Summary of the Volume",
+          "Assessment",
+          "Capitalism and War",
+          "pages 491–492 of the supplied source"
+        ],
+        "coverage": "complete",
+        "criterion": "The citing text directly defends, reconstructs, criticizes, applies, or surveys a proposition associated with Max Weber.",
+        "basis": "Riley explicitly reconstructs Weber’s theory of imperialism, distinguishes it from Mann’s account, and states the proposition attributed to Weber.",
+        "limitations": [
+          "This finding concerns the supplied 2013 article, not Riley’s complete work or the thinker’s entire reception.",
+          "The citation-index metadata is routing information and was not treated as an independent substantive source."
+        ],
+        "finding_ids": [
+          "D2.DOC5.F1"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:PSYPHAPS": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 2199
+}

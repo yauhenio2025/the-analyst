@@ -1,0 +1,86 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "reader_stance",
+  "doc": "em:ZYGH3ALE",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 52990,
+  "output_tokens": 510,
+  "duration_ms": 6521,
+  "cost_usd": 0.0112,
+  "retries": 0,
+  "wall": {
+    "rows": 0,
+    "with_anchor": 0,
+    "verified": 0,
+    "trimmed": 0,
+    "anchor_rate": 0.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 0,
+    "verified_anchors": 0,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 0,
+      "with_anchor": 0,
+      "verified": 0,
+      "trimmed": 0,
+      "anchor_rate": 0.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 0,
+      "verified_anchors": 0,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:ZYGH3ALE"
+        ],
+        "dimension_key": "reader_stance",
+        "outcome": "no_relevant_instance",
+        "sections_inspected": [
+          "Full held text, pp. 832–853, including the body discussion of Weber and Marx and the references"
+        ],
+        "coverage": "complete",
+        "criterion": "The supplied secondary reader must explicitly defend, reconstruct, criticize, apply, or survey Dylan Riley's position.",
+        "basis": "Wright's article develops its own comparison of Weber and Marx on class, status, rationalization, and exploitation. No passage in the supplied full text names, cites, or otherwise demonstrably engages Dylan Riley, so no reader-stance row about Riley can be retained.",
+        "limitations": [
+          "This is a finding about no demonstrated engagement in the supplied text, not proof that Wright never encountered Riley's work.",
+          "The supplied source is one article and does not represent Wright's complete reception of Riley."
+        ],
+        "finding_ids": [],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:ZYGH3ALE": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 1440
+}

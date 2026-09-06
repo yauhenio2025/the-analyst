@@ -1,0 +1,90 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "cites_author",
+  "doc": "em:EBSFFE5N",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 43557,
+  "output_tokens": 654,
+  "duration_ms": 8527,
+  "cost_usd": 0.0095,
+  "retries": 0,
+  "wall": {
+    "rows": 1,
+    "with_anchor": 1,
+    "verified": 1,
+    "trimmed": 1,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 1,
+    "verified_anchors": 1,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 1,
+      "with_anchor": 1,
+      "verified": 1,
+      "trimmed": 1,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 1,
+      "verified_anchors": 1,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:EBSFFE5N"
+        ],
+        "dimension_key": "cites_author",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Full supplied article, pp. 261–279, including the discussion of classical sociology on p. 270 and footnotes 39–40"
+        ],
+        "coverage": "complete",
+        "criterion": "A positive citation requires the secondary text to name Max Weber and state what the citation does",
+        "basis": "The article names Weber and attributes to him a specific argument about the affinity between modern industrial capitalism and mass suffrage and the state-strengthening effects of representative government.",
+        "limitations": [
+          "This is a finding about the supplied article only, not Riley's complete work or the thinker's entire reception.",
+          "The article's discussion also cites Weber's Economy and Society, but the present finding is anchored in Riley's own substantive sentence."
+        ],
+        "finding_ids": [
+          "[D4.DOC9.F1]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:EBSFFE5N": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 2111
+}

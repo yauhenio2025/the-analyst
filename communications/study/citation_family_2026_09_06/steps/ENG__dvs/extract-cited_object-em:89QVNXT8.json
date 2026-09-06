@@ -1,0 +1,96 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "cited_object",
+  "doc": "em:89QVNXT8",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 54901,
+  "output_tokens": 1324,
+  "duration_ms": 11243,
+  "cost_usd": 0.0126,
+  "retries": 0,
+  "wall": {
+    "rows": 4,
+    "with_anchor": 4,
+    "verified": 4,
+    "trimmed": 1,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 4,
+    "verified_anchors": 4,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 4,
+      "with_anchor": 4,
+      "verified": 4,
+      "trimmed": 1,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 4,
+      "verified_anchors": 4,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:89QVNXT8"
+        ],
+        "dimension_key": "cited_object",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Introduction, pp. 813–820",
+          "Positivism and Capitalism, pp. 814–815",
+          "Positivism as Teleological Knowledge: Ardigò’s Theory of Morality, pp. 834–835",
+          "References, pp. 838–841"
+        ],
+        "coverage": "complete",
+        "criterion": "Retain a row when the citing text names Weber or attributes a claim to Weber and identifies a specific work and locus.",
+        "basis": "The article directly cites Weber’s Economy and Society, General Economic History, and From Max Weber: Essays in Sociology at specified page ranges.",
+        "limitations": [
+          "This outcome concerns only the supplied 2021 article, not the authors’ complete corpus or Weber’s entire reception.",
+          "One cited work, General Economic History, has no held primary window in the supplied package."
+        ],
+        "finding_ids": [
+          "[D2.DOC16.F1]",
+          "[D2.DOC16.F2]",
+          "[D2.DOC16.F3]",
+          "[D2.DOC16.F4]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:89QVNXT8": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 4464
+}

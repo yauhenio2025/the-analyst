@@ -1,0 +1,269 @@
+engine_key: citation_fidelity_audit
+engine_name: Citation fidelity audit
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: Does each attribution hold against the supplied page window of the work it cites?
+  framing: 'This engine audits citation pairs only. The upstream plan supplies context, not tasks from the engagement
+    or reception engines. Do not demand reception readers. Audit every eligible pair independently: an unresolved
+    work, search result or edition makes that pair unverifiable; it never prevents checks of other pairs. Account
+    for the unchecked/linked name windows separately. Use one paired_fidelity finding per assessable pair; its fields
+    can carry the document dimensions, so separate repetitive rows per dimension are unnecessary. Report unassessed
+    documents explicitly. No requirement that every pair be settled or every name window be a substantive citation.
+    A paired audit of the evidence index: for every indexed attribution, A''s actual claim and anchor beside P''s
+    own words and anchor, attribution kind, accurate/fair/selective/stretched/misattributed/unverifiable verdict
+    with a reason, and edition/locus notes. State how many pairs and works were checked, unresolved and outside
+    the sample. A practice conclusion applies only to the checked sample. Use the supplied author/person identities
+    and source roles. If a document is an evidence index, treat its routing, locations and counts as metadata; its
+    duplicated quotations do not create an independent source. Anchor substantive claims in the actual citing text,
+    held primary window or secondary text. Keep coauthorship and nested quotations. Read the body, not just titles,
+    bibliographies or headers. A document outside a dimension''s role gets no positive row in that dimension. Report
+    that scope explicitly. Do not turn an incomplete check into a source''s silence. The held sample is not the
+    author''s complete work or the thinker''s entire reception. Dates missing from metadata stay unknown unless
+    stated in the source.'
+  scoped_outcomes: false
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: attribution_kind
+    name: Who attributes what to whom
+    questions:
+    - Does A directly attribute a claim to P, report P reporting another view, contrast P with another, or merely
+      name P?
+    method_card: 'Do: Work from the A side of each indexed pair. Preserve nested attribution. A mere mention makes
+      no substantive attribution to audit. In a W-only document defer A-side conclusions until the paired comparison.
+      Select literal spans that carry the actor, predicate, object and necessary qualification. A name or topic
+      alone cannot support a reading. Use separate anchor-b/doc-b for a second span; never stitch quotations. Keep
+      attribution, negation, modality, edition and chronology. Re-anchor, narrow or reject a claim whose quotation
+      omits its predicate. Code checks only anchors and IDs; the model must judge the reading against the supplied
+      text.'
+    indicators:
+    - according to
+    - reports
+    - in contrast
+    scope: document
+    load_bearing: true
+    id_prefix: D1
+    answer_shape: '[D1.F<n>] <one scoped finding> — dim: attribution_kind — pair-ref: <index ID> — attribution:
+      direct|reported|contrast|none — voice-chain: <A to P to reported speaker, if any> — anchor: "<verbatim supporting
+      clause, <=200 chars>" — doc: <actual supplied source key> — confidence: high|medium|low'
+  - key: attributed_claim
+    name: A's actual attribution
+    questions:
+    - What exactly does A attribute at this citation, in A's own terms and with A's qualification?
+    method_card: 'Do: Copy the supporting A clause; retain quotation versus paraphrase and creative adaptation versus
+      a claim to literal fidelity. In a footnote pair, read the body sentence to which the note belongs. Do not
+      use an index''s generated description as A''s words. Select literal spans that carry the actor, predicate,
+      object and necessary qualification. A name or topic alone cannot support a reading. Use separate anchor-b/doc-b
+      for a second span; never stitch quotations. Keep attribution, negation, modality, edition and chronology.
+      Re-anchor, narrow or reject a claim whose quotation omits its predicate. Code checks only anchors and IDs;
+      the model must judge the reading against the supplied text.'
+    indicators:
+    - writes
+    - adapting
+    - termed
+    scope: document
+    load_bearing: true
+    id_prefix: D2
+    answer_shape: '[D2.F<n>] <one scoped finding> — dim: attributed_claim — pair-ref: <index ID> — a-attributes:
+      <one proposition> — cited-work-locus: <literal citation> — anchor: "<verbatim supporting clause, <=200 chars>"
+      — doc: <actual supplied source key> — confidence: high|medium|low'
+  - key: source_position
+    name: P's own position at the retrieved place
+    questions:
+    - What does P say in the held page window, and whose voice is speaking there?
+    method_card: 'Do: Read only the W side. Copy P''s own words verbatim. A translator''s introduction, editorial
+      note, table of contents or quoted opponent is not P''s assertion. If nothing here settles the attribution,
+      report that limit rather than recalling P''s work. Select literal spans that carry the actor, predicate, object
+      and necessary qualification. A name or topic alone cannot support a reading. Use separate anchor-b/doc-b for
+      a second span; never stitch quotations. Keep attribution, negation, modality, edition and chronology. Re-anchor,
+      narrow or reject a claim whose quotation omits its predicate. Code checks only anchors and IDs; the model
+      must judge the reading against the supplied text.'
+    indicators:
+    - therefore
+    - however
+    - by this we mean
+    scope: document
+    load_bearing: true
+    id_prefix: D3
+    answer_shape: '[D3.F<n>] <one scoped finding> — dim: source_position — pair-ref: <index ID> — p-says: <position
+      in two to three sentences> — voice: <P, editor, translator, quoted other or unresolved> — held-locus: <printed/PDF
+      pages> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <actual supplied source key> — confidence:
+      high|medium|low'
+  - key: source_context
+    name: Qualifications around the cited words
+    questions:
+    - Which surrounding distinction or qualification affects the weight of the words A invokes?
+    method_card: 'Do: Read the whole retrieved window, including neighboring pages. True words may be selective
+      if their argumentative weight is reversed. Record the limiting clause before judging a discrepancy; an unrelated
+      retrieval proves no misattribution. Select literal spans that carry the actor, predicate, object and necessary
+      qualification. A name or topic alone cannot support a reading. Use separate anchor-b/doc-b for a second span;
+      never stitch quotations. Keep attribution, negation, modality, edition and chronology. Re-anchor, narrow or
+      reject a claim whose quotation omits its predicate. Code checks only anchors and IDs; the model must judge
+      the reading against the supplied text.'
+    indicators:
+    - only
+    - on the other hand
+    - not
+    scope: document
+    load_bearing: true
+    id_prefix: D4
+    answer_shape: '[D4.F<n>] <one scoped finding> — dim: source_context — pair-ref: <index ID> — qualification:
+      <source-side limit> — bearing: <what comparison must retain> — anchor: "<verbatim supporting clause, <=200
+      chars>" — doc: <actual supplied source key> — confidence: high|medium|low'
+  - key: edition_locus
+    name: Edition and retrieval limits
+    questions:
+    - Which edition, printed page, PDF page, retrieval method (page, section or search), and known section title
+      are supplied, and what remains unresolved?
+    method_card: 'Do: Read the evidence index as provenance. Preserve how: page|section|search and the section title
+      when known (for example Politik als Beruf inside MWG I/17). Keep unheld/unresolved in retrieval-status, not
+      in how. Separate PDF index from printed page. A term-overlap match is a candidate window, not confirmation
+      of locus or edition equivalence. State missing works and missing locations without treating them as P''s silence.
+      Select literal spans that carry the actor, predicate, object and necessary qualification. A name or topic
+      alone cannot support a reading. Use separate anchor-b/doc-b for a second span; never stitch quotations. Keep
+      attribution, negation, modality, edition and chronology. Re-anchor, narrow or reject a claim whose quotation
+      omits its predicate. Code checks only anchors and IDs; the model must judge the reading against the supplied
+      text.'
+    indicators:
+    - 'how: search'
+    - edition
+    - PDF p.
+    scope: document
+    load_bearing: false
+    id_prefix: D5
+    answer_shape: '[D5.F<n>] <one scoped finding> — dim: edition_locus — pair-ref: <index ID> — edition: <held/cited>
+      — retrieval-status: retrieved|unheld|unresolved — how: page|section|search (only when retrieved) — section-title:
+      <known cited-work section title or unknown> — locus: <mapped printed/PDF pages> — limitation: <uncertainty>
+      — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <actual supplied source key> — confidence: high|medium|low'
+  - key: paired_fidelity
+    name: Verdict on each supplied pair
+    questions:
+    - 'Does A''s attribution hold against P''s own words in this retrieved window: accurate, fair, selective, stretched,
+      misattributed or unverifiable, and why?'
+    method_card: 'Do: Pair an anchor from the actual A text with anchor-b from the actual W window, using distinct
+      supplied document keys. These are corpus rows because the verdict predicates a relation between two sources,
+      even though the unit is one citation. Stretched or misattributed requires P''s own contrary words; otherwise
+      say unverifiable. Search-window irrelevance warrants unverifiable, not misattributed. Keep every index ID
+      accounted for in the audit table, even when no positive verdict is possible. Select literal spans that carry
+      the actor, predicate, object and necessary qualification. A name or topic alone cannot support a reading.
+      Use separate anchor-b/doc-b for a second span; never stitch quotations. Keep attribution, negation, modality,
+      edition and chronology. Re-anchor, narrow or reject a claim whose quotation omits its predicate. Code checks
+      only anchors and IDs; the model must judge the reading against the supplied text.'
+    indicators:
+    - paired attribution
+    - what P says
+    - retrieved window
+    scope: corpus
+    load_bearing: false
+    id_prefix: X6
+    answer_shape: '[X6.F<n>] <one scoped finding> — dim: paired_fidelity — pair-ref: <index ID> — attribution: direct|reported|contrast|none
+      — a-attributes: <claim> — p-says: <position> — verdict: accurate|fair|selective|stretched|misattributed|unverifiable
+      — reason: <specific warrant> — edition-locus: <limit> — anchor: "<verbatim clause from A, <=200 chars>" —
+      doc: <A source key> — anchor-b: "<verbatim clause from W or reader B, <=200 chars>" — doc-b: <different actual
+      supplied source key> — confidence: high|medium|low'
+  - key: sample_practice
+    name: Practice across the checked sample
+    questions:
+    - What pattern holds across the checked attributions, with precisely what pair and work coverage?
+    method_card: 'Do: Count checked pair IDs once; do not count multiple findings or overlapping windows as independent
+      citations. Use supplied coverage counts and distinguish eligible, retrieved, assessed and settled. Anchor
+      pattern claims in actual A and W sources. Never generalise to A''s citation practice beyond this checked sample.
+      Select literal spans that carry the actor, predicate, object and necessary qualification. A name or topic
+      alone cannot support a reading. Use separate anchor-b/doc-b for a second span; never stitch quotations. Keep
+      attribution, negation, modality, edition and chronology. Re-anchor, narrow or reject a claim whose quotation
+      omits its predicate. Code checks only anchors and IDs; the model must judge the reading against the supplied
+      text.'
+    indicators:
+    - checked sample
+    - unresolved
+    - edition difference
+    scope: corpus
+    load_bearing: false
+    id_prefix: X7
+    answer_shape: '[X7.F<n>] <one scoped finding> — dim: sample_practice — sample: <checked/eligible/unresolved
+      pairs; held/cited works> — pattern: <bounded finding> — exceptions: <paired evidence> — coverage: <explicit
+      limit> — anchor: "<verbatim clause from A, <=200 chars>" — doc: <A source key> — anchor-b: "<verbatim clause
+      from W or reader B, <=200 chars>" — doc-b: <different actual supplied source key> — confidence: high|medium|low'
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension_x_document
+    model_tier: cheap
+    output: ledger
+    max_rows: 12
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - merge_duplicates
+    - hunt_misses
+    - name_must_keep
+    - Use the supplied author/person identities and source roles. If a document is an evidence index, treat its
+      routing, locations and counts as metadata; its duplicated quotations do not create an independent source.
+      Anchor substantive claims in the actual citing text, held primary window or secondary text. Keep coauthorship
+      and nested quotations. Read the body, not just titles, bibliographies or headers. A document outside a dimension's
+      role gets no positive row in that dimension. Report that scope explicitly. Do not turn an incomplete check
+      into a source's silence. The held sample is not the author's complete work or the thinker's entire reception.
+      Dates missing from metadata stay unknown unless stated in the source.
+    - ' Select literal spans that carry the actor, predicate, object and necessary qualification. A name or topic
+      alone cannot support a reading. Use separate anchor-b/doc-b for a second span; never stitch quotations. Keep
+      attribution, negation, modality, edition and chronology. Re-anchor, narrow or reject a claim whose quotation
+      omits its predicate. Code checks only anchors and IDs; the model must judge the reading against the supplied
+      text.'
+    - Check every passage/pair against its actual source role and preserve both keys for relational claims. Verify
+      table meanings, voice and edition uncertainty; a search hit is not a confirmed cited page.
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: a scholar of A with the cited works and secondary texts open
+    tables:
+    - paired_citation_fidelity
+    - checked_sample_coverage
+    brief: "1. Complete the eligible-pair audit even when some pairs remain unverifiable. This engine audits citation\
+      \ pairs only. The upstream plan supplies context, not tasks from the engagement or reception engines. Do not\
+      \ demand reception readers. Audit every eligible pair independently: an unresolved work, search result or\
+      \ edition makes that pair unverifiable; it never prevents checks of other pairs. Account for the unchecked/linked\
+      \ name windows separately. Use one paired_fidelity finding per assessable pair; its fields can carry the document\
+      \ dimensions, so separate repetitive rows per dimension are unnecessary. Report unassessed documents explicitly.\
+      \ No requirement that every pair be settled or every name window be a substantive citation. \n1. A paired\
+      \ audit of the evidence index: for every indexed attribution, A's actual claim and anchor beside P's own words\
+      \ and anchor, attribution kind, accurate/fair/selective/stretched/misattributed/unverifiable verdict with\
+      \ a reason, and edition/locus notes. State how many pairs and works were checked, unresolved and outside the\
+      \ sample. A practice conclusion applies only to the checked sample.\n2. Give the source-specific reading with\
+      \ qualifications, then render the named Markdown tables. Every positive cell cites its final supporting finding\
+      \ ID; unknown cells state the actual limit.\n3. Preserve granular evidence through reconciliation: inspect\
+      \ each final table cell against its cited final row and source context. Renumber citations with rows; no old\
+      \ ID may silently acquire a new meaning. Count passage/pair IDs, not findings, for coverage.\n4. Give a short\
+      \ read-first route and the unsettled question. No claim of exhaustive coverage without a complete supplied\
+      \ inventory and actual inspection. Use the supplied author/person identities and source roles. If a document\
+      \ is an evidence index, treat its routing, locations and counts as metadata; its duplicated quotations do\
+      \ not create an independent source. Anchor substantive claims in the actual citing text, held primary window\
+      \ or secondary text. Keep coauthorship and nested quotations. Read the body, not just titles, bibliographies\
+      \ or headers. A document outside a dimension's role gets no positive row in that dimension. Report that scope\
+      \ explicitly. Do not turn an incomplete check into a source's silence. The held sample is not the author's\
+      \ complete work or the thinker's entire reception. Dates missing from metadata stay unknown unless stated\
+      \ in the source. Select literal spans that carry the actor, predicate, object and necessary qualification.\
+      \ A name or topic alone cannot support a reading. Use separate anchor-b/doc-b for a second span; never stitch\
+      \ quotations. Keep attribution, negation, modality, edition and chronology. Re-anchor, narrow or reject a\
+      \ claim whose quotation omits its predicate. Code checks only anchors and IDs; the model must judge the reading\
+      \ against the supplied text."

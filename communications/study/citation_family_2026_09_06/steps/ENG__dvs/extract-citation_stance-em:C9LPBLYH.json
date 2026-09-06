@@ -1,0 +1,111 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "citation_stance",
+  "doc": "em:C9LPBLYH",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 68931,
+  "output_tokens": 1373,
+  "duration_ms": 16840,
+  "cost_usd": 0.0154,
+  "retries": 0,
+  "wall": {
+    "reanchor_receipts": [
+      {
+        "content": "## Findings ledger\n- [D4.DOC6.F3] Riley qualifies the reported Weberian interpretive strategy by noting that Biernacki gives relatively little account of the procedures by which interpretation is to be conducted — dim: citation_stance — ref: RW0021 — stance: qualifies — object: The return to Weberian ideal-type interpretation requires a more explicit procedure for cultural sociology — anchor: \"But Biernacki says relatively little about procedures of interpretation.\" — doc: em:C9LPBLYH — confidence: high — trimmed-anchor: yes",
+        "partial": false,
+        "stop_reason": "stop",
+        "error": null
+      }
+    ],
+    "rows": 4,
+    "with_anchor": 4,
+    "verified": 3,
+    "trimmed": 0,
+    "anchor_rate": 0.75,
+    "failed_ids": [
+      "D4.DOC6.F3"
+    ],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 4,
+    "verified_anchors": 3,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 3,
+      "with_anchor": 3,
+      "verified": 3,
+      "trimmed": 0,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 3,
+      "verified_anchors": 3,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [
+      {
+        "id": "D4.DOC6.F3",
+        "dimension": "citation_stance"
+      }
+    ],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:C9LPBLYH"
+        ],
+        "dimension_key": "citation_stance",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Back to Weber!, pp. 627–629, especially the sections “Two Sorts of Critique” and “Assessment”"
+        ],
+        "coverage": "complete",
+        "criterion": "A passage must express the citing author’s adoption, development, qualification, dispute, or explicit mention of a proposition attributed to Weber.",
+        "basis": "The inspected text explicitly attributes propositions concerning Weber’s ideal types and interpretive method, qualifies the procedures offered for that method, and disputes Biernacki’s assimilation of Foucault to Weber.",
+        "limitations": [
+          "The findings concern this supplied source only and do not establish Riley’s stance across his complete work.",
+          "Several Weber-related propositions are reported through Biernacki rather than quoted directly from Weber."
+        ],
+        "finding_ids": [
+          "[D4.DOC6.F1]",
+          "[D4.DOC6.F2]",
+          "[D4.DOC6.F3]",
+          "[D4.DOC6.F4]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:C9LPBLYH": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Findings lost anchor evidence; this does not establish absence",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [
+    "D4.DOC6.F3"
+  ],
+  "chars": 4175
+}

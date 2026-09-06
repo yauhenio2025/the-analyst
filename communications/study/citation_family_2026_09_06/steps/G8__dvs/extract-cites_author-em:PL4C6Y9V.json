@@ -1,0 +1,91 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "cites_author",
+  "doc": "em:PL4C6Y9V",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 41225,
+  "output_tokens": 498,
+  "duration_ms": 6532,
+  "cost_usd": 0.0088,
+  "retries": 0,
+  "wall": {
+    "rows": 0,
+    "with_anchor": 0,
+    "verified": 0,
+    "trimmed": 0,
+    "anchor_rate": 0.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 0,
+    "verified_anchors": 0,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 0,
+      "with_anchor": 0,
+      "verified": 0,
+      "trimmed": 0,
+      "anchor_rate": 0.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 0,
+      "verified_anchors": 0,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:PL4C6Y9V"
+        ],
+        "dimension_key": "cites_author",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Bibliographical Note on the Writings of Max Weber",
+          "Introduction",
+          "Chapter I: Career and Personal Orientation",
+          "Beginning of Chapter II: Weber’s Early Studies and the Definition of His Intellectual Perspective",
+          "Contiguous marked-text excerpt, character range [4120, 44120)"
+        ],
+        "coverage": "partial",
+        "criterion": "A positive citation requires Dylan Riley’s name in Reinhard Bendix’s text and a passage showing what the citation does.",
+        "basis": "The inspected excerpt contains no located instance of the name Dylan Riley or a citation to Riley; because the supplied source is only a contiguous excerpt rather than the complete book, no whole-document absence finding is warranted.",
+        "limitations": [
+          "The supplied source covers only the marked excerpt, not the complete book.",
+          "A name-window search or citation index is not available for this source.",
+          "No positive finding can be retained without an anchored passage from Bendix’s text."
+        ],
+        "finding_ids": [],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:PL4C6Y9V": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 1742
+}

@@ -1,0 +1,234 @@
+{
+  "step": "verify",
+  "kind": "verify",
+  "dimension": "",
+  "doc": "em:PSYPHAPS",
+  "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+  "model_used": "openrouter/deepseek/deepseek-v4-pro",
+  "input_tokens": 48336,
+  "output_tokens": 9980,
+  "duration_ms": 132909,
+  "cost_usd": 0.0712,
+  "retries": 0,
+  "wall": {
+    "rows": 10,
+    "with_anchor": 10,
+    "verified": 10,
+    "trimmed": 2,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 10,
+    "verified_anchors": 10,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "carried_forward": 0,
+    "rejected": 5,
+    "added": 1,
+    "ruling_coverage": {
+      "original_count": 9,
+      "explicitly_ruled_count": 9,
+      "missing_or_unruled_ids": [],
+      "unexpected_nonadded_ids": [],
+      "invalid_original_status_ids": [],
+      "duplicate_original_ids": [],
+      "duplicate_ruling_ids": [],
+      "coverage_complete": true
+    },
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:PSYPHAPS"
+        ],
+        "dimension_key": "place_in_text",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Introduction",
+          "Summary of the Volume",
+          "Assessment",
+          "Capitalism and War",
+          "pp. 491–492 discussion of Weber",
+          "pp. 492–494 concluding argument"
+        ],
+        "coverage": "complete",
+        "criterion": "The citing text must contain a substantive argument that assigns Max Weber an evidentiary, framework, opponent, dialogue, courtesy or qualified role in the text’s argument.",
+        "basis": "The complete supplied text was inspected; a new row V.DOC5.F1 was added with a verbatim anchor from p.491 showing Weber as a counterpoint to Mann.",
+        "limitations": [
+          "This outcome concerns only the supplied 2013 text and does not establish Riley’s place for Weber across his complete corpus.",
+          "The assessment does not independently verify the cited Weber passages or edition pagination."
+        ],
+        "finding_ids": [
+          "V.DOC5.F1"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "Verified anchor in source; added row supports the claim.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:PSYPHAPS": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Findings lost anchor evidence; this does not establish absence",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "em:PSYPHAPS"
+        ],
+        "dimension_key": "cited_object",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "pp. 491–492, discussion of Weber, imperialism, and political capitalism",
+          "References, p. 494"
+        ],
+        "coverage": "complete",
+        "criterion": "A direct citation in Riley’s text must identify Weber’s work or idea and, where supplied, its cited locus.",
+        "basis": "Row D2.DOC5.F1 confirmed; anchor shows verbatim citation of Economy and Society with p.919.",
+        "limitations": [
+          "This outcome concerns the supplied citing-text window, not Riley’s complete work or Weber’s entire reception.",
+          "The passage also mentions Weber more generally, but those mentions do not independently identify additional works."
+        ],
+        "finding_ids": [
+          "D2.DOC5.F1"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "Anchor verbatim in source; verifies the citation event.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:PSYPHAPS": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "em:PSYPHAPS"
+        ],
+        "dimension_key": "citation_move",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Introduction",
+          "Summary of the Volume",
+          "Assessment",
+          "Capitalism and War",
+          "pp. 491–492 discussion of Weber and imperialism"
+        ],
+        "coverage": "complete",
+        "criterion": "A finding requires an anchored passage in which Riley performs an argumentative act with the citation to Weber, such as authority, evidence, foil, dialogue, genealogy, illustration, courtesy, or self-positioning.",
+        "basis": "Row D3.DOC5.F1 confirmed; anchor verbatim on p.491 shows Weber placed in dialogue with Mann.",
+        "limitations": [
+          "This outcome concerns only the supplied citing text and does not represent Riley’s complete work or Weber’s entire reception."
+        ],
+        "finding_ids": [
+          "D3.DOC5.F1"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "Verified anchor and reading; row confirmed.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:PSYPHAPS": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "em:PSYPHAPS"
+        ],
+        "dimension_key": "citation_stance",
+        "outcome": "no_relevant_instance",
+        "sections_inspected": [
+          "Assessment: Capitalism and War",
+          "Imperialism and war discussion on PDF pages 8–9 / printed pages 491–492"
+        ],
+        "coverage": "complete",
+        "criterion": "A finding requires an explicit passage in which Riley adopts, builds on, qualifies, disputes, or merely mentions a proposition attributed to Max Weber.",
+        "basis": "All three original rows (D4.DOC5.F1–F3) were rejected because their anchors did not carry the claimed stance (adopts, builds_on, disputes). No additional stance rows were added because the text’s mention‑level attributions, while present, would not substantially enhance the reading.",
+        "limitations": [
+          "The text does contain reporting of Weber’s claims, but no single‑anchor explicit stance row merited addition.",
+          "This outcome covers the supplied citing text only, not Riley’s complete work."
+        ],
+        "finding_ids": [],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "Rejected rows shown to lack anchoring; no new stance finding added.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:PSYPHAPS": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "em:PSYPHAPS"
+        ],
+        "dimension_key": "passage_reading",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Introduction",
+          "Summary of the Volume",
+          "Assessment",
+          "Capitalism and War",
+          "pp. 491–492, PDF pp. 8–9"
+        ],
+        "coverage": "complete",
+        "criterion": "A retained row must explain what Riley’s citation of Weber accomplishes in the passage, using a verbatim anchor that contains the relevant actor, predicate, object, and qualification.",
+        "basis": "Rows D5.DOC5.F1 and D5.DOC5.F2 confirmed with verbatim anchors; D5.DOC5.F3 and D5.DOC5.F4 rejected because anchors did not carry their claimed readings.",
+        "limitations": [
+          "This outcome concerns only the supplied 2013 citing text, not Riley’s complete work or Weber’s entire reception.",
+          "The primary Weber text was not used to certify what Weber actually wrote beyond Riley’s quotation and attribution."
+        ],
+        "finding_ids": [
+          "D5.DOC5.F1",
+          "D5.DOC5.F2"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "Two passage‑reading rows verified; rejected rows removed.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:PSYPHAPS": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 14895
+}

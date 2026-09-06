@@ -1,0 +1,109 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "cites_author",
+  "doc": "em:EZWD7IBR",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 108539,
+  "output_tokens": 1057,
+  "duration_ms": 14926,
+  "cost_usd": 0.023,
+  "retries": 0,
+  "wall": {
+    "reanchor_receipts": [
+      {
+        "content": "## Findings ledger\n- [D4.DOC21.F1] The chapter explicitly invokes Weber as part of Emigh et al.’s theoretical combination with Gramsci to analyse intellectuals’ social effects — dim: cites_author — reader: Patricia Ahmed, Rebecca Jean Emigh, Dylan Riley, and Nancy Wang Yuen — cites-A: yes — author-note: The text attributes to “Emigh et al. (2016)” a project “combining Weber with Gramsci” to investigate intellectuals’ social effects — anchor: \"Emigh et al. (2016, pp. 24–30), by combining Weber with Gramsci, investigated the micro-level social interactional backdrop to common sense as well as the macro-level political effects of intellectuals’ alignment on political and social structures.\" — doc: em:EZWD7IBR — confidence: high",
+        "partial": false,
+        "stop_reason": "stop",
+        "error": null
+      }
+    ],
+    "rows": 1,
+    "with_anchor": 1,
+    "verified": 0,
+    "trimmed": 0,
+    "anchor_rate": 0.0,
+    "failed_ids": [
+      "D4.DOC21.F1"
+    ],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 1,
+    "verified_anchors": 0,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 0,
+      "with_anchor": 0,
+      "verified": 0,
+      "trimmed": 0,
+      "anchor_rate": 0.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 0,
+      "verified_anchors": 0,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [
+      {
+        "id": "D4.DOC21.F1",
+        "dimension": "cites_author"
+      }
+    ],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:EZWD7IBR"
+        ],
+        "dimension_key": "cites_author",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Main chapter text, pp. 25–44",
+          "References, pp. 44–49"
+        ],
+        "coverage": "complete",
+        "criterion": "A positive citation requires the reader's text to name or cite Riley's target thinker, Max Weber, and state what the text does with that citation.",
+        "basis": "The chapter names Weber in the substantive sentence describing Emigh et al.'s combination of Weber with Gramsci and the resulting analysis of intellectuals' social effects.",
+        "limitations": [
+          "The passage does not identify a specific Weber work, edition, or page.",
+          "This outcome concerns the supplied chapter only, not the authors' complete work."
+        ],
+        "finding_ids": [
+          "[D4.DOC21.F1]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:EZWD7IBR": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Findings lost anchor evidence; this does not establish absence",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [
+    "D4.DOC21.F1"
+  ],
+  "chars": 2272
+}

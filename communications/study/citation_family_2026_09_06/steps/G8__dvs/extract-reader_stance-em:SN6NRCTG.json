@@ -1,0 +1,90 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "reader_stance",
+  "doc": "em:SN6NRCTG",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 42439,
+  "output_tokens": 737,
+  "duration_ms": 8920,
+  "cost_usd": 0.0094,
+  "retries": 0,
+  "wall": {
+    "rows": 1,
+    "with_anchor": 1,
+    "verified": 1,
+    "trimmed": 0,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 1,
+    "verified_anchors": 1,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 1,
+      "with_anchor": 1,
+      "verified": 1,
+      "trimmed": 0,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 1,
+      "verified_anchors": 1,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:SN6NRCTG"
+        ],
+        "dimension_key": "reader_stance",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "contiguous densest 40000-character excerpt, marked-text character range [1005672, 1045672)",
+          "Max Weber and the Idea of Economic Sociology, notes to appendix, pp. 289–298"
+        ],
+        "coverage": "partial",
+        "criterion": "A supplied secondary reader must defend, reconstruct, criticize, apply, or survey a proposition concerning Max Weber, anchored in the text’s own predicates.",
+        "basis": "The excerpt contains Swedberg’s explicit survey claim that concepts in Weber’s later economic sociology were already present in the 1898 Outline.",
+        "limitations": [
+          "The held sample is an excerpt, not the complete book.",
+          "The excerpt does not establish Swedberg’s engagement with Dylan Riley.",
+          "Most of the inspected material consists of notes and reported scholarship, so no stronger stance than surveys is retained."
+        ],
+        "finding_ids": [
+          "D2.DOC30.F1"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:SN6NRCTG": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 2331
+}

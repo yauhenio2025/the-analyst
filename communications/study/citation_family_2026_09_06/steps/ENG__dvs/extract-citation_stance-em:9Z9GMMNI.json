@@ -1,0 +1,93 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "citation_stance",
+  "doc": "em:9Z9GMMNI",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 32664,
+  "output_tokens": 1152,
+  "duration_ms": 13620,
+  "cost_usd": 0.0079,
+  "retries": 0,
+  "wall": {
+    "rows": 4,
+    "with_anchor": 4,
+    "verified": 4,
+    "trimmed": 1,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 4,
+    "verified_anchors": 4,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 4,
+      "with_anchor": 4,
+      "verified": 4,
+      "trimmed": 1,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 4,
+      "verified_anchors": 4,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:9Z9GMMNI"
+        ],
+        "dimension_key": "citation_stance",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Angles of Vision, pp. 1–2 / complete supplied body"
+        ],
+        "coverage": "complete",
+        "criterion": "A finding qualifies when Riley’s text adopts, builds on, qualifies, disputes, or explicitly mentions a proposition attributed to Weber or to a cited reader’s interpretation of Weber.",
+        "basis": "The complete supplied two-page text was inspected and contains anchored treatments of Weber’s standpoint, wage-labour calculation, and Lukács’s interpretation of Weber.",
+        "limitations": [
+          "This is one supplied 2026 text and does not establish Riley’s stance across his complete work.",
+          "Several claims about Weber are mediated through Riley’s report of Lukács rather than directly cited to a Weber passage."
+        ],
+        "finding_ids": [
+          "[D4.DOC25.F1]",
+          "[D4.DOC25.F2]",
+          "[D4.DOC25.F3]",
+          "[D4.DOC25.F4]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:9Z9GMMNI": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 4514
+}

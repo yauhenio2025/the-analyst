@@ -1,0 +1,259 @@
+{
+  "step": "verify",
+  "kind": "verify",
+  "dimension": "",
+  "doc": "em:VE9TU4JA",
+  "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+  "model_used": "openrouter/deepseek/deepseek-v4-pro",
+  "input_tokens": 64645,
+  "output_tokens": 11866,
+  "duration_ms": 154302,
+  "cost_usd": 0.0921,
+  "retries": 0,
+  "wall": {
+    "rows": 18,
+    "with_anchor": 18,
+    "verified": 13,
+    "trimmed": 3,
+    "anchor_rate": 0.722,
+    "failed_ids": [
+      "D1.DOC24.F2",
+      "D3.DOC24.F2",
+      "D4.DOC24.F1",
+      "D5.DOC24.F1",
+      "V.DOC24.F2"
+    ],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 28,
+    "verified_anchors": 23,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "carried_forward": 0,
+    "rejected": 5,
+    "added": 2,
+    "ruling_coverage": {
+      "original_count": 16,
+      "explicitly_ruled_count": 16,
+      "missing_or_unruled_ids": [],
+      "unexpected_nonadded_ids": [],
+      "invalid_original_status_ids": [],
+      "duplicate_original_ids": [],
+      "duplicate_ruling_ids": [],
+      "coverage_complete": true
+    },
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:VE9TU4JA"
+        ],
+        "dimension_key": "place_in_text",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "pp. 25–70, especially the discussion beginning “4. political capitalism?” on pp. 52–57"
+        ],
+        "coverage": "complete",
+        "criterion": "The citing text must give the named thinker an argumentative role—such as evidence, adopted framework, opponent, dialogue partner, foil, or qualified source—supported by a verbatim passage carrying the relevant predicate.",
+        "basis": "The text identifies Weber as a source for the term political capitalism, uses tax-farming as its historical archetype, cites Economy and Society pp. 965–6, and applies the tax-farming analogy to contemporary fiscal relations.",
+        "limitations": [
+          "This outcome concerns only the supplied 2025 article and does not represent Riley’s complete work or the thinker’s entire reception.",
+          "The underlying Weber passage was cited but not reproduced in the supplied citing text."
+        ],
+        "finding_ids": [
+          "D1.DOC24.F1",
+          "D1.DOC24.F2",
+          "D1.DOC24.F3",
+          "D1.DOC24.F4",
+          "D1.DOC24.F5"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": false,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:VE9TU4JA": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Malformed/missing scope records: 4 validation errors for ScopeOutcome\ncriterion\n  Field required [type=missing, input_value={'document_keys': ['em:VE...s the provided anchor.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\nlimitations\n  Field required [type=missing, input_value={'document_keys': ['em:VE...s the provided anchor.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\ncriteron\n  Extra inputs are not permitted [type=extra_forbidden, input_value='A passage must explicitl... locus where available.', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden\nlimations\n  Extra inputs are not permitted [type=extra_forbidden, input_value=['This assessment covers ...as not inspected here.'], input_type=list]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden",
+            "Findings in this scope lost anchor evidence; this does not establish absence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "em:VE9TU4JA"
+        ],
+        "dimension_key": "cited_object",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "pp. 25–70, especially the section “Political capitalism redefined” on pp. 53–57 and the bibliography footnotes to pp. 53–54"
+        ],
+        "coverage": "complete",
+        "criterion": "A passage must explicitly cite or identify a work, idea, or named thinker and provide a recoverable cited locus where available.",
+        "basis": "The source explicitly names Max Weber, cites Economy and Society, and gives the cited pages 965–966 in footnote 55; the surrounding passage states the role of that citation in the account of tax-farming and political capitalism.",
+        "limitations": [
+          "This assessment covers the supplied source text, not Riley’s and Brenner’s complete work or Weber’s entire reception.",
+          "The passage does not by itself settle the exact edition or the full content of Weber’s cited discussion."
+        ],
+        "finding_ids": [
+          "[D2.DOC24.F1]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": false,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:VE9TU4JA": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Malformed/missing scope records: 4 validation errors for ScopeOutcome\ncriterion\n  Field required [type=missing, input_value={'document_keys': ['em:VE...s the provided anchor.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\nlimitations\n  Field required [type=missing, input_value={'document_keys': ['em:VE...s the provided anchor.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\ncriteron\n  Extra inputs are not permitted [type=extra_forbidden, input_value='A passage must explicitl... locus where available.', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden\nlimations\n  Extra inputs are not permitted [type=extra_forbidden, input_value=['This assessment covers ...as not inspected here.'], input_type=list]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "em:VE9TU4JA"
+        ],
+        "dimension_key": "citation_move",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "pp. 53–57, especially the section “Political capitalism redefined” and the Weber citation at footnote 55"
+        ],
+        "coverage": "partial",
+        "criterion": "A retained finding must classify the argumentative act performed by the citing text’s substantive citation to Weber, supported by a verbatim passage showing the relevant predicate and object.",
+        "basis": "The inspected passage explicitly presents Weber as part of the genealogy of “political capitalism” and cites Economy and Society as evidence for the historical tax-farming model.",
+        "limitations": [
+          "Only the supplied source text and the indicated Weber-citation passage were inspected; this does not establish the move made by every Weber citation in the article.",
+          "The evidence-index metadata was used only for routing and citation identification, not as an independent source."
+        ],
+        "finding_ids": [
+          "[D3.DOC24.F1]",
+          "[D3.DOC24.F2]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": false,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:VE9TU4JA": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Malformed/missing scope records: 4 validation errors for ScopeOutcome\ncriterion\n  Field required [type=missing, input_value={'document_keys': ['em:VE...s the provided anchor.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\nlimitations\n  Field required [type=missing, input_value={'document_keys': ['em:VE...s the provided anchor.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\ncriteron\n  Extra inputs are not permitted [type=extra_forbidden, input_value='A passage must explicitl... locus where available.', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden\nlimations\n  Extra inputs are not permitted [type=extra_forbidden, input_value=['This assessment covers ...as not inspected here.'], input_type=list]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden",
+            "One or more declared finding references lack retained verified evidence",
+            "Findings in this scope lost anchor evidence; this does not establish absence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "em:VE9TU4JA"
+        ],
+        "dimension_key": "citation_stance",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "pp. 53–57, sections “Political capitalism redefined” and “Political reconfigurations”",
+          "RW0088",
+          "RW0089"
+        ],
+        "coverage": "partial",
+        "criterion": "A proposition-level statement in which the citing text adopts, builds on, qualifies, disputes, or merely mentions a cited position by Max Weber.",
+        "basis": "The inspected passage explicitly names Max Weber as an origin of the term “political capitalism,” presents tax-farming as its historical archetype, develops the tax-farming analogy into an account of politically constituted rent, and qualifies the analogy by distinguishing the contemporary mechanism.",
+        "limitations": [
+          "Only the supplied source window was assessed for this dimension; the article’s other Weber references were not inspected.",
+          "The cited Weber pages 965–66 are referenced but not reproduced in the citing passage.",
+          "The source is coauthored, and the passage does not assign the stance separately to Riley or Brenner."
+        ],
+        "finding_ids": [
+          "[D4.DOC24.F1]",
+          "[D4.DOC24.F2]",
+          "[D4.DOC24.F3]",
+          "[D4.DOC24.F4]",
+          "[D4.DOC24.F5]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": false,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:VE9TU4JA": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Malformed/missing scope records: 4 validation errors for ScopeOutcome\ncriterion\n  Field required [type=missing, input_value={'document_keys': ['em:VE...s the provided anchor.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\nlimitations\n  Field required [type=missing, input_value={'document_keys': ['em:VE...s the provided anchor.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\ncriteron\n  Extra inputs are not permitted [type=extra_forbidden, input_value='A passage must explicitl... locus where available.', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden\nlimations\n  Extra inputs are not permitted [type=extra_forbidden, input_value=['This assessment covers ...as not inspected here.'], input_type=list]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden",
+            "One or more declared finding references lack retained verified evidence",
+            "Findings in this scope lost anchor evidence; this does not establish absence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "em:VE9TU4JA"
+        ],
+        "dimension_key": "passage_reading",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "pp. 53–57, especially the sections \"Political capitalism redefined\" and \"Political reconfigurations\""
+        ],
+        "coverage": "partial",
+        "criterion": "A substantive, anchored passage in which the citing text uses, interprets, adapts, qualifies, or disputes a claim or distinction associated with Max Weber",
+        "basis": "The inspected passages explicitly name Weber as one source for the term political capitalism, cite Economy and Society pp. 965–66, explain tax-farming as politically constituted rent, and adapt that model to contemporary state-backed debt and asset-price support.",
+        "limitations": [
+          "Only the supplied source and the inspected pp. 53–57 were assessed for this dimension.",
+          "The source’s interpretation of Weber was not independently checked against the primary Weber window here.",
+          "The findings do not represent Riley and Brenner’s complete reception of Weber across their corpus."
+        ],
+        "finding_ids": [
+          "[D5.DOC24.F1]",
+          "[D5.DOC24.F2]",
+          "[D5.DOC24.F3]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": false,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:VE9TU4JA": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Malformed/missing scope records: 4 validation errors for ScopeOutcome\ncriterion\n  Field required [type=missing, input_value={'document_keys': ['em:VE...s the provided anchor.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\nlimitations\n  Field required [type=missing, input_value={'document_keys': ['em:VE...s the provided anchor.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\ncriteron\n  Extra inputs are not permitted [type=extra_forbidden, input_value='A passage must explicitl... locus where available.', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden\nlimations\n  Extra inputs are not permitted [type=extra_forbidden, input_value=['This assessment covers ...as not inspected here.'], input_type=list]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden",
+            "One or more declared finding references lack retained verified evidence",
+            "Findings in this scope lost anchor evidence; this does not establish absence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [
+    "D1.DOC24.F2",
+    "D3.DOC24.F2",
+    "D4.DOC24.F1",
+    "D5.DOC24.F1",
+    "V.DOC24.F2"
+  ],
+  "chars": 23465
+}

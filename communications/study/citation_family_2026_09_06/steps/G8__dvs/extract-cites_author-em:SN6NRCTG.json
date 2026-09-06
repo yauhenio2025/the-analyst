@@ -1,0 +1,87 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "cites_author",
+  "doc": "em:SN6NRCTG",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 42455,
+  "output_tokens": 407,
+  "duration_ms": 5681,
+  "cost_usd": 0.009,
+  "retries": 0,
+  "wall": {
+    "rows": 0,
+    "with_anchor": 0,
+    "verified": 0,
+    "trimmed": 0,
+    "anchor_rate": 0.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 0,
+    "verified_anchors": 0,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 0,
+      "with_anchor": 0,
+      "verified": 0,
+      "trimmed": 0,
+      "anchor_rate": 0.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 0,
+      "verified_anchors": 0,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:SN6NRCTG"
+        ],
+        "dimension_key": "cites_author",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Supplied contiguous densest 40000-character excerpt, including the displayed notes to the appendix and references"
+        ],
+        "coverage": "partial",
+        "criterion": "A positive finding requires the secondary reader's text to name or cite Dylan Riley and to make a substantive claim involving that citation.",
+        "basis": "No occurrence of Riley, Dylan Riley, or an identifiable citation to Riley is visible in the supplied excerpt, but the source is explicitly only a partial excerpt rather than the complete work.",
+        "limitations": [
+          "The supplied text covers only the marked-text character range [1005672, 1045672) of the 1998 work.",
+          "A negative inspection of this excerpt does not establish that the complete book lacks a citation to Riley.",
+          "The citation-index metadata is not an anchor source and cannot establish engagement independently."
+        ],
+        "finding_ids": [],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:SN6NRCTG": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 1507
+}

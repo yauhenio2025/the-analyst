@@ -1,0 +1,87 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "cites_author",
+  "doc": "em:TDSPYHWK",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 40043,
+  "output_tokens": 438,
+  "duration_ms": 7182,
+  "cost_usd": 0.0085,
+  "retries": 0,
+  "wall": {
+    "rows": 0,
+    "with_anchor": 0,
+    "verified": 0,
+    "trimmed": 0,
+    "anchor_rate": 0.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 0,
+    "verified_anchors": 0,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 0,
+      "with_anchor": 0,
+      "verified": 0,
+      "trimmed": 0,
+      "anchor_rate": 0.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 0,
+      "verified_anchors": 0,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:TDSPYHWK"
+        ],
+        "dimension_key": "cites_author",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "supplied contiguous densest 40000-character excerpt, marked-text range [71399, 111399), including pp. 22–33 / PDF pp. 32–42"
+        ],
+        "coverage": "partial",
+        "criterion": "A positive citation requires Dylan Riley's name in John R. Love's secondary text and a sentence showing what the text does with that citation.",
+        "basis": "No positive Riley citation is present in the supplied excerpt, but the excerpt is only a partial sample of the work and therefore cannot establish that the full text does not cite Riley.",
+        "limitations": [
+          "The full 1991 work was not supplied or inspected.",
+          "The excerpt's discussion of Weber and related scholars is not evidence of engagement with Riley.",
+          "No finding ID is retained because the inspected text contains no anchored positive citation to Riley."
+        ],
+        "finding_ids": [],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:TDSPYHWK": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 1550
+}

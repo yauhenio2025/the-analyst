@@ -1,0 +1,114 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "reception_scope",
+  "doc": "em:89QVNXT8",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 110082,
+  "output_tokens": 1329,
+  "duration_ms": 15850,
+  "cost_usd": 0.0236,
+  "retries": 0,
+  "wall": {
+    "reanchor_receipts": [
+      {
+        "content": "## Findings ledger",
+        "partial": false,
+        "stop_reason": "stop",
+        "error": null
+      }
+    ],
+    "rows": 4,
+    "with_anchor": 4,
+    "verified": 3,
+    "trimmed": 0,
+    "anchor_rate": 0.75,
+    "failed_ids": [
+      "D5.DOC16.F4"
+    ],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 4,
+    "verified_anchors": 3,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 3,
+      "with_anchor": 3,
+      "verified": 3,
+      "trimmed": 0,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 3,
+      "verified_anchors": 3,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [
+      {
+        "id": "D5.DOC16.F4",
+        "dimension": "reception_scope"
+      }
+    ],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:89QVNXT8"
+        ],
+        "dimension_key": "reception_scope",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "full article, pp. 813–842",
+          "appendix and references, pp. 838–842",
+          "supplied citation-index metadata for RW0048–RW0050"
+        ],
+        "coverage": "complete",
+        "criterion": "A source qualifies when its text states a date, identifies a bounded excerpt or citation to Weber, or supplies an authoritative citation-count record relevant to locating the reader among the supplied Weber readers.",
+        "basis": "The article states its submission, revision, acceptance, and publication dates; cites identifiable Weber works and page ranges; and contains a specific quotation attributed to Weber. The supplied metadata provides no scholarly citation-count record.",
+        "limitations": [
+          "Complete coverage refers to the supplied article and metadata, not to Riley’s complete work or Weber’s entire reception.",
+          "No most-cited ranking can be made because scholarly citation counts are absent.",
+          "The article’s Weber citations include multiple editions and translations, and the supplied material does not establish full edition equivalence."
+        ],
+        "finding_ids": [
+          "[D5.DOC16.F1]",
+          "[D5.DOC16.F2]",
+          "[D5.DOC16.F3]",
+          "[D5.DOC16.F4]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:89QVNXT8": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Findings lost anchor evidence; this does not establish absence",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [
+    "D5.DOC16.F4"
+  ],
+  "chars": 4841
+}

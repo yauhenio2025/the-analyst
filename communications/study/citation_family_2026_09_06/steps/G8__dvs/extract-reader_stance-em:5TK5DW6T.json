@@ -1,0 +1,97 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "reader_stance",
+  "doc": "em:5TK5DW6T",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 57534,
+  "output_tokens": 1321,
+  "duration_ms": 13776,
+  "cost_usd": 0.0131,
+  "retries": 0,
+  "wall": {
+    "rows": 5,
+    "with_anchor": 5,
+    "verified": 5,
+    "trimmed": 0,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 5,
+    "verified_anchors": 5,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 5,
+      "with_anchor": 5,
+      "verified": 5,
+      "trimmed": 0,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 5,
+      "verified_anchors": 5,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:5TK5DW6T"
+        ],
+        "dimension_key": "reader_stance",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Abstract",
+          "1988, Returning to Weber",
+          "The Centrality of Meaning",
+          "A Practical Example: The Anti-Speculative Stance towards History",
+          "Concluding Remarks"
+        ],
+        "coverage": "complete",
+        "criterion": "Retain an anchored finding when the secondary reader explicitly defends, reconstructs, criticizes, applies, or surveys a proposition concerning Max Weber or a reading of Weber.",
+        "basis": "The full held article was inspected and contains explicit reconstructions and criticisms of Weber’s conception of meaning, Weber’s historical method, and Castoriadis’s interpretation of Weber.",
+        "limitations": [
+          "The article does not demonstrate engagement with Dylan Riley’s writings or Riley’s specific reception themes."
+        ],
+        "finding_ids": [
+          "[D2.DOC33.F1]",
+          "[D2.DOC33.F2]",
+          "[D2.DOC33.F3]",
+          "[D2.DOC33.F4]",
+          "[D2.DOC33.F5]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:5TK5DW6T": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 4735
+}

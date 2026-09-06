@@ -1,0 +1,98 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "citation_stance",
+  "doc": "em:QASWYLCG",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 67736,
+  "output_tokens": 2106,
+  "duration_ms": 19854,
+  "cost_usd": 0.0161,
+  "retries": 0,
+  "wall": {
+    "rows": 9,
+    "with_anchor": 9,
+    "verified": 9,
+    "trimmed": 5,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 9,
+    "verified_anchors": 9,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 9,
+      "with_anchor": 9,
+      "verified": 9,
+      "trimmed": 5,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 9,
+      "verified_anchors": 9,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:QASWYLCG"
+        ],
+        "dimension_key": "citation_stance",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "pp. 18–26, 31; sections “Conceptualizing Power,” “The Relational Power of Elites and Nonelites,” “Organizational Power: Powers to Direct and Coordinate,” and “Ideational Power”"
+        ],
+        "coverage": "partial",
+        "criterion": "A retained finding requires a substantive passage in which the citing text adopts, builds on, qualifies, disputes, or merely mentions a proposition attributed to Weber.",
+        "basis": "The inspected passages explicitly attribute propositions about power, organizational domination, bureaucracy, legitimacy, formal and informal power, and consensuality to Weber and position those propositions within the authors’ relational power theory.",
+        "limitations": [
+          "Only the supplied source window and the specified sections were assessed; this is not a determination about the entire chapter or the authors’ complete work.",
+          "The source cites Weber alongside other thinkers, so some broader claims cannot be attributed to Weber alone."
+        ],
+        "finding_ids": [
+          "[D4.DOC22.F1]",
+          "[D4.DOC22.F2]",
+          "[D4.DOC22.F3]",
+          "[D4.DOC22.F4]",
+          "[D4.DOC22.F5]",
+          "[D4.DOC22.F6]",
+          "[D4.DOC22.F7]",
+          "[D4.DOC22.F8]",
+          "[D4.DOC22.F9]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:QASWYLCG": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 7961
+}

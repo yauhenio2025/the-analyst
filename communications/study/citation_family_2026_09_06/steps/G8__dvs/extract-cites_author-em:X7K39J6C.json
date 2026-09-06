@@ -1,0 +1,93 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "cites_author",
+  "doc": "em:X7K39J6C",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 49587,
+  "output_tokens": 1182,
+  "duration_ms": 13103,
+  "cost_usd": 0.0113,
+  "retries": 0,
+  "wall": {
+    "rows": 4,
+    "with_anchor": 4,
+    "verified": 4,
+    "trimmed": 1,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 4,
+    "verified_anchors": 4,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 4,
+      "with_anchor": 4,
+      "verified": 4,
+      "trimmed": 1,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 4,
+      "verified_anchors": 4,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:X7K39J6C"
+        ],
+        "dimension_key": "cites_author",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Supplied full text of BOURDIEU'S CLASS THEORY: The Academic as Revolutionary"
+        ],
+        "coverage": "complete",
+        "criterion": "A positive citation requires Max Weber's name to appear in the reader's text and the text to use that citation or attribution substantively.",
+        "basis": "The supplied text names Weber in multiple substantive claims, including Weber's sociology of domination, Weber's understanding of labor, Weber's account of differentiation, and Weber's association with a mixed-constitution political vision.",
+        "limitations": [
+          "This finding concerns the supplied text only and does not establish the author's complete engagement with Weber.",
+          "The text does not always identify a specific Weber work or edition."
+        ],
+        "finding_ids": [
+          "[D4.DOC11.F1]",
+          "[D4.DOC11.F2]",
+          "[D4.DOC11.F3]",
+          "[D4.DOC11.F4]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:X7K39J6C": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 4478
+}

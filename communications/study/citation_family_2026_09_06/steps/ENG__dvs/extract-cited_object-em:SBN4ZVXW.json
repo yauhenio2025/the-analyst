@@ -1,0 +1,92 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "cited_object",
+  "doc": "em:SBN4ZVXW",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 36218,
+  "output_tokens": 1010,
+  "duration_ms": 13308,
+  "cost_usd": 0.0085,
+  "retries": 0,
+  "wall": {
+    "rows": 2,
+    "with_anchor": 2,
+    "verified": 2,
+    "trimmed": 1,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 2,
+    "verified_anchors": 2,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 2,
+      "with_anchor": 2,
+      "verified": 2,
+      "trimmed": 1,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 2,
+      "verified_anchors": 2,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:SBN4ZVXW"
+        ],
+        "dimension_key": "cited_object",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "entire supplied passage, pp. 447–453, with particular attention to pp. 450–451"
+        ],
+        "coverage": "complete",
+        "criterion": "Retain an object, work or idea that the citing text explicitly attributes to Weber or identifies through a direct Weber citation, with a recoverable locus where available.",
+        "basis": "The passage directly cites Weber 1946:126 and explicitly discusses Weber’s vocation essays, including “Wissenschaft als Beruf” and “Politik als Beruf.”",
+        "limitations": [
+          "The supplied passage does not include the bibliography or identify the full Weber 1946 title.",
+          "References to Brown’s account of Weber were treated as secondary reports, not as direct Weber citations.",
+          "This outcome concerns only the supplied citing text and not Riley’s complete work or Weber’s entire reception."
+        ],
+        "finding_ids": [
+          "[D2.DOC20.F1]",
+          "[D2.DOC20.F2]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:SBN4ZVXW": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 3396
+}

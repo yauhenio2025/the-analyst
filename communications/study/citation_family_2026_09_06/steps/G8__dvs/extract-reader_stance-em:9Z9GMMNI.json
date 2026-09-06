@@ -1,0 +1,93 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "reader_stance",
+  "doc": "em:9Z9GMMNI",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 32661,
+  "output_tokens": 1077,
+  "duration_ms": 9798,
+  "cost_usd": 0.0078,
+  "retries": 0,
+  "wall": {
+    "rows": 5,
+    "with_anchor": 5,
+    "verified": 5,
+    "trimmed": 0,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 5,
+    "verified_anchors": 5,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 5,
+      "with_anchor": 5,
+      "verified": 5,
+      "trimmed": 0,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 5,
+      "verified_anchors": 5,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:9Z9GMMNI"
+        ],
+        "dimension_key": "reader_stance",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Angles of Vision, pp. 1–2 of supplied PDF text"
+        ],
+        "coverage": "complete",
+        "criterion": "A retained row must identify what the supplied reader does with a proposition concerning Max Weber and anchor that stance in the reader's own text.",
+        "basis": "The supplied two-page article directly reconstructs, criticizes and uses Weber’s standpoint in relation to Marx, capitalism, wage labour, class structure and Lukácsian mediation.",
+        "limitations": [
+          "This assessment covers only the supplied article, not Dylan Riley’s complete work or the complete reception of Max Weber."
+        ],
+        "finding_ids": [
+          "[D2.DOC25.F1]",
+          "[D2.DOC25.F2]",
+          "[D2.DOC25.F3]",
+          "[D2.DOC25.F4]",
+          "[D2.DOC25.F5]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:9Z9GMMNI": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 4864
+}

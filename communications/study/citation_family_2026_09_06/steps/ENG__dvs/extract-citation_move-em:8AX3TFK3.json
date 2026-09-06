@@ -1,0 +1,92 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "citation_move",
+  "doc": "em:8AX3TFK3",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 61683,
+  "output_tokens": 1076,
+  "duration_ms": 12378,
+  "cost_usd": 0.0136,
+  "retries": 0,
+  "wall": {
+    "rows": 2,
+    "with_anchor": 2,
+    "verified": 2,
+    "trimmed": 0,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 2,
+    "verified_anchors": 2,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 2,
+      "with_anchor": 2,
+      "verified": 2,
+      "trimmed": 0,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 2,
+      "verified_anchors": 2,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:8AX3TFK3"
+        ],
+        "dimension_key": "citation_move",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Abstract and introduction",
+          "Theoretical discussion of society-centered and neo-Weberian state-centered approaches, PDF pp. 1–4"
+        ],
+        "coverage": "partial",
+        "criterion": "An explicit passage must use the cited thinker as authority, evidence, foil, dialogue, genealogy, illustration, courtesy, or self-positioning in an argument.",
+        "basis": "The inspected discussion explicitly invokes Weberian roots and Weber’s definition of the state, using the former genealogically and the latter as part of a state-centered position against which the paper develops its interactive account.",
+        "limitations": [
+          "Only the supplied source text was inspected; this is not a claim about the authors’ complete work or the thinker’s entire reception.",
+          "Other Weber citations listed in the evidence index were not independently treated as findings without their full citing passages."
+        ],
+        "finding_ids": [
+          "[D3.DOC8.F1]",
+          "[D3.DOC8.F2]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:8AX3TFK3": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 3046
+}

@@ -1,0 +1,86 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "reader_stance",
+  "doc": "em:2Z7GD9IM",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 38706,
+  "output_tokens": 553,
+  "duration_ms": 9998,
+  "cost_usd": 0.0084,
+  "retries": 0,
+  "wall": {
+    "rows": 0,
+    "with_anchor": 0,
+    "verified": 0,
+    "trimmed": 0,
+    "anchor_rate": 0.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 0,
+    "verified_anchors": 0,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 0,
+      "with_anchor": 0,
+      "verified": 0,
+      "trimmed": 0,
+      "anchor_rate": 0.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 0,
+      "verified_anchors": 0,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:2Z7GD9IM"
+        ],
+        "dimension_key": "reader_stance",
+        "outcome": "no_relevant_instance",
+        "sections_inspected": [
+          "Full supplied text of Politics as Theatre?, pp. 149–159"
+        ],
+        "coverage": "complete",
+        "criterion": "A relevant instance must be a supplied secondary reader that explicitly defends, reconstructs, criticizes, applies, or surveys the target thinker's proposition in its own text.",
+        "basis": "The supplied document is Dylan Riley's citing text about David Runciman and contains no reader's stance toward Riley; its brief Weber reference reports Runciman's use of Weber rather than supplying a reader-stance argument.",
+        "limitations": [
+          "This outcome concerns only the supplied document and does not establish the absence of other readers.",
+          "The citation-index metadata is routing evidence, not an independent reader text."
+        ],
+        "finding_ids": [],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:2Z7GD9IM": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 1722
+}

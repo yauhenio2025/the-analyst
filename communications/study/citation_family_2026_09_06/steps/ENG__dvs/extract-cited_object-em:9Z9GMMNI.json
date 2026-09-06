@@ -1,0 +1,94 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "cited_object",
+  "doc": "em:9Z9GMMNI",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 32667,
+  "output_tokens": 1190,
+  "duration_ms": 10497,
+  "cost_usd": 0.008,
+  "retries": 0,
+  "wall": {
+    "rows": 3,
+    "with_anchor": 3,
+    "verified": 3,
+    "trimmed": 1,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 3,
+    "verified_anchors": 3,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 3,
+      "with_anchor": 3,
+      "verified": 3,
+      "trimmed": 1,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 3,
+      "verified_anchors": 3,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "em:9Z9GMMNI"
+        ],
+        "dimension_key": "cited_object",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Angles of Vision, PDF pp. 1–2",
+          "RW0090–RW0094"
+        ],
+        "coverage": "complete",
+        "criterion": "Retain explicit citations or named thinkers, works, and ideas that the passage attributes, discusses, or directs the reader to, while recording unknown loci rather than supplying them.",
+        "basis": "The complete supplied two-page article was inspected. It explicitly discusses Weber, Marx, and Lukács, attributes a standpoint analysis to Weber, presents the Lukácsian wager, and gives a further-reading citation to Lukács’s “Lukács on His Life and Work.”",
+        "limitations": [
+          "No specific Weber work or page is supplied in the passage.",
+          "The article’s discussion of Marx is not retained as a separate row because this scope is keyed to the supplied target thinker, Max Weber.",
+          "The held sample is this supplied article, not Riley’s complete work or the entire reception of Weber."
+        ],
+        "finding_ids": [
+          "[D2.DOC25.F1]",
+          "[D2.DOC25.F2]",
+          "[D2.DOC25.F3]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "em:9Z9GMMNI": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 3684
+}

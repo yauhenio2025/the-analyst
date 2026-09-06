@@ -1,0 +1,11 @@
+# Source read: original full-source fidelity condition
+
+Output SHA256: 51970d981703aa93c412e9a20fea36f8a91dd99ccce8f926883213d2c755a647
+
+This output fails the inventory standard: it retains no findings, although 28 pair candidates have actual A and W witnesses. Its refusal is not evidence that the sources are missing. The first reader treated 162 required document/dimension scope objects, the paired inventory and a corpus reading as an all-or-nothing demand. The critic supplied source readings, but the final synthesis still did not deliver a usable paired audit. No zero-row anchor percentage can release this method.
+
+The PDFs allow narrower positive work. In Faultlines (CX58SV9M), Riley explicitly says “Adapting Weber’s concept”; at held E&S printed 917 / PDF1027 Weber identifies Roman tax-farmers, creditors and suppliers whose opportunities rest on political domination. That supports testing an acknowledged adaptation without requiring an identity claim. In What Is Trump? (3YLGA6BQ) the patrimonial-office quotation is present at E&S1028–29 / PDF1138–39. In the estates chapter (QKSXS3VW), the 1922p180 reference is visibly marginal A180 at MWG printed598–599 / PDF625–626, where Weber joins social estimation, education and monopoly while denying identity with class position. These are inspectable pair candidates.
+
+Real limits remain. The English Methodology p172 is represented only by a German-collection search candidate. The Political Writings search for RW0074 hits editorial material. RW0080 cites multiple German works but has only one candidate witness. Those pairs may be unverifiable without preventing an audit of the directly retrieved E&S pairs. The 70 unchecked or note-linked name windows are outside the 28 candidates, not reasons to suppress them. The shared plan’s reception questions are context; fidelity does not require independent reception readers.
+
+Disposition before scores: withhold this candidate. A separate repair turns off the optional per-document scope JSON for this pair inventory, whose explicit pair/coverage tables already carry unresolved cases, and clarifies independent assessment and the engine boundary. The citation questions, retrieval fields, and two-source anchor wall are preserved.
