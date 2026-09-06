@@ -1,6 +1,6 @@
 # Snapshot of the legacy analyzer-mgmt API (2026-09-06)
 
-Read-only export of everything `https://analyzer-mgmt-api.onrender.com/api` still served on 2026-09-06, taken before that service and its Postgres are retired. The Mastermind console (`yauhenio2025/analyzer-mgmt`, https://the-mastermind.onrender.com) reads engines, organs, processes and the rest from the Analyst's API; only its Grids, Rhetoric, Pipelines and Changes pages, and its paradigm/consumer/LLM helper calls, still went through this legacy backend (`api.ts`: `new ApiClient(API_BASE)`).
+Read-only export of everything `https://analyzer-mgmt-api.onrender.com/api` still served on 2026-09-06, taken before that service and its Postgres are retired. The Mastermind console (`yauhenio2025/analyzer-mgmt`, https://the-mastermind.onrender.com) reads engines, organs, processes and the rest from the Analyst's API; its Paradigms pages (incl. branching and lineage), Consumers, Changes, Grids, Rhetoric, Pipelines, the engine editor's update/versions/schema/stage-context/restore and the LLM helper buttons still go through this legacy backend (`api.ts`: every `this.get/post` method of `new ApiClient(API_BASE)`).
 
 | file | records | note |
 |---|---:|---|
