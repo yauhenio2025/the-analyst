@@ -14,7 +14,7 @@ def _corpus():
 
 
 def test_normalize_handles_quotes_dashes_and_linebreaks():
-    assert normalize("a “quoted” – word\n  next") == 'a "quoted" - word next'
+    assert normalize("a “quoted” – word\n  next") == 'a quoted - word next'   # quotation marks are presentation (2026-09-06)
     assert normalize("exploit-\native") == "exploitative"
 
 

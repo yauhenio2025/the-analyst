@@ -5,6 +5,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Changed (2026-09-06, evening)
+- Anchor wall: quotation marks are stripped on both sides before the membership test (a model writes ‘Power’ where the page has Power) ([walls.py](src/dossier/walls.py)).
+- Corpus synthesis contract: after the bounded repair, remaining wall failures are recorded (`synthesis_contract_failed_after_repair`, `unverified_after_repair`), the failing rows tagged `anchor-verified: no` and their citations `unverified`, and the paid output kept; the run no longer aborts ([process_runner.py](src/executor/process_runner.py)).
+
 ### Added (2026-09-06, the Stacks bridge)
 - Sources carry a `role` (`source` | `evidence_index` | `plan`): a context document is not profiled by reconnaissance, not counted in the corpus, and is bound under `context:` so every executor phase receives it as upstream context ([schemas.py](src/sources/schemas.py), [resolve.py](src/sources/resolve.py), [runner.py](src/dossier/runner.py), [analysis.py](src/dossier/analysis.py), [phase_runner.py](src/executor/phase_runner.py)). Tests: `tests/test_source_roles_2026_09_06.py`. Assessment and the Stacks' reply: `communications/INTEGRATION_stacks_citation_universe_2026-09-06.md`, `REPLY_*`.
 

@@ -99,6 +99,9 @@ def normalize(text: str) -> str:
     # markdown emphasis is presentation, not text: models bold the quote inside
     # the anchor ("**it can be only a negative one**"); strip it on both sides
     text = re.sub(r"\*{1,3}|_{2,3}", "", text)
+    # quotation marks are presentation too: a model writes ‘Power’ (Macht) where the page has Power (Macht) or “Power”
+    # (the fidelity audit's Weber witness, 2026-09-06); the words are the evidence, the marks are not
+    text = re.sub(r"[\"'“”‘’«»‹›„‚]", "", text)
     # join words hyphenated across line breaks ("exploit-\native", and PDF text's "con -\nnects" with a space before the hyphen)
     text = re.sub(r"(\w)[ \t]*-\s*\n\s*(\w)", r"\1\2", text)
     text = _WS.sub(" ", text)

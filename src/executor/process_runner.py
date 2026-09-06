@@ -374,7 +374,27 @@ def _check_corpus_synthesis(sc, prompt, spec, index, corpus_ids, call_fn, model,
         record(sc)
         attempts.append(issues)
         if attempt == (1 if reanchor else 0):
-            raise RuntimeError("Corpus synthesis contract failed after bounded repair: " + json.dumps(issues))
+            # the bounded repair did not clear every issue: keep the paid output, say so on the wall, tag every failing
+            # row and every citation of it inline; the desks' walls decide citability row by row (they re-verify anchors),
+            # so a broken cell never reaches a table as valid. Aborting here lost a 33-minute deep phase and a paid
+            # fidelity audit to three legitimately unverifiable quotes (2026-09-06).
+            failed = set(issues["failed_ids"]) | set(issues["missing_cited"])
+            for r in rows:
+                if r.id in failed and "anchor-verified: no" not in r.text:
+                    r.text = r.text.rstrip() + " — anchor-verified: no"
+            tagged_prose = re.sub(r"\[([A-Za-z][A-Za-z0-9]*(?:\.[A-Za-z0-9]+)*)\]",
+                                  lambda m: f"[{m.group(1)}, unverified]" if m.group(1) in failed else m.group(0), prose)
+            tail = ""
+            m_aux = re.search(r"^\s{0,3}#{2,4}\s*(counter[- ]evidence|open questions|rejected by the critic|check receipt)\b.*$", ledger, re.I | re.M)
+            if m_aux:
+                tail = "\n\n" + ledger[m_aux.start():].strip()
+            sc.content = tagged_prose.rstrip() + "\n\n" + render_rows(rows) + tail + (
+                "\n\n### Synthesis contract\n- The bounded repair did not clear every wall failure; rows "
+                + ", ".join(sorted(failed)) + " are tagged `anchor-verified: no` and their citations `unverified`. "
+                "Desks drop them; the receipt keeps both attempts.")
+            sc.wall = {**sc.wall, "synthesis_contract_failed_after_repair": True, "unverified_after_repair": sorted(failed)}
+            logger.warning(f"[{prompt.label}] corpus synthesis contract failed after the bounded repair: {json.dumps(issues)[:300]}")
+            return sc
         repair = prompt.model_copy(deep=True)
         repair.label += " (repair corpus synthesis)"
         scope_repair = (

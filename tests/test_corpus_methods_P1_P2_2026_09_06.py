@@ -209,8 +209,11 @@ def test_corpus_synthesis_repairs_once_or_refuses_output(repair_succeeds):
         assert result.wall['cross_document_rows'] == 1
         assert len(result.wall['synthesis_repair_attempts']) == 1
     else:
-        with pytest.raises(RuntimeError, match='Corpus synthesis contract failed after bounded repair'):
-            run()
+        # since 2026-09-06 the contract records and tags after the bounded repair instead of aborting paid work
+        result = run()
+        assert result.wall['synthesis_contract_failed_after_repair'] is True
+        assert 'F1' in result.wall['unverified_after_repair'] and 'anchor-verified: no' in result.content
+        assert '### Synthesis contract' in result.content
     assert len(calls) == 1
     assert recorded[0].wall['incomplete_cross_document_ids'] == ['F1']
 

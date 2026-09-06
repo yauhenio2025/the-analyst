@@ -69,8 +69,9 @@ def test_single_document_table_with_unverified_final_anchor_gets_bounded_repair(
     def fake(system, user, **kwargs):
         calls.append(user)
         return {'content': next(replies), 'model_used': kwargs['model_hint']}
-    with pytest.raises(RuntimeError, match='failed after bounded repair'):
-        run_oneshot_checked(CAP, spec(), {'doc': SOURCE}, call_fn=fake)
+    result = run_oneshot_checked(CAP, spec(), {'doc': SOURCE}, call_fn=fake)
+    # the bounded repair ran and failed: the output is kept with the failing row tagged, never aborted (2026-09-06)
+    assert result.final_wall['synthesis_contract_failed_after_repair'] is True and '[F1, unverified]' in result.final_content
     assert len(calls) == 4 and 'CODE WALL FAILURES' in calls[-1]
     assert 'Only one document is supplied' in calls[-1]
     assert 'Corpus descendants need anchors from two distinct document keys' not in calls[-1]
