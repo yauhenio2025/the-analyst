@@ -28,3 +28,13 @@ The job ran while three pushes redeployed the service (06:03–06:06 local). It 
 ## Verdict
 
 The desk consumes the checked ledger by id end to end on the live deployment: spine sections cite finding ids, tables lift rows that the anchor wall verifies verbatim, the crosscheck reads them, and the two inventory engines are chosen by the planner and produce desk-ready tables. Nothing to change in the shape.
+
+## Second live check: the Deutschmann pair through two second-queue corpus methods (2026-09-06 evening)
+
+Job `dossier-8577d8159b38`: Deutschmann 2001 (The Promise of Absolute Wealth) and 2022 (The interpretation of capitalism as religion), researcher audience, medium depth, chosen path `concept_trajectories_revision` (the desk's alternative was a dialectical stress test through the released A5 method): `compare_concept_trajectories` at standard depth, `revision_presentation` at deep. Total 49 calls, **$3.20** (every OpenRouter pass priced), of which analysis $1.44.
+
+It failed three times before it finished, each time on the desk rather than on the methods, and each failure was fixed and deployed the same evening: the Postgres pool (five connections, fail-fast) exhausted by the deep chain's parallel extraction; the plan lost on the redeploy between failure and resume (plans were files on the ephemeral disk); and a wall of ours that failed the 33-minute deep phase because two critics had added a miss under the same id. The fourth attempt resumed the same executor job at phase 4.2 (phase 4.1's calls kept) and completed: the deep chain in 42 min, 7 calls, $0.69.
+
+What the desk did: thesis "the capitalism-religion thesis persists in its core claim (money's indeterminate possibility content) while the 2022 chapter reframes its explanatory architecture without declaring a revision"; five spine sections, each citing finding ids (shared anchors, concept trajectories, the disappearing entrepreneur, revision presentation, epistemological escalation); two tables lifted from the corpus methods' ledgers (concept-by-work trajectory map 8/8 rows through the anchor wall; declared/silent/performed changes 5/5); draft wall 21 claims anchored; crosscheck "hangs together" with one minor note (a sentence anchoring two claims). The compose step first drafted without the section headings and the desk's patch round restored them; worth a look if it recurs.
+
+Standard-depth cost note: the concept-trajectory run took five passes (read, check, two bounded table reconciliations, checked), $0.61 — the corpus reconcile path is where the standard mode now spends.
