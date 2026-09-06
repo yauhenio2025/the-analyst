@@ -33,6 +33,10 @@ def test_unstringify_and_stringified_fields_agree():
     assert unstringify(raw, SCHEMA) == {"thesis": "t", "sections": [{"key": "x"}]}
     assert stringified_fields({"thesis": "t", "sections": "garbage"}, SCHEMA) == ["sections"]
     assert stringified_fields({"thesis": "t", "sections": [{"key": "x"}]}, SCHEMA) == []
+    # a string item inside an array of objects is left to the desk's coercion, never re-asked (the brief's promises, 2026-09-06)
+    nested = {"type": "object", "properties": {"options": {"type": "array", "items": {"type": "object", "properties": {"you_will_understand": {"type": "array", "items": {"type": "object"}}}}}}}
+    assert stringified_fields({"options": [{"you_will_understand": [{"a": 1}, "a sentence"]}]}, nested) == []
+    assert stringified_fields({"options": [{"you_will_understand": "whole field as a string"}]}, nested) == ["options[0].you_will_understand"]
 
 
 def test_call_json_re_asks_when_a_field_is_still_a_string_and_returns_the_repaired_answer(monkeypatch):

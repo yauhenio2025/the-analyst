@@ -30,6 +30,10 @@ def main():
                 notes=["own path: chosen on the request; no deliverable framing was written by the brief desk"]))
         update_job(job_id, chosen_option=runner.OWN_PATH_KEY, brief=brief, status="planning", step="plan")
         print(time.strftime("%H:%M:%S"), "chose own_path for", job_id, "(entry chosen with a fixed path)", flush=True)
+    if job.status in ("failed", "cancelled"):
+        from src.dossier.store import update_job as _upd
+        _upd(job_id, status=runner.STATUS_FOR_STEP.get(job.step, "queued"), error=None)
+        print(time.strftime("%H:%M:%S"), f"reset {job_id} from {job.status} to resume at step {job.step}", flush=True)
     runner.start(job_id)
     seen = None
     while True:

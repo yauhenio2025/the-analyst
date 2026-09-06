@@ -328,20 +328,25 @@ def _salvage_array(text: str) -> Any:
 
 
 def stringified_fields(value: Any, schema: Optional[dict], path: str = "") -> list[str]:
-    """Paths where the schema expects an array/object and the value is still a string (after unstringify)."""
+    """Paths of PROPERTIES where the schema expects an array/object and the value is still a string after unstringify
+    (a spine's whole `sections` as a string). A single string ITEM inside an array of objects (a promise written as a
+    sentence) is not flagged: the desks' coercion tolerates it, and re-asking for it broke the brief step on
+    2026-09-06 19:40."""
     schema = schema or {}
-    stype = schema.get("type")
-    if isinstance(value, str):
-        return [path or "$"] if stype in ("array", "object") else []
     out: list[str] = []
     if isinstance(value, dict):
         props = schema.get("properties") or {}
         for k, v in value.items():
-            out += stringified_fields(v, props.get(k), f"{path}.{k}" if path else k)
+            sub = props.get(k) or {}
+            if isinstance(v, str) and sub.get("type") in ("array", "object"):
+                out.append(f"{path}.{k}" if path else k)
+            elif isinstance(v, (dict, list)):
+                out += stringified_fields(v, sub, f"{path}.{k}" if path else k)
     elif isinstance(value, list):
         items = schema.get("items") if isinstance(schema.get("items"), dict) else None
         for i, v in enumerate(value):
-            out += stringified_fields(v, items, f"{path}[{i}]")
+            if isinstance(v, (dict, list)):
+                out += stringified_fields(v, items, f"{path}[{i}]")
     return out
 
 
