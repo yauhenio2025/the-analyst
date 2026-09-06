@@ -272,9 +272,179 @@ def build_reception():
     write(OUT/"reception_manifest.json",selected)
 
 
+# Source-read location records. This is bibliography/pagination metadata, never
+# an accuracy verdict. Every PDF window below is extracted afresh with -f/-l.
+ES = 'NEVNCMNY'
+FROM = 'VGJ3KBBJ'
+RESOLUTIONS = {
+ 'RW0001': (FROM, [194], 'Class, Status, Party'),
+ 'RW0002': ('QM343SXS', [], 'Critical Studies in the Logic of the Cultural Sciences'),
+ 'RW0003': ('QM343SXS', [], 'Critical Studies in the Logic of the Cultural Sciences'),
+ 'RW0008': (FROM, [], 'Religious Rejections of the World and Their Directions'),
+ 'RW0010': (FROM, [], 'Politics as a Vocation'),
+ 'RW0011': (FROM, [], 'Politics as a Vocation'),
+ 'RW0016': (ES, [919], 'Political Communities: The Economic Foundations of Imperialism'),
+ 'RW0023': (FROM, list(range(77,88)), 'Politics as a Vocation'),
+ 'RW0029': (ES, list(range(1407,1411)), 'Parliament and Government in a Reconstructed Germany'),
+ 'RW0042': (ES, list(range(1028,1032)), 'Patriarchal and Patrimonial Domination'),
+ 'RW0045': (ES, [917], 'Political Communities: The Economic Foundations of Imperialism'),
+ 'RW0048': (ES, list(range(86,91)), 'Sociological Categories of Economic Action'),
+ 'RW0049': (ES, [91,92,93], 'Sociological Categories of Economic Action'),
+ 'RW0050': (FROM, [152,153], 'Science as a Vocation'),
+ 'RW0064': (FROM, [126], 'Politics as a Vocation'),
+ 'RW0074': ('GUWLLR3M', [], 'Parliament and Government in Germany under a New Political Order'),
+ 'RW0076': (ES, [53], 'Basic Sociological Terms: Power and Domination'),
+ 'RW0077': (ES, [954,1112], 'Domination and Legitimacy; Charisma'),
+ 'RW0078': (ES, [956,1006,1112], 'Bureaucracy; Patrimonial Domination; Charisma'),
+ 'RW0079': (ES, [956,1006,1112], 'Bureaucracy; Patrimonial Domination; Charisma'),
+ 'RW0080': ('NFJUV484', [], None),
+ 'RW0081': (ES, [942,973,974,975], 'Domination and Legitimacy; Bureaucracy'),
+ 'RW0082': (ES, [956,957,958,1417,1418], 'Bureaucracy; Parliament and Government'),
+ 'RW0083': (ES, [974], 'Bureaucracy'),
+ 'RW0084': (ES, [213], 'The Types of Legitimate Domination'),
+ 'RW0085': ('NFJUV484', [180], 'Kapitel IV. Stände und Klassen, §3. Ständische Lage und Stand'),
+ 'RW0088': (ES, [965,966], 'Bureaucracy: Economic Presuppositions of Bureaucracy'),
+ 'RW0096': (ES, [965,966], 'Bureaucracy: Economic Presuppositions of Bureaucracy'),
+}
+# A note and its body form one citation event, not two independent checks.
+NOTE_LINKS = {'RW0013':'RW0011','RW0030':'RW0029','RW0043':'RW0042',
+              'RW0046':'RW0045','RW0089':'RW0088','RW0097':'RW0096'}
+CALIBRATIONS = {
+ ES: {'offset':110, 'range':[1,1469], 'inspected':{'53':163,'917':1027,'919':1029,'965':1075,'1028':1138,'1407':1517},
+      'note':'Source-read continuous body pagination; OCR edge heuristic rejected (e.g. 1177 misread as 77).'},
+ FROM: {'offset':13, 'range':[1,490], 'inspected':{'126':139,'152':165,'194':207},
+        'note':'Gerth/Mills 1948 held impression; cited 1946/1958 impressions differ in date; verify text, do not assert edition identity.'},
+}
+
+
+def pilot_plan():
+    estates=STACKS/'communications/2026-09-03_riley_weber_estates.md'
+    bundle=STACKS/'communications/2026-09-03_castoriadis_weber_bundle.md'
+    plan={
+      'provenance':{'saved_lane_plan':'absent in communications/2026-09-05_cites and Riley-Weber memo files in this clone',
+        'status':'guide-derived plan, reconstructed from the Stacks estates memo and bundle 299; not the missing Fable plan',
+        'sources':[{'path':str(p),'sha256':sha(p.read_bytes())} for p in [estates,bundle]]},
+      'questions':[
+        'How do estates, closure, political capitalism and patrimonialism function across Riley’s dated texts?',
+        'Does Riley fuse market closure and status honour, and what do the cited Weber places actually establish?',
+        'How do the 2013 imperialism prognosis, the 2020 explicit adaptation, and the 2025–26 tax-farming citations differ?',
+        'Does the 2018 criticism of estate concepts differ from the later society-of-estates thesis, and what explains the change?',
+        'How do Marx/Weber standpoints, subjective meaning and imagined alternatives connect to the institutional concepts?',
+        'Which supplied readers bear on those questions, and what concerns do those readers add?'],
+      'warnings':[
+        'The estates memo is an LLM-written guide, not evidence; test its interpretations against the PDFs.',
+        'The September 3 guide predates acquisition of Roth/Wittich E&S; its not-held claims are historical, not current.',
+        'Keep closure, status honour, estate and acquisition-class categories distinct; do not assume the guide’s fusion thesis.',
+        'Weber 1922 p.180 is marginal A180 in MWG I/23, not printed MWG p.180; editions and translations need separate notes.',
+        'Separate Riley’s claims from quoted Judt, Mann, Bourdieu, Brown and Lukács, and preserve Emigh/Brenner coauthorship.',
+        'The Catalyst bundled reply includes adjacent authors; the separate Riley copy is the pilot witness.',
+        'Citation-index name windows are a candidate inventory, not complete citation recall; note links are not extra events.',
+        'Book excerpts cannot prove global silence; absent scholarly citation counts cannot support most-cited rankings.',
+        'The Stacks export index text has no page markers; this pilot’s page-marked witnesses and windows come from PDFs.'],
+      'themes':['Estates, status honour and social closure','Political capitalism, imperialism and tax-farming',
+        'Patrimonialism, bureaucracy and political organisation','The historical applicability of estate concepts',
+        'Marx and Weber as standpoints; meaning, imagined alternatives and class formation',
+        'Science, political values and responsibility']}
+    write(OUT/'pilot_plan.json',plan)
+    return plan
+
+
+def ranges(numbers):
+    out=[]
+    for n in sorted(set(numbers)):
+        if out and n==out[-1][-1]+1:out[-1].append(n)
+        else:out.append([n])
+    return [(ns[0],ns[-1]) for ns in out]
+
+
+def build_evidence():
+    inventory=json.loads((OUT/'inventory.json').read_text())
+    works={i['key']:i for i in json.loads((OUT/'work_maps.json').read_text())}
+    selections=json.loads((OUT/'selection.json').read_text())['selected']
+    selection={i['key']:i for i in selections}
+    passages=json.loads((OUT/'passage_index.json').read_text())['passages']
+    checks=[];unchecked=[];texts=[]
+    word=lambda t:set(w.lower() for w in re.findall(r'\b[A-Za-zÀ-ž]{4,}\b',t) if w.lower() not in
+      {'weber','which','their','there','these','those','would','could','about','other','political','sociology','society','economy'})
+    for p in passages:
+        ref=p['ref_id'];resolution=RESOLUTIONS.get(ref)
+        if not resolution:
+            unchecked.append({'ref_id':ref,'why':('same event as '+NOTE_LINKS[ref]) if ref in NOTE_LINKS else
+                'No specific directly located Weber work in this name window; mention, reported reading, or unspecific attribution. Not certified as absent.'})
+            continue
+        key,nums,section=resolution;it=works[key];a=it['attachment'];pp=pages(extract(a))
+        cited=nums[:];how='page';notes=[]
+        if key in CALIBRATIONS and nums:
+            cal=CALIBRATIONS[key];pdfnums=[n+cal['offset'] for n in nums]
+            mapping={n:n-cal['offset'] for n in range(1,len(pp)+1) if cal['range'][0]<=n-cal['offset']<=cal['range'][1]}
+            notes.append(cal['note'])
+        elif ref=='RW0085':
+            pdfnums=[625,626];mapping={n:n-27 for n in range(624,628)}
+            notes.append('Cited 1922 p.180 corresponds to marginal A180 at MWG I/23 pp.598–599, PDF625–626; not MWG p.180.')
+        else:
+            how='search';terms=word(p['window']);scores=[len(terms&word(t)) for t in pp]
+            best=max(range(len(pp)),key=lambda i:scores[i]);pdfnums=[best+1]
+            mapping={int(k):v for k,v in it['printed_pages'].items()}
+            notes.append('Simple term-overlap candidate (score '+str(scores[best])+'); no locus/edition equivalence established. Supplied section title names the cited target, not proof the search landed inside it.')
+        want=[n for n in pdfnums for n in range(max(1,n-1),min(len(pp),n+1)+1)]
+        wins=[]
+        for lo,hi in ranges(want):
+            raw=subprocess.run(['pdftotext','-enc','UTF-8','-f',str(lo),'-l',str(hi),a['path'],'-'],capture_output=True,check=True).stdout.decode()
+            body=marked(pages(raw),mapping,start=lo)
+            wins.append({'how':how,'section_title':section,'printed':[mapping.get(n) for n in range(lo,hi+1)],
+                'pdf':list(range(lo,hi+1)),'text':body,'sha256':sha(body),
+                'command':['pdftotext','-enc','UTF-8','-f',str(lo),'-l',str(hi),a['path'],'-']})
+        check={'work_key':key,'title':it['title'],'year':it['year'],
+            'copy':{'uid':it['uid'],'edition':it['date']+'; '+it['fields'].get('publisher',''),
+                    'language':it['fields'].get('language') or ('German' if key=='NFJUV484' else 'English'),
+                    'attachment_key':a['key'],'pdf_sha256':sha(Path(a['path']).read_bytes())},
+            'cited_pages':cited,'windows':wins,'ref_ids':[ref], 'edition_pagination_notes':notes}
+        if ref in ('RW0002','RW0003'):check['cited_pages']=[172];check['edition_pagination_notes'].append('Cites Methodology of the Social Sciences (1949), p.172; held German MWG I/7 is a different language/collection; English search may be uninformative. Collected Methodological Writings has no held PDF in this snapshot.')
+        if ref=='RW0074':check['cited_pages']=[398];check['edition_pagination_notes'].append('Cited Gesammelte politische Schriften (1921); held English Political Writings is a different collection.')
+        if ref=='RW0080':check['edition_pagination_notes'].append('Passage cites multiple German collections (1921 p397; 1922 p526; 1925 pp69–79,241–242). Search tests only E&S candidate; other works unchecked.')
+        if ref=='RW0049':check['edition_pagination_notes'].append('Also cites General Economic History 1992[1927] pp275–277; this pair covers only E&S 91–93.')
+        checks.append(check)
+        p['cited_work']={'key':key,'title':it['title']};p['cited_locus']=check['cited_pages'];p['resolution']=how
+    for it in selections:
+        ps=[dict(p) for p in passages if p['text_key']==it['key']]
+        raw=pages((ROOT/it['extraction']['cache']).read_text());mp={int(k):v for k,v in it['printed_pages'].items()}
+        for p in ps:
+            if p['ref_id'] in RESOLUTIONS:
+                lo=max(1,p['pdf_page']-1);hi=min(len(raw),p['pdf_page']+1)
+                # The selected article may start partway through a shared PDF page.
+                actual=(ROOT/it['path']).read_text()
+                parts=[marked([raw[n-1]],mp,start=n) for n in range(lo,hi+1)]
+                p['section']='\n\n'.join(part for part in parts if part in actual)
+                if not p['section']:p['section']=p['window']
+            p['work']=p.pop('cited_work');p['locus']={'printed':p['page'],'pdf':p['pdf_page'],'cited':p.pop('cited_locus')}
+        texts.append({'uid':it['uid'],'title':it['title'],'year':it['year'],'type':it['type'],
+                      'creators':it['creators'],'passages':ps})
+    index={'role':'evidence_index','author':'Dylan Riley','person':'Max Weber','plan':pilot_plan(),
+      'texts':texts,'checks':checks,'unchecked':unchecked,
+      'settings':{'extraction':'pdftotext without -layout; form feeds retained; PDF windows extracted with -f/-l',
+        'coverage':{'citing_texts':len(texts),'candidate_name_windows':len(passages),'checked_pair_candidates':len(checks),
+                    'unchecked_or_linked_windows':len(unchecked),'scholarly_citation_counts':'absent'},
+        'note_links':NOTE_LINKS, 'calibrations':CALIBRATIONS}}
+    write(OUT/'evidence_index.json',index)
+    write(OUT/'passage_index.json',{'author':'Dylan Riley','person':'Max Weber','passages':passages})
+    # Full A sources and bounded readers; W windows grouped under held-copy UID.
+    docs={it['uid']:(ROOT/it['path']).read_text() for it in selections}
+    for it in json.loads((OUT/'reception_manifest.json').read_text()):docs[it['uid']]=(ROOT/it['path']).read_text()
+    docs['citation_index']=json.dumps(index,ensure_ascii=False)
+    write(OUT/'documents.json',docs)
+    lines=['# Riley → Weber pilot provenance', '', 'Local Zotero opened read-only and immutable; Stacks is read-only. No database copy. All PDF text retains form feeds; the Stacks export is not a paginated witness.', '',
+      f"Scanned {len(inventory['riley'])} Riley records. Selected {len(texts)} complete articles/chapters, {len(passages)} candidate name windows, {len(checks)} located pair candidates; {len(unchecked)} unchecked or linked windows. Eight held secondary texts; books use a contiguous densest 40k-character excerpt. Name windows are not exhaustive citation recall.", '',
+      'No saved lane plan was found. pilot_plan.json is explicitly reconstructed from the Stacks estates guide and bundle 299; its questions and warnings are context, not findings. The comparison uses the unchanged estates memo, whose materials and historical availability differ.', '',
+      '## Citing texts', '', '| UID | Year | Text | SHA256 |','|---|---|---|---|']
+    lines += [f"| {i['uid']} | {i['year'] or 'unknown'} | {i['title']} | {i['sha256']} |" for i in selections]
+    lines += ['', '## Page custody', '', 'Every evidence window records its exact pdftotext -f/-l command, PDF hash, output hash, how, section title and edition notes. The naive OCR edge map is not used for Roth/Wittich page lookup; inspected +110 and +13 calibrations are recorded in the index. MWG A180 is mapped explicitly to PDF625–626. Search results are candidate evidence and can be irrelevant.', '', 'selection.json records exclusions and boundaries; inventory.json records the original Zotero size/mtime; reception_manifest.json records excerpt offsets and hashes. Locally held copyrighted source texts remain under ignored data/study, with manifests and study outputs exported for review.']
+    (OUT/'PROVENANCE.md').write_text('\n'.join(lines)+'\n')
+    print('EVIDENCE',len(checks),'pairs',len(json.dumps(index)), 'chars; corpus',sum(map(len,docs.values())),flush=True)
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("action", choices=["scan", "passages", "works", "reception"])
+    ap.add_argument("action", choices=["scan", "passages", "works", "reception", "evidence"])
     ap.add_argument("--include-podcast", action="store_true")
     args = ap.parse_args()
     if args.action == "scan":
@@ -285,3 +455,6 @@ if __name__ == "__main__":
         prepare_works()
     elif args.action == "reception":
         build_reception()
+
+    elif args.action == "evidence":
+        build_evidence()

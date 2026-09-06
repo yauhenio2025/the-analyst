@@ -120,14 +120,17 @@ process:
   - key: edition_locus
     name: Edition and retrieval limits
     questions:
-    - Which edition, printed page, PDF page and retrieval method are actually supplied, and what remains unresolved?
-    method_card: 'Do: Read the evidence index as provenance. Separate PDF index from printed page. A term-overlap
-      match is a candidate window, not confirmation of locus or edition equivalence. State missing works and missing
-      locations without treating them as P''s silence. Select literal spans that carry the actor, predicate, object
-      and necessary qualification. A name or topic alone cannot support a reading. Use separate anchor-b/doc-b for
-      a second span; never stitch quotations. Keep attribution, negation, modality, edition and chronology. Re-anchor,
-      narrow or reject a claim whose quotation omits its predicate. Code checks only anchors and IDs; the model
-      must judge the reading against the supplied text.'
+    - Which edition, printed page, PDF page, retrieval method (page, section or search), and known section title
+      are supplied, and what remains unresolved?
+    method_card: 'Do: Read the evidence index as provenance. Preserve how: page|section|search and the section title
+      when known (for example Politik als Beruf inside MWG I/17). Keep unheld/unresolved in retrieval-status, not
+      in how. Separate PDF index from printed page. A term-overlap match is a candidate window, not confirmation
+      of locus or edition equivalence. State missing works and missing locations without treating them as P''s silence.
+      Select literal spans that carry the actor, predicate, object and necessary qualification. A name or topic
+      alone cannot support a reading. Use separate anchor-b/doc-b for a second span; never stitch quotations. Keep
+      attribution, negation, modality, edition and chronology. Re-anchor, narrow or reject a claim whose quotation
+      omits its predicate. Code checks only anchors and IDs; the model must judge the reading against the supplied
+      text.'
     indicators:
     - 'how: search'
     - edition
@@ -136,8 +139,9 @@ process:
     load_bearing: false
     id_prefix: D5
     answer_shape: '[D5.F<n>] <one scoped finding> — dim: edition_locus — pair-ref: <index ID> — edition: <held/cited>
-      — how: page|search|unheld|unresolved — locus: <mapped printed/PDF pages> — limitation: <uncertainty> — anchor:
-      "<verbatim supporting clause, <=200 chars>" — doc: <actual supplied source key> — confidence: high|medium|low'
+      — retrieval-status: retrieved|unheld|unresolved — how: page|section|search (only when retrieved) — section-title:
+      <known cited-work section title or unknown> — locus: <mapped printed/PDF pages> — limitation: <uncertainty>
+      — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <actual supplied source key> — confidence: high|medium|low'
   - key: paired_fidelity
     name: Verdict on each supplied pair
     questions:

@@ -27,3 +27,15 @@ Validation: engagement and reception in dvs, fidelity in checked mode over index
 The pilot is one local SQLite dossier, submitted with paste sources and the evidence index, following the three chosen engines. The Stacks comparison available in its communications tree is the 3 September estates memo; it is preserved unchanged. That memo's source set and historical availability differ from the newly assembled corpus, so this is not represented as a controlled same-input generation experiment. Sonnet sees the two finished memos in both orders against a bibliographic rubric, with only order-stable agreements counted, accompanied by a separate source read.
 
 E3 follows the citation pilot: rate the existing 0004 candidate, without regeneration, and release only if Sonnet reaches the original 7.833 threshold. I9 remains withheld.
+
+## Build amendment after the Stacks reply (6 September, 16:20 brief)
+
+Reception now exposes `theme-origin: plan_spine|reader_addition` and the link to a plan theme in its answer shape. The retrieved-place shape separates retrieval status from `how: page|section|search` and carries a known section title while preserving edition and pagination notes.
+
+The evidence index is a transport envelope. The process runner unpacks its literal A passages and W windows under their original distinct UIDs before applying the existing two-key wall. This supports an index-only call to the fidelity engine without another engine or a dossier. The plan is context rather than an anchor source, and reaches extraction, criticism, first synthesis and checked reconciliation. The dossier brief reads that same plan directly from its evidence-index source. Explicit paste-source keys and roles preserve those identities across the local API.
+
+No saved Riley–Weber lane plan or finished lane memo was found in `communications/2026-09-05_cites` in this clone. The estates memo is the available comparison. `pilot_plan.json` labels its questions/themes/warnings as a guide-derived reconstruction from that memo and bundle 299, not as the absent Fable plan. The comparison will therefore be reported as shape-with-plan vs lane, with this provenance and historical material mismatch explicit; the dossier lacks the lane's final register edit.
+
+The completed builder selects 27 full articles/chapters, 98 name windows and 28 located pair candidates, with linked notes and unresolved mentions accounted for. The initial OCR edge heuristic was rejected for the large E&S scan: source-read pagination calibrations (+110 for Roth/Wittich and +13 for From Max Weber) replace it for page retrieval. MWG's marginal A180 is explicitly located at PDF625–626 (printed 598–599). Every admitted window is a fresh `pdftotext -f/-l` extraction with custody hashes.
+
+The validation conditions are ENG dvs, G8 dvs, G6 checked over full citing texts plus windows, and G6 checked from the evidence index alone. Ratings use a disclosed reproducible context packet because the full article corpus exceeds Sonnet's ordinary context. All receipts, including any failed attempts, count toward actual spend.

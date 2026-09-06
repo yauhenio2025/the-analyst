@@ -253,7 +253,7 @@ def _run_step(job: DossierJob, step: str, docs) -> None:
     elif step == "brief":
         from src.dossier.brief import run_brief
 
-        brief = run_brief(job, docs)
+        brief = run_brief(job, docs, context_documents=context_docs) if context_docs else run_brief(job, docs)
         job.brief = brief
         fields = {"brief": brief}
         if job.options.autopilot and not job.chosen_option:

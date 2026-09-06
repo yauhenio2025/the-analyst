@@ -195,7 +195,10 @@ def _same_author(docs: list[Document]) -> Optional[bool]:
     return len(creators) <= 1
 
 
-def build_user_prompt(job: DossierJob, docs: list[Document], catalog: dict, audience: str) -> str:
+def build_user_prompt(job: DossierJob, docs: list[Document], catalog: dict, audience: str,
+                      context_documents: Optional[list[Document]] = None) -> str:
+    from src.sources.citation_evidence import plan_context
+    citation_plan = plan_context({d.key: d.text for d in [*docs, *(context_documents or [])]})
     vocab = vocabulary_lines(audience)
     vocab_block = "\n".join(f'  "{t}" → "{p}"' for t, p in vocab) if vocab else "  (technical names are allowed for this audience)"
     uf = job.options.use_frame
@@ -210,6 +213,7 @@ def build_user_prompt(job: DossierJob, docs: list[Document], catalog: dict, audi
         f"ENGINE PLAIN NAMES FOR THIS AUDIENCE (use verbatim as path.steps[].plain_name):\n{plain_name_lines(catalog)}\n\n"
         f"USE REGISTER (use_kind → what the reader is trying to do):\n{use_register}\n\n"
         f"REQUESTER'S USE: {use_kind} — {job.options.intent or 'no intent given'}\n"
+        f"{citation_plan}\n"
         f"  occasion: {(uf.occasion if uf and uf.occasion else '—')}   reads it: {(uf.who_reads if uf and uf.who_reads else audience)}"
         f"   decision due: {(uf.decision if uf and uf.decision else '—')}\n"
         f"DEPTH PREFERENCE: {depth} (options may sit one level lighter or heavier when the use demands it)\n"
@@ -543,7 +547,7 @@ def _fallback_option(n: int, corpus_chars: int, ctx: CheckContext) -> BriefOptio
     return o
 
 
-def run_brief(job: DossierJob, docs: list[Document]) -> Brief:
+def run_brief(job: DossierJob, docs: list[Document], context_documents: Optional[list[Document]] = None) -> Brief:
     audience = job.options.audience or "executive"
     entry = job.options.entry or ("material" if job.options.autopilot else "use")
     corpus_chars = sum(d.char_count for d in docs)
@@ -563,7 +567,7 @@ def run_brief(job: DossierJob, docs: list[Document]) -> Brief:
         fixed = resolve_path_request(job.options.path, audience, by_key)
         translate_steps = " → ".join(f"{s.engine_key}@{s.depth} (\"{s.plain_name}\")" for s in fixed.steps)
     system = system_prompt(translate_steps)
-    user = build_user_prompt(job, docs, catalog, audience)
+    user = build_user_prompt(job, docs, catalog, audience, context_documents)
     schema = brief_schema(translate=fixed is not None)
     label = "brief: the fixed path + the desk's alternative" if fixed else "brief: three deliverables"
 

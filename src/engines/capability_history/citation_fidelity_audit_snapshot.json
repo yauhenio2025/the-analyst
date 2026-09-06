@@ -1,0 +1,74 @@
+{
+  "analytical_dimensions": [
+    {
+      "depth_guidance": {},
+      "description": "Who attributes what to whom",
+      "key": "attribution_kind",
+      "probing_questions": [
+        "Does A directly attribute a claim to P, report P reporting another view, contrast P with another, or merely name P?"
+      ]
+    },
+    {
+      "depth_guidance": {},
+      "description": "A's actual attribution",
+      "key": "attributed_claim",
+      "probing_questions": [
+        "What exactly does A attribute at this citation, in A's own terms and with A's qualification?"
+      ]
+    },
+    {
+      "depth_guidance": {},
+      "description": "P's own position at the retrieved place",
+      "key": "source_position",
+      "probing_questions": [
+        "What does P say in the held page window, and whose voice is speaking there?"
+      ]
+    },
+    {
+      "depth_guidance": {},
+      "description": "Qualifications around the cited words",
+      "key": "source_context",
+      "probing_questions": [
+        "Which surrounding distinction or qualification affects the weight of the words A invokes?"
+      ]
+    },
+    {
+      "depth_guidance": {},
+      "description": "Edition and retrieval limits",
+      "key": "edition_locus",
+      "probing_questions": [
+        "Which edition, printed page, PDF page, retrieval method (page, section or search), and known section title are supplied, and what remains unresolved?"
+      ]
+    }
+  ],
+  "apps": [
+    "critic"
+  ],
+  "capabilities": [],
+  "category": "scholarly",
+  "composability": {
+    "consumes_from": {},
+    "shares_with": {},
+    "synergy_engines": []
+  },
+  "composition_role": null,
+  "depth_levels": [],
+  "engine_key": "citation_fidelity_audit",
+  "engine_name": "Citation fidelity audit",
+  "function": "genealogy",
+  "intellectual_lineage": {
+    "key_concepts": [],
+    "primary": "source_criticism",
+    "secondary": [],
+    "traditions": []
+  },
+  "kind": "comparison",
+  "legacy_engine_key": null,
+  "output_contract": null,
+  "output_mode": "prose",
+  "paradigm_keys": [],
+  "problematique": "A paired audit of the evidence index: for every indexed attribution, A's actual claim and anchor beside P's own words and anchor, attribution kind, accurate/fair/selective/stretched/misattributed/unverifiable verdict with a reason, and edition/locus notes. State how many pairs and works were checked, unresolved and outside the sample. A practice conclusion applies only to the checked sample.",
+  "prompt_context_keys": [],
+  "researcher_question": "Does each attribution hold against the supplied page window of the work it cites?",
+  "version": 1
+}

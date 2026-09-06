@@ -1,0 +1,524 @@
+........................................................................ [  5%]
+........................................................................ [ 10%]
+........................................................................ [ 16%]
+........................................................................ [ 21%]
+........................................................................ [ 26%]
+........................................................................ [ 32%]
+........................................................................ [ 37%]
+...........F............................................................ [ 43%]
+..........................................FFF.........FF................ [ 48%]
+.................F.FF....F.............................................. [ 53%]
+........................................................................ [ 59%]
+................................s........s.............................. [ 64%]
+........................................................................ [ 70%]
+........................................................................ [ 75%]
+........................................................................ [ 80%]
+........................................................................ [ 86%]
+........................................................................ [ 91%]
+...............................................................F........ [ 96%]
+.........................................                                [100%]
+==================================== ERRORS ====================================
+_______________ ERROR collecting tests/test_adaptive_planner.py ________________
+ImportError while importing test module '/home/evgeny/projects/the-analyst/tests/test_adaptive_planner.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/usr/lib64/python3.13/importlib/__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_adaptive_planner.py:1: in <module>
+    from src.orchestrator.adaptive_planner import _normalize_chapter_targets
+E   ImportError: cannot import name '_normalize_chapter_targets' from 'src.orchestrator.adaptive_planner' (/home/evgeny/projects/the-analyst/src/orchestrator/adaptive_planner.py)
+_____________ ERROR collecting tests/test_bounded_release_gate.py ______________
+ImportError while importing test module '/home/evgeny/projects/the-analyst/tests/test_bounded_release_gate.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/usr/lib64/python3.13/importlib/__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_bounded_release_gate.py:3: in <module>
+    from src.evaluations.gate_builder import (
+src/evaluations/gate_builder.py:10: in <module>
+    from src.evaluations.frozen_pack_harness import run_frozen_pack
+src/evaluations/frozen_pack_harness.py:13: in <module>
+    from src.analysis_products.source_backed_readiness import build_source_backed_readiness
+src/analysis_products/source_backed_readiness.py:12: in <module>
+    from src.analysis_products.schemas import (
+E   ImportError: cannot import name 'AoiSourceBackedReadinessDetail' from 'src.analysis_products.schemas' (/home/evgeny/projects/the-analyst/src/analysis_products/schemas.py)
+____________ ERROR collecting tests/test_frozen_governance_pack.py _____________
+ImportError while importing test module '/home/evgeny/projects/the-analyst/tests/test_frozen_governance_pack.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/usr/lib64/python3.13/importlib/__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_frozen_governance_pack.py:13: in <module>
+    from src.evaluations.frozen_pack_harness import run_frozen_pack, run_pack_definition
+src/evaluations/frozen_pack_harness.py:13: in <module>
+    from src.analysis_products.source_backed_readiness import build_source_backed_readiness
+src/analysis_products/source_backed_readiness.py:12: in <module>
+    from src.analysis_products.schemas import (
+E   ImportError: cannot import name 'AoiSourceBackedReadinessDetail' from 'src.analysis_products.schemas' (/home/evgeny/projects/the-analyst/src/analysis_products/schemas.py)
+_______ ERROR collecting tests/test_phase1c_genealogy_direct_sections.py _______
+ImportError while importing test module '/home/evgeny/projects/the-analyst/tests/test_phase1c_genealogy_direct_sections.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/usr/lib64/python3.13/importlib/__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_phase1c_genealogy_direct_sections.py:6: in <module>
+    from src.api.routes.orchestrator import (
+E   ImportError: cannot import name 'get_planning_decision_compose_from_intent_request' from 'src.api.routes.orchestrator' (/home/evgeny/projects/the-analyst/src/api/routes/orchestrator.py)
+____________ ERROR collecting tests/test_source_backed_readiness.py ____________
+ImportError while importing test module '/home/evgeny/projects/the-analyst/tests/test_source_backed_readiness.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/usr/lib64/python3.13/importlib/__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_source_backed_readiness.py:9: in <module>
+    from src.analysis_products.source_backed_readiness import (
+src/analysis_products/source_backed_readiness.py:12: in <module>
+    from src.analysis_products.schemas import (
+E   ImportError: cannot import name 'AoiSourceBackedReadinessDetail' from 'src.analysis_products.schemas' (/home/evgeny/projects/the-analyst/src/analysis_products/schemas.py)
+_________________ ERROR collecting tests/test_task_planner.py __________________
+ImportError while importing test module '/home/evgeny/projects/the-analyst/tests/test_task_planner.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/usr/lib64/python3.13/importlib/__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_task_planner.py:8: in <module>
+    from src.api.routes.orchestrator import (
+E   ImportError: cannot import name 'get_planning_decision' from 'src.api.routes.orchestrator' (/home/evgeny/projects/the-analyst/src/api/routes/orchestrator.py)
+__________________ ERROR collecting tests/test_task_router.py __________________
+ImportError while importing test module '/home/evgeny/projects/the-analyst/tests/test_task_router.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/usr/lib64/python3.13/importlib/__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_task_router.py:7: in <module>
+    from src.api.routes.orchestrator import route_task as route_task_route
+E   ImportError: cannot import name 'route_task' from 'src.api.routes.orchestrator' (/home/evgeny/projects/the-analyst/src/api/routes/orchestrator.py)
+_______ ERROR collecting tests/test_workflow_runner_auto_presentation.py _______
+ImportError while importing test module '/home/evgeny/projects/the-analyst/tests/test_workflow_runner_auto_presentation.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/usr/lib64/python3.13/importlib/__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_workflow_runner_auto_presentation.py:1: in <module>
+    from src.executor.workflow_runner import (
+E   ImportError: cannot import name '_resolve_auto_presentation_consumer_key' from 'src.executor.workflow_runner' (/home/evgeny/projects/the-analyst/src/executor/workflow_runner.py)
+=================================== FAILURES ===================================
+____________________ test_context_scope_merges_and_restores ____________________
+
+    def test_context_scope_merges_and_restores():
+>       assert events_context.current() == {}
+E       AssertionError: assert {'job_id': 'job-concept-1'} == {}
+E         
+E         Left contains 1 more item:
+E         {'job_id': 'job-concept-1'}
+E         Use -v to get more diff
+
+tests/test_events_store.py:226: AssertionError
+______________ test_anthropic_thinking_config_uses_budget_tokens _______________
+
+    def test_anthropic_thinking_config_uses_budget_tokens():
+>       assert AnthropicBackend._thinking_config("high", 48_000) == {
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            "type": "enabled",
+            "budget_tokens": 16_384,
+        }
+E       AttributeError: type object 'AnthropicBackend' has no attribute '_thinking_config'
+
+tests/test_llm_backends.py:5: AttributeError
+________ test_anthropic_thinking_config_clamps_to_available_max_tokens _________
+
+    def test_anthropic_thinking_config_clamps_to_available_max_tokens():
+>       assert AnthropicBackend._thinking_config("high", 3_000) == {
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            "type": "enabled",
+            "budget_tokens": 1_976,
+        }
+E       AttributeError: type object 'AnthropicBackend' has no attribute '_thinking_config'
+
+tests/test_llm_backends.py:12: AttributeError
+________ test_anthropic_thinking_config_skips_when_max_tokens_too_small ________
+
+    def test_anthropic_thinking_config_skips_when_max_tokens_too_small():
+>       assert AnthropicBackend._thinking_config("high", 1_500) is None
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: type object 'AnthropicBackend' has no attribute '_thinking_config'
+
+tests/test_llm_backends.py:19: AttributeError
+_ test_aoi_live_controls_keep_served_outputs_identical_with_and_without_renderer_enforcement[proof-round5-adaptive-aoi-dossier-final-1774100000] _
+
+job_id = 'proof-round5-adaptive-aoi-dossier-final-1774100000'
+
+    @pytest.mark.parametrize(
+        "job_id",
+        [
+            "proof-round5-adaptive-aoi-dossier-final-1774100000",
+            "proof-round5-adaptive-aoi-comparison-final-1774100000",
+        ],
+    )
+    def test_aoi_live_controls_keep_served_outputs_identical_with_and_without_renderer_enforcement(job_id):
+        saved_round6_trace = json.loads(_ROUND6_AOI_TRACE_FILES[job_id].read_text(encoding="utf-8"))
+    
+        with patch(
+            "src.presenter.manifest_builder.enforce_final_payload_contracts_or_raise",
+            return_value=None,
+        ):
+>           baseline_manifest = build_presentation_manifest(
+                job_id,
+                consumer_key="the-critic",
+                composition_mode=COMPOSITION_MODE_ADAPTIVE_AOI_THEME_REPORT_SUITE_V1,
+            )
+
+tests/test_manifest_trace.py:610: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/presenter/presentation_api.py:856: in build_presentation_manifest
+    page_inputs = _prepare_page_payloads(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+job_id = 'proof-round5-adaptive-aoi-dossier-final-1774100000'
+
+    def _prepare_page_payloads(
+        job_id: str,
+        *,
+        consumer_key: str,
+        slim: bool = False,
+        read_only: bool = False,
+    ) -> dict[str, Any]:
+        """Build the render tree inputs shared by /page and /status."""
+    
+        job = get_job(job_id)
+        if job is None:
+>           raise ValueError(f"Job not found: {job_id}")
+E           ValueError: Job not found: proof-round5-adaptive-aoi-dossier-final-1774100000
+
+src/presenter/presentation_api.py:798: ValueError
+_ test_aoi_live_controls_keep_served_outputs_identical_with_and_without_renderer_enforcement[proof-round5-adaptive-aoi-comparison-final-1774100000] _
+
+job_id = 'proof-round5-adaptive-aoi-comparison-final-1774100000'
+
+    @pytest.mark.parametrize(
+        "job_id",
+        [
+            "proof-round5-adaptive-aoi-dossier-final-1774100000",
+            "proof-round5-adaptive-aoi-comparison-final-1774100000",
+        ],
+    )
+    def test_aoi_live_controls_keep_served_outputs_identical_with_and_without_renderer_enforcement(job_id):
+        saved_round6_trace = json.loads(_ROUND6_AOI_TRACE_FILES[job_id].read_text(encoding="utf-8"))
+    
+        with patch(
+            "src.presenter.manifest_builder.enforce_final_payload_contracts_or_raise",
+            return_value=None,
+        ):
+>           baseline_manifest = build_presentation_manifest(
+                job_id,
+                consumer_key="the-critic",
+                composition_mode=COMPOSITION_MODE_ADAPTIVE_AOI_THEME_REPORT_SUITE_V1,
+            )
+
+tests/test_manifest_trace.py:610: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/presenter/presentation_api.py:856: in build_presentation_manifest
+    page_inputs = _prepare_page_payloads(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+job_id = 'proof-round5-adaptive-aoi-comparison-final-1774100000'
+
+    def _prepare_page_payloads(
+        job_id: str,
+        *,
+        consumer_key: str,
+        slim: bool = False,
+        read_only: bool = False,
+    ) -> dict[str, Any]:
+        """Build the render tree inputs shared by /page and /status."""
+    
+        job = get_job(job_id)
+        if job is None:
+>           raise ValueError(f"Job not found: {job_id}")
+E           ValueError: Job not found: proof-round5-adaptive-aoi-comparison-final-1774100000
+
+src/presenter/presentation_api.py:798: ValueError
+______ TestPhase3DocumentAssembly.test_phase3_excludes_raw_source_corpus _______
+
+self = <test_phase3_prompt_budget.TestPhase3DocumentAssembly object at 0x7fa4bf78ac10>
+
+    def test_phase3_excludes_raw_source_corpus(self):
+        """Phase 3.0 document_text does NOT contain the raw source corpus text."""
+        result = self._call_assembly(3.0)
+>       assert "Source corpus text" not in result
+E       AssertionError: assert 'Source corpus text' not in '# Subject C...corpus text '
+E         
+E         'Source corpus text' is contained here:
+E           ritings]
+E           
+E           Source corpus text Source corpus text Source corpus text Source corpus text Source corpus text Source corpus text Source corpus text Source corpus text Source corpus text Source corpus text Source corpus text Source corpus text Source corpus text Source corpus text Source corpus text Source corpus text Source corpus text Source corpus text Source corpus text Source corpus text Source corpus text Source corpus text Source corpus text Source corpus text Source corpus text Source corpus text Source corpus text Source corpus text...
+E         
+E         ...Full output truncated (7 lines hidden), use '-vv' to show
+
+tests/test_phase3_prompt_budget.py:96: AssertionError
+_____ TestPhase3DocumentAssembly.test_phase3_mentions_upstream_provenance ______
+
+self = <test_phase3_prompt_budget.TestPhase3DocumentAssembly object at 0x7fa4bf6d88a0>
+
+    def test_phase3_mentions_upstream_provenance(self):
+        """Phase 3.0 identity header directs provenance to upstream context."""
+        result = self._call_assembly(3.0)
+>       assert "Phase 1.0" in result or "upstream" in result.lower()
+E       AssertionError: assert ('Phase 1.0' in '# Subject Corpus: test-project\n\nTarget corpus text Target corpus text Target corpus text Target corpus text Target ...ext Source corpus text Source corpus text Source corpus text Source corpus text Source corpus text Source corpus text ' or 'upstream' in '# subject corpus: test-project\n\ntarget corpus text target corpus text target corpus text target corpus text target ...ext source corpus text source corpus text source corpus text source corpus text source corpus text source corpus text ')
+E        +  where '# subject corpus: test-project\n\ntarget corpus text target corpus text target corpus text target corpus text target ...ext source corpus text source corpus text source corpus text source corpus text source corpus text source corpus text ' = <built-in method lower of str object at 0x55dde15f2390>()
+E        +    where <built-in method lower of str object at 0x55dde15f2390> = '# Subject Corpus: test-project\n\nTarget corpus text Target corpus text Target corpus text Target corpus text Target ...ext Source corpus text Source corpus text Source corpus text Source corpus text Source corpus text Source corpus text '.lower
+
+tests/test_phase3_prompt_budget.py:108: AssertionError
+_____ TestPhase3DocumentAssembly.test_phase3_much_smaller_than_full_corpus _____
+
+self = <test_phase3_prompt_budget.TestPhase3DocumentAssembly object at 0x7fa4bf649eb0>
+
+    def test_phase3_much_smaller_than_full_corpus(self):
+        """Phase 3.0 document_text is dramatically smaller without raw source."""
+        result_phase3 = self._call_assembly(3.0)
+        result_phase1 = self._call_assembly(1.0)
+        # Phase 1.0 gets the full source corpus; Phase 3.0 should be much smaller
+>       assert len(result_phase3) < len(result_phase1) / 10
+E       AssertionError: assert 3819205 < (3800166 / 10)
+E        +  where 3819205 = len('# Subject Corpus: test-project\n\nTarget corpus text Target corpus text Target corpus text Target corpus text Target ...ext Source corpus text Source corpus text Source corpus text Source corpus text Source corpus text Source corpus text ')
+E        +  and   3800166 = len('# Selected Source Thinker: Otto Neurath\n\n# Source Work: Economic Writings [economic_writings]\n\nSource corpus text...ext Source corpus text Source corpus text Source corpus text Source corpus text Source corpus text Source corpus text ')
+
+tests/test_phase3_prompt_budget.py:115: AssertionError
+___ TestRepairedPromptShape.test_budget_helper_matches_composed_prompt_total ___
+
+self = <test_phase3_prompt_budget.TestRepairedPromptShape object at 0x7fa4bf78b110>
+
+    def test_budget_helper_matches_composed_prompt_total(self):
+        """Budget diagnostics must match the real guard path, not double-count context."""
+        from src.engines.registry import get_engine_registry
+        from src.engines.schemas_v2 import PassDefinition
+>       from src.executor.chain_runner import _estimate_pass_budget
+E       ImportError: cannot import name '_estimate_pass_budget' from 'src.executor.chain_runner' (/home/evgeny/projects/the-analyst/src/executor/chain_runner.py)
+
+tests/test_phase3_prompt_budget.py:218: ImportError
+__________ TestGenerateSubRendererVariants.test_empty_existing_hints ___________
+
+self = <test_variant_generator.TestGenerateSubRendererVariants object at 0x7fa4be199810>
+
+    def test_empty_existing_hints(self):
+        base = _make_renderer(
+            "accordion",
+            section_renderers=["chip_grid", "mini_card_list"],
+        )
+        variants = _generate_sub_renderer_variants(base, {}, max_variants=3)
+    
+        assert len(variants) >= 1
+        for v in variants:
+            config = v["renderer_config"]
+>           assert "section_renderer_hints" in config
+E           AssertionError: assert 'section_renderer_hints' in {'section_renderers': {'default': {'renderer_type': 'chip_grid'}}}
+
+tests/test_variant_generator.py:227: AssertionError
+=============================== warnings summary ===============================
+../../.local/lib/python3.13/site-packages/pydantic/_internal/_config.py:295
+../../.local/lib/python3.13/site-packages/pydantic/_internal/_config.py:295
+../../.local/lib/python3.13/site-packages/pydantic/_internal/_config.py:295
+../../.local/lib/python3.13/site-packages/pydantic/_internal/_config.py:295
+tests/test_study_argument_family_2026_09_05.py::test_exact_matrix
+tests/test_study_ideas_hegel_heldout_2026_09_05.py::test_pinned_matrix_and_estimate
+  /home/evgeny/.local/lib/python3.13/site-packages/pydantic/_internal/_config.py:295: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.10/migration/
+    warnings.warn(DEPRECATION_MESSAGE, DeprecationWarning)
+
+tests/test_adaptive_execution_target_normalization.py: 2 warnings
+tests/test_concept_artifact_authority.py: 1 warning
+tests/test_concept_by_ref_launch.py: 1 warning
+tests/test_events_store.py: 1 warning
+tests/test_plan_durability_2026_09_06.py: 3 warnings
+tests/test_registered_corpus_launch.py: 3 warnings
+tests/test_stage3_contract.py: 12 warnings
+  /home/evgeny/projects/the-analyst/src/orchestrator/schemas.py:440: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    default_factory=lambda: datetime.utcnow().isoformat(),
+
+tests/test_adaptive_execution_target_normalization.py: 1 warning
+tests/test_analysis_product_contract.py: 2 warnings
+tests/test_project_lifecycle.py: 14 warnings
+tests/test_registered_corpus_launch.py: 2 warnings
+tests/test_run_contract.py: 6 warnings
+tests/test_stage3_contract.py: 11 warnings
+  /home/evgeny/projects/the-analyst/src/executor/job_manager.py:50: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    now = datetime.utcnow().isoformat()
+
+tests/test_adaptive_execution_target_normalization.py: 2 warnings
+tests/test_project_lifecycle.py: 5 warnings
+tests/test_run_contract.py: 5 warnings
+tests/test_stage3_contract.py: 8 warnings
+  /home/evgeny/projects/the-analyst/src/executor/job_manager.py:163: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    now = datetime.utcnow().isoformat()
+
+tests/test_analysis_product_contract.py::test_slim_output_load_preserves_content_hash_for_manifest_freshness
+  /home/evgeny/projects/the-analyst/src/executor/output_store.py:42: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    now = datetime.utcnow().isoformat()
+
+tests/test_anchor_repairs_2026_09_05.py: 80 warnings
+tests/test_brief_v2_checks.py: 6 warnings
+tests/test_compose_tokens.py: 16 warnings
+tests/test_corpus_ledger_2026_09_05.py: 6 warnings
+tests/test_corpus_methods_P1_P2_2026_09_06.py: 8 warnings
+tests/test_crosscheck_clamps.py: 28 warnings
+tests/test_desks_read_ledger_2026_09_05.py: 12 warnings
+tests/test_dossier_boot_recovery.py: 10 warnings
+tests/test_exhibits_from_spine.py: 6 warnings
+tests/test_figure_spec_validation.py: 16 warnings
+tests/test_sigterm_drain.py: 18 warnings
+  /home/evgeny/projects/the-analyst/src/dossier/schemas.py:36: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    return datetime.utcnow().isoformat()
+
+tests/test_compose_tokens.py::test_compose_draft_end_to_end_with_fake_calls
+tests/test_compose_tokens.py::test_compose_draft_end_to_end_with_fake_calls
+tests/test_compose_tokens.py::test_compose_draft_end_to_end_with_fake_calls
+tests/test_compose_tokens.py::test_legacy_sections_still_render_at_section_end
+  /home/evgeny/projects/the-analyst/src/dossier/compose.py:723: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    "meta": {"date": datetime.utcnow().strftime("%d %B %Y"), "audience": job.options.audience,
+
+tests/test_job_recovery.py::test_recover_orphaned_jobs_skips_recent_resumable_jobs
+  /home/evgeny/projects/the-analyst/tests/test_job_recovery.py:15: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    recent = (datetime.utcnow() - timedelta(seconds=30)).isoformat()
+
+tests/test_job_recovery.py::test_recover_orphaned_jobs_skips_recent_resumable_jobs
+  /home/evgeny/projects/the-analyst/src/executor/job_manager.py:456: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    now = datetime.utcnow().isoformat()
+
+tests/test_job_recovery.py::test_recover_orphaned_jobs_skips_recent_resumable_jobs
+  /home/evgeny/projects/the-analyst/src/executor/job_manager.py:614: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    return (datetime.utcnow() - created_dt).total_seconds()
+
+tests/test_plates_spec.py::test_appendix_partial_renders_generated_plates_only
+tests/test_plates_spec.py::test_appendix_partial_renders_generated_plates_only
+tests/test_plates_spec.py::test_appendix_partial_renders_generated_plates_only
+tests/test_plates_spec.py::test_store_upsert_list_get_delete_and_run_registry
+  /home/evgeny/projects/the-analyst/src/dossier/plates.py:116: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    created_at: str = Field(default_factory=lambda: datetime.utcnow().isoformat())
+
+tests/test_plates_spec.py::test_store_upsert_list_get_delete_and_run_registry
+tests/test_plates_spec.py::test_store_upsert_list_get_delete_and_run_registry
+  /home/evgeny/projects/the-analyst/src/dossier/plate_store.py:94: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    now = datetime.utcnow().isoformat()
+
+tests/test_plates_spec.py::test_store_upsert_list_get_delete_and_run_registry
+  /home/evgeny/projects/the-analyst/src/dossier/plate_store.py:162: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    _runs[job_id] = {"started_at": datetime.utcnow().isoformat(), "n": n, "perspectives": perspectives or []}
+
+tests/test_project_lifecycle.py: 31 warnings
+  /home/evgeny/projects/the-analyst/src/executor/project_manager.py:37: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    now = datetime.utcnow().isoformat()
+
+tests/test_project_lifecycle.py::TestProjectCRUD::test_list_projects_filter_status
+tests/test_project_lifecycle.py::TestArchive::test_archive_project
+tests/test_project_lifecycle.py::TestArchive::test_archive_idempotent
+tests/test_project_lifecycle.py::TestArchive::test_archive_allows_completed_jobs
+tests/test_project_lifecycle.py::TestArchive::test_archive_cleans_presentation_artifacts
+tests/test_project_lifecycle.py::TestArchive::test_archive_retains_engine_outputs
+tests/test_project_lifecycle.py::TestRevive::test_revive_project
+tests/test_project_lifecycle.py::TestAutoArchive::test_auto_archive_stale_project
+  /home/evgeny/projects/the-analyst/src/executor/project_manager.py:369: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    ("archived", datetime.utcnow().isoformat(), project_id, "active"),
+
+tests/test_project_lifecycle.py::TestProjectCRUD::test_update_project
+  /home/evgeny/projects/the-analyst/src/executor/project_manager.py:154: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    params.append(datetime.utcnow().isoformat())
+
+tests/test_project_lifecycle.py: 13 warnings
+tests/test_registered_corpus_launch.py: 2 warnings
+tests/test_run_contract.py: 6 warnings
+tests/test_stage3_contract.py: 10 warnings
+  /home/evgeny/projects/the-analyst/src/executor/project_manager.py:172: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    (datetime.utcnow().isoformat(), project_id),
+
+tests/test_project_lifecycle.py::TestRevive::test_revive_project
+  /home/evgeny/projects/the-analyst/src/executor/project_manager.py:412: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    now = datetime.utcnow().isoformat()
+
+tests/test_project_lifecycle.py::TestAutoArchive::test_auto_archive_stale_project
+tests/test_project_lifecycle.py::TestAutoArchive::test_auto_archive_skips_recent
+tests/test_project_lifecycle.py::TestAutoArchive::test_auto_archive_skips_exempt
+tests/test_project_lifecycle.py::TestAutoArchive::test_auto_archive_skips_active_jobs
+  /home/evgeny/projects/the-analyst/src/executor/project_manager.py:472: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    now = datetime.utcnow()
+
+tests/test_registered_corpus_launch.py::test_sync_external_documents_resolves_parent_across_full_batch
+tests/test_registered_corpus_launch.py::test_sync_external_documents_updates_binding_with_new_doc_id_without_mutating_old_content
+tests/test_registered_corpus_launch.py::test_sync_external_documents_updates_binding_with_new_doc_id_without_mutating_old_content
+tests/test_registered_corpus_launch.py::test_analyze_by_ref_route_returns_400_for_chapter_role_mismatch
+tests/test_registered_corpus_launch.py::test_run_analysis_by_ref_preserves_analyze_response_shape
+tests/test_registered_corpus_launch.py::test_run_analysis_by_ref_aoi_preserves_semantic_chapter_ids_and_snapshot_metadata
+  /home/evgeny/projects/the-analyst/src/executor/document_store.py:228: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    now = datetime.utcnow().isoformat()
+
+tests/test_registered_corpus_launch.py: 13 warnings
+  /home/evgeny/projects/the-analyst/src/executor/document_store.py:50: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    now = datetime.utcnow().isoformat()
+
+tests/test_run_contract.py::test_run_detail_exposes_progress_aliases
+  /home/evgeny/projects/the-analyst/src/presenter/preparation_store.py:76: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    now = datetime.utcnow().isoformat()
+
+tests/test_variant_store.py::TestSaveAndLoadVariantSet::test_save_and_load_roundtrip
+tests/test_variant_store.py::TestListVariantSets::test_list_by_job_and_view
+tests/test_variant_store.py::TestListVariantSets::test_list_by_job_and_view
+tests/test_variant_store.py::TestListVariantSets::test_list_by_job_and_view
+tests/test_variant_store.py::TestDeleteVariantSet::test_delete_cascades
+tests/test_variant_store.py::TestSelections::test_save_and_load_selection
+tests/test_variant_store.py::TestSelections::test_upsert_replaces_selection
+tests/test_variant_store.py::TestSummarizeSelections::test_summary_grouped
+tests/test_variant_store.py::TestDeleteForJob::test_deletes_all_variant_data
+  /home/evgeny/projects/the-analyst/src/presenter/variant_store.py:62: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    now = datetime.utcnow().isoformat()
+
+tests/test_variant_store.py::TestSaveAndLoadVariantSet::test_save_and_load_roundtrip
+tests/test_variant_store.py::TestSaveAndLoadVariantSet::test_save_and_load_roundtrip
+tests/test_variant_store.py::TestDeleteVariantSet::test_delete_cascades
+tests/test_variant_store.py::TestSummarizeSelections::test_summary_grouped
+tests/test_variant_store.py::TestSummarizeSelections::test_summary_grouped
+tests/test_variant_store.py::TestDeleteForJob::test_deletes_all_variant_data
+tests/test_variant_store.py::TestDeleteForJob::test_deletes_all_variant_data
+  /home/evgeny/projects/the-analyst/src/presenter/variant_store.py:89: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    now = datetime.utcnow().isoformat()
+
+tests/test_variant_store.py::TestDeleteVariantSet::test_delete_cascades
+tests/test_variant_store.py::TestSelections::test_save_and_load_selection
+tests/test_variant_store.py::TestSelections::test_upsert_replaces_selection
+tests/test_variant_store.py::TestSelections::test_upsert_replaces_selection
+tests/test_variant_store.py::TestSummarizeSelections::test_summary_grouped
+tests/test_variant_store.py::TestDeleteForJob::test_deletes_all_variant_data
+  /home/evgeny/projects/the-analyst/src/presenter/variant_store.py:180: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    now = datetime.utcnow().isoformat()
+
+tests/test_workflow_corpus_dispatch.py::test_dossier_start_persists_exact_source_bindings
+  /home/evgeny/projects/the-analyst/src/executor/schemas.py:97: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    created_at: str = Field(default_factory=lambda: datetime.utcnow().isoformat())
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_events_store.py::test_context_scope_merges_and_restores - A...
+FAILED tests/test_llm_backends.py::test_anthropic_thinking_config_uses_budget_tokens
+FAILED tests/test_llm_backends.py::test_anthropic_thinking_config_clamps_to_available_max_tokens
+FAILED tests/test_llm_backends.py::test_anthropic_thinking_config_skips_when_max_tokens_too_small
+FAILED tests/test_manifest_trace.py::test_aoi_live_controls_keep_served_outputs_identical_with_and_without_renderer_enforcement[proof-round5-adaptive-aoi-dossier-final-1774100000]
+FAILED tests/test_manifest_trace.py::test_aoi_live_controls_keep_served_outputs_identical_with_and_without_renderer_enforcement[proof-round5-adaptive-aoi-comparison-final-1774100000]
+FAILED tests/test_phase3_prompt_budget.py::TestPhase3DocumentAssembly::test_phase3_excludes_raw_source_corpus
+FAILED tests/test_phase3_prompt_budget.py::TestPhase3DocumentAssembly::test_phase3_mentions_upstream_provenance
+FAILED tests/test_phase3_prompt_budget.py::TestPhase3DocumentAssembly::test_phase3_much_smaller_than_full_corpus
+FAILED tests/test_phase3_prompt_budget.py::TestRepairedPromptShape::test_budget_helper_matches_composed_prompt_total
+FAILED tests/test_variant_generator.py::TestGenerateSubRendererVariants::test_empty_existing_hints
+ERROR tests/test_adaptive_planner.py
+ERROR tests/test_bounded_release_gate.py
+ERROR tests/test_frozen_governance_pack.py
+ERROR tests/test_phase1c_genealogy_direct_sections.py
+ERROR tests/test_source_backed_readiness.py
+ERROR tests/test_task_planner.py
+ERROR tests/test_task_router.py
+ERROR tests/test_workflow_runner_auto_presentation.py
+11 failed, 1324 passed, 2 skipped, 425 warnings, 8 errors in 75.70s (0:01:15)

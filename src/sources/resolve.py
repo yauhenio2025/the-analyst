@@ -104,8 +104,6 @@ def resolve_sources(specs: list[SourceSpec]) -> list[Document]:
                 title = spec.title or _title_from_text(text, f"Pasted document {idx}")
                 if spec.key and spec.key in used:
                     raise ValueError(f"duplicate explicit source key: {spec.key}")
-                if spec.role and spec.role != "evidence_index" and not text.startswith("SOURCE ROLE:"):
-                    text = f"SOURCE ROLE: {spec.role}\n{text}"
                 add(Document(key=spec.key or _slug(spec.title or f"doc{idx}"), title=title,
                              role=spec.role or "", text=text))
         elif spec.kind == "exemplar":

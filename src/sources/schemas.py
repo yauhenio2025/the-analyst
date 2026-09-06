@@ -25,7 +25,6 @@ class SourceSpec(BaseModel):
     title: Optional[str] = None
     text: Optional[str] = None
     key: Optional[str] = None
-    role: Optional[str] = None
     view_id: Optional[str] = None
     uids: Optional[list[str]] = None
     name: Optional[str] = Field(default=None, description="exemplar file name")
@@ -34,7 +33,6 @@ class SourceSpec(BaseModel):
 class Document(BaseModel):
     key: str
     title: str
-    role: str = ""
     creators: str = ""
     year: str = ""
     publication: str = ""

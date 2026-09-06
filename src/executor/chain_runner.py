@@ -17,6 +17,8 @@ Ported from The Critic's execute_chain() with plan-driven override support.
 """
 
 import logging
+import json
+import re
 import time
 from typing import Any, Callable, Optional
 
@@ -520,6 +522,37 @@ def _run_engine_passes(
     return results
 
 
+def _citation_context_envelopes(engine_key, sources, upstream):
+    """The Stacks bridge binds indexes as context; citation engines unpack them.
+
+    Transfer only tagged JSON envelopes, preserving all other upstream analysis.
+    The process adapter removes the envelope from the wall's source index again
+    after restoring its literal, separately keyed witnesses.
+    """
+    from src.sources.citation_evidence import FAMILY, evidence_indexes
+    if engine_key not in FAMILY:
+        return sources, upstream
+    sources = dict(sources)
+    removals = []
+    for match in re.finditer(r"CONTEXT SUPPLIED WITH THE JOB \[([^\]]+)\]:\n", upstream):
+        payload = upstream[match.end():]
+        try:
+            obj, end = json.JSONDecoder().raw_decode(payload)
+        except ValueError:
+            continue
+        raw = payload[:end]
+        if not evidence_indexes({match[1]: raw}):
+            continue
+        key = "citation-envelope:" + match[1]
+        if key in sources:
+            raise ValueError(f"citation envelope key collision: {key}")
+        sources[key] = raw
+        removals.append((match.start(), match.end() + end))
+    for lo, hi in reversed(removals):
+        upstream = upstream[:lo] + upstream[hi:]
+    return sources, upstream
+
+
 def _run_engine_process(
     cap_def: Any,
     spec: Any,
@@ -550,6 +583,7 @@ def _run_engine_process(
     # Preserve source boundaries before the process decides whether to run corpus dimensions.
     # The text form remains available to legacy stance engines and their auto-chunking path.
     sources = dict(documents) if documents is not None else {work_key or "document": document_text}
+    sources, upstream_context = _citation_context_envelopes(cap_def.engine_key, sources, upstream_context)
     empty_keys = [key for key, text in sources.items() if not text.strip()]
     if not sources or empty_keys:
         detail = ", ".join(empty_keys) if empty_keys else "no sources selected"

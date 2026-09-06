@@ -37,6 +37,7 @@ from src.executor.scoped_outcomes import (
     assess_scopes, expected_scopes, render_scope_json, scope_report, strip_scope_outcomes,
 )
 from src.operationalizations.schemas import ProcessDimension, ProcessSpec, ProcessStep
+from src.sources.citation_evidence import prepare_citation_sources, with_citation_context
 from src.stages.process_composer import (
     LEDGER_HEADING, ProcessPrompt, compose_extract_prompt, compose_oneshot_prompt, compose_synthesize_prompt,
     compose_verify_prompt,
@@ -410,8 +411,9 @@ def run_process(
     upstream_context: str = "",
 ) -> ProcessRunResult:
     """Run the process over `documents` ({doc_key: text}). Returns every call's receipt and the final reading."""
+    documents, citation_context = prepare_citation_sources(cap_def.engine_key, documents)
     _check_scope_sources(spec, documents)
-    call_fn = call_fn or _default_call
+    call_fn = with_citation_context(call_fn or _default_call, citation_context)
     t0 = time.time()
     result = ProcessRunResult(engine_key=cap_def.engine_key, process_key=spec.key)
     index = SourceIndex(documents)
@@ -783,8 +785,9 @@ def run_oneshot_checked(
 ) -> ProcessRunResult:
     """One call on the strong tier (or a `reading` already on disk), then, if `check`, the critic on the mid tier
     over its ledger and the rulings applied by code."""
+    documents, citation_context = prepare_citation_sources(cap_def.engine_key, documents)
     _check_scope_sources(spec, documents)
-    call_fn = call_fn or _default_call
+    call_fn = with_citation_context(call_fn or _default_call, citation_context)
     t0 = time.time()
     result = ProcessRunResult(engine_key=cap_def.engine_key, process_key=spec.key)
     index = SourceIndex(documents)
@@ -880,6 +883,8 @@ def run_oneshot_checked(
                                            rejected_text="\n".join(r.render() for r in rejected))
         sprompt.step_key = "reconcile_checked"
         sprompt.label = f"{cap_def.engine_key} | reconcile checked tables"
+        if upstream_context:
+            sprompt.user = f"{upstream_context}\n\n=====\n\n{sprompt.user}"
         sprompt.user += ("\n\nORIGINAL READING (input finding Fn is now CHECK.Fn; use CHECK.Fn in lineage, "
                          "renumber final F1..Fn and revise every affected cell and citation):\n"
                          + prose + "\n\nCRITIC REVIEW (rulings already applied; use cell/coverage advice):\n" + vc.content
