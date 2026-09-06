@@ -1,6 +1,7 @@
+# P1 source-defect repair, 2026-09-06 evening
 engine_key: compare_supplied_cases
 engine_name: Compare supplied cases
-version: 3
+version: 4
 problematique: 'Compare supplied cases on justified common questions. The unit may be a country, policy, institution,
   option or conceptual approach, but a source is not automatically one case. The product is a case by criterion
   matrix with attributed evidence, explicit missing and incommensurable cells, supported contrasts and exceptions.
@@ -15,17 +16,50 @@ problematique: 'Compare supplied cases on justified common questions. The unit m
   literal bracketed letters, hyphens and line breaks; choose separate spans around page headers. A quotation ending
   mid-word, at a conjunction, or before its essential object cannot carry the completed claim. Narrow the finding
   or add evidence. Two spans from one source remain single-source evidence; a corpus relation needs distinct source
-  keys.'
+  keys.
+
+
+  For broken-word source text, copy from raw source bytes rather than reconstructing the word. Preserve the space
+  before a line-end hyphen, the hyphen and newline: be - followed by newline came must not become became or be-
+  followed by newline came. Use a short complete predicate span and a separate identity/ownership span, not one
+  long sentence reconstructed across columns or furniture. A matching prefix is inadequate if it loses the date
+  or operative predicate. For the supplied subsea article, a complete short PEACE status packet is the literal span
+  “One such effort is the PEACE cable, which be -
+
+  came operational in 2022.” Reinspect and copy that span from the supplied source; keep ownership/routes in separate
+  anchors. Retain the separate positive PEACE operational chronology and EMA reported reactive development in the
+  final comparison; omission of both or substitution of ownership alone does not answer the required status distinction.
+  EMA''s reported reaction to SeaMeWe-6 exclusion must never be transferred to PEACE. Short source spans for each
+  project must carry its own predicate.
+
+
+  Instrument identity precedes chronology. In the supplied AUKUS article, the June 2023 Eximbank statutory-capital
+  proposal and the December 2023 Enforcement Decree of the Financial Investment Services and Capital Markets Act
+  are separately named and juxtaposed, without an explicit identity link. Retain separate proposal and decree findings
+  and state identity unresolved; do not call them proposed/effective stages of the same amendment, or say that the
+  December decree enacted the June Eximbank proposal. December''s defence-export effect is expressed as potential.
+  More generally, shared jurisdiction, topic or neighboring sentences do not identify two instruments; quote an
+  explicit identity predicate before merging their stages. Apply this distinction in the actual case matrix and
+  every final summary.'
 category: evidence
 kind: comparison
 researcher_question: How do the supplied cases or approaches compare on justified common dimensions?
 legacy_engine_key: comparative_framework
 analytical_dimensions:
 - key: case_identity
-  description: Cases, boundaries and comparable objects. Identify the unit before comparing it. Separate a paper,
+  description: 'Cases, boundaries and comparable objects. Identify the unit before comparing it. Separate a paper,
     a case and an actor inside a case; keep nested cases explicit. Choose criteria because they answer a shared
     question and the sources can speak to them. Treat approaches as cases when the material is conceptual, without
     pretending they are empirical countries or successive stages.
+
+    Instrument identity precedes chronology. In the supplied AUKUS article, the June 2023 Eximbank statutory-capital
+    proposal and the December 2023 Enforcement Decree of the Financial Investment Services and Capital Markets Act
+    are separately named and juxtaposed, without an explicit identity link. Retain separate proposal and decree
+    findings and state identity unresolved; do not call them proposed/effective stages of the same amendment, or
+    say that the December decree enacted the June Eximbank proposal. December''s defence-export effect is expressed
+    as potential. More generally, shared jurisdiction, topic or neighboring sentences do not identify two instruments;
+    quote an explicit identity predicate before merging their stages. Apply this distinction in the actual case
+    matrix and every final summary.'
   probing_questions:
   - What case or approach does this source actually document, which actors belong to it, and what object, place
     and time does it cover? Distinguish a source from the cases within it.
@@ -48,7 +82,27 @@ analytical_dimensions:
     Shared routes do not transfer a cause from one cable to another, and omitting both does not resolve the attribution
     question. For conceptual comparisons, inspect formal/official versus effective/informal practice before calling
     a cell missing; where Technique is supplied, check management''s official work organization and workers'' informal
-    organization on the same material basis. Preserve the actual scope of that contrast.'
+    organization on the same material basis. Preserve the actual scope of that contrast.
+
+    For broken-word source text, copy from raw source bytes rather than reconstructing the word. Preserve the space
+    before a line-end hyphen, the hyphen and newline: be - followed by newline came must not become became or be-
+    followed by newline came. Use a short complete predicate span and a separate identity/ownership span, not one
+    long sentence reconstructed across columns or furniture. A matching prefix is inadequate if it loses the date
+    or operative predicate. For the supplied subsea article, a complete short PEACE status packet is the literal
+    span “One such effort is the PEACE cable, which be -
+
+    came operational in 2022.” Reinspect and copy that span from the supplied source; keep ownership/routes in separate
+    anchors. Retain the separate positive PEACE operational chronology and EMA reported reactive development in
+    the final comparison; omission of both or substitution of ownership alone does not answer the required status
+    distinction. EMA''s reported reaction to SeaMeWe-6 exclusion must never be transferred to PEACE. Short source
+    spans for each project must carry its own predicate. Instrument identity precedes chronology. In the supplied
+    AUKUS article, the June 2023 Eximbank statutory-capital proposal and the December 2023 Enforcement Decree of
+    the Financial Investment Services and Capital Markets Act are separately named and juxtaposed, without an explicit
+    identity link. Retain separate proposal and decree findings and state identity unresolved; do not call them
+    proposed/effective stages of the same amendment, or say that the December decree enacted the June Eximbank proposal.
+    December''s defence-export effect is expressed as potential. More generally, shared jurisdiction, topic or neighboring
+    sentences do not identify two instruments; quote an explicit identity predicate before merging their stages.
+    Apply this distinction in the actual case matrix and every final summary.'
   probing_questions:
   - On each justified candidate criterion, what answer does this case supply, with its mechanism, evidence and qualification?
     Use the criterion as a question, not a topic label.
@@ -59,10 +113,30 @@ analytical_dimensions:
   - Which distinct parallel projects have separately stated dates and causal/reactive status, and which named passage
     supports each attribution?
 - key: comparison_limits
-  description: Exceptions, context and unavailable cells. Try to break the proposed pattern with the source's exceptions.
-    Name what a translation or cultural assumption changes in the comparison, or state that no such issue is established
-    in the inspected scope. Keep missing, insufficient and incommensurable distinct. Record actual inspection and
-    its limits separately; never fabricate a quote for an empty cell.
+  description: 'Exceptions, context and unavailable cells. Try to break the proposed pattern with the source''s
+    exceptions. Name what a translation or cultural assumption changes in the comparison, or state that no such
+    issue is established in the inspected scope. Keep missing, insufficient and incommensurable distinct. Record
+    actual inspection and its limits separately; never fabricate a quote for an empty cell.
+
+    For broken-word source text, copy from raw source bytes rather than reconstructing the word. Preserve the space
+    before a line-end hyphen, the hyphen and newline: be - followed by newline came must not become became or be-
+    followed by newline came. Use a short complete predicate span and a separate identity/ownership span, not one
+    long sentence reconstructed across columns or furniture. A matching prefix is inadequate if it loses the date
+    or operative predicate. For the supplied subsea article, a complete short PEACE status packet is the literal
+    span “One such effort is the PEACE cable, which be -
+
+    came operational in 2022.” Reinspect and copy that span from the supplied source; keep ownership/routes in separate
+    anchors. Retain the separate positive PEACE operational chronology and EMA reported reactive development in
+    the final comparison; omission of both or substitution of ownership alone does not answer the required status
+    distinction. EMA''s reported reaction to SeaMeWe-6 exclusion must never be transferred to PEACE. Short source
+    spans for each project must carry its own predicate. Instrument identity precedes chronology. In the supplied
+    AUKUS article, the June 2023 Eximbank statutory-capital proposal and the December 2023 Enforcement Decree of
+    the Financial Investment Services and Capital Markets Act are separately named and juxtaposed, without an explicit
+    identity link. Retain separate proposal and decree findings and state identity unresolved; do not call them
+    proposed/effective stages of the same amendment, or say that the December decree enacted the June Eximbank proposal.
+    December''s defence-export effect is expressed as potential. More generally, shared jurisdiction, topic or neighboring
+    sentences do not identify two instruments; quote an explicit identity predicate before merging their stages.
+    Apply this distinction in the actual case matrix and every final summary.'
   probing_questions:
   - What in this source qualifies or defeats a proposed common pattern, and which case detail would a uniform template
     erase?
@@ -83,7 +157,27 @@ analytical_dimensions:
     Write from: as exact earlier IDs separated by comma and space, for example D1.C2.F1, V.D2.F3. Never join IDs
     with spaces alone. Preserve corpus ancestry and both distinct source keys; do not disguise a corpus descendant
     as a one-source finding. A genuinely new final source-read finding has no invented antecedent: omit from: and
-    mark evidence-origin: final_source_read.'
+    mark evidence-origin: final_source_read.
+
+    For broken-word source text, copy from raw source bytes rather than reconstructing the word. Preserve the space
+    before a line-end hyphen, the hyphen and newline: be - followed by newline came must not become became or be-
+    followed by newline came. Use a short complete predicate span and a separate identity/ownership span, not one
+    long sentence reconstructed across columns or furniture. A matching prefix is inadequate if it loses the date
+    or operative predicate. For the supplied subsea article, a complete short PEACE status packet is the literal
+    span “One such effort is the PEACE cable, which be -
+
+    came operational in 2022.” Reinspect and copy that span from the supplied source; keep ownership/routes in separate
+    anchors. Retain the separate positive PEACE operational chronology and EMA reported reactive development in
+    the final comparison; omission of both or substitution of ownership alone does not answer the required status
+    distinction. EMA''s reported reaction to SeaMeWe-6 exclusion must never be transferred to PEACE. Short source
+    spans for each project must carry its own predicate. Instrument identity precedes chronology. In the supplied
+    AUKUS article, the June 2023 Eximbank statutory-capital proposal and the December 2023 Enforcement Decree of
+    the Financial Investment Services and Capital Markets Act are separately named and juxtaposed, without an explicit
+    identity link. Retain separate proposal and decree findings and state identity unresolved; do not call them
+    proposed/effective stages of the same amendment, or say that the December decree enacted the June Eximbank proposal.
+    December''s defence-export effect is expressed as potential. More generally, shared jurisdiction, topic or neighboring
+    sentences do not identify two instruments; quote an explicit identity predicate before merging their stages.
+    Apply this distinction in the actual case matrix and every final summary.'
   probing_questions:
   - Which common questions are justified by the supplied case inventories? Explain alignment, keeping a source-to-case
     map when a source contains several cases or several sources describe one case.
