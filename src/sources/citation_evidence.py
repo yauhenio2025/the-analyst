@@ -35,6 +35,39 @@ def plan_context(documents: dict[str, str]) -> str:
             "Test the plan's suggestions against the sources.\n" + json.dumps(plans, ensure_ascii=False))
 
 
+def _bare(k) -> str:
+    k = str(k or "")
+    return k[3:] if k.startswith("em:") else k
+
+
+def _same(a, b) -> bool:
+    return bool(a) and bool(b) and _bare(a) == _bare(b)
+
+
+def _alias_index(sources: dict[str, str]) -> dict[str, str]:
+    """Every name a supplied document answers to (its key, with and without the em: prefix, and a ZOTERO UID line
+    in its header) → its key in `sources`."""
+    out = {}
+    for k, body in sources.items():
+        for alias in {k, _bare(k), f"em:{_bare(k)}"}:
+            out.setdefault(alias, k)
+        m = re.search(r"^ZOTERO UID: (\S+)", body[:600], re.M)
+        if m:
+            for alias in {m.group(1), _bare(m.group(1)), f"em:{_bare(m.group(1))}"}:
+                out.setdefault(alias, k)
+    return out
+
+
+def _meet(supplied: dict[str, str], *names) -> str:
+    for n in names:
+        if not n:
+            continue
+        for alias in (str(n), _bare(n), f"em:{_bare(n)}"):
+            if alias in supplied:
+                return supplied[alias]
+    return ""
+
+
 def prepare_citation_sources(engine_key: str, documents: dict[str, str]) -> tuple[dict[str, str], str]:
     if engine_key not in FAMILY:
         return documents, ""
@@ -45,14 +78,25 @@ def prepare_citation_sources(engine_key: str, documents: dict[str, str]) -> tupl
         return documents, ""
     sources = {k: v for k, v in documents.items() if k not in {k for k, _ in indexes}}
     metadata = []
+    supplied = _alias_index(sources)
     for _, obj in indexes:
+        # The index's `roles` map (Zotero key → citing_author | primary_window | secondary_reader) labels supplied
+        # documents that carry no SOURCE ROLE line of their own, before the scope filter below (2026-09-06, the Stacks' Q2).
+        for rk, role in (obj.get("roles") or {}).items():
+            sk = supplied.get(rk) or supplied.get(f"em:{rk}")
+            if sk and role in ("citing_author", "primary_window", "secondary_reader") and not re.match(r"SOURCE ROLE: \w+", sources[sk]):
+                sources[sk] = f"SOURCE ROLE: {role}\n" + sources[sk]
         # Group passages by original source key; repeated quotations never become
-        # independent witnesses. Prefer a supplied complete source with that key.
+        # independent witnesses. Prefer a supplied complete source with that key —
+        # matched by uid OR key, with or without the em: prefix (2026-09-06, the Stacks' Q1).
         for text in obj["texts"]:
             key = text.get("uid") or text.get("key")
             if not key:
                 raise ValueError("citation text needs an original uid/key")
-            if key not in sources:
+            met = _meet(supplied, text.get("uid"), text.get("key"))
+            if met:
+                text["supplied_as"] = met
+            if not met and key not in sources:
                 parts = [p.get("section") or p.get("window") or
                          "\n".join(p.get(n, "") for n in ("before", "hit", "after"))
                          for p in text.get("passages", [])]
@@ -61,11 +105,16 @@ def prepare_citation_sources(engine_key: str, documents: dict[str, str]) -> tupl
                     sources[key] = (f"SOURCE ROLE: citing_author\nTITLE: {text.get('title', key)}\n"
                                     f"YEAR: {text.get('year') or 'unknown'}\nCOVERAGE: supplied citation witnesses\n\n{body}")
         for check in obj["checks"]:
-            key = (check.get("copy") or {}).get("uid")
+            copy = check.get("copy") or {}
+            key = copy.get("uid")
             if not key:
                 raise ValueError("citation check needs copy.uid (the held witness identity)")
-            if any(key == (t.get("uid") or t.get("key")) for t in obj["texts"]):
+            if any(_same(key, t.get("uid")) or _same(key, t.get("key")) for t in obj["texts"]):
                 raise ValueError("A and W must have distinct source identities")
+            met = _meet(supplied, copy.get("uid"), copy.get("key"))
+            if met:
+                check["supplied_as"] = met
+                key = met
             parts = []
             for win in check.get("windows", []):
                 if win.get("how") not in ("page", "section", "search"):
