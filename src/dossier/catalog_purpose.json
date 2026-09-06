@@ -46,10 +46,10 @@
         },
         {
           "engine_key": "dialectical_structure",
-          "plain_name": "contradiction map",
-          "use_when": "see the tensions a discourse cannot resolve, which side secretly depends on the other, and what it cannot think",
-          "yields": "map of tensions (tension · positions · what each excludes · how it plays out)",
-          "row_unit": "one row per tension",
+          "plain_name": "development through tensions",
+          "use_when": "trace opposed positions, responses and unresolved limits without assuming every text resolves them",
+          "yields": "position, transition and remainder tables",
+          "row_unit": "one row per supported tension or transition",
           "deliverable_kinds": [
             "stress_test",
             "briefing"
@@ -64,9 +64,9 @@
         {
           "engine_key": "counterfactual_analyzer",
           "plain_name": "what-if audit",
-          "use_when": "test claims that rest on \"had X not happened…\" — which what-ifs hold and which are rhetoric",
-          "yields": "audit of each counterfactual (the world it assumes · the causal chain · plausibility · abuse pattern)",
-          "row_unit": "one row per what-if claim",
+          "use_when": "test a supposition, the conditions it holds fixed and the strongest alternative route",
+          "yields": "supposition and dependency tables with conclusions that survive",
+          "row_unit": "one row per supposition or alternative",
           "deliverable_kinds": [
             "decision_memo",
             "comparison",
@@ -92,6 +92,21 @@
           "pairs_with": [
             "argument_architecture"
           ],
+          "fit": "ok",
+          "fit_note": ""
+        },
+        {
+          "engine_key": "modal_force_inventory",
+          "plain_name": "possibility and certainty",
+          "use_when": "separate what a text says must, may or cannot happen and under which conditions",
+          "yields": "modal claims with speakers, scope, backing and examples",
+          "row_unit": "one row per scoped possibility or necessity claim",
+          "deliverable_kinds": [
+            "stress_test",
+            "briefing",
+            "case_file"
+          ],
+          "pairs_with": [],
           "fit": "ok",
           "fit_note": ""
         }
@@ -174,9 +189,9 @@
         {
           "engine_key": "comparative_reasoning_analyzer",
           "plain_name": "comparison audit",
-          "use_when": "the material argues by comparison (A vs B, typologies, scales) and you need to know whether the comparisons hold",
-          "yields": "audit of each comparison (what is transferred · where it breaks · would other criteria reverse it)",
-          "row_unit": "one row per comparison",
+          "use_when": "test a comparison’s relevant similarities, defeating differences, criteria and alternatives",
+          "yields": "comparison audits and bounded conclusions",
+          "row_unit": "one row per comparison or supported criterion",
           "deliverable_kinds": [
             "comparison",
             "decision_memo"
@@ -191,9 +206,9 @@
         {
           "engine_key": "theory_construction_analyzer",
           "plain_name": "theory build map",
-          "use_when": "know how a theory was assembled — borrowed pieces, innovations, how it touches evidence",
-          "yields": "build map of the theoretical framework",
-          "row_unit": "one row per building block",
+          "use_when": "see how a text selects resources, combines mechanisms and bounds its contribution",
+          "yields": "construction and evidence tables retaining each distinct contribution",
+          "row_unit": "one row per input, construction move or evidential limit",
           "deliverable_kinds": [
             "reading_guide",
             "case_file"
@@ -218,6 +233,34 @@
           ],
           "fit": "ok",
           "fit_note": "researcher-leaning; rarely an executive deliverable"
+        },
+        {
+          "engine_key": "framework_components",
+          "plain_name": "framework components",
+          "use_when": "map the lenses, components and relations a text uses to explain its object",
+          "yields": "component–relation and application–limit tables",
+          "row_unit": "one row per component, relation or application",
+          "deliverable_kinds": [
+            "briefing",
+            "case_file"
+          ],
+          "pairs_with": [],
+          "fit": "ok",
+          "fit_note": ""
+        },
+        {
+          "engine_key": "reconcile_sources",
+          "plain_name": "reconcile sources",
+          "use_when": "compare how supplied sources answer shared questions and where their scope differs",
+          "yields": "shared-question reconciliation and source-attributed theme coverage",
+          "row_unit": "one row per aligned question or evidenced theme",
+          "deliverable_kinds": [
+            "briefing",
+            "case_file"
+          ],
+          "pairs_with": [],
+          "fit": "ok",
+          "fit_note": ""
         }
       ]
     },
@@ -245,10 +288,10 @@
         },
         {
           "engine_key": "concept_appropriation_tracker",
-          "plain_name": "capture register",
-          "use_when": "know who took a term and bent it to their purposes — co-optation, capture, borrowed authority",
-          "yields": "register of appropriations (term · origin · who uses it now · how it was bent · acknowledged?)",
-          "row_unit": "one row per term",
+          "plain_name": "borrowed ideas and changed use",
+          "use_when": "trace how a text credits and uses borrowed ideas, and what actually changes across supplied works",
+          "yields": "borrowing and use tables with attribution and limits",
+          "row_unit": "one row per attributed use or supported change",
           "deliverable_kinds": [
             "decoder",
             "playbook",
@@ -309,6 +352,48 @@
           "fit": "conditional",
           "fit_note": "presumes the same author across time (e.g. successive annual reports); off for mixed-author bundles",
           "applies_when": "same_author"
+        },
+        {
+          "engine_key": "compare_concept_trajectories",
+          "plain_name": "concept comparison",
+          "use_when": "compare what the same concepts mean and do across supplied works",
+          "yields": "concept-by-work map with supported continuities and changes",
+          "row_unit": "one row per aligned concept",
+          "deliverable_kinds": [
+            "briefing",
+            "case_file"
+          ],
+          "pairs_with": [],
+          "fit": "ok",
+          "fit_note": ""
+        },
+        {
+          "engine_key": "revision_presentation",
+          "plain_name": "revision record",
+          "use_when": "see how supplied works present continuity, qualification and revision",
+          "yields": "position map and revision record with earlier qualifications",
+          "row_unit": "one row per supported relation between positions",
+          "deliverable_kinds": [
+            "briefing",
+            "case_file"
+          ],
+          "pairs_with": [],
+          "fit": "ok",
+          "fit_note": ""
+        },
+        {
+          "engine_key": "meaning_in_use",
+          "plain_name": "meaning in use",
+          "use_when": "distinguish a term’s local senses, neighbors, contrasts and speakers",
+          "yields": "meaning and contrast inventories with separate evidence for each sense",
+          "row_unit": "one row per local sense or contrast",
+          "deliverable_kinds": [
+            "briefing",
+            "case_file"
+          ],
+          "pairs_with": [],
+          "fit": "ok",
+          "fit_note": ""
         }
       ]
     },
@@ -399,6 +484,20 @@
           "fit": "conditional",
           "fit_note": "single long work only; off for multi-paper bundles",
           "applies_when": "single_document"
+        },
+        {
+          "engine_key": "narrative_form_perspective",
+          "plain_name": "narrative form and perspective",
+          "use_when": "follow an exposition’s sequence, voices, time and qualifications",
+          "yields": "sequence and perspective maps suited to the text’s genre",
+          "row_unit": "one row per sequence, perspective or temporal move",
+          "deliverable_kinds": [
+            "briefing",
+            "case_file"
+          ],
+          "pairs_with": [],
+          "fit": "ok",
+          "fit_note": ""
         }
       ]
     },
@@ -473,54 +572,6 @@
     {
       "engine_key": "compare_supplied_cases",
       "why": "Research v3; withheld after P1/P2 third round (2026-09-06): PEACE/EMA attribution improves, but the PEACE finding fails after bounded synthesis repair; consequential cell spans and the Korean amendment chronology remain incomplete. See communications/study/STUDY_corpus_methods_P1_P2_third_round_2026-09-06.md."
-    },
-    {
-      "engine_key": "reconcile_sources",
-      "why": "Research v3; withheld after P1/P2 third round (2026-09-06): per-source coverage and two-key handoff pass, but French causal cells lack complete cited spans, Japanese/Korean engagement lacks a finding, and delivery uncertainty is misapplied to political support. See communications/study/STUDY_corpus_methods_P1_P2_third_round_2026-09-06.md."
-    },
-    {
-      "engine_key": "compare_concept_trajectories",
-      "why": "Second queue research definition; withheld after source review (2026-09-06): concept-by-work alignment and consequential causal/method cell support remain incomplete. See communications/study/STUDY_second_queue_2026-09-06.md."
-    },
-    {
-      "engine_key": "concept_appropriation_tracker",
-      "why": "Second queue research definition; withheld after source review (2026-09-06): the deep pair invents a Weber change already explicit in 2001; attribution spans remain incomplete. See communications/study/STUDY_second_queue_2026-09-06.md."
-    },
-    {
-      "engine_key": "revision_presentation",
-      "why": "Second queue research definition; withheld after source review (2026-09-06): later presentation is overstated as changed support and scope; earlier qualifications and cell spans are incomplete. See communications/study/STUDY_second_queue_2026-09-06.md."
-    },
-    {
-      "engine_key": "counterfactual_analyzer",
-      "why": "Second queue research definition; withheld after source review (2026-09-06): Hegel retains broken anchors and rejected citations; dependency alternatives and attribution spans need repair. See communications/study/STUDY_second_queue_2026-09-06.md."
-    },
-    {
-      "engine_key": "dialectical_structure",
-      "why": "Second queue research definition; withheld after source review (2026-09-06): Elling reverses a rival-reading attribution; Zambrana financial-limit cells lack their necessary spans. See communications/study/STUDY_second_queue_2026-09-06.md."
-    },
-    {
-      "engine_key": "modal_force_inventory",
-      "why": "Second queue research definition; withheld after source review (2026-09-06): Chen retains a broken conditional anchor and an example cell cites a different example. See communications/study/STUDY_second_queue_2026-09-06.md."
-    },
-    {
-      "engine_key": "meaning_in_use",
-      "why": "Second queue research definition; withheld after source review (2026-09-06): consequential senses, contrasts and source voices are not fully supported by their cited spans. See communications/study/STUDY_second_queue_2026-09-06.md."
-    },
-    {
-      "engine_key": "framework_components",
-      "why": "Second queue research definition; withheld after source review (2026-09-06): a within-paper comparison uses a corpus dimension; named mechanisms and examples lack complete spans. See communications/study/STUDY_second_queue_2026-09-06.md."
-    },
-    {
-      "engine_key": "narrative_form_perspective",
-      "why": "Second queue research definition; withheld after source review (2026-09-06): subsea retains rejected citations; temporal conditions and attributed voices need complete spans. See communications/study/STUDY_second_queue_2026-09-06.md."
-    },
-    {
-      "engine_key": "theory_construction_analyzer",
-      "why": "Second queue research definition; withheld after source review (2026-09-06): Promise retains rejected synthesis citations; construction cells need granular mechanism evidence. See communications/study/STUDY_second_queue_2026-09-06.md."
-    },
-    {
-      "engine_key": "comparative_reasoning_analyzer",
-      "why": "Second queue research definition; withheld after source review (2026-09-06): new audit questions replace the taxonomy, but final tables retain rejected or broadened findings and incomplete alternative evidence. See communications/study/STUDY_second_queue_2026-09-06.md."
     }
   ],
   "deliverable_hints": {

@@ -215,7 +215,7 @@ def test_corpus_synthesis_repairs_once_or_refuses_output(repair_succeeds):
     assert recorded[0].wall['incomplete_cross_document_ids'] == ['F1']
 
 
-def test_unreleased_corpus_methods_load_but_are_not_offered():
+def test_p1_stays_withheld_and_p2_is_offered_after_source_adjudication():
     from src.dossier.common import engine_catalog
     from src.dossier.catalog import purpose_catalog, resolve_path_request
     from src.dossier.schemas import PathRequest, PathStepRequest
@@ -224,11 +224,15 @@ def test_unreleased_corpus_methods_load_but_are_not_offered():
     catalog=purpose_catalog(n_docs=3)
     picker_keys={e['engine_key'] for g in catalog['groups'] for e in g['engines']}
     excluded={e['engine_key'] for e in catalog['excluded']}
-    for key in ('compare_supplied_cases','reconcile_sources'):
-        assert key in all_keys and key in excluded
-        assert key not in offered_keys and key not in picker_keys
-        with pytest.raises(ValueError):
-            resolve_path_request(PathRequest(steps=[PathStepRequest(engine_key=key,depth='deep')]))
+    key='compare_supplied_cases'
+    assert key in all_keys and key in excluded
+    assert key not in offered_keys and key not in picker_keys
+    with pytest.raises(ValueError):
+        resolve_path_request(PathRequest(steps=[PathStepRequest(engine_key=key,depth='deep')]))
+    key='reconcile_sources'
+    assert key in all_keys and key not in excluded
+    assert key in offered_keys and key in picker_keys
+    resolve_path_request(PathRequest(steps=[PathStepRequest(engine_key=key,depth='deep')]))
     assert {'argument_architecture','conditions_of_possibility_analyzer','inferential_commitment_mapper','epistemological_method_detector'} <= offered_keys
 
 

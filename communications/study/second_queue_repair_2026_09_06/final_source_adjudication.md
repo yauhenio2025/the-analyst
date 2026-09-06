@@ -1,0 +1,9 @@
+# Final release adjudication
+
+The two final-repair source memos were committed in 778790a before the four new ratings. The selected S3 artifact corrects the ending order in prose, finding F16 and the actual sequence table; both raters find the source interpretation reliable, and Sol reports no decisive error. S3 releases under the inventory exception. Its earlier incorrect table remains preserved as a superseded artifact.
+
+The selected A3 artifact contains separate critical-minerals and venture-capital comparisons with their actors, financing/control mechanisms and bounded conclusions. Sonnet rates it 8.00 against the unchanged original's 7.67. Both source reads and raters find no fabricated finding or attribution reversal. Sol still identifies contradictory scope-review metadata; this is disclosed and does not restore a rejected row in any actual table.
+
+All eleven selected second-queue outputs pass retained-anchor, actual-table-ID and desk-handoff checks. All required Sonnet comparisons now pass; C1 uses the explicit inventory exception despite its lower reading-rubric score. No second-queue method retains a confirmed (b)/(d) defect in the selected release artifact. P2's unchanged third-round output qualifies under the separately recorded source adjudication. Release all eleven and P2 in the recorded destination groups. P1 stays withheld as instructed; its failed PEACE repair and unsupported proposed/effective decree identity are not repaired here.
+
+The first-pass memos and scores were not rewritten to erase the S3 miss or A3 score deficit. Complete local quotation packages were not reinstated as a release gate. Remaining scope-report contradictions, the incorrect G2 no-dates limitation, local citation gaps and incomplete coverage are stated in the report. They are not hidden behind the passing anchor checks.

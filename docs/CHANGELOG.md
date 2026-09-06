@@ -5,6 +5,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Changed (2026-09-06 — second queue release under the first-queue standard)
+
+- Released all eleven second-queue methods in Follow the words, Test a position, See the structure and Read it properly. Released `reconcile_sources` from its unchanged P2 third-round output; `compare_supplied_cases` stays withheld after its failed final repair. Picker, planner and ordinary paths now expose the released methods.
+- Strengthened shared anchor/critic laws to require the actor and asserted predicate, using separate spans when necessary. Checked single-document tables now reconcile applied rulings; fuller confirmed critic anchors replace short matching prefixes. Ledger grammar is unchanged. Deliberately refreshed the 68-prompt fixture in the same shared-law commit; Claude reviewed the runner changes.
+- Repaired cards and briefs without changing analytical questions. Source reviews and independent scores led to two bounded final repairs: S3 now preserves the source’s ending order, and A3 audits financial/institutional applications as distinct comparisons. All 198 selected findings, 270 retained anchors and table/desk IDs pass; all required Sonnet original comparisons pass, with the stated inventory exceptions. [Release report, preserved attempts and scores](../communications/study/STUDY_second_queue_repair_2026-09-06.md).
+- Known round cost **USD7.555422**, including failures, final repairs and Claude review; a terminated Claude CLI attempt has unreceipted cost. The exact offline suite reports **1,303 passed, 2 skipped**, the same 11 documented failures (including the old events-store ordering failure), and 8 old collection errors; no new failures.
+
 ### Changed (2026-09-06 — P1/P2 third round, release withheld)
 
 - P1/P2 v3 prompts and cards require complete local evidence packets, a finding for each counted source, exact lineage separators and a self-check of the delivered table. P1 positively distinguishes PEACE/EMA; P2 corrects autonomy coverage and separates record integrity from source meaning. No runner, composer or wall changes.

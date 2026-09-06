@@ -1,0 +1,41 @@
+{
+  "command": "python -m pytest tests -q --continue-on-collection-errors --ignore=tests/test_study_ideas_material_2026_09_05.py",
+  "summary": "11 failed, 1303 passed, 2 skipped, 416 warnings, 8 errors in 101.15s (0:01:41)",
+  "failures": [
+    "tests/test_events_store.py::test_context_scope_merges_and_restores",
+    "tests/test_llm_backends.py::test_anthropic_thinking_config_uses_budget_tokens",
+    "tests/test_llm_backends.py::test_anthropic_thinking_config_clamps_to_available_max_tokens",
+    "tests/test_llm_backends.py::test_anthropic_thinking_config_skips_when_max_tokens_too_small",
+    "tests/test_manifest_trace.py::test_aoi_live_controls_keep_served_outputs_identical_with_and_without_renderer_enforcement[proof-round5-adaptive-aoi-dossier-final-1774100000]",
+    "tests/test_manifest_trace.py::test_aoi_live_controls_keep_served_outputs_identical_with_and_without_renderer_enforcement[proof-round5-adaptive-aoi-comparison-final-1774100000]",
+    "tests/test_phase3_prompt_budget.py::TestPhase3DocumentAssembly::test_phase3_excludes_raw_source_corpus",
+    "tests/test_phase3_prompt_budget.py::TestPhase3DocumentAssembly::test_phase3_mentions_upstream_provenance",
+    "tests/test_phase3_prompt_budget.py::TestPhase3DocumentAssembly::test_phase3_much_smaller_than_full_corpus",
+    "tests/test_phase3_prompt_budget.py::TestRepairedPromptShape::test_budget_helper_matches_composed_prompt_total",
+    "tests/test_variant_generator.py::TestGenerateSubRendererVariants::test_empty_existing_hints"
+  ],
+  "collection_errors": [
+    "tests/test_adaptive_planner.py",
+    "tests/test_bounded_release_gate.py",
+    "tests/test_frozen_governance_pack.py",
+    "tests/test_phase1c_genealogy_direct_sections.py",
+    "tests/test_source_backed_readiness.py",
+    "tests/test_task_planner.py",
+    "tests/test_task_router.py",
+    "tests/test_workflow_runner_auto_presentation.py"
+  ],
+  "same_failure_ids_as_phase1": true,
+  "same_collection_errors_as_phase1": true,
+  "focused_release": "44 passed",
+  "baseline_note": "The ten listed baseline failures plus the events-store ordering failure already documented in the first-round protocol; eight old collection errors. Seven initially failing prose-only mock fixtures were explicitly made table-free; no production question changed.",
+  "tested_file_sha256": {
+    "src/dossier/catalog_purpose.json": "087ee166ff3911f581456f72e57632bfaba7421dec0b7f6681e168781d406c92",
+    "tests/test_second_queue_repair_2026_09_06.py": "f00d3f73cc0e30f60753aee674b904ff352b4ea9614ca239f7e24f2fbcd51738",
+    "tests/test_corpus_methods_P1_P2_2026_09_06.py": "5d6969cc282035589fe2d29c9493ad2661b2def4a697529994f0c031f047088b",
+    "src/executor/process_runner.py": "a0803533f0e76f842856975c2604baa8a714a5daf8c33f92334b3e5f0946b346",
+    "src/stages/process_composer.py": "133e86b8b87e2ae30b37c1d47e35f6394214d2bf733e10fdce79ed929dd32d89",
+    "src/operationalizations/definitions/comparative_reasoning_analyzer.yaml": "cd14345373de52b9b28468750fea3d8f39059c4bd0945bf88fe43ad86b5ac391",
+    "src/operationalizations/definitions/narrative_form_perspective.yaml": "e96f97631ac2f758adfee6f9fe2894c0a0cf95a557b9bac527f3c5035fe58a37"
+  },
+  "after_final_card_repairs": true
+}
