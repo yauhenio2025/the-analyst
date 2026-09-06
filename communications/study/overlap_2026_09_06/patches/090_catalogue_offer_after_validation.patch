@@ -1,0 +1,42 @@
+# Deferred proposal. Base: 6e37527bf75fd32fc24bbd59c52f9bf611cf1b33. Recheck newer HEAD before applying.
+--- a/src/dossier/catalog_purpose.json
++++ b/src/dossier/catalog_purpose.json
+@@ -906,6 +906,38 @@
+           ],
+           "fit": "ok",
+           "fit_note": "the plan's themes are the spine; readers' themes are labelled additions"
++        },
++        {
++          "engine_key": "citation_overlap_map",
++          "plain_name": "two authors on a shared figure",
++          "use_when": "both authors have independently authored passages citing the same person, with an approved overlap table",
++          "yields": "works overlap, per-passage moves and stances, topics, dated trajectories and qualified asymmetry with both authors’ anchors",
++          "row_unit": "one row per side passage or supported cross-author finding",
++          "deliverable_kinds": [
++            "briefing",
++            "case_file"
++          ],
++          "pairs_with": [
++            "citation_overlap_synthesis"
++          ],
++          "fit": "ok",
++          "fit_note": "Offer only after the documented real source/owner-first/both-order gate; requires author-aware adapter and provenance admission."
++        },
++        {
++          "engine_key": "citation_overlap_synthesis",
++          "plain_name": "the shared citation canon",
++          "use_when": "completed shared-person maps and both side ledgers with approved counts, residues and collective blocks",
++          "yields": "argued joint reliance and asymmetry, canon hypotheses, disagreements, periods, scoped residues and per-side audited fidelity",
++          "row_unit": "one row per supported cross-person finding or scoped metadata report",
++          "deliverable_kinds": [
++            "briefing",
++            "case_file"
++          ],
++          "pairs_with": [
++            "citation_overlap_map"
++          ],
++          "fit": "ok",
++          "fit_note": "Offer only after the documented real source/owner-first/both-order gate; requires author-aware adapter and provenance admission."
+         }
+       ]
+     }

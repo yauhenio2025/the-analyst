@@ -1,0 +1,1313 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "overlap-packet/v1"
+    },
+    "packet_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "fixture_only": {
+      "type": "boolean"
+    },
+    "authors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "uid": {
+            "type": "string",
+            "minLength": 1
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "uid",
+          "name"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "overlap_table": {
+      "type": "object",
+      "properties": {
+        "role": {
+          "const": "overlap_table"
+        },
+        "doc_key": {
+          "const": "context:overlap"
+        },
+        "uid": {
+          "type": "string",
+          "minLength": 1
+        },
+        "approved": {
+          "type": "boolean"
+        },
+        "complete_union": {
+          "type": "boolean"
+        },
+        "authors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "uid": {
+                "type": "string",
+                "minLength": 1
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "uid",
+              "name"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "settings": {
+          "type": "object",
+          "properties": {
+            "min_events_per_side": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "work_rule": {
+              "enum": [
+                "key",
+                "registry_work",
+                "edition"
+              ]
+            },
+            "coauthored_policy": {
+              "const": "exclude_both"
+            },
+            "kinds": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "types": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "self_citations": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "min_events_per_side",
+            "work_rule",
+            "coauthored_policy",
+            "kinds",
+            "types",
+            "self_citations"
+          ],
+          "additionalProperties": false
+        },
+        "rows": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "uid": {
+                "type": "string",
+                "minLength": 1
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "fixture_only": {
+                "type": "boolean"
+              },
+              "by_author": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "object",
+                  "properties": {
+                    "count": {
+                      "type": [
+                        "integer",
+                        "null"
+                      ]
+                    },
+                    "events": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "event_id": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "ref_id": {
+                            "type": [
+                              "string",
+                              "integer"
+                            ]
+                          },
+                          "text_key": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "year": {
+                            "type": [
+                              "integer",
+                              "null"
+                            ]
+                          },
+                          "kind": {
+                            "enum": [
+                              "reference",
+                              "footnote",
+                              "intext",
+                              "mention",
+                              "bibliography_only"
+                            ]
+                          },
+                          "work_keys": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          }
+                        },
+                        "required": [
+                          "event_id",
+                          "ref_id",
+                          "text_key",
+                          "year",
+                          "kind",
+                          "work_keys"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "works": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "key": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "title": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "registry_work_id": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "edition_id": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "event_ids": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "held": {
+                            "type": "boolean"
+                          },
+                          "fetched": {
+                            "type": "boolean"
+                          },
+                          "wanted": {
+                            "type": "boolean"
+                          },
+                          "copies": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "key": {
+                                  "type": "string",
+                                  "minLength": 1
+                                },
+                                "edition": {
+                                  "type": [
+                                    "string",
+                                    "null"
+                                  ]
+                                },
+                                "how": {
+                                  "enum": [
+                                    "works",
+                                    "library",
+                                    "resolve",
+                                    "editions"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "key",
+                                "edition",
+                                "how"
+                              ],
+                              "additionalProperties": false
+                            }
+                          }
+                        },
+                        "required": [
+                          "key",
+                          "title",
+                          "registry_work_id",
+                          "edition_id",
+                          "event_ids",
+                          "held",
+                          "fetched",
+                          "wanted",
+                          "copies"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "materials": {
+                      "type": "object"
+                    },
+                    "jobs": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "job_id": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "status": {
+                            "enum": [
+                              "queued",
+                              "running",
+                              "done",
+                              "failed"
+                            ]
+                          },
+                          "engine_keys": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "canonical_uri": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "job_id",
+                          "status",
+                          "engine_keys",
+                          "canonical_uri"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "count",
+                    "events",
+                    "works"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "common_work_keys": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            },
+            "required": [
+              "uid",
+              "name",
+              "fixture_only",
+              "by_author",
+              "common_work_keys"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "selected": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "selection_changes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "person_uid": {
+                "type": "string",
+                "minLength": 1
+              },
+              "action": {
+                "enum": [
+                  "add",
+                  "strike"
+                ]
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "person_uid",
+              "action",
+              "reason"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "below_threshold": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "unselected_shared": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "coverage": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "held": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "inspected": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "missing": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "unknown_years": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "ledger_complete": {
+                "type": "boolean"
+              },
+              "aliases_resolved": {
+                "type": "boolean"
+              },
+              "snapshot": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "held",
+              "inspected",
+              "missing",
+              "unknown_years",
+              "ledger_complete",
+              "aliases_resolved",
+              "snapshot"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "residues": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "person_uids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "total": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "completeness": {
+                "enum": [
+                  "all",
+                  "top_n",
+                  "unknown"
+                ]
+              },
+              "top_n": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "omitted": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "person_uids",
+              "total",
+              "completeness",
+              "top_n",
+              "omitted"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "collective": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "terms": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "events": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "event_id": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "source_doc_key": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "anchor": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "locus": {
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "event_id",
+                    "source_doc_key",
+                    "anchor",
+                    "locus"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "analysis_status": {
+                "enum": [
+                  "not_run",
+                  "unavailable"
+                ]
+              }
+            },
+            "required": [
+              "terms",
+              "events",
+              "analysis_status"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "excluded_coauthored": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "minLength": 1
+              },
+              "author_uids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "events": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "key",
+              "author_uids",
+              "events"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "metrics": {
+          "type": "object",
+          "properties": {
+            "persons": {
+              "type": "object",
+              "properties": {
+                "intersection": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "union": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "complete": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "intersection",
+                "union",
+                "complete"
+              ],
+              "additionalProperties": false
+            },
+            "works": {
+              "type": "object",
+              "properties": {
+                "intersection": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "union": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "complete": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "intersection",
+                "union",
+                "complete"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "persons",
+            "works"
+          ],
+          "additionalProperties": false
+        },
+        "costs": {
+          "type": "object",
+          "properties": {
+            "total_usd": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "status": {
+              "enum": [
+                "measured",
+                "unmeasured"
+              ]
+            }
+          },
+          "required": [
+            "total_usd",
+            "status"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "role",
+        "doc_key",
+        "uid",
+        "approved",
+        "complete_union",
+        "authors",
+        "settings",
+        "rows",
+        "selected",
+        "selection_changes",
+        "below_threshold",
+        "unselected_shared",
+        "coverage",
+        "residues",
+        "collective",
+        "excluded_coauthored",
+        "metrics",
+        "costs"
+      ],
+      "additionalProperties": false
+    },
+    "plan": {
+      "type": "object",
+      "properties": {
+        "role": {
+          "const": "plan"
+        },
+        "doc_key": {
+          "const": "context:plan"
+        },
+        "sections": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1
+              },
+              "questions": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            },
+            "required": [
+              "id",
+              "title",
+              "questions"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "themes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "minLength": 1
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1
+              },
+              "origin": {
+                "enum": [
+                  "plan_spine",
+                  "reader_addition"
+                ]
+              }
+            },
+            "required": [
+              "key",
+              "label",
+              "origin"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "warnings": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "role",
+        "doc_key",
+        "sections",
+        "themes",
+        "warnings"
+      ],
+      "additionalProperties": false
+    },
+    "pairs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "pair_key": {
+            "type": "string",
+            "minLength": 1
+          },
+          "doc_key": {
+            "type": "string",
+            "minLength": 1
+          },
+          "author_uid": {
+            "type": "string",
+            "minLength": 1
+          },
+          "member_uid": {
+            "type": "string",
+            "minLength": 1
+          },
+          "fixture_only": {
+            "type": "boolean"
+          },
+          "ledgers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "engine_key": {
+                  "enum": [
+                    "citation_engagement_map",
+                    "citation_fidelity_audit",
+                    "citation_reception_map",
+                    "citation_overlap_map"
+                  ]
+                },
+                "artifact_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "artifact_sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "artifact_text": {
+                  "type": "string"
+                },
+                "rows": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "row_id": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "ref": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "dimension": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "claim": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "raw_row": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "status": {
+                        "enum": [
+                          "confirmed",
+                          "rejected",
+                          "unresolved",
+                          "superseded"
+                        ]
+                      },
+                      "anchor_status": {
+                        "enum": [
+                          "verified",
+                          "failed",
+                          "unverifiable"
+                        ]
+                      },
+                      "canonical_ref": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "event_ids": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      },
+                      "anchors": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "text": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "source_doc_key": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "locus": {
+                              "type": "object"
+                            },
+                            "voice": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "required": [
+                            "text",
+                            "source_doc_key",
+                            "locus",
+                            "voice"
+                          ],
+                          "additionalProperties": false
+                        }
+                      },
+                      "fields": {
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "row_id",
+                      "ref",
+                      "dimension",
+                      "claim",
+                      "raw_row",
+                      "status",
+                      "anchor_status",
+                      "canonical_ref",
+                      "event_ids",
+                      "anchors",
+                      "fields"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "reviewed_empty": {
+                  "type": "boolean"
+                },
+                "empty_reason": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "engine_key",
+                "artifact_id",
+                "artifact_sha256",
+                "artifact_text",
+                "rows",
+                "reviewed_empty"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "lens_status": {
+            "type": "object",
+            "properties": {
+              "citation_engagement_map": {
+                "enum": [
+                  "run",
+                  "not_run",
+                  "unavailable"
+                ]
+              },
+              "citation_fidelity_audit": {
+                "enum": [
+                  "run",
+                  "not_run",
+                  "unavailable"
+                ]
+              },
+              "citation_reception_map": {
+                "enum": [
+                  "run",
+                  "not_run",
+                  "unavailable"
+                ]
+              },
+              "citation_overlap_map": {
+                "enum": [
+                  "run",
+                  "not_run",
+                  "unavailable"
+                ]
+              }
+            },
+            "required": [
+              "citation_engagement_map",
+              "citation_fidelity_audit",
+              "citation_reception_map",
+              "citation_overlap_map"
+            ],
+            "additionalProperties": false
+          },
+          "tables": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "table_key": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "markdown": {
+                  "type": "string"
+                },
+                "row_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              },
+              "required": [
+                "table_key",
+                "markdown",
+                "row_refs"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "memo": {
+            "type": "object",
+            "properties": {
+              "markdown": {
+                "type": "string"
+              },
+              "canonical_uri": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "markdown",
+              "canonical_uri"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "pair_key",
+          "doc_key",
+          "author_uid",
+          "member_uid",
+          "fixture_only",
+          "ledgers",
+          "lens_status",
+          "tables",
+          "memo"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "shared_maps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "person_uid": {
+            "type": "string",
+            "minLength": 1
+          },
+          "map_key": {
+            "type": "string",
+            "minLength": 1
+          },
+          "doc_key": {
+            "type": "string",
+            "minLength": 1
+          },
+          "fixture_only": {
+            "type": "boolean"
+          },
+          "ledger": {
+            "type": "object",
+            "properties": {
+              "engine_key": {
+                "enum": [
+                  "citation_engagement_map",
+                  "citation_fidelity_audit",
+                  "citation_reception_map",
+                  "citation_overlap_map"
+                ]
+              },
+              "artifact_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "artifact_sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "artifact_text": {
+                "type": "string"
+              },
+              "rows": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "row_id": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "ref": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "dimension": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "claim": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "raw_row": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "status": {
+                      "enum": [
+                        "confirmed",
+                        "rejected",
+                        "unresolved",
+                        "superseded"
+                      ]
+                    },
+                    "anchor_status": {
+                      "enum": [
+                        "verified",
+                        "failed",
+                        "unverifiable"
+                      ]
+                    },
+                    "canonical_ref": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "event_ids": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    },
+                    "anchors": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "text": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "source_doc_key": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "locus": {
+                            "type": "object"
+                          },
+                          "voice": {
+                            "type": "string",
+                            "minLength": 1
+                          }
+                        },
+                        "required": [
+                          "text",
+                          "source_doc_key",
+                          "locus",
+                          "voice"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "fields": {
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "row_id",
+                    "ref",
+                    "dimension",
+                    "claim",
+                    "raw_row",
+                    "status",
+                    "anchor_status",
+                    "canonical_ref",
+                    "event_ids",
+                    "anchors",
+                    "fields"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "reviewed_empty": {
+                "type": "boolean"
+              },
+              "empty_reason": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "engine_key",
+              "artifact_id",
+              "artifact_sha256",
+              "artifact_text",
+              "rows",
+              "reviewed_empty"
+            ],
+            "additionalProperties": false
+          },
+          "memo": {
+            "type": "object",
+            "properties": {
+              "markdown": {
+                "type": "string"
+              },
+              "canonical_uri": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "markdown",
+              "canonical_uri"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "person_uid",
+          "map_key",
+          "doc_key",
+          "fixture_only",
+          "ledger",
+          "memo"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "source_documents": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "author_uid": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "role": {
+            "enum": [
+              "citing_author",
+              "primary_window",
+              "secondary_reader"
+            ]
+          },
+          "year": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "coauthors": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "fixture_only": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "text",
+          "sha256",
+          "author_uid",
+          "role",
+          "year",
+          "coauthors",
+          "fixture_only"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "packet_id",
+    "revision",
+    "fixture_only",
+    "authors",
+    "overlap_table",
+    "plan",
+    "pairs",
+    "shared_maps",
+    "source_documents"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}
