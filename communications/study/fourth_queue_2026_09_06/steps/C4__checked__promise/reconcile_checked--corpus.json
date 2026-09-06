@@ -1,0 +1,244 @@
+{
+  "step": "reconcile_checked",
+  "kind": "synthesize",
+  "dimension": "",
+  "doc": "",
+  "model_requested": "openrouter/openai/gpt-5.6-sol",
+  "model_used": "openrouter/openai/gpt-5.6-sol",
+  "input_tokens": 28786,
+  "output_tokens": 5620,
+  "duration_ms": 70619,
+  "cost_usd": 0.1138,
+  "retries": 0,
+  "wall": {
+    "rows": 19,
+    "with_anchor": 19,
+    "verified": 19,
+    "trimmed": 0,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 28,
+    "verified_anchors": 28,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "checked",
+      "scope": "retained_ledger",
+      "missing_rejected_ids": [],
+      "missing_other_ids": []
+    },
+    "synthesis_contract": {
+      "failed_ids": [],
+      "incomplete_cross_document_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "unknown_dimensions": [],
+      "missing_ledger": false,
+      "parse_error": "",
+      "incomplete_invocation": false
+    },
+    "synthesis_repair_attempts": [],
+    "rows_without_dimension": 0,
+    "check_ruling_coverage": {
+      "original_count": 16,
+      "explicitly_ruled_count": 16,
+      "missing_or_unruled_ids": [],
+      "unexpected_nonadded_ids": [],
+      "invalid_original_status_ids": [],
+      "duplicate_original_ids": [],
+      "duplicate_ruling_ids": [],
+      "coverage_complete": true
+    },
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "target",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Abstract",
+          "Sections I-IV",
+          "Notes"
+        ],
+        "coverage": "complete",
+        "criterion": "Identify a central source concept and distinguish its local causal use from definition, constitution, association, and analogy.",
+        "basis": "Confirmed findings include the cyclical symbolic‑construction nature (F1), the communicative classification of the employment contract (F16), and the added direct analogy (V.F2). A rejected analogy finding (F15) was replaced by a properly anchored miss.",
+        "limitations": [
+          "The selected target is one central mechanism in a larger argument about capitalism as religion."
+        ],
+        "finding_ids": [
+          "F1",
+          "F16",
+          "F18"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "Anchors verified: F1 captures the myth cycle; F16 captures the non‑causal communicative relation; V.F2 captures the religious analogy. F15 was rejected for an incomplete anchor; its intended content is now in V.F2.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "as_cause",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Abstract",
+          "Sections I-IV",
+          "Notes"
+        ],
+        "coverage": "complete",
+        "criterion": "Retain claims in which the selected concept causes, enables, channels, or blocks an outcome.",
+        "basis": "Confirmed findings show paradigms channel search (F3), motivate coordination and legitimate power asymmetries (F4), create stable markets and channel investment (F9), and lose their growth‑inducing capacity after institutionalization (F10). An additional bounded‑rationality claim was added (V.F4).",
+        "limitations": [
+          "The relations are theoretical and interpretive; no effect sizes or controlled comparisons are supplied."
+        ],
+        "finding_ids": [
+          "F3",
+          "F4",
+          "F9",
+          "F10",
+          "F20"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "All cited anchors were checked against the source and are verbatim. F3, F4, F9, F10 anchors directly support the causal claims. V.F4 supplies a further supported directional effect.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "as_effect",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Abstract",
+          "Sections I-IV",
+          "Notes"
+        ],
+        "coverage": "complete",
+        "criterion": "Retain claims identifying what produces, constructs, sustains, or transforms the selected concept.",
+        "basis": "Supported findings include the generation of basic knowledge by entrepreneurs/inventors (F6) and the creation of paradigms through expert–economic interaction (V.F1). The original F2 was narrowed to only the linking claim, while the creation claim is now provided by V.F1.",
+        "limitations": [
+          "The upstream actor configurations are illustrative rather than systematically compared."
+        ],
+        "finding_ids": [
+          "F6",
+          "F17"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "F6 anchor verified; V.F1 anchor covers the creation through interaction. F2 was weakened and its creation part moved to V.F1.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "mechanisms",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Abstract",
+          "Sections I-IV",
+          "Notes"
+        ],
+        "coverage": "complete",
+        "criterion": "Retain ordered causal links and their enabling or blocking conditions, without treating logical implication or constitution as causation.",
+        "basis": "Supported findings include the resonance/self‑fulfilling mechanism (F7), the requirement of creative labor and external cooperation (F8, revised), and the lock‑in‑to‑crisis sequence (F11). Added finding V.F3 captures the redemption of capital’s promises through myth construction/deconstruction.",
+        "limitations": [
+          "Several mediating links are asserted rather than empirically demonstrated; timing and magnitudes are absent."
+        ],
+        "finding_ids": [
+          "F7",
+          "F8",
+          "F11",
+          "F19"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "F7, F11 anchors verified. F8 was narrowed to remove unsupported mediation claim; that mediation role is now partially reflected in V.F3. All anchors are verbatim and support the stated links.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "reciprocity",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Abstract",
+          "Sections I-IV",
+          "Notes"
+        ],
+        "coverage": "complete",
+        "criterion": "Retain explicit feedback edges, interventions, and counterfactuals while distinguishing observed relations from interpretive or hypothetical ones.",
+        "basis": "Supported findings include the communication‑diffusion‑application feedback (F5), the old‑to‑new myth succession (F12), the blocking interpretation of market radicalism (F13), and the conditional depressive‑spiral prediction (F14).",
+        "limitations": [
+          "No feedback strength is measured; market radicalism is interpretive and the halt scenario is hypothetical."
+        ],
+        "finding_ids": [
+          "F5",
+          "F12",
+          "F13",
+          "F14"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "All cited anchors are verbatim and directly support the reciprocal or conditional claims.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 25080
+}

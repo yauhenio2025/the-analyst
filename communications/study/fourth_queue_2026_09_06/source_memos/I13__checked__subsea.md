@@ -1,0 +1,15 @@
+# Source read: I13__checked__subsea
+
+Output SHA256: `e4b7650c3a37519fd1e6f04e43633afd26e2f322441409c650a93a24464c06c7`
+
+Written before independent Sonnet/Sol scores. Codex reviewed the delivered output, its findings and actual tables against the supplied paper; source-side orientation and qualifications are recorded in [source_orientation.md](../source_orientation.md). This is a textual source check, not independent verification of the paper’s claims.
+
+The delivered transaction register and changed-holdings table preserve the key source distinctions. Huawei's majority-stake sale is not assigned an exact stake or consideration. HMN's subsidized bid, SubCom's reduced proposal and the later award are distinct records; financing amount is not confused with proposal price. The Chinese withdrawals retain China Unicom, and unnamed Malaysian/Indonesian entrants remain unnamed. PEACE's operational year is separately anchored in F18; EMA's contract is attributed to reports; Orange's memoranda do not become an investment or equity stake. F17 explicitly attaches the reaction to EMA while keeping PEACE's route similarity separate.
+
+The ASN sequence is particularly useful for the live numbers-and-sequence path: 2012 failed Orange/FSI intervention, 2016 Nokia acquisition of Alcatel-Lucent, June 2024 negotiations and November 80%/€350m deal, with the later remaining-20% purchase still an intention. It neither invents a closing day nor totals incomparable valuations. Existing Orange 13.5%/9.5% public holdings are context, not new transactions. The source's later nationalized wording would support a stronger majority-state-ownership status, but the cautious agreed-deal wording is not a reversal. No rejected original PEACE operational predicate survives unsupported: the full short operational sentence appears as F18 and is cited in the table.
+
+Table IDs match their final ledger meanings. F13/F14 split across source line-wrap syllables, which normalize under existing production rules; F15 is over the nominal short-span size but verified. Several local referents need context: F3's company is HMN, F11's It is Orange, and F9's “which” sits after the Hengtong-subsidiary apposition. The paper supports a partnership in the PEACE/Hengtong corporate arrangement; the output treats that as the owner partnership without inferring telecom equity. This is a referent-locality caution, not evidence for ownership shares. The appended patterns scope is inconclusive, so complete coverage prose must not be read as exhaustive certification. No fabricated deal, precise unknown date, market-wide trend or surviving rejected-row cell was found.
+
+Mechanical record (existing production normalization): 18 rows, 20/20 anchors verified; failed IDs []; missing table IDs []. These checks establish matching spans and IDs, not semantic entailment.
+
+**Pre-score disposition:** Source PASS for the inventory, pending final coded audit. Legacy-control generation failed and will be replaced separately; retain scope and local-referent limitations.

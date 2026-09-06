@@ -1,0 +1,254 @@
+{
+  "step": "check",
+  "kind": "verify",
+  "dimension": "",
+  "doc": "",
+  "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+  "model_used": "openrouter/deepseek/deepseek-v4-pro",
+  "input_tokens": 22239,
+  "output_tokens": 16255,
+  "duration_ms": 247173,
+  "cost_usd": 0.0571,
+  "retries": 0,
+  "wall": {
+    "rows": 20,
+    "with_anchor": 20,
+    "verified": 18,
+    "trimmed": 3,
+    "anchor_rate": 0.9,
+    "failed_ids": [
+      "F11",
+      "F13"
+    ],
+    "duplicate_ids": [],
+    "missing_cited": [
+      "F14"
+    ],
+    "anchors": 26,
+    "verified_anchors": 24,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "checked",
+      "scope": "retained_ledger",
+      "missing_rejected_ids": [
+        "F14"
+      ],
+      "missing_other_ids": []
+    },
+    "check_in": 18,
+    "check_confirmed": 14,
+    "check_weakened": 3,
+    "check_rejected": 1,
+    "check_added": 3,
+    "check_added_dropped": 1,
+    "check_carried": 0,
+    "check_unverified": 2,
+    "check_ruling_coverage": {
+      "original_count": 18,
+      "explicitly_ruled_count": 18,
+      "missing_or_unruled_ids": [],
+      "unexpected_nonadded_ids": [],
+      "invalid_original_status_ids": [],
+      "duplicate_original_ids": [],
+      "duplicate_ruling_ids": [],
+      "coverage_complete": true
+    },
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "references",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "article body",
+          "notes",
+          "references"
+        ],
+        "coverage": "complete",
+        "criterion": "Named works or thinkers invoked in the argument or listed in the references, with in‑text versus bibliography‑only status and supplied access distinguished.",
+        "basis": "No reference‑specific findings were extracted or verified; the text contains many in‑text citations but the extraction did not produce rows for this dimension.",
+        "limitations": [
+          "This does not establish absence of references; the extraction omitted this dimension."
+        ],
+        "finding_ids": [],
+        "review_state": "unchecked",
+        "review_basis": "The original scope outcome incorrectly claimed inconclusive with F1, a proposition finding; the dimension lacks reference‑specific findings.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Finding identity does not belong to the declared scope"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "propositions",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "article body",
+          "notes"
+        ],
+        "coverage": "complete",
+        "criterion": "A proposition is explicitly assigned by the citing voice to an identified source while preserving attribution and qualification.",
+        "basis": "Attributions to Jaeggi, Kitcher, Kuhn, Honneth, Hegel, and Lakatos are anchored in the text.",
+        "limitations": [
+          "Fidelity to unsupplied sources cannot be checked."
+        ],
+        "finding_ids": [
+          "F1",
+          "F5",
+          "F9",
+          "F19",
+          "F20",
+          "F21"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "Anchors verified; one original finding rejected and replaced with a properly anchored miss.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "uses",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "article body",
+          "notes"
+        ],
+        "coverage": "complete",
+        "criterion": "The citing passage uses an invocation as support, criticism, method, example, or background in relation to a local claim.",
+        "basis": "Uses of Kitcher, Dewey, Kuhn, Kuukkanen, Roth, Giddens, Searle, and Allen are anchored.",
+        "limitations": [
+          "Some findings were weakened to match anchor evidence."
+        ],
+        "finding_ids": [
+          "F4",
+          "F6",
+          "F8",
+          "F10",
+          "F11",
+          "F12",
+          "F13",
+          "F15",
+          "F16",
+          "F17"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "All uses are anchored; weakened findings still support the dimension.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Findings in this scope lost anchor evidence; this does not establish absence",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "clusters",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "article body",
+          "notes"
+        ],
+        "coverage": "complete",
+        "criterion": "Two or more references are textually grouped or opposed around a shared question, without treating co‑citation as proof of mutual influence.",
+        "basis": "Moralists, historicists, and the Jaeggi‑Kuhn parallel are grouped in the text.",
+        "limitations": [
+          "Groupings are Chen’s local constructions."
+        ],
+        "finding_ids": [
+          "F2",
+          "F3",
+          "F7"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "Anchors support the groupings.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "recognition",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "introduction",
+          "article body",
+          "conclusion"
+        ],
+        "coverage": "complete",
+        "criterion": "The text explicitly confers authority, acknowledges a debt, or marks a possible allusion while alternatives and access limits are retained.",
+        "basis": "Critical theory and Jaeggi are presented as authoritative; Honneth’s phrase is quoted to confer authority.",
+        "limitations": [
+          "No uncertain allusion retained."
+        ],
+        "finding_ids": [
+          "F18",
+          "V.F2"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "Anchors verified; added a missed recognition move.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Findings in this scope lost anchor evidence; this does not establish absence",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 15511
+}

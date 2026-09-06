@@ -1,0 +1,1110 @@
+{
+  "status": "complete",
+  "job": {
+    "id": "I13",
+    "engine": "deal_flow_tracker",
+    "papers": [
+      "subsea"
+    ],
+    "condition": "checked"
+  },
+  "output_sha256": "e4b7650c3a37519fd1e6f04e43633afd26e2f322441409c650a93a24464c06c7",
+  "seconds": 412.7179775238037,
+  "process": {
+    "engine": "deal_flow_tracker",
+    "process": "dvs",
+    "cost_usd": 0.3941,
+    "input_tokens": 116091,
+    "output_tokens": 27965,
+    "seconds": 412.7,
+    "final_model": "openrouter/openai/gpt-5.6-sol",
+    "final_wall": {
+      "rows": 18,
+      "with_anchor": 18,
+      "verified": 18,
+      "trimmed": 3,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 20,
+      "verified_anchors": 20,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "checked",
+        "scope": "retained_ledger",
+        "missing_rejected_ids": [],
+        "missing_other_ids": []
+      },
+      "synthesis_contract": {
+        "failed_ids": [],
+        "incomplete_cross_document_ids": [],
+        "duplicate_ids": [],
+        "missing_cited": [],
+        "unknown_dimensions": [],
+        "missing_ledger": false,
+        "parse_error": "",
+        "incomplete_invocation": false
+      },
+      "synthesis_repair_attempts": [
+        {
+          "failed_ids": [
+            "F18"
+          ],
+          "incomplete_cross_document_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [
+            "F18"
+          ],
+          "unknown_dimensions": [],
+          "missing_ledger": false,
+          "parse_error": "",
+          "incomplete_invocation": false
+        }
+      ],
+      "rows_without_dimension": 0,
+      "check_ruling_coverage": {
+        "original_count": 18,
+        "explicitly_ruled_count": 18,
+        "missing_or_unruled_ids": [],
+        "unexpected_nonadded_ids": [],
+        "invalid_original_status_ids": [],
+        "duplicate_original_ids": [],
+        "duplicate_ruling_ids": [],
+        "coverage_complete": true
+      },
+      "scope_outcomes": [
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "transactions",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "Abstract and introduction",
+            "Section 3: Case Studies and Methods",
+            "Section 4: Case 1: The US–Chinese Conflict Over SeaMeWe-6",
+            "Section 5: Case 2: France's Nationalization of Alcatel Submarine Networks",
+            "Section 6: Conclusion"
+          ],
+          "coverage": "complete",
+          "criterion": "Distinct reported acquisitions, investments, licenses, procurement awards, consortium entries, or partnerships connecting identified market actors.",
+          "basis": "The inspected sections report initial supplier selection and later award to SubCom, consortium membership changes, PEACE ownership and partnership, Orange MoUs, Nokia acquisition, and full consortium participant list.",
+          "limitations": [
+            "The article is a two-case study, not a comprehensive census.",
+            "Some transactions are attributed to media reports or official documents."
+          ],
+          "finding_ids": [
+            "F2",
+            "F7",
+            "F9",
+            "F11",
+            "F12",
+            "F15"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "All cited findings are anchored verbatim in the source; F11 and F15 anchors were re-anchored to full verbatim spans. The included sections contain the reported transactions.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "status",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "Section 4: Case 1: The US–Chinese Conflict Over SeaMeWe-6",
+            "Section 5: Case 2: France's Nationalization of Alcatel Submarine Networks",
+            "Section 6: Conclusion"
+          ],
+          "coverage": "complete",
+          "criterion": "Transaction dates tied to predicates distinguishing proposed, agreed, completed, cancelled, or unresolved actions.",
+          "basis": "The text includes the late-2021 SubCom award vote, the 2022 operational status of PEACE, the reported EMA contract, the unsuccessful 2012 ASN proposal, and the 2024 acquisition deal.",
+          "limitations": [
+            "Several dates are year-only or month-level.",
+            "The EMA contract is attributed to reports; as-of date and completion are not verified."
+          ],
+          "finding_ids": [
+            "F5",
+            "F10",
+            "F14",
+            "F19"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "All cited findings are anchored verbatim; V.F19 supplies the previously missing PEACE operational year sentence. Status predicates match the text.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "terms",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "Section 4: Case 1: The US–Chinese Conflict Over SeaMeWe-6",
+            "Section 5: Case 2: France's Nationalization of Alcatel Submarine Networks"
+          ],
+          "coverage": "complete",
+          "criterion": "Reported monetary amount, currency, stake, asset, or material term attached to a specific transaction, without calculating unstated valuations.",
+          "basis": "HMN Tech’s $500 million bid, SubCom’s $600 million proposal, and €350 million for 80% of ASN with intended 20% purchase are explicitly stated.",
+          "limitations": [
+            "Many transactions lack consideration or detailed contractual terms.",
+            "No total valuation was inferred."
+          ],
+          "finding_ids": [
+            "F3",
+            "F4",
+            "F13"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "Anchors are verbatim and carry the monetary amounts and stakes as reported.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "holdings",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "Section 4: Case 1: The US–Chinese Conflict Over SeaMeWe-6",
+            "Section 5: Case 2: France's Nationalization of Alcatel Submarine Networks"
+          ],
+          "coverage": "complete",
+          "criterion": "Evidence identifies a transfer or changed contractual/partnership right and preserves any expressly reported retained stake or continuing participation.",
+          "basis": "Hengtong’s majority stake, SeaMeWe-6 withdrawals/retention, PEACE ownership, France’s 80% ASN acquisition and residual Nokia 20%, plus existing French Orange stakes are all reported.",
+          "limitations": [
+            "Ownership does not by itself establish operational or political control.",
+            "Several residual interests and partnership rights are unspecified."
+          ],
+          "finding_ids": [
+            "F1",
+            "F6",
+            "F8",
+            "F16"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "Anchors verbatim; F8 revised to remove unsupported operational claim but still supports built-and-owned transfer.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "patterns",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "Section 4: Case 1: The US–Chinese Conflict Over SeaMeWe-6",
+            "Section 5: Case 2: France's Nationalization of Alcatel Submarine Networks",
+            "Section 6: Conclusion"
+          ],
+          "coverage": "complete",
+          "criterion": "Only source-supported relations among reported deals, common parties, assets, or routes; selective cases cannot establish a complete market or forecast.",
+          "basis": "The text explicitly states that PEACE “closely mirrors” SeaMeWe‑6 and EMA was launched in reaction to US interference, and that realignment is only partially effective.",
+          "limitations": [
+            "The cases do not support market-wide consolidation.",
+            "No future transaction or comprehensive ownership pattern is inferred."
+          ],
+          "finding_ids": [
+            "F17",
+            "F18"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "Both anchors are verbatim; the limitation statement is directly quoted. The earlier anchor loss for F18 was an error; it now verifies.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "Findings in this scope lost anchor evidence; this does not establish absence",
+              "One or more declared finding references lack retained verified evidence"
+            ]
+          }
+        }
+      ]
+    },
+    "calls": [
+      {
+        "step": "read",
+        "kind": "synthesize",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/openai/gpt-5.6-sol",
+        "model_used": "openrouter/openai/gpt-5.6-sol",
+        "input_tokens": 20828,
+        "output_tokens": 5610,
+        "duration_ms": 60082,
+        "cost_usd": 0.0978,
+        "retries": 0,
+        "wall": {
+          "rows": 18,
+          "with_anchor": 18,
+          "verified": 17,
+          "trimmed": 3,
+          "anchor_rate": 0.944,
+          "failed_ids": [
+            "F18"
+          ],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 22,
+          "verified_anchors": 21,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "has_ledger": true,
+          "prose_chars": 10080,
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "transactions",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract and introduction",
+                "Section 3: Case Studies and Methods",
+                "Section 4: Case 1: The US–Chinese Conflict Over SeaMeWe-6",
+                "Section 5: Case 2: France's Nationalization of Alcatel Submarine Networks",
+                "Section 6: Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "Distinct reported acquisitions, investments, licenses, procurement awards, consortium entries, or partnerships connecting identified market actors.",
+              "basis": "The inspected sections report supplier selections and awards, consortium entries, corporate acquisitions, cable ownership and partnership relationships, and memoranda concerning participation.",
+              "limitations": [
+                "The article is a two-case study rather than a comprehensive transaction census.",
+                "Some transactions are reported through secondary media or official sources."
+              ],
+              "finding_ids": [
+                "F2",
+                "F7",
+                "F9",
+                "F11",
+                "F12",
+                "F15"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "status",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Section 4: Case 1: The US–Chinese Conflict Over SeaMeWe-6",
+                "Section 5: Case 2: France's Nationalization of Alcatel Submarine Networks"
+              ],
+              "coverage": "complete",
+              "criterion": "Transaction dates must be tied to predicates distinguishing proposed, agreed, completed, cancelled, or unresolved actions.",
+              "basis": "The text dates the late-2021 SubCom award, attributes the EMA contract to reports, and distinguishes the unsuccessful 2012 ASN proposal from the 2024 deal.",
+              "limitations": [
+                "Several dates are year- or month-level only.",
+                "The article does not consistently report closing or operational dates."
+              ],
+              "finding_ids": [
+                "F5",
+                "F10",
+                "F14"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "terms",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Section 4: Case 1: The US–Chinese Conflict Over SeaMeWe-6",
+                "Section 5: Case 2: France's Nationalization of Alcatel Submarine Networks"
+              ],
+              "coverage": "complete",
+              "criterion": "Reported monetary amount, currency, stake, asset, or material term must be attached to a specific transaction without calculating unstated valuations.",
+              "basis": "The text reports HMN Tech's approximately $500 million bid, SubCom's $600 million proposal, and France's €350 million agreement for 80% of ASN with an intended later purchase of 20%.",
+              "limitations": [
+                "Many transactions lack consideration, contribution amounts, or detailed contractual terms.",
+                "No unstated total valuation has been inferred."
+              ],
+              "finding_ids": [
+                "F3",
+                "F4",
+                "F13"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "holdings",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Section 4: Case 1: The US–Chinese Conflict Over SeaMeWe-6",
+                "Section 5: Case 2: France's Nationalization of Alcatel Submarine Networks"
+              ],
+              "coverage": "complete",
+              "criterion": "Evidence must identify a transfer or changed contractual or partnership right and preserve any expressly reported retained stake or continuing participation.",
+              "basis": "The text reports Hengtong's acquisition of a majority HMN Tech stake, SeaMeWe-6 withdrawals and retained China Unicom participation, PEACE ownership, France's 80% ASN acquisition structure, and existing French Orange stakes.",
+              "limitations": [
+                "Ownership does not by itself establish operational or political control.",
+                "Several residual stakes and partnership rights are unspecified."
+              ],
+              "finding_ids": [
+                "F1",
+                "F6",
+                "F8",
+                "F16"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "patterns",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Section 4: Case 1: The US–Chinese Conflict Over SeaMeWe-6",
+                "Section 5: Case 2: France's Nationalization of Alcatel Submarine Networks",
+                "Section 6: Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "Only source-supported relations among reported deals, common parties, assets, or routes qualify; selective cases cannot establish a complete market or forecast.",
+              "basis": "The conclusion explicitly relates PEACE and EMA to SeaMeWe-6 route duplication and limits network-realignment effects as partial.",
+              "limitations": [
+                "The cases do not establish market-wide consolidation.",
+                "No future transaction or comprehensive ownership pattern is inferred."
+              ],
+              "finding_ids": [
+                "F17",
+                "F18"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Findings in this scope lost anchor evidence; this does not establish absence",
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 22697
+      },
+      {
+        "step": "check",
+        "kind": "verify",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+        "model_used": "openrouter/deepseek/deepseek-v4-pro",
+        "input_tokens": 27062,
+        "output_tokens": 11601,
+        "duration_ms": 233964,
+        "cost_usd": 0.0524,
+        "retries": 0,
+        "wall": {
+          "rows": 19,
+          "with_anchor": 19,
+          "verified": 18,
+          "trimmed": 3,
+          "anchor_rate": 0.947,
+          "failed_ids": [
+            "F18"
+          ],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 22,
+          "verified_anchors": 21,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "checked",
+            "scope": "retained_ledger",
+            "missing_rejected_ids": [],
+            "missing_other_ids": []
+          },
+          "check_in": 18,
+          "check_confirmed": 17,
+          "check_weakened": 1,
+          "check_rejected": 0,
+          "check_added": 1,
+          "check_added_dropped": 0,
+          "check_carried": 0,
+          "check_unverified": 1,
+          "check_ruling_coverage": {
+            "original_count": 18,
+            "explicitly_ruled_count": 18,
+            "missing_or_unruled_ids": [],
+            "unexpected_nonadded_ids": [],
+            "invalid_original_status_ids": [],
+            "duplicate_original_ids": [],
+            "duplicate_ruling_ids": [],
+            "coverage_complete": true
+          },
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "transactions",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract and introduction",
+                "Section 3: Case Studies and Methods",
+                "Section 4: Case 1: The US–Chinese Conflict Over SeaMeWe-6",
+                "Section 5: Case 2: France's Nationalization of Alcatel Submarine Networks",
+                "Section 6: Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "Distinct reported acquisitions, investments, licenses, procurement awards, consortium entries, or partnerships connecting identified market actors.",
+              "basis": "The inspected sections report initial supplier selection and later award to SubCom, consortium membership changes, PEACE ownership and partnership, Orange MoUs, Nokia acquisition, and full consortium participant list.",
+              "limitations": [
+                "The article is a two-case study, not a comprehensive census.",
+                "Some transactions are attributed to media reports or official documents."
+              ],
+              "finding_ids": [
+                "F2",
+                "F7",
+                "F9",
+                "F11",
+                "F12",
+                "F15"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "All cited findings are anchored verbatim in the source; F11 and F15 anchors were re-anchored to full verbatim spans. The included sections contain the reported transactions.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "status",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Section 4: Case 1: The US–Chinese Conflict Over SeaMeWe-6",
+                "Section 5: Case 2: France's Nationalization of Alcatel Submarine Networks",
+                "Section 6: Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "Transaction dates tied to predicates distinguishing proposed, agreed, completed, cancelled, or unresolved actions.",
+              "basis": "The text includes the late-2021 SubCom award vote, the 2022 operational status of PEACE, the reported EMA contract, the unsuccessful 2012 ASN proposal, and the 2024 acquisition deal.",
+              "limitations": [
+                "Several dates are year-only or month-level.",
+                "The EMA contract is attributed to reports; as-of date and completion are not verified."
+              ],
+              "finding_ids": [
+                "F5",
+                "F10",
+                "F14",
+                "F19"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "All cited findings are anchored verbatim; V.F19 supplies the previously missing PEACE operational year sentence. Status predicates match the text.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "terms",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Section 4: Case 1: The US–Chinese Conflict Over SeaMeWe-6",
+                "Section 5: Case 2: France's Nationalization of Alcatel Submarine Networks"
+              ],
+              "coverage": "complete",
+              "criterion": "Reported monetary amount, currency, stake, asset, or material term attached to a specific transaction, without calculating unstated valuations.",
+              "basis": "HMN Tech’s $500 million bid, SubCom’s $600 million proposal, and €350 million for 80% of ASN with intended 20% purchase are explicitly stated.",
+              "limitations": [
+                "Many transactions lack consideration or detailed contractual terms.",
+                "No total valuation was inferred."
+              ],
+              "finding_ids": [
+                "F3",
+                "F4",
+                "F13"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "Anchors are verbatim and carry the monetary amounts and stakes as reported.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "holdings",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Section 4: Case 1: The US–Chinese Conflict Over SeaMeWe-6",
+                "Section 5: Case 2: France's Nationalization of Alcatel Submarine Networks"
+              ],
+              "coverage": "complete",
+              "criterion": "Evidence identifies a transfer or changed contractual/partnership right and preserves any expressly reported retained stake or continuing participation.",
+              "basis": "Hengtong’s majority stake, SeaMeWe-6 withdrawals/retention, PEACE ownership, France’s 80% ASN acquisition and residual Nokia 20%, plus existing French Orange stakes are all reported.",
+              "limitations": [
+                "Ownership does not by itself establish operational or political control.",
+                "Several residual interests and partnership rights are unspecified."
+              ],
+              "finding_ids": [
+                "F1",
+                "F6",
+                "F8",
+                "F16"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "Anchors verbatim; F8 revised to remove unsupported operational claim but still supports built-and-owned transfer.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "patterns",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Section 4: Case 1: The US–Chinese Conflict Over SeaMeWe-6",
+                "Section 5: Case 2: France's Nationalization of Alcatel Submarine Networks",
+                "Section 6: Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "Only source-supported relations among reported deals, common parties, assets, or routes; selective cases cannot establish a complete market or forecast.",
+              "basis": "The text explicitly states that PEACE “closely mirrors” SeaMeWe‑6 and EMA was launched in reaction to US interference, and that realignment is only partially effective.",
+              "limitations": [
+                "The cases do not support market-wide consolidation.",
+                "No future transaction or comprehensive ownership pattern is inferred."
+              ],
+              "finding_ids": [
+                "F17",
+                "F18"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "Both anchors are verbatim; the limitation statement is directly quoted. The earlier anchor loss for F18 was an error; it now verifies.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Findings in this scope lost anchor evidence; this does not establish absence",
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 19599
+      },
+      {
+        "step": "reconcile_checked",
+        "kind": "synthesize",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/openai/gpt-5.6-sol",
+        "model_used": "openrouter/openai/gpt-5.6-sol",
+        "input_tokens": 31456,
+        "output_tokens": 5331,
+        "duration_ms": 60884,
+        "cost_usd": 0.1162,
+        "retries": 0,
+        "wall": {
+          "rows": 19,
+          "with_anchor": 19,
+          "verified": 18,
+          "trimmed": 3,
+          "anchor_rate": 0.947,
+          "failed_ids": [
+            "F18"
+          ],
+          "duplicate_ids": [],
+          "missing_cited": [
+            "F18"
+          ],
+          "anchors": 22,
+          "verified_anchors": 21,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "checked",
+            "scope": "retained_ledger",
+            "missing_rejected_ids": [],
+            "missing_other_ids": [
+              "F18"
+            ]
+          },
+          "synthesis_contract": {
+            "failed_ids": [
+              "F18"
+            ],
+            "incomplete_cross_document_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [
+              "F18"
+            ],
+            "unknown_dimensions": [],
+            "missing_ledger": false,
+            "parse_error": "",
+            "incomplete_invocation": false
+          },
+          "synthesis_repair_attempts": [],
+          "rows_without_dimension": 0
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 22355
+      },
+      {
+        "step": "reconcile_checked",
+        "kind": "synthesize",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/openai/gpt-5.6-sol",
+        "model_used": "openrouter/openai/gpt-5.6-sol",
+        "input_tokens": 36745,
+        "output_tokens": 5423,
+        "duration_ms": 57706,
+        "cost_usd": 0.1277,
+        "retries": 0,
+        "wall": {
+          "rows": 18,
+          "with_anchor": 18,
+          "verified": 18,
+          "trimmed": 3,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 20,
+          "verified_anchors": 20,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "checked",
+            "scope": "retained_ledger",
+            "missing_rejected_ids": [],
+            "missing_other_ids": []
+          },
+          "synthesis_contract": {
+            "failed_ids": [],
+            "incomplete_cross_document_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [],
+            "unknown_dimensions": [],
+            "missing_ledger": false,
+            "parse_error": "",
+            "incomplete_invocation": false
+          },
+          "synthesis_repair_attempts": [
+            {
+              "failed_ids": [
+                "F18"
+              ],
+              "incomplete_cross_document_ids": [],
+              "duplicate_ids": [],
+              "missing_cited": [
+                "F18"
+              ],
+              "unknown_dimensions": [],
+              "missing_ledger": false,
+              "parse_error": "",
+              "incomplete_invocation": false
+            }
+          ],
+          "rows_without_dimension": 0,
+          "check_ruling_coverage": {
+            "original_count": 18,
+            "explicitly_ruled_count": 18,
+            "missing_or_unruled_ids": [],
+            "unexpected_nonadded_ids": [],
+            "invalid_original_status_ids": [],
+            "duplicate_original_ids": [],
+            "duplicate_ruling_ids": [],
+            "coverage_complete": true
+          },
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "transactions",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract and introduction",
+                "Section 3: Case Studies and Methods",
+                "Section 4: Case 1: The US–Chinese Conflict Over SeaMeWe-6",
+                "Section 5: Case 2: France's Nationalization of Alcatel Submarine Networks",
+                "Section 6: Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "Distinct reported acquisitions, investments, licenses, procurement awards, consortium entries, or partnerships connecting identified market actors.",
+              "basis": "The inspected sections report initial supplier selection and later award to SubCom, consortium membership changes, PEACE ownership and partnership, Orange MoUs, Nokia acquisition, and full consortium participant list.",
+              "limitations": [
+                "The article is a two-case study, not a comprehensive census.",
+                "Some transactions are attributed to media reports or official documents."
+              ],
+              "finding_ids": [
+                "F2",
+                "F7",
+                "F9",
+                "F11",
+                "F12",
+                "F15"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "All cited findings are anchored verbatim in the source; F11 and F15 anchors were re-anchored to full verbatim spans. The included sections contain the reported transactions.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "status",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Section 4: Case 1: The US–Chinese Conflict Over SeaMeWe-6",
+                "Section 5: Case 2: France's Nationalization of Alcatel Submarine Networks",
+                "Section 6: Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "Transaction dates tied to predicates distinguishing proposed, agreed, completed, cancelled, or unresolved actions.",
+              "basis": "The text includes the late-2021 SubCom award vote, the 2022 operational status of PEACE, the reported EMA contract, the unsuccessful 2012 ASN proposal, and the 2024 acquisition deal.",
+              "limitations": [
+                "Several dates are year-only or month-level.",
+                "The EMA contract is attributed to reports; as-of date and completion are not verified."
+              ],
+              "finding_ids": [
+                "F5",
+                "F10",
+                "F14",
+                "F19"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "All cited findings are anchored verbatim; V.F19 supplies the previously missing PEACE operational year sentence. Status predicates match the text.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "terms",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Section 4: Case 1: The US–Chinese Conflict Over SeaMeWe-6",
+                "Section 5: Case 2: France's Nationalization of Alcatel Submarine Networks"
+              ],
+              "coverage": "complete",
+              "criterion": "Reported monetary amount, currency, stake, asset, or material term attached to a specific transaction, without calculating unstated valuations.",
+              "basis": "HMN Tech’s $500 million bid, SubCom’s $600 million proposal, and €350 million for 80% of ASN with intended 20% purchase are explicitly stated.",
+              "limitations": [
+                "Many transactions lack consideration or detailed contractual terms.",
+                "No total valuation was inferred."
+              ],
+              "finding_ids": [
+                "F3",
+                "F4",
+                "F13"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "Anchors are verbatim and carry the monetary amounts and stakes as reported.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "holdings",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Section 4: Case 1: The US–Chinese Conflict Over SeaMeWe-6",
+                "Section 5: Case 2: France's Nationalization of Alcatel Submarine Networks"
+              ],
+              "coverage": "complete",
+              "criterion": "Evidence identifies a transfer or changed contractual/partnership right and preserves any expressly reported retained stake or continuing participation.",
+              "basis": "Hengtong’s majority stake, SeaMeWe-6 withdrawals/retention, PEACE ownership, France’s 80% ASN acquisition and residual Nokia 20%, plus existing French Orange stakes are all reported.",
+              "limitations": [
+                "Ownership does not by itself establish operational or political control.",
+                "Several residual interests and partnership rights are unspecified."
+              ],
+              "finding_ids": [
+                "F1",
+                "F6",
+                "F8",
+                "F16"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "Anchors verbatim; F8 revised to remove unsupported operational claim but still supports built-and-owned transfer.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "patterns",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Section 4: Case 1: The US–Chinese Conflict Over SeaMeWe-6",
+                "Section 5: Case 2: France's Nationalization of Alcatel Submarine Networks",
+                "Section 6: Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "Only source-supported relations among reported deals, common parties, assets, or routes; selective cases cannot establish a complete market or forecast.",
+              "basis": "The text explicitly states that PEACE “closely mirrors” SeaMeWe‑6 and EMA was launched in reaction to US interference, and that realignment is only partially effective.",
+              "limitations": [
+                "The cases do not support market-wide consolidation.",
+                "No future transaction or comprehensive ownership pattern is inferred."
+              ],
+              "finding_ids": [
+                "F17",
+                "F18"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "Both anchors are verbatim; the limitation statement is directly quoted. The earlier anchor loss for F18 was an error; it now verifies.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Findings in this scope lost anchor evidence; this does not establish absence",
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 21934
+      }
+    ]
+  },
+  "audit": {
+    "wall": {
+      "rows": 18,
+      "with_anchor": 18,
+      "verified": 18,
+      "trimmed": 3,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 20,
+      "verified_anchors": 20,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "rows": 18,
+    "raw_anchors": 20,
+    "raw_exact": 3,
+    "unknown_dimensions": [],
+    "missing_table_ids": [],
+    "missing_prose_ids": []
+  }
+}

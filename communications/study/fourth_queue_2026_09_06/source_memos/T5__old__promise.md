@@ -1,0 +1,15 @@
+# Source read: T5__old__promise
+
+Output SHA256: `183c873d7b961ebe49224199cbbffe92cd4d46882790b7f7fd3d9ef86d78a561`
+
+Written before independent Sonnet/Sol scores. Codex reviewed the delivered output, its findings and actual tables against the supplied paper; source-side orientation and qualifications are recorded in [source_orientation.md](../source_orientation.md). This is a textual source check, not independent verification of the paper’s claims.
+
+The source supports the cycle from myth generation and communication through diffusion, institutionalization, profitability decline, crisis and a new myth built from old blind spots. It also supports money's growth/decline imperative, socially cooperative innovation, worker freedom, institutional lock-in, increasing financial flows and a conditional depressive spiral if creative destruction halts. The output's counter-evidence retains some important qualifications: institutionalization initially enables coordination, competition can generate applications, financial decoupling is a suggested symptom and the halt remains conditional. These are valuable features of the legacy reading.
+
+The original also constructs a much larger system-dynamics model than the source establishes. Loop strengths, mental-model reality scores, graph weights/density, stock current levels, delay classes, S-shaped growth/overshoot and tipping thresholds have no measured basis. Financial-escape R4 invents a return edge from asset valuations/perceived returns to inflows; the essay reports capital moving into financial assets and possible retreat, not this closed mechanism. R5 fills out a demand/profit/investment return chain beyond the source's shorter conditional wages/unemployment sentence. Calling B2 a balancing loop is internally questionable because its displayed cycle has two negative edges. Its claimed inverted-U competition curve is not established by the two source observations that competition can stimulate applications and a purely hostile environment impedes entrepreneurship.
+
+The twelve ranked leverage points, tax/capital requirements, disclosure metrics, gain-sharing and portfolio interventions are analyst policy proposals with purported effects, not the paper's tested interventions. The source proposes a critique of absolute wealth but supplies no complete alternative institutions. Ledger quotations have Markdown bold inside quote boundaries and noun fragments such as “self-fulfilling prophecy”; these do not verify the additional causal closure claims. Preserve the original as a broad, partly speculative model, rather than silently treating it as an extracted dynamical inventory.
+
+Mechanical record (existing production normalization): 24 rows, 23/24 anchors verified; failed IDs ['F23']; missing table IDs []. These checks establish matching spans and IDs, not semantic entailment.
+
+**Pre-score disposition:** Legacy control only. Unsupported quantitative dynamics, reconstructed return edges and ranked policy effects prevent release of this output; preserve unedited for scoring.

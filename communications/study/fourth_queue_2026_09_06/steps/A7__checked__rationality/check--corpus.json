@@ -1,0 +1,263 @@
+{
+  "step": "check",
+  "kind": "verify",
+  "dimension": "",
+  "doc": "",
+  "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+  "model_used": "openrouter/deepseek/deepseek-v4-pro",
+  "input_tokens": 23206,
+  "output_tokens": 14360,
+  "duration_ms": 236650,
+  "cost_usd": 0.0541,
+  "retries": 0,
+  "wall": {
+    "rows": 21,
+    "with_anchor": 21,
+    "verified": 21,
+    "trimmed": 1,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 29,
+    "verified_anchors": 29,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "checked",
+      "scope": "retained_ledger",
+      "missing_rejected_ids": [],
+      "missing_other_ids": []
+    },
+    "check_in": 18,
+    "check_confirmed": 16,
+    "check_weakened": 2,
+    "check_rejected": 0,
+    "check_added": 3,
+    "check_added_dropped": 1,
+    "check_carried": 0,
+    "check_unverified": 0,
+    "check_ruling_coverage": {
+      "original_count": 18,
+      "explicitly_ruled_count": 18,
+      "missing_or_unruled_ids": [],
+      "unexpected_nonadded_ids": [],
+      "invalid_original_status_ids": [],
+      "duplicate_original_ids": [],
+      "duplicate_ruling_ids": [],
+      "coverage_complete": true
+    },
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "values",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Opening discussion of rationality and legitimation",
+          "Specificity and Social-Historical Relativity of the Capitalist Institution",
+          "The Theoretical Ideology of the Capitalist Economy",
+          "The Effective Reality of the Capitalist Economy",
+          "Relative Efficiency, Flexibility, and Resistance of Capitalism",
+          "Conclusion and notes"
+        ],
+        "coverage": "complete",
+        "criterion": "Explicit or reconstructed valuations preserving their holder, target, attribution, and qualification.",
+        "basis": "The text explicitly identifies capitalism's supreme economic value and rational mastery, affirms autonomy as worthwhile, evaluates solidarity and contestation positively, and values activities solely in monetary terms; the definition of autonomous society is also explicit.",
+        "limitations": [
+          "Some positive values are reconstructed from explicit condemnations rather than formulated as a complete alternative ethic."
+        ],
+        "finding_ids": [
+          "F1",
+          "F3",
+          "F4",
+          "F11",
+          "F19",
+          "F20"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "Verified against the source; F1 weakened to remove the monetary claim, V.F1 added for that claim; V.F2 added for the definition of autonomous society.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "judgments",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Opening discussion of rationality and legitimation",
+          "Specificity and Social-Historical Relativity of the Capitalist Institution",
+          "The Theoretical Ideology of the Capitalist Economy",
+          "The Effective Reality of the Capitalist Economy",
+          "Relative Efficiency, Flexibility, and Resistance of Capitalism",
+          "Conclusion and notes"
+        ],
+        "coverage": "complete",
+        "criterion": "Moral or evaluative judgments paired with the reasons or values offered in their support.",
+        "basis": "The text judges capitalist justification circular, its cost calculation exclusionary, production socially collective, labor struggles corrective, survival insufficient to establish superiority, and adds specific exclusions of work's meaning and dependence on accumulated history.",
+        "limitations": [
+          "The paper often combines empirical, conceptual, and moral criticism, so not every negative assessment is independently moral."
+        ],
+        "finding_ids": [
+          "F8",
+          "F9",
+          "F10",
+          "F12",
+          "F13",
+          "F18",
+          "V.F3",
+          "V.F4"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "Verified; V.F3 and V.F4 added to capture the exclusion of work's meaning and the role of accumulated history.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Findings in this scope lost anchor evidence; this does not establish absence",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "principles",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Opening discussion of rationality and legitimation",
+          "Specificity and Social-Historical Relativity of the Capitalist Institution",
+          "The Theoretical Ideology of the Capitalist Economy",
+          "The Effective Reality of the Capitalist Economy",
+          "Relative Efficiency, Flexibility, and Resistance of Capitalism",
+          "Conclusion and notes"
+        ],
+        "coverage": "complete",
+        "criterion": "Operative ethical reasoning patterns described before any optional framework label and preserving attributed voice.",
+        "basis": "The text rejects the intrinsic value of instrumental rationality, acknowledges the self-institution of ultimate criteria, and explicitly adopts immanent critique.",
+        "limitations": [
+          "The text does not present a systematic moral theory or externally grounded hierarchy of ultimate ends."
+        ],
+        "finding_ids": [
+          "F2",
+          "F5",
+          "F6"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "F2 enriched with anchor-b for the evaluation of means; others unchanged.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "priorities",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Opening discussion of rationality and legitimation",
+          "Specificity and Social-Historical Relativity of the Capitalist Institution",
+          "The Theoretical Ideology of the Capitalist Economy",
+          "The Effective Reality of the Capitalist Economy",
+          "Relative Efficiency, Flexibility, and Resistance of Capitalism",
+          "Conclusion and notes"
+        ],
+        "coverage": "complete",
+        "criterion": "Comparisons between values that identify whose priority is asserted, the cost accepted, and any qualification.",
+        "basis": "The text contrasts goods with justice, neoliberal employment outcomes with profits and wealthy incomes, and short-term profit with environmental and long-term concerns.",
+        "limitations": [
+          "Several priorities belong to capitalist doctrine or institutions being criticized and are not the text's own priorities."
+        ],
+        "finding_ids": [
+          "F7",
+          "F14",
+          "F15"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "All anchors confirmed; no changes.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "prescriptions",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Opening discussion of rationality and legitimation",
+          "Specificity and Social-Historical Relativity of the Capitalist Institution",
+          "The Theoretical Ideology of the Capitalist Economy",
+          "The Effective Reality of the Capitalist Economy",
+          "Relative Efficiency, Flexibility, and Resistance of Capitalism",
+          "Conclusion and notes"
+        ],
+        "coverage": "complete",
+        "criterion": "Explicit statements of what ought to be done or preserved, by whom where stated, including conditions and unresolved conflicts.",
+        "basis": "The text calls critical analysis imperative and states that subsequent developments depend on affected populations' reactions and actions.",
+        "limitations": [
+          "No detailed institutional or policy program is prescribed.",
+          "The statement about populations assigns agency but does not specify which actions they ought to take."
+        ],
+        "finding_ids": [
+          "F16",
+          "F17"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "Anchors confirmed; no changes.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 22273
+}

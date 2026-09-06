@@ -1,0 +1,277 @@
+{
+  "step": "check",
+  "kind": "verify",
+  "dimension": "",
+  "doc": "",
+  "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+  "model_used": "openrouter/deepseek/deepseek-v4-pro",
+  "input_tokens": 26668,
+  "output_tokens": 18039,
+  "duration_ms": 225700,
+  "cost_usd": 0.0654,
+  "retries": 0,
+  "wall": {
+    "rows": 15,
+    "with_anchor": 15,
+    "verified": 15,
+    "trimmed": 9,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [
+      "F9",
+      "F12",
+      "F5",
+      "F10",
+      "F2",
+      "F3",
+      "F11",
+      "F13",
+      "F14",
+      "F15",
+      "F16",
+      "F17"
+    ],
+    "anchors": 19,
+    "verified_anchors": 19,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "checked",
+      "scope": "retained_ledger",
+      "missing_rejected_ids": [
+        "F9",
+        "F12",
+        "F5",
+        "F10",
+        "F2",
+        "F3",
+        "F11",
+        "F13",
+        "F14",
+        "F15",
+        "F16",
+        "F17"
+      ],
+      "missing_other_ids": []
+    },
+    "check_in": 17,
+    "check_confirmed": 5,
+    "check_weakened": 0,
+    "check_rejected": 12,
+    "check_added": 10,
+    "check_added_dropped": 3,
+    "check_carried": 0,
+    "check_unverified": 0,
+    "check_ruling_coverage": {
+      "original_count": 17,
+      "explicitly_ruled_count": 17,
+      "missing_or_unruled_ids": [],
+      "unexpected_nonadded_ids": [],
+      "invalid_original_status_ids": [],
+      "duplicate_original_ids": [],
+      "duplicate_ruling_ids": [],
+      "coverage_complete": true
+    },
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "problem",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Abstract",
+          "Section 1",
+          "Section 2",
+          "Sections 4–6"
+        ],
+        "coverage": "complete",
+        "criterion": "Identify the specific outcome being explained and the source-proposed rival explanations, advocates, and scope.",
+        "basis": "The article explicitly frames a tension between statecraft-centric and capital-centric perspectives and states its intermediate account; all relevant finding anchors now verified verbatim.",
+        "limitations": [
+          "The rivals are theoretical perspectives rather than mutually exclusive causal models."
+        ],
+        "finding_ids": [
+          "F1",
+          "F4",
+          "F18",
+          "F19"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "Original F2 and F3 rejected for non-verbatim anchors; verbatim replacements V.F1 and V.F2 added. F1 and F4 confirmed. All retained findings now verbatim-anchored.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "predictions",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Section 2",
+          "Table 1",
+          "Sections 4–6"
+        ],
+        "coverage": "complete",
+        "criterion": "Identify source-stated or transparently analyst-derived expected observations from anchored hypotheses and their assumptions.",
+        "basis": "The framework states that network position conditions industrial, regulatory, and coercive strategies; the realignment definition and strategy contrast are now verbatim-anchored.",
+        "limitations": [
+          "Prediction expectations remain partly analyst-derived."
+        ],
+        "finding_ids": [
+          "F7",
+          "V.F3"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "Original F5 rejected for incomplete anchor; concept re-anchored via V.F3. F7 confirmed. Both now fully verbatim.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Findings in this scope lost anchor evidence; this does not establish absence",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "evidence",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Section 3",
+          "Section 4",
+          "Section 5",
+          "Section 6"
+        ],
+        "coverage": "complete",
+        "criterion": "Identify reported observations bearing on each rival and classify them as supportive, adverse, shared, or silent while preserving provenance.",
+        "basis": "The cases report corporate cable investment, the SeaMeWe‑6 supplier reversal, Chinese parallel projects, and France's ASN acquisition; all now verbatim-anchored.",
+        "limitations": [
+          "Evidence is based on a purpositive two‑case design and includes journalistic, official, and interview sources."
+        ],
+        "finding_ids": [
+          "F6",
+          "F8",
+          "F20",
+          "F21"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "Original F9 and F10 rejected for non-verbatim anchors; replaced by V.F4 and V.F5. F6 and F8 confirmed. All evidence findings now verbatim-anchored.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "diagnosticity",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Sections 4–6",
+          "Policy implications"
+        ],
+        "coverage": "complete",
+        "criterion": "Compare rival expectations against the same observations and identify genuine discriminators or unresolved shared fit without unsupported scores.",
+        "basis": "Selective French engagement, network duplication, and continued private expansion are now verbatim-anchored; discrimination between strong one-sided accounts and interaction account is anchored.",
+        "limitations": [
+          "SeaMeWe‑6 fits both statecraft and realignment accounts; discrimination depends on scope."
+        ],
+        "finding_ids": [
+          "V.F6",
+          "V.F7",
+          "V.F13"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "Original F11 and F12 rejected for non-verbatim anchors; replaced by V.F6, V.F7, V.F13. All diagnostic findings now verbatim-anchored.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Findings in this scope lost anchor evidence; this does not establish absence",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "sensitivity",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Section 3",
+          "Section 5",
+          "Section 6",
+          "Endnotes"
+        ],
+        "coverage": "complete",
+        "criterion": "Identify linchpin assumptions, counter‑evidence, missing tests, and bounded conclusions permitted by the source.",
+        "basis": "The paper states financial and positional conditions, acknowledges French constraints, uses purposive case selection, and relies on mixed sources; all now verbatim-anchored.",
+        "limitations": [
+          "No untreated comparison cases or network‑wide quantitative tests; post‑nationalization outcomes not observed."
+        ],
+        "finding_ids": [
+          "V.F8",
+          "V.F9",
+          "V.F10",
+          "V.F11",
+          "V.F12"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "Original F13–F17 all rejected for non‑verbatim anchors; replaced by V.F8–V.F12. All sensitivity findings now verbatim-anchored.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Findings in this scope lost anchor evidence; this does not establish absence",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 24260
+}

@@ -1,0 +1,15 @@
+# Source read: G5__checked__chen
+
+Output SHA256: `fe5fd71c1bc516fbcd2a108969e7feda2b2b34dedbbfabe9af543d5f67f15a39`
+
+Written before independent Sonnet/Sol scores. Codex reviewed the delivered output, its findings and actual tables against the supplied paper; source-side orientation and qualifications are recorded in [source_orientation.md](../source_orientation.md). This is a textual source check, not independent verification of the paper’s claims.
+
+The final citation-use register correctly separates reconstruction, criticism, possible defense and positive reuse. The Kitcher functional-refinement qualification survives F5 and both relevant table cells. Kuhn’s instrumental know-how defense is retained with a complete conditional quotation in F10; the output does not turn it into Chen’s final endorsement of cumulative social progress. F11 explicitly limits the retained Roth proposition to her first condition while separately anchoring Chen’s rejection of both theses. F12 preserves Lakatos as the source of the psychologism objection. F14 and its cells say that applying Searle’s framework to progress is Chen’s move. F15 keeps Allen’s dilemma distinct from agreement with Chen’s solution.
+
+Both actual tables were read against the source body and notes. Titles and dates can be checked in the bibliography; several final packets carry the claim but not the neighboring bibliographic identity. F2’s moralist grouping uses the full source’s immediately following parenthetical names, omitted from the local span. F7’s Jaeggi/Kuhn relation likewise needs the preceding Jaeggi paragraph. These are incomplete local attribution packets, not fabricated memberships or reversed attributions. The map does not certify fidelity to the unsupplied books, reciprocal citation, transmission or numerical authority. Former legacy metric names remain as indeterminate in the prose—unnecessary product detail, but no values are invented.
+
+Coverage is selective: no bibliography-only reference inventory is retained, and the source note 11’s Laudan/Kuhn distinction is not developed. The references dimension is honestly marked inconclusive/omitted. Scope records for uses and recognition preserve inconsistent precursor evidence references and unchecked/inconclusive status; they do not warrant completeness, and the delivered scope prose largely makes that limit explicit. The final tables use retained findings and do not carry the rejected original proposition as valid. No fabrication or attribution reversal found in those final claims.
+
+Mechanical record (existing production normalization): 16 rows, 21/21 anchors verified; failed IDs []; missing table IDs []. These checks establish matching spans and IDs, not semantic entailment.
+
+**Pre-score disposition:** Source check passes first-queue standard for a selective inventory, pending final anchor/desk audit. Disclose omitted reference-only coverage, missing local identity spans and noisy scope records; no stronger exhaustive-catalogue requirement imposed.

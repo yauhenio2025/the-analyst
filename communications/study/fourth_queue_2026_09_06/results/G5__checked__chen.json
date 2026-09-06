@@ -1,0 +1,1133 @@
+{
+  "status": "complete",
+  "job": {
+    "id": "G5",
+    "engine": "citation_invocation_map",
+    "papers": [
+      "chen"
+    ],
+    "condition": "checked"
+  },
+  "output_sha256": "fe5fd71c1bc516fbcd2a108969e7feda2b2b34dedbbfabe9af543d5f67f15a39",
+  "seconds": 446.14792561531067,
+  "process": {
+    "engine": "citation_invocation_map",
+    "process": "dvs",
+    "cost_usd": 0.364,
+    "input_tokens": 94602,
+    "output_tokens": 32472,
+    "seconds": 444.9,
+    "final_model": "openrouter/openai/gpt-5.6-sol",
+    "final_wall": {
+      "rows": 16,
+      "with_anchor": 16,
+      "verified": 16,
+      "trimmed": 1,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 21,
+      "verified_anchors": 21,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "checked",
+        "scope": "retained_ledger",
+        "missing_rejected_ids": [],
+        "missing_other_ids": []
+      },
+      "synthesis_contract": {
+        "failed_ids": [],
+        "incomplete_cross_document_ids": [],
+        "duplicate_ids": [],
+        "missing_cited": [],
+        "unknown_dimensions": [],
+        "missing_ledger": false,
+        "parse_error": "",
+        "incomplete_invocation": false
+      },
+      "synthesis_repair_attempts": [
+        {
+          "failed_ids": [
+            "F11",
+            "F13",
+            "F19"
+          ],
+          "incomplete_cross_document_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [
+            "F11",
+            "F13",
+            "F19"
+          ],
+          "unknown_dimensions": [],
+          "missing_ledger": false,
+          "parse_error": "",
+          "incomplete_invocation": false
+        }
+      ],
+      "rows_without_dimension": 0,
+      "check_ruling_coverage": {
+        "original_count": 18,
+        "explicitly_ruled_count": 18,
+        "missing_or_unruled_ids": [],
+        "unexpected_nonadded_ids": [],
+        "invalid_original_status_ids": [],
+        "duplicate_original_ids": [],
+        "duplicate_ruling_ids": [],
+        "coverage_complete": true
+      },
+      "scope_outcomes": [
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "references",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "article body",
+            "notes",
+            "references"
+          ],
+          "coverage": "complete",
+          "criterion": "Named works or thinkers invoked in the argument or listed in the references, with in‑text versus bibliography‑only status and supplied access distinguished.",
+          "basis": "No reference‑specific findings were extracted or verified; the text contains many in‑text citations but the extraction did not produce rows for this dimension.",
+          "limitations": [
+            "This does not establish absence of references; the extraction omitted this dimension."
+          ],
+          "finding_ids": [],
+          "review_state": "unchecked",
+          "review_basis": "The original scope outcome incorrectly claimed inconclusive with F1, a proposition finding; the dimension lacks reference‑specific findings.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "Finding identity does not belong to the declared scope"
+            ]
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "propositions",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "article body",
+            "notes"
+          ],
+          "coverage": "complete",
+          "criterion": "A proposition is explicitly assigned by the citing voice to an identified source while preserving attribution and qualification.",
+          "basis": "Attributions to Jaeggi, Kitcher, Kuhn, Honneth, Hegel, and Lakatos are anchored in the text.",
+          "limitations": [
+            "Fidelity to unsupplied sources cannot be checked."
+          ],
+          "finding_ids": [
+            "F1",
+            "F5",
+            "F9",
+            "F19",
+            "F20",
+            "F21"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "Anchors verified; one original finding rejected and replaced with a properly anchored miss.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "uses",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "article body",
+            "notes"
+          ],
+          "coverage": "complete",
+          "criterion": "The citing passage uses an invocation as support, criticism, method, example, or background in relation to a local claim.",
+          "basis": "Uses of Kitcher, Dewey, Kuhn, Kuukkanen, Roth, Giddens, Searle, and Allen are anchored.",
+          "limitations": [
+            "Some findings were weakened to match anchor evidence."
+          ],
+          "finding_ids": [
+            "F4",
+            "F6",
+            "F8",
+            "F10",
+            "F11",
+            "F12",
+            "F13",
+            "F15",
+            "F16",
+            "F17"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "All uses are anchored; weakened findings still support the dimension.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "Findings in this scope lost anchor evidence; this does not establish absence",
+              "One or more declared finding references lack retained verified evidence"
+            ]
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "clusters",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "article body",
+            "notes"
+          ],
+          "coverage": "complete",
+          "criterion": "Two or more references are textually grouped or opposed around a shared question, without treating co‑citation as proof of mutual influence.",
+          "basis": "Moralists, historicists, and the Jaeggi‑Kuhn parallel are grouped in the text.",
+          "limitations": [
+            "Groupings are Chen’s local constructions."
+          ],
+          "finding_ids": [
+            "F2",
+            "F3",
+            "F7"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "Anchors support the groupings.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "recognition",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "introduction",
+            "article body",
+            "conclusion"
+          ],
+          "coverage": "complete",
+          "criterion": "The text explicitly confers authority, acknowledges a debt, or marks a possible allusion while alternatives and access limits are retained.",
+          "basis": "Critical theory and Jaeggi are presented as authoritative; Honneth’s phrase is quoted to confer authority.",
+          "limitations": [
+            "No uncertain allusion retained."
+          ],
+          "finding_ids": [
+            "F18",
+            "V.F2"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "Anchors verified; added a missed recognition move.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "Findings in this scope lost anchor evidence; this does not establish absence",
+              "One or more declared finding references lack retained verified evidence"
+            ]
+          }
+        }
+      ]
+    },
+    "calls": [
+      {
+        "step": "read",
+        "kind": "synthesize",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/openai/gpt-5.6-sol",
+        "model_used": "openrouter/openai/gpt-5.6-sol",
+        "input_tokens": 16115,
+        "output_tokens": 5622,
+        "duration_ms": 74171,
+        "cost_usd": 0.0885,
+        "retries": 0,
+        "wall": {
+          "rows": 18,
+          "with_anchor": 18,
+          "verified": 16,
+          "trimmed": 2,
+          "anchor_rate": 0.889,
+          "failed_ids": [
+            "F11",
+            "F13"
+          ],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 24,
+          "verified_anchors": 22,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "has_ledger": true,
+          "prose_chars": 10264,
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "references",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "article body",
+                "notes",
+                "references"
+              ],
+              "coverage": "complete",
+              "criterion": "Named works or thinkers invoked in the argument or listed in the references, with in-text versus bibliography-only status and supplied access distinguished.",
+              "basis": "The article body and notes repeatedly identify cited authors and works, and the reference list supplies bibliographic identities.",
+              "limitations": [
+                "The cited works were not separately supplied, so attribution fidelity and reciprocal citation cannot be checked.",
+                "The register is selective rather than an exhaustive row-by-row transcription of every citation."
+              ],
+              "finding_ids": [
+                "F1"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Finding identity does not belong to the declared scope"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "propositions",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Jaeggi’s critique of moralism and historicism",
+                "Problem-solving and forms of live: Jaeggi’s pragmatist theory of progress",
+                "Criticism: Ignorance of the problem of incommensurability",
+                "Alternative: From pragmatist to psychologist understanding of progress",
+                "Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "A proposition is explicitly assigned by the citing voice to an identified source while preserving attribution and qualification.",
+              "basis": "Chen explicitly attributes substantive positions to Jaeggi, Kitcher, Kuhn, Lakatos, and other named sources.",
+              "limitations": [
+                "These are Chen’s attributions; the cited source texts were not independently inspected."
+              ],
+              "finding_ids": [
+                "F1",
+                "F5",
+                "F9",
+                "F14"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "uses",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Problem-solving and forms of live: Jaeggi’s pragmatist theory of progress",
+                "Criticism: Ignorance of the problem of incommensurability",
+                "Alternative: From pragmatist to psychologist understanding of progress",
+                "Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "The citing passage uses an invocation as support, criticism, method, example, or background in relation to a local claim.",
+              "basis": "The paper uses cited sources to reconstruct pragmatism, formulate objections, supply counterexamples, and construct the psychologist alternative.",
+              "limitations": [
+                "Local argumentative use does not establish agreement by the cited authors with Chen’s broader conclusions."
+              ],
+              "finding_ids": [
+                "F4",
+                "F6",
+                "F8",
+                "F10",
+                "F11",
+                "F12",
+                "F13",
+                "F15",
+                "F16",
+                "F17"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Findings in this scope lost anchor evidence; this does not establish absence",
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "clusters",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Jaeggi’s critique of moralism and historicism",
+                "Criticism: Ignorance of the problem of incommensurability",
+                "notes"
+              ],
+              "coverage": "complete",
+              "criterion": "Two or more references are textually grouped or opposed around a shared question, without treating co-citation as proof of mutual influence.",
+              "basis": "The paper groups moralists, contrasts moralism with historicism, and places Jaeggi and Kuhn in a reconstructed social/scientific progress parallel.",
+              "limitations": [
+                "The groupings are Chen’s local argumentative constructions and do not establish mutual citation among the grouped sources."
+              ],
+              "finding_ids": [
+                "F2",
+                "F3",
+                "F7"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "recognition",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "introduction",
+                "article body",
+                "notes",
+                "conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "The text explicitly confers authority, acknowledges a debt, or marks a possible allusion while alternatives and access limits are retained.",
+              "basis": "The introduction explicitly characterizes critical theory as irreplaceable and Jaeggi as a representative contemporary figure.",
+              "limitations": [
+                "This is a local rhetorical recognition move, not evidence of actual field prestige, influence, or authorial intent.",
+                "No consequential uncertain allusion was retained."
+              ],
+              "finding_ids": [
+                "F18"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 23536
+      },
+      {
+        "step": "check",
+        "kind": "verify",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+        "model_used": "openrouter/deepseek/deepseek-v4-pro",
+        "input_tokens": 22239,
+        "output_tokens": 16255,
+        "duration_ms": 247173,
+        "cost_usd": 0.0571,
+        "retries": 0,
+        "wall": {
+          "rows": 20,
+          "with_anchor": 20,
+          "verified": 18,
+          "trimmed": 3,
+          "anchor_rate": 0.9,
+          "failed_ids": [
+            "F11",
+            "F13"
+          ],
+          "duplicate_ids": [],
+          "missing_cited": [
+            "F14"
+          ],
+          "anchors": 26,
+          "verified_anchors": 24,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "checked",
+            "scope": "retained_ledger",
+            "missing_rejected_ids": [
+              "F14"
+            ],
+            "missing_other_ids": []
+          },
+          "check_in": 18,
+          "check_confirmed": 14,
+          "check_weakened": 3,
+          "check_rejected": 1,
+          "check_added": 3,
+          "check_added_dropped": 1,
+          "check_carried": 0,
+          "check_unverified": 2,
+          "check_ruling_coverage": {
+            "original_count": 18,
+            "explicitly_ruled_count": 18,
+            "missing_or_unruled_ids": [],
+            "unexpected_nonadded_ids": [],
+            "invalid_original_status_ids": [],
+            "duplicate_original_ids": [],
+            "duplicate_ruling_ids": [],
+            "coverage_complete": true
+          },
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "references",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "article body",
+                "notes",
+                "references"
+              ],
+              "coverage": "complete",
+              "criterion": "Named works or thinkers invoked in the argument or listed in the references, with in‑text versus bibliography‑only status and supplied access distinguished.",
+              "basis": "No reference‑specific findings were extracted or verified; the text contains many in‑text citations but the extraction did not produce rows for this dimension.",
+              "limitations": [
+                "This does not establish absence of references; the extraction omitted this dimension."
+              ],
+              "finding_ids": [],
+              "review_state": "unchecked",
+              "review_basis": "The original scope outcome incorrectly claimed inconclusive with F1, a proposition finding; the dimension lacks reference‑specific findings.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Finding identity does not belong to the declared scope"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "propositions",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "article body",
+                "notes"
+              ],
+              "coverage": "complete",
+              "criterion": "A proposition is explicitly assigned by the citing voice to an identified source while preserving attribution and qualification.",
+              "basis": "Attributions to Jaeggi, Kitcher, Kuhn, Honneth, Hegel, and Lakatos are anchored in the text.",
+              "limitations": [
+                "Fidelity to unsupplied sources cannot be checked."
+              ],
+              "finding_ids": [
+                "F1",
+                "F5",
+                "F9",
+                "F19",
+                "F20",
+                "F21"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "Anchors verified; one original finding rejected and replaced with a properly anchored miss.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "uses",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "article body",
+                "notes"
+              ],
+              "coverage": "complete",
+              "criterion": "The citing passage uses an invocation as support, criticism, method, example, or background in relation to a local claim.",
+              "basis": "Uses of Kitcher, Dewey, Kuhn, Kuukkanen, Roth, Giddens, Searle, and Allen are anchored.",
+              "limitations": [
+                "Some findings were weakened to match anchor evidence."
+              ],
+              "finding_ids": [
+                "F4",
+                "F6",
+                "F8",
+                "F10",
+                "F11",
+                "F12",
+                "F13",
+                "F15",
+                "F16",
+                "F17"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "All uses are anchored; weakened findings still support the dimension.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Findings in this scope lost anchor evidence; this does not establish absence",
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "clusters",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "article body",
+                "notes"
+              ],
+              "coverage": "complete",
+              "criterion": "Two or more references are textually grouped or opposed around a shared question, without treating co‑citation as proof of mutual influence.",
+              "basis": "Moralists, historicists, and the Jaeggi‑Kuhn parallel are grouped in the text.",
+              "limitations": [
+                "Groupings are Chen’s local constructions."
+              ],
+              "finding_ids": [
+                "F2",
+                "F3",
+                "F7"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "Anchors support the groupings.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "recognition",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "introduction",
+                "article body",
+                "conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "The text explicitly confers authority, acknowledges a debt, or marks a possible allusion while alternatives and access limits are retained.",
+              "basis": "Critical theory and Jaeggi are presented as authoritative; Honneth’s phrase is quoted to confer authority.",
+              "limitations": [
+                "No uncertain allusion retained."
+              ],
+              "finding_ids": [
+                "F18",
+                "V.F2"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "Anchors verified; added a missed recognition move.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Findings in this scope lost anchor evidence; this does not establish absence",
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 15511
+      },
+      {
+        "step": "reconcile_checked",
+        "kind": "synthesize",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/openai/gpt-5.6-sol",
+        "model_used": "openrouter/openai/gpt-5.6-sol",
+        "input_tokens": 25453,
+        "output_tokens": 5437,
+        "duration_ms": 69125,
+        "cost_usd": 0.1053,
+        "retries": 0,
+        "wall": {
+          "rows": 19,
+          "with_anchor": 19,
+          "verified": 16,
+          "trimmed": 1,
+          "anchor_rate": 0.842,
+          "failed_ids": [
+            "F11",
+            "F13",
+            "F19"
+          ],
+          "duplicate_ids": [],
+          "missing_cited": [
+            "F11",
+            "F13",
+            "F19"
+          ],
+          "anchors": 25,
+          "verified_anchors": 22,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "checked",
+            "scope": "retained_ledger",
+            "missing_rejected_ids": [],
+            "missing_other_ids": [
+              "F11",
+              "F13",
+              "F19"
+            ]
+          },
+          "synthesis_contract": {
+            "failed_ids": [
+              "F11",
+              "F13",
+              "F19"
+            ],
+            "incomplete_cross_document_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [
+              "F11",
+              "F13",
+              "F19"
+            ],
+            "unknown_dimensions": [],
+            "missing_ledger": false,
+            "parse_error": "",
+            "incomplete_invocation": false
+          },
+          "synthesis_repair_attempts": [],
+          "rows_without_dimension": 0
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 23211
+      },
+      {
+        "step": "reconcile_checked",
+        "kind": "synthesize",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/openai/gpt-5.6-sol",
+        "model_used": "openrouter/openai/gpt-5.6-sol",
+        "input_tokens": 30795,
+        "output_tokens": 5158,
+        "duration_ms": 54356,
+        "cost_usd": 0.1132,
+        "retries": 0,
+        "wall": {
+          "rows": 16,
+          "with_anchor": 16,
+          "verified": 16,
+          "trimmed": 1,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 21,
+          "verified_anchors": 21,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "checked",
+            "scope": "retained_ledger",
+            "missing_rejected_ids": [],
+            "missing_other_ids": []
+          },
+          "synthesis_contract": {
+            "failed_ids": [],
+            "incomplete_cross_document_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [],
+            "unknown_dimensions": [],
+            "missing_ledger": false,
+            "parse_error": "",
+            "incomplete_invocation": false
+          },
+          "synthesis_repair_attempts": [
+            {
+              "failed_ids": [
+                "F11",
+                "F13",
+                "F19"
+              ],
+              "incomplete_cross_document_ids": [],
+              "duplicate_ids": [],
+              "missing_cited": [
+                "F11",
+                "F13",
+                "F19"
+              ],
+              "unknown_dimensions": [],
+              "missing_ledger": false,
+              "parse_error": "",
+              "incomplete_invocation": false
+            }
+          ],
+          "rows_without_dimension": 0,
+          "check_ruling_coverage": {
+            "original_count": 18,
+            "explicitly_ruled_count": 18,
+            "missing_or_unruled_ids": [],
+            "unexpected_nonadded_ids": [],
+            "invalid_original_status_ids": [],
+            "duplicate_original_ids": [],
+            "duplicate_ruling_ids": [],
+            "coverage_complete": true
+          },
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "references",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "article body",
+                "notes",
+                "references"
+              ],
+              "coverage": "complete",
+              "criterion": "Named works or thinkers invoked in the argument or listed in the references, with in‑text versus bibliography‑only status and supplied access distinguished.",
+              "basis": "No reference‑specific findings were extracted or verified; the text contains many in‑text citations but the extraction did not produce rows for this dimension.",
+              "limitations": [
+                "This does not establish absence of references; the extraction omitted this dimension."
+              ],
+              "finding_ids": [],
+              "review_state": "unchecked",
+              "review_basis": "The original scope outcome incorrectly claimed inconclusive with F1, a proposition finding; the dimension lacks reference‑specific findings.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Finding identity does not belong to the declared scope"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "propositions",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "article body",
+                "notes"
+              ],
+              "coverage": "complete",
+              "criterion": "A proposition is explicitly assigned by the citing voice to an identified source while preserving attribution and qualification.",
+              "basis": "Attributions to Jaeggi, Kitcher, Kuhn, Honneth, Hegel, and Lakatos are anchored in the text.",
+              "limitations": [
+                "Fidelity to unsupplied sources cannot be checked."
+              ],
+              "finding_ids": [
+                "F1",
+                "F5",
+                "F9",
+                "F19",
+                "F20",
+                "F21"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "Anchors verified; one original finding rejected and replaced with a properly anchored miss.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "uses",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "article body",
+                "notes"
+              ],
+              "coverage": "complete",
+              "criterion": "The citing passage uses an invocation as support, criticism, method, example, or background in relation to a local claim.",
+              "basis": "Uses of Kitcher, Dewey, Kuhn, Kuukkanen, Roth, Giddens, Searle, and Allen are anchored.",
+              "limitations": [
+                "Some findings were weakened to match anchor evidence."
+              ],
+              "finding_ids": [
+                "F4",
+                "F6",
+                "F8",
+                "F10",
+                "F11",
+                "F12",
+                "F13",
+                "F15",
+                "F16",
+                "F17"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "All uses are anchored; weakened findings still support the dimension.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Findings in this scope lost anchor evidence; this does not establish absence",
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "clusters",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "article body",
+                "notes"
+              ],
+              "coverage": "complete",
+              "criterion": "Two or more references are textually grouped or opposed around a shared question, without treating co‑citation as proof of mutual influence.",
+              "basis": "Moralists, historicists, and the Jaeggi‑Kuhn parallel are grouped in the text.",
+              "limitations": [
+                "Groupings are Chen’s local constructions."
+              ],
+              "finding_ids": [
+                "F2",
+                "F3",
+                "F7"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "Anchors support the groupings.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "recognition",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "introduction",
+                "article body",
+                "conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "The text explicitly confers authority, acknowledges a debt, or marks a possible allusion while alternatives and access limits are retained.",
+              "basis": "Critical theory and Jaeggi are presented as authoritative; Honneth’s phrase is quoted to confer authority.",
+              "limitations": [
+                "No uncertain allusion retained."
+              ],
+              "finding_ids": [
+                "F18",
+                "V.F2"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "Anchors verified; added a missed recognition move.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Findings in this scope lost anchor evidence; this does not establish absence",
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 21623
+      }
+    ]
+  },
+  "audit": {
+    "wall": {
+      "rows": 16,
+      "with_anchor": 16,
+      "verified": 16,
+      "trimmed": 1,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 21,
+      "verified_anchors": 21,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "rows": 16,
+    "raw_anchors": 21,
+    "raw_exact": 3,
+    "unknown_dimensions": [],
+    "missing_table_ids": [],
+    "missing_prose_ids": []
+  }
+}

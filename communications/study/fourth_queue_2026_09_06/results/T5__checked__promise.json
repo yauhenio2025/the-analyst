@@ -1,0 +1,868 @@
+{
+  "status": "complete",
+  "job": {
+    "id": "T5",
+    "engine": "feedback_loop_mapper",
+    "papers": [
+      "promise"
+    ],
+    "condition": "checked"
+  },
+  "output_sha256": "66cf9da9f9af445d2580654f44e272bd0a9f29cae59d7793ddaef0536679977a",
+  "seconds": 356.8088457584381,
+  "process": {
+    "engine": "feedback_loop_mapper",
+    "process": "dvs",
+    "cost_usd": 0.1486,
+    "input_tokens": 44044,
+    "output_tokens": 20387,
+    "seconds": 356.8,
+    "final_model": "openrouter/openai/gpt-5.6-sol",
+    "final_wall": {
+      "rows": 22,
+      "with_anchor": 22,
+      "verified": 22,
+      "trimmed": 0,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 28,
+      "verified_anchors": 28,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "checked",
+        "scope": "retained_ledger",
+        "missing_rejected_ids": [],
+        "missing_other_ids": []
+      },
+      "check_in": 22,
+      "check_confirmed": 0,
+      "check_weakened": 0,
+      "check_rejected": 0,
+      "check_added": 0,
+      "check_added_dropped": 0,
+      "check_carried": 22,
+      "check_unverified": 0,
+      "check_ruling_coverage": {
+        "original_count": 22,
+        "explicitly_ruled_count": 0,
+        "missing_or_unruled_ids": [
+          "F1",
+          "F2",
+          "F3",
+          "F4",
+          "F5",
+          "F6",
+          "F7",
+          "F8",
+          "F9",
+          "F10",
+          "F11",
+          "F12",
+          "F13",
+          "F14",
+          "F15",
+          "F16",
+          "F17",
+          "F18",
+          "F19",
+          "F20",
+          "F21",
+          "F22"
+        ],
+        "unexpected_nonadded_ids": [],
+        "invalid_original_status_ids": [],
+        "duplicate_original_ids": [],
+        "duplicate_ruling_ids": [],
+        "coverage_complete": false
+      },
+      "scope_outcomes": [
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "variables",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "Abstract",
+            "I",
+            "II",
+            "III",
+            "IV",
+            "Notes"
+          ],
+          "coverage": "complete",
+          "criterion": "Quantities or capacities that accumulate, and processes that increase or decrease them, retaining the source's accumulation or change predicate.",
+          "basis": "The paper explicitly describes stored money, processual capital, creative labour capacity, money's general power potential, investment flows, and stocks of knowledge. After verification, four variable findings (F1,F2,F3,V.F2) are retained with verbatim anchors.",
+          "limitations": [
+            "The variables are predominantly qualitative; no measured stock levels or observation intervals are supplied."
+          ],
+          "finding_ids": [
+            "F1",
+            "F2",
+            "F3",
+            "V.F2"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "All cited findings were verified against the source verbatim; one missing variable (money as general power) was added.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "Malformed findings ledger: Ledger row F6 has repeated anchor fields; use distinct anchor/doc suffixes",
+              "One or more declared finding references lack retained verified evidence"
+            ]
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "links",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "Abstract",
+            "I",
+            "II",
+            "III",
+            "IV",
+            "Notes"
+          ],
+          "coverage": "complete",
+          "criterion": "Directional effects connecting anchored endpoints, with sign, conditions, attribution, and uncertainty retained.",
+          "basis": "The paper gives directional relations among creative labour, innovation, monopoly profit, diffusion, institutionalization, lock-in, profitability, crisis, financial globalization, and growth imperative. After verification, 10 original links (F4,F5,F6,F7,F8,F11,F12,F13,F14,F17) plus two added links (V.F1,V.F3) are retained with proper anchors.",
+          "limitations": [
+            "Signs are qualitative and conditional; causal magnitudes and thresholds are not measured."
+          ],
+          "finding_ids": [
+            "F4",
+            "F5",
+            "F6",
+            "F7",
+            "F8",
+            "F11",
+            "F12",
+            "F13",
+            "F14",
+            "F17",
+            "V.F1",
+            "V.F3"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "All retained link findings were checked; two anchors were revised (F6,F17) to include the full causal span, and one added (V.F3) for the economy's alternating states.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "Malformed findings ledger: Ledger row F6 has repeated anchor fields; use distinct anchor/doc suffixes",
+              "One or more declared finding references lack retained verified evidence"
+            ]
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "loops",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "Abstract",
+            "I",
+            "II",
+            "III",
+            "IV",
+            "Notes"
+          ],
+          "coverage": "complete",
+          "criterion": "Paths returning to their starting variable through separately supported links, distinguishing source-described cycles from analyst reconstruction and open chains.",
+          "basis": "The paper explicitly names a cyclical myth process and supports both the communication-diffusion-application reinforcing loop (F10) and the old-myth-to-new-myth return (F15). No duplicates; all anchors verbatim.",
+          "limitations": [
+            "Closure applies to the class of economic myths, not necessarily to each technology; no periodicity or deterministic recurrence is established."
+          ],
+          "finding_ids": [
+            "F9",
+            "F10",
+            "F15"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "Loop findings verified against source; each return edge is separately anchored.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "Malformed findings ledger: Ledger row F6 has repeated anchor fields; use distinct anchor/doc suffixes"
+            ]
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "time",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "Abstract",
+            "I",
+            "II",
+            "III",
+            "IV",
+            "Notes"
+          ],
+          "coverage": "complete",
+          "criterion": "Reported delays, rates, phases, or behavioral changes retained only at the precision stated in the source.",
+          "basis": "The paper reports acceleration of organizational innovation (F16) and a less predictable contemporary environment (F18). Both are verbatim and qualitative; no numeric rates.",
+          "limitations": [
+            "No numeric innovation rate, cycle duration, dated lag, or measurement interval is provided."
+          ],
+          "finding_ids": [
+            "F16",
+            "F18"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "Both time findings confirmed verbatim; they capture the qualitative timing claims.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "Malformed findings ledger: Ledger row F6 has repeated anchor fields; use distinct anchor/doc suffixes"
+            ]
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "interventions",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "Abstract",
+            "I",
+            "II",
+            "III",
+            "IV",
+            "Notes"
+          ],
+          "coverage": "complete",
+          "criterion": "Changes or counterforces that could alter the dynamic, with observed, interpretive, and hypothetical effects kept distinct.",
+          "basis": "The text identifies market radicalism as a paralysing counterforce (F19), possible entrepreneurial withdrawal (F20), a conditional halt scenario (F21), and paradigms as cooperation-inducing mechanisms (F22). All findings are qualitative and hypothetical/interpretive.",
+          "limitations": [
+            "No controlled intervention or evaluated policy effect is reported; the terminal scenario and critique of money are speculative."
+          ],
+          "finding_ids": [
+            "F19",
+            "F20",
+            "F21",
+            "F22"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "Intervention findings verified; one revised (F20) to include the full withdrawal options.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "Malformed findings ledger: Ledger row F6 has repeated anchor fields; use distinct anchor/doc suffixes"
+            ]
+          }
+        }
+      ]
+    },
+    "calls": [
+      {
+        "step": "read",
+        "kind": "synthesize",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/openai/gpt-5.6-sol",
+        "model_used": "openrouter/openai/gpt-5.6-sol",
+        "input_tokens": 19083,
+        "output_tokens": 5292,
+        "duration_ms": 76525,
+        "cost_usd": 0.0911,
+        "retries": 0,
+        "wall": {
+          "rows": 22,
+          "with_anchor": 22,
+          "verified": 22,
+          "trimmed": 0,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 28,
+          "verified_anchors": 28,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "has_ledger": true,
+          "prose_chars": 10928,
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "variables",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract",
+                "I",
+                "II",
+                "III",
+                "IV",
+                "Notes"
+              ],
+              "coverage": "complete",
+              "criterion": "Quantities or capacities that accumulate, and processes that increase or decrease them, retaining the source's accumulation or change predicate.",
+              "basis": "The paper explicitly describes stored money, processual capital, creative labour capacity, investment flows, and stocks of knowledge.",
+              "limitations": [
+                "The variables are predominantly qualitative; no measured stock levels or observation intervals are supplied."
+              ],
+              "finding_ids": [
+                "F1",
+                "F2",
+                "F3"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "links",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract",
+                "I",
+                "II",
+                "III",
+                "IV",
+                "Notes"
+              ],
+              "coverage": "complete",
+              "criterion": "Directional effects connecting anchored endpoints, with sign, conditions, attribution, and uncertainty retained.",
+              "basis": "The paper gives directional relations among creative labour, innovation, monopoly profit, diffusion, institutionalization, lock-in, profitability, and crisis.",
+              "limitations": [
+                "Signs are qualitative and conditional; causal magnitudes and thresholds are not measured."
+              ],
+              "finding_ids": [
+                "F4",
+                "F5",
+                "F6",
+                "F7",
+                "F8",
+                "F11",
+                "F12",
+                "F13",
+                "F14",
+                "F17"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "loops",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract",
+                "I",
+                "II",
+                "III",
+                "IV",
+                "Notes"
+              ],
+              "coverage": "complete",
+              "criterion": "Paths returning to their starting variable through separately supported links, distinguishing source-described cycles from analyst reconstruction and open chains.",
+              "basis": "The paper explicitly names a cyclical myth process and supports return from decline of an old myth to the start of a new one; it also supports a communication-diffusion-application reinforcing path.",
+              "limitations": [
+                "Closure applies to the class of economic myths, not necessarily to each technology; no periodicity or deterministic recurrence is established."
+              ],
+              "finding_ids": [
+                "F9",
+                "F10",
+                "F15"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "time",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract",
+                "I",
+                "II",
+                "III",
+                "IV",
+                "Notes"
+              ],
+              "coverage": "complete",
+              "criterion": "Reported delays, rates, phases, or behavioral changes retained only at the precision stated in the source.",
+              "basis": "The paper reports phases, acceleration, temporary monopoly, competitors following soon, and a less predictable contemporary environment.",
+              "limitations": [
+                "No numeric innovation rate, cycle duration, dated lag, or measurement interval is provided."
+              ],
+              "finding_ids": [
+                "F16",
+                "F18"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "interventions",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract",
+                "I",
+                "II",
+                "III",
+                "IV",
+                "Notes"
+              ],
+              "coverage": "complete",
+              "criterion": "Changes or counterforces that could alter the dynamic, with observed, interpretive, and hypothetical effects kept distinct.",
+              "basis": "The text identifies cooperation and paradigms as enabling mechanisms, market radicalism as a paralysing counterforce, possible financial withdrawal, and a conditional halt scenario.",
+              "limitations": [
+                "No controlled intervention or evaluated policy effect is reported; the terminal scenario and critique of money are speculative."
+              ],
+              "finding_ids": [
+                "F19",
+                "F20",
+                "F21",
+                "F22"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 23869
+      },
+      {
+        "step": "check",
+        "kind": "verify",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+        "model_used": "openrouter/deepseek/deepseek-v4-pro",
+        "input_tokens": 24961,
+        "output_tokens": 15095,
+        "duration_ms": 280222,
+        "cost_usd": 0.0575,
+        "retries": 0,
+        "wall": {
+          "rows": 22,
+          "with_anchor": 22,
+          "verified": 22,
+          "trimmed": 0,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 28,
+          "verified_anchors": 28,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "checked",
+            "scope": "retained_ledger",
+            "missing_rejected_ids": [],
+            "missing_other_ids": []
+          },
+          "check_in": 22,
+          "check_confirmed": 0,
+          "check_weakened": 0,
+          "check_rejected": 0,
+          "check_added": 0,
+          "check_added_dropped": 0,
+          "check_carried": 22,
+          "check_unverified": 0,
+          "check_ruling_coverage": {
+            "original_count": 22,
+            "explicitly_ruled_count": 0,
+            "missing_or_unruled_ids": [
+              "F1",
+              "F2",
+              "F3",
+              "F4",
+              "F5",
+              "F6",
+              "F7",
+              "F8",
+              "F9",
+              "F10",
+              "F11",
+              "F12",
+              "F13",
+              "F14",
+              "F15",
+              "F16",
+              "F17",
+              "F18",
+              "F19",
+              "F20",
+              "F21",
+              "F22"
+            ],
+            "unexpected_nonadded_ids": [],
+            "invalid_original_status_ids": [],
+            "duplicate_original_ids": [],
+            "duplicate_ruling_ids": [],
+            "coverage_complete": false
+          },
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "variables",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Abstract",
+                "I",
+                "II",
+                "III",
+                "IV",
+                "Notes"
+              ],
+              "coverage": "complete",
+              "criterion": "Quantities or capacities that accumulate, and processes that increase or decrease them, retaining the source's accumulation or change predicate.",
+              "basis": "The paper explicitly describes stored money, processual capital, creative labour capacity, money's general power potential, investment flows, and stocks of knowledge. After verification, four variable findings (F1,F2,F3,V.F2) are retained with verbatim anchors.",
+              "limitations": [
+                "The variables are predominantly qualitative; no measured stock levels or observation intervals are supplied."
+              ],
+              "finding_ids": [
+                "F1",
+                "F2",
+                "F3",
+                "V.F2"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "All cited findings were verified against the source verbatim; one missing variable (money as general power) was added.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Malformed findings ledger: Ledger row F6 has repeated anchor fields; use distinct anchor/doc suffixes",
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "links",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Abstract",
+                "I",
+                "II",
+                "III",
+                "IV",
+                "Notes"
+              ],
+              "coverage": "complete",
+              "criterion": "Directional effects connecting anchored endpoints, with sign, conditions, attribution, and uncertainty retained.",
+              "basis": "The paper gives directional relations among creative labour, innovation, monopoly profit, diffusion, institutionalization, lock-in, profitability, crisis, financial globalization, and growth imperative. After verification, 10 original links (F4,F5,F6,F7,F8,F11,F12,F13,F14,F17) plus two added links (V.F1,V.F3) are retained with proper anchors.",
+              "limitations": [
+                "Signs are qualitative and conditional; causal magnitudes and thresholds are not measured."
+              ],
+              "finding_ids": [
+                "F4",
+                "F5",
+                "F6",
+                "F7",
+                "F8",
+                "F11",
+                "F12",
+                "F13",
+                "F14",
+                "F17",
+                "V.F1",
+                "V.F3"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "All retained link findings were checked; two anchors were revised (F6,F17) to include the full causal span, and one added (V.F3) for the economy's alternating states.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Malformed findings ledger: Ledger row F6 has repeated anchor fields; use distinct anchor/doc suffixes",
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "loops",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Abstract",
+                "I",
+                "II",
+                "III",
+                "IV",
+                "Notes"
+              ],
+              "coverage": "complete",
+              "criterion": "Paths returning to their starting variable through separately supported links, distinguishing source-described cycles from analyst reconstruction and open chains.",
+              "basis": "The paper explicitly names a cyclical myth process and supports both the communication-diffusion-application reinforcing loop (F10) and the old-myth-to-new-myth return (F15). No duplicates; all anchors verbatim.",
+              "limitations": [
+                "Closure applies to the class of economic myths, not necessarily to each technology; no periodicity or deterministic recurrence is established."
+              ],
+              "finding_ids": [
+                "F9",
+                "F10",
+                "F15"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "Loop findings verified against source; each return edge is separately anchored.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Malformed findings ledger: Ledger row F6 has repeated anchor fields; use distinct anchor/doc suffixes"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "time",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Abstract",
+                "I",
+                "II",
+                "III",
+                "IV",
+                "Notes"
+              ],
+              "coverage": "complete",
+              "criterion": "Reported delays, rates, phases, or behavioral changes retained only at the precision stated in the source.",
+              "basis": "The paper reports acceleration of organizational innovation (F16) and a less predictable contemporary environment (F18). Both are verbatim and qualitative; no numeric rates.",
+              "limitations": [
+                "No numeric innovation rate, cycle duration, dated lag, or measurement interval is provided."
+              ],
+              "finding_ids": [
+                "F16",
+                "F18"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "Both time findings confirmed verbatim; they capture the qualitative timing claims.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Malformed findings ledger: Ledger row F6 has repeated anchor fields; use distinct anchor/doc suffixes"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "interventions",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Abstract",
+                "I",
+                "II",
+                "III",
+                "IV",
+                "Notes"
+              ],
+              "coverage": "complete",
+              "criterion": "Changes or counterforces that could alter the dynamic, with observed, interpretive, and hypothetical effects kept distinct.",
+              "basis": "The text identifies market radicalism as a paralysing counterforce (F19), possible entrepreneurial withdrawal (F20), a conditional halt scenario (F21), and paradigms as cooperation-inducing mechanisms (F22). All findings are qualitative and hypothetical/interpretive.",
+              "limitations": [
+                "No controlled intervention or evaluated policy effect is reported; the terminal scenario and critique of money are speculative."
+              ],
+              "finding_ids": [
+                "F19",
+                "F20",
+                "F21",
+                "F22"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "Intervention findings verified; one revised (F20) to include the full withdrawal options.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Malformed findings ledger: Ledger row F6 has repeated anchor fields; use distinct anchor/doc suffixes"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 27336
+      }
+    ]
+  },
+  "audit": {
+    "wall": {
+      "rows": 22,
+      "with_anchor": 22,
+      "verified": 22,
+      "trimmed": 0,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 28,
+      "verified_anchors": 28,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "rows": 22,
+    "raw_anchors": 28,
+    "raw_exact": 28,
+    "unknown_dimensions": [],
+    "missing_table_ids": [],
+    "missing_prose_ids": []
+  }
+}

@@ -1,0 +1,15 @@
+# Source read: C4__checked__promise
+
+Output SHA256: `5b0a713260d5da5db16753591609f0793c830edb60e6be72bb71aa89a5d8abc0`
+
+Written before independent Sonnet/Sol scores. Codex reviewed the delivered output, its findings and actual tables against the supplied paper; source-side orientation and qualifications are recorded in [source_orientation.md](../source_orientation.md). This is a textual source check, not independent verification of the paper’s claims.
+
+The output selects economic myths rather than the legacy control’s absolute wealth; both are central source concepts, and the method names its default selection openly. F1/F2 distinguish constitution from causation. F3–F8 retain direction, motivational/legitimating predicates and phase-dependent stabilization; F14 uses actual worker-creative-capacity and wider-cooperation passages. The repaired analogy F18 carries both sides; F19 preserves the explicitly communicative employment-contract distinction. F15 keeps market radicalism as the author’s interpretation and F17 retains the entire halt-of-creative-destruction condition.
+
+I read both actual tables against the ledger and Sections III–IV. The proposed full cycle is explicitly a theoretical synthesis, not measured causality. The successful-communication/diffusion/application path is supported by the adjacent source discussion of applications, successful communication, imitation, competition and further applications. The table’s reciprocal-reinforcement label is loose: the displayed two arrows are not alone a fully closed loop. The table itself explicitly says it does not establish a closed indefinitely self-sustaining loop; no invented return edge or empirical feedback estimate is retained. The old-to-new myth relation correctly means succession, not recurrence of the identical myth.
+
+F9’s second span begins with “This” and needs the preceding source sentence for declining profitability. The full source directly supplies it, so this is a local-packet limitation rather than fabrication. F7 likewise needs the adjacent phase context to bind the stable market to institutionalization. The critic’s original religious-analogy finding was rejected; the final table cites the re-anchored two-span F18. Scope-assessment text retains references to precursor IDs and includes a long duplicate coverage narrative; those are reviewer provenance, not extra citable positive findings or proof of completeness. No surviving fabricated finding or attribution reversal found in the delivered tables.
+
+Mechanical record (existing production normalization): 19 rows, 28/28 anchors verified; failed IDs []; missing table IDs []. These checks establish matching spans and IDs, not semantic entailment.
+
+**Pre-score disposition:** Source check passes first-queue standard, subject to final mechanical/desk audit. Inventory; score comparison is disclosed rather than a reading-rubric gate. Record loose reciprocal label and anaphoric local spans as limitations, not reasons to impose a stronger release bar.

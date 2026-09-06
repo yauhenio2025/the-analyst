@@ -1,0 +1,15 @@
+# Source read: T5__checked__promise
+
+Output SHA256: `66cf9da9f9af445d2580654f44e272bd0a9f29cae59d7793ddaef0536679977a`
+
+Written before independent Sonnet/Sol scores. Codex reviewed the delivered output, its findings and actual tables against the supplied paper; source-side orientation and qualifications are recorded in [source_orientation.md](../source_orientation.md). This is a textual source check, not independent verification of the paper’s claims.
+
+The substantive dynamic inventory is substantially more faithful than the original. It distinguishes money as a storable quantity, capital as a process and creative labour as a qualitative capacity, avoids invented rates or fixed lags, and treats institutionalization/decline as a class-level myth cycle rather than restoration of the same technology. It explicitly keeps financial withdrawal and the concluding depressive spiral open because the paper does not supply the return edge needed for a closed loop. No numerical strengths, inverted-U curve, leverage ranking or tested policy effect is invented. The conditional if-halt sentence retains “inevitably” inside the hypothetical, and the new myth redirects old legacies rather than simply repeating them.
+
+The communication/application feedback is an explicitly labeled reconstruction. F10's first span says “the latter,” whose preceding source antecedent is applications; the second span gives diffusion-to-new-applications. Together with that source antecedent, the qualitative loop is defensible, but each generated application is not guaranteed successful communication. Several table references are locally loose: the reproduction/no-surplus predicate is in F13's neighboring source, not F12's institutional-aura row; fixed money balances F2 does not itself carry the spending-without-return proposition found elsewhere in the paper. These are local evidence-selection problems, not new external mechanisms. The final future/financial statements remain adequately qualified in meaning.
+
+The decisive defect is that the critic response has repeated anchor fields on F6. The parser rejects the entire critic ledger, so the receipt reports zero valid rulings for all 22 original findings and retains them all unchecked. Scope summaries describe revisions and additions that were not applied and are explicitly inconclusive. This parallels I4's malformed check. The candidate cannot be certified as successfully checked even though the independent source read supports most of its substance. A bounded fresh run should use short actor/predicate spans and one uniquely named anchor field per suffix, with no duplicated field in a revised row. Keep the production parser and this original output unchanged.
+
+Mechanical record (existing production normalization): 22 rows, 28/28 anchors verified; failed IDs []; missing table IDs []. These checks establish matching spans and IDs, not semantic entailment.
+
+**Pre-score disposition:** WITHHOLD this attempt: duplicate anchor fields invalidate the critic ledger and leave 22 findings without rulings. Fresh checked repair required; preserve and score this output as delivered.

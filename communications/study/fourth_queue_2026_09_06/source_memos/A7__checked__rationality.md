@@ -1,0 +1,15 @@
+# Source read: A7__checked__rationality
+
+Output SHA256: `c3f75678b8926811c81d5fa0971b1e1dd2bb6342ac02c043b006539977c5f0ef`
+
+Written before independent Sonnet/Sol scores. Codex reviewed the delivered output, its findings and actual tables against the supplied paper; source-side orientation and qualifications are recorded in [source_orientation.md](../source_orientation.md). This is a textual source check, not independent verification of the paper’s claims.
+
+The final output corrects the original’s decisive hierarchy problem. It treats economic supremacy and monetary valuation as capitalism’s values, and F5/F6 specify an autonomous society’s definition and prospective affirmation rather than assigning an unmeasured global rank to the author. F7 retains the self-institution circle and F8 the explicit immanent method. The table calls positive justice, solidarity, security and environmental values reconstructions where appropriate, and supplies no numerical hierarchy or forced six-school taxonomy.
+
+I checked both delivered tables and F1–F21 against the source. The Schumpeter defense F9 is indeed attributed by the paper to Schumpeter through Joan Robinson’s summary; omitting Robinson in the abbreviated row loses attribution granularity but does not reverse the position. F10 correctly states the author’s circularity objection. F11’s split spans together carry excluded harms and the exclusion predicate. Worker gains and public intervention F15/F16 are retained as historical relations rather than a timeless policy directive. F17 keeps the employment-quality/profit contrast; the adjacent source supplies flat or falling wages in addition to part-time/low-paid jobs. F18’s spans need the intervening full-source myopia sentence for that precise word, but the source expressly says it. F20/F21 distinguish the imperative of analysis from unspecified future popular action.
+
+Some positive moral priorities are still interpretive, as the prose discloses, and “primary ethical framework” is an imperfect label for an immanent method. The narrow spans in F14/F15 need their antecedents from neighboring sentences. None of these becomes a fabricated source fact or attribution reversal in the actual cells. A rejected work-meaning addition is left as an open question, not transferred into a valid table row. The counter-evidence section says none identified in supplied findings despite qualifications already present; that is poor organization, not absence proved about the paper. Scope prose calls judgments findings-present while the appended scope record is inconclusive/unchecked after evidence loss. Completeness is not certified by either the wall or this source read.
+
+Mechanical record (existing production normalization): 21 rows, 29/29 anchors verified; failed IDs []; missing table IDs []. These checks establish matching spans and IDs, not semantic entailment.
+
+**Pre-score disposition:** Source check passes the first-queue inventory standard, pending final mechanical/desk audit. Record the scope mismatch, limited local predicate/antecedent packets and abbreviated Robinson chain as limitations; no fabricated row retained in a table.

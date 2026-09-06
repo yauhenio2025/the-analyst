@@ -1,0 +1,750 @@
+{
+  "status": "complete",
+  "job": {
+    "id": "I4",
+    "engine": "collective_action_problem_identifier",
+    "papers": [
+      "rationality"
+    ],
+    "condition": "checked"
+  },
+  "output_sha256": "aac104294d42e1fc40e8cc7846c0b3d6f7bb1fa85547c7c7832a6c63b7aded3a",
+  "seconds": 184.317955493927,
+  "process": {
+    "engine": "collective_action_problem_identifier",
+    "process": "dvs",
+    "cost_usd": 0.1194,
+    "input_tokens": 38751,
+    "output_tokens": 16536,
+    "seconds": 184.3,
+    "final_model": "openrouter/openai/gpt-5.6-sol",
+    "final_wall": {
+      "rows": 9,
+      "with_anchor": 9,
+      "verified": 9,
+      "trimmed": 0,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 12,
+      "verified_anchors": 12,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "checked",
+        "scope": "retained_ledger",
+        "missing_rejected_ids": [],
+        "missing_other_ids": []
+      },
+      "check_in": 9,
+      "check_confirmed": 0,
+      "check_weakened": 0,
+      "check_rejected": 0,
+      "check_added": 0,
+      "check_added_dropped": 0,
+      "check_carried": 9,
+      "check_unverified": 0,
+      "check_ruling_coverage": {
+        "original_count": 9,
+        "explicitly_ruled_count": 0,
+        "missing_or_unruled_ids": [
+          "F1",
+          "F2",
+          "F3",
+          "F4",
+          "F5",
+          "F6",
+          "F7",
+          "F8",
+          "F9"
+        ],
+        "unexpected_nonadded_ids": [],
+        "invalid_original_status_ids": [],
+        "duplicate_original_ids": [],
+        "duplicate_ruling_ids": [],
+        "coverage_complete": false
+      },
+      "scope_outcomes": [
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "outcome",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "Specificity and Social-Historical Relativity of the Capitalist Institution",
+            "The Theoretical Ideology of the Capitalist Economy",
+            "The Effective Reality of the Capitalist Economy",
+            "Relative Efficiency, Flexibility, and Resistance of Capitalism"
+          ],
+          "coverage": "complete",
+          "criterion": "A documented group outcome with its stated holder and evidence showing whether the interest is common or disputed.",
+          "basis": "Revised F1 anchors the regime’s aim of increased production and reduced costs; V.F1 anchors the restrictive cost definition that excludes environmental/social harms; together they establish the regime’s stated operational outcome.",
+          "limitations": [
+            "The outcome is stated primarily in the regime’s terms and is not shown to be equally desired by workers and owners."
+          ],
+          "finding_ids": [
+            "F1",
+            "V.F1"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "F1 (weakened) and V.F1 (added) provide verbatim anchors for the production/cost aim and the exclusion of non‑pecuniary harms, meeting the criterion.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "Malformed findings ledger: A critic row has multiple revised-finding fields",
+              "One or more declared finding references lack retained verified evidence"
+            ]
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "incentives",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "The Effective Reality of the Capitalist Economy",
+            "Relative Efficiency, Flexibility, and Resistance of Capitalism"
+          ],
+          "coverage": "complete",
+          "criterion": "Documented actor actions that provide individual benefits while making the named collective outcome harder to achieve.",
+          "basis": "F3 anchors firm‑level cost minimization leading to low wages, undermining aggregate demand; F5 anchors short‑term profit orientation and environmental neglect, showing actions with harmful collective consequences.",
+          "limitations": [
+            "Firm‑level benefits and aggregate effects are not quantified.",
+            "The environmental outcome is not established as a goal accepted by the firms concerned."
+          ],
+          "finding_ids": [
+            "F3",
+            "F5"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "Both F3 and F5 remain confirmed; they provide literal anchors for the incentive–collective harm link.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "Malformed findings ledger: A critic row has multiple revised-finding fields"
+            ]
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "barriers",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "Specificity and Social-Historical Relativity of the Capitalist Institution",
+            "The Effective Reality of the Capitalist Economy",
+            "Relative Efficiency, Flexibility, and Resistance of Capitalism"
+          ],
+          "coverage": "complete",
+          "criterion": "A documented cooperation barrier identifying actors and an incentive, coordination, information, enforcement, or disputed‑goal mechanism.",
+          "basis": "F2 anchors labor–capital contestation; F4 anchors the coordination gap in investment; V.F2 anchors the global wage‑competition barrier. They cover disputed interests and decentralized failures.",
+          "limitations": [
+            "The text does not formulate these mechanisms as a formal game.",
+            "No evidence establishes deliberate free riding."
+          ],
+          "finding_ids": [
+            "F2",
+            "F4",
+            "V.F2"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "F2 and F4 are confirmed; V.F2 adds a major barrier not previously captured. All meet the criterion.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "Malformed findings ledger: A critic row has multiple revised-finding fields",
+              "One or more declared finding references lack retained verified evidence"
+            ]
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "responses",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "Relative Efficiency, Flexibility, and Resistance of Capitalism"
+          ],
+          "coverage": "complete",
+          "criterion": "Observed or proposed rules, norms, or informal arrangements addressing the barrier, with reported results kept distinct from proposals.",
+          "basis": "Revised F6 anchors wage/working‑time changes and market creation; revised F7 anchors forced state intervention; revised F8 anchors the ensuing long expansion. Together they document a response sequence with a reported result.",
+          "limitations": [
+            "The source does not provide a detailed institutional design or isolate the causal effect of each response."
+          ],
+          "finding_ids": [
+            "F6",
+            "F7",
+            "F8"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "Even after weakening to match their anchors, the findings still establish observed responses and their results.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "Malformed findings ledger: A critic row has multiple revised-finding fields"
+            ]
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "limits",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "Relative Efficiency, Flexibility, and Resistance of Capitalism"
+          ],
+          "coverage": "complete",
+          "criterion": "A counter‑passage or feasibility condition that challenges the cooperation diagnosis or limits the proposed response.",
+          "basis": "F9 anchors the claim that capitalism continued to function despite its internal conflicts, directly challenging any assertion that the conflicts make collective production impossible.",
+          "limitations": [
+            "Continued functioning according to capitalist finalities does not establish social optimality or agreement among affected groups."
+          ],
+          "finding_ids": [
+            "F9"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "F9 is confirmed and its anchor directly states functioning through booms and crashes, meeting the criterion.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "Malformed findings ledger: A critic row has multiple revised-finding fields"
+            ]
+          }
+        }
+      ]
+    },
+    "calls": [
+      {
+        "step": "read",
+        "kind": "synthesize",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/openai/gpt-5.6-sol",
+        "model_used": "openrouter/openai/gpt-5.6-sol",
+        "input_tokens": 17194,
+        "output_tokens": 3549,
+        "duration_ms": 47291,
+        "cost_usd": 0.0699,
+        "retries": 0,
+        "wall": {
+          "rows": 9,
+          "with_anchor": 9,
+          "verified": 9,
+          "trimmed": 0,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 12,
+          "verified_anchors": 12,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "has_ledger": true,
+          "prose_chars": 7920,
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "outcome",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Specificity and Social-Historical Relativity of the Capitalist Institution",
+                "The Theoretical Ideology of the Capitalist Economy",
+                "The Effective Reality of the Capitalist Economy",
+                "Relative Efficiency, Flexibility, and Resistance of Capitalism"
+              ],
+              "coverage": "complete",
+              "criterion": "A documented group outcome with its stated holder and evidence showing whether the interest is common or disputed.",
+              "basis": "The text states capitalism’s production and cost-reduction finalities and describes the aggregate production and employment conditions at stake.",
+              "limitations": [
+                "The outcome is stated primarily in the regime’s terms and is not shown to be equally desired by workers and owners."
+              ],
+              "finding_ids": [
+                "F1"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "incentives",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "The Effective Reality of the Capitalist Economy",
+                "Relative Efficiency, Flexibility, and Resistance of Capitalism"
+              ],
+              "coverage": "complete",
+              "criterion": "Documented actor actions that provide individual benefits while making the named collective outcome harder to achieve.",
+              "basis": "The text links employer cost minimization to low wages and links short-term profit orientation to neglected collective consequences.",
+              "limitations": [
+                "Firm-level benefits and aggregate effects are not quantified.",
+                "The environmental outcome is not established as a goal accepted by the firms concerned."
+              ],
+              "finding_ids": [
+                "F3",
+                "F5"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "barriers",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Specificity and Social-Historical Relativity of the Capitalist Institution",
+                "The Effective Reality of the Capitalist Economy",
+                "Relative Efficiency, Flexibility, and Resistance of Capitalism"
+              ],
+              "coverage": "complete",
+              "criterion": "A documented cooperation barrier identifying actors and an incentive, coordination, information, enforcement, or disputed-goal mechanism.",
+              "basis": "The text documents labor–capital contestation and the absence of any guarantee that decentralized investment will be collectively sufficient.",
+              "limitations": [
+                "The text does not formulate these mechanisms as a formal game.",
+                "No evidence establishes deliberate free riding."
+              ],
+              "finding_ids": [
+                "F2",
+                "F4"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "responses",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Relative Efficiency, Flexibility, and Resistance of Capitalism"
+              ],
+              "coverage": "complete",
+              "criterion": "Observed or proposed rules, norms, or informal arrangements addressing the barrier, with reported results kept distinct from proposals.",
+              "basis": "The text reports working-class struggle, wage and working-time changes, state intervention, demand regulation, and a subsequent long expansion.",
+              "limitations": [
+                "The source does not provide a detailed institutional design or isolate the causal effect of each response."
+              ],
+              "finding_ids": [
+                "F6",
+                "F7",
+                "F8"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "limits",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Relative Efficiency, Flexibility, and Resistance of Capitalism"
+              ],
+              "coverage": "complete",
+              "criterion": "A counter-passage or feasibility condition that challenges the cooperation diagnosis or limits the proposed response.",
+              "basis": "The text states that capitalism continued to function through booms, crashes, and imperfect coordination, limiting any claim of total collective failure.",
+              "limitations": [
+                "Continued functioning according to capitalist finalities does not establish social optimality or agreement among affected groups."
+              ],
+              "finding_ids": [
+                "F9"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 17283
+      },
+      {
+        "step": "check",
+        "kind": "verify",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+        "model_used": "openrouter/deepseek/deepseek-v4-pro",
+        "input_tokens": 21557,
+        "output_tokens": 12987,
+        "duration_ms": 136990,
+        "cost_usd": 0.0495,
+        "retries": 0,
+        "wall": {
+          "rows": 9,
+          "with_anchor": 9,
+          "verified": 9,
+          "trimmed": 0,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 12,
+          "verified_anchors": 12,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "checked",
+            "scope": "retained_ledger",
+            "missing_rejected_ids": [],
+            "missing_other_ids": []
+          },
+          "check_in": 9,
+          "check_confirmed": 0,
+          "check_weakened": 0,
+          "check_rejected": 0,
+          "check_added": 0,
+          "check_added_dropped": 0,
+          "check_carried": 9,
+          "check_unverified": 0,
+          "check_ruling_coverage": {
+            "original_count": 9,
+            "explicitly_ruled_count": 0,
+            "missing_or_unruled_ids": [
+              "F1",
+              "F2",
+              "F3",
+              "F4",
+              "F5",
+              "F6",
+              "F7",
+              "F8",
+              "F9"
+            ],
+            "unexpected_nonadded_ids": [],
+            "invalid_original_status_ids": [],
+            "duplicate_original_ids": [],
+            "duplicate_ruling_ids": [],
+            "coverage_complete": false
+          },
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "outcome",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Specificity and Social-Historical Relativity of the Capitalist Institution",
+                "The Theoretical Ideology of the Capitalist Economy",
+                "The Effective Reality of the Capitalist Economy",
+                "Relative Efficiency, Flexibility, and Resistance of Capitalism"
+              ],
+              "coverage": "complete",
+              "criterion": "A documented group outcome with its stated holder and evidence showing whether the interest is common or disputed.",
+              "basis": "Revised F1 anchors the regime’s aim of increased production and reduced costs; V.F1 anchors the restrictive cost definition that excludes environmental/social harms; together they establish the regime’s stated operational outcome.",
+              "limitations": [
+                "The outcome is stated primarily in the regime’s terms and is not shown to be equally desired by workers and owners."
+              ],
+              "finding_ids": [
+                "F1",
+                "V.F1"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "F1 (weakened) and V.F1 (added) provide verbatim anchors for the production/cost aim and the exclusion of non‑pecuniary harms, meeting the criterion.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Malformed findings ledger: A critic row has multiple revised-finding fields",
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "incentives",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "The Effective Reality of the Capitalist Economy",
+                "Relative Efficiency, Flexibility, and Resistance of Capitalism"
+              ],
+              "coverage": "complete",
+              "criterion": "Documented actor actions that provide individual benefits while making the named collective outcome harder to achieve.",
+              "basis": "F3 anchors firm‑level cost minimization leading to low wages, undermining aggregate demand; F5 anchors short‑term profit orientation and environmental neglect, showing actions with harmful collective consequences.",
+              "limitations": [
+                "Firm‑level benefits and aggregate effects are not quantified.",
+                "The environmental outcome is not established as a goal accepted by the firms concerned."
+              ],
+              "finding_ids": [
+                "F3",
+                "F5"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "Both F3 and F5 remain confirmed; they provide literal anchors for the incentive–collective harm link.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Malformed findings ledger: A critic row has multiple revised-finding fields"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "barriers",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Specificity and Social-Historical Relativity of the Capitalist Institution",
+                "The Effective Reality of the Capitalist Economy",
+                "Relative Efficiency, Flexibility, and Resistance of Capitalism"
+              ],
+              "coverage": "complete",
+              "criterion": "A documented cooperation barrier identifying actors and an incentive, coordination, information, enforcement, or disputed‑goal mechanism.",
+              "basis": "F2 anchors labor–capital contestation; F4 anchors the coordination gap in investment; V.F2 anchors the global wage‑competition barrier. They cover disputed interests and decentralized failures.",
+              "limitations": [
+                "The text does not formulate these mechanisms as a formal game.",
+                "No evidence establishes deliberate free riding."
+              ],
+              "finding_ids": [
+                "F2",
+                "F4",
+                "V.F2"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "F2 and F4 are confirmed; V.F2 adds a major barrier not previously captured. All meet the criterion.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Malformed findings ledger: A critic row has multiple revised-finding fields",
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "responses",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Relative Efficiency, Flexibility, and Resistance of Capitalism"
+              ],
+              "coverage": "complete",
+              "criterion": "Observed or proposed rules, norms, or informal arrangements addressing the barrier, with reported results kept distinct from proposals.",
+              "basis": "Revised F6 anchors wage/working‑time changes and market creation; revised F7 anchors forced state intervention; revised F8 anchors the ensuing long expansion. Together they document a response sequence with a reported result.",
+              "limitations": [
+                "The source does not provide a detailed institutional design or isolate the causal effect of each response."
+              ],
+              "finding_ids": [
+                "F6",
+                "F7",
+                "F8"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "Even after weakening to match their anchors, the findings still establish observed responses and their results.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Malformed findings ledger: A critic row has multiple revised-finding fields"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "limits",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Relative Efficiency, Flexibility, and Resistance of Capitalism"
+              ],
+              "coverage": "complete",
+              "criterion": "A counter‑passage or feasibility condition that challenges the cooperation diagnosis or limits the proposed response.",
+              "basis": "F9 anchors the claim that capitalism continued to function despite its internal conflicts, directly challenging any assertion that the conflicts make collective production impossible.",
+              "limitations": [
+                "Continued functioning according to capitalist finalities does not establish social optimality or agreement among affected groups."
+              ],
+              "finding_ids": [
+                "F9"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "F9 is confirmed and its anchor directly states functioning through booms and crashes, meeting the criterion.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Malformed findings ledger: A critic row has multiple revised-finding fields"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 15079
+      }
+    ]
+  },
+  "audit": {
+    "wall": {
+      "rows": 9,
+      "with_anchor": 9,
+      "verified": 9,
+      "trimmed": 0,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 12,
+      "verified_anchors": 12,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "rows": 9,
+    "raw_anchors": 12,
+    "raw_exact": 11,
+    "unknown_dimensions": [],
+    "missing_table_ids": [],
+    "missing_prose_ids": []
+  }
+}

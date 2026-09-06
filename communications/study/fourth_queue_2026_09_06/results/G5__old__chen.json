@@ -1,0 +1,55 @@
+{
+  "status": "complete",
+  "job": {
+    "id": "G5",
+    "engine": "citation_invocation_map",
+    "papers": [
+      "chen"
+    ],
+    "condition": "old"
+  },
+  "output_sha256": "ec8c3495f98fe816b1adcfca5eaf3d5b4418bdea9bfc1baff97977ef040a9a0e",
+  "seconds": 85.80039310455322,
+  "process": {
+    "calls": [
+      {
+        "step": "old_oneshot",
+        "model_used": "openrouter/openai/gpt-5.6-sol",
+        "input_tokens": 14328,
+        "output_tokens": 7564,
+        "stop_reason": "stop",
+        "partial": false,
+        "duration_ms": 85749,
+        "retries": 0
+      }
+    ]
+  },
+  "audit": {
+    "wall": {
+      "rows": 26,
+      "with_anchor": 26,
+      "verified": 25,
+      "trimmed": 2,
+      "anchor_rate": 0.962,
+      "failed_ids": [
+        "F12"
+      ],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 26,
+      "verified_anchors": 25,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "rows": 26,
+    "raw_anchors": 26,
+    "raw_exact": 8,
+    "unknown_dimensions": [],
+    "missing_table_ids": [],
+    "missing_prose_ids": []
+  }
+}

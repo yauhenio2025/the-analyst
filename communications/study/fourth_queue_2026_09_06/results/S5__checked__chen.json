@@ -1,0 +1,770 @@
+{
+  "status": "complete",
+  "job": {
+    "id": "S5",
+    "engine": "pedagogical_pathway",
+    "papers": [
+      "chen"
+    ],
+    "condition": "checked"
+  },
+  "output_sha256": "ed8af108b7a810b866718d682c0c8bc8adeb2a7bb44be045e9b2da2812dd2844",
+  "seconds": 192.40776538848877,
+  "process": {
+    "engine": "pedagogical_pathway",
+    "process": "dvs",
+    "cost_usd": 0.1372,
+    "input_tokens": 39025,
+    "output_tokens": 16270,
+    "seconds": 192.4,
+    "final_model": "openrouter/openai/gpt-5.6-sol",
+    "final_wall": {
+      "rows": 17,
+      "with_anchor": 17,
+      "verified": 17,
+      "trimmed": 1,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 30,
+      "verified_anchors": 30,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "checked",
+        "scope": "retained_ledger",
+        "missing_rejected_ids": [],
+        "missing_other_ids": []
+      },
+      "check_in": 17,
+      "check_confirmed": 17,
+      "check_weakened": 0,
+      "check_rejected": 0,
+      "check_added": 0,
+      "check_added_dropped": 0,
+      "check_carried": 0,
+      "check_unverified": 0,
+      "check_ruling_coverage": {
+        "original_count": 17,
+        "explicitly_ruled_count": 17,
+        "missing_or_unruled_ids": [],
+        "unexpected_nonadded_ids": [],
+        "invalid_original_status_ids": [],
+        "duplicate_original_ids": [],
+        "duplicate_ruling_ids": [],
+        "coverage_complete": true
+      },
+      "scope_outcomes": [
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "concepts",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "Abstract",
+            "Jaeggi’s critique of moralism and historicism",
+            "Problem-solving and forms of live: Jaeggi’s pragmatist theory of progress",
+            "Criticism: Ignorance of the problem of incommensurability",
+            "Alternative: From pragmatist to psychologist understanding of progress",
+            "Conclusion",
+            "Notes"
+          ],
+          "coverage": "complete",
+          "criterion": "Named concepts with local meanings and passages needed to follow the paper’s question and main answer",
+          "basis": "Verbatim anchors confirm the presence of the listed concepts and their definitions.",
+          "limitations": [
+            "Coverage is limited to the supplied article; cited external works were not independently inspected.",
+            "No learner starting knowledge was supplied."
+          ],
+          "finding_ids": [
+            "F1",
+            "F2",
+            "F3",
+            "F4",
+            "F5",
+            "F6",
+            "F7",
+            "F11"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "All cited findings are confirmed by verbatim anchors from the source; no weakening or rejection required.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "prerequisites",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "Problem-solving and forms of live: Jaeggi’s pragmatist theory of progress",
+            "Criticism: Ignorance of the problem of incommensurability",
+            "Alternative: From pragmatist to psychologist understanding of progress"
+          ],
+          "coverage": "complete",
+          "criterion": "Relations in which understanding one concept enables another, anchored by passages involving both concepts",
+          "basis": "F8 and F9 are argumentative claims that establish dependence relations; F9 explicitly states a contrast between shared goal in science and its absence in social forms of life.",
+          "limitations": [
+            "Some ordering recommendations are inferred teaching dependencies and are marked as proposals rather than measured learner requirements."
+          ],
+          "finding_ids": [
+            "F8",
+            "F9"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "Both findings are confirmed by verbatim anchors; F8 is a claim about incompatibility, F9 is a direct contrast of conditions.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "sequence",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "Introduction",
+            "Jaeggi’s critique of moralism and historicism",
+            "Problem-solving and forms of live: Jaeggi’s pragmatist theory of progress",
+            "Criticism: Ignorance of the problem of incommensurability",
+            "Alternative: From pragmatist to psychologist understanding of progress",
+            "Conclusion"
+          ],
+          "coverage": "complete",
+          "criterion": "An explicit proposed order of concepts and passages supported by argumentative dependencies, without treating section order as uniquely necessary",
+          "basis": "F14 directly quotes the author’s step‑by‑step description of the argumentative progression.",
+          "limitations": [
+            "Alternative entry points are reading advice for an unspecified learner, not source claims about demonstrated effectiveness."
+          ],
+          "finding_ids": [
+            "F14"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "The finding is confirmed by verbatim anchors from the introduction.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "scaffolds",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "Problem-solving and forms of live: Jaeggi’s pragmatist theory of progress",
+            "Criticism: Ignorance of the problem of incommensurability"
+          ],
+          "coverage": "complete",
+          "criterion": "Source examples, analogies, or contrasts that explain a difficult concept while retaining the example’s stated predicate",
+          "basis": "F15, F16, and F17 are all verbatim examples from the source that serve as explanatory contrasts.",
+          "limitations": [
+            "The article does not test these examples as instructional interventions."
+          ],
+          "finding_ids": [
+            "F15",
+            "F16",
+            "F17"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "All three findings are confirmed by verbatim anchors; they are explicit source scaffolds.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "misreadings",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "Notes",
+            "Problem-solving and forms of live: Jaeggi’s pragmatist theory of progress",
+            "Criticism: Ignorance of the problem of incommensurability",
+            "Alternative: From pragmatist to psychologist understanding of progress",
+            "Conclusion"
+          ],
+          "coverage": "complete",
+          "criterion": "Plausible reading hypotheses corrected by source qualifications, without presenting them as observed learner errors",
+          "basis": "F10, F12, and F13 identify qualifications that respond to potential misreadings and are anchored in verbatim source text.",
+          "limitations": [
+            "No empirical learner evidence establishes the frequency of these misreadings or the effectiveness of the proposed checkpoints."
+          ],
+          "finding_ids": [
+            "F10",
+            "F12",
+            "F13"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "All three findings are confirmed by verbatim anchors; F10’s earlier trimmed‑anchor flag was mistaken.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "Findings in this scope lost anchor evidence; this does not establish absence",
+              "One or more declared finding references lack retained verified evidence"
+            ]
+          }
+        }
+      ]
+    },
+    "calls": [
+      {
+        "step": "read",
+        "kind": "synthesize",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/openai/gpt-5.6-sol",
+        "model_used": "openrouter/openai/gpt-5.6-sol",
+        "input_tokens": 16090,
+        "output_tokens": 5968,
+        "duration_ms": 81149,
+        "cost_usd": 0.0919,
+        "retries": 0,
+        "wall": {
+          "rows": 17,
+          "with_anchor": 17,
+          "verified": 16,
+          "trimmed": 0,
+          "anchor_rate": 0.941,
+          "failed_ids": [
+            "F10"
+          ],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 30,
+          "verified_anchors": 29,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "has_ledger": true,
+          "prose_chars": 14708,
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "concepts",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract",
+                "Jaeggi’s critique of moralism and historicism",
+                "Problem-solving and forms of live: Jaeggi’s pragmatist theory of progress",
+                "Criticism: Ignorance of the problem of incommensurability",
+                "Alternative: From pragmatist to psychologist understanding of progress",
+                "Conclusion",
+                "Notes"
+              ],
+              "coverage": "complete",
+              "criterion": "Named concepts with local meanings and passages needed to follow the paper’s question and main answer",
+              "basis": "The paper explicitly defines and distinguishes progress, moralism, historicism, nonderivative problem-solving, forms of life, incommensurability, and psychologist progress.",
+              "limitations": [
+                "Coverage is limited to the supplied article; cited external works were not independently inspected.",
+                "No learner starting knowledge was supplied."
+              ],
+              "finding_ids": [
+                "F1",
+                "F2",
+                "F3",
+                "F4",
+                "F5",
+                "F6",
+                "F7",
+                "F11"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "prerequisites",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Problem-solving and forms of live: Jaeggi’s pragmatist theory of progress",
+                "Criticism: Ignorance of the problem of incommensurability",
+                "Alternative: From pragmatist to psychologist understanding of progress"
+              ],
+              "coverage": "complete",
+              "criterion": "Relations in which understanding one concept enables another, anchored by passages involving both concepts",
+              "basis": "The critique depends on first understanding the social/scientific parallel, incommensurability, and the proposed know-how response.",
+              "limitations": [
+                "Some ordering recommendations are inferred teaching dependencies and are marked as proposals rather than measured learner requirements."
+              ],
+              "finding_ids": [
+                "F8",
+                "F9"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "sequence",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Introduction",
+                "Jaeggi’s critique of moralism and historicism",
+                "Problem-solving and forms of live: Jaeggi’s pragmatist theory of progress",
+                "Criticism: Ignorance of the problem of incommensurability",
+                "Alternative: From pragmatist to psychologist understanding of progress",
+                "Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "An explicit proposed order of concepts and passages supported by argumentative dependencies, without treating section order as uniquely necessary",
+              "basis": "The introduction explicitly states the argumentative progression from reconstruction through critique to the psychologist alternative.",
+              "limitations": [
+                "Alternative entry points are reading advice for an unspecified learner, not source claims about demonstrated effectiveness."
+              ],
+              "finding_ids": [
+                "F14"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "scaffolds",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Problem-solving and forms of live: Jaeggi’s pragmatist theory of progress",
+                "Criticism: Ignorance of the problem of incommensurability"
+              ],
+              "coverage": "complete",
+              "criterion": "Source examples, analogies, or contrasts that explain a difficult concept while retaining the example’s stated predicate",
+              "basis": "The article uses slavery, Deweyan experience, and conflicting slaveholder/abolitionist problem definitions as explanatory contrasts.",
+              "limitations": [
+                "The article does not test these examples as instructional interventions."
+              ],
+              "finding_ids": [
+                "F15",
+                "F16",
+                "F17"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "misreadings",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Notes",
+                "Problem-solving and forms of live: Jaeggi’s pragmatist theory of progress",
+                "Criticism: Ignorance of the problem of incommensurability",
+                "Alternative: From pragmatist to psychologist understanding of progress",
+                "Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "Plausible reading hypotheses corrected by source qualifications, without presenting them as observed learner errors",
+              "basis": "The text supplies qualifications concerning indirect reconstruction, systematic regression, reasons within psychologism, and the unresolved relativism problem.",
+              "limitations": [
+                "No empirical learner evidence establishes the frequency of these misreadings or the effectiveness of the proposed checkpoints."
+              ],
+              "finding_ids": [
+                "F10",
+                "F12",
+                "F13"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Findings in this scope lost anchor evidence; this does not establish absence",
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 28167
+      },
+      {
+        "step": "check",
+        "kind": "verify",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+        "model_used": "openrouter/deepseek/deepseek-v4-pro",
+        "input_tokens": 22935,
+        "output_tokens": 10302,
+        "duration_ms": 111208,
+        "cost_usd": 0.0454,
+        "retries": 0,
+        "wall": {
+          "rows": 17,
+          "with_anchor": 17,
+          "verified": 17,
+          "trimmed": 1,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 30,
+          "verified_anchors": 30,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "checked",
+            "scope": "retained_ledger",
+            "missing_rejected_ids": [],
+            "missing_other_ids": []
+          },
+          "check_in": 17,
+          "check_confirmed": 17,
+          "check_weakened": 0,
+          "check_rejected": 0,
+          "check_added": 0,
+          "check_added_dropped": 0,
+          "check_carried": 0,
+          "check_unverified": 0,
+          "check_ruling_coverage": {
+            "original_count": 17,
+            "explicitly_ruled_count": 17,
+            "missing_or_unruled_ids": [],
+            "unexpected_nonadded_ids": [],
+            "invalid_original_status_ids": [],
+            "duplicate_original_ids": [],
+            "duplicate_ruling_ids": [],
+            "coverage_complete": true
+          },
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "concepts",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract",
+                "Jaeggi’s critique of moralism and historicism",
+                "Problem-solving and forms of live: Jaeggi’s pragmatist theory of progress",
+                "Criticism: Ignorance of the problem of incommensurability",
+                "Alternative: From pragmatist to psychologist understanding of progress",
+                "Conclusion",
+                "Notes"
+              ],
+              "coverage": "complete",
+              "criterion": "Named concepts with local meanings and passages needed to follow the paper’s question and main answer",
+              "basis": "Verbatim anchors confirm the presence of the listed concepts and their definitions.",
+              "limitations": [
+                "Coverage is limited to the supplied article; cited external works were not independently inspected.",
+                "No learner starting knowledge was supplied."
+              ],
+              "finding_ids": [
+                "F1",
+                "F2",
+                "F3",
+                "F4",
+                "F5",
+                "F6",
+                "F7",
+                "F11"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "All cited findings are confirmed by verbatim anchors from the source; no weakening or rejection required.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "prerequisites",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Problem-solving and forms of live: Jaeggi’s pragmatist theory of progress",
+                "Criticism: Ignorance of the problem of incommensurability",
+                "Alternative: From pragmatist to psychologist understanding of progress"
+              ],
+              "coverage": "complete",
+              "criterion": "Relations in which understanding one concept enables another, anchored by passages involving both concepts",
+              "basis": "F8 and F9 are argumentative claims that establish dependence relations; F9 explicitly states a contrast between shared goal in science and its absence in social forms of life.",
+              "limitations": [
+                "Some ordering recommendations are inferred teaching dependencies and are marked as proposals rather than measured learner requirements."
+              ],
+              "finding_ids": [
+                "F8",
+                "F9"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "Both findings are confirmed by verbatim anchors; F8 is a claim about incompatibility, F9 is a direct contrast of conditions.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "sequence",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Introduction",
+                "Jaeggi’s critique of moralism and historicism",
+                "Problem-solving and forms of live: Jaeggi’s pragmatist theory of progress",
+                "Criticism: Ignorance of the problem of incommensurability",
+                "Alternative: From pragmatist to psychologist understanding of progress",
+                "Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "An explicit proposed order of concepts and passages supported by argumentative dependencies, without treating section order as uniquely necessary",
+              "basis": "F14 directly quotes the author’s step‑by‑step description of the argumentative progression.",
+              "limitations": [
+                "Alternative entry points are reading advice for an unspecified learner, not source claims about demonstrated effectiveness."
+              ],
+              "finding_ids": [
+                "F14"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "The finding is confirmed by verbatim anchors from the introduction.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "scaffolds",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Problem-solving and forms of live: Jaeggi’s pragmatist theory of progress",
+                "Criticism: Ignorance of the problem of incommensurability"
+              ],
+              "coverage": "complete",
+              "criterion": "Source examples, analogies, or contrasts that explain a difficult concept while retaining the example’s stated predicate",
+              "basis": "F15, F16, and F17 are all verbatim examples from the source that serve as explanatory contrasts.",
+              "limitations": [
+                "The article does not test these examples as instructional interventions."
+              ],
+              "finding_ids": [
+                "F15",
+                "F16",
+                "F17"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "All three findings are confirmed by verbatim anchors; they are explicit source scaffolds.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "misreadings",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Notes",
+                "Problem-solving and forms of live: Jaeggi’s pragmatist theory of progress",
+                "Criticism: Ignorance of the problem of incommensurability",
+                "Alternative: From pragmatist to psychologist understanding of progress",
+                "Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "Plausible reading hypotheses corrected by source qualifications, without presenting them as observed learner errors",
+              "basis": "F10, F12, and F13 identify qualifications that respond to potential misreadings and are anchored in verbatim source text.",
+              "limitations": [
+                "No empirical learner evidence establishes the frequency of these misreadings or the effectiveness of the proposed checkpoints."
+              ],
+              "finding_ids": [
+                "F10",
+                "F12",
+                "F13"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "All three findings are confirmed by verbatim anchors; F10’s earlier trimmed‑anchor flag was mistaken.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Findings in this scope lost anchor evidence; this does not establish absence",
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 17427
+      }
+    ]
+  },
+  "audit": {
+    "wall": {
+      "rows": 17,
+      "with_anchor": 17,
+      "verified": 17,
+      "trimmed": 1,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 30,
+      "verified_anchors": 30,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "rows": 17,
+    "raw_anchors": 30,
+    "raw_exact": 4,
+    "unknown_dimensions": [],
+    "missing_table_ids": [],
+    "missing_prose_ids": []
+  }
+}
