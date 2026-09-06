@@ -1,0 +1,129 @@
+{
+  "role": "evidence_index",
+  "version": "overlap-index/v1",
+  "authors": [
+    {
+      "uid": "fixture:A",
+      "name": "Fixture first author"
+    },
+    {
+      "uid": "fixture:B",
+      "name": "Fixture second author"
+    }
+  ],
+  "person": {
+    "uid": "fixture:P",
+    "name": "Fixture person"
+  },
+  "texts": [
+    {
+      "uid": "em:ATEXT",
+      "key": "ATEXT",
+      "author": "fixture:A",
+      "coauthored_with": [],
+      "title": "Fixture citing text",
+      "year": 2000,
+      "passages": [
+        {
+          "ref_id": 5505,
+          "event_id": "fixture:A::e5505",
+          "hit": "Fixture fixture:A passage about P.",
+          "before": "",
+          "after": "",
+          "locus": {
+            "printed": 1,
+            "pdf": 2,
+            "how": "verbatim"
+          },
+          "work": {
+            "key": "fixture:work"
+          }
+        }
+      ]
+    },
+    {
+      "uid": "em:BTEXT",
+      "key": "BTEXT",
+      "author": "fixture:B",
+      "coauthored_with": [],
+      "title": "Fixture citing text",
+      "year": 2000,
+      "passages": [
+        {
+          "ref_id": 5505,
+          "event_id": "fixture:B::e5505",
+          "hit": "Fixture fixture:B passage about P.",
+          "before": "",
+          "after": "",
+          "locus": {
+            "printed": 1,
+            "pdf": 2,
+            "how": "verbatim"
+          },
+          "work": {
+            "key": "fixture:work"
+          }
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "author": "fixture:A",
+      "ref_ids": [
+        5505
+      ],
+      "work_key": "fixture:work",
+      "title": "Fixture P work",
+      "copy": {
+        "uid": "em:PWORK",
+        "key": "PWORK",
+        "edition": "fixture"
+      },
+      "windows": [
+        {
+          "how": "page",
+          "printed": [
+            1
+          ],
+          "text": "Fixture P primary witness."
+        }
+      ]
+    },
+    {
+      "author": "fixture:B",
+      "ref_ids": [
+        5505
+      ],
+      "work_key": "fixture:work",
+      "title": "Fixture P work",
+      "copy": {
+        "uid": "em:PWORK",
+        "key": "PWORK",
+        "edition": "fixture"
+      },
+      "windows": [
+        {
+          "how": "page",
+          "printed": [
+            1
+          ],
+          "text": "Fixture P primary witness."
+        }
+      ]
+    }
+  ],
+  "unchecked": [],
+  "readers": [],
+  "roles": {
+    "ATEXT": "citing_author",
+    "BTEXT": "citing_author",
+    "PWORK": "primary_window",
+    "READER": "secondary_reader"
+  },
+  "plan": {
+    "questions": [
+      "How does each author use P?"
+    ]
+  }
+}

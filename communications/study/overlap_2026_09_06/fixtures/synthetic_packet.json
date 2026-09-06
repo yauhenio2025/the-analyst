@@ -1,0 +1,1129 @@
+{
+  "schema_version": "overlap-packet/v1",
+  "packet_id": "fixture:overlap",
+  "revision": 1,
+  "fixture_only": true,
+  "authors": [
+    {
+      "uid": "fixture:A",
+      "name": "Fixture first author"
+    },
+    {
+      "uid": "fixture:B",
+      "name": "Fixture second author"
+    }
+  ],
+  "plan": {
+    "role": "plan",
+    "doc_key": "context:plan",
+    "sections": [
+      {
+        "id": "reliance",
+        "title": "Shared arguments?",
+        "questions": [
+          "What changes across the two fixture authors?"
+        ]
+      }
+    ],
+    "themes": [],
+    "warnings": [
+      "All passages and persons are synthetic."
+    ]
+  },
+  "pairs": [
+    {
+      "pair_key": "fixture:A__fixture:P",
+      "doc_key": "pair::fixture:A__fixture:P",
+      "author_uid": "fixture:A",
+      "member_uid": "fixture:P",
+      "fixture_only": true,
+      "ledgers": [
+        {
+          "engine_key": "citation_overlap_map",
+          "artifact_id": "fixture:artifact:fixture:A__fixture:P",
+          "artifact_text": "[O2.F1] Synthetic proposition — anchors: [p. 1 | PDF p. 2] fixture:A fixture only: I adopt fixture:P on fixture:P:workshared for this example. Observation 0.\n[O2.F2] Synthetic proposition — anchors: [p. 1 | PDF p. 2] fixture:A fixture only: I adopt fixture:P on fixture:P:workshared for this example. Observation 1.",
+          "artifact_sha256": "ad1e8f9fa4ee810b56a2d98c0f7a72f7e86221b9c3b6442559d235fac8491687",
+          "rows": [
+            {
+              "row_id": "O2.F1",
+              "ref": "fixture:A__fixture:P::citation_overlap_map::O2.F1",
+              "dimension": "passage_use",
+              "claim": "Synthetic proposition",
+              "raw_row": "[O2.F1] Synthetic proposition — anchors: [p. 1 | PDF p. 2] fixture:A fixture only: I adopt fixture:P on fixture:P:workshared for this example. Observation 0.",
+              "status": "confirmed",
+              "anchor_status": "verified",
+              "canonical_ref": null,
+              "event_ids": [
+                "fixture:A::fixture:P-0"
+              ],
+              "anchors": [
+                {
+                  "text": "[p. 1 | PDF p. 2] fixture:A fixture only: I adopt fixture:P on fixture:P:workshared for this example. Observation 0.",
+                  "source_doc_key": "fixture:A:text:fixture:P:0",
+                  "voice": "fixture author",
+                  "locus": {
+                    "printed_page": "1",
+                    "pdf_page": 2,
+                    "edition": "fixture",
+                    "how": "page",
+                    "section_uid": null,
+                    "section_title": null
+                  }
+                }
+              ],
+              "fields": {
+                "move": "authority",
+                "stance": "adopts",
+                "text_key": "fixture:A:text:fixture:P:0",
+                "year": 2000,
+                "work_key": "fixture:P:workshared"
+              }
+            },
+            {
+              "row_id": "O2.F2",
+              "ref": "fixture:A__fixture:P::citation_overlap_map::O2.F2",
+              "dimension": "passage_use",
+              "claim": "Synthetic proposition",
+              "raw_row": "[O2.F2] Synthetic proposition — anchors: [p. 1 | PDF p. 2] fixture:A fixture only: I adopt fixture:P on fixture:P:workshared for this example. Observation 1.",
+              "status": "confirmed",
+              "anchor_status": "verified",
+              "canonical_ref": null,
+              "event_ids": [
+                "fixture:A::fixture:P-1"
+              ],
+              "anchors": [
+                {
+                  "text": "[p. 1 | PDF p. 2] fixture:A fixture only: I adopt fixture:P on fixture:P:workshared for this example. Observation 1.",
+                  "source_doc_key": "fixture:A:text:fixture:P:1",
+                  "voice": "fixture author",
+                  "locus": {
+                    "printed_page": "1",
+                    "pdf_page": 2,
+                    "edition": "fixture",
+                    "how": "page",
+                    "section_uid": null,
+                    "section_title": null
+                  }
+                }
+              ],
+              "fields": {
+                "move": "authority",
+                "stance": "adopts",
+                "text_key": "fixture:A:text:fixture:P:1",
+                "year": 2010,
+                "work_key": "fixture:P:workshared"
+              }
+            }
+          ],
+          "reviewed_empty": false
+        }
+      ],
+      "lens_status": {
+        "citation_overlap_map": "run",
+        "citation_engagement_map": "not_run",
+        "citation_fidelity_audit": "not_run",
+        "citation_reception_map": "not_run"
+      },
+      "tables": [],
+      "memo": {
+        "markdown": "Fixture side projection, not an independent memo.",
+        "canonical_uri": "fixture://fixture:A__fixture:P"
+      }
+    },
+    {
+      "pair_key": "fixture:B__fixture:P",
+      "doc_key": "pair::fixture:B__fixture:P",
+      "author_uid": "fixture:B",
+      "member_uid": "fixture:P",
+      "fixture_only": true,
+      "ledgers": [
+        {
+          "engine_key": "citation_overlap_map",
+          "artifact_id": "fixture:artifact:fixture:B__fixture:P",
+          "artifact_text": "[O2.F1] Synthetic proposition — anchors: [p. 1 | PDF p. 2] fixture:B fixture only: I dispute fixture:P on fixture:P:workshared for this example. Observation 0.\n[O2.F2] Synthetic proposition — anchors: [p. 1 | PDF p. 2] fixture:B fixture only: I dispute fixture:P on fixture:P:workshared for this example. Observation 1.",
+          "artifact_sha256": "c9755538ae9236bce8a4a1fd22abf08f4fb5f6b78cb0aa4a411fd9aa04526b23",
+          "rows": [
+            {
+              "row_id": "O2.F1",
+              "ref": "fixture:B__fixture:P::citation_overlap_map::O2.F1",
+              "dimension": "passage_use",
+              "claim": "Synthetic proposition",
+              "raw_row": "[O2.F1] Synthetic proposition — anchors: [p. 1 | PDF p. 2] fixture:B fixture only: I dispute fixture:P on fixture:P:workshared for this example. Observation 0.",
+              "status": "confirmed",
+              "anchor_status": "verified",
+              "canonical_ref": null,
+              "event_ids": [
+                "fixture:B::fixture:P-0"
+              ],
+              "anchors": [
+                {
+                  "text": "[p. 1 | PDF p. 2] fixture:B fixture only: I dispute fixture:P on fixture:P:workshared for this example. Observation 0.",
+                  "source_doc_key": "fixture:B:text:fixture:P:0",
+                  "voice": "fixture author",
+                  "locus": {
+                    "printed_page": "1",
+                    "pdf_page": 2,
+                    "edition": "fixture",
+                    "how": "page",
+                    "section_uid": null,
+                    "section_title": null
+                  }
+                }
+              ],
+              "fields": {
+                "move": "foil",
+                "stance": "disputes",
+                "text_key": "fixture:B:text:fixture:P:0",
+                "year": 2000,
+                "work_key": "fixture:P:workshared"
+              }
+            },
+            {
+              "row_id": "O2.F2",
+              "ref": "fixture:B__fixture:P::citation_overlap_map::O2.F2",
+              "dimension": "passage_use",
+              "claim": "Synthetic proposition",
+              "raw_row": "[O2.F2] Synthetic proposition — anchors: [p. 1 | PDF p. 2] fixture:B fixture only: I dispute fixture:P on fixture:P:workshared for this example. Observation 1.",
+              "status": "confirmed",
+              "anchor_status": "verified",
+              "canonical_ref": null,
+              "event_ids": [
+                "fixture:B::fixture:P-1"
+              ],
+              "anchors": [
+                {
+                  "text": "[p. 1 | PDF p. 2] fixture:B fixture only: I dispute fixture:P on fixture:P:workshared for this example. Observation 1.",
+                  "source_doc_key": "fixture:B:text:fixture:P:1",
+                  "voice": "fixture author",
+                  "locus": {
+                    "printed_page": "1",
+                    "pdf_page": 2,
+                    "edition": "fixture",
+                    "how": "page",
+                    "section_uid": null,
+                    "section_title": null
+                  }
+                }
+              ],
+              "fields": {
+                "move": "foil",
+                "stance": "disputes",
+                "text_key": "fixture:B:text:fixture:P:1",
+                "year": 2010,
+                "work_key": "fixture:P:workshared"
+              }
+            }
+          ],
+          "reviewed_empty": false
+        }
+      ],
+      "lens_status": {
+        "citation_overlap_map": "run",
+        "citation_engagement_map": "not_run",
+        "citation_fidelity_audit": "not_run",
+        "citation_reception_map": "not_run"
+      },
+      "tables": [],
+      "memo": {
+        "markdown": "Fixture side projection, not an independent memo.",
+        "canonical_uri": "fixture://fixture:B__fixture:P"
+      }
+    },
+    {
+      "pair_key": "fixture:A__fixture:Q",
+      "doc_key": "pair::fixture:A__fixture:Q",
+      "author_uid": "fixture:A",
+      "member_uid": "fixture:Q",
+      "fixture_only": true,
+      "ledgers": [
+        {
+          "engine_key": "citation_overlap_map",
+          "artifact_id": "fixture:artifact:fixture:A__fixture:Q",
+          "artifact_text": "[O2.F1] Synthetic proposition — anchors: [p. 1 | PDF p. 2] fixture:A fixture only: I adopt fixture:Q on fixture:Q:work0 for this example. Observation 0.\n[O2.F2] Synthetic proposition — anchors: [p. 1 | PDF p. 2] fixture:A fixture only: I adopt fixture:Q on fixture:Q:work0 for this example. Observation 1.",
+          "artifact_sha256": "fa34fc36efeda5a31694fc05e8f288af9d280c7bf6c85eb17abddeb4c36d3db0",
+          "rows": [
+            {
+              "row_id": "O2.F1",
+              "ref": "fixture:A__fixture:Q::citation_overlap_map::O2.F1",
+              "dimension": "passage_use",
+              "claim": "Synthetic proposition",
+              "raw_row": "[O2.F1] Synthetic proposition — anchors: [p. 1 | PDF p. 2] fixture:A fixture only: I adopt fixture:Q on fixture:Q:work0 for this example. Observation 0.",
+              "status": "confirmed",
+              "anchor_status": "verified",
+              "canonical_ref": null,
+              "event_ids": [
+                "fixture:A::fixture:Q-0"
+              ],
+              "anchors": [
+                {
+                  "text": "[p. 1 | PDF p. 2] fixture:A fixture only: I adopt fixture:Q on fixture:Q:work0 for this example. Observation 0.",
+                  "source_doc_key": "fixture:A:text:fixture:Q:0",
+                  "voice": "fixture author",
+                  "locus": {
+                    "printed_page": "1",
+                    "pdf_page": 2,
+                    "edition": "fixture",
+                    "how": "page",
+                    "section_uid": null,
+                    "section_title": null
+                  }
+                }
+              ],
+              "fields": {
+                "move": "authority",
+                "stance": "adopts",
+                "text_key": "fixture:A:text:fixture:Q:0",
+                "year": 2000,
+                "work_key": "fixture:Q:work0"
+              }
+            },
+            {
+              "row_id": "O2.F2",
+              "ref": "fixture:A__fixture:Q::citation_overlap_map::O2.F2",
+              "dimension": "passage_use",
+              "claim": "Synthetic proposition",
+              "raw_row": "[O2.F2] Synthetic proposition — anchors: [p. 1 | PDF p. 2] fixture:A fixture only: I adopt fixture:Q on fixture:Q:work0 for this example. Observation 1.",
+              "status": "confirmed",
+              "anchor_status": "verified",
+              "canonical_ref": null,
+              "event_ids": [
+                "fixture:A::fixture:Q-1"
+              ],
+              "anchors": [
+                {
+                  "text": "[p. 1 | PDF p. 2] fixture:A fixture only: I adopt fixture:Q on fixture:Q:work0 for this example. Observation 1.",
+                  "source_doc_key": "fixture:A:text:fixture:Q:1",
+                  "voice": "fixture author",
+                  "locus": {
+                    "printed_page": "1",
+                    "pdf_page": 2,
+                    "edition": "fixture",
+                    "how": "page",
+                    "section_uid": null,
+                    "section_title": null
+                  }
+                }
+              ],
+              "fields": {
+                "move": "authority",
+                "stance": "adopts",
+                "text_key": "fixture:A:text:fixture:Q:1",
+                "year": 2010,
+                "work_key": "fixture:Q:work0"
+              }
+            }
+          ],
+          "reviewed_empty": false
+        }
+      ],
+      "lens_status": {
+        "citation_overlap_map": "run",
+        "citation_engagement_map": "not_run",
+        "citation_fidelity_audit": "not_run",
+        "citation_reception_map": "not_run"
+      },
+      "tables": [],
+      "memo": {
+        "markdown": "Fixture side projection, not an independent memo.",
+        "canonical_uri": "fixture://fixture:A__fixture:Q"
+      }
+    },
+    {
+      "pair_key": "fixture:B__fixture:Q",
+      "doc_key": "pair::fixture:B__fixture:Q",
+      "author_uid": "fixture:B",
+      "member_uid": "fixture:Q",
+      "fixture_only": true,
+      "ledgers": [
+        {
+          "engine_key": "citation_overlap_map",
+          "artifact_id": "fixture:artifact:fixture:B__fixture:Q",
+          "artifact_text": "[O2.F1] Synthetic proposition — anchors: [p. 1 | PDF p. 2] fixture:B fixture only: I dispute fixture:Q on fixture:Q:work1 for this example. Observation 0.\n[O2.F2] Synthetic proposition — anchors: [p. 1 | PDF p. 2] fixture:B fixture only: I dispute fixture:Q on fixture:Q:work1 for this example. Observation 1.",
+          "artifact_sha256": "5ba330b4a664ea1cde20571cc0ffff228025df39161f4b173054893e4d40214e",
+          "rows": [
+            {
+              "row_id": "O2.F1",
+              "ref": "fixture:B__fixture:Q::citation_overlap_map::O2.F1",
+              "dimension": "passage_use",
+              "claim": "Synthetic proposition",
+              "raw_row": "[O2.F1] Synthetic proposition — anchors: [p. 1 | PDF p. 2] fixture:B fixture only: I dispute fixture:Q on fixture:Q:work1 for this example. Observation 0.",
+              "status": "confirmed",
+              "anchor_status": "verified",
+              "canonical_ref": null,
+              "event_ids": [
+                "fixture:B::fixture:Q-0"
+              ],
+              "anchors": [
+                {
+                  "text": "[p. 1 | PDF p. 2] fixture:B fixture only: I dispute fixture:Q on fixture:Q:work1 for this example. Observation 0.",
+                  "source_doc_key": "fixture:B:text:fixture:Q:0",
+                  "voice": "fixture author",
+                  "locus": {
+                    "printed_page": "1",
+                    "pdf_page": 2,
+                    "edition": "fixture",
+                    "how": "page",
+                    "section_uid": null,
+                    "section_title": null
+                  }
+                }
+              ],
+              "fields": {
+                "move": "foil",
+                "stance": "disputes",
+                "text_key": "fixture:B:text:fixture:Q:0",
+                "year": 2000,
+                "work_key": "fixture:Q:work1"
+              }
+            },
+            {
+              "row_id": "O2.F2",
+              "ref": "fixture:B__fixture:Q::citation_overlap_map::O2.F2",
+              "dimension": "passage_use",
+              "claim": "Synthetic proposition",
+              "raw_row": "[O2.F2] Synthetic proposition — anchors: [p. 1 | PDF p. 2] fixture:B fixture only: I dispute fixture:Q on fixture:Q:work1 for this example. Observation 1.",
+              "status": "confirmed",
+              "anchor_status": "verified",
+              "canonical_ref": null,
+              "event_ids": [
+                "fixture:B::fixture:Q-1"
+              ],
+              "anchors": [
+                {
+                  "text": "[p. 1 | PDF p. 2] fixture:B fixture only: I dispute fixture:Q on fixture:Q:work1 for this example. Observation 1.",
+                  "source_doc_key": "fixture:B:text:fixture:Q:1",
+                  "voice": "fixture author",
+                  "locus": {
+                    "printed_page": "1",
+                    "pdf_page": 2,
+                    "edition": "fixture",
+                    "how": "page",
+                    "section_uid": null,
+                    "section_title": null
+                  }
+                }
+              ],
+              "fields": {
+                "move": "foil",
+                "stance": "disputes",
+                "text_key": "fixture:B:text:fixture:Q:1",
+                "year": 2010,
+                "work_key": "fixture:Q:work1"
+              }
+            }
+          ],
+          "reviewed_empty": false
+        }
+      ],
+      "lens_status": {
+        "citation_overlap_map": "run",
+        "citation_engagement_map": "not_run",
+        "citation_fidelity_audit": "not_run",
+        "citation_reception_map": "not_run"
+      },
+      "tables": [],
+      "memo": {
+        "markdown": "Fixture side projection, not an independent memo.",
+        "canonical_uri": "fixture://fixture:B__fixture:Q"
+      }
+    }
+  ],
+  "shared_maps": [
+    {
+      "person_uid": "fixture:P",
+      "map_key": "fixture:universe__fixture:P",
+      "doc_key": "shared::fixture:universe__fixture:P",
+      "fixture_only": true,
+      "ledger": {
+        "engine_key": "citation_overlap_map",
+        "artifact_id": "fixture:artifact:fixture:universe__fixture:P",
+        "artifact_text": "[O5.F1] Fixture A adopts what fixture B disputes. — anchors: [p. 1 | PDF p. 2] fixture:A fixture only: I adopt fixture:P on fixture:P:workshared for this example. Observation 0. | [p. 1 | PDF p. 2] fixture:A fixture only: I adopt fixture:P on fixture:P:workshared for this example. Observation 1. | [p. 1 | PDF p. 2] fixture:B fixture only: I dispute fixture:P on fixture:P:workshared for this example. Observation 0. | [p. 1 | PDF p. 2] fixture:B fixture only: I dispute fixture:P on fixture:P:workshared for this example. Observation 1.",
+        "artifact_sha256": "4a41fae8bf0603afe939e6176c810adee22c17e43ba8ea90bfd900811cd0edb3",
+        "rows": [
+          {
+            "row_id": "O5.F1",
+            "ref": "fixture:universe__fixture:P::citation_overlap_map::O5.F1",
+            "dimension": "asymmetry_verdict",
+            "claim": "Fixture A adopts what fixture B disputes.",
+            "raw_row": "[O5.F1] Fixture A adopts what fixture B disputes. — anchors: [p. 1 | PDF p. 2] fixture:A fixture only: I adopt fixture:P on fixture:P:workshared for this example. Observation 0. | [p. 1 | PDF p. 2] fixture:A fixture only: I adopt fixture:P on fixture:P:workshared for this example. Observation 1. | [p. 1 | PDF p. 2] fixture:B fixture only: I dispute fixture:P on fixture:P:workshared for this example. Observation 0. | [p. 1 | PDF p. 2] fixture:B fixture only: I dispute fixture:P on fixture:P:workshared for this example. Observation 1.",
+            "status": "confirmed",
+            "anchor_status": "verified",
+            "canonical_ref": null,
+            "event_ids": [
+              "fixture:A::fixture:P-0",
+              "fixture:A::fixture:P-1",
+              "fixture:B::fixture:P-0",
+              "fixture:B::fixture:P-1"
+            ],
+            "anchors": [
+              {
+                "text": "[p. 1 | PDF p. 2] fixture:A fixture only: I adopt fixture:P on fixture:P:workshared for this example. Observation 0.",
+                "source_doc_key": "fixture:A:text:fixture:P:0",
+                "voice": "fixture author",
+                "locus": {
+                  "printed_page": "1",
+                  "pdf_page": 2,
+                  "edition": "fixture",
+                  "how": "page",
+                  "section_uid": null,
+                  "section_title": null
+                }
+              },
+              {
+                "text": "[p. 1 | PDF p. 2] fixture:A fixture only: I adopt fixture:P on fixture:P:workshared for this example. Observation 1.",
+                "source_doc_key": "fixture:A:text:fixture:P:1",
+                "voice": "fixture author",
+                "locus": {
+                  "printed_page": "1",
+                  "pdf_page": 2,
+                  "edition": "fixture",
+                  "how": "page",
+                  "section_uid": null,
+                  "section_title": null
+                }
+              },
+              {
+                "text": "[p. 1 | PDF p. 2] fixture:B fixture only: I dispute fixture:P on fixture:P:workshared for this example. Observation 0.",
+                "source_doc_key": "fixture:B:text:fixture:P:0",
+                "voice": "fixture author",
+                "locus": {
+                  "printed_page": "1",
+                  "pdf_page": 2,
+                  "edition": "fixture",
+                  "how": "page",
+                  "section_uid": null,
+                  "section_title": null
+                }
+              },
+              {
+                "text": "[p. 1 | PDF p. 2] fixture:B fixture only: I dispute fixture:P on fixture:P:workshared for this example. Observation 1.",
+                "source_doc_key": "fixture:B:text:fixture:P:1",
+                "voice": "fixture author",
+                "locus": {
+                  "printed_page": "1",
+                  "pdf_page": 2,
+                  "edition": "fixture",
+                  "how": "page",
+                  "section_uid": null,
+                  "section_title": null
+                }
+              }
+            ],
+            "fields": {
+              "support_refs": [
+                "fixture:A__fixture:P::citation_overlap_map::O2.F1",
+                "fixture:A__fixture:P::citation_overlap_map::O2.F2",
+                "fixture:B__fixture:P::citation_overlap_map::O2.F1",
+                "fixture:B__fixture:P::citation_overlap_map::O2.F2"
+              ],
+              "verdict": "authority_vs_foil"
+            }
+          }
+        ],
+        "reviewed_empty": false
+      },
+      "memo": {
+        "markdown": "Synthetic comparison.",
+        "canonical_uri": "fixture://fixture:universe__fixture:P"
+      }
+    },
+    {
+      "person_uid": "fixture:Q",
+      "map_key": "fixture:universe__fixture:Q",
+      "doc_key": "shared::fixture:universe__fixture:Q",
+      "fixture_only": true,
+      "ledger": {
+        "engine_key": "citation_overlap_map",
+        "artifact_id": "fixture:artifact:fixture:universe__fixture:Q",
+        "artifact_text": "[O5.F1] Fixture A adopts what fixture B disputes. — anchors: [p. 1 | PDF p. 2] fixture:A fixture only: I adopt fixture:Q on fixture:Q:work0 for this example. Observation 0. | [p. 1 | PDF p. 2] fixture:A fixture only: I adopt fixture:Q on fixture:Q:work0 for this example. Observation 1. | [p. 1 | PDF p. 2] fixture:B fixture only: I dispute fixture:Q on fixture:Q:work1 for this example. Observation 0. | [p. 1 | PDF p. 2] fixture:B fixture only: I dispute fixture:Q on fixture:Q:work1 for this example. Observation 1.",
+        "artifact_sha256": "65004b066cebc3d03a1bbf355adfe846638d17281668a23e0cd54f6bfbb887be",
+        "rows": [
+          {
+            "row_id": "O5.F1",
+            "ref": "fixture:universe__fixture:Q::citation_overlap_map::O5.F1",
+            "dimension": "asymmetry_verdict",
+            "claim": "Fixture A adopts what fixture B disputes.",
+            "raw_row": "[O5.F1] Fixture A adopts what fixture B disputes. — anchors: [p. 1 | PDF p. 2] fixture:A fixture only: I adopt fixture:Q on fixture:Q:work0 for this example. Observation 0. | [p. 1 | PDF p. 2] fixture:A fixture only: I adopt fixture:Q on fixture:Q:work0 for this example. Observation 1. | [p. 1 | PDF p. 2] fixture:B fixture only: I dispute fixture:Q on fixture:Q:work1 for this example. Observation 0. | [p. 1 | PDF p. 2] fixture:B fixture only: I dispute fixture:Q on fixture:Q:work1 for this example. Observation 1.",
+            "status": "confirmed",
+            "anchor_status": "verified",
+            "canonical_ref": null,
+            "event_ids": [
+              "fixture:A::fixture:Q-0",
+              "fixture:A::fixture:Q-1",
+              "fixture:B::fixture:Q-0",
+              "fixture:B::fixture:Q-1"
+            ],
+            "anchors": [
+              {
+                "text": "[p. 1 | PDF p. 2] fixture:A fixture only: I adopt fixture:Q on fixture:Q:work0 for this example. Observation 0.",
+                "source_doc_key": "fixture:A:text:fixture:Q:0",
+                "voice": "fixture author",
+                "locus": {
+                  "printed_page": "1",
+                  "pdf_page": 2,
+                  "edition": "fixture",
+                  "how": "page",
+                  "section_uid": null,
+                  "section_title": null
+                }
+              },
+              {
+                "text": "[p. 1 | PDF p. 2] fixture:A fixture only: I adopt fixture:Q on fixture:Q:work0 for this example. Observation 1.",
+                "source_doc_key": "fixture:A:text:fixture:Q:1",
+                "voice": "fixture author",
+                "locus": {
+                  "printed_page": "1",
+                  "pdf_page": 2,
+                  "edition": "fixture",
+                  "how": "page",
+                  "section_uid": null,
+                  "section_title": null
+                }
+              },
+              {
+                "text": "[p. 1 | PDF p. 2] fixture:B fixture only: I dispute fixture:Q on fixture:Q:work1 for this example. Observation 0.",
+                "source_doc_key": "fixture:B:text:fixture:Q:0",
+                "voice": "fixture author",
+                "locus": {
+                  "printed_page": "1",
+                  "pdf_page": 2,
+                  "edition": "fixture",
+                  "how": "page",
+                  "section_uid": null,
+                  "section_title": null
+                }
+              },
+              {
+                "text": "[p. 1 | PDF p. 2] fixture:B fixture only: I dispute fixture:Q on fixture:Q:work1 for this example. Observation 1.",
+                "source_doc_key": "fixture:B:text:fixture:Q:1",
+                "voice": "fixture author",
+                "locus": {
+                  "printed_page": "1",
+                  "pdf_page": 2,
+                  "edition": "fixture",
+                  "how": "page",
+                  "section_uid": null,
+                  "section_title": null
+                }
+              }
+            ],
+            "fields": {
+              "support_refs": [
+                "fixture:A__fixture:Q::citation_overlap_map::O2.F1",
+                "fixture:A__fixture:Q::citation_overlap_map::O2.F2",
+                "fixture:B__fixture:Q::citation_overlap_map::O2.F1",
+                "fixture:B__fixture:Q::citation_overlap_map::O2.F2"
+              ],
+              "verdict": "authority_vs_foil"
+            }
+          }
+        ],
+        "reviewed_empty": false
+      },
+      "memo": {
+        "markdown": "Synthetic comparison.",
+        "canonical_uri": "fixture://fixture:universe__fixture:Q"
+      }
+    }
+  ],
+  "source_documents": {
+    "fixture:A:text:fixture:P:0": {
+      "text": "[p. 1 | PDF p. 2] fixture:A fixture only: I adopt fixture:P on fixture:P:workshared for this example. Observation 0.",
+      "sha256": "1b2349fea6f89b07eeca2871f637d14960f873ab323adac99d60feb4d2ab6598",
+      "author_uid": "fixture:A",
+      "role": "citing_author",
+      "year": 2000,
+      "coauthors": [],
+      "fixture_only": true
+    },
+    "fixture:A:text:fixture:P:1": {
+      "text": "[p. 1 | PDF p. 2] fixture:A fixture only: I adopt fixture:P on fixture:P:workshared for this example. Observation 1.",
+      "sha256": "047daf8e3ce9e4d826311aeb021e83aa933b971fe965bbc8aba99bde1e1b36ed",
+      "author_uid": "fixture:A",
+      "role": "citing_author",
+      "year": 2010,
+      "coauthors": [],
+      "fixture_only": true
+    },
+    "fixture:B:text:fixture:P:0": {
+      "text": "[p. 1 | PDF p. 2] fixture:B fixture only: I dispute fixture:P on fixture:P:workshared for this example. Observation 0.",
+      "sha256": "7a058c76f94bb7ec27fcca370725fe3b36d0dcc5df1b7fa3b4feff4e91a82718",
+      "author_uid": "fixture:B",
+      "role": "citing_author",
+      "year": 2000,
+      "coauthors": [],
+      "fixture_only": true
+    },
+    "fixture:B:text:fixture:P:1": {
+      "text": "[p. 1 | PDF p. 2] fixture:B fixture only: I dispute fixture:P on fixture:P:workshared for this example. Observation 1.",
+      "sha256": "99c3e71d0a362232a7914219f118c0b88b9b38e0a00810c6d2e0432e0b542db5",
+      "author_uid": "fixture:B",
+      "role": "citing_author",
+      "year": 2010,
+      "coauthors": [],
+      "fixture_only": true
+    },
+    "fixture:A:text:fixture:Q:0": {
+      "text": "[p. 1 | PDF p. 2] fixture:A fixture only: I adopt fixture:Q on fixture:Q:work0 for this example. Observation 0.",
+      "sha256": "15a168e6a8bbef82e5abb13a5a18d0bee19b59bc24bd71e944bc4b665d7810d9",
+      "author_uid": "fixture:A",
+      "role": "citing_author",
+      "year": 2000,
+      "coauthors": [],
+      "fixture_only": true
+    },
+    "fixture:A:text:fixture:Q:1": {
+      "text": "[p. 1 | PDF p. 2] fixture:A fixture only: I adopt fixture:Q on fixture:Q:work0 for this example. Observation 1.",
+      "sha256": "70f34e3ad1d098b89f2b837ad1a610353358dd24df896c7d176bc194d05afeac",
+      "author_uid": "fixture:A",
+      "role": "citing_author",
+      "year": 2010,
+      "coauthors": [],
+      "fixture_only": true
+    },
+    "fixture:B:text:fixture:Q:0": {
+      "text": "[p. 1 | PDF p. 2] fixture:B fixture only: I dispute fixture:Q on fixture:Q:work1 for this example. Observation 0.",
+      "sha256": "80cbccc29e4130fe5a8e593e3a5b00b3957804b4cf6db13bee1984350c1cbe14",
+      "author_uid": "fixture:B",
+      "role": "citing_author",
+      "year": 2000,
+      "coauthors": [],
+      "fixture_only": true
+    },
+    "fixture:B:text:fixture:Q:1": {
+      "text": "[p. 1 | PDF p. 2] fixture:B fixture only: I dispute fixture:Q on fixture:Q:work1 for this example. Observation 1.",
+      "sha256": "28459e0ea3002fcc1dc8337369709f1a0fe59f2e04d452a58327b9c90619e1a2",
+      "author_uid": "fixture:B",
+      "role": "citing_author",
+      "year": 2010,
+      "coauthors": [],
+      "fixture_only": true
+    },
+    "fixture:A:text:fixture:R_A:0": {
+      "text": "[p. 1 | PDF p. 2] fixture:A fixture only: I adopt fixture:R_A on fixture:R_A:work0 for this example. Observation 0.",
+      "sha256": "ded6ac210667e68b79baf3420d730f10acc57ac2aaa598c0b9eeb59577fdf7f4",
+      "author_uid": "fixture:A",
+      "role": "citing_author",
+      "year": 2000,
+      "coauthors": [],
+      "fixture_only": true
+    },
+    "fixture:B:text:fixture:R_B:0": {
+      "text": "[p. 1 | PDF p. 2] fixture:B fixture only: I dispute fixture:R_B on fixture:R_B:work1 for this example. Observation 0.",
+      "sha256": "51c38ff584741beeeff2e8e00b9d2b2356ed25dd59946b5f201cdb14b4f94c1d",
+      "author_uid": "fixture:B",
+      "role": "citing_author",
+      "year": null,
+      "coauthors": [],
+      "fixture_only": true
+    }
+  },
+  "overlap_table": {
+    "role": "overlap_table",
+    "doc_key": "context:overlap",
+    "uid": "fixture:universe",
+    "approved": true,
+    "complete_union": true,
+    "authors": [
+      {
+        "uid": "fixture:A",
+        "name": "Fixture first author"
+      },
+      {
+        "uid": "fixture:B",
+        "name": "Fixture second author"
+      }
+    ],
+    "settings": {
+      "min_events_per_side": 1,
+      "work_rule": "key",
+      "coauthored_policy": "exclude_both",
+      "kinds": [
+        "footnote"
+      ],
+      "types": [
+        "article"
+      ],
+      "self_citations": false
+    },
+    "rows": [
+      {
+        "uid": "fixture:P",
+        "name": "fixture:P (synthetic)",
+        "fixture_only": true,
+        "by_author": {
+          "fixture:A": {
+            "count": 2,
+            "events": [
+              {
+                "event_id": "fixture:A::fixture:P-0",
+                "ref_id": 1,
+                "text_key": "fixture:A:text:fixture:P:0",
+                "year": 2000,
+                "kind": "footnote",
+                "work_keys": [
+                  "fixture:P:workshared"
+                ]
+              },
+              {
+                "event_id": "fixture:A::fixture:P-1",
+                "ref_id": 2,
+                "text_key": "fixture:A:text:fixture:P:1",
+                "year": 2010,
+                "kind": "footnote",
+                "work_keys": [
+                  "fixture:P:workshared"
+                ]
+              }
+            ],
+            "works": [
+              {
+                "key": "fixture:P:workshared",
+                "title": "Synthetic cited work",
+                "registry_work_id": null,
+                "edition_id": null,
+                "event_ids": [
+                  "fixture:A::fixture:P-0",
+                  "fixture:A::fixture:P-1"
+                ],
+                "held": false,
+                "fetched": false,
+                "wanted": true,
+                "copies": []
+              }
+            ]
+          },
+          "fixture:B": {
+            "count": 2,
+            "events": [
+              {
+                "event_id": "fixture:B::fixture:P-0",
+                "ref_id": 1,
+                "text_key": "fixture:B:text:fixture:P:0",
+                "year": 2000,
+                "kind": "footnote",
+                "work_keys": [
+                  "fixture:P:workshared"
+                ]
+              },
+              {
+                "event_id": "fixture:B::fixture:P-1",
+                "ref_id": 2,
+                "text_key": "fixture:B:text:fixture:P:1",
+                "year": 2010,
+                "kind": "footnote",
+                "work_keys": [
+                  "fixture:P:workshared"
+                ]
+              }
+            ],
+            "works": [
+              {
+                "key": "fixture:P:workshared",
+                "title": "Synthetic cited work",
+                "registry_work_id": null,
+                "edition_id": null,
+                "event_ids": [
+                  "fixture:B::fixture:P-0",
+                  "fixture:B::fixture:P-1"
+                ],
+                "held": false,
+                "fetched": false,
+                "wanted": true,
+                "copies": []
+              }
+            ]
+          }
+        },
+        "common_work_keys": [
+          "fixture:P:workshared"
+        ]
+      },
+      {
+        "uid": "fixture:Q",
+        "name": "fixture:Q (synthetic)",
+        "fixture_only": true,
+        "by_author": {
+          "fixture:A": {
+            "count": 2,
+            "events": [
+              {
+                "event_id": "fixture:A::fixture:Q-0",
+                "ref_id": 1,
+                "text_key": "fixture:A:text:fixture:Q:0",
+                "year": 2000,
+                "kind": "footnote",
+                "work_keys": [
+                  "fixture:Q:work0"
+                ]
+              },
+              {
+                "event_id": "fixture:A::fixture:Q-1",
+                "ref_id": 2,
+                "text_key": "fixture:A:text:fixture:Q:1",
+                "year": 2010,
+                "kind": "footnote",
+                "work_keys": [
+                  "fixture:Q:work0"
+                ]
+              }
+            ],
+            "works": [
+              {
+                "key": "fixture:Q:work0",
+                "title": "Synthetic cited work",
+                "registry_work_id": null,
+                "edition_id": null,
+                "event_ids": [
+                  "fixture:A::fixture:Q-0",
+                  "fixture:A::fixture:Q-1"
+                ],
+                "held": false,
+                "fetched": false,
+                "wanted": true,
+                "copies": []
+              }
+            ]
+          },
+          "fixture:B": {
+            "count": 2,
+            "events": [
+              {
+                "event_id": "fixture:B::fixture:Q-0",
+                "ref_id": 1,
+                "text_key": "fixture:B:text:fixture:Q:0",
+                "year": 2000,
+                "kind": "footnote",
+                "work_keys": [
+                  "fixture:Q:work1"
+                ]
+              },
+              {
+                "event_id": "fixture:B::fixture:Q-1",
+                "ref_id": 2,
+                "text_key": "fixture:B:text:fixture:Q:1",
+                "year": 2010,
+                "kind": "footnote",
+                "work_keys": [
+                  "fixture:Q:work1"
+                ]
+              }
+            ],
+            "works": [
+              {
+                "key": "fixture:Q:work1",
+                "title": "Synthetic cited work",
+                "registry_work_id": null,
+                "edition_id": null,
+                "event_ids": [
+                  "fixture:B::fixture:Q-0",
+                  "fixture:B::fixture:Q-1"
+                ],
+                "held": false,
+                "fetched": false,
+                "wanted": true,
+                "copies": []
+              }
+            ]
+          }
+        },
+        "common_work_keys": []
+      },
+      {
+        "uid": "fixture:R_A",
+        "name": "fixture:R_A (synthetic)",
+        "fixture_only": true,
+        "by_author": {
+          "fixture:A": {
+            "count": 1,
+            "events": [
+              {
+                "event_id": "fixture:A::fixture:R_A-0",
+                "ref_id": 1,
+                "text_key": "fixture:A:text:fixture:R_A:0",
+                "year": 2000,
+                "kind": "footnote",
+                "work_keys": [
+                  "fixture:R_A:work0"
+                ]
+              }
+            ],
+            "works": [
+              {
+                "key": "fixture:R_A:work0",
+                "title": "Synthetic cited work",
+                "registry_work_id": null,
+                "edition_id": null,
+                "event_ids": [
+                  "fixture:A::fixture:R_A-0"
+                ],
+                "held": false,
+                "fetched": false,
+                "wanted": true,
+                "copies": []
+              }
+            ]
+          },
+          "fixture:B": {
+            "count": 0,
+            "events": [],
+            "works": []
+          }
+        },
+        "common_work_keys": []
+      },
+      {
+        "uid": "fixture:R_B",
+        "name": "fixture:R_B (synthetic)",
+        "fixture_only": true,
+        "by_author": {
+          "fixture:A": {
+            "count": 0,
+            "events": [],
+            "works": []
+          },
+          "fixture:B": {
+            "count": 1,
+            "events": [
+              {
+                "event_id": "fixture:B::fixture:R_B-0",
+                "ref_id": 1,
+                "text_key": "fixture:B:text:fixture:R_B:0",
+                "year": null,
+                "kind": "footnote",
+                "work_keys": [
+                  "fixture:R_B:work1"
+                ]
+              }
+            ],
+            "works": [
+              {
+                "key": "fixture:R_B:work1",
+                "title": "Synthetic cited work",
+                "registry_work_id": null,
+                "edition_id": null,
+                "event_ids": [
+                  "fixture:B::fixture:R_B-0"
+                ],
+                "held": false,
+                "fetched": false,
+                "wanted": true,
+                "copies": []
+              }
+            ]
+          }
+        },
+        "common_work_keys": []
+      }
+    ],
+    "selected": [
+      "fixture:P",
+      "fixture:Q"
+    ],
+    "selection_changes": [],
+    "below_threshold": [],
+    "unselected_shared": [],
+    "coverage": {
+      "fixture:A": {
+        "held": [
+          "fixture:A:text:fixture:P:0",
+          "fixture:A:text:fixture:P:1",
+          "fixture:A:text:fixture:Q:0",
+          "fixture:A:text:fixture:Q:1",
+          "fixture:A:text:fixture:R_A:0"
+        ],
+        "inspected": [
+          "fixture:A:text:fixture:P:0",
+          "fixture:A:text:fixture:P:1",
+          "fixture:A:text:fixture:Q:0",
+          "fixture:A:text:fixture:Q:1",
+          "fixture:A:text:fixture:R_A:0"
+        ],
+        "missing": [],
+        "unknown_years": [],
+        "ledger_complete": true,
+        "aliases_resolved": true,
+        "snapshot": "fixture:snapshot"
+      },
+      "fixture:B": {
+        "held": [
+          "fixture:B:text:fixture:P:0",
+          "fixture:B:text:fixture:P:1",
+          "fixture:B:text:fixture:Q:0",
+          "fixture:B:text:fixture:Q:1",
+          "fixture:B:text:fixture:R_B:0"
+        ],
+        "inspected": [
+          "fixture:B:text:fixture:P:0",
+          "fixture:B:text:fixture:P:1",
+          "fixture:B:text:fixture:Q:0",
+          "fixture:B:text:fixture:Q:1",
+          "fixture:B:text:fixture:R_B:0"
+        ],
+        "missing": [],
+        "unknown_years": [
+          "fixture:B:text:fixture:R_B:0"
+        ],
+        "ledger_complete": true,
+        "aliases_resolved": true,
+        "snapshot": "fixture:snapshot"
+      }
+    },
+    "residues": {
+      "fixture:A": {
+        "person_uids": [
+          "fixture:R_A"
+        ],
+        "total": 1,
+        "completeness": "all",
+        "top_n": null,
+        "omitted": 0
+      },
+      "fixture:B": {
+        "person_uids": [
+          "fixture:R_B"
+        ],
+        "total": 1,
+        "completeness": "all",
+        "top_n": null,
+        "omitted": 0
+      }
+    },
+    "collective": {
+      "fixture:A": {
+        "terms": [],
+        "events": [],
+        "analysis_status": "not_run"
+      },
+      "fixture:B": {
+        "terms": [],
+        "events": [],
+        "analysis_status": "not_run"
+      }
+    },
+    "excluded_coauthored": [
+      {
+        "key": "fixture:joint",
+        "author_uids": [
+          "fixture:A",
+          "fixture:B"
+        ],
+        "events": 4
+      }
+    ],
+    "metrics": {
+      "persons": {
+        "intersection": 2,
+        "union": 4
+      },
+      "works": {
+        "intersection": 1,
+        "union": 5
+      }
+    },
+    "costs": {
+      "total_usd": null,
+      "status": "unmeasured"
+    }
+  }
+}

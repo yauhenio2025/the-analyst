@@ -1,0 +1,166 @@
+{
+  "schema_version": "overlap-output/v1",
+  "packet_id": "fixture:overlap",
+  "revision": 1,
+  "fixture_only": true,
+  "findings": [
+    {
+      "id": "S2.F1",
+      "dimension": "joint_reliance",
+      "kind": "cross_person",
+      "claim": "Fixture authority/foil contrast spans P and Q.",
+      "person_uids": [
+        "fixture:P",
+        "fixture:Q"
+      ],
+      "author_uids": [
+        "fixture:A",
+        "fixture:B"
+      ],
+      "row_refs": [
+        "fixture:universe__fixture:P::citation_overlap_map::O5.F1",
+        "fixture:universe__fixture:Q::citation_overlap_map::O5.F1"
+      ],
+      "anchors": [
+        {
+          "text": "[p. 1 | PDF p. 2] fixture:A fixture only: I adopt fixture:P on fixture:P:workshared for this example. Observation 0.",
+          "source_doc_key": "fixture:A:text:fixture:P:0",
+          "voice": "fixture author",
+          "locus": {
+            "printed_page": "1",
+            "pdf_page": 2,
+            "edition": "fixture",
+            "how": "page",
+            "section_uid": null,
+            "section_title": null
+          }
+        },
+        {
+          "text": "[p. 1 | PDF p. 2] fixture:A fixture only: I adopt fixture:P on fixture:P:workshared for this example. Observation 1.",
+          "source_doc_key": "fixture:A:text:fixture:P:1",
+          "voice": "fixture author",
+          "locus": {
+            "printed_page": "1",
+            "pdf_page": 2,
+            "edition": "fixture",
+            "how": "page",
+            "section_uid": null,
+            "section_title": null
+          }
+        },
+        {
+          "text": "[p. 1 | PDF p. 2] fixture:B fixture only: I dispute fixture:P on fixture:P:workshared for this example. Observation 0.",
+          "source_doc_key": "fixture:B:text:fixture:P:0",
+          "voice": "fixture author",
+          "locus": {
+            "printed_page": "1",
+            "pdf_page": 2,
+            "edition": "fixture",
+            "how": "page",
+            "section_uid": null,
+            "section_title": null
+          }
+        },
+        {
+          "text": "[p. 1 | PDF p. 2] fixture:B fixture only: I dispute fixture:P on fixture:P:workshared for this example. Observation 1.",
+          "source_doc_key": "fixture:B:text:fixture:P:1",
+          "voice": "fixture author",
+          "locus": {
+            "printed_page": "1",
+            "pdf_page": 2,
+            "edition": "fixture",
+            "how": "page",
+            "section_uid": null,
+            "section_title": null
+          }
+        },
+        {
+          "text": "[p. 1 | PDF p. 2] fixture:A fixture only: I adopt fixture:Q on fixture:Q:work0 for this example. Observation 0.",
+          "source_doc_key": "fixture:A:text:fixture:Q:0",
+          "voice": "fixture author",
+          "locus": {
+            "printed_page": "1",
+            "pdf_page": 2,
+            "edition": "fixture",
+            "how": "page",
+            "section_uid": null,
+            "section_title": null
+          }
+        },
+        {
+          "text": "[p. 1 | PDF p. 2] fixture:A fixture only: I adopt fixture:Q on fixture:Q:work0 for this example. Observation 1.",
+          "source_doc_key": "fixture:A:text:fixture:Q:1",
+          "voice": "fixture author",
+          "locus": {
+            "printed_page": "1",
+            "pdf_page": 2,
+            "edition": "fixture",
+            "how": "page",
+            "section_uid": null,
+            "section_title": null
+          }
+        },
+        {
+          "text": "[p. 1 | PDF p. 2] fixture:B fixture only: I dispute fixture:Q on fixture:Q:work1 for this example. Observation 0.",
+          "source_doc_key": "fixture:B:text:fixture:Q:0",
+          "voice": "fixture author",
+          "locus": {
+            "printed_page": "1",
+            "pdf_page": 2,
+            "edition": "fixture",
+            "how": "page",
+            "section_uid": null,
+            "section_title": null
+          }
+        },
+        {
+          "text": "[p. 1 | PDF p. 2] fixture:B fixture only: I dispute fixture:Q on fixture:Q:work1 for this example. Observation 1.",
+          "source_doc_key": "fixture:B:text:fixture:Q:1",
+          "voice": "fixture author",
+          "locus": {
+            "printed_page": "1",
+            "pdf_page": 2,
+            "edition": "fixture",
+            "how": "page",
+            "section_uid": null,
+            "section_title": null
+          }
+        }
+      ],
+      "metadata_refs": []
+    }
+  ],
+  "tables": [
+    {
+      "key": "joint_reliance_asymmetries",
+      "cells": [
+        {
+          "value": "Fixture authority/foil contrast spans P and Q.",
+          "finding_ids": [
+            "S2.F1"
+          ],
+          "metadata_refs": []
+        }
+      ]
+    },
+    {
+      "key": "residues_by_side",
+      "cells": [
+        {
+          "value": "fixture:R_A",
+          "finding_ids": [],
+          "metadata_refs": [
+            "person:fixture:R_A"
+          ]
+        },
+        {
+          "value": "fixture:R_B",
+          "finding_ids": [],
+          "metadata_refs": [
+            "person:fixture:R_B"
+          ]
+        }
+      ]
+    }
+  ]
+}
