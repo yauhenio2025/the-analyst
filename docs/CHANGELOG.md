@@ -5,6 +5,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Added (2026-09-06 — second queue, release withheld)
+
+- Registered eleven ideal-output-first methods with capability/process definitions, text-facing questions, method cards and surface/checked/deep routing; A3 replaces its lifted comparison-device taxonomy. A4/A5 incorporate the prior source-led corrections. All eleven remain excluded from offers with observed hold reasons.
+- Completed 38 outputs, source memos committed before scores, and 70 independent Sonnet/Sol ratings for **USD11.789971 of USD12**. Every new output has both ratings; six original-control ratings remain unpurchased because their reserved bounds cannot fit. No provider failures or unknown reserve. [Report, per-output evidence, scores and remaining work](../communications/study/STUDY_second_queue_2026-09-06.md).
+- Baseline-filtered offline suite: **1287 passed, 2 skipped, 11 deselected**; documented old collection errors excluded. Source/anchor/ID audit and memo-before-score bindings pass. No protected engine or runner/wall changes in this queue.
+
 ### Fixed (2026-09-06, live check and consolidation)
 - Dossier receipts price OpenRouter passes (`openrouter/<vendor>/<model>`) by falling back to `src.events.pricing`, instead of writing them as `[UNPRICED]` $0 ([receipts.py](src/dossier/receipts.py)); the live check's nine analysis passes had gone unpriced (~$0.77 of $2.34).
 - Process call narration names the mode actually run (`oneshot`, `oneshot_checked`, `dvs`) instead of the process key ([chain_runner.py](src/executor/chain_runner.py)).

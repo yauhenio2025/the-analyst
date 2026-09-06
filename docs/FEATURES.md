@@ -1505,6 +1505,13 @@ Ten advanced engines with deep theoretical foundations, cross-referencing ID sys
   - `src/api/routes/organs.py` - `GET /v1/organs`, `/by-layer`, `/{key}`, `/{key}/engines`
 - **Added**: 2026-09-04
 
+### Second-queue methods under the process shape
+- **Status**: Registered for research; all eleven withheld from ordinary offers.
+- **Description**: Concept trajectories, borrowing, revision presentation, counterfactual audit, development through tensions, modal force, meaning in use, framework components, narrative form, theory construction and comparison audit have ideal-output-first questions, method cards and surface/standard/deep processes. Standard uses a checked Sol reading; deep uses Luna extraction, DeepSeek V4 Pro verification and Sol synthesis.
+- **Validation**: 38 source-reviewed outputs. Useful readings and inventories still have source, quotation or final-table support defects. The [release report](../communications/study/STUDY_second_queue_2026-09-06.md) records independent scores, the hard USD12 accounting and each remaining requirement. Registration does not enable picker, planner or ordinary-path access.
+- **Entry Points**: `scripts/study_second_queue.py`, `scripts/audit_second_queue.py`, capability/process YAMLs, `src/dossier/catalog_purpose.json` exclusions.
+- **Added**: 2026-09-06
+
 ### Registered estate methods and processes
 - **Status**: Active
 - **Description**: 65 mirrored/native engine definitions and 7 cross-organ process workflows generated from a table; doctrine files imported from organ repos and exported from the Analyst's desks.
