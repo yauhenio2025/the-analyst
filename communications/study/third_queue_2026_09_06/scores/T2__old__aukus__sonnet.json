@@ -1,0 +1,36 @@
+{
+  "score": {
+    "specificity": 8,
+    "anchoring": 7,
+    "non_obviousness": 7,
+    "coherence": 7,
+    "usefulness": 8,
+    "hallucination_risk": 6,
+    "reasons": {
+      "specificity": "The analysis correctly names distinct actors (Hanwha, Lynas, Arafura, Red 6, SkyWater, Fortescue, ASC), specific funding figures (AUD 840m, USD 258m, USD 1.5bn, GBP 220m), and assigns events to named timelines with source-specific attribution rather than generic geopolitical themes, making it clearly tailored to this single article.",
+      "anchoring": "Most quoted passages occur verbatim in the source and support the interpretations applied (e.g., 'within 24 hours bipartisanship was assured,' 'domestic source,' 'without export licences,' 'marriage of convenience'), but two anomalies reduce confidence: the analysis flags a White House 2023a date (May) paired with October narrative without fully resolving it, and the AUKUS date discrepancy (15 vs 16 September) is noted but not resolved by the source text itself.",
+      "non_obviousness": "The parallel-lanes structure captures non-obvious intersections a casual reader would miss, such as the concurrent Hanwha contract and Japan export-rule pledge in July 2023 (S2), the layering of export-credit agency roles onto minerals cooperation (R5), and the simultaneity of US semiconductor awards (S5); the temporal-contradiction cells on bipartisanship-versus-obstruction and political support versus delivery failure usefully surface tensions the article presents but does not foreground as contradictions.",
+      "coherence": "Timeline labels, event IDs, and synchronization-point entries are internally consistent and cross-referenced correctly; however, the meta-count lists 8 timelines but two (T7, T8) are typed 'process' and 'theme' while the parallel-processes section adds a fifth process (P5) not fully anchored in a distinct timeline, creating minor structural inconsistency; the White House 2023a/2023b attribution issue is flagged in C2 but not corrected in the event table.",
+      "usefulness": "The inventory gives a reader a structured entry point into a dense 22-page article: the event table with exact or approximate dates, the overlap clusters, and the findings ledger with confidence ratings make the chronological argument navigable; the open-questions section identifies genuine gaps the article leaves unresolved, which is directly useful for a reader wanting to assess the empirical claims.",
+      "hallucination_risk": "Most specific claims are traceable to named passages, but several cells introduce framing not explicit in the source: describing T4 as ending '2023-12' is not stated; the meta field 'Historical background span: 1945–1980' is accurate but the analysis presents it as a discrete timeline entry rather than illustrative comparison; the claim that White House 2023a 'may be an additional or miscited source' is speculative; R2 asserts AUKUS 'preceded' GWEO as enabling context without the source establishing direct causal linkage, and R8 describes an 'intended causal' link the article only implies."
+    },
+    "decisive_errors": [
+      {
+        "claim": "T4 end date listed as '2023-12'; UK NSSIF activities are described as ending in December 2023.",
+        "counter_passage": "UK Parliament (2023) records NSSIF commitments as of November 2023, and British Business Bank (2024) is dated 2024, indicating the UK investment process continued beyond December 2023; no source sets December 2023 as a terminal date."
+      },
+      {
+        "claim": "C2 states White House 2023a date of '20 May' is attached to October 2023 state-visit narrative and may be 'miscited'.",
+        "counter_passage": "The article cites White House 2023a ('Australia-United States Joint Leaders' Statement – An Alliance for our Times,' 20 May) separately from White House 2023b (25 October); both are in the reference list; the analysis treats this as a possible error when the article itself uses both sources for different propositions, so the 'miscitation' inference is not supported by the text."
+      }
+    ],
+    "one_line": "A well-constructed, source-specific parallel-lanes inventory with accurate event details and useful overlap analysis, modestly weakened by two speculative interpretive inferences about source attribution and timeline end-dates not established by the article."
+  },
+  "binding": {
+    "output_sha256": "5a5195e30c3ac2fd9ec0033db250df0a2b1694a81a7a6950caddc784cb0e77a6",
+    "memo_sha256": "4dd3b860132c1c1a135dab6de1cf44797ca704b8cda72e1a82df7db23d4871f1",
+    "memo_path": "communications/study/third_queue_2026_09_06/source_memos/T2__old__aukus.md"
+  },
+  "rater": "sonnet",
+  "mean": 7.166666666666667
+}

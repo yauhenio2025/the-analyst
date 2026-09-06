@@ -1,0 +1,9 @@
+# Third queue: first-pass adjudication, 2026-09-06
+
+All 24 source-read memos were committed at a9f5311 before the 44 independent scores. The audit binds each memo, output and score and checks timestamps. No source memo was revised in response to a score. The first pass cost $8.561397 by the receipt ledger (90 calls, zero incomplete).
+
+Eight methods are eligible on this validation: R1, R3, I1, I2, I3, T10, C2, P4. I3 Sonnet 8.3333 exceeds original 8.1667; T10 ties 7.8333. The other six are inventories, designated before generation; release judges useful rows, source fidelity and anchors rather than requiring a scalar improvement. R1 (7.8333 vs 8.5), I1 (7.6667 vs 8.1667), and I2 (7.6667 vs 8.5) have lower Sonnet means, disclosed rather than hidden. Their source limitations and selective coverage remain in the committed memos.
+
+Four methods are not releasable on this pass. I15 final synthesis F6 joined an ITAR quotation across a page header. P3 final synthesis F20 joined the ASN/Orange Marine predicate across page furniture; its PEACE packet also lost its date predicate under prefix trimming. Both syntheses were refused and received no completed-output rating. T2 mechanically passed but joined a June Eximbank proposal and a separately named December decree into one unsupported interval, propagating it into overlap cells. E2 mechanically passed but its table extended Ker (2024) from the Lynas sentence to the following uncited US loan claim. Neither score overrides these defects.
+
+A separately frozen bounded repair will change only these four unreleased methods' cards and delivery instructions, preserving their reader questions and all first-pass evidence. One additional checked run on the same paper per method; no new originals. It will require a fresh committed source read before fresh independent scores. No runner or anchor-wall change is warranted.
