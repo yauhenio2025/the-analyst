@@ -1,0 +1,750 @@
+{
+  "status": "complete",
+  "job": {
+    "id": "E2",
+    "engine": "claim_provenance",
+    "papers": [
+      "aukus"
+    ],
+    "condition": "checked"
+  },
+  "output_sha256": "92f1f94b0d279b5eaf4a9a28bc0606f0a3e8044ba94b1c3850d90347f9d060a7",
+  "seconds": 202.79229426383972,
+  "process": {
+    "engine": "claim_provenance",
+    "process": "dvs",
+    "cost_usd": 0.1462,
+    "input_tokens": 52740,
+    "output_tokens": 13954,
+    "seconds": 199.8,
+    "final_model": "openrouter/openai/gpt-5.6-sol",
+    "final_wall": {
+      "rows": 12,
+      "with_anchor": 12,
+      "verified": 12,
+      "trimmed": 0,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 19,
+      "verified_anchors": 19,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "checked",
+        "scope": "retained_ledger",
+        "missing_rejected_ids": [],
+        "missing_other_ids": []
+      },
+      "check_in": 11,
+      "check_confirmed": 11,
+      "check_weakened": 0,
+      "check_rejected": 0,
+      "check_added": 1,
+      "check_added_dropped": 0,
+      "check_carried": 0,
+      "check_unverified": 0,
+      "check_ruling_coverage": {
+        "original_count": 11,
+        "explicitly_ruled_count": 11,
+        "missing_or_unruled_ids": [],
+        "unexpected_nonadded_ids": [],
+        "invalid_original_status_ids": [],
+        "duplicate_original_ids": [],
+        "duplicate_ruling_ids": [],
+        "coverage_complete": true
+      },
+      "scope_outcomes": [
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "claims",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "Abstract",
+            "Introduction",
+            "AUKUS and militarised neoliberalism",
+            "AUKUS, bipartisanship, and the regulatory control",
+            "State interventions and politico-business coalitions",
+            "The emergence of a new business class",
+            "Conclusion",
+            "Notes",
+            "References"
+          ],
+          "coverage": "complete",
+          "criterion": "Important numerical, dated, and mechanism claims with their immediate cited or reported source and access status",
+          "basis": "The article contains author-level mechanism claims and multiple numerical claims attributed to government, media, corporate, and other intermediaries.",
+          "limitations": [
+            "Cited originals and intermediaries were not supplied for inspection.",
+            "Bibliography metadata was not treated as evidence of source content."
+          ],
+          "finding_ids": [
+            "F1",
+            "F4",
+            "F6",
+            "F8",
+            "F10"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "All claim-level rows were confirmed against verbatim anchors; the cited originals remain uninspected.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "chains",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "Introduction",
+            "AUKUS, bipartisanship, and the regulatory control",
+            "State interventions and politico-business coalitions",
+            "References"
+          ],
+          "coverage": "complete",
+          "criterion": "Explicitly documented original-to-intermediary-to-article links, with uninspected links and citation gaps retained",
+          "basis": "The article identifies mediated quotations and cited reports, while one adjacent financial claim lacks its own citation.",
+          "limitations": [
+            "No external link in the documented chains was inspected.",
+            "The origin of the USD 1.28 billion loan claim is unspecified."
+          ],
+          "finding_ids": [
+            "F2",
+            "F5",
+            "F7",
+            "F9"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "Chain rows were confirmed via verbatim anchors; the gaps remain as noted.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "transformations",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "Abstract",
+            "Introduction",
+            "Conclusion"
+          ],
+          "coverage": "complete",
+          "criterion": "Visible summarizing, reframing, rounding, translation, or change of scope supported by both formulations",
+          "basis": "The abstract explicitly contrasts AUKUS as a security partnership with its analytical reclassification as a mutation of neoliberalism.",
+          "limitations": [
+            "This is an internal analytical reframing, not a transformation verified by comparison with an external original."
+          ],
+          "finding_ids": [
+            "F3"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "The reframing row is directly anchored and confirmed.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "dependence",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "Abstract",
+            "Introduction",
+            "AUKUS, bipartisanship, and the regulatory control",
+            "State interventions and politico-business coalitions",
+            "The emergence of a new business class",
+            "Conclusion",
+            "References"
+          ],
+          "coverage": "complete",
+          "criterion": "Independent corroboration requires genuinely inspected independent support rather than repeated reporting or distinct citation labels",
+          "basis": "The article cites multiple source objects, but none of those external sources was supplied and inspected; independence and corroboration therefore cannot be established.",
+          "limitations": [
+            "Different citations may be independent, dependent, or based on common upstream records.",
+            "Repeated statements within the article are not independent support."
+          ],
+          "finding_ids": [],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "The inconclusive outcome is correct given the uninspected nature of all external sources.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "conflicts",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "AUKUS, bipartisanship, and the regulatory control",
+            "Notes"
+          ],
+          "coverage": "complete",
+          "criterion": "Potential disagreements checked for matching population, date, target, and status before being classified as contradictions",
+          "basis": "The article juxtaposes relative US bipartisanship with a Republican move to block enabling legislation, but the positions can align as conditional support rather than contradiction.",
+          "limitations": [
+            "The relevant legislation, voting history, and complete senatorial statements were not supplied."
+          ],
+          "finding_ids": [
+            "F11"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "The conflict row is anchored and correctly qualified.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        }
+      ]
+    },
+    "calls": [
+      {
+        "step": "read",
+        "kind": "synthesize",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/openai/gpt-5.6-sol",
+        "model_used": "openrouter/openai/gpt-5.6-sol",
+        "input_tokens": 23475,
+        "output_tokens": 5011,
+        "duration_ms": 99374,
+        "cost_usd": 0.0971,
+        "retries": 0,
+        "wall": {
+          "rows": 11,
+          "with_anchor": 11,
+          "verified": 11,
+          "trimmed": 0,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 17,
+          "verified_anchors": 17,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "has_ledger": true,
+          "prose_chars": 8823,
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "claims",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract",
+                "Introduction",
+                "AUKUS and militarised neoliberalism",
+                "AUKUS, bipartisanship, and the regulatory control",
+                "State interventions and politico-business coalitions",
+                "The emergence of a new business class",
+                "Conclusion",
+                "Notes",
+                "References"
+              ],
+              "coverage": "complete",
+              "criterion": "Important numerical, dated, and mechanism claims with their immediate cited or reported source and access status",
+              "basis": "The article contains author-level mechanism claims and multiple numerical claims attributed to government, media, corporate, and other intermediaries.",
+              "limitations": [
+                "Cited originals and intermediaries were not supplied for inspection.",
+                "Bibliography metadata was not treated as evidence of source content."
+              ],
+              "finding_ids": [
+                "F1",
+                "F4",
+                "F6",
+                "F8",
+                "F10"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "chains",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Introduction",
+                "AUKUS, bipartisanship, and the regulatory control",
+                "State interventions and politico-business coalitions",
+                "References"
+              ],
+              "coverage": "complete",
+              "criterion": "Explicitly documented original-to-intermediary-to-article links, with uninspected links and citation gaps retained",
+              "basis": "The article identifies mediated quotations and cited reports, while one adjacent financial claim lacks its own citation.",
+              "limitations": [
+                "No external link in the documented chains was inspected.",
+                "The origin of the USD 1.28 billion loan claim is unspecified."
+              ],
+              "finding_ids": [
+                "F2",
+                "F5",
+                "F7",
+                "F9"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "transformations",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract",
+                "Introduction",
+                "Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "Visible summarizing, reframing, rounding, translation, or change of scope supported by both formulations",
+              "basis": "The abstract explicitly contrasts AUKUS as a security partnership with its analytical reclassification as a mutation of neoliberalism.",
+              "limitations": [
+                "This is an internal analytical reframing, not a transformation verified by comparison with an external original."
+              ],
+              "finding_ids": [
+                "F3"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "dependence",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Abstract",
+                "Introduction",
+                "AUKUS, bipartisanship, and the regulatory control",
+                "State interventions and politico-business coalitions",
+                "The emergence of a new business class",
+                "Conclusion",
+                "References"
+              ],
+              "coverage": "complete",
+              "criterion": "Independent corroboration requires genuinely inspected independent support rather than repeated reporting or distinct citation labels",
+              "basis": "The article cites multiple source objects, but none of those external sources was supplied and inspected; independence and corroboration therefore cannot be established.",
+              "limitations": [
+                "Different citations may be independent, dependent, or based on common upstream records.",
+                "Repeated statements within the article are not independent support."
+              ],
+              "finding_ids": [],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "conflicts",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "AUKUS, bipartisanship, and the regulatory control",
+                "Notes"
+              ],
+              "coverage": "complete",
+              "criterion": "Potential disagreements checked for matching population, date, target, and status before being classified as contradictions",
+              "basis": "The article juxtaposes relative US bipartisanship with a Republican move to block enabling legislation, but the positions can align as conditional support rather than contradiction.",
+              "limitations": [
+                "The relevant legislation, voting history, and complete senatorial statements were not supplied."
+              ],
+              "finding_ids": [
+                "F11"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 22252
+      },
+      {
+        "step": "check",
+        "kind": "verify",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+        "model_used": "openrouter/deepseek/deepseek-v4-pro",
+        "input_tokens": 29265,
+        "output_tokens": 8943,
+        "duration_ms": 100109,
+        "cost_usd": 0.0491,
+        "retries": 0,
+        "wall": {
+          "rows": 12,
+          "with_anchor": 12,
+          "verified": 12,
+          "trimmed": 0,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 19,
+          "verified_anchors": 19,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "checked",
+            "scope": "retained_ledger",
+            "missing_rejected_ids": [],
+            "missing_other_ids": []
+          },
+          "check_in": 11,
+          "check_confirmed": 11,
+          "check_weakened": 0,
+          "check_rejected": 0,
+          "check_added": 1,
+          "check_added_dropped": 0,
+          "check_carried": 0,
+          "check_unverified": 0,
+          "check_ruling_coverage": {
+            "original_count": 11,
+            "explicitly_ruled_count": 11,
+            "missing_or_unruled_ids": [],
+            "unexpected_nonadded_ids": [],
+            "invalid_original_status_ids": [],
+            "duplicate_original_ids": [],
+            "duplicate_ruling_ids": [],
+            "coverage_complete": true
+          },
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "claims",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract",
+                "Introduction",
+                "AUKUS and militarised neoliberalism",
+                "AUKUS, bipartisanship, and the regulatory control",
+                "State interventions and politico-business coalitions",
+                "The emergence of a new business class",
+                "Conclusion",
+                "Notes",
+                "References"
+              ],
+              "coverage": "complete",
+              "criterion": "Important numerical, dated, and mechanism claims with their immediate cited or reported source and access status",
+              "basis": "The article contains author-level mechanism claims and multiple numerical claims attributed to government, media, corporate, and other intermediaries.",
+              "limitations": [
+                "Cited originals and intermediaries were not supplied for inspection.",
+                "Bibliography metadata was not treated as evidence of source content."
+              ],
+              "finding_ids": [
+                "F1",
+                "F4",
+                "F6",
+                "F8",
+                "F10"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "All claim-level rows were confirmed against verbatim anchors; the cited originals remain uninspected.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "chains",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Introduction",
+                "AUKUS, bipartisanship, and the regulatory control",
+                "State interventions and politico-business coalitions",
+                "References"
+              ],
+              "coverage": "complete",
+              "criterion": "Explicitly documented original-to-intermediary-to-article links, with uninspected links and citation gaps retained",
+              "basis": "The article identifies mediated quotations and cited reports, while one adjacent financial claim lacks its own citation.",
+              "limitations": [
+                "No external link in the documented chains was inspected.",
+                "The origin of the USD 1.28 billion loan claim is unspecified."
+              ],
+              "finding_ids": [
+                "F2",
+                "F5",
+                "F7",
+                "F9"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "Chain rows were confirmed via verbatim anchors; the gaps remain as noted.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "transformations",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract",
+                "Introduction",
+                "Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "Visible summarizing, reframing, rounding, translation, or change of scope supported by both formulations",
+              "basis": "The abstract explicitly contrasts AUKUS as a security partnership with its analytical reclassification as a mutation of neoliberalism.",
+              "limitations": [
+                "This is an internal analytical reframing, not a transformation verified by comparison with an external original."
+              ],
+              "finding_ids": [
+                "F3"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "The reframing row is directly anchored and confirmed.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "dependence",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Abstract",
+                "Introduction",
+                "AUKUS, bipartisanship, and the regulatory control",
+                "State interventions and politico-business coalitions",
+                "The emergence of a new business class",
+                "Conclusion",
+                "References"
+              ],
+              "coverage": "complete",
+              "criterion": "Independent corroboration requires genuinely inspected independent support rather than repeated reporting or distinct citation labels",
+              "basis": "The article cites multiple source objects, but none of those external sources was supplied and inspected; independence and corroboration therefore cannot be established.",
+              "limitations": [
+                "Different citations may be independent, dependent, or based on common upstream records.",
+                "Repeated statements within the article are not independent support."
+              ],
+              "finding_ids": [],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "The inconclusive outcome is correct given the uninspected nature of all external sources.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "conflicts",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "AUKUS, bipartisanship, and the regulatory control",
+                "Notes"
+              ],
+              "coverage": "complete",
+              "criterion": "Potential disagreements checked for matching population, date, target, and status before being classified as contradictions",
+              "basis": "The article juxtaposes relative US bipartisanship with a Republican move to block enabling legislation, but the positions can align as conditional support rather than contradiction.",
+              "limitations": [
+                "The relevant legislation, voting history, and complete senatorial statements were not supplied."
+              ],
+              "finding_ids": [
+                "F11"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "The conflict row is anchored and correctly qualified.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 17115
+      }
+    ]
+  },
+  "audit": {
+    "wall": {
+      "rows": 12,
+      "with_anchor": 12,
+      "verified": 12,
+      "trimmed": 0,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 19,
+      "verified_anchors": 19,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "rows": 12,
+    "raw_anchors": 19,
+    "raw_exact": 0,
+    "unknown_dimensions": [],
+    "missing_table_ids": [],
+    "missing_prose_ids": []
+  }
+}

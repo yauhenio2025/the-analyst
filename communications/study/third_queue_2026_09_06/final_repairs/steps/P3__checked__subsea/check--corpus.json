@@ -1,0 +1,268 @@
+{
+  "step": "check",
+  "kind": "verify",
+  "dimension": "",
+  "doc": "",
+  "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+  "model_used": "openrouter/deepseek/deepseek-v4-pro",
+  "input_tokens": 28726,
+  "output_tokens": 22161,
+  "duration_ms": 278334,
+  "cost_usd": 0.0761,
+  "retries": 0,
+  "wall": {
+    "rows": 25,
+    "with_anchor": 23,
+    "verified": 23,
+    "trimmed": 8,
+    "anchor_rate": 0.92,
+    "failed_ids": [
+      "F11",
+      "F16"
+    ],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 30,
+    "verified_anchors": 28,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "checked",
+      "scope": "retained_ledger",
+      "missing_rejected_ids": [],
+      "missing_other_ids": []
+    },
+    "check_in": 17,
+    "check_confirmed": 15,
+    "check_weakened": 2,
+    "check_rejected": 0,
+    "check_added": 8,
+    "check_added_dropped": 0,
+    "check_carried": 0,
+    "check_unverified": 2,
+    "check_ruling_coverage": {
+      "original_count": 17,
+      "explicitly_ruled_count": 17,
+      "missing_or_unruled_ids": [],
+      "unexpected_nonadded_ids": [],
+      "invalid_original_status_ids": [],
+      "duplicate_original_ids": [],
+      "duplicate_ruling_ids": [],
+      "coverage_complete": true
+    },
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "mentions",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "article front matter and abstract",
+          "Reconciling Market Dynamics and State Strategy in Global Networks",
+          "Case 1: The US–Chinese Conflict Over SeaMeWe- 6",
+          "Case 2: France's Nationalization of Alcatel Submarine Networks",
+          "Conclusion"
+        ],
+        "coverage": "complete",
+        "criterion": "Inventory people, organizations, locations, products/projects and events relevant to the argument.",
+        "basis": "The inspected article names the author, governments, companies, cable projects, consortium members, and network hubs.",
+        "limitations": [
+          "The index prioritizes case actors and objects rather than treating every cited reference author as a case actor."
+        ],
+        "finding_ids": [
+          "F1",
+          "F4",
+          "F5",
+          "F17"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": false,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Malformed/missing scope records: 4 validation errors for ScopeOutcome\ncriterion\n  Field required [type=missing, input_value={'document_keys': ['doc']... nature of EMA claims.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\nbasis\n  Field required [type=missing, input_value={'document_keys': ['doc']... nature of EMA claims.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\ncritterion\n  Extra inputs are not permitted [type=extra_forbidden, input_value='State material uncertain...pansions or completion.', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden\nbassis\n  Extra inputs are not permitted [type=extra_forbidden, input_value='The EMA discussion is ex...ansions are introduced.', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden",
+            "Findings in this scope lost anchor evidence; this does not establish absence",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "identity",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Reconciling Market Dynamics and State Strategy in Global Networks",
+          "Case 1: The US–Chinese Conflict Over SeaMeWe- 6",
+          "Case 2: France's Nationalization of Alcatel Submarine Networks"
+        ],
+        "coverage": "complete",
+        "criterion": "Require an explicit alias or unambiguous contextual link and leave unsupported acronym or case identities unresolved.",
+        "basis": "The text explicitly expands SeaMeWe- 6 and EMA and states that HMN Tech was formerly Huawei Marine Networks.",
+        "limitations": [
+          "PEACE is not expanded.",
+          "The article does not supply a formal corporate-renaming statement for Orange and France Telecom."
+        ],
+        "finding_ids": [
+          "F3",
+          "F7"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": false,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Malformed/missing scope records: 4 validation errors for ScopeOutcome\ncriterion\n  Field required [type=missing, input_value={'document_keys': ['doc']... nature of EMA claims.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\nbasis\n  Field required [type=missing, input_value={'document_keys': ['doc']... nature of EMA claims.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\ncritterion\n  Extra inputs are not permitted [type=extra_forbidden, input_value='State material uncertain...pansions or completion.', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden\nbassis\n  Extra inputs are not permitted [type=extra_forbidden, input_value='The EMA discussion is ex...ansions are introduced.', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden",
+            "Findings in this scope lost anchor evidence; this does not establish absence",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "roles",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "abstract",
+          "Case 1: The US–Chinese Conflict Over SeaMeWe- 6",
+          "Case 2: France's Nationalization of Alcatel Submarine Networks",
+          "Conclusion"
+        ],
+        "coverage": "complete",
+        "criterion": "Quote role predicates with their objects while distinguishing ownership, operation, financing, and partnership.",
+        "basis": "The article assigns development, ownership, operation, financing, contracting, manufacturing, and maintenance roles to named actors.",
+        "limitations": [
+          "Some consortium participation is listed without detailed ownership percentages or governance powers."
+        ],
+        "finding_ids": [
+          "F2",
+          "F8",
+          "F11",
+          "F16"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": false,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Malformed/missing scope records: 4 validation errors for ScopeOutcome\ncriterion\n  Field required [type=missing, input_value={'document_keys': ['doc']... nature of EMA claims.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\nbasis\n  Field required [type=missing, input_value={'document_keys': ['doc']... nature of EMA claims.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\ncritterion\n  Extra inputs are not permitted [type=extra_forbidden, input_value='State material uncertain...pansions or completion.', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden\nbassis\n  Extra inputs are not permitted [type=extra_forbidden, input_value='The EMA discussion is ex...ansions are introduced.', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden",
+            "Findings in this scope lost anchor evidence; this does not establish absence",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "relationships",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Case 1: The US–Chinese Conflict Over SeaMeWe- 6",
+          "Case 2: France's Nationalization of Alcatel Submarine Networks",
+          "Conclusion"
+        ],
+        "coverage": "complete",
+        "criterion": "Retain both entities and the relational predicate; co-mention alone is not an edge.",
+        "basis": "The cases explicitly report supplier selection, government pressure, contract reassignment, investor withdrawal, ownership, construction, and state acquisition.",
+        "limitations": [
+          "Several claims rely on the article's synthesis of media reports rather than reproduced primary contracts or government communications."
+        ],
+        "finding_ids": [
+          "F6",
+          "F9",
+          "F10",
+          "F12",
+          "F13",
+          "F15"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": false,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Malformed/missing scope records: 4 validation errors for ScopeOutcome\ncriterion\n  Field required [type=missing, input_value={'document_keys': ['doc']... nature of EMA claims.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\nbasis\n  Field required [type=missing, input_value={'document_keys': ['doc']... nature of EMA claims.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\ncritterion\n  Extra inputs are not permitted [type=extra_forbidden, input_value='State material uncertain...pansions or completion.', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden\nbassis\n  Extra inputs are not permitted [type=extra_forbidden, input_value='The EMA discussion is ex...ansions are introduced.', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden",
+            "Findings in this scope lost anchor evidence; this does not establish absence",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "coverage",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Case Studies and Methods",
+          "Case 1: The US–Chinese Conflict Over SeaMeWe- 6",
+          "Case 2: France's Nationalization of Alcatel Submarine Networks",
+          "Endnotes and references"
+        ],
+        "coverage": "complete",
+        "criterion": "State material uncertainty, reported status, and unresolved identity rather than inventing canonical expansions or completion.",
+        "basis": "The EMA discussion explicitly qualifies development and contracting claims as reported.",
+        "limitations": [
+          "The source does not reproduce EMA contracts or project records.",
+          "A complete legal-entity registry for all consortium participants is outside the article's supplied evidence."
+        ],
+        "finding_ids": [
+          "F14"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": false,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Malformed/missing scope records: 4 validation errors for ScopeOutcome\ncriterion\n  Field required [type=missing, input_value={'document_keys': ['doc']... nature of EMA claims.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\nbasis\n  Field required [type=missing, input_value={'document_keys': ['doc']... nature of EMA claims.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.10/v/missing\ncritterion\n  Extra inputs are not permitted [type=extra_forbidden, input_value='State material uncertain...pansions or completion.', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden\nbassis\n  Extra inputs are not permitted [type=extra_forbidden, input_value='The EMA discussion is ex...ansions are introduced.', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/extra_forbidden",
+            "Findings in this scope lost anchor evidence; this does not establish absence",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 22915
+}
