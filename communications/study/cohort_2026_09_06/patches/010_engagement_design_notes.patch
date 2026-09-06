@@ -1,0 +1,250 @@
+Rationale: Expose the verified passage inventory in the synthesis while preserving canonical passage counts and source provenance. This changes retained evidence and final cells, so validate original versus revision with full source reads, anchor/cell checks and Sonnet in both orders; the table is not certified cosmetic. Generated against main-tree HEAD 4d061afbc69021fc9f7d7d098781e87bc7cf2184; this file is deferred and does not authorize application before the pilot completes.
+
+diff --git a/src/engines/capability_definitions/citation_engagement_map.yaml b/src/engines/capability_definitions/citation_engagement_map.yaml
+--- a/src/engines/capability_definitions/citation_engagement_map.yaml
++++ b/src/engines/capability_definitions/citation_engagement_map.yaml
+@@ -4,10 +4,23 @@
+ version: 1
+ category: scholarly
+ kind: comparison
+-problematique: A bibliographic reading of A on P, led by P's place in these arguments. Give a passage × cited object
+-  × move × stance × reading × locus table, then a text/year trajectory table. Distinguish evidence, foil and dialogue;
+-  pair the actual passages before claiming development. Give a scholar three to five passages to open first and
+-  say why.
++problematique: >-
++  A bibliographic reading of A on P, led by P's place in these arguments. Give a passage × cited
++  object × move × stance × reading × locus table, then a text/year trajectory table. Distinguish
++  evidence, foil and dialogue; pair the actual passages before claiming development. Give a scholar
++  three to five passages to open first and say why.
++
++  Include a verified passage inventory from the applied ledger with stable passage IDs and final
++  row/anchor links; report canonical passage coverage separately from finding counts.
++
++  Do: Prefer the supplied Stacks markers=1 rendition of the same identified work and edition. Use the
++  actual supplied bytes and document key; a card cannot fetch or replace a rendition. When
++  unavailable, retain the supplied pdftotext window and label that fallback. Keep rendition identity,
++  printed page and PDF page distinct, and preserve the works-registry section UID/title and edition
++  where supplied. A section is a locus, not an inferred page mapping. Never infer edition equivalence
++  from equal page numbers, invent a section title, correct OCR inside a quotation, or supply words
++  from memory. A replacement rendition requires a new source snapshot and anchor checks; overlapping
++  renditions remain one citation event.
+ researcher_question: How does this author use and read this thinker across the supplied citing texts?
+ intellectual_lineage:
+   primary: source_criticism
+diff --git a/src/operationalizations/definitions/citation_engagement_map.yaml b/src/operationalizations/definitions/citation_engagement_map.yaml
+--- a/src/operationalizations/definitions/citation_engagement_map.yaml
++++ b/src/operationalizations/definitions/citation_engagement_map.yaml
+@@ -14,16 +14,31 @@
+ process:
+   key: dvs
+   description: How does this author use and read this thinker across the supplied citing texts?
+-  framing: A bibliographic reading of A on P, led by P's place in these arguments. Give a passage × cited object
+-    × move × stance × reading × locus table, then a text/year trajectory table. Distinguish evidence, foil and dialogue;
+-    pair the actual passages before claiming development. Give a scholar three to five passages to open first and
+-    say why. Use the supplied author/person identities and source roles. If a document is an evidence index, treat
+-    its routing, locations and counts as metadata; its duplicated quotations do not create an independent source.
+-    Anchor substantive claims in the actual citing text, held primary window or secondary text. Keep coauthorship
+-    and nested quotations. Read the body, not just titles, bibliographies or headers. A document outside a dimension's
+-    role gets no positive row in that dimension. Report that scope explicitly. Do not turn an incomplete check into
+-    a source's silence. The held sample is not the author's complete work or the thinker's entire reception. Dates
+-    missing from metadata stay unknown unless stated in the source.
++  framing: >-
++    A bibliographic reading of A on P, led by P's place in these arguments. Give a passage × cited
++    object × move × stance × reading × locus table, then a text/year trajectory table. Distinguish
++    evidence, foil and dialogue; pair the actual passages before claiming development. Give a scholar
++    three to five passages to open first and say why. Use the supplied author/person identities and
++    source roles. If a document is an evidence index, treat its routing, locations and counts as
++    metadata; its duplicated quotations do not create an independent source. Anchor substantive claims
++    in the actual citing text, held primary window or secondary text. Keep coauthorship and nested
++    quotations. Read the body, not just titles, bibliographies or headers. A document outside a
++    dimension's role gets no positive row in that dimension. Report that scope explicitly. Do not turn
++    an incomplete check into a source's silence. The held sample is not the author's complete work or
++    the thinker's entire reception. Dates missing from metadata stay unknown unless stated in the
++    source.
++
++    Include a verified passage inventory from the applied ledger with stable passage IDs and final
++    row/anchor links; report canonical passage coverage separately from finding counts.
++
++    Do: Prefer the supplied Stacks markers=1 rendition of the same identified work and edition. Use the
++    actual supplied bytes and document key; a card cannot fetch or replace a rendition. When
++    unavailable, retain the supplied pdftotext window and label that fallback. Keep rendition identity,
++    printed page and PDF page distinct, and preserve the works-registry section UID/title and edition
++    where supplied. A section is a locus, not an inferred page mapping. Never infer edition equivalence
++    from equal page numbers, invent a section title, correct OCR inside a quotation, or supply words
++    from memory. A replacement rendition requires a new source snapshot and anchor checks; overlapping
++    renditions remain one citation event.
+   scoped_outcomes: true
+   routing:
+     cheap: openrouter/openai/gpt-5.6-luna
+@@ -54,13 +69,24 @@
+     name: What each passage cites
+     questions:
+     - For each supplied passage, what work, idea or named thinker is cited, and at what locus?
+-    method_card: 'Do: Copy the cited identity and locus from the passage and bibliography. Record mentions without
+-      works. Separate a secondary reader''s report of P from a direct citation of P. Never supply a work from memory.
+-      Select literal spans that carry the actor, predicate, object and necessary qualification. A name or topic
+-      alone cannot support a reading. Use separate anchor-b/doc-b for a second span; never stitch quotations. Keep
+-      attribution, negation, modality, edition and chronology. Re-anchor, narrow or reject a claim whose quotation
+-      omits its predicate. Code checks only anchors and IDs; the model must judge the reading against the supplied
+-      text.'
++    method_card: >-
++      Do: Copy the cited identity and locus from the passage and bibliography. Record mentions without
++      works. Separate a secondary reader's report of P from a direct citation of P. Never supply a work
++      from memory. Select literal spans that carry the actor, predicate, object and necessary
++      qualification. A name or topic alone cannot support a reading. Use separate anchor-b/doc-b for a
++      second span; never stitch quotations. Keep attribution, negation, modality, edition and chronology.
++      Re-anchor, narrow or reject a claim whose quotation omits its predicate. Code checks only anchors
++      and IDs; the model must judge the reading against the supplied text.
++
++      Do: Prefer the supplied Stacks markers=1 rendition of the same identified work and edition. Use the
++      actual supplied bytes and document key; a card cannot fetch or replace a rendition. When
++      unavailable, retain the supplied pdftotext window and label that fallback. Keep rendition identity,
++      printed page and PDF page distinct, and preserve the works-registry section UID/title and edition
++      where supplied. A section is a locus, not an inferred page mapping. Never infer edition equivalence
++      from equal page numbers, invent a section title, correct OCR inside a quotation, or supply words
++      from memory. A replacement rendition requires a new source snapshot and anchor checks; overlapping
++      renditions remain one citation event. Preserve explicit canonical passage/event mappings across
++      dimension rows.
+     indicators:
+     - Weber
+     - cites
+@@ -68,9 +94,13 @@
+     scope: document
+     load_bearing: true
+     id_prefix: D2
+-    answer_shape: '[D2.F<n>] <one scoped finding> — dim: cited_object — ref: <index ref or local passage ID> — cited:
+-      <work or idea> — locus: <printed/PDF page; cited locus if present> — access: <held window or unknown> — anchor:
+-      "<verbatim supporting clause, <=200 chars>" — doc: <actual supplied source key> — confidence: high|medium|low'
++    answer_shape: >-
++      [D2.F<n>] <one scoped finding> — dim: cited_object — ref: <index ref or local passage ID> — cited:
++      <work or idea> — locus: <printed/PDF page; cited locus if present> — access: <held window or
++      unknown> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <actual supplied source key> —
++      confidence: high|medium|low — canonical-event: <supplied mapping or unresolved> — rendition:
++      <supplied identity> — edition: <supplied or unknown> — section-uid: <supplied or unknown> —
++      section-title: <supplied or unknown>
+   - key: citation_move
+     name: The move made with the citation
+     questions:
+@@ -187,8 +217,35 @@
+       attribution, negation, modality, edition and chronology. Re-anchor, narrow or reject a claim whose quotation
+       omits its predicate. Code checks only anchors and IDs; the model must judge the reading against the supplied
+       text.'
+-    - Check every passage/pair against its actual source role and preserve both keys for relational claims. Verify
+-      table meanings, voice and edition uncertainty; a search hit is not a confirmed cited page.
++    - >-
++      Check every passage/pair against its actual source role and preserve both keys for relational
++      claims. Verify table meanings, voice and edition uncertainty; a search hit is not a confirmed cited
++      page.
++
++      Do: Render verified_passage_inventory from the applied, wall-checked passage ledger, including
++      retained passages not selected for the short narrative. Columns: canonical passage/event ID | A text
++      and year (unknown when absent) | cited work/idea | move | stance toward the named proposition |
++      bounded reading and qualification | final ledger IDs | exact carried anchors | original document
++      keys | rendition, edition, printed/PDF pages and supplied section UID/title. Join dimension rows
++      only by their explicit passage/event mapping, never by adjacency or topic. Preserve separate
++      propositions and witnesses. Count canonical passages once across dimensions, overlapping windows,
++      renditions and memo restatements; report eligible/inspected/retained/rejected/unresolved counts
++      separately. Each positive cell must resolve to a retained verified ledger row with its unchanged
++      meaning after reconciliation. Keep granular rows addressable in the final ledger/sidecar even when
++      narrative findings are compressed. Rejected, superseded or anchor-failed rows go in a separate
++      coverage report and cannot support inventory cells. If the full applied ledger or event mapping is
++      unavailable, label the inventory partial and list missing inputs; never reconstruct omitted rows
++      from a memo or call a narrative subset the full verified ledger. A restatement links its canonical
++      row and is never filed or counted twice.
++
++      Do: Prefer the supplied Stacks markers=1 rendition of the same identified work and edition. Use the
++      actual supplied bytes and document key; a card cannot fetch or replace a rendition. When
++      unavailable, retain the supplied pdftotext window and label that fallback. Keep rendition identity,
++      printed page and PDF page distinct, and preserve the works-registry section UID/title and edition
++      where supplied. A section is a locus, not an inferred page mapping. Never infer edition equivalence
++      from equal page numbers, invent a section title, correct OCR inside a quotation, or supply words
++      from memory. A replacement rendition requires a new source snapshot and anchor checks; overlapping
++      renditions remain one citation event.
+   - key: synthesize
+     kind: synthesize
+     consumes:
+@@ -199,29 +256,59 @@
+     reader: a scholar of A with the cited works and secondary texts open
+     tables:
+     - passage_move_stance_locus
++    - verified_passage_inventory
+     - trajectory_by_text_and_year
+-    brief: '1. A bibliographic reading of A on P, led by P''s place in these arguments. Give a passage × cited object
+-      × move × stance × reading × locus table, then a text/year trajectory table. Distinguish evidence, foil and
+-      dialogue; pair the actual passages before claiming development. Give a scholar three to five passages to open
+-      first and say why.
+-
+-      2. Give the source-specific reading with qualifications, then render the named Markdown tables. Every positive
+-      cell cites its final supporting finding ID; unknown cells state the actual limit.
+-
+-      3. Preserve granular evidence through reconciliation: inspect each final table cell against its cited final
+-      row and source context. Renumber citations with rows; no old ID may silently acquire a new meaning. Count
+-      passage/pair IDs, not findings, for coverage.
+-
+-      4. Give a short read-first route and the unsettled question. No claim of exhaustive coverage without a complete
+-      supplied inventory and actual inspection. Use the supplied author/person identities and source roles. If a
+-      document is an evidence index, treat its routing, locations and counts as metadata; its duplicated quotations
+-      do not create an independent source. Anchor substantive claims in the actual citing text, held primary window
+-      or secondary text. Keep coauthorship and nested quotations. Read the body, not just titles, bibliographies
+-      or headers. A document outside a dimension''s role gets no positive row in that dimension. Report that scope
+-      explicitly. Do not turn an incomplete check into a source''s silence. The held sample is not the author''s
+-      complete work or the thinker''s entire reception. Dates missing from metadata stay unknown unless stated in
+-      the source. Select literal spans that carry the actor, predicate, object and necessary qualification. A name
+-      or topic alone cannot support a reading. Use separate anchor-b/doc-b for a second span; never stitch quotations.
+-      Keep attribution, negation, modality, edition and chronology. Re-anchor, narrow or reject a claim whose quotation
+-      omits its predicate. Code checks only anchors and IDs; the model must judge the reading against the supplied
+-      text.'
++    brief: >-
++      1. A bibliographic reading of A on P, led by P's place in these arguments. Give a passage × cited
++      object × move × stance × reading × locus table, then a text/year trajectory table. Distinguish
++      evidence, foil and dialogue; pair the actual passages before claiming development. Give a scholar
++      three to five passages to open first and say why.
++
++      2. Give the source-specific reading with qualifications, then render the named Markdown tables.
++      Every positive cell cites its final supporting finding ID; unknown cells state the actual limit.
++
++      3. Preserve granular evidence through reconciliation: inspect each final table cell against its
++      cited final row and source context. Renumber citations with rows; no old ID may silently acquire a
++      new meaning. Count passage/pair IDs, not findings, for coverage.
++
++      4. Give a short read-first route and the unsettled question. No claim of exhaustive coverage without
++      a complete supplied inventory and actual inspection. Use the supplied author/person identities and
++      source roles. If a document is an evidence index, treat its routing, locations and counts as
++      metadata; its duplicated quotations do not create an independent source. Anchor substantive claims
++      in the actual citing text, held primary window or secondary text. Keep coauthorship and nested
++      quotations. Read the body, not just titles, bibliographies or headers. A document outside a
++      dimension's role gets no positive row in that dimension. Report that scope explicitly. Do not turn
++      an incomplete check into a source's silence. The held sample is not the author's complete work or
++      the thinker's entire reception. Dates missing from metadata stay unknown unless stated in the
++      source. Select literal spans that carry the actor, predicate, object and necessary qualification. A
++      name or topic alone cannot support a reading. Use separate anchor-b/doc-b for a second span; never
++      stitch quotations. Keep attribution, negation, modality, edition and chronology. Re-anchor, narrow
++      or reject a claim whose quotation omits its predicate. Code checks only anchors and IDs; the model
++      must judge the reading against the supplied text.
++
++
++      Do: Render verified_passage_inventory from the applied, wall-checked passage ledger, including
++      retained passages not selected for the short narrative. Columns: canonical passage/event ID | A text
++      and year (unknown when absent) | cited work/idea | move | stance toward the named proposition |
++      bounded reading and qualification | final ledger IDs | exact carried anchors | original document
++      keys | rendition, edition, printed/PDF pages and supplied section UID/title. Join dimension rows
++      only by their explicit passage/event mapping, never by adjacency or topic. Preserve separate
++      propositions and witnesses. Count canonical passages once across dimensions, overlapping windows,
++      renditions and memo restatements; report eligible/inspected/retained/rejected/unresolved counts
++      separately. Each positive cell must resolve to a retained verified ledger row with its unchanged
++      meaning after reconciliation. Keep granular rows addressable in the final ledger/sidecar even when
++      narrative findings are compressed. Rejected, superseded or anchor-failed rows go in a separate
++      coverage report and cannot support inventory cells. If the full applied ledger or event mapping is
++      unavailable, label the inventory partial and list missing inputs; never reconstruct omitted rows
++      from a memo or call a narrative subset the full verified ledger. A restatement links its canonical
++      row and is never filed or counted twice.
++
++
++      Do: Prefer the supplied Stacks markers=1 rendition of the same identified work and edition. Use the
++      actual supplied bytes and document key; a card cannot fetch or replace a rendition. When
++      unavailable, retain the supplied pdftotext window and label that fallback. Keep rendition identity,
++      printed page and PDF page distinct, and preserve the works-registry section UID/title and edition
++      where supplied. A section is a locus, not an inferred page mapping. Never infer edition equivalence
++      from equal page numbers, invent a section title, correct OCR inside a quotation, or supply words
++      from memory. A replacement rendition requires a new source snapshot and anchor checks; overlapping
++      renditions remain one citation event.

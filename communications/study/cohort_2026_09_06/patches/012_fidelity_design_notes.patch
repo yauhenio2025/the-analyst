@@ -1,0 +1,417 @@
+Rationale: Prefer supplied marked renditions and preserve work-registry sections and edition identity without relaxing the no-witness rule. Retrieval and evidence changes require affected index-only and held-source conditions, OCR/editorial-notes negative controls, source reads, anchor/cell checks and both-order original/revision comparison. Freeze rendition changes as separate evidence conditions. Generated against main-tree HEAD 4d061afbc69021fc9f7d7d098781e87bc7cf2184; this file is deferred and does not authorize application before the pilot completes.
+
+diff --git a/src/engines/capability_definitions/citation_fidelity_audit.yaml b/src/engines/capability_definitions/citation_fidelity_audit.yaml
+--- a/src/engines/capability_definitions/citation_fidelity_audit.yaml
++++ b/src/engines/capability_definitions/citation_fidelity_audit.yaml
+@@ -4,10 +4,25 @@
+ version: 1
+ category: scholarly
+ kind: comparison
+-problematique: 'A paired audit of the evidence index: for every indexed attribution, A''s actual claim and anchor
+-  beside P''s own words and anchor, attribution kind, accurate/fair/selective/stretched/misattributed/unverifiable
+-  verdict with a reason, and edition/locus notes. State how many pairs and works were checked, unresolved and outside
+-  the sample. A practice conclusion applies only to the checked sample.'
++problematique: >-
++  A paired audit of the evidence index: for every indexed attribution, A's actual claim and anchor
++  beside P's own words and anchor, attribution kind,
++  accurate/fair/selective/stretched/misattributed/unverifiable verdict with a reason, and
++  edition/locus notes. State how many pairs and works were checked, unresolved and outside the sample.
++  A practice conclusion applies only to the checked sample.
++
++  Use supplied marked page or registry-section witnesses and preserve work, section and edition
++  identity. A section title alone is no witness; absent or irrelevant primary words leave the verdict
++  unverifiable.
++
++  Do: Prefer the supplied Stacks markers=1 rendition of the same identified work and edition. Use the
++  actual supplied bytes and document key; a card cannot fetch or replace a rendition. When
++  unavailable, retain the supplied pdftotext window and label that fallback. Keep rendition identity,
++  printed page and PDF page distinct, and preserve the works-registry section UID/title and edition
++  where supplied. A section is a locus, not an inferred page mapping. Never infer edition equivalence
++  from equal page numbers, invent a section title, correct OCR inside a quotation, or supply words
++  from memory. A replacement rendition requires a new source snapshot and anchor checks; overlapping
++  renditions remain one citation event.
+ researcher_question: Does each attribution hold against the supplied page window of the work it cites?
+ intellectual_lineage:
+   primary: source_criticism
+diff --git a/src/operationalizations/definitions/citation_fidelity_audit.yaml b/src/operationalizations/definitions/citation_fidelity_audit.yaml
+--- a/src/operationalizations/definitions/citation_fidelity_audit.yaml
++++ b/src/operationalizations/definitions/citation_fidelity_audit.yaml
+@@ -13,23 +13,43 @@
+ process:
+   key: dvs
+   description: Does each attribution hold against the supplied page window of the work it cites?
+-  framing: 'This engine audits citation pairs only. The upstream plan supplies context, not tasks from the engagement
+-    or reception engines. Do not demand reception readers. Every paired_fidelity row carries `verdict:` and `how:` as fields; a verdict folded into the finding sentence is malformed. When the supplied window for the cited place does not carry the matter (wrong pages retrieved, editorial matter, OCR loss), the verdict is unverifiable: never supply the cited author''s words from memory; `p-says` and `anchor-b` come from the window or stay empty. Audit every eligible pair independently: an unresolved
+-    work, search result or edition makes that pair unverifiable; it never prevents checks of other pairs. Account
+-    for the unchecked/linked name windows separately. Use one paired_fidelity finding per assessable pair; its fields
+-    can carry the document dimensions, so separate repetitive rows per dimension are unnecessary. Report unassessed
+-    documents explicitly. No requirement that every pair be settled or every name window be a substantive citation.
+-    A paired audit of the evidence index: for every indexed attribution, A''s actual claim and anchor beside P''s
+-    own words and anchor, attribution kind, accurate/fair/selective/stretched/misattributed/unverifiable verdict
+-    with a reason, and edition/locus notes. State how many pairs and works were checked, unresolved and outside
+-    the sample. A practice conclusion applies only to the checked sample. Use the supplied author/person identities
+-    and source roles. If a document is an evidence index, treat its routing, locations and counts as metadata; its
+-    duplicated quotations do not create an independent source. Anchor substantive claims in the actual citing text,
+-    held primary window or secondary text. Keep coauthorship and nested quotations. Read the body, not just titles,
+-    bibliographies or headers. A document outside a dimension''s role gets no positive row in that dimension. Report
+-    that scope explicitly. Do not turn an incomplete check into a source''s silence. The held sample is not the
+-    author''s complete work or the thinker''s entire reception. Dates missing from metadata stay unknown unless
+-    stated in the source.'
++  framing: >-
++    This engine audits citation pairs only. The upstream plan supplies context, not tasks from the
++    engagement or reception engines. Do not demand reception readers. Every paired_fidelity row carries
++    `verdict:` and `how:` as fields; a verdict folded into the finding sentence is malformed. When the
++    supplied window for the cited place does not carry the matter (wrong pages retrieved, editorial
++    matter, OCR loss), the verdict is unverifiable: never supply the cited author's words from memory;
++    `p-says` and `anchor-b` come from the window or stay empty. Audit every eligible pair independently:
++    an unresolved work, search result or edition makes that pair unverifiable; it never prevents checks
++    of other pairs. Account for the unchecked/linked name windows separately. Use one paired_fidelity
++    finding per assessable pair; its fields can carry the document dimensions, so separate repetitive
++    rows per dimension are unnecessary. Report unassessed documents explicitly. No requirement that
++    every pair be settled or every name window be a substantive citation. A paired audit of the evidence
++    index: for every indexed attribution, A's actual claim and anchor beside P's own words and anchor,
++    attribution kind, accurate/fair/selective/stretched/misattributed/unverifiable verdict with a
++    reason, and edition/locus notes. State how many pairs and works were checked, unresolved and outside
++    the sample. A practice conclusion applies only to the checked sample. Use the supplied author/person
++    identities and source roles. If a document is an evidence index, treat its routing, locations and
++    counts as metadata; its duplicated quotations do not create an independent source. Anchor
++    substantive claims in the actual citing text, held primary window or secondary text. Keep
++    coauthorship and nested quotations. Read the body, not just titles, bibliographies or headers. A
++    document outside a dimension's role gets no positive row in that dimension. Report that scope
++    explicitly. Do not turn an incomplete check into a source's silence. The held sample is not the
++    author's complete work or the thinker's entire reception. Dates missing from metadata stay unknown
++    unless stated in the source.
++
++    Use supplied marked page or registry-section witnesses and preserve work, section and edition
++    identity. A section title alone is no witness; absent or irrelevant primary words leave the verdict
++    unverifiable.
++
++    Do: Prefer the supplied Stacks markers=1 rendition of the same identified work and edition. Use the
++    actual supplied bytes and document key; a card cannot fetch or replace a rendition. When
++    unavailable, retain the supplied pdftotext window and label that fallback. Keep rendition identity,
++    printed page and PDF page distinct, and preserve the works-registry section UID/title and edition
++    where supplied. A section is a locus, not an inferred page mapping. Never infer edition equivalence
++    from equal page numbers, invent a section title, correct OCR inside a quotation, or supply words
++    from memory. A replacement rendition requires a new source snapshot and anchor checks; overlapping
++    renditions remain one citation event.
+   scoped_outcomes: false
+   routing:
+     cheap: openrouter/openai/gpt-5.6-luna
+@@ -83,13 +103,36 @@
+     name: P's own position at the retrieved place
+     questions:
+     - What does P say in the held page window, and whose voice is speaking there?
+-    method_card: 'Do: Read only the W side. Copy P''s own words verbatim. A translator''s introduction, editorial
+-      note, table of contents or quoted opponent is not P''s assertion. If nothing here settles the attribution,
+-      report that limit rather than recalling P''s work. Select literal spans that carry the actor, predicate, object
+-      and necessary qualification. A name or topic alone cannot support a reading. Use separate anchor-b/doc-b for
+-      a second span; never stitch quotations. Keep attribution, negation, modality, edition and chronology. Re-anchor,
+-      narrow or reject a claim whose quotation omits its predicate. Code checks only anchors and IDs; the model
+-      must judge the reading against the supplied text.'
++    method_card: >-
++      Do: Read only the W side. Copy P's own words verbatim. A translator's introduction, editorial note,
++      table of contents or quoted opponent is not P's assertion. If nothing here settles the attribution,
++      report that limit rather than recalling P's work. Select literal spans that carry the actor,
++      predicate, object and necessary qualification. A name or topic alone cannot support a reading. Use
++      separate anchor-b/doc-b for a second span; never stitch quotations. Keep attribution, negation,
++      modality, edition and chronology. Re-anchor, narrow or reject a claim whose quotation omits its
++      predicate. Code checks only anchors and IDs; the model must judge the reading against the supplied
++      text.
++
++      Do: Preserve the supplied work identity, cited/held editions, rendition identity, section UID/title
++      and printed/PDF pages in each audit row and final paired_citation_fidelity cell. Keep how:
++      page|section|search as the actual retrieval method only when retrieved; a registry title does not
++      change how: search into how: section. A registry section must identify the cited work/edition and
++      lead to a held substantive witness before it supports a verdict. Editorial notes, contents,
++      unrelated search hits, missing pages and OCR loss remain unverifiable when they do not carry the
++      matter. Preserve the existing no-witness rule: p-says and anchor-b come from the held witness or
++      stay empty; never fill them from memory. Do not label unverifiable as misattributed. Every
++      paired_fidelity row retains explicit verdict: and how: fields (unknown/not applicable retrieval is
++      kept in retrieval-status); all substantive verdicts retain both A and P anchors. Reconcile verdict
++      totals and table cells against final wall and critic rulings.
++
++      Do: Prefer the supplied Stacks markers=1 rendition of the same identified work and edition. Use the
++      actual supplied bytes and document key; a card cannot fetch or replace a rendition. When
++      unavailable, retain the supplied pdftotext window and label that fallback. Keep rendition identity,
++      printed page and PDF page distinct, and preserve the works-registry section UID/title and edition
++      where supplied. A section is a locus, not an inferred page mapping. Never infer edition equivalence
++      from equal page numbers, invent a section title, correct OCR inside a quotation, or supply words
++      from memory. A replacement rendition requires a new source snapshot and anchor checks; overlapping
++      renditions remain one citation event.
+     indicators:
+     - therefore
+     - however
+@@ -97,10 +140,11 @@
+     scope: document
+     load_bearing: true
+     id_prefix: D3
+-    answer_shape: '[D3.F<n>] <one scoped finding> — dim: source_position — pair-ref: <index ID> — p-says: <position
+-      in two to three sentences> — voice: <P, editor, translator, quoted other or unresolved> — held-locus: <printed/PDF
+-      pages> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <actual supplied source key> — confidence:
+-      high|medium|low'
++    answer_shape: >-
++      [D3.F<n>] <one scoped finding> — dim: source_position — pair-ref: <index ID> — p-says: <position in
++      two to three sentences> — voice: <P, editor, translator, quoted other or unresolved> — held-locus:
++      <supplied printed/PDF pages or registry section UID/title; edition> — anchor: "<verbatim supporting
++      clause, <=200 chars>" — doc: <actual supplied source key> — confidence: high|medium|low
+   - key: source_context
+     name: Qualifications around the cited words
+     questions:
+@@ -127,15 +171,38 @@
+     questions:
+     - Which edition, printed page, PDF page, retrieval method (page, section or search), and known section title
+       are supplied, and what remains unresolved?
+-    method_card: 'Do: Read the evidence index as provenance. Preserve how: page|section|search and the section title
+-      when known (for example Politik als Beruf inside MWG I/17). Keep unheld/unresolved in retrieval-status, not
+-      in how. Separate PDF index from printed page. A term-overlap match is a candidate window, not confirmation
+-      of locus or edition equivalence. State missing works and missing locations without treating them as P''s silence.
+-      Select literal spans that carry the actor, predicate, object and necessary qualification. A name or topic
+-      alone cannot support a reading. Use separate anchor-b/doc-b for a second span; never stitch quotations. Keep
+-      attribution, negation, modality, edition and chronology. Re-anchor, narrow or reject a claim whose quotation
+-      omits its predicate. Code checks only anchors and IDs; the model must judge the reading against the supplied
+-      text.'
++    method_card: >-
++      Do: Read the evidence index as provenance. Preserve how: page|section|search and the section title
++      when known (for example Politik als Beruf inside MWG I/17). Keep unheld/unresolved in
++      retrieval-status, not in how. Separate PDF index from printed page. A term-overlap match is a
++      candidate window, not confirmation of locus or edition equivalence. State missing works and missing
++      locations without treating them as P's silence. Select literal spans that carry the actor,
++      predicate, object and necessary qualification. A name or topic alone cannot support a reading. Use
++      separate anchor-b/doc-b for a second span; never stitch quotations. Keep attribution, negation,
++      modality, edition and chronology. Re-anchor, narrow or reject a claim whose quotation omits its
++      predicate. Code checks only anchors and IDs; the model must judge the reading against the supplied
++      text.
++
++      Do: Preserve the supplied work identity, cited/held editions, rendition identity, section UID/title
++      and printed/PDF pages in each audit row and final paired_citation_fidelity cell. Keep how:
++      page|section|search as the actual retrieval method only when retrieved; a registry title does not
++      change how: search into how: section. A registry section must identify the cited work/edition and
++      lead to a held substantive witness before it supports a verdict. Editorial notes, contents,
++      unrelated search hits, missing pages and OCR loss remain unverifiable when they do not carry the
++      matter. Preserve the existing no-witness rule: p-says and anchor-b come from the held witness or
++      stay empty; never fill them from memory. Do not label unverifiable as misattributed. Every
++      paired_fidelity row retains explicit verdict: and how: fields (unknown/not applicable retrieval is
++      kept in retrieval-status); all substantive verdicts retain both A and P anchors. Reconcile verdict
++      totals and table cells against final wall and critic rulings.
++
++      Do: Prefer the supplied Stacks markers=1 rendition of the same identified work and edition. Use the
++      actual supplied bytes and document key; a card cannot fetch or replace a rendition. When
++      unavailable, retain the supplied pdftotext window and label that fallback. Keep rendition identity,
++      printed page and PDF page distinct, and preserve the works-registry section UID/title and edition
++      where supplied. A section is a locus, not an inferred page mapping. Never infer edition equivalence
++      from equal page numbers, invent a section title, correct OCR inside a quotation, or supply words
++      from memory. A replacement rendition requires a new source snapshot and anchor checks; overlapping
++      renditions remain one citation event.
+     indicators:
+     - 'how: search'
+     - edition
+@@ -143,24 +210,50 @@
+     scope: document
+     load_bearing: false
+     id_prefix: D5
+-    answer_shape: '[D5.F<n>] <one scoped finding> — dim: edition_locus — pair-ref: <index ID> — edition: <held/cited>
+-      — retrieval-status: retrieved|unheld|unresolved — how: page|section|search (only when retrieved) — section-title:
+-      <known cited-work section title or unknown> — locus: <mapped printed/PDF pages> — limitation: <uncertainty>
+-      — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <actual supplied source key> — confidence: high|medium|low'
++    answer_shape: >-
++      [D5.F<n>] <one scoped finding> — dim: edition_locus — pair-ref: <index ID> — edition: <held/cited> —
++      retrieval-status: retrieved|unheld|unresolved — how: page|section|search (only when retrieved) —
++      section-title: <known cited-work section title or unknown> — locus: <mapped printed/PDF pages> —
++      limitation: <uncertainty> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <actual
++      supplied source key> — confidence: high|medium|low — work-uid: <supplied identity or unresolved> —
++      rendition: <supplied identity> — section-uid: <supplied or unknown>
+   - key: paired_fidelity
+     name: Verdict on each supplied pair
+     questions:
+     - 'Does A''s attribution hold against P''s own words in this retrieved window: accurate, fair, selective, stretched,
+       misattributed or unverifiable, and why?'
+-    method_card: 'Do: Pair an anchor from the actual A text with anchor-b from the actual W window, using distinct
+-      supplied document keys. These are corpus rows because the verdict predicates a relation between two sources,
+-      even though the unit is one citation. Stretched or misattributed requires P''s own contrary words; otherwise
+-      say unverifiable. Search-window irrelevance warrants unverifiable, not misattributed. Keep every index ID
+-      accounted for in the audit table, even when no positive verdict is possible. Select literal spans that carry
+-      the actor, predicate, object and necessary qualification. A name or topic alone cannot support a reading.
+-      Use separate anchor-b/doc-b for a second span; never stitch quotations. Keep attribution, negation, modality,
+-      edition and chronology. Re-anchor, narrow or reject a claim whose quotation omits its predicate. Code checks
+-      only anchors and IDs; the model must judge the reading against the supplied text.'
++    method_card: >-
++      Do: Pair an anchor from the actual A text with anchor-b from the actual W window, using distinct
++      supplied document keys. These are corpus rows because the verdict predicates a relation between two
++      sources, even though the unit is one citation. Stretched or misattributed requires P's own contrary
++      words; otherwise say unverifiable. Search-window irrelevance warrants unverifiable, not
++      misattributed. Keep every index ID accounted for in the audit table, even when no positive verdict
++      is possible. Select literal spans that carry the actor, predicate, object and necessary
++      qualification. A name or topic alone cannot support a reading. Use separate anchor-b/doc-b for a
++      second span; never stitch quotations. Keep attribution, negation, modality, edition and chronology.
++      Re-anchor, narrow or reject a claim whose quotation omits its predicate. Code checks only anchors
++      and IDs; the model must judge the reading against the supplied text.
++
++      Do: Preserve the supplied work identity, cited/held editions, rendition identity, section UID/title
++      and printed/PDF pages in each audit row and final paired_citation_fidelity cell. Keep how:
++      page|section|search as the actual retrieval method only when retrieved; a registry title does not
++      change how: search into how: section. A registry section must identify the cited work/edition and
++      lead to a held substantive witness before it supports a verdict. Editorial notes, contents,
++      unrelated search hits, missing pages and OCR loss remain unverifiable when they do not carry the
++      matter. Preserve the existing no-witness rule: p-says and anchor-b come from the held witness or
++      stay empty; never fill them from memory. Do not label unverifiable as misattributed. Every
++      paired_fidelity row retains explicit verdict: and how: fields (unknown/not applicable retrieval is
++      kept in retrieval-status); all substantive verdicts retain both A and P anchors. Reconcile verdict
++      totals and table cells against final wall and critic rulings.
++
++      Do: Prefer the supplied Stacks markers=1 rendition of the same identified work and edition. Use the
++      actual supplied bytes and document key; a card cannot fetch or replace a rendition. When
++      unavailable, retain the supplied pdftotext window and label that fallback. Keep rendition identity,
++      printed page and PDF page distinct, and preserve the works-registry section UID/title and edition
++      where supplied. A section is a locus, not an inferred page mapping. Never infer edition equivalence
++      from equal page numbers, invent a section title, correct OCR inside a quotation, or supply words
++      from memory. A replacement rendition requires a new source snapshot and anchor checks; overlapping
++      renditions remain one citation event.
+     indicators:
+     - paired attribution
+     - what P says
+@@ -168,11 +261,14 @@
+     scope: corpus
+     load_bearing: false
+     id_prefix: X6
+-    answer_shape: '[X6.F<n>] <one scoped finding> — dim: paired_fidelity — pair-ref: <index ID> — attribution: direct|reported|contrast|none
+-      — a-attributes: <claim> — p-says: <position> — verdict: accurate|fair|selective|stretched|misattributed|unverifiable
+-      — reason: <specific warrant> — edition-locus: <limit> — anchor: "<verbatim clause from A, <=200 chars>" —
+-      doc: <A source key> — anchor-b: "<verbatim clause from W or reader B, <=200 chars>" — doc-b: <different actual
+-      supplied source key> — confidence: high|medium|low'
++    answer_shape: >-
++      [X6.F<n>] <one scoped finding> — dim: paired_fidelity — pair-ref: <index ID> — attribution:
++      direct|reported|contrast|none — a-attributes: <claim> — p-says: <position> — verdict:
++      accurate|fair|selective|stretched|misattributed|unverifiable — reason: <specific warrant> —
++      edition-locus: <limit> — anchor: "<verbatim clause from A, <=200 chars>" — doc: <A source key> —
++      anchor-b: "<verbatim clause from W or reader B, <=200 chars>" — doc-b: <different actual supplied
++      source key> — confidence: high|medium|low — work-uid: <supplied identity or unresolved> — rendition:
++      <supplied identity> — section-uid: <supplied or unknown>
+   - key: sample_practice
+     name: Practice across the checked sample
+     questions:
+@@ -226,8 +322,31 @@
+       attribution, negation, modality, edition and chronology. Re-anchor, narrow or reject a claim whose quotation
+       omits its predicate. Code checks only anchors and IDs; the model must judge the reading against the supplied
+       text.'
+-    - Check every passage/pair against its actual source role and preserve both keys for relational claims. Verify
+-      table meanings, voice and edition uncertainty; a search hit is not a confirmed cited page.
++    - >-
++      Check every passage/pair against its actual source role and preserve both keys for relational
++      claims. Verify table meanings, voice and edition uncertainty; a search hit is not a confirmed cited
++      page.
++
++      Do: Preserve the supplied work identity, cited/held editions, rendition identity, section UID/title
++      and printed/PDF pages in each audit row and final paired_citation_fidelity cell. Keep how:
++      page|section|search as the actual retrieval method only when retrieved; a registry title does not
++      change how: search into how: section. A registry section must identify the cited work/edition and
++      lead to a held substantive witness before it supports a verdict. Editorial notes, contents,
++      unrelated search hits, missing pages and OCR loss remain unverifiable when they do not carry the
++      matter. Preserve the existing no-witness rule: p-says and anchor-b come from the held witness or
++      stay empty; never fill them from memory. Do not label unverifiable as misattributed. Every
++      paired_fidelity row retains explicit verdict: and how: fields (unknown/not applicable retrieval is
++      kept in retrieval-status); all substantive verdicts retain both A and P anchors. Reconcile verdict
++      totals and table cells against final wall and critic rulings.
++
++      Do: Prefer the supplied Stacks markers=1 rendition of the same identified work and edition. Use the
++      actual supplied bytes and document key; a card cannot fetch or replace a rendition. When
++      unavailable, retain the supplied pdftotext window and label that fallback. Keep rendition identity,
++      printed page and PDF page distinct, and preserve the works-registry section UID/title and edition
++      where supplied. A section is a locus, not an inferred page mapping. Never infer edition equivalence
++      from equal page numbers, invent a section title, correct OCR inside a quotation, or supply words
++      from memory. A replacement rendition requires a new source snapshot and anchor checks; overlapping
++      renditions remain one citation event.
+   - key: synthesize
+     kind: synthesize
+     consumes:
+@@ -239,31 +358,63 @@
+     tables:
+     - paired_citation_fidelity
+     - checked_sample_coverage
+-    brief: "1. Complete the eligible-pair audit even when some pairs remain unverifiable. This engine audits citation\
+-      \ pairs only. The upstream plan supplies context, not tasks from the engagement or reception engines. Do not\
+-      \ demand reception readers. Audit every eligible pair independently: an unresolved work, search result or\
+-      \ edition makes that pair unverifiable; it never prevents checks of other pairs. Account for the unchecked/linked\
+-      \ name windows separately. Use one paired_fidelity finding per assessable pair; its fields can carry the document\
+-      \ dimensions, so separate repetitive rows per dimension are unnecessary. Report unassessed documents explicitly.\
+-      \ No requirement that every pair be settled or every name window be a substantive citation. \n1. A paired\
+-      \ audit of the evidence index: for every indexed attribution, A's actual claim and anchor beside P's own words\
+-      \ and anchor, attribution kind, accurate/fair/selective/stretched/misattributed/unverifiable verdict with\
+-      \ a reason, and edition/locus notes. State how many pairs and works were checked, unresolved and outside the\
+-      \ sample. A practice conclusion applies only to the checked sample.\n2. Give the source-specific reading with\
+-      \ qualifications, then render the named Markdown tables. Every positive cell cites its final supporting finding\
+-      \ ID; unknown cells state the actual limit.\n3. Preserve granular evidence through reconciliation: inspect\
+-      \ each final table cell against its cited final row and source context. Renumber citations with rows; no old\
+-      \ ID may silently acquire a new meaning. Count passage/pair IDs, not findings, for coverage.\n4. Give a short\
+-      \ read-first route and the unsettled question. No claim of exhaustive coverage without a complete supplied\
+-      \ inventory and actual inspection. Use the supplied author/person identities and source roles. If a document\
+-      \ is an evidence index, treat its routing, locations and counts as metadata; its duplicated quotations do\
+-      \ not create an independent source. Anchor substantive claims in the actual citing text, held primary window\
+-      \ or secondary text. Keep coauthorship and nested quotations. Read the body, not just titles, bibliographies\
+-      \ or headers. A document outside a dimension's role gets no positive row in that dimension. Report that scope\
+-      \ explicitly. Do not turn an incomplete check into a source's silence. The held sample is not the author's\
+-      \ complete work or the thinker's entire reception. Dates missing from metadata stay unknown unless stated\
+-      \ in the source. Select literal spans that carry the actor, predicate, object and necessary qualification.\
+-      \ A name or topic alone cannot support a reading. Use separate anchor-b/doc-b for a second span; never stitch\
+-      \ quotations. Keep attribution, negation, modality, edition and chronology. Re-anchor, narrow or reject a\
+-      \ claim whose quotation omits its predicate. Code checks only anchors and IDs; the model must judge the reading\
+-      \ against the supplied text."
++    brief: >-
++      1. Complete the eligible-pair audit even when some pairs remain unverifiable. This engine audits
++      citation pairs only. The upstream plan supplies context, not tasks from the engagement or reception
++      engines. Do not demand reception readers. Audit every eligible pair independently: an unresolved
++      work, search result or edition makes that pair unverifiable; it never prevents checks of other
++      pairs. Account for the unchecked/linked name windows separately. Use one paired_fidelity finding per
++      assessable pair; its fields can carry the document dimensions, so separate repetitive rows per
++      dimension are unnecessary. Report unassessed documents explicitly. No requirement that every pair be
++      settled or every name window be a substantive citation.
++
++      1. A paired audit of the evidence index: for every indexed attribution, A's actual claim and anchor
++      beside P's own words and anchor, attribution kind,
++      accurate/fair/selective/stretched/misattributed/unverifiable verdict with a reason, and
++      edition/locus notes. State how many pairs and works were checked, unresolved and outside the sample.
++      A practice conclusion applies only to the checked sample.
++
++      2. Give the source-specific reading with qualifications, then render the named Markdown tables.
++      Every positive cell cites its final supporting finding ID; unknown cells state the actual limit.
++
++      3. Preserve granular evidence through reconciliation: inspect each final table cell against its
++      cited final row and source context. Renumber citations with rows; no old ID may silently acquire a
++      new meaning. Count passage/pair IDs, not findings, for coverage.
++
++      4. Give a short read-first route and the unsettled question. No claim of exhaustive coverage without
++      a complete supplied inventory and actual inspection. Use the supplied author/person identities and
++      source roles. If a document is an evidence index, treat its routing, locations and counts as
++      metadata; its duplicated quotations do not create an independent source. Anchor substantive claims
++      in the actual citing text, held primary window or secondary text. Keep coauthorship and nested
++      quotations. Read the body, not just titles, bibliographies or headers. A document outside a
++      dimension's role gets no positive row in that dimension. Report that scope explicitly. Do not turn
++      an incomplete check into a source's silence. The held sample is not the author's complete work or
++      the thinker's entire reception. Dates missing from metadata stay unknown unless stated in the
++      source. Select literal spans that carry the actor, predicate, object and necessary qualification. A
++      name or topic alone cannot support a reading. Use separate anchor-b/doc-b for a second span; never
++      stitch quotations. Keep attribution, negation, modality, edition and chronology. Re-anchor, narrow
++      or reject a claim whose quotation omits its predicate. Code checks only anchors and IDs; the model
++      must judge the reading against the supplied text.
++
++
++      Do: Preserve the supplied work identity, cited/held editions, rendition identity, section UID/title
++      and printed/PDF pages in each audit row and final paired_citation_fidelity cell. Keep how:
++      page|section|search as the actual retrieval method only when retrieved; a registry title does not
++      change how: search into how: section. A registry section must identify the cited work/edition and
++      lead to a held substantive witness before it supports a verdict. Editorial notes, contents,
++      unrelated search hits, missing pages and OCR loss remain unverifiable when they do not carry the
++      matter. Preserve the existing no-witness rule: p-says and anchor-b come from the held witness or
++      stay empty; never fill them from memory. Do not label unverifiable as misattributed. Every
++      paired_fidelity row retains explicit verdict: and how: fields (unknown/not applicable retrieval is
++      kept in retrieval-status); all substantive verdicts retain both A and P anchors. Reconcile verdict
++      totals and table cells against final wall and critic rulings.
++
++
++      Do: Prefer the supplied Stacks markers=1 rendition of the same identified work and edition. Use the
++      actual supplied bytes and document key; a card cannot fetch or replace a rendition. When
++      unavailable, retain the supplied pdftotext window and label that fallback. Keep rendition identity,
++      printed page and PDF page distinct, and preserve the works-registry section UID/title and edition
++      where supplied. A section is a locus, not an inferred page mapping. Never infer edition equivalence
++      from equal page numbers, invent a section title, correct OCR inside a quotation, or supply words
++      from memory. A replacement rendition requires a new source snapshot and anchor checks; overlapping
++      renditions remain one citation event.
