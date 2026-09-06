@@ -1,0 +1,257 @@
+{
+  "step": "reconcile_checked",
+  "kind": "synthesize",
+  "dimension": "",
+  "doc": "",
+  "model_requested": "openrouter/openai/gpt-5.6-sol",
+  "model_used": "openrouter/openai/gpt-5.6-sol",
+  "input_tokens": 35027,
+  "output_tokens": 5411,
+  "duration_ms": 64205,
+  "cost_usd": 0.1242,
+  "retries": 0,
+  "wall": {
+    "rows": 16,
+    "with_anchor": 16,
+    "verified": 16,
+    "trimmed": 1,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 28,
+    "verified_anchors": 28,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "checked",
+      "scope": "retained_ledger",
+      "missing_rejected_ids": [],
+      "missing_other_ids": []
+    },
+    "synthesis_contract": {
+      "failed_ids": [],
+      "incomplete_cross_document_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "unknown_dimensions": [],
+      "missing_ledger": false,
+      "parse_error": "",
+      "incomplete_invocation": false
+    },
+    "synthesis_repair_attempts": [],
+    "rows_without_dimension": 0,
+    "check_ruling_coverage": {
+      "original_count": 16,
+      "explicitly_ruled_count": 16,
+      "missing_or_unruled_ids": [],
+      "unexpected_nonadded_ids": [],
+      "invalid_original_status_ids": [],
+      "duplicate_original_ids": [],
+      "duplicate_ruling_ids": [],
+      "coverage_complete": true
+    },
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "claims",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "front matter",
+          "abstract",
+          "Introduction",
+          "AUKUS and militarised neoliberalism",
+          "AUKUS, bipartisanship, and the regulatory control",
+          "State interventions and politico-business coalitions",
+          "The emergence of a new business class",
+          "Conclusion",
+          "Notes",
+          "References"
+        ],
+        "coverage": "complete",
+        "criterion": "Important numbers, dates, and mechanism claims with an identifiable immediate cited or reported source and access status",
+        "basis": "Verified: the supplied article contains multiple attributed numerical and chronological claims. Anchors for F1, F5, F7, and F13 are verbatim and support the findings.",
+        "limitations": [
+          "Only the supplied article was inspected; referenced originals were not supplied.",
+          "Complete coverage refers to the supplied text, not the cited-source corpus."
+        ],
+        "finding_ids": [
+          "F1",
+          "F5",
+          "F7",
+          "F13"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "All four finding anchors were verified as verbatim against the document; the findings correctly report the article’s immediate attribution and access status.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "chains",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Introduction",
+          "AUKUS and militarised neoliberalism",
+          "AUKUS, bipartisanship, and the regulatory control",
+          "State interventions and politico-business coalitions",
+          "References"
+        ],
+        "coverage": "complete",
+        "criterion": "Claims for which the text identifies an original or intermediary and permits inspected and missing links to be distinguished",
+        "basis": "Verified: the text identifies intermediaries (news reports, government statements) for the claims. Anchors for F2, F4, V.F1 (replacement for the rejected F3), F10, and F12 are verbatim and correctly record the inspected links and gaps.",
+        "limitations": [
+          "Bibliographic identification does not establish the contents or reliability of an uninspected source.",
+          "Ultimate factual origins may precede the sources named by the article."
+        ],
+        "finding_ids": [
+          "F2",
+          "F17",
+          "F4",
+          "F10",
+          "F12"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "All chains findings that were retained (F2, F4, F10, F12) and the newly added V.F1 are verifiably quoted. The rejected F3 was replaced with a corrected entry; no other links were misrepresented.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "transformations",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "AUKUS and militarised neoliberalism",
+          "AUKUS, bipartisanship, and the regulatory control",
+          "State interventions and politico-business coalitions",
+          "Conclusion"
+        ],
+        "coverage": "complete",
+        "criterion": "Visible summarising, aggregation, change of scope, or reformulation for which the supplied text provides the relevant formulations",
+        "basis": "Verified: the article visibly aggregates unlike instruments (F6, F8) and synthesises policy examples into the militarised neoliberalism mechanism (F15). F11, with an added anchor, confirms grouping of three departmental programs. All anchors are verbatim.",
+        "limitations": [
+          "Transformations against cited originals cannot be verified because those originals were not supplied.",
+          "No common accounting framework is stated for the aggregated monetary examples."
+        ],
+        "finding_ids": [
+          "F6",
+          "F8",
+          "F11",
+          "F15"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "Each finding’s anchor was confirmed as verbatim; the described transformations are clearly visible within the supplied article.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "dependence",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "AUKUS, bipartisanship, and the regulatory control",
+          "State interventions and politico-business coalitions",
+          "The emergence of a new business class",
+          "References"
+        ],
+        "coverage": "complete",
+        "criterion": "Evidence permitting repeated reporting, asserted corroboration, or genuinely inspected independent support to be distinguished",
+        "basis": "Verified: F9 and F14 correctly identify that the sources support different predicates and that the trend claim rests on a single report. Both anchors are verbatim.",
+        "limitations": [
+          "Different citations may derive from the same official announcement.",
+          "Sources supporting different predicates do not independently corroborate one claim."
+        ],
+        "finding_ids": [
+          "F9",
+          "F14"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "Both findings accurately describe the dependence situation as shown by the verbatim anchors.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "conflicts",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "AUKUS, bipartisanship, and the regulatory control",
+          "Notes"
+        ],
+        "coverage": "complete",
+        "criterion": "Supplied passages that challenge the same policy claim after population, date, target, and status are aligned, while distinguishing direct contradiction from differently scoped criticism",
+        "basis": "Verified: F16 correctly juxtaposes the government rationale and White’s criticism; the anchors are verbatim. The finding notes the difference in predicates and missing evidence.",
+        "limitations": [
+          "The passages concern related but non-identical predicates.",
+          "The technical assessment and comparative cost-risk evidence are not supplied."
+        ],
+        "finding_ids": [
+          "F16"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "The conflict finding is well supported by the supplied text; no additional conflicting evidence was missed.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 24666
+}

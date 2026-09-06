@@ -1,0 +1,777 @@
+{
+  "status": "complete",
+  "job": {
+    "id": "I2",
+    "engine": "resource_distribution",
+    "papers": [
+      "aukus"
+    ],
+    "condition": "checked"
+  },
+  "output_sha256": "3429ee9ade51c351aadb6e4ddd9866a8af45975c338aa773eb1ffff47dbaa704",
+  "seconds": 291.6892411708832,
+  "process": {
+    "engine": "resource_distribution",
+    "process": "dvs",
+    "cost_usd": 0.1736,
+    "input_tokens": 52201,
+    "output_tokens": 23859,
+    "seconds": 291.7,
+    "final_model": "openrouter/openai/gpt-5.6-sol",
+    "final_wall": {
+      "rows": 26,
+      "with_anchor": 26,
+      "verified": 26,
+      "trimmed": 3,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 32,
+      "verified_anchors": 32,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "checked",
+        "scope": "retained_ledger",
+        "missing_rejected_ids": [],
+        "missing_other_ids": []
+      },
+      "check_in": 20,
+      "check_confirmed": 19,
+      "check_weakened": 0,
+      "check_rejected": 1,
+      "check_added": 7,
+      "check_added_dropped": 0,
+      "check_carried": 0,
+      "check_unverified": 0,
+      "check_ruling_coverage": {
+        "original_count": 20,
+        "explicitly_ruled_count": 20,
+        "missing_or_unruled_ids": [],
+        "unexpected_nonadded_ids": [],
+        "invalid_original_status_ids": [],
+        "duplicate_original_ids": [],
+        "duplicate_ruling_ids": [],
+        "coverage_complete": true
+      },
+      "scope_outcomes": [
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "flows",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "full text"
+          ],
+          "coverage": "complete",
+          "criterion": "Named supplying and receiving actors connected by a source‑supported transfer of money, contracts, knowledge, technology, regulatory access, or other resources, with transfer status preserved.",
+          "basis": "The article reports multiple government‑to‑firm and government‑to‑research transfers: DoD award to Lynas, Defence Innovation Hub grants, CHIPS Act funding, RDT&E collaboration, regulatory licence‑free transfers, NSSIF investment, Defence Innovation Hub contracts, and Critical Minerals Program grants to named recipients.",
+          "limitations": [
+            "Many payment dates, financial terms, and realized outputs are not reported.",
+            "Some amounts are aggregates that cannot be assigned to individual recipients."
+          ],
+          "finding_ids": [
+            "F2",
+            "F6",
+            "F10",
+            "F11",
+            "F13",
+            "F21",
+            "F23",
+            "F26"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "All listed findings are anchored verbatim in the source and describe resource transfers matching the dimension’s scope.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "Finding identity does not belong to the declared scope"
+            ]
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "quantities",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "full text"
+          ],
+          "coverage": "complete",
+          "criterion": "A reported flow with an amount, unit, period where available, and a status distinguishing pledges, allocations, awards, commitments, and realized expenditure.",
+          "basis": "The article gives recipient‑specific awards (F1, F3, F7, F9, F10, V.F2, V.F4, V.F5) and programme‑level allocations (F4, F5, F8) with amounts, units, and status (secured, pledged, promised, confirmed, allocated, awarded, unveiled).",
+          "limitations": [
+            "Some dates and disbursement statuses are absent.",
+            "Aggregate funds and programme allocations do not establish recipient‑level expenditure."
+          ],
+          "finding_ids": [
+            "F1",
+            "F3",
+            "F4",
+            "F5",
+            "F7",
+            "F8",
+            "F9",
+            "F22",
+            "F24",
+            "F25"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "All listed findings are verbatim‑anchored quantities with documented amounts and statuses.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "benefits",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "full text"
+          ],
+          "coverage": "complete",
+          "criterion": "A source‑stated benefit predicate naming its recipient and mechanism, while separating eligibility, opportunity, contracts, and market responses from realized profit.",
+          "basis": "The article identifies licence‑free transfers, funding eligibility, contracts, preferred‑bidder status, and a share‑price increase for named beneficiaries.",
+          "limitations": [
+            "Most passages do not report realized recipient revenue or profit.",
+            "Eligibility and reduced barriers do not establish that funding or contracts were received in every case."
+          ],
+          "finding_ids": [
+            "F12",
+            "F14",
+            "F15",
+            "F16"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "All findings are anchored to specific benefit statements without conflating them with realized profits.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "burdens",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "full text"
+          ],
+          "coverage": "complete",
+          "criterion": "A stated financial, social, operational, political, or strategic cost or risk with an identifiable bearer, preserving whether it is observed, contingent, warned of, or transferred.",
+          "basis": "The article reports higher submarine costs and risks that were never previously justified (F17) and a contingent risk that delays or delivery denial could leave Australia without sovereign submarine capability (F18).",
+          "limitations": [
+            "The risks are not quantified.",
+            "The reported capability loss is contingent rather than observed.",
+            "The article does not document a contractual transfer of these burdens."
+          ],
+          "finding_ids": [
+            "F17",
+            "F18"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "Both findings are anchored verbatim and clearly express risks borne by Australia, with appropriate caution about their contingent or criticized nature.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "asymmetries",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "full text"
+          ],
+          "coverage": "complete",
+          "criterion": "An evidenced difference in the distribution of resources, advantages, or burdens between actors, without inferring motive and with limits on unlike or incomplete comparisons stated.",
+          "basis": "The article documents that uncertainty marginalised South Australia’s naval shipbuilding sector and ASC while offering only potential windfall profits (F19). It also states that security apparatuses have taken on a pilot‑agency role and form developmental partnerships, concentrating state power and market opportunities (V.F7).",
+          "limitations": [
+            "No common monetary measure compares public cost and private return.",
+            "The marginalised interest and the structural pilot‑agency arrangement are not measured in financial terms.",
+            "Potential windfall profits are counterfactual, not observed."
+          ],
+          "finding_ids": [
+            "F19",
+            "F27"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "Both findings rest on verbatim anchors, explicitly tie an advantage or burden to an actor, and acknowledge the limits of the comparison.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "Findings in this scope lost anchor evidence; this does not establish absence",
+              "One or more declared finding references lack retained verified evidence"
+            ]
+          }
+        }
+      ]
+    },
+    "calls": [
+      {
+        "step": "read",
+        "kind": "synthesize",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/openai/gpt-5.6-sol",
+        "model_used": "openrouter/openai/gpt-5.6-sol",
+        "input_tokens": 22600,
+        "output_tokens": 6036,
+        "duration_ms": 73244,
+        "cost_usd": 0.1056,
+        "retries": 0,
+        "wall": {
+          "rows": 20,
+          "with_anchor": 20,
+          "verified": 19,
+          "trimmed": 2,
+          "anchor_rate": 0.95,
+          "failed_ids": [
+            "F20"
+          ],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 26,
+          "verified_anchors": 25,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "has_ledger": true,
+          "prose_chars": 9334,
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "flows",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Introduction",
+                "AUKUS and militarised neoliberalism",
+                "AUKUS, bipartisanship, and the regulatory control",
+                "State interventions and politico-business coalitions",
+                "The emergence of a new business class",
+                "Conclusion",
+                "Notes"
+              ],
+              "coverage": "complete",
+              "criterion": "Named supplying and receiving actors connected by a source-supported transfer of money, contracts, knowledge, technology, regulatory access, or other resources, with transfer status preserved.",
+              "basis": "The article reports multiple government-to-firm and government-to-research transfers, including awards, grants, contracts, investment, regulatory access, and joint research.",
+              "limitations": [
+                "Many payment dates, financial terms, and realized outputs are not reported.",
+                "Programme totals cannot be assigned to individual recipients unless the article supplies a recipient-specific amount."
+              ],
+              "finding_ids": [
+                "F1",
+                "F2",
+                "F6",
+                "F10",
+                "F11",
+                "F13"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Finding identity does not belong to the declared scope"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "quantities",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "AUKUS, bipartisanship, and the regulatory control",
+                "State interventions and politico-business coalitions",
+                "The emergence of a new business class",
+                "Notes"
+              ],
+              "coverage": "complete",
+              "criterion": "A reported flow with an amount, unit, period where available, and a status distinguishing pledges, allocations, awards, commitments, and realized expenditure.",
+              "basis": "The article gives recipient-specific awards and project funding as well as aggregate programmes, pledges, and announced investments with distinguishable statuses.",
+              "limitations": [
+                "Some dates and disbursement statuses are absent.",
+                "Aggregate funds and programme allocations do not establish recipient-level expenditure."
+              ],
+              "finding_ids": [
+                "F3",
+                "F4",
+                "F5",
+                "F7",
+                "F8",
+                "F9"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "benefits",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "AUKUS, bipartisanship, and the regulatory control",
+                "State interventions and politico-business coalitions",
+                "The emergence of a new business class"
+              ],
+              "coverage": "complete",
+              "criterion": "A source-stated benefit predicate naming its recipient and mechanism, while separating eligibility, opportunity, contracts, and market responses from realized profit.",
+              "basis": "The article identifies licence-free transfers, funding eligibility, contracts, preferred-bidder status, and a share-price increase for named beneficiaries.",
+              "limitations": [
+                "Most passages do not report realized recipient revenue or profit.",
+                "Eligibility and reduced barriers do not establish that funding or contracts were received in every case."
+              ],
+              "finding_ids": [
+                "F12",
+                "F14",
+                "F15",
+                "F16"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "burdens",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "AUKUS, bipartisanship, and the regulatory control",
+                "Conclusion",
+                "Notes"
+              ],
+              "coverage": "complete",
+              "criterion": "A stated financial, social, operational, political, or strategic cost or risk with an identifiable bearer, preserving whether it is observed, contingent, warned of, or transferred.",
+              "basis": "The article reports higher submarine costs and risks and a contingent risk that delays or delivery denial could leave Australia without sovereign submarine capability.",
+              "limitations": [
+                "The risks are not quantified.",
+                "The reported capability loss is contingent rather than observed.",
+                "The article does not document a contractual transfer of these burdens."
+              ],
+              "finding_ids": [
+                "F17",
+                "F18"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "asymmetries",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "AUKUS, bipartisanship, and the regulatory control",
+                "State interventions and politico-business coalitions",
+                "The emergence of a new business class",
+                "Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "An evidenced difference in the distribution of resources, advantages, or burdens between actors, without inferring motive and with limits on unlike or incomplete comparisons stated.",
+              "basis": "The article documents public financing and regulatory support for selected firms and institutions, while also reporting contingent public capability risks and marginalized prospective beneficiaries.",
+              "limitations": [
+                "The source does not provide a common measure of public cost and private return.",
+                "It generally lacks repayment, ownership, profit, tax, and realized-output data.",
+                "Potential windfall profits and capability losses are not observed outcomes."
+              ],
+              "finding_ids": [
+                "F19",
+                "F20"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Findings in this scope lost anchor evidence; this does not establish absence",
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 28158
+      },
+      {
+        "step": "check",
+        "kind": "verify",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+        "model_used": "openrouter/deepseek/deepseek-v4-pro",
+        "input_tokens": 29601,
+        "output_tokens": 17823,
+        "duration_ms": 218273,
+        "cost_usd": 0.068,
+        "retries": 0,
+        "wall": {
+          "rows": 26,
+          "with_anchor": 26,
+          "verified": 26,
+          "trimmed": 3,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 32,
+          "verified_anchors": 32,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "checked",
+            "scope": "retained_ledger",
+            "missing_rejected_ids": [],
+            "missing_other_ids": []
+          },
+          "check_in": 20,
+          "check_confirmed": 19,
+          "check_weakened": 0,
+          "check_rejected": 1,
+          "check_added": 7,
+          "check_added_dropped": 0,
+          "check_carried": 0,
+          "check_unverified": 0,
+          "check_ruling_coverage": {
+            "original_count": 20,
+            "explicitly_ruled_count": 20,
+            "missing_or_unruled_ids": [],
+            "unexpected_nonadded_ids": [],
+            "invalid_original_status_ids": [],
+            "duplicate_original_ids": [],
+            "duplicate_ruling_ids": [],
+            "coverage_complete": true
+          },
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "flows",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "full text"
+              ],
+              "coverage": "complete",
+              "criterion": "Named supplying and receiving actors connected by a source‑supported transfer of money, contracts, knowledge, technology, regulatory access, or other resources, with transfer status preserved.",
+              "basis": "The article reports multiple government‑to‑firm and government‑to‑research transfers: DoD award to Lynas, Defence Innovation Hub grants, CHIPS Act funding, RDT&E collaboration, regulatory licence‑free transfers, NSSIF investment, Defence Innovation Hub contracts, and Critical Minerals Program grants to named recipients.",
+              "limitations": [
+                "Many payment dates, financial terms, and realized outputs are not reported.",
+                "Some amounts are aggregates that cannot be assigned to individual recipients."
+              ],
+              "finding_ids": [
+                "F2",
+                "F6",
+                "F10",
+                "F11",
+                "F13",
+                "F21",
+                "F23",
+                "F26"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "All listed findings are anchored verbatim in the source and describe resource transfers matching the dimension’s scope.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Finding identity does not belong to the declared scope"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "quantities",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "full text"
+              ],
+              "coverage": "complete",
+              "criterion": "A reported flow with an amount, unit, period where available, and a status distinguishing pledges, allocations, awards, commitments, and realized expenditure.",
+              "basis": "The article gives recipient‑specific awards (F1, F3, F7, F9, F10, V.F2, V.F4, V.F5) and programme‑level allocations (F4, F5, F8) with amounts, units, and status (secured, pledged, promised, confirmed, allocated, awarded, unveiled).",
+              "limitations": [
+                "Some dates and disbursement statuses are absent.",
+                "Aggregate funds and programme allocations do not establish recipient‑level expenditure."
+              ],
+              "finding_ids": [
+                "F1",
+                "F3",
+                "F4",
+                "F5",
+                "F7",
+                "F8",
+                "F9",
+                "F22",
+                "F24",
+                "F25"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "All listed findings are verbatim‑anchored quantities with documented amounts and statuses.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "benefits",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "full text"
+              ],
+              "coverage": "complete",
+              "criterion": "A source‑stated benefit predicate naming its recipient and mechanism, while separating eligibility, opportunity, contracts, and market responses from realized profit.",
+              "basis": "The article identifies licence‑free transfers, funding eligibility, contracts, preferred‑bidder status, and a share‑price increase for named beneficiaries.",
+              "limitations": [
+                "Most passages do not report realized recipient revenue or profit.",
+                "Eligibility and reduced barriers do not establish that funding or contracts were received in every case."
+              ],
+              "finding_ids": [
+                "F12",
+                "F14",
+                "F15",
+                "F16"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "All findings are anchored to specific benefit statements without conflating them with realized profits.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "burdens",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "full text"
+              ],
+              "coverage": "complete",
+              "criterion": "A stated financial, social, operational, political, or strategic cost or risk with an identifiable bearer, preserving whether it is observed, contingent, warned of, or transferred.",
+              "basis": "The article reports higher submarine costs and risks that were never previously justified (F17) and a contingent risk that delays or delivery denial could leave Australia without sovereign submarine capability (F18).",
+              "limitations": [
+                "The risks are not quantified.",
+                "The reported capability loss is contingent rather than observed.",
+                "The article does not document a contractual transfer of these burdens."
+              ],
+              "finding_ids": [
+                "F17",
+                "F18"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "Both findings are anchored verbatim and clearly express risks borne by Australia, with appropriate caution about their contingent or criticized nature.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "asymmetries",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "full text"
+              ],
+              "coverage": "complete",
+              "criterion": "An evidenced difference in the distribution of resources, advantages, or burdens between actors, without inferring motive and with limits on unlike or incomplete comparisons stated.",
+              "basis": "The article documents that uncertainty marginalised South Australia’s naval shipbuilding sector and ASC while offering only potential windfall profits (F19). It also states that security apparatuses have taken on a pilot‑agency role and form developmental partnerships, concentrating state power and market opportunities (V.F7).",
+              "limitations": [
+                "No common monetary measure compares public cost and private return.",
+                "The marginalised interest and the structural pilot‑agency arrangement are not measured in financial terms.",
+                "Potential windfall profits are counterfactual, not observed."
+              ],
+              "finding_ids": [
+                "F19",
+                "F27"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "Both findings rest on verbatim anchors, explicitly tie an advantage or burden to an actor, and acknowledge the limits of the comparison.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Findings in this scope lost anchor evidence; this does not establish absence",
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 27793
+      }
+    ]
+  },
+  "audit": {
+    "wall": {
+      "rows": 26,
+      "with_anchor": 26,
+      "verified": 26,
+      "trimmed": 3,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 32,
+      "verified_anchors": 32,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "rows": 26,
+    "raw_anchors": 32,
+    "raw_exact": 0,
+    "unknown_dimensions": [],
+    "missing_table_ids": [],
+    "missing_prose_ids": []
+  }
+}

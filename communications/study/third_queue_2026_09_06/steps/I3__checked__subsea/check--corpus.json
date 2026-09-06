@@ -1,0 +1,254 @@
+{
+  "step": "check",
+  "kind": "verify",
+  "dimension": "",
+  "doc": "",
+  "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+  "model_used": "openrouter/deepseek/deepseek-v4-pro",
+  "input_tokens": 27498,
+  "output_tokens": 16725,
+  "duration_ms": 267773,
+  "cost_usd": 0.0635,
+  "retries": 0,
+  "wall": {
+    "rows": 19,
+    "with_anchor": 19,
+    "verified": 19,
+    "trimmed": 4,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [
+      "F10"
+    ],
+    "anchors": 26,
+    "verified_anchors": 26,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "checked",
+      "scope": "retained_ledger",
+      "missing_rejected_ids": [
+        "F10"
+      ],
+      "missing_other_ids": []
+    },
+    "check_in": 15,
+    "check_confirmed": 13,
+    "check_weakened": 1,
+    "check_rejected": 1,
+    "check_added": 5,
+    "check_added_dropped": 0,
+    "check_carried": 0,
+    "check_unverified": 0,
+    "check_ruling_coverage": {
+      "original_count": 15,
+      "explicitly_ruled_count": 15,
+      "missing_or_unruled_ids": [],
+      "unexpected_nonadded_ids": [],
+      "invalid_original_status_ids": [],
+      "duplicate_original_ids": [],
+      "duplicate_ruling_ids": [],
+      "coverage_complete": true
+    },
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "incentives",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Abstract",
+          "Policy implications",
+          "Section 2",
+          "Section 4",
+          "Section 5",
+          "Section 6"
+        ],
+        "coverage": "complete",
+        "criterion": "Documented rewards or penalties offered to an actor conditional on an action, with a supported mechanism.",
+        "basis": "After verification, the article documents Chinese subsidies for HMN Tech’s bid (F1), US financing and grants for SubCom (F2), threatened sanctions and lost US customer access (F3), consortia’s fear of sanctions and hyperscaler business loss (V.F2), French state’s concern about plant closure and capacity loss (V.F3), and expected ASN revenue growth (V.F4). All are anchored verbatim.",
+        "limitations": [
+          "The article does not quantify actors’ expected utilities or isolate the separate effects of each US inducement."
+        ],
+        "finding_ids": [
+          "F1",
+          "F2",
+          "F3",
+          "F17",
+          "F18",
+          "F19"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "Each finding’s anchor was located verbatim in the supplied source text; fields match the source. Rejected F10 is excluded. Newly added rows V.F2, V.F3, V.F4 fill evidence gaps from the original extraction.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "constraints",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Policy implications",
+          "Section 2",
+          "Section 4",
+          "Section 5",
+          "Section 6"
+        ],
+        "coverage": "complete",
+        "criterion": "Documented technical, legal, financial, or geopolitical limits shaping an actor’s feasible choices.",
+        "basis": "The article explicitly identifies infrastructure inertia and corporate circumvention (F8) and France’s budgetary limits, sanctions fears, and reliance on US tech firms (F9). Both are anchored verbatim.",
+        "limitations": [
+          "The full option sets available to firms and states are not systematically documented."
+        ],
+        "finding_ids": [
+          "F8",
+          "F9"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "Anchors were checked verbatim; they directly state the constraints.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "responses",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Abstract",
+          "Section 4",
+          "Section 5",
+          "Section 6"
+        ],
+        "coverage": "complete",
+        "criterion": "A reported actor response with evidence linking it to an incentive or constraint, rather than temporal succession alone.",
+        "basis": "The source links the concrete sanctions threat to the consortium’s supplier reversal (F4), reports the Chinese investors’ withdrawal (F5), notes wider consortia reluctance (F6, weakened but anchored), parallel Chinese cable development after exclusion (F7), and France’s acquisition of ASN (V.F1).",
+        "limitations": [
+          "The EMA development is reported rather than independently verified in the article; the decline in HMN Tech’s global market share appears in source but is not yet anchored in a finding."
+        ],
+        "finding_ids": [
+          "F4",
+          "F5",
+          "F6",
+          "F7",
+          "F16"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "All retained response findings have verbatim anchors for the observed actions and the causal link where present. F6 was weakened to only the anchored portion; V.F1 fills the gap left by rejected F10.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "delegation",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Section 3",
+          "Section 4",
+          "Section 5"
+        ],
+        "coverage": "complete",
+        "criterion": "Documented delegation of a task, conflicting objectives, unequal information, or an associated control mechanism without presuming a principal‑agent problem.",
+        "basis": "The article states that Team Telecom makes recommendations on foreign telecom investments within an interagency national‑security review arrangement (F13). The anchor is verbatim.",
+        "limitations": [
+          "The article does not document a principal‑agent dysfunction, monitoring failure, or a delegation relationship between the US government and the SeaMeWe‑6 consortium."
+        ],
+        "finding_ids": [
+          "F13"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "Anchor confirmed verbatim; the finding correctly captures the delegation mechanism.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "alternatives",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Policy implications",
+          "Section 1",
+          "Section 2",
+          "Section 4",
+          "Section 5",
+          "Section 6"
+        ],
+        "coverage": "complete",
+        "criterion": "A source‑grounded rival mechanism or changed condition that alters the proposed response, with conditional scenarios distinguished from observed evidence.",
+        "basis": "The article contrasts geopolitical intervention with market‑driven investment (F12), documents Orange’s selective engagement (F11), conditions public investment on private insufficiency (F14), states the resilience rationale behind selective alignment (V.F5), and explicitly conditions middle‑power autonomy on financial means and a sectoral foothold (F15).",
+        "limitations": [
+          "Several conditional predictions are analytical implications and are not directly tested by the case studies."
+        ],
+        "finding_ids": [
+          "F11",
+          "F12",
+          "F14",
+          "F15",
+          "F20"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "All anchors are verbatim; the added V.F5 anchors the resilience objective not previously covered. F11 and F12 show contrasts grounded in the source.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 25249
+}

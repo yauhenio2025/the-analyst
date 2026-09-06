@@ -1,0 +1,230 @@
+{
+  "step": "read",
+  "kind": "synthesize",
+  "dimension": "",
+  "doc": "",
+  "model_requested": "openrouter/openai/gpt-5.6-sol",
+  "model_used": "openrouter/openai/gpt-5.6-sol",
+  "input_tokens": 21362,
+  "output_tokens": 5402,
+  "duration_ms": 65434,
+  "cost_usd": 0.0967,
+  "retries": 0,
+  "wall": {
+    "rows": 20,
+    "with_anchor": 20,
+    "verified": 19,
+    "trimmed": 4,
+    "anchor_rate": 0.95,
+    "failed_ids": [
+      "F15"
+    ],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 25,
+    "verified_anchors": 24,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "has_ledger": true,
+    "prose_chars": 9794,
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "mentions",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "article metadata and abstract",
+          "Sections 1–6",
+          "Acknowledgements and endnotes"
+        ],
+        "coverage": "complete",
+        "criterion": "Inventory people, organizations, locations, products/projects and events relevant to the argument.",
+        "basis": "The text names state actors, companies, cable projects, locations, agencies and the article author.",
+        "limitations": [
+          "Reference-list authors were not indexed merely because they were cited.",
+          "Minor actors without a material role in the reported arrangements were not exhaustively inventoried."
+        ],
+        "finding_ids": [
+          "F3",
+          "F7",
+          "F12",
+          "F19"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "identity",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "abstract and Section 1",
+          "Section 4",
+          "Section 5"
+        ],
+        "coverage": "complete",
+        "criterion": "Require an explicit alias or unambiguous contextual link; do not merge separate projects.",
+        "basis": "The text explicitly expands SeaMeWe-6 and ASN/APE and states that HMN Tech was formerly Huawei Marine Networks.",
+        "limitations": [
+          "PEACE is not expanded.",
+          "The precise formal identity relationship between Orange and France Telecom is not fully evidenced by the inspected wording."
+        ],
+        "finding_ids": [
+          "F4",
+          "F6"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "roles",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "abstract and policy implications",
+          "Sections 4–6"
+        ],
+        "coverage": "complete",
+        "criterion": "Quote role predicates with their objects and keep ownership, operation, financing and partnership distinct.",
+        "basis": "The article assigns industrial, regulatory, ownership, contracting and operating roles to states and corporations.",
+        "limitations": [
+          "Some strategic characterizations are the article's analysis rather than formal organizational mandates."
+        ],
+        "finding_ids": [
+          "F1",
+          "F2",
+          "F8",
+          "F15",
+          "F20"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Findings in this scope lost anchor evidence; this does not establish absence",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "relationships",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Section 4: Case 1",
+          "Section 5: Case 2",
+          "Section 6: Conclusion"
+        ],
+        "coverage": "complete",
+        "criterion": "Retain both entities and the relational predicate; do not treat co-mention as an edge.",
+        "basis": "The text explicitly reports supplier selection, financing, withdrawal, ownership, construction, shareholding and acquisition relations.",
+        "limitations": [
+          "EMA relations are report-attributed and do not establish project completion.",
+          "Not all consortium ownership shares are provided."
+        ],
+        "finding_ids": [
+          "F5",
+          "F9",
+          "F10",
+          "F13",
+          "F14",
+          "F16",
+          "F17",
+          "F18"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "coverage",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Sections 4–6",
+          "endnotes"
+        ],
+        "coverage": "complete",
+        "criterion": "State relevant coverage and material identity or project ambiguity without inventing canonical expansions.",
+        "basis": "The text supports keeping SeaMeWe-6, PEACE and EMA separate and leaves several acronyms, ownership shares and project statuses unresolved.",
+        "limitations": [
+          "The article is not a corporate registry or definitive project-status database.",
+          "Several factual claims rely on media reports and anonymized interviews."
+        ],
+        "finding_ids": [
+          "F11"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 21781
+}

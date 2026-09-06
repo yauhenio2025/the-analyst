@@ -1,0 +1,7 @@
+# Source read of failed I15 attempt
+
+Quarantined final raw response SHA-256: `292c4daa3dd95008abd0cfc0503aefb8161f24cf960979390e7235e340850e32`. This is a source read before any ratings; there is no completed output to score.
+
+The production runner refused the final reconciliation after its one bounded repair because F6's quotation does not match the source; its table citations consequently have no accepted F6. The raw quote joins “AUKUS-linked reforms in the” to “US export controls, International Traffic in Arms Regulations (ITAR), remove barriers to” across a page header. The source at lines750–754 has the journal page header between those spans. The model had been instructed to use separate short spans around page breaks but did not. No wall was relaxed and no output was rescued by editing its text.
+
+I read the raw final rules and behavior tables and the relevant AUKUS sections. The Korean defect is semantically cured: the existing40% cap/June2023 proposed capital increase and the separately named December2023 decree occupy distinct rows, with identity explicitly unresolved and export effects projected. Japan's July2023 guideline change remains a pledge, DPA designation conveys eligibility, and licensing benefit is reported by the article rather than independently legally verified. Thus withholding is for the failed ITAR anchor/uncitable actual-table cell, not for pretending the source lacks an ITAR mechanism. The source does contain it. This failed attempt and all four paid calls remain in custody; no independent score will be purchased for it.

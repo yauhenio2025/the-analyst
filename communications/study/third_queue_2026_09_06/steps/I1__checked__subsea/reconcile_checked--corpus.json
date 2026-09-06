@@ -1,0 +1,331 @@
+{
+  "step": "reconcile_checked",
+  "kind": "synthesize",
+  "dimension": "",
+  "doc": "",
+  "model_requested": "openrouter/openai/gpt-5.6-sol",
+  "model_used": "openrouter/openai/gpt-5.6-sol",
+  "input_tokens": 38778,
+  "output_tokens": 5465,
+  "duration_ms": 49617,
+  "cost_usd": 0.1322,
+  "retries": 0,
+  "wall": {
+    "rows": 20,
+    "with_anchor": 20,
+    "verified": 20,
+    "trimmed": 9,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 23,
+    "verified_anchors": 23,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "checked",
+      "scope": "retained_ledger",
+      "missing_rejected_ids": [],
+      "missing_other_ids": []
+    },
+    "synthesis_contract": {
+      "failed_ids": [],
+      "incomplete_cross_document_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "unknown_dimensions": [],
+      "missing_ledger": false,
+      "parse_error": "",
+      "incomplete_invocation": false
+    },
+    "synthesis_repair_attempts": [
+      {
+        "failed_ids": [
+          "F2",
+          "F14"
+        ],
+        "incomplete_cross_document_ids": [],
+        "duplicate_ids": [],
+        "missing_cited": [
+          "F2",
+          "F14"
+        ],
+        "unknown_dimensions": [],
+        "missing_ledger": false,
+        "parse_error": "",
+        "incomplete_invocation": false
+      }
+    ],
+    "rows_without_dimension": 0,
+    "check_ruling_coverage": {
+      "original_count": 17,
+      "explicitly_ruled_count": 0,
+      "missing_or_unruled_ids": [
+        "F1",
+        "F2",
+        "F3",
+        "F4",
+        "F5",
+        "F6",
+        "F7",
+        "F8",
+        "F9",
+        "F10",
+        "F11",
+        "F12",
+        "F13",
+        "F14",
+        "F15",
+        "F16",
+        "F17"
+      ],
+      "unexpected_nonadded_ids": [
+        "D1.F1",
+        "D1.F2",
+        "D1.F3",
+        "D1.F4",
+        "D1.F5",
+        "D1.F6",
+        "D1.F7",
+        "D1.F8",
+        "D1.F9",
+        "D1.F10",
+        "D1.F11",
+        "D1.F12",
+        "D1.F13",
+        "D1.F14",
+        "D1.F15",
+        "D1.F16",
+        "D1.F17"
+      ],
+      "invalid_original_status_ids": [],
+      "duplicate_original_ids": [],
+      "duplicate_ruling_ids": [],
+      "coverage_complete": false
+    },
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "actors",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Abstract",
+          "Policy implications",
+          "1 | Reconciling Market Dynamics and State Strategy in Global Networks",
+          "2 | Non-Alignment and Re-Alignment of Privately Owned Networks",
+          "3 | Case Studies and Methods",
+          "4 | Case 1: The US–Chinese Conflict Over SeaMeWe-6",
+          "5 | Case 2: France's Nationalization of Alcatel Submarine Networks",
+          "6 | Conclusion"
+        ],
+        "coverage": "complete",
+        "criterion": "Actors identified by the source with a stated stake or a bounded inference grounded in a stated constraint",
+        "basis": "Verified anchors confirm corporate ownership, Chinese and French strategic stakes, Egyptian leverage, and the security framing. Added findings cover commercial drivers, Chinese market-capture ambition, and the US‑China security perception.",
+        "limitations": [
+          "Some inferred stakes (e.g., HMN Tech’s commercial ambitions) rely on context rather than direct attribution.",
+          "Actor inventory emphasises those for which both stakes and influence mechanisms are documented."
+        ],
+        "finding_ids": [
+          "D1.F1",
+          "D1.F2",
+          "D1.F3",
+          "D1.F17",
+          "V.F2",
+          "V.F3",
+          "V.F4"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "All retained and added findings are anchored verbatim in the source; the additional findings fill gaps in the original matrix without over‑reading.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Findings in this scope lost anchor evidence; this does not establish absence",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "means",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Policy implications",
+          "2 | Non-Alignment and Re-Alignment of Privately Owned Networks",
+          "4 | Case 1: The US–Chinese Conflict Over SeaMeWe-6",
+          "5 | Case 2: France's Nationalization of Alcatel Submarine Networks",
+          "6 | Conclusion"
+        ],
+        "coverage": "complete",
+        "criterion": "A legal, resource, financial, geographic, or technical position explicitly giving an actor influence over a relevant decision",
+        "basis": "Checked anchors for FCC oversight, Chinese subsidies, Egyptian hub leverage, French shareholding and manufacturing assets, plus the added Cable Security Fleet. Each finding ties a named actor to a specific influence mechanism.",
+        "limitations": [
+          "Relative effectiveness of each means is not quantified in the source.",
+          "Possession of a means does not demonstrate that it was decisive in every instance."
+        ],
+        "finding_ids": [
+          "D1.F4",
+          "D1.F5",
+          "D1.F6",
+          "D1.F12",
+          "V.F1"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "Anchor corrections (F5, F12) and the added Fleet finding resolve the earlier inconclusive status; all means are now anchored verbatim.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Findings in this scope lost anchor evidence; this does not establish absence",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "actions",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "4 | Case 1: The US–Chinese Conflict Over SeaMeWe-6",
+          "5 | Case 2: France's Nationalization of Alcatel Submarine Networks",
+          "6 | Conclusion"
+        ],
+        "coverage": "complete",
+        "criterion": "An actor's capability, threat, proposal, or completed action is distinguished and linked to a reported result",
+        "basis": "Verified anchors document US pressure, the consortium vote, Chinese withdrawal, Entity List designation, China’s start of EMA development, and France’s ASN acquisition. EMA is properly characterised as reported development.",
+        "limitations": [
+          "Causal chains rest on temporal sequence and attributed assessments, not experimental evidence.",
+          "EMA’s delivered capacity is not established in the source."
+        ],
+        "finding_ids": [
+          "D1.F7",
+          "D1.F8",
+          "D1.F9",
+          "D1.F10",
+          "D1.F11",
+          "D1.F13"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "All action findings are verbatim‑anchored, with [D1.F11] narrowed to the development action that the source directly reports.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Findings in this scope lost anchor evidence; this does not establish absence",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "relations",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "2 | Non-Alignment and Re-Alignment of Privately Owned Networks",
+          "4 | Case 1: The US–Chinese Conflict Over SeaMeWe-6",
+          "5 | Case 2: France's Nationalization of Alcatel Submarine Networks",
+          "6 | Conclusion"
+        ],
+        "coverage": "complete",
+        "criterion": "A relationship‑bearing clause documents cooperation, ownership, dependency, withdrawal, or opposition between identified actors",
+        "basis": "Verified anchors for Orange’s reservations and EMA MOUs, the French‑Orange shareholding, the French acquisition of ASN, and the added PEACE partnership provide the documented edges.",
+        "limitations": [
+          "Memoranda of understanding do not demonstrate completed infrastructure.",
+          "Common consortium membership alone is not treated as a durable alliance."
+        ],
+        "finding_ids": [
+          "D1.F14",
+          "V.F6"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "[F14] was narrowed and re‑anchored; [V.F6] adds the PEACE partnership that the source explicitly notes.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "limits",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Policy implications",
+          "2 | Non-Alignment and Re-Alignment of Privately Owned Networks",
+          "4 | Case 1: The US–Chinese Conflict Over SeaMeWe-6",
+          "5 | Case 2: France's Nationalization of Alcatel Submarine Networks",
+          "6 | Conclusion"
+        ],
+        "coverage": "complete",
+        "criterion": "An explicit commercial, political, technical, or institutional constraint qualifies an actor's means or inferred preference",
+        "basis": "Verified anchors cover corporate circumvention incentives, French dependence on sanctions and US tech firms, and the oligopolistic supply structure (added).",
+        "limitations": [
+          "Constraints are not numerically measured.",
+          "A constraint shown in one case does not establish a uniform power ranking."
+        ],
+        "finding_ids": [
+          "D1.F15",
+          "D1.F16",
+          "V.F5"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "[F15] was narrowed to the circumvention constraint; [F16] was re‑anchored with the full sentence; [V.F5] adds the market‑structure limit.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Findings in this scope lost anchor evidence; this does not establish absence",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 24001
+}

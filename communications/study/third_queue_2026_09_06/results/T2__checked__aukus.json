@@ -1,0 +1,1028 @@
+{
+  "status": "complete",
+  "job": {
+    "id": "T2",
+    "engine": "chronology_simultaneity",
+    "papers": [
+      "aukus"
+    ],
+    "condition": "checked"
+  },
+  "output_sha256": "36950a7e35c5b21d9ec7b1f7f3d6811a9dc931b3d53442389e4679e2b076cd57",
+  "seconds": 563.1816103458405,
+  "process": {
+    "engine": "chronology_simultaneity",
+    "process": "dvs",
+    "cost_usd": 0.3165,
+    "input_tokens": 84024,
+    "output_tokens": 44484,
+    "seconds": 563.2,
+    "final_model": "openrouter/openai/gpt-5.6-sol",
+    "final_wall": {
+      "rows": 17,
+      "with_anchor": 17,
+      "verified": 17,
+      "trimmed": 3,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 25,
+      "verified_anchors": 25,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "checked",
+        "scope": "retained_ledger",
+        "missing_rejected_ids": [],
+        "missing_other_ids": []
+      },
+      "synthesis_contract": {
+        "failed_ids": [],
+        "incomplete_cross_document_ids": [],
+        "duplicate_ids": [],
+        "missing_cited": [],
+        "unknown_dimensions": [],
+        "missing_ledger": false,
+        "parse_error": "",
+        "incomplete_invocation": false
+      },
+      "synthesis_repair_attempts": [],
+      "rows_without_dimension": 0,
+      "check_ruling_coverage": {
+        "original_count": 14,
+        "explicitly_ruled_count": 14,
+        "missing_or_unruled_ids": [],
+        "unexpected_nonadded_ids": [],
+        "invalid_original_status_ids": [],
+        "duplicate_original_ids": [],
+        "duplicate_ruling_ids": [],
+        "coverage_complete": true
+      },
+      "scope_outcomes": [
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "lanes",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "Front matter and abstract",
+            "Introduction",
+            "AUKUS and militarised neoliberalism",
+            "AUKUS, bipartisanship, and the regulatory control",
+            "State interventions and politico-business coalitions",
+            "The emergence of a new business class",
+            "Conclusion",
+            "Notes"
+          ],
+          "coverage": "complete",
+          "criterion": "Distinct source-supported processes or dated events with actor, predicate, date and status",
+          "basis": "The source documents AUKUS’s announcement and several national regulatory, procurement, research and investment events with dated predicates.",
+          "limitations": [
+            "Several processes lack endpoints.",
+            "Plans and pledges are kept separate from completed measures."
+          ],
+          "finding_ids": [
+            "F1",
+            "F3",
+            "F5",
+            "F7",
+            "F15",
+            "F16"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "Each retained lane anchor was checked against the source text for actor, date and predicate; F2 and F4 were narrowed separately.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "intervals",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "Introduction",
+            "AUKUS and militarised neoliberalism",
+            "AUKUS, bipartisanship, and the regulatory control",
+            "State interventions and politico-business coalitions"
+          ],
+          "coverage": "complete",
+          "criterion": "A source-supported start, end or bounded interval without filling unknown endpoints",
+          "basis": "The source supports open-ended attribution from the AUKUS announcement, the 2023 Labor party-policy event, South Korea’s June–December 2023 reform, and Australia–Japan June 2023–January 2024 stages.",
+          "limitations": [
+            "F4’s start is left unknown.",
+            "F8 does not establish continuous activity between the two dated stages."
+          ],
+          "finding_ids": [
+            "F2",
+            "F4",
+            "F6",
+            "F8"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "Anchors were checked and retained only where the source supplies the start, end or dated stage claimed.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "overlap",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "AUKUS, bipartisanship, and the regulatory control",
+            "State interventions and politico-business coalitions"
+          ],
+          "coverage": "complete",
+          "criterion": "Two source-supported dated processes whose intervals intersect, with simultaneity limited to the available precision",
+          "basis": "V.F3 anchors year-level 2023 co-occurrence between Japan’s July 2023 pledge and South Korea’s December 2023 decree.",
+          "limitations": [
+            "Only year-level co-occurrence is anchored as a standalone overlap row.",
+            "The month-level within-interval overlay requires F6 and F7 in the matrix."
+          ],
+          "finding_ids": [
+            "F17"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "V.F3 was checked against the Japanese and South Korean date anchors and supports only year-level co-occurrence.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "intersections",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "Introduction",
+            "AUKUS and militarised neoliberalism",
+            "AUKUS, bipartisanship, and the regulatory control",
+            "State interventions and politico-business coalitions",
+            "The emergence of a new business class",
+            "Conclusion"
+          ],
+          "coverage": "complete",
+          "criterion": "An express linking predicate showing coordination, institutional connection or interaction beyond a shared date",
+          "basis": "The source expressly links AUKUS with bipartisanship, critical-minerals market integration, and the investor network; F12 records the absence of stated Japan–South Korea coordination.",
+          "limitations": [
+            "Interpretive policy links do not establish causation."
+          ],
+          "finding_ids": [
+            "F9",
+            "F11",
+            "F12",
+            "F13"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "Each retained intersection anchor contains an express linking or non-linking predicate.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "Finding identity does not belong to the declared scope"
+            ]
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "discrepancies",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "Front matter",
+            "AUKUS, bipartisanship, and the regulatory control",
+            "Notes"
+          ],
+          "coverage": "complete",
+          "criterion": "Reported timing that is unresolved or appears different but must be checked for event identity, stage and precision",
+          "basis": "F10 records unresolved prospective submarine timing; F14 distinguishes online 2024 and issue 2025 publication stages.",
+          "limitations": [
+            "The source gives no firm alternative submarine delivery dates."
+          ],
+          "finding_ids": [
+            "F10",
+            "F14"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "Both discrepancy anchors were checked and support unresolved or stage-distinct timing.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        }
+      ]
+    },
+    "calls": [
+      {
+        "step": "read",
+        "kind": "synthesize",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/openai/gpt-5.6-sol",
+        "model_used": "openrouter/openai/gpt-5.6-sol",
+        "input_tokens": 22599,
+        "output_tokens": 5242,
+        "duration_ms": 64274,
+        "cost_usd": 0.0976,
+        "retries": 0,
+        "wall": {
+          "rows": 14,
+          "with_anchor": 14,
+          "verified": 14,
+          "trimmed": 2,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 19,
+          "verified_anchors": 19,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "has_ledger": true,
+          "prose_chars": 6567,
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "lanes",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "front matter and abstract",
+                "Introduction",
+                "AUKUS and militarised neoliberalism",
+                "AUKUS, bipartisanship, and the regulatory control",
+                "State interventions and politico-business coalitions",
+                "The emergence of a new business class",
+                "Conclusion",
+                "Notes"
+              ],
+              "coverage": "complete",
+              "criterion": "Distinct source-supported processes or dated events with actor, predicate, date and status",
+              "basis": "The source documents AUKUS’s announcement and multiple national regulatory, research, financing and investment events.",
+              "limitations": [
+                "Several processes have no stated endpoint.",
+                "Plans and pledges were retained separately from completed measures."
+              ],
+              "finding_ids": [
+                "F1",
+                "F3",
+                "F5",
+                "F7"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "intervals",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Introduction",
+                "AUKUS and militarised neoliberalism",
+                "AUKUS, bipartisanship, and the regulatory control",
+                "State interventions and politico-business coalitions"
+              ],
+              "coverage": "complete",
+              "criterion": "A source-supported start, end or bounded interval without filling unknown endpoints",
+              "basis": "The source supports an open AUKUS interval and staged 2023–2024 political, legislative and research sequences.",
+              "limitations": [
+                "The AUKUS endpoint is unknown.",
+                "Some pairs of dated stages do not prove continuous activity between them."
+              ],
+              "finding_ids": [
+                "F2",
+                "F4",
+                "F6",
+                "F8"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "overlap",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "AUKUS and militarised neoliberalism",
+                "AUKUS, bipartisanship, and the regulatory control",
+                "State interventions and politico-business coalitions",
+                "The emergence of a new business class"
+              ],
+              "coverage": "complete",
+              "criterion": "Two source-supported dated processes whose intervals intersect, with simultaneity limited to the available precision",
+              "basis": "The June–December 2023 South Korean reform interval includes Japan’s July 2023 pledge, while continuing AUKUS activity overlaps several later initiatives.",
+              "limitations": [
+                "Some overlaps are only at month or year precision.",
+                "Overlap alone does not establish coordination or causation."
+              ],
+              "finding_ids": [
+                "F12"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "intersections",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Introduction",
+                "AUKUS and militarised neoliberalism",
+                "AUKUS, bipartisanship, and the regulatory control",
+                "The emergence of a new business class",
+                "Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "An express linking predicate showing coordination, institutional connection or interaction beyond a shared date",
+              "basis": "The text expressly connects AUKUS with bipartisanship, critical-minerals market integration and the AUKUS Defense Investor Network.",
+              "limitations": [
+                "The source’s interpretive policy linkages do not establish that AUKUS caused every associated national measure."
+              ],
+              "finding_ids": [
+                "F9",
+                "F11",
+                "F13"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "discrepancies",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "front matter",
+                "AUKUS, bipartisanship, and the regulatory control",
+                "Notes"
+              ],
+              "coverage": "complete",
+              "criterion": "Reported timing that is unresolved or appears different but must be checked for event identity, stage and precision",
+              "basis": "Submarine delivery timing remains unresolved, while the article’s 2024 online date and 2025 issue date refer to different publication stages.",
+              "limitations": [
+                "The source gives no firm alternative submarine delivery dates.",
+                "The publication dates are not contradictory once their stages are distinguished."
+              ],
+              "finding_ids": [
+                "F10",
+                "F14"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 20448
+      },
+      {
+        "step": "check",
+        "kind": "verify",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+        "model_used": "openrouter/deepseek/deepseek-v4-pro",
+        "input_tokens": 28328,
+        "output_tokens": 34020,
+        "duration_ms": 448215,
+        "cost_usd": 0.1004,
+        "retries": 0,
+        "wall": {
+          "rows": 17,
+          "with_anchor": 17,
+          "verified": 17,
+          "trimmed": 3,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 25,
+          "verified_anchors": 25,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "checked",
+            "scope": "retained_ledger",
+            "missing_rejected_ids": [],
+            "missing_other_ids": []
+          },
+          "check_in": 14,
+          "check_confirmed": 11,
+          "check_weakened": 3,
+          "check_rejected": 0,
+          "check_added": 3,
+          "check_added_dropped": 0,
+          "check_carried": 0,
+          "check_unverified": 0,
+          "check_ruling_coverage": {
+            "original_count": 14,
+            "explicitly_ruled_count": 14,
+            "missing_or_unruled_ids": [],
+            "unexpected_nonadded_ids": [],
+            "invalid_original_status_ids": [],
+            "duplicate_original_ids": [],
+            "duplicate_ruling_ids": [],
+            "coverage_complete": true
+          },
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "lanes",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Front matter and abstract",
+                "Introduction",
+                "AUKUS and militarised neoliberalism",
+                "AUKUS, bipartisanship, and the regulatory control",
+                "State interventions and politico-business coalitions",
+                "The emergence of a new business class",
+                "Conclusion",
+                "Notes"
+              ],
+              "coverage": "complete",
+              "criterion": "Distinct source-supported processes or dated events with actor, predicate, date and status",
+              "basis": "The source documents AUKUS’s announcement and several national regulatory, procurement, research and investment events with dated predicates.",
+              "limitations": [
+                "Several processes lack endpoints.",
+                "Plans and pledges are kept separate from completed measures."
+              ],
+              "finding_ids": [
+                "F1",
+                "F3",
+                "F5",
+                "F7",
+                "F15",
+                "F16"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "Each retained lane anchor was checked against the source text for actor, date and predicate; F2 and F4 were narrowed separately.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "intervals",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Introduction",
+                "AUKUS and militarised neoliberalism",
+                "AUKUS, bipartisanship, and the regulatory control",
+                "State interventions and politico-business coalitions"
+              ],
+              "coverage": "complete",
+              "criterion": "A source-supported start, end or bounded interval without filling unknown endpoints",
+              "basis": "The source supports open-ended attribution from the AUKUS announcement, the 2023 Labor party-policy event, South Korea’s June–December 2023 reform, and Australia–Japan June 2023–January 2024 stages.",
+              "limitations": [
+                "F4’s start is left unknown.",
+                "F8 does not establish continuous activity between the two dated stages."
+              ],
+              "finding_ids": [
+                "F2",
+                "F4",
+                "F6",
+                "F8"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "Anchors were checked and retained only where the source supplies the start, end or dated stage claimed.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "overlap",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "AUKUS, bipartisanship, and the regulatory control",
+                "State interventions and politico-business coalitions"
+              ],
+              "coverage": "complete",
+              "criterion": "Two source-supported dated processes whose intervals intersect, with simultaneity limited to the available precision",
+              "basis": "V.F3 anchors year-level 2023 co-occurrence between Japan’s July 2023 pledge and South Korea’s December 2023 decree.",
+              "limitations": [
+                "Only year-level co-occurrence is anchored as a standalone overlap row.",
+                "The month-level within-interval overlay requires F6 and F7 in the matrix."
+              ],
+              "finding_ids": [
+                "F17"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "V.F3 was checked against the Japanese and South Korean date anchors and supports only year-level co-occurrence.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "intersections",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Introduction",
+                "AUKUS and militarised neoliberalism",
+                "AUKUS, bipartisanship, and the regulatory control",
+                "State interventions and politico-business coalitions",
+                "The emergence of a new business class",
+                "Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "An express linking predicate showing coordination, institutional connection or interaction beyond a shared date",
+              "basis": "The source expressly links AUKUS with bipartisanship, critical-minerals market integration, and the investor network; F12 records the absence of stated Japan–South Korea coordination.",
+              "limitations": [
+                "Interpretive policy links do not establish causation."
+              ],
+              "finding_ids": [
+                "F9",
+                "F11",
+                "F12",
+                "F13"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "Each retained intersection anchor contains an express linking or non-linking predicate.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Finding identity does not belong to the declared scope"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "discrepancies",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Front matter",
+                "AUKUS, bipartisanship, and the regulatory control",
+                "Notes"
+              ],
+              "coverage": "complete",
+              "criterion": "Reported timing that is unresolved or appears different but must be checked for event identity, stage and precision",
+              "basis": "F10 records unresolved prospective submarine timing; F14 distinguishes online 2024 and issue 2025 publication stages.",
+              "limitations": [
+                "The source gives no firm alternative submarine delivery dates."
+              ],
+              "finding_ids": [
+                "F10",
+                "F14"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "Both discrepancy anchors were checked and support unresolved or stage-distinct timing.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 22190
+      },
+      {
+        "step": "reconcile_checked",
+        "kind": "synthesize",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/openai/gpt-5.6-sol",
+        "model_used": "openrouter/openai/gpt-5.6-sol",
+        "input_tokens": 33097,
+        "output_tokens": 5222,
+        "duration_ms": 50571,
+        "cost_usd": 0.1184,
+        "retries": 0,
+        "wall": {
+          "rows": 17,
+          "with_anchor": 17,
+          "verified": 17,
+          "trimmed": 3,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 25,
+          "verified_anchors": 25,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "checked",
+            "scope": "retained_ledger",
+            "missing_rejected_ids": [],
+            "missing_other_ids": []
+          },
+          "synthesis_contract": {
+            "failed_ids": [],
+            "incomplete_cross_document_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [],
+            "unknown_dimensions": [],
+            "missing_ledger": false,
+            "parse_error": "",
+            "incomplete_invocation": false
+          },
+          "synthesis_repair_attempts": [],
+          "rows_without_dimension": 0,
+          "check_ruling_coverage": {
+            "original_count": 14,
+            "explicitly_ruled_count": 14,
+            "missing_or_unruled_ids": [],
+            "unexpected_nonadded_ids": [],
+            "invalid_original_status_ids": [],
+            "duplicate_original_ids": [],
+            "duplicate_ruling_ids": [],
+            "coverage_complete": true
+          },
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "lanes",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Front matter and abstract",
+                "Introduction",
+                "AUKUS and militarised neoliberalism",
+                "AUKUS, bipartisanship, and the regulatory control",
+                "State interventions and politico-business coalitions",
+                "The emergence of a new business class",
+                "Conclusion",
+                "Notes"
+              ],
+              "coverage": "complete",
+              "criterion": "Distinct source-supported processes or dated events with actor, predicate, date and status",
+              "basis": "The source documents AUKUS’s announcement and several national regulatory, procurement, research and investment events with dated predicates.",
+              "limitations": [
+                "Several processes lack endpoints.",
+                "Plans and pledges are kept separate from completed measures."
+              ],
+              "finding_ids": [
+                "F1",
+                "F3",
+                "F5",
+                "F7",
+                "F15",
+                "F16"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "Each retained lane anchor was checked against the source text for actor, date and predicate; F2 and F4 were narrowed separately.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "intervals",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Introduction",
+                "AUKUS and militarised neoliberalism",
+                "AUKUS, bipartisanship, and the regulatory control",
+                "State interventions and politico-business coalitions"
+              ],
+              "coverage": "complete",
+              "criterion": "A source-supported start, end or bounded interval without filling unknown endpoints",
+              "basis": "The source supports open-ended attribution from the AUKUS announcement, the 2023 Labor party-policy event, South Korea’s June–December 2023 reform, and Australia–Japan June 2023–January 2024 stages.",
+              "limitations": [
+                "F4’s start is left unknown.",
+                "F8 does not establish continuous activity between the two dated stages."
+              ],
+              "finding_ids": [
+                "F2",
+                "F4",
+                "F6",
+                "F8"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "Anchors were checked and retained only where the source supplies the start, end or dated stage claimed.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "overlap",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "AUKUS, bipartisanship, and the regulatory control",
+                "State interventions and politico-business coalitions"
+              ],
+              "coverage": "complete",
+              "criterion": "Two source-supported dated processes whose intervals intersect, with simultaneity limited to the available precision",
+              "basis": "V.F3 anchors year-level 2023 co-occurrence between Japan’s July 2023 pledge and South Korea’s December 2023 decree.",
+              "limitations": [
+                "Only year-level co-occurrence is anchored as a standalone overlap row.",
+                "The month-level within-interval overlay requires F6 and F7 in the matrix."
+              ],
+              "finding_ids": [
+                "F17"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "V.F3 was checked against the Japanese and South Korean date anchors and supports only year-level co-occurrence.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "intersections",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Introduction",
+                "AUKUS and militarised neoliberalism",
+                "AUKUS, bipartisanship, and the regulatory control",
+                "State interventions and politico-business coalitions",
+                "The emergence of a new business class",
+                "Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "An express linking predicate showing coordination, institutional connection or interaction beyond a shared date",
+              "basis": "The source expressly links AUKUS with bipartisanship, critical-minerals market integration, and the investor network; F12 records the absence of stated Japan–South Korea coordination.",
+              "limitations": [
+                "Interpretive policy links do not establish causation."
+              ],
+              "finding_ids": [
+                "F9",
+                "F11",
+                "F12",
+                "F13"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "Each retained intersection anchor contains an express linking or non-linking predicate.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Finding identity does not belong to the declared scope"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "discrepancies",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Front matter",
+                "AUKUS, bipartisanship, and the regulatory control",
+                "Notes"
+              ],
+              "coverage": "complete",
+              "criterion": "Reported timing that is unresolved or appears different but must be checked for event identity, stage and precision",
+              "basis": "F10 records unresolved prospective submarine timing; F14 distinguishes online 2024 and issue 2025 publication stages.",
+              "limitations": [
+                "The source gives no firm alternative submarine delivery dates."
+              ],
+              "finding_ids": [
+                "F10",
+                "F14"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "Both discrepancy anchors were checked and support unresolved or stage-distinct timing.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 22792
+      }
+    ]
+  },
+  "audit": {
+    "wall": {
+      "rows": 17,
+      "with_anchor": 17,
+      "verified": 17,
+      "trimmed": 3,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 25,
+      "verified_anchors": 25,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "rows": 17,
+    "raw_anchors": 25,
+    "raw_exact": 3,
+    "unknown_dimensions": [],
+    "missing_table_ids": [],
+    "missing_prose_ids": []
+  }
+}

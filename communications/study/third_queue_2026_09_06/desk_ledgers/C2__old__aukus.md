@@ -1,0 +1,27 @@
+FINDINGS LEDGER — what the analysis established, by id. Anchors below are verified verbatim in the documents by code: copy them character-for-character as your own anchors and name the row ids you build on.
+- [F1] (categories_boundaries) The article’s primary classificatory intervention is to move AUKUS from the category of mere security partnership into militarised neoliberalism. — anchor [doc]: "not simply a security partnership, but rather constitutes a mutation of neoliberalism"
+- [F3] (categories_boundaries) Pillar I is defined by nuclear-powered submarine acquisition. — anchor [doc]: "acquire its first nuclear-powered submarines"
+- [F4] (categories_boundaries) Pillar II is defined by advanced and often dual-use technologies. — anchor [doc]: "quantum technologies, cybersecurity, hypersonic missiles, and artificial intelligence"
+- [F5] (categories_boundaries) Realist classifications privilege states, alliances, and strategic competition. — anchor [doc]: "A common state-centric focus"
+- [F6] (categories_boundaries) The MN category instead makes social relations and capitalist transformation constitutive of AUKUS. — anchor [doc]: "reconnect geopolitical relations between states and the underlying social forces"
+- [F7] (categories_boundaries) The authors classify MN as a mutation, rather than an abandonment, of neoliberalism. — anchor [doc]: "MN is a mutation of neoliberalism"
+- [F9] (categories_boundaries) Bipartisanship is classified as a mechanism that reconciles nominally competing political factions. — anchor [doc]: "reconciling of two otherwise competing political groups or factions"
+- [F10] (categories_boundaries) Regulatory controls are understood as market-shaping rather than simply market-restricting mechanisms. — anchor [doc]: "regulations motivated by geopolitics, which in turn reshapes market mechanisms"
+- [F11] (categories_boundaries) Security agencies are reclassified as economic and industrial actors. — anchor [doc]: "military agencies now hold the most decisive control over financing mechanisms and procurement"
+- [F13] (categories_boundaries) The beneficiary taxonomy extends beyond conventional defence contractors. — anchor [doc]: "civilian-run enterprises, defence contractors, state-owned enterprises, and emerging tech start-ups"
+- [F14] (categories_boundaries) Critical-mineral firms occupy a boundary category between civilian industry and defence supply chains. — anchor [doc]: "critical for EVs, wind turbines, and defence capabilities"
+- [F15] (categories_boundaries) Japan and South Korea are classified as non-member partners capable of engaging Pillar II. — anchor [doc]: "two key defence partners under Pillar II"
+- [F16] (categories_boundaries) Pillar II enables an expanded military-industrial complex involving established foreign conglomerates. — anchor [doc]: "Mitsubishi and Kawasaki Heavy Industries and South Korea’s Hanwha Aerospace"
+- [F17] (categories_boundaries) Universities and research bodies form a distinct but connected military-industrial-academic category. — anchor [doc]: "triangular relationship between the academia/R&D landscape, defence, and the state"
+- [F18] (categories_boundaries) Venture capital is classified as a structural actor, not merely a passive source of finance. — anchor [doc]: "power to define the structure, to choose the game"
+- [F19] (categories_boundaries) Venture capital increasingly mediates between state capital and defence start-ups. — anchor [doc]: "intermediaries between capital providers (the state) and start-ups"
+- [F20] (categories_boundaries) Supply-chain resilience, sovereignty, and technological advance operate as both policy categories and legitimating narratives. — anchor [doc]: "technological sovereignty becomes a convenient banner"
+- [F21] (categories_boundaries) The article treats friendshoring and nearshoring as accumulation strategies within active state intervention. — anchor [doc]: "nearshoring, friendshoring, and injections of state capital"
+- [F22] (categories_boundaries) AUKUS is classified as selectively reconnecting global markets rather than simply deglobalising them. — anchor [doc]: "reconnects, rather than deconstructs, the global economy"
+- [F23] (categories_boundaries) The security/economy distinction is deliberately destabilised by the category of policy fusion. — anchor [doc]: "subordination of the defence agenda to economic policy and vice versa"
+- [F24] (categories_boundaries) Distributional stakes are central because the new formation creates identifiable winners and losers. — anchor [doc]: "one that creates new losers and winners"
+
+Rows whose anchors are unverified or incomplete, including paraphrases (cite the finding by id; find the sentences in the documents yourself, never copy these quotes):
+- [F2] (categories_boundaries) AUKUS has an explicit two-part institutional taxonomy. — near: (unverified quotation: ambiguous inner quotation marks; use JSON-escaped double quotes)
+- [F8] (categories_boundaries) Bipartisan political coalitions provide the institutional foundation for regulatory change. — near: "bipartisanship … serves as a social foundation of MN"
+- [F12] (categories_boundaries) Economic agencies are correspondingly reclassified as participants in security governance. — near: "economic institutions … have adapted their discourse on military issues"

@@ -1,0 +1,245 @@
+{
+  "step": "check",
+  "kind": "verify",
+  "dimension": "",
+  "doc": "",
+  "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+  "model_used": "openrouter/deepseek/deepseek-v4-pro",
+  "input_tokens": 28106,
+  "output_tokens": 26376,
+  "duration_ms": 407838,
+  "cost_usd": 0.0843,
+  "retries": 0,
+  "wall": {
+    "rows": 21,
+    "with_anchor": 21,
+    "verified": 21,
+    "trimmed": 8,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 34,
+    "verified_anchors": 34,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "checked",
+      "scope": "retained_ledger",
+      "missing_rejected_ids": [],
+      "missing_other_ids": []
+    },
+    "check_in": 14,
+    "check_confirmed": 12,
+    "check_weakened": 2,
+    "check_rejected": 0,
+    "check_added": 7,
+    "check_added_dropped": 2,
+    "check_carried": 0,
+    "check_unverified": 0,
+    "check_ruling_coverage": {
+      "original_count": 14,
+      "explicitly_ruled_count": 14,
+      "missing_or_unruled_ids": [],
+      "unexpected_nonadded_ids": [],
+      "invalid_original_status_ids": [],
+      "duplicate_original_ids": [],
+      "duplicate_ruling_ids": [],
+      "coverage_complete": true
+    },
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "rules",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Full supplied article"
+        ],
+        "coverage": "complete",
+        "criterion": "Named acts, decrees, regulations, agreements or programs with a source-reported function, kept distinct where linkage is unresolved",
+        "basis": "Verified anchors for AUKUS pillar functions, the Australia-US Climate, Critical Minerals and Clean Energy Transformation Compact, the Defence Trade Controls Amendment Act 2024, and AUKUS-linked ITAR reforms.",
+        "limitations": [
+          "Underlying legal instruments are not supplied in full.",
+          "The source uses several labels for AUKUS without supplying a treaty classification."
+        ],
+        "finding_ids": [
+          "F2",
+          "V.F1",
+          "V.F2",
+          "V.F3"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "Each listed finding was checked against the supplied source; its anchor is verbatim and carries the actor, object and function claimed.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Findings in this scope lost anchor evidence; this does not establish absence",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "status",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Full supplied article"
+        ],
+        "coverage": "complete",
+        "criterion": "Exact reported dates and predicates for announcement, proposal, passage, effectiveness or implementation without merging unlinked instruments",
+        "basis": "The text dates AUKUS announcement, South Korea's proposal and decree effect, Japan's revision pledge, and the AUKUS Defense Investor Network establishment.",
+        "limitations": [
+          "Several instruments lack exact commencement dates.",
+          "The South Korean proposal and effective decree are not explicitly identified as the same amendment."
+        ],
+        "finding_ids": [
+          "F1",
+          "F5",
+          "F8",
+          "F19"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "Date-bearing predicates were checked against the source and are verbatim; unresolved identity remains noted as a limitation.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "requirements",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Full supplied article"
+        ],
+        "coverage": "complete",
+        "criterion": "Reported operative condition, eligibility rule, exception or enforcement mechanism with actor and scope",
+        "basis": "The article reports US funding eligibility, licence-free AUKUS transfers, the Australian DTC legislation, Japanese export restrictions and the South Korean lending cap.",
+        "limitations": [
+          "No full-instrument audit is possible.",
+          "Enforcement mechanisms are generally not reported."
+        ],
+        "finding_ids": [
+          "F3",
+          "F4",
+          "F7",
+          "F16"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "Requirement and eligibility predicates were checked against the source and are anchored to the relevant actor and condition.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "responses",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Full supplied article"
+        ],
+        "coverage": "complete",
+        "criterion": "Behavior or implementation reported after or in response to a rule, separated from projected or uncertain effects",
+        "basis": "The article reports awards, grants, pledges, contracts, investment, a share-price response and start-up benefits, while separately describing projected export and submarine effects.",
+        "limitations": [
+          "Most evidence concerns allocations or transactions rather than completed capability.",
+          "Causal attribution is explicit only in some passages."
+        ],
+        "finding_ids": [
+          "F9",
+          "F10",
+          "F11",
+          "F12",
+          "F13",
+          "F14",
+          "F18",
+          "F20",
+          "F21"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "Each reported response or expected effect was checked against the source and is anchored to the actor, amount or behavior described.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Findings in this scope lost anchor evidence; this does not establish absence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "interactions",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Full supplied article"
+        ],
+        "coverage": "complete",
+        "criterion": "Expressly supported reinforcement, constraint or overlap between supplied rules, with unresolved identity retained and topic similarity alone rejected",
+        "basis": "The article expressly describes the US licensing exception as complemented by Australian DTC legislation and presents an unresolved South Korean proposal/decree sequence with only projected effects.",
+        "limitations": [
+          "The source does not prove that every national financing or industrial program legally implements AUKUS.",
+          "Only one supplied text was available, so no cross-document alignment was possible."
+        ],
+        "finding_ids": [
+          "F6",
+          "F17"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "The complemented-legislation relation and the unresolved South Korean instrument sequence were checked against the source and are anchored.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 21950
+}

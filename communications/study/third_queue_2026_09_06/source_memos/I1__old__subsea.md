@@ -1,0 +1,13 @@
+# Source read: I1__old__subsea
+
+Output SHA-256: `cc56ccf0dd841aeb69a1a0f5adca52f42d37f22eef7d4813615dfa5c775dd311`
+
+Codex source read before independent Sonnet or Sol scores. Source: subsea. The supplied paper, its surrounding arguments and the actual delivered artifact were inspected; external references were not independently retrieved.
+
+The principal reading agrees with the source’s two case studies: subsidies versus sanctions in the SeaMeWe-6 procurement, consortium voting and the withdrawal of China Telecom/Mobile while Unicom remains, France’s ASN acquisition and the Orange mixed-engagement strategy. The nationalization amount and intended later 20% purchase are supported. The source also supports Egyptian geographic leverage, the four supplier oligopoly, US customer exposure, and France’s fiscal/financing constraints. These are useful actor records.
+
+The schema fills numerous unmeasured power, interest, relationship and coalition scores; the opening calls them analytical estimates, but it supplies no reproducible scale or source evidence for their numerical precision. It also labels actors as supporters/opponents of state-directed realignment generally even though preferences concern particular projects. The Egypt/Telecom Egypt single actor combines a government and a company. Co-financing and reservations are promoted to a named US-aligned coalition; the source supports cooperation on this issue, not necessarily a durable alliance. Winners/losers include potential foreign buyers and investors bearing duplication costs without corresponding observed outcome evidence.
+
+F9 labels Unicom’s remaining as hedging (medium confidence), a plausible inference rather than a stated motive. F19’s EMA anchor is normalized across extraction line breaks and does not match as supplied. F24 turns the paper’s conditional policy recommendation for public investment where private provision fails into a likelihood claim. The actual source only says proactive investments might be required. Several relationships have only name or prefix quotes, though the full source supports the central mechanism. No control is being released; retain these defects as evidence of what the original schema elicited.
+
+Mechanical record (not semantic certification): {"wall": {"rows": 24, "with_anchor": 24, "verified": 20, "trimmed": 1, "anchor_rate": 0.833, "failed_ids": ["F14", "F15", "F19", "F22"], "duplicate_ids": [], "missing_cited": [], "anchors": 24, "verified_anchors": 20, "cross_document_rows": 0, "incomplete_cross_document_ids": [], "invalid_anchor_ids": [], "citation_check": {"status": "not_checked"}}, "rows": 24, "raw_anchors": 24, "raw_exact": 6, "unknown_dimensions": [], "missing_table_ids": [], "missing_prose_ids": []}

@@ -1,0 +1,252 @@
+{
+  "step": "check",
+  "kind": "verify",
+  "dimension": "",
+  "doc": "",
+  "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+  "model_used": "openrouter/deepseek/deepseek-v4-pro",
+  "input_tokens": 19568,
+  "output_tokens": 14831,
+  "duration_ms": 101443,
+  "cost_usd": 0.0513,
+  "retries": 0,
+  "wall": {
+    "rows": 14,
+    "with_anchor": 14,
+    "verified": 14,
+    "trimmed": 1,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 21,
+    "verified_anchors": 21,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "checked",
+      "scope": "retained_ledger",
+      "missing_rejected_ids": [],
+      "missing_other_ids": []
+    },
+    "check_in": 12,
+    "check_confirmed": 12,
+    "check_weakened": 0,
+    "check_rejected": 0,
+    "check_added": 2,
+    "check_added_dropped": 0,
+    "check_carried": 0,
+    "check_unverified": 0,
+    "check_ruling_coverage": {
+      "original_count": 12,
+      "explicitly_ruled_count": 12,
+      "missing_or_unruled_ids": [],
+      "unexpected_nonadded_ids": [],
+      "invalid_original_status_ids": [],
+      "duplicate_original_ids": [],
+      "duplicate_ruling_ids": [],
+      "coverage_complete": true
+    },
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "speakers",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Abstract",
+          "Introduction",
+          "Speculative thinking",
+          "Commodity fetishism",
+          "Self-valorization",
+          "Final reﬂections"
+        ],
+        "coverage": "complete",
+        "criterion": "Explicitly attributed speakers with predicates stating what they argue, maintain, or write",
+        "basis": "All claimed voices (Zambrana, Rose, Hegel, Marx, Lukács, Ramas San Miguel, Smallwood, Pepperell, Lazarus) are anchored; added missing voices confirm completeness.",
+        "limitations": [
+          "The references list was not treated as evidence of speaking voices.",
+          "The inventory is qualitative rather than an exhaustive quotation count."
+        ],
+        "finding_ids": [
+          "F1",
+          "F2",
+          "F10",
+          "F13",
+          "F14"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "All finding ids confirmed or added through verbatim anchors; sections inspected cover the article's main argumentative sections.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "attribution",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Speculative thinking",
+          "Commodity fetishism",
+          "Self-valorization"
+        ],
+        "coverage": "complete",
+        "criterion": "Direct quotations, reported propositions, and nested attribution chains whose speakers can be distinguished",
+        "basis": "Direct quotes from Hegel, Lukács, Marx and nested quotes (Hegel via Rose) are anchored and verified.",
+        "limitations": [
+          "Some propositions are available only through Zambrana’s selection and framing.",
+          "External source accuracy was not checked."
+        ],
+        "finding_ids": [
+          "F3",
+          "F4",
+          "F6",
+          "F8"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "All attribution findings confirmed with verbatim anchors in the specified sections.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "functions",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Commodity fetishism",
+          "Self-valorization",
+          "Final reﬂections"
+        ],
+        "coverage": "complete",
+        "criterion": "Attributed voices whose statements are taken up as support, qualification, conceptual resource, example, or objection",
+        "basis": "Rose, Lukács, Ramas San Miguel, Marx, and Smallwood all have clear functional roles confirmed by anchors.",
+        "limitations": [
+          "Roles describe the article’s use of each voice, not the speakers’ intentions."
+        ],
+        "finding_ids": [
+          "F5",
+          "F7",
+          "F9"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "All function findings confirmed; the specified sections contain the reported uses.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "relations",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Introduction",
+          "Commodity fetishism",
+          "Self-valorization",
+          "Final reﬂections"
+        ],
+        "coverage": "complete",
+        "criterion": "Passages that align or contrast attributed positions on a shared question while preserving speaker boundaries",
+        "basis": "F11 explicitly aligns Zambrana and Smallwood against prehistory; other relation cells in the reading are supported by the cited findings even if constructed.",
+        "limitations": [
+          "The Marx–Smallwood relation is constructed by Zambrana rather than being a direct dialogue.",
+          "Only one explicit relation finding (F11) uses the relations dimension; earlier blocking issue resolved by adding F11."
+        ],
+        "finding_ids": [
+          "F11"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "F11 is a confirmed relation finding; the reading’s relation table is supported by the underlying speaker/function findings. Changed outcome from inconclusive to findings_present based on verified F11.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Finding identity does not belong to the declared scope"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "coverage",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Abstract",
+          "Introduction",
+          "Speculative thinking",
+          "Commodity fetishism",
+          "Self-valorization",
+          "Final reﬂections",
+          "Notes",
+          "References"
+        ],
+        "coverage": "complete",
+        "criterion": "Explicit evidence that voices recur across the inspected argument and occupy identifiable roles, without inferring deliberate absence",
+        "basis": "The article’s three‑step structure is explicit; the identified voices recur throughout; F12 anchors the distribution.",
+        "limitations": [
+          "No exhaustive frequency count was performed.",
+          "Bibliographic recurrence alone was not counted as voice.",
+          "No deliberate silencing or whole-field absence is inferred."
+        ],
+        "finding_ids": [
+          "F12"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "F12 confirmed; coverage sections complete.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 17767
+}
