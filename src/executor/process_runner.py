@@ -540,12 +540,14 @@ def run_process(
             step_scopes = {}
             step_ledgers = {}
             targets = [dk for dk in per_doc.keys() if dk != ""] or ([] if corpus else [""])
-            for dk in targets:
+            targets = [dk for dk in targets if per_doc.get(dk) or spec.scoped_outcomes]
+
+            def _verify_one(dk):
+                # one document's verify: the model call and the wall; the bookkeeping happens in the caller, in order
+                # (2026-09-06: verify ran one document at a time whatever the YAML said and blew a 90-minute clock on 27 texts)
                 if _cancelled():
                     raise InterruptedError(f"process {spec.key} cancelled during {step.key}")
                 rows = per_doc.get(dk, [])
-                if not rows and not spec.scoped_outcomes:
-                    continue
                 prior_scopes = per_doc_scopes.get(dk, [])
                 text = render_rows(rows)
                 if spec.scoped_outcomes:
@@ -559,13 +561,21 @@ def run_process(
                                   corpus_dimensions=corpus_dimension_keys)
                 kept, rejected, sc.wall = _apply_critic(rows, vrows, rep)
                 sc.dropped_ids = [r.id for r in vrows if not r.anchor_verified]
+                scopes = None
                 if spec.scoped_outcomes:
-                    step_scopes[dk] = _assess_call(sc, _identity(prior_scopes), kept, documents,
-                                                  reviewing=True, previous=prior_scopes,
-                                                  failed_rows=[r for r in vrows if not r.anchor_verified])
-                _record(sc)
-                step_ledgers[dk] = kept
-                rejected_by_doc[dk] = rejected
+                    scopes = _assess_call(sc, _identity(prior_scopes), kept, documents,
+                                          reviewing=True, previous=prior_scopes,
+                                          failed_rows=[r for r in vrows if not r.anchor_verified])
+                return dk, sc, kept, rejected, scopes
+
+            vworkers = max(1, min(parallelism, len(targets))) if step.parallel_over != "none" and targets else 1
+            with ThreadPoolExecutor(max_workers=vworkers) as pool:
+                for dk, sc, kept, rejected, scopes in pool.map(_verify_one, targets):
+                    if scopes is not None:
+                        step_scopes[dk] = scopes
+                    _record(sc)
+                    step_ledgers[dk] = kept
+                    rejected_by_doc[dk] = rejected
             if corpus and (per_doc.get("") or (spec.scoped_outcomes and per_doc_scopes.get(""))):
                 # cross-document rows: one verify with all sources in context
                 text = render_rows(per_doc.get("", []))
