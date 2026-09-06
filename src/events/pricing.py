@@ -48,6 +48,7 @@ PRICING: dict[str, tuple[float, float]] = {
     "gemini-3-flash-preview": (0.50, 3.00),
     "gemini-2.5-pro": (1.25, 10.00),
     "gemini-2.5-flash": (0.30, 2.50),
+    "gemini-3.8-flash": (0.75, 3.75),   # OpenRouter list price, the Stacks' cites page (2026-09-06)
 }
 
 # Family fallbacks used when an exact id is unknown (e.g. a new dated snapshot).
@@ -61,6 +62,7 @@ _FAMILY_FALLBACKS: tuple[tuple[str, tuple[float, float]], ...] = (
     ("gemini-3-pro", (2.00, 12.00)),
     ("gemini-2.5-pro", (1.25, 10.00)),
     ("gemini-2.5-flash", (0.30, 2.50)),
+    ("gemini-3.8-flash", (0.75, 3.75)),
 )
 
 _warned_models: set[str] = set()
