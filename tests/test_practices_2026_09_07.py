@@ -47,3 +47,20 @@ def test_the_routes_serve_the_registry():
     rows = list_practices(task="person-harvest")
     assert rows and all("practice" in r and "shape" in r for r in rows)
     assert get_practice("wildcard-name")["key"] == "wildcard-name" and "person-harvest" in task_kinds()
+
+
+def test_an_organ_registers_a_practice_and_only_its_owner_may_overwrite_it(tmp_path):
+    from src.practices.registry import Practice
+    reg = PracticeRegistry(tmp_path)
+    p = reg.upsert(Practice(key="fetch-ladder", name="The fetch ladder", task_kinds=["pdf-fetch"], when="a paper has a DOI", shape="doi → unpaywall → publisher → scholar",
+                            yields="the PDF", owner="the-referee"))
+    assert p.version and PracticeRegistry(tmp_path).get("fetch-ladder").owner == "the-referee" and "pdf-fetch" in PracticeRegistry(tmp_path).task_kinds()
+    reg.add_evidence("fetch-ladder", PracticeEvidence(run="referee-9", organ="the-referee", queries=4, new_relevant=2))
+    p2 = reg.upsert(Practice(key="fetch-ladder", name="The fetch ladder", task_kinds=["pdf-fetch", "work-identity"], when="a paper has a DOI or a title", shape="…", yields="the PDF", owner="the-referee"))
+    assert p2.evidence[0].run == "referee-9" and p2.task_kinds == ["pdf-fetch", "work-identity"]      # an update keeps the runs' evidence
+    with pytest.raises(PermissionError):
+        reg.upsert(Practice(key="fetch-ladder", name="x", task_kinds=["pdf-fetch"], when="w", shape="s", yields="y", owner="gs-revamp"))
+    with pytest.raises(ValueError):
+        reg.upsert(Practice(key="Not A Slug", name="x", task_kinds=["pdf-fetch"], when="w", shape="s", yields="y"))
+    with pytest.raises(ValueError):
+        reg.upsert(Practice(key="thin", name="x", task_kinds=[], when="", shape="s", yields="y"))

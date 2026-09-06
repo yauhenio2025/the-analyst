@@ -18,7 +18,10 @@ from typing import Optional
 
 from pydantic import BaseModel, Field
 
+import re
+
 DEFINITIONS = Path(__file__).parent / "definitions"
+KEY = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 
 
 class PracticeEvidence(BaseModel):
@@ -79,6 +82,24 @@ class PracticeRegistry:
         p.evidence.append(ev)
         self.file_for(key).write_text(json.dumps(p.model_dump(), ensure_ascii=False, indent=2) + "\n")
         return p
+
+    def upsert(self, practice: Practice) -> Practice:
+        """Create a practice or update one; the record's evidence is kept when the poster sends none (an organ registers
+        what its planner already knows; the runs' yields stay). An organ may not overwrite another organ's record."""
+        if not KEY.match(practice.key):
+            raise ValueError(f"practice key must be a slug of lower-case words and hyphens, not {practice.key!r}")
+        if not practice.task_kinds or not practice.when.strip() or not practice.shape.strip() or not practice.yields.strip():
+            raise ValueError("a practice needs task_kinds, when, shape and yields")
+        old = self._items.get(practice.key)
+        if old is not None and old.owner != practice.owner:
+            raise PermissionError(f"practice {practice.key} is {old.owner}'s; {practice.owner} may not overwrite it")
+        if old is not None and not practice.evidence:
+            practice.evidence = old.evidence
+        if not practice.version:
+            practice.version = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        self._items[practice.key] = practice
+        self.file_for(practice.key).write_text(json.dumps(practice.model_dump(), ensure_ascii=False, indent=2) + "\n")
+        return practice
 
     def file_for(self, key: str) -> Path:
         return self.path / f"{key}.json"
