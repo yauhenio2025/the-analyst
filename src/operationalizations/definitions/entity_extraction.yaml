@@ -1,0 +1,222 @@
+# Third queue: communications/study/REDESIGN_third_queue_2026-09-06.md
+engine_key: entity_extraction
+engine_name: Entity and relationship index
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: Who and what appear in the collection, in which roles and relationships? One text or a collection
+    with named actors/objects and supporting relationship passages.
+  framing: An entity index with source name, alias or unresolved identity, type, role and location, followed by
+    an evidenced subject–relation–object table. Index people, organizations, places, products/projects and events;
+    keep acronym and case identities unresolved when the source does. Preserve the original question and entity/role/relationship
+    fields. Replace automatic alias consolidation, mention-based significance scores and compulsory graph clusters
+    with evidenced identity and relation spans. Co-occurrence is not an edge.
+  scoped_outcomes: true
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: mentions
+    id_prefix: D1
+    name: Entities and mentions
+    scope: document
+    load_bearing: true
+    questions:
+    - Who and what are the key actors and objects in this discourse?
+    answer_shape: '[D1.F<n>] <one source-scoped finding> — dim: mentions — name: <value or unknown> — type: <value
+      or unknown> — mention-context: <value or unknown> — anchor: "<literal actor and predicate span, <=200 chars>"
+      — doc: <source key> — confidence: high|medium|low'
+    method_card: 'Do: Inventory people, organizations, locations, products/projects and events relevant to the argument.
+      A reference author is not automatically a case actor. Select literal spans that together carry the finding’s
+      actor, predicate, object and necessary qualification. If one span of at most 200 characters cannot do so,
+      use anchor-b/doc-b for another span, including within one document. Do not join separated text or normalize
+      a quote into invented wording. Retain both poles of a contrast. A verbatim name or prefix without the claimed
+      predicate is insufficient: re-anchor, narrow or reject it. Keep source voice, status, chronology and uncertainty
+      in the final claim. No scope record supplies positive evidence.'
+    indicators:
+    - company
+    - government
+    - cable
+  - key: identity
+    id_prefix: D2
+    name: Aliases and identity
+    scope: document
+    load_bearing: true
+    questions:
+    - Which names or acronyms demonstrably refer to the same entity, and which remain unresolved?
+    answer_shape: '[D2.F<n>] <one source-scoped finding> — dim: identity — mention-a: <value or unknown> — mention-b:
+      <value or unknown> — identity-basis: <value or unknown> — status: <value or unknown> — anchor: "<literal actor
+      and predicate span, <=200 chars>" — doc: <source key> — confidence: high|medium|low'
+    method_card: 'Do: Require an explicit alias or unambiguous contextual link. Never merge separate projects sharing
+      a geography, sponsor or instrument type. Select literal spans that together carry the finding’s actor, predicate,
+      object and necessary qualification. If one span of at most 200 characters cannot do so, use anchor-b/doc-b
+      for another span, including within one document. Do not join separated text or normalize a quote into invented
+      wording. Retain both poles of a contrast. A verbatim name or prefix without the claimed predicate is insufficient:
+      re-anchor, narrow or reject it. Keep source voice, status, chronology and uncertainty in the final claim.
+      No scope record supplies positive evidence.'
+    indicators:
+    - known as
+    - formerly
+    - acronym
+  - key: roles
+    id_prefix: D3
+    name: Documented roles
+    scope: document
+    load_bearing: true
+    questions:
+    - What role does the text assign each entity in the reported arrangement?
+    answer_shape: '[D3.F<n>] <one source-scoped finding> — dim: roles — entity: <value or unknown> — role: <value
+      or unknown> — arrangement: <value or unknown> — date-status: <value or unknown> — anchor: "<literal actor
+      and predicate span, <=200 chars>" — doc: <source key> — confidence: high|medium|low'
+    method_card: 'Do: Quote the role predicate with its object. Ownership, operation, financing and partnership
+      are distinct relations. Select literal spans that together carry the finding’s actor, predicate, object and
+      necessary qualification. If one span of at most 200 characters cannot do so, use anchor-b/doc-b for another
+      span, including within one document. Do not join separated text or normalize a quote into invented wording.
+      Retain both poles of a contrast. A verbatim name or prefix without the claimed predicate is insufficient:
+      re-anchor, narrow or reject it. Keep source voice, status, chronology and uncertainty in the final claim.
+      No scope record supplies positive evidence.'
+    indicators:
+    - owns
+    - operates
+    - financed
+  - key: relationships
+    id_prefix: D4
+    name: Evidenced relationships
+    scope: document
+    load_bearing: false
+    questions:
+    - Which subject–predicate–object relationships are explicitly reported or carefully reconstructed?
+    answer_shape: '[D4.F<n>] <one source-scoped finding> — dim: relationships — subject: <value or unknown> — predicate:
+      <value or unknown> — object: <value or unknown> — stated-or-reconstructed: <value or unknown> — anchor: "<literal
+      actor and predicate span, <=200 chars>" — doc: <source key> — confidence: high|medium|low'
+    method_card: 'Do: Retain spans for both entities and the relational verb; use additional spans when necessary.
+      Co-mentions alone establish no causal or institutional edge. Select literal spans that together carry the
+      finding’s actor, predicate, object and necessary qualification. If one span of at most 200 characters cannot
+      do so, use anchor-b/doc-b for another span, including within one document. Do not join separated text or normalize
+      a quote into invented wording. Retain both poles of a contrast. A verbatim name or prefix without the claimed
+      predicate is insufficient: re-anchor, narrow or reject it. Keep source voice, status, chronology and uncertainty
+      in the final claim. No scope record supplies positive evidence.'
+    indicators:
+    - acquired
+    - connects
+    - partnered
+  - key: coverage
+    id_prefix: D5
+    name: Ambiguity and index limits
+    scope: document
+    load_bearing: false
+    questions:
+    - Which entity or relationship ambiguities matter to the index, and what evidence would resolve them?
+    answer_shape: '[D5.F<n>] <one source-scoped finding> — dim: coverage — entity: <value or unknown> — ambiguity:
+      <value or unknown> — inspected-context: <value or unknown> — missing-evidence: <value or unknown> — anchor:
+      "<literal actor and predicate span, <=200 chars>" — doc: <source key> — confidence: high|medium|low'
+    method_card: 'Do: State relevant coverage and ambiguous identity rather than inventing a canonical expansion.
+      Do not claim completeness from a fixed row count. Select literal spans that together carry the finding’s actor,
+      predicate, object and necessary qualification. If one span of at most 200 characters cannot do so, use anchor-b/doc-b
+      for another span, including within one document. Do not join separated text or normalize a quote into invented
+      wording. Retain both poles of a contrast. A verbatim name or prefix without the claimed predicate is insufficient:
+      re-anchor, narrow or reject it. Keep source voice, status, chronology and uncertainty in the final claim.
+      No scope record supplies positive evidence.'
+    indicators:
+    - unclear
+    - consortium
+    - project
+  - key: across_sources
+    id_prefix: X6
+    name: Aligned objects across supplied sources
+    scope: corpus
+    load_bearing: false
+    questions:
+    - Which supplied sources address the same object on this method’s question, and what aligned agreement or difference
+      do their passages support?
+    answer_shape: '[X6.F<n>] <scoped relation> — dim: across_sources — object: <aligned object> — relation: <agreement
+      or difference> — anchor: "<literal supporting span>" — doc: <A> — anchor-b: "<literal supporting span>" —
+      doc-b: <different B> — confidence: high|medium|low'
+    method_card: 'Do: Establish a local inventory in each supplied document first. Match identity, question, time
+      and scope before relating findings. Preserve two distinct source keys and the predicate on each side. One
+      article quoting several authors is still one supplied document. Select literal spans that together carry the
+      finding’s actor, predicate, object and necessary qualification. If one span of at most 200 characters cannot
+      do so, use anchor-b/doc-b for another span, including within one document. Do not join separated text or normalize
+      a quote into invented wording. Retain both poles of a contrast. A verbatim name or prefix without the claimed
+      predicate is insufficient: re-anchor, narrow or reject it. Keep source voice, status, chronology and uncertainty
+      in the final claim. No scope record supplies positive evidence.'
+    indicators:
+    - same object in two sources
+    - different answers to an aligned question
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension_x_document
+    model_tier: cheap
+    output: ledger
+    max_rows: 8
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - reject_biography
+    - merge_duplicates
+    - hunt_misses
+    - name_must_keep
+    - check_matrix_cell_support
+    - 'Every substantive table cell cites final finding IDs with separate [F1] [F2] citations. Before returning,
+      reread the actual final tables against the retained ledger and full source contexts. Rewrite or drop any cell
+      citing a rejected, weakened or unverified claim; never carry a rejected row as valid evidence in a cell. Preserve
+      granular support when merging duplicates. Use comma-separated full IDs in from:. No fabricated completion
+      of missing cells, attribution reversals or silent replacement of missing evidence with context. The models
+      judge meaning; code checks anchors and IDs only. Select literal spans that together carry the finding’s actor,
+      predicate, object and necessary qualification. If one span of at most 200 characters cannot do so, use anchor-b/doc-b
+      for another span, including within one document. Do not join separated text or normalize a quote into invented
+      wording. Retain both poles of a contrast. A verbatim name or prefix without the claimed predicate is insufficient:
+      re-anchor, narrow or reject it. Keep source voice, status, chronology and uncertainty in the final claim.
+      No scope record supplies positive evidence.'
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: 'a reader with the source open who needs to answer: Who and what appear in the collection, in which
+      roles and relationships?'
+    tables:
+    - entity_extraction_inventory
+    - entity_extraction_relations
+    brief: '1. An entity index with source name, alias or unresolved identity, type, role and location, followed
+      by an evidenced subject–relation–object table. Index people, organizations, places, products/projects and
+      events; keep acronym and case identities unresolved when the source does.
+
+      2. Lead with the most consequential supported distinction, organized around source objects and questions.
+      Useful inventory coverage is the deliverable; do not force a novel thesis.
+
+      3. Render the two named Markdown tables, with explicit limits and citable rows; end with what is established
+      and the evidence still needed.
+
+      4. With multiple supplied texts, establish local inventories before an aligned relation; with one text do
+      not pretend there is a supplied corpus.
+
+      Every substantive table cell cites final finding IDs with separate [F1] [F2] citations. Before returning,
+      reread the actual final tables against the retained ledger and full source contexts. Rewrite or drop any cell
+      citing a rejected, weakened or unverified claim; never carry a rejected row as valid evidence in a cell. Preserve
+      granular support when merging duplicates. Use comma-separated full IDs in from:. No fabricated completion
+      of missing cells, attribution reversals or silent replacement of missing evidence with context. The models
+      judge meaning; code checks anchors and IDs only. Select literal spans that together carry the finding’s actor,
+      predicate, object and necessary qualification. If one span of at most 200 characters cannot do so, use anchor-b/doc-b
+      for another span, including within one document. Do not join separated text or normalize a quote into invented
+      wording. Retain both poles of a contrast. A verbatim name or prefix without the claimed predicate is insufficient:
+      re-anchor, narrow or reject it. Keep source voice, status, chronology and uncertainty in the final claim.
+      No scope record supplies positive evidence.'

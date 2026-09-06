@@ -1,0 +1,223 @@
+# Third queue: communications/study/REDESIGN_third_queue_2026-09-06.md
+engine_key: periodization_critic
+engine_name: Testing historical periods
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: Are the time boundaries used by the source justified by its evidence and question? A text's proposed
+    periods with evidence about boundaries, continuity and the relevant analytical object.
+  framing: A judgment of the source’s strongest historical boundary, with a period/boundary/criterion/evidence/continuity
+    table. A second table compares a source-grounded alternative cut and its costs. Lead with what the periodization
+    explains, and distinguish approximate overlapping thresholds from a factual contradiction. Preserve Are the
+    proposed time periods analytically justified? and boundary/coherence/continuity/alternative probes. The old
+    schema asks for a critique type even when a boundary holds; allow a justified boundary and avoid invented precision
+    or obligatory replacement periods.
+  scoped_outcomes: true
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: periods
+    id_prefix: D1
+    name: Periods and their object
+    scope: document
+    load_bearing: true
+    questions:
+    - Are the proposed time periods analytically justified?
+    answer_shape: '[D1.F<n>] <one source-scoped finding> — dim: periods — scheme: <value or unknown> — period: <value
+      or unknown> — object: <value or unknown> — purpose: <value or unknown> — anchor: "<literal actor and predicate
+      span, <=200 chars>" — doc: <source key> — confidence: high|medium|low'
+    method_card: 'Do: Inventory the actual source scheme, distinguishing a historical phase from a date used only
+      as an example. State what the boundary is intended to explain. Select literal spans that together carry the
+      finding’s actor, predicate, object and necessary qualification. If one span of at most 200 characters cannot
+      do so, use anchor-b/doc-b for another span, including within one document. Do not join separated text or normalize
+      a quote into invented wording. Retain both poles of a contrast. A verbatim name or prefix without the claimed
+      predicate is insufficient: re-anchor, narrow or reject it. Keep source voice, status, chronology and uncertainty
+      in the final claim. No scope record supplies positive evidence.'
+    indicators:
+    - phase
+    - period
+    - era
+  - key: boundaries
+    id_prefix: D2
+    name: Boundary criteria
+    scope: document
+    load_bearing: true
+    questions:
+    - What change or criterion justifies each beginning or end, and how precise is the source’s date?
+    answer_shape: '[D2.F<n>] <one source-scoped finding> — dim: boundaries — boundary: <value or unknown> — criterion:
+      <value or unknown> — date: <value or unknown> — precision: <value or unknown> — anchor: "<literal actor and
+      predicate span, <=200 chars>" — doc: <source key> — confidence: high|medium|low'
+    method_card: 'Do: Retain approximately, around and mixed thresholds. Quote the change predicate, not a date
+      alone. Select literal spans that together carry the finding’s actor, predicate, object and necessary qualification.
+      If one span of at most 200 characters cannot do so, use anchor-b/doc-b for another span, including within
+      one document. Do not join separated text or normalize a quote into invented wording. Retain both poles of
+      a contrast. A verbatim name or prefix without the claimed predicate is insufficient: re-anchor, narrow or
+      reject it. Keep source voice, status, chronology and uncertainty in the final claim. No scope record supplies
+      positive evidence.'
+    indicators:
+    - since
+    - until
+    - around
+  - key: coherence
+    id_prefix: D3
+    name: Within-period coherence
+    scope: document
+    load_bearing: true
+    questions:
+    - Which evidence supports a period’s coherence, and which differences within it matter to the question?
+    answer_shape: '[D3.F<n>] <one source-scoped finding> — dim: coherence — period: <value or unknown> — common-feature:
+      <value or unknown> — internal-difference: <value or unknown> — implication: <value or unknown> — anchor: "<literal
+      actor and predicate span, <=200 chars>" — doc: <source key> — confidence: high|medium|low'
+    method_card: 'Do: Assess the source’s evidence and its explanatory purpose; a heterogeneous era is not automatically
+      an invalid analytical period. Select literal spans that together carry the finding’s actor, predicate, object
+      and necessary qualification. If one span of at most 200 characters cannot do so, use anchor-b/doc-b for another
+      span, including within one document. Do not join separated text or normalize a quote into invented wording.
+      Retain both poles of a contrast. A verbatim name or prefix without the claimed predicate is insufficient:
+      re-anchor, narrow or reject it. Keep source voice, status, chronology and uncertainty in the final claim.
+      No scope record supplies positive evidence.'
+    indicators:
+    - throughout
+    - characteristic
+    - exception
+  - key: continuities
+    id_prefix: D4
+    name: Continuities across a cut
+    scope: document
+    load_bearing: false
+    questions:
+    - What continues across the proposed boundary, and does the source acknowledge it?
+    answer_shape: '[D4.F<n>] <one source-scoped finding> — dim: continuities — boundary: <value or unknown> — continuity:
+      <value or unknown> — change: <value or unknown> — acknowledgment: <value or unknown> — anchor: "<literal actor
+      and predicate span, <=200 chars>" — doc: <source key> — confidence: high|medium|low'
+    method_card: 'Do: Pair before-and-after claims and preserve the positive continuity passage. Added factors do
+      not imply that the earlier mechanism disappeared. Select literal spans that together carry the finding’s actor,
+      predicate, object and necessary qualification. If one span of at most 200 characters cannot do so, use anchor-b/doc-b
+      for another span, including within one document. Do not join separated text or normalize a quote into invented
+      wording. Retain both poles of a contrast. A verbatim name or prefix without the claimed predicate is insufficient:
+      re-anchor, narrow or reject it. Keep source voice, status, chronology and uncertainty in the final claim.
+      No scope record supplies positive evidence.'
+    indicators:
+    - remains true
+    - but new
+    - still
+  - key: alternatives
+    id_prefix: D5
+    name: Alternative cuts and costs
+    scope: document
+    load_bearing: false
+    questions:
+    - What source-supported alternative boundary would answer the stated question differently, and with what tradeoff?
+    answer_shape: '[D5.F<n>] <one source-scoped finding> — dim: alternatives — alternative: <value or unknown> —
+      source-basis: <value or unknown> — gain: <value or unknown> — cost: <value or unknown> — status: <value or
+      unknown> — anchor: "<literal actor and predicate span, <=200 chars>" — doc: <source key> — confidence: high|medium|low'
+    method_card: 'Do: Label analyst alternatives and retain their source basis. Do not invent a historical record
+      or mistake another analytic timescale for the source’s own periodization. Select literal spans that together
+      carry the finding’s actor, predicate, object and necessary qualification. If one span of at most 200 characters
+      cannot do so, use anchor-b/doc-b for another span, including within one document. Do not join separated text
+      or normalize a quote into invented wording. Retain both poles of a contrast. A verbatim name or prefix without
+      the claimed predicate is insufficient: re-anchor, narrow or reject it. Keep source voice, status, chronology
+      and uncertainty in the final claim. No scope record supplies positive evidence.'
+    indicators:
+    - instead
+    - earlier
+    - long term
+  - key: across_sources
+    id_prefix: X6
+    name: Aligned objects across supplied sources
+    scope: corpus
+    load_bearing: false
+    questions:
+    - Which supplied sources address the same object on this method’s question, and what aligned agreement or difference
+      do their passages support?
+    answer_shape: '[X6.F<n>] <scoped relation> — dim: across_sources — object: <aligned object> — relation: <agreement
+      or difference> — anchor: "<literal supporting span>" — doc: <A> — anchor-b: "<literal supporting span>" —
+      doc-b: <different B> — confidence: high|medium|low'
+    method_card: 'Do: Establish a local inventory in each supplied document first. Match identity, question, time
+      and scope before relating findings. Preserve two distinct source keys and the predicate on each side. One
+      article quoting several authors is still one supplied document. Select literal spans that together carry the
+      finding’s actor, predicate, object and necessary qualification. If one span of at most 200 characters cannot
+      do so, use anchor-b/doc-b for another span, including within one document. Do not join separated text or normalize
+      a quote into invented wording. Retain both poles of a contrast. A verbatim name or prefix without the claimed
+      predicate is insufficient: re-anchor, narrow or reject it. Keep source voice, status, chronology and uncertainty
+      in the final claim. No scope record supplies positive evidence.'
+    indicators:
+    - same object in two sources
+    - different answers to an aligned question
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension_x_document
+    model_tier: cheap
+    output: ledger
+    max_rows: 8
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - reject_biography
+    - merge_duplicates
+    - hunt_misses
+    - name_must_keep
+    - check_matrix_cell_support
+    - 'Every substantive table cell cites final finding IDs with separate [F1] [F2] citations. Before returning,
+      reread the actual final tables against the retained ledger and full source contexts. Rewrite or drop any cell
+      citing a rejected, weakened or unverified claim; never carry a rejected row as valid evidence in a cell. Preserve
+      granular support when merging duplicates. Use comma-separated full IDs in from:. No fabricated completion
+      of missing cells, attribution reversals or silent replacement of missing evidence with context. The models
+      judge meaning; code checks anchors and IDs only. Select literal spans that together carry the finding’s actor,
+      predicate, object and necessary qualification. If one span of at most 200 characters cannot do so, use anchor-b/doc-b
+      for another span, including within one document. Do not join separated text or normalize a quote into invented
+      wording. Retain both poles of a contrast. A verbatim name or prefix without the claimed predicate is insufficient:
+      re-anchor, narrow or reject it. Keep source voice, status, chronology and uncertainty in the final claim.
+      No scope record supplies positive evidence.'
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: 'a reader with the source open who needs to answer: Are the time boundaries used by the source justified
+      by its evidence and question?'
+    tables:
+    - periodization_critic_inventory
+    - periodization_critic_relations
+    brief: '1. A judgment of the source’s strongest historical boundary, with a period/boundary/criterion/evidence/continuity
+      table. A second table compares a source-grounded alternative cut and its costs. Lead with what the periodization
+      explains, and distinguish approximate overlapping thresholds from a factual contradiction.
+
+      2. Lead with the most consequential supported distinction, organized around source objects and questions.
+      Carry one explanatory judgment through the evidence and its strongest counter-passage.
+
+      3. Render the two named Markdown tables, with explicit limits and citable rows; end with what is established
+      and the evidence still needed.
+
+      4. With multiple supplied texts, establish local inventories before an aligned relation; with one text do
+      not pretend there is a supplied corpus.
+
+      Every substantive table cell cites final finding IDs with separate [F1] [F2] citations. Before returning,
+      reread the actual final tables against the retained ledger and full source contexts. Rewrite or drop any cell
+      citing a rejected, weakened or unverified claim; never carry a rejected row as valid evidence in a cell. Preserve
+      granular support when merging duplicates. Use comma-separated full IDs in from:. No fabricated completion
+      of missing cells, attribution reversals or silent replacement of missing evidence with context. The models
+      judge meaning; code checks anchors and IDs only. Select literal spans that together carry the finding’s actor,
+      predicate, object and necessary qualification. If one span of at most 200 characters cannot do so, use anchor-b/doc-b
+      for another span, including within one document. Do not join separated text or normalize a quote into invented
+      wording. Retain both poles of a contrast. A verbatim name or prefix without the claimed predicate is insufficient:
+      re-anchor, narrow or reject it. Keep source voice, status, chronology and uncertainty in the final claim.
+      No scope record supplies positive evidence.'

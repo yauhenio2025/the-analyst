@@ -1,0 +1,223 @@
+# Third queue: communications/study/REDESIGN_third_queue_2026-09-06.md
+engine_key: claim_provenance
+engine_name: Claim provenance and corroboration
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: Through which sources and transformations did the collection's claims arrive? Supplied claim-bearing
+    sources and any available originals or intermediaries; record missing links.
+  framing: A claim-origin-and-chain inventory linking important numbers, dates and mechanisms to the immediate cited
+    or reported source, stated transformation and access status. A dependence table distinguishes repeated reporting,
+    asserted corroboration and genuinely inspected independent support; missing originals stay unverified. Preserve
+    Where do these claims come from, and how reliable are those sources? as a bounded source-status question. Uninspected
+    citations cannot show actual degradation, reliability or independent corroboration. Replace the presumption
+    of tracing actual origin with the chain the supplied text documents.
+  scoped_outcomes: true
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: claims
+    id_prefix: D1
+    name: Claims and immediate origins
+    scope: document
+    load_bearing: true
+    questions:
+    - Where do these claims come from, and how reliable are those sources?
+    answer_shape: '[D1.F<n>] <one source-scoped finding> — dim: claims — claim: <value or unknown> — immediate-source:
+      <value or unknown> — attribution: <value or unknown> — access-status: <value or unknown> — anchor: "<literal
+      actor and predicate span, <=200 chars>" — doc: <source key> — confidence: high|medium|low'
+    method_card: 'Do: Treat reliability as what the supplied evidence establishes, not a reputation score. Inventory
+      important numbers and mechanism claims; the citing article is not the original itself. Select literal spans
+      that together carry the finding’s actor, predicate, object and necessary qualification. If one span of at
+      most 200 characters cannot do so, use anchor-b/doc-b for another span, including within one document. Do not
+      join separated text or normalize a quote into invented wording. Retain both poles of a contrast. A verbatim
+      name or prefix without the claimed predicate is insufficient: re-anchor, narrow or reject it. Keep source
+      voice, status, chronology and uncertainty in the final claim. No scope record supplies positive evidence.'
+    indicators:
+    - according to
+    - reports
+    - cited
+  - key: chains
+    id_prefix: D2
+    name: Documented chains
+    scope: document
+    load_bearing: true
+    questions:
+    - Which original or intermediary does the text identify, and which links remain uninspected?
+    answer_shape: '[D2.F<n>] <one source-scoped finding> — dim: chains — claim: <value or unknown> — origin: <value
+      or unknown> — intermediary: <value or unknown> — inspected-link: <value or unknown> — gap: <value or unknown>
+      — anchor: "<literal actor and predicate span, <=200 chars>" — doc: <source key> — confidence: high|medium|low'
+    method_card: 'Do: Quote the attribution together with the claim predicate, using a second span when separated.
+      Never imply that an unsupplied reference has been read. Select literal spans that together carry the finding’s
+      actor, predicate, object and necessary qualification. If one span of at most 200 characters cannot do so,
+      use anchor-b/doc-b for another span, including within one document. Do not join separated text or normalize
+      a quote into invented wording. Retain both poles of a contrast. A verbatim name or prefix without the claimed
+      predicate is insufficient: re-anchor, narrow or reject it. Keep source voice, status, chronology and uncertainty
+      in the final claim. No scope record supplies positive evidence.'
+    indicators:
+    - quoting
+    - drawing on
+    - based on
+  - key: transformations
+    id_prefix: D3
+    name: Reported transformations
+    scope: document
+    load_bearing: true
+    questions:
+    - What summarizing, rounding, translation or change of scope is visible in the supplied chain?
+    answer_shape: '[D3.F<n>] <one source-scoped finding> — dim: transformations — claim: <value or unknown> — transformation:
+      <value or unknown> — compared-passages: <value or unknown> — status: <value or unknown> — anchor: "<literal
+      actor and predicate span, <=200 chars>" — doc: <source key> — confidence: high|medium|low'
+    method_card: 'Do: An actual transformation needs both formulations. Distinguish the article’s report of a transformation
+      from a transformation verified against an original. Select literal spans that together carry the finding’s
+      actor, predicate, object and necessary qualification. If one span of at most 200 characters cannot do so,
+      use anchor-b/doc-b for another span, including within one document. Do not join separated text or normalize
+      a quote into invented wording. Retain both poles of a contrast. A verbatim name or prefix without the claimed
+      predicate is insufficient: re-anchor, narrow or reject it. Keep source voice, status, chronology and uncertainty
+      in the final claim. No scope record supplies positive evidence.'
+    indicators:
+    - estimated
+    - summarized
+    - adapted
+  - key: dependence
+    id_prefix: D4
+    name: Dependence and corroboration
+    scope: document
+    load_bearing: false
+    questions:
+    - Do independent sources corroborate these claims?
+    answer_shape: '[D4.F<n>] <one source-scoped finding> — dim: dependence — claim: <value or unknown> — sources:
+      <value or unknown> — dependence-evidence: <value or unknown> — corroboration-status: <value or unknown> —
+      anchor: "<literal actor and predicate span, <=200 chars>" — doc: <source key> — confidence: high|medium|low'
+    method_card: 'Do: Answer only within supplied access. Different citation labels do not establish independence;
+      name circularity or laundering only with a documented chain, otherwise retain a hypothesis. Select literal
+      spans that together carry the finding’s actor, predicate, object and necessary qualification. If one span
+      of at most 200 characters cannot do so, use anchor-b/doc-b for another span, including within one document.
+      Do not join separated text or normalize a quote into invented wording. Retain both poles of a contrast. A
+      verbatim name or prefix without the claimed predicate is insufficient: re-anchor, narrow or reject it. Keep
+      source voice, status, chronology and uncertainty in the final claim. No scope record supplies positive evidence.'
+    indicators:
+    - same source
+    - confirmed
+    - repeated
+  - key: conflicts
+    id_prefix: D5
+    name: Conflicts and next evidence
+    scope: document
+    load_bearing: false
+    questions:
+    - Where do supplied chains disagree on the same claim, and what missing source would resolve the issue?
+    answer_shape: '[D5.F<n>] <one source-scoped finding> — dim: conflicts — claim: <value or unknown> — conflict:
+      <value or unknown> — alignment: <value or unknown> — missing-evidence: <value or unknown> — anchor: "<literal
+      actor and predicate span, <=200 chars>" — doc: <source key> — confidence: high|medium|low'
+    method_card: 'Do: Check population, date, target and status before declaring contradiction. Missing originals
+      mean unverified, not false; scope records cannot prove a positive fact. Select literal spans that together
+      carry the finding’s actor, predicate, object and necessary qualification. If one span of at most 200 characters
+      cannot do so, use anchor-b/doc-b for another span, including within one document. Do not join separated text
+      or normalize a quote into invented wording. Retain both poles of a contrast. A verbatim name or prefix without
+      the claimed predicate is insufficient: re-anchor, narrow or reject it. Keep source voice, status, chronology
+      and uncertainty in the final claim. No scope record supplies positive evidence.'
+    indicators:
+    - however
+    - differs
+    - reference
+  - key: across_sources
+    id_prefix: X6
+    name: Aligned objects across supplied sources
+    scope: corpus
+    load_bearing: false
+    questions:
+    - Which supplied sources address the same object on this method’s question, and what aligned agreement or difference
+      do their passages support?
+    answer_shape: '[X6.F<n>] <scoped relation> — dim: across_sources — object: <aligned object> — relation: <agreement
+      or difference> — anchor: "<literal supporting span>" — doc: <A> — anchor-b: "<literal supporting span>" —
+      doc-b: <different B> — confidence: high|medium|low'
+    method_card: 'Do: Establish a local inventory in each supplied document first. Match identity, question, time
+      and scope before relating findings. Preserve two distinct source keys and the predicate on each side. One
+      article quoting several authors is still one supplied document. Select literal spans that together carry the
+      finding’s actor, predicate, object and necessary qualification. If one span of at most 200 characters cannot
+      do so, use anchor-b/doc-b for another span, including within one document. Do not join separated text or normalize
+      a quote into invented wording. Retain both poles of a contrast. A verbatim name or prefix without the claimed
+      predicate is insufficient: re-anchor, narrow or reject it. Keep source voice, status, chronology and uncertainty
+      in the final claim. No scope record supplies positive evidence.'
+    indicators:
+    - same object in two sources
+    - different answers to an aligned question
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension_x_document
+    model_tier: cheap
+    output: ledger
+    max_rows: 8
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - reject_biography
+    - merge_duplicates
+    - hunt_misses
+    - name_must_keep
+    - check_matrix_cell_support
+    - 'Every substantive table cell cites final finding IDs with separate [F1] [F2] citations. Before returning,
+      reread the actual final tables against the retained ledger and full source contexts. Rewrite or drop any cell
+      citing a rejected, weakened or unverified claim; never carry a rejected row as valid evidence in a cell. Preserve
+      granular support when merging duplicates. Use comma-separated full IDs in from:. No fabricated completion
+      of missing cells, attribution reversals or silent replacement of missing evidence with context. The models
+      judge meaning; code checks anchors and IDs only. Select literal spans that together carry the finding’s actor,
+      predicate, object and necessary qualification. If one span of at most 200 characters cannot do so, use anchor-b/doc-b
+      for another span, including within one document. Do not join separated text or normalize a quote into invented
+      wording. Retain both poles of a contrast. A verbatim name or prefix without the claimed predicate is insufficient:
+      re-anchor, narrow or reject it. Keep source voice, status, chronology and uncertainty in the final claim.
+      No scope record supplies positive evidence.'
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: 'a reader with the source open who needs to answer: Through which sources and transformations did the
+      collection''s claims arrive?'
+    tables:
+    - claim_provenance_inventory
+    - claim_provenance_relations
+    brief: '1. A claim-origin-and-chain inventory linking important numbers, dates and mechanisms to the immediate
+      cited or reported source, stated transformation and access status. A dependence table distinguishes repeated
+      reporting, asserted corroboration and genuinely inspected independent support; missing originals stay unverified.
+
+      2. Lead with the most consequential supported distinction, organized around source objects and questions.
+      Useful inventory coverage is the deliverable; do not force a novel thesis.
+
+      3. Render the two named Markdown tables, with explicit limits and citable rows; end with what is established
+      and the evidence still needed.
+
+      4. With multiple supplied texts, establish local inventories before an aligned relation; with one text do
+      not pretend there is a supplied corpus.
+
+      Every substantive table cell cites final finding IDs with separate [F1] [F2] citations. Before returning,
+      reread the actual final tables against the retained ledger and full source contexts. Rewrite or drop any cell
+      citing a rejected, weakened or unverified claim; never carry a rejected row as valid evidence in a cell. Preserve
+      granular support when merging duplicates. Use comma-separated full IDs in from:. No fabricated completion
+      of missing cells, attribution reversals or silent replacement of missing evidence with context. The models
+      judge meaning; code checks anchors and IDs only. Select literal spans that together carry the finding’s actor,
+      predicate, object and necessary qualification. If one span of at most 200 characters cannot do so, use anchor-b/doc-b
+      for another span, including within one document. Do not join separated text or normalize a quote into invented
+      wording. Retain both poles of a contrast. A verbatim name or prefix without the claimed predicate is insufficient:
+      re-anchor, narrow or reject it. Keep source voice, status, chronology and uncertainty in the final claim.
+      No scope record supplies positive evidence.'

@@ -1,0 +1,223 @@
+# Third queue: communications/study/REDESIGN_third_queue_2026-09-06.md
+engine_key: categories_boundaries
+engine_name: Categories and boundaries
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: How does the text classify the domain, and where are its criteria or memberships contested? A text
+    or supplied collection containing classifications, criteria and relevant instances.
+  framing: A category/criterion/instance inventory plus a boundary-and-overlap table showing nonexclusive membership,
+    disputed cases and criteria that change by context. Preserve the author’s classifications and competing attributed
+    definitions before judging their consequences. Preserve the taxonomy core question, hierarchy, instances and
+    cross-classification fields. boundary_probe presumes probing would reveal hidden arbitrariness; replace that
+    verdict with an open criterion test. A schema membership is not evidence of exhaustive or exclusive categories.
+  scoped_outcomes: true
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: categories
+    id_prefix: D1
+    name: Categories and purpose
+    scope: document
+    load_bearing: true
+    questions:
+    - How are things classified in this domain, and what do the categories reveal?
+    answer_shape: '[D1.F<n>] <one source-scoped finding> — dim: categories — category: <value or unknown> — classified-object:
+      <value or unknown> — owner: <value or unknown> — purpose: <value or unknown> — anchor: "<literal actor and
+      predicate span, <=200 chars>" — doc: <source key> — confidence: high|medium|low'
+    method_card: 'Do: Inventory each classification in its attributed context; keep the article’s categories distinct
+      from cited authors’ typologies. Select literal spans that together carry the finding’s actor, predicate, object
+      and necessary qualification. If one span of at most 200 characters cannot do so, use anchor-b/doc-b for another
+      span, including within one document. Do not join separated text or normalize a quote into invented wording.
+      Retain both poles of a contrast. A verbatim name or prefix without the claimed predicate is insufficient:
+      re-anchor, narrow or reject it. Keep source voice, status, chronology and uncertainty in the final claim.
+      No scope record supplies positive evidence.'
+    indicators:
+    - type
+    - form
+    - classified
+  - key: criteria
+    id_prefix: D2
+    name: Inclusion and exclusion
+    scope: document
+    load_bearing: true
+    questions:
+    - Which stated criterion includes an instance in a category, and what would exclude it?
+    answer_shape: '[D2.F<n>] <one source-scoped finding> — dim: criteria — category: <value or unknown> — inclusion:
+      <value or unknown> — exclusion: <value or unknown> — stated-or-reconstructed: <value or unknown> — anchor:
+      "<literal actor and predicate span, <=200 chars>" — doc: <source key> — confidence: high|medium|low'
+    method_card: 'Do: Quote the classification predicate and its limiting condition. Reconstruct a criterion only
+      with explicit status, never from a category name alone. Select literal spans that together carry the finding’s
+      actor, predicate, object and necessary qualification. If one span of at most 200 characters cannot do so,
+      use anchor-b/doc-b for another span, including within one document. Do not join separated text or normalize
+      a quote into invented wording. Retain both poles of a contrast. A verbatim name or prefix without the claimed
+      predicate is insufficient: re-anchor, narrow or reject it. Keep source voice, status, chronology and uncertainty
+      in the final claim. No scope record supplies positive evidence.'
+    indicators:
+    - defined as
+    - requires
+    - excludes
+  - key: instances
+    id_prefix: D3
+    name: Instances and membership
+    scope: document
+    load_bearing: true
+    questions:
+    - Which named instances does the text assign to each category, under which criterion?
+    answer_shape: '[D3.F<n>] <one source-scoped finding> — dim: instances — instance: <value or unknown> — category:
+      <value or unknown> — criterion: <value or unknown> — qualification: <value or unknown> — anchor: "<literal
+      actor and predicate span, <=200 chars>" — doc: <source key> — confidence: high|medium|low'
+    method_card: 'Do: Use a membership-bearing clause for each assignment. Keep state ownership, financing and procurement
+      distinct even when they occur in one case. Select literal spans that together carry the finding’s actor, predicate,
+      object and necessary qualification. If one span of at most 200 characters cannot do so, use anchor-b/doc-b
+      for another span, including within one document. Do not join separated text or normalize a quote into invented
+      wording. Retain both poles of a contrast. A verbatim name or prefix without the claimed predicate is insufficient:
+      re-anchor, narrow or reject it. Keep source voice, status, chronology and uncertainty in the final claim.
+      No scope record supplies positive evidence.'
+    indicators:
+    - example
+    - belongs
+    - constitutes
+  - key: relations
+    id_prefix: D4
+    name: Hierarchies and overlaps
+    scope: document
+    load_bearing: false
+    questions:
+    - How do the classifications nest, intersect or cross-cut one another?
+    answer_shape: '[D4.F<n>] <one source-scoped finding> — dim: relations — category-a: <value or unknown> — category-b:
+      <value or unknown> — relation: <value or unknown> — basis: <value or unknown> — anchor: "<literal actor and
+      predicate span, <=200 chars>" — doc: <source key> — confidence: high|medium|low'
+    method_card: 'Do: Preserve nonexclusive membership and alternative schemes. A framework comparison within one
+      paper is a document relation with same-source spans. Select literal spans that together carry the finding’s
+      actor, predicate, object and necessary qualification. If one span of at most 200 characters cannot do so,
+      use anchor-b/doc-b for another span, including within one document. Do not join separated text or normalize
+      a quote into invented wording. Retain both poles of a contrast. A verbatim name or prefix without the claimed
+      predicate is insufficient: re-anchor, narrow or reject it. Keep source voice, status, chronology and uncertainty
+      in the final claim. No scope record supplies positive evidence.'
+    indicators:
+    - subset
+    - overlapping
+    - hybrid
+  - key: boundaries
+    id_prefix: D5
+    name: Contested edges
+    scope: document
+    load_bearing: false
+    questions:
+    - Where does the text contest a criterion or supply a borderline case, and what does changing that threshold
+      change?
+    answer_shape: '[D5.F<n>] <one source-scoped finding> — dim: boundaries — case: <value or unknown> — criterion:
+      <value or unknown> — contest: <value or unknown> — consequence: <value or unknown> — anchor: "<literal actor
+      and predicate span, <=200 chars>" — doc: <source key> — confidence: high|medium|low'
+    method_card: 'Do: Retain both definitions in disputes. Do not force arbitrariness, exclusivity or an invented
+      numerical threshold; put missing boundary evidence in the scope report. Select literal spans that together
+      carry the finding’s actor, predicate, object and necessary qualification. If one span of at most 200 characters
+      cannot do so, use anchor-b/doc-b for another span, including within one document. Do not join separated text
+      or normalize a quote into invented wording. Retain both poles of a contrast. A verbatim name or prefix without
+      the claimed predicate is insufficient: re-anchor, narrow or reject it. Keep source voice, status, chronology
+      and uncertainty in the final claim. No scope record supplies positive evidence.'
+    indicators:
+    - rather than
+    - narrower
+    - contested
+  - key: across_sources
+    id_prefix: X6
+    name: Aligned objects across supplied sources
+    scope: corpus
+    load_bearing: false
+    questions:
+    - Which supplied sources address the same object on this method’s question, and what aligned agreement or difference
+      do their passages support?
+    answer_shape: '[X6.F<n>] <scoped relation> — dim: across_sources — object: <aligned object> — relation: <agreement
+      or difference> — anchor: "<literal supporting span>" — doc: <A> — anchor-b: "<literal supporting span>" —
+      doc-b: <different B> — confidence: high|medium|low'
+    method_card: 'Do: Establish a local inventory in each supplied document first. Match identity, question, time
+      and scope before relating findings. Preserve two distinct source keys and the predicate on each side. One
+      article quoting several authors is still one supplied document. Select literal spans that together carry the
+      finding’s actor, predicate, object and necessary qualification. If one span of at most 200 characters cannot
+      do so, use anchor-b/doc-b for another span, including within one document. Do not join separated text or normalize
+      a quote into invented wording. Retain both poles of a contrast. A verbatim name or prefix without the claimed
+      predicate is insufficient: re-anchor, narrow or reject it. Keep source voice, status, chronology and uncertainty
+      in the final claim. No scope record supplies positive evidence.'
+    indicators:
+    - same object in two sources
+    - different answers to an aligned question
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension_x_document
+    model_tier: cheap
+    output: ledger
+    max_rows: 8
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - reject_biography
+    - merge_duplicates
+    - hunt_misses
+    - name_must_keep
+    - check_matrix_cell_support
+    - 'Every substantive table cell cites final finding IDs with separate [F1] [F2] citations. Before returning,
+      reread the actual final tables against the retained ledger and full source contexts. Rewrite or drop any cell
+      citing a rejected, weakened or unverified claim; never carry a rejected row as valid evidence in a cell. Preserve
+      granular support when merging duplicates. Use comma-separated full IDs in from:. No fabricated completion
+      of missing cells, attribution reversals or silent replacement of missing evidence with context. The models
+      judge meaning; code checks anchors and IDs only. Select literal spans that together carry the finding’s actor,
+      predicate, object and necessary qualification. If one span of at most 200 characters cannot do so, use anchor-b/doc-b
+      for another span, including within one document. Do not join separated text or normalize a quote into invented
+      wording. Retain both poles of a contrast. A verbatim name or prefix without the claimed predicate is insufficient:
+      re-anchor, narrow or reject it. Keep source voice, status, chronology and uncertainty in the final claim.
+      No scope record supplies positive evidence.'
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: 'a reader with the source open who needs to answer: How does the text classify the domain, and where
+      are its criteria or memberships contested?'
+    tables:
+    - categories_boundaries_inventory
+    - categories_boundaries_relations
+    brief: '1. A category/criterion/instance inventory plus a boundary-and-overlap table showing nonexclusive membership,
+      disputed cases and criteria that change by context. Preserve the author’s classifications and competing attributed
+      definitions before judging their consequences.
+
+      2. Lead with the most consequential supported distinction, organized around source objects and questions.
+      Useful inventory coverage is the deliverable; do not force a novel thesis.
+
+      3. Render the two named Markdown tables, with explicit limits and citable rows; end with what is established
+      and the evidence still needed.
+
+      4. With multiple supplied texts, establish local inventories before an aligned relation; with one text do
+      not pretend there is a supplied corpus.
+
+      Every substantive table cell cites final finding IDs with separate [F1] [F2] citations. Before returning,
+      reread the actual final tables against the retained ledger and full source contexts. Rewrite or drop any cell
+      citing a rejected, weakened or unverified claim; never carry a rejected row as valid evidence in a cell. Preserve
+      granular support when merging duplicates. Use comma-separated full IDs in from:. No fabricated completion
+      of missing cells, attribution reversals or silent replacement of missing evidence with context. The models
+      judge meaning; code checks anchors and IDs only. Select literal spans that together carry the finding’s actor,
+      predicate, object and necessary qualification. If one span of at most 200 characters cannot do so, use anchor-b/doc-b
+      for another span, including within one document. Do not join separated text or normalize a quote into invented
+      wording. Retain both poles of a contrast. A verbatim name or prefix without the claimed predicate is insufficient:
+      re-anchor, narrow or reject it. Keep source voice, status, chronology and uncertainty in the final claim.
+      No scope record supplies positive evidence.'

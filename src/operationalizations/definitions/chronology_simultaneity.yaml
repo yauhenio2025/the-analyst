@@ -1,0 +1,222 @@
+# Third queue: communications/study/REDESIGN_third_queue_2026-09-06.md
+engine_key: chronology_simultaneity
+engine_name: Parallel timelines
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: Which documented events and processes overlap in time? Two or more source-supported processes with
+    dates or bounded intervals.
+  framing: Parallel process lanes with actor, event or interval, date precision and status; an overlap table identifies
+    which intervals intersect and whether a source establishes synchronization, discrepancy or merely approximate
+    contemporaneity. No causal arrows follow from overlap alone. Preserve the original simultaneity question and
+    lane/intersection/discrepancy fields. The generic relationship-graph instruction supplies no temporal proof.
+    Ask for both intervals, avoid making a year into a specific date, and retain plans separately from events.
+  scoped_outcomes: true
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: lanes
+    id_prefix: D1
+    name: Processes and dated events
+    scope: document
+    load_bearing: true
+    questions:
+    - What was happening simultaneously, and how do different timelines overlap or contradict?
+    answer_shape: '[D1.F<n>] <one source-scoped finding> — dim: lanes — process: <value or unknown> — actor: <value
+      or unknown> — event: <value or unknown> — date: <value or unknown> — status: <value or unknown> — anchor:
+      "<literal actor and predicate span, <=200 chars>" — doc: <source key> — confidence: high|medium|low'
+    method_card: 'Do: Identify distinct source-supported processes before constructing lanes; events in one article
+      need not belong to one causal sequence. Select literal spans that together carry the finding’s actor, predicate,
+      object and necessary qualification. If one span of at most 200 characters cannot do so, use anchor-b/doc-b
+      for another span, including within one document. Do not join separated text or normalize a quote into invented
+      wording. Retain both poles of a contrast. A verbatim name or prefix without the claimed predicate is insufficient:
+      re-anchor, narrow or reject it. Keep source voice, status, chronology and uncertainty in the final claim.
+      No scope record supplies positive evidence.'
+    indicators:
+    - during
+    - announced
+    - began
+  - key: intervals
+    id_prefix: D2
+    name: Intervals and precision
+    scope: document
+    load_bearing: true
+    questions:
+    - What start, end or bounded interval does the source give, with what date precision?
+    answer_shape: '[D2.F<n>] <one source-scoped finding> — dim: intervals — process: <value or unknown> — start:
+      <value or unknown> — end: <value or unknown> — precision: <value or unknown> — open-bound: <value or unknown>
+      — anchor: "<literal actor and predicate span, <=200 chars>" — doc: <source key> — confidence: high|medium|low'
+    method_card: 'Do: Do not fill an unknown endpoint. Keep planned dates apart from completed events and preserve
+      relative dates only where the reference is established. Select literal spans that together carry the finding’s
+      actor, predicate, object and necessary qualification. If one span of at most 200 characters cannot do so,
+      use anchor-b/doc-b for another span, including within one document. Do not join separated text or normalize
+      a quote into invented wording. Retain both poles of a contrast. A verbatim name or prefix without the claimed
+      predicate is insufficient: re-anchor, narrow or reject it. Keep source voice, status, chronology and uncertainty
+      in the final claim. No scope record supplies positive evidence.'
+    indicators:
+    - since
+    - until
+    - by
+  - key: overlap
+    id_prefix: D3
+    name: Evidenced overlap
+    scope: document
+    load_bearing: true
+    questions:
+    - Which documented intervals overlap, and at what precision can their simultaneity be established?
+    answer_shape: '[D3.F<n>] <one source-scoped finding> — dim: overlap — interval-a: <value or unknown> — interval-b:
+      <value or unknown> — overlap: <value or unknown> — precision: <value or unknown> — anchor: "<literal actor
+      and predicate span, <=200 chars>" — doc: <source key> — confidence: high|medium|low'
+    method_card: 'Do: Retain an anchor for each dated predicate, including two in one document. Same-year dates
+      prove at most year-level co-occurrence unless intervals support more. Select literal spans that together carry
+      the finding’s actor, predicate, object and necessary qualification. If one span of at most 200 characters
+      cannot do so, use anchor-b/doc-b for another span, including within one document. Do not join separated text
+      or normalize a quote into invented wording. Retain both poles of a contrast. A verbatim name or prefix without
+      the claimed predicate is insufficient: re-anchor, narrow or reject it. Keep source voice, status, chronology
+      and uncertainty in the final claim. No scope record supplies positive evidence.'
+    indicators:
+    - meanwhile
+    - in 2024
+    - concurrent
+  - key: intersections
+    id_prefix: D4
+    name: Synchronization and intersections
+    scope: document
+    load_bearing: false
+    questions:
+    - Does the text establish that processes synchronized or interacted, beyond simply overlapping?
+    answer_shape: '[D4.F<n>] <one source-scoped finding> — dim: intersections — process-a: <value or unknown> —
+      process-b: <value or unknown> — synchronization: <value or unknown> — evidence-status: <value or unknown>
+      — anchor: "<literal actor and predicate span, <=200 chars>" — doc: <source key> — confidence: high|medium|low'
+    method_card: 'Do: Require the linking predicate for coordination or causation. A shared date cannot establish
+      a planned joint response. Select literal spans that together carry the finding’s actor, predicate, object
+      and necessary qualification. If one span of at most 200 characters cannot do so, use anchor-b/doc-b for another
+      span, including within one document. Do not join separated text or normalize a quote into invented wording.
+      Retain both poles of a contrast. A verbatim name or prefix without the claimed predicate is insufficient:
+      re-anchor, narrow or reject it. Keep source voice, status, chronology and uncertainty in the final claim.
+      No scope record supplies positive evidence.'
+    indicators:
+    - coordinated
+    - linked
+    - coincided
+  - key: discrepancies
+    id_prefix: D5
+    name: Discrepancies and unresolved timing
+    scope: document
+    load_bearing: false
+    questions:
+    - Do reported dates disagree on the same event, or refer to different stages or levels of precision?
+    answer_shape: '[D5.F<n>] <one source-scoped finding> — dim: discrepancies — event: <value or unknown> — date-a:
+      <value or unknown> — date-b: <value or unknown> — stage: <value or unknown> — resolution: <value or unknown>
+      — anchor: "<literal actor and predicate span, <=200 chars>" — doc: <source key> — confidence: high|medium|low'
+    method_card: 'Do: Check identity and stage before alleging contradiction. Report ambiguous chronology openly
+      rather than harmonizing dates. Select literal spans that together carry the finding’s actor, predicate, object
+      and necessary qualification. If one span of at most 200 characters cannot do so, use anchor-b/doc-b for another
+      span, including within one document. Do not join separated text or normalize a quote into invented wording.
+      Retain both poles of a contrast. A verbatim name or prefix without the claimed predicate is insufficient:
+      re-anchor, narrow or reject it. Keep source voice, status, chronology and uncertainty in the final claim.
+      No scope record supplies positive evidence.'
+    indicators:
+    - approximately
+    - later
+    - proposal
+  - key: across_sources
+    id_prefix: X6
+    name: Aligned objects across supplied sources
+    scope: corpus
+    load_bearing: false
+    questions:
+    - Which supplied sources address the same object on this method’s question, and what aligned agreement or difference
+      do their passages support?
+    answer_shape: '[X6.F<n>] <scoped relation> — dim: across_sources — object: <aligned object> — relation: <agreement
+      or difference> — anchor: "<literal supporting span>" — doc: <A> — anchor-b: "<literal supporting span>" —
+      doc-b: <different B> — confidence: high|medium|low'
+    method_card: 'Do: Establish a local inventory in each supplied document first. Match identity, question, time
+      and scope before relating findings. Preserve two distinct source keys and the predicate on each side. One
+      article quoting several authors is still one supplied document. Select literal spans that together carry the
+      finding’s actor, predicate, object and necessary qualification. If one span of at most 200 characters cannot
+      do so, use anchor-b/doc-b for another span, including within one document. Do not join separated text or normalize
+      a quote into invented wording. Retain both poles of a contrast. A verbatim name or prefix without the claimed
+      predicate is insufficient: re-anchor, narrow or reject it. Keep source voice, status, chronology and uncertainty
+      in the final claim. No scope record supplies positive evidence.'
+    indicators:
+    - same object in two sources
+    - different answers to an aligned question
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension_x_document
+    model_tier: cheap
+    output: ledger
+    max_rows: 8
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - reject_biography
+    - merge_duplicates
+    - hunt_misses
+    - name_must_keep
+    - check_matrix_cell_support
+    - 'Every substantive table cell cites final finding IDs with separate [F1] [F2] citations. Before returning,
+      reread the actual final tables against the retained ledger and full source contexts. Rewrite or drop any cell
+      citing a rejected, weakened or unverified claim; never carry a rejected row as valid evidence in a cell. Preserve
+      granular support when merging duplicates. Use comma-separated full IDs in from:. No fabricated completion
+      of missing cells, attribution reversals or silent replacement of missing evidence with context. The models
+      judge meaning; code checks anchors and IDs only. Select literal spans that together carry the finding’s actor,
+      predicate, object and necessary qualification. If one span of at most 200 characters cannot do so, use anchor-b/doc-b
+      for another span, including within one document. Do not join separated text or normalize a quote into invented
+      wording. Retain both poles of a contrast. A verbatim name or prefix without the claimed predicate is insufficient:
+      re-anchor, narrow or reject it. Keep source voice, status, chronology and uncertainty in the final claim.
+      No scope record supplies positive evidence.'
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: 'a reader with the source open who needs to answer: Which documented events and processes overlap in
+      time?'
+    tables:
+    - chronology_simultaneity_inventory
+    - chronology_simultaneity_relations
+    brief: '1. Parallel process lanes with actor, event or interval, date precision and status; an overlap table
+      identifies which intervals intersect and whether a source establishes synchronization, discrepancy or merely
+      approximate contemporaneity. No causal arrows follow from overlap alone.
+
+      2. Lead with the most consequential supported distinction, organized around source objects and questions.
+      Useful inventory coverage is the deliverable; do not force a novel thesis.
+
+      3. Render the two named Markdown tables, with explicit limits and citable rows; end with what is established
+      and the evidence still needed.
+
+      4. With multiple supplied texts, establish local inventories before an aligned relation; with one text do
+      not pretend there is a supplied corpus.
+
+      Every substantive table cell cites final finding IDs with separate [F1] [F2] citations. Before returning,
+      reread the actual final tables against the retained ledger and full source contexts. Rewrite or drop any cell
+      citing a rejected, weakened or unverified claim; never carry a rejected row as valid evidence in a cell. Preserve
+      granular support when merging duplicates. Use comma-separated full IDs in from:. No fabricated completion
+      of missing cells, attribution reversals or silent replacement of missing evidence with context. The models
+      judge meaning; code checks anchors and IDs only. Select literal spans that together carry the finding’s actor,
+      predicate, object and necessary qualification. If one span of at most 200 characters cannot do so, use anchor-b/doc-b
+      for another span, including within one document. Do not join separated text or normalize a quote into invented
+      wording. Retain both poles of a contrast. A verbatim name or prefix without the claimed predicate is insufficient:
+      re-anchor, narrow or reject it. Keep source voice, status, chronology and uncertainty in the final claim.
+      No scope record supplies positive evidence.'

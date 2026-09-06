@@ -1,0 +1,222 @@
+# Third queue: communications/study/REDESIGN_third_queue_2026-09-06.md
+engine_key: resource_distribution
+engine_name: Distribution of resources, benefits and risks
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: Who supplies resources, receives benefits and bears risks in the documented arrangement? Documented
+    arrangement with named actors and source-supported transfers or burdens.
+  framing: A resource-flow and burden inventory with supplying actor, receiving actor, resource, mechanism, amount/unit/date/status
+    when given, and beneficiary or risk bearer. Explain documented asymmetries without converting a fund total into
+    a project allocation or a benefit into a motive. Preserve Who pays? Who profits? Who bears the risks? and FROM
+    → TO / magnitude / mechanism. Replace hidden-interest inference and compulsory asymmetry severity with documented
+    transfers and source-reported burdens. Aggregates, pledges and eligibility are not disbursements.
+  scoped_outcomes: true
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: flows
+    id_prefix: D1
+    name: Resource flows
+    scope: document
+    load_bearing: true
+    questions:
+    - Who pays? Who profits? Who bears the risks?
+    answer_shape: '[D1.F<n>] <one source-scoped finding> — dim: flows — supplier: <value or unknown> — recipient:
+      <value or unknown> — resource: <value or unknown> — mechanism: <value or unknown> — anchor: "<literal actor
+      and predicate span, <=200 chars>" — doc: <source key> — confidence: high|medium|low'
+    method_card: 'Do: Anchor the from-to transfer predicate and its status. Record nonfinancial resources, knowledge
+      and access as well as money. Select literal spans that together carry the finding’s actor, predicate, object
+      and necessary qualification. If one span of at most 200 characters cannot do so, use anchor-b/doc-b for another
+      span, including within one document. Do not join separated text or normalize a quote into invented wording.
+      Retain both poles of a contrast. A verbatim name or prefix without the claimed predicate is insufficient:
+      re-anchor, narrow or reject it. Keep source voice, status, chronology and uncertainty in the final claim.
+      No scope record supplies positive evidence.'
+    indicators:
+    - funds
+    - supplies
+    - transfers
+  - key: quantities
+    id_prefix: D2
+    name: Amounts and status
+    scope: document
+    load_bearing: true
+    questions:
+    - What amount, unit, period and commitment or realization status belongs to each reported flow?
+    answer_shape: '[D2.F<n>] <one source-scoped finding> — dim: quantities — flow: <value or unknown> — amount:
+      <value or unknown> — unit: <value or unknown> — period: <value or unknown> — status: <value or unknown> —
+      anchor: "<literal actor and predicate span, <=200 chars>" — doc: <source key> — confidence: high|medium|low'
+    method_card: 'Do: Keep aggregates separate from allocations and targets from expenditure. Missing amount is
+      unknown, not zero; a total program fund cannot be assigned to one case. Select literal spans that together
+      carry the finding’s actor, predicate, object and necessary qualification. If one span of at most 200 characters
+      cannot do so, use anchor-b/doc-b for another span, including within one document. Do not join separated text
+      or normalize a quote into invented wording. Retain both poles of a contrast. A verbatim name or prefix without
+      the claimed predicate is insufficient: re-anchor, narrow or reject it. Keep source voice, status, chronology
+      and uncertainty in the final claim. No scope record supplies positive evidence.'
+    indicators:
+    - million
+    - committed
+    - allocated
+  - key: benefits
+    id_prefix: D3
+    name: Benefits and value chains
+    scope: document
+    load_bearing: true
+    questions:
+    - Who receives the stated benefit, at which stage of the arrangement, through what mechanism?
+    answer_shape: '[D3.F<n>] <one source-scoped finding> — dim: benefits — beneficiary: <value or unknown> — benefit:
+      <value or unknown> — stage: <value or unknown> — mechanism: <value or unknown> — anchor: "<literal actor and
+      predicate span, <=200 chars>" — doc: <source key> — confidence: high|medium|low'
+    method_card: 'Do: Quote the benefit predicate and its recipient. Separate promised commercial opportunities
+      from demonstrated revenue or profit. Select literal spans that together carry the finding’s actor, predicate,
+      object and necessary qualification. If one span of at most 200 characters cannot do so, use anchor-b/doc-b
+      for another span, including within one document. Do not join separated text or normalize a quote into invented
+      wording. Retain both poles of a contrast. A verbatim name or prefix without the claimed predicate is insufficient:
+      re-anchor, narrow or reject it. Keep source voice, status, chronology and uncertainty in the final claim.
+      No scope record supplies positive evidence.'
+    indicators:
+    - access
+    - contracts
+    - returns
+  - key: burdens
+    id_prefix: D4
+    name: Costs and risks
+    scope: document
+    load_bearing: false
+    questions:
+    - Which actor bears a stated cost or risk, and does the text describe a transfer of that burden?
+    answer_shape: '[D4.F<n>] <one source-scoped finding> — dim: burdens — risk: <value or unknown> — generator:
+      <value or unknown> — bearer: <value or unknown> — transfer-status: <value or unknown> — anchor: "<literal
+      actor and predicate span, <=200 chars>" — doc: <source key> — confidence: high|medium|low'
+    method_card: 'Do: A warning about a risk is not an observed loss. Preserve financial, social, operational and
+      political kinds. Select literal spans that together carry the finding’s actor, predicate, object and necessary
+      qualification. If one span of at most 200 characters cannot do so, use anchor-b/doc-b for another span, including
+      within one document. Do not join separated text or normalize a quote into invented wording. Retain both poles
+      of a contrast. A verbatim name or prefix without the claimed predicate is insufficient: re-anchor, narrow
+      or reject it. Keep source voice, status, chronology and uncertainty in the final claim. No scope record supplies
+      positive evidence.'
+    indicators:
+    - cost
+    - liability
+    - risk
+  - key: asymmetries
+    id_prefix: D5
+    name: Supported asymmetries
+    scope: document
+    load_bearing: false
+    questions:
+    - Which evidenced flows or burdens support a distributional asymmetry, and what limits the comparison?
+    answer_shape: '[D5.F<n>] <one source-scoped finding> — dim: asymmetries — relation: <value or unknown> — advantage:
+      <value or unknown> — burden: <value or unknown> — comparison-limit: <value or unknown> — anchor: "<literal
+      actor and predicate span, <=200 chars>" — doc: <source key> — confidence: high|medium|low'
+    method_card: 'Do: Compare like quantities and roles. Name structural advantages without treating them as proof
+      of intention or capture. Select literal spans that together carry the finding’s actor, predicate, object and
+      necessary qualification. If one span of at most 200 characters cannot do so, use anchor-b/doc-b for another
+      span, including within one document. Do not join separated text or normalize a quote into invented wording.
+      Retain both poles of a contrast. A verbatim name or prefix without the claimed predicate is insufficient:
+      re-anchor, narrow or reject it. Keep source voice, status, chronology and uncertainty in the final claim.
+      No scope record supplies positive evidence.'
+    indicators:
+    - unequal
+    - public
+    - private
+  - key: across_sources
+    id_prefix: X6
+    name: Aligned objects across supplied sources
+    scope: corpus
+    load_bearing: false
+    questions:
+    - Which supplied sources address the same object on this method’s question, and what aligned agreement or difference
+      do their passages support?
+    answer_shape: '[X6.F<n>] <scoped relation> — dim: across_sources — object: <aligned object> — relation: <agreement
+      or difference> — anchor: "<literal supporting span>" — doc: <A> — anchor-b: "<literal supporting span>" —
+      doc-b: <different B> — confidence: high|medium|low'
+    method_card: 'Do: Establish a local inventory in each supplied document first. Match identity, question, time
+      and scope before relating findings. Preserve two distinct source keys and the predicate on each side. One
+      article quoting several authors is still one supplied document. Select literal spans that together carry the
+      finding’s actor, predicate, object and necessary qualification. If one span of at most 200 characters cannot
+      do so, use anchor-b/doc-b for another span, including within one document. Do not join separated text or normalize
+      a quote into invented wording. Retain both poles of a contrast. A verbatim name or prefix without the claimed
+      predicate is insufficient: re-anchor, narrow or reject it. Keep source voice, status, chronology and uncertainty
+      in the final claim. No scope record supplies positive evidence.'
+    indicators:
+    - same object in two sources
+    - different answers to an aligned question
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension_x_document
+    model_tier: cheap
+    output: ledger
+    max_rows: 8
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - reject_biography
+    - merge_duplicates
+    - hunt_misses
+    - name_must_keep
+    - check_matrix_cell_support
+    - 'Every substantive table cell cites final finding IDs with separate [F1] [F2] citations. Before returning,
+      reread the actual final tables against the retained ledger and full source contexts. Rewrite or drop any cell
+      citing a rejected, weakened or unverified claim; never carry a rejected row as valid evidence in a cell. Preserve
+      granular support when merging duplicates. Use comma-separated full IDs in from:. No fabricated completion
+      of missing cells, attribution reversals or silent replacement of missing evidence with context. The models
+      judge meaning; code checks anchors and IDs only. Select literal spans that together carry the finding’s actor,
+      predicate, object and necessary qualification. If one span of at most 200 characters cannot do so, use anchor-b/doc-b
+      for another span, including within one document. Do not join separated text or normalize a quote into invented
+      wording. Retain both poles of a contrast. A verbatim name or prefix without the claimed predicate is insufficient:
+      re-anchor, narrow or reject it. Keep source voice, status, chronology and uncertainty in the final claim.
+      No scope record supplies positive evidence.'
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: 'a reader with the source open who needs to answer: Who supplies resources, receives benefits and bears
+      risks in the documented arrangement?'
+    tables:
+    - resource_distribution_inventory
+    - resource_distribution_relations
+    brief: '1. A resource-flow and burden inventory with supplying actor, receiving actor, resource, mechanism,
+      amount/unit/date/status when given, and beneficiary or risk bearer. Explain documented asymmetries without
+      converting a fund total into a project allocation or a benefit into a motive.
+
+      2. Lead with the most consequential supported distinction, organized around source objects and questions.
+      Useful inventory coverage is the deliverable; do not force a novel thesis.
+
+      3. Render the two named Markdown tables, with explicit limits and citable rows; end with what is established
+      and the evidence still needed.
+
+      4. With multiple supplied texts, establish local inventories before an aligned relation; with one text do
+      not pretend there is a supplied corpus.
+
+      Every substantive table cell cites final finding IDs with separate [F1] [F2] citations. Before returning,
+      reread the actual final tables against the retained ledger and full source contexts. Rewrite or drop any cell
+      citing a rejected, weakened or unverified claim; never carry a rejected row as valid evidence in a cell. Preserve
+      granular support when merging duplicates. Use comma-separated full IDs in from:. No fabricated completion
+      of missing cells, attribution reversals or silent replacement of missing evidence with context. The models
+      judge meaning; code checks anchors and IDs only. Select literal spans that together carry the finding’s actor,
+      predicate, object and necessary qualification. If one span of at most 200 characters cannot do so, use anchor-b/doc-b
+      for another span, including within one document. Do not join separated text or normalize a quote into invented
+      wording. Retain both poles of a contrast. A verbatim name or prefix without the claimed predicate is insufficient:
+      re-anchor, narrow or reject it. Keep source voice, status, chronology and uncertainty in the final claim.
+      No scope record supplies positive evidence.'

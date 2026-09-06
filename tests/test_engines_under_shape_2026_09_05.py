@@ -9,7 +9,12 @@ UNDER_THE_SHAPE = ("conditions_of_possibility_analyzer", "argument_architecture"
                    "comparative_reasoning_analyzer", "concept_centrality_mapper", "chapter_role_analyzer",
                    "compare_concept_trajectories", "concept_appropriation_tracker", "revision_presentation",
                    "counterfactual_analyzer", "dialectical_structure", "modal_force_inventory", "meaning_in_use",
-                   "framework_components", "narrative_form_perspective", "theory_construction_analyzer")
+                   "framework_components", "narrative_form_perspective", "theory_construction_analyzer",
+                   # Third queue: twelve single-document methods (2026-09-06)
+                   "metaphorical_mappings", "quote_attribution_voice", "stakeholder_power_interest",
+                   "resource_distribution", "incentives_constrained_choices", "rules_and_responses",
+                   "chronology_simultaneity", "periodization_critic", "categories_boundaries",
+                   "claim_provenance", "entity_extraction", "exemplar_catalog")
 BANNED = ("author's prior work", "reputational", "embarrass", "would the author be comfortable", "husserlian critique", "the author's own social position")
 
 
