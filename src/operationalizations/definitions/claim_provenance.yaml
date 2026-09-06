@@ -1,4 +1,4 @@
-# Third queue: communications/study/REDESIGN_third_queue_2026-09-06.md
+# Third queue: bounded source-defect repair, 2026-09-06
 engine_key: claim_provenance
 engine_name: Claim provenance and corroboration
 stance_operationalizations: []
@@ -15,12 +15,19 @@ process:
   key: dvs
   description: Through which sources and transformations did the collection's claims arrive? Supplied claim-bearing
     sources and any available originals or intermediaries; record missing links.
-  framing: A claim-origin-and-chain inventory linking important numbers, dates and mechanisms to the immediate cited
-    or reported source, stated transformation and access status. A dependence table distinguishes repeated reporting,
-    asserted corroboration and genuinely inspected independent support; missing originals stay unverified. Preserve
-    Where do these claims come from, and how reliable are those sources? as a bounded source-status question. Uninspected
-    citations cannot show actual degradation, reliability or independent corroboration. Replace the presumption
-    of tracing actual origin with the chain the supplied text documents.
+  framing: 'A claim-origin-and-chain inventory linking important numbers, dates and mechanisms to the immediate
+    cited or reported source, stated transformation and access status. A dependence table distinguishes repeated
+    reporting, asserted corroboration and genuinely inspected independent support; missing originals stay unverified.
+    Preserve Where do these claims come from, and how reliable are those sources? as a bounded source-status question.
+    Uninspected citations cannot show actual degradation, reliability or independent corroboration. Replace the
+    presumption of tracing actual origin with the chain the supplied text documents. Assign an intermediary citation
+    separately to each claim''s full predicate. Inspect the sentence boundary and the exact position of the citation:
+    a citation closing one sentence does not automatically cover the next sentence, especially one beginning Meanwhile
+    or introducing a different actor, amount or program. When the source states a claim without an attached citation,
+    record author assertion / upstream unspecified; a neighboring reference can only be an explicitly unresolved
+    candidate. Keep these distinct in every table cell and summary; never merge a cited award and an uncited loan
+    into one attributed financial claim. Do not upgrade bibliography metadata into evidence of what an unseen source
+    actually says.'
   scoped_outcomes: true
   routing:
     cheap: openrouter/openai/gpt-5.6-luna
@@ -43,7 +50,14 @@ process:
       most 200 characters cannot do so, use anchor-b/doc-b for another span, including within one document. Do not
       join separated text or normalize a quote into invented wording. Retain both poles of a contrast. A verbatim
       name or prefix without the claimed predicate is insufficient: re-anchor, narrow or reject it. Keep source
-      voice, status, chronology and uncertainty in the final claim. No scope record supplies positive evidence.'
+      voice, status, chronology and uncertainty in the final claim. No scope record supplies positive evidence.
+      Assign an intermediary citation separately to each claim''s full predicate. Inspect the sentence boundary
+      and the exact position of the citation: a citation closing one sentence does not automatically cover the next
+      sentence, especially one beginning Meanwhile or introducing a different actor, amount or program. When the
+      source states a claim without an attached citation, record author assertion / upstream unspecified; a neighboring
+      reference can only be an explicitly unresolved candidate. Keep these distinct in every table cell and summary;
+      never merge a cited award and an uncited loan into one attributed financial claim. Do not upgrade bibliography
+      metadata into evidence of what an unseen source actually says.'
     indicators:
     - according to
     - reports
@@ -64,7 +78,14 @@ process:
       use anchor-b/doc-b for another span, including within one document. Do not join separated text or normalize
       a quote into invented wording. Retain both poles of a contrast. A verbatim name or prefix without the claimed
       predicate is insufficient: re-anchor, narrow or reject it. Keep source voice, status, chronology and uncertainty
-      in the final claim. No scope record supplies positive evidence.'
+      in the final claim. No scope record supplies positive evidence. Assign an intermediary citation separately
+      to each claim''s full predicate. Inspect the sentence boundary and the exact position of the citation: a citation
+      closing one sentence does not automatically cover the next sentence, especially one beginning Meanwhile or
+      introducing a different actor, amount or program. When the source states a claim without an attached citation,
+      record author assertion / upstream unspecified; a neighboring reference can only be an explicitly unresolved
+      candidate. Keep these distinct in every table cell and summary; never merge a cited award and an uncited loan
+      into one attributed financial claim. Do not upgrade bibliography metadata into evidence of what an unseen
+      source actually says.'
     indicators:
     - quoting
     - drawing on
@@ -85,7 +106,14 @@ process:
       use anchor-b/doc-b for another span, including within one document. Do not join separated text or normalize
       a quote into invented wording. Retain both poles of a contrast. A verbatim name or prefix without the claimed
       predicate is insufficient: re-anchor, narrow or reject it. Keep source voice, status, chronology and uncertainty
-      in the final claim. No scope record supplies positive evidence.'
+      in the final claim. No scope record supplies positive evidence. Assign an intermediary citation separately
+      to each claim''s full predicate. Inspect the sentence boundary and the exact position of the citation: a citation
+      closing one sentence does not automatically cover the next sentence, especially one beginning Meanwhile or
+      introducing a different actor, amount or program. When the source states a claim without an attached citation,
+      record author assertion / upstream unspecified; a neighboring reference can only be an explicitly unresolved
+      candidate. Keep these distinct in every table cell and summary; never merge a cited award and an uncited loan
+      into one attributed financial claim. Do not upgrade bibliography metadata into evidence of what an unseen
+      source actually says.'
     indicators:
     - estimated
     - summarized
@@ -106,7 +134,14 @@ process:
       of at most 200 characters cannot do so, use anchor-b/doc-b for another span, including within one document.
       Do not join separated text or normalize a quote into invented wording. Retain both poles of a contrast. A
       verbatim name or prefix without the claimed predicate is insufficient: re-anchor, narrow or reject it. Keep
-      source voice, status, chronology and uncertainty in the final claim. No scope record supplies positive evidence.'
+      source voice, status, chronology and uncertainty in the final claim. No scope record supplies positive evidence.
+      Assign an intermediary citation separately to each claim''s full predicate. Inspect the sentence boundary
+      and the exact position of the citation: a citation closing one sentence does not automatically cover the next
+      sentence, especially one beginning Meanwhile or introducing a different actor, amount or program. When the
+      source states a claim without an attached citation, record author assertion / upstream unspecified; a neighboring
+      reference can only be an explicitly unresolved candidate. Keep these distinct in every table cell and summary;
+      never merge a cited award and an uncited loan into one attributed financial claim. Do not upgrade bibliography
+      metadata into evidence of what an unseen source actually says.'
     indicators:
     - same source
     - confirmed
@@ -127,7 +162,14 @@ process:
       cannot do so, use anchor-b/doc-b for another span, including within one document. Do not join separated text
       or normalize a quote into invented wording. Retain both poles of a contrast. A verbatim name or prefix without
       the claimed predicate is insufficient: re-anchor, narrow or reject it. Keep source voice, status, chronology
-      and uncertainty in the final claim. No scope record supplies positive evidence.'
+      and uncertainty in the final claim. No scope record supplies positive evidence. Assign an intermediary citation
+      separately to each claim''s full predicate. Inspect the sentence boundary and the exact position of the citation:
+      a citation closing one sentence does not automatically cover the next sentence, especially one beginning Meanwhile
+      or introducing a different actor, amount or program. When the source states a claim without an attached citation,
+      record author assertion / upstream unspecified; a neighboring reference can only be an explicitly unresolved
+      candidate. Keep these distinct in every table cell and summary; never merge a cited award and an uncited loan
+      into one attributed financial claim. Do not upgrade bibliography metadata into evidence of what an unseen
+      source actually says.'
     indicators:
     - however
     - differs
@@ -150,7 +192,14 @@ process:
       do so, use anchor-b/doc-b for another span, including within one document. Do not join separated text or normalize
       a quote into invented wording. Retain both poles of a contrast. A verbatim name or prefix without the claimed
       predicate is insufficient: re-anchor, narrow or reject it. Keep source voice, status, chronology and uncertainty
-      in the final claim. No scope record supplies positive evidence.'
+      in the final claim. No scope record supplies positive evidence. Assign an intermediary citation separately
+      to each claim''s full predicate. Inspect the sentence boundary and the exact position of the citation: a citation
+      closing one sentence does not automatically cover the next sentence, especially one beginning Meanwhile or
+      introducing a different actor, amount or program. When the source states a claim without an attached citation,
+      record author assertion / upstream unspecified; a neighboring reference can only be an explicitly unresolved
+      candidate. Keep these distinct in every table cell and summary; never merge a cited award and an uncited loan
+      into one attributed financial claim. Do not upgrade bibliography metadata into evidence of what an unseen
+      source actually says.'
     indicators:
     - same object in two sources
     - different answers to an aligned question
@@ -185,6 +234,13 @@ process:
       wording. Retain both poles of a contrast. A verbatim name or prefix without the claimed predicate is insufficient:
       re-anchor, narrow or reject it. Keep source voice, status, chronology and uncertainty in the final claim.
       No scope record supplies positive evidence.'
+    - 'Assign an intermediary citation separately to each claim''s full predicate. Inspect the sentence boundary
+      and the exact position of the citation: a citation closing one sentence does not automatically cover the next
+      sentence, especially one beginning Meanwhile or introducing a different actor, amount or program. When the
+      source states a claim without an attached citation, record author assertion / upstream unspecified; a neighboring
+      reference can only be an explicitly unresolved candidate. Keep these distinct in every table cell and summary;
+      never merge a cited award and an uncited loan into one attributed financial claim. Do not upgrade bibliography
+      metadata into evidence of what an unseen source actually says.'
   - key: synthesize
     kind: synthesize
     consumes:
@@ -220,4 +276,13 @@ process:
       for another span, including within one document. Do not join separated text or normalize a quote into invented
       wording. Retain both poles of a contrast. A verbatim name or prefix without the claimed predicate is insufficient:
       re-anchor, narrow or reject it. Keep source voice, status, chronology and uncertainty in the final claim.
-      No scope record supplies positive evidence.'
+      No scope record supplies positive evidence.
+
+
+      Assign an intermediary citation separately to each claim''s full predicate. Inspect the sentence boundary
+      and the exact position of the citation: a citation closing one sentence does not automatically cover the next
+      sentence, especially one beginning Meanwhile or introducing a different actor, amount or program. When the
+      source states a claim without an attached citation, record author assertion / upstream unspecified; a neighboring
+      reference can only be an explicitly unresolved candidate. Keep these distinct in every table cell and summary;
+      never merge a cited award and an uncited loan into one attributed financial claim. Do not upgrade bibliography
+      metadata into evidence of what an unseen source actually says.'
