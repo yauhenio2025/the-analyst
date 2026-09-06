@@ -91,7 +91,7 @@
   - `src/executor/db.py:1-283` - Dual-backend DB abstraction (Postgres via psycopg2 + SQLite), init_db(), execute(), 4 tables
   - `src/executor/engine_runner.py:1-887` - Atomic LLM call: MODEL_CONFIGS (opus/sonnet/haiku), PHASE_MODEL_DEFAULTS, sync API by default (PREFER_SYNC=true, 100x faster on Render), streaming with adaptive thinking when ENABLE_STREAMING=true, smart 1M context avoidance (prefer standard 200K by reducing max_tokens), auto-fallback to 1M beta for both sync and streaming, dynamic effort scaling for large inputs, partial output salvage on connection drop, heartbeat monitoring with [std]/[1M] tags, exponential backoff retry (5 attempts), document chunking (CHUNK_THRESHOLD=200K chars, re-enabled — O(n²) attention is model-side)
   - `src/executor/context_broker.py:1-200` - Cross-phase context assembly with emphasis injection, inner-pass context threading, chain context forwarding, phase_max_chars_override (M5)
-  - `src/executor/chain_runner.py:1-494` - Sequential chain execution using capability_composer, multi-pass operationalization support, run_chain() + run_single_engine()
+  - `src/executor/chain_runner.py:50-811` - Sequential chain execution using capability_composer, multi-pass operationalization support; `run_chain` (line 50), `_run_engine_passes` (240) dispatching on the depth's mode, `_run_engine_process` (523), `run_single_engine` (742)()
   - `src/executor/phase_runner.py:1-803` - Phase resolution (chain_key/engine_key), per-work iteration with ThreadPoolExecutor, plan override application, supplementary chain execution (M5), _combine_with_distilled_analysis (M5), _run_chapter_targeted_phase() for per-chapter analysis
   - `src/executor/workflow_runner.py:1-771` - Top-level DAG execution, dependency-aware parallel phases, progress tracking, context_char_overrides threading (M5), execute_plan() + start_execution_thread(), mid-course revision checkpoint between phase groups
   - `src/executor/chapter_splitter.py:1-186` - Regex-based chapter detection and extraction, configurable patterns, chapter metadata
@@ -473,14 +473,14 @@
   - `src/operationalizations/schemas.py:96-168` - ProcessDimension, ProcessStep, ProcessSpec; `DepthSequence.process`; `EngineOperationalization.process_for_depth`
   - `src/operationalizations/definitions/conditions_of_possibility_analyzer.yaml` - `process:` block (givens, inheritance, apparatus, visibility, rivals, path_dependence)
   - `src/operationalizations/definitions/argument_architecture.yaml` - `process:` block (claims, skeleton, schemes, dialectic, omissions, exchange)
-  - `src/stages/process_composer.py:1-60` - laws and the ProcessPrompt; `compose_extract_prompt`, `compose_verify_prompt`, `compose_synthesize_prompt`, `compose_oneshot_prompt`
-  - `src/executor/ledger_walls.py` - `parse_rows`, `SourceIndex`, `verify_quote`, `verify_rows`, `check_citations`, `reanchor_request`
-  - `src/executor/process_runner.py` - `resolve_step_model`, `run_process`, `preview_prompts`, receipts
+  - `src/stages/process_composer.py:21-76` - the laws (`LEDGER_HEADING`, `ANCHORING_LAW` with the predicate rule, `TEXT_NOT_AUTHORS`); `ProcessPrompt` (77); `compose_extract_prompt` (187), `compose_verify_prompt`, `compose_synthesize_prompt`, `compose_oneshot_prompt`
+  - `src/executor/ledger_walls.py` - `parse_rows`, `SourceIndex`, `verify_quote`, `verify_rows`, `cited_ids`, `citing_text`, `check_citations`, `reanchor_request`; `src/dossier/walls.normalize` strips markdown emphasis
+  - `src/executor/process_runner.py` - `resolve_step_model`, `run_process` (the `dvs` chain), `run_oneshot_checked` (read → check → rulings applied by code; tables reconciled on the strong tier only when the check touched a cited row; corpus methods always reconcile), `apply_rulings`, `assemble_checked_content` (inline tag on prose citations of rejected rows), `preview_prompts`, receipts
   - `src/executor/chain_runner.py` - `_run_engine_passes` dispatch when the depth key names a process; `_run_engine_process`
   - `src/api/routes/operationalizations.py` - `GET /{engine_key}/process`, `POST /{engine_key}/process-preview`
   - `scripts/study_engine_harness_v3.py` - the frontier study (a/b/c/d × 7 models × 2 papers × 2 engines; two judges)
 - **Dependencies**: `src/dossier/walls.normalize`, `src/executor/context_broker.split_ledger`, `src/events/pricing`, OpenRouter key for the cheap and mid tiers
-- **Added**: 2026-09-04 | **Modified**: 2026-09-05
+- **Added**: 2026-09-04 | **Modified**: 2026-09-06
 
 ### Desks read the findings ledger by id
 - **Status**: Active (2026-09-05)
