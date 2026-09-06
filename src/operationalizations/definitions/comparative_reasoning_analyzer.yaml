@@ -1,4 +1,3 @@
-# Second queue repair: prompts/cards only; analytical questions preserved.
 engine_key: comparative_reasoning_analyzer
 engine_name: Audit comparisons and analogies
 stance_operationalizations: []
@@ -60,7 +59,12 @@ process:
     method_card: 'Do: Map the relevant relation, not shared adjectives. Give supporting spans for both compared
       sides; unsupported external facts stay unverified. Repair discipline: Across page headers or intervening material,
       give two literal spans, never a silently joined quotation. Preserve the full asserted correspondence and its
-      speaker.'
+      speaker. Inventory consequential comparisons inside worked economic, institutional and financial applications
+      as well as headline classifications and historical analogies. Where the text contrasts a policy justification
+      with distributional or financial-power effects, reconstruct that comparison separately: actors, resources,
+      valuation or control mechanism, warranted consequence and strongest alternative. Do not reduce such a comparison
+      to naming a new business class, and do not turn every financial term into an analogy. Keep the audit compact
+      enough that each distinct inference is visible.'
     indicators:
     - corresponds
     - same relation
@@ -120,7 +124,12 @@ process:
     method_card: 'Do: Use the text’s own third cases first. Do not infer case-selection motives or force an illustrative
       example to be a representative sample. Repair discipline: Read the strongest supplied alternative inference
       before ranking it. Anchor the complete alternative, including its actor, resources and power where asserted;
-      a stock example alone cannot establish the conclusion.'
+      a stock example alone cannot establish the conclusion. Inventory consequential comparisons inside worked economic,
+      institutional and financial applications as well as headline classifications and historical analogies. Where
+      the text contrasts a policy justification with distributional or financial-power effects, reconstruct that
+      comparison separately: actors, resources, valuation or control mechanism, warranted consequence and strongest
+      alternative. Do not reduce such a comparison to naming a new business class, and do not turn every financial
+      term into an analogy. Keep the audit compact enough that each distinct inference is visible.'
     indicators:
     - either
     - all cases
@@ -199,6 +208,12 @@ process:
       classification without an explicit warrant. Quote the actual criterion and any passage limiting its force.
       Read the strongest supplied alternative inference before ranking it. Anchor the complete alternative, including
       its actor, resources and power where asserted; a stock example alone cannot establish the conclusion.'
+    - 'Inventory consequential comparisons inside worked economic, institutional and financial applications as well
+      as headline classifications and historical analogies. Where the text contrasts a policy justification with
+      distributional or financial-power effects, reconstruct that comparison separately: actors, resources, valuation
+      or control mechanism, warranted consequence and strongest alternative. Do not reduce such a comparison to
+      naming a new business class, and do not turn every financial term into an analogy. Keep the audit compact
+      enough that each distinct inference is visible.'
   - key: synthesize
     kind: synthesize
     consumes:
@@ -240,4 +255,12 @@ process:
 
       After the check, rewrite or drop cells resting on rejected or unverified findings; rewrite weakened claims
       everywhere they occur. A rejection tag is acceptable only in prose, not as validation of a table cell. Keep
-      separate granular support when deduplicating. Apply the method-card repairs to the final reading and its tables.'
+      separate granular support when deduplicating. Apply the method-card repairs to the final reading and its tables.
+
+
+      Final source-read repair: Inventory consequential comparisons inside worked economic, institutional and financial
+      applications as well as headline classifications and historical analogies. Where the text contrasts a policy
+      justification with distributional or financial-power effects, reconstruct that comparison separately: actors,
+      resources, valuation or control mechanism, warranted consequence and strongest alternative. Do not reduce
+      such a comparison to naming a new business class, and do not turn every financial term into an analogy. Keep
+      the audit compact enough that each distinct inference is visible.'

@@ -1,4 +1,3 @@
-# Second queue repair: prompts/cards only; analytical questions preserved.
 engine_key: narrative_form_perspective
 engine_name: Narrative form and perspective
 process:
@@ -29,7 +28,11 @@ process:
       <local or sustained> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source key> — confidence:
       high|medium|low'
     method_card: 'Do: Read the actual order of presentation; distinguish events from the order of an exposition.
-      Do not impose romance, tragedy or a closed plot.'
+      Do not impose romance, tragedy or a closed plot. Before asserting an A-to-B presentation sequence, reread
+      the actual adjacent source paragraphs, including across page breaks. Preserve the order of the author’s final
+      scholarly task, policy advice and conditional prescription. The analyst may end with an open question, but
+      must not relocate the source’s research question to the end to fit that analytical ending. Both prose and
+      sequence cells must follow the source’s actual order.'
     indicators:
     - initially
     - then
@@ -119,7 +122,11 @@ process:
       issue> — consequence: <interpretive effect> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source
       key> — confidence: high|medium|low'
     method_card: 'Do: Compare the closure with the evidence and stated question. Open-endedness can be the intended
-      textual result; do not manufacture hidden resolution or author intention.'
+      textual result; do not manufacture hidden resolution or author intention. Before asserting an A-to-B presentation
+      sequence, reread the actual adjacent source paragraphs, including across page breaks. Preserve the order of
+      the author’s final scholarly task, policy advice and conditional prescription. The analyst may end with an
+      open question, but must not relocate the source’s research question to the end to fit that analytical ending.
+      Both prose and sequence cells must follow the source’s actual order.'
     indicators:
     - remains
     - finally
@@ -179,6 +186,10 @@ process:
       and consequence where one short quote cannot carry them. Name each attributed voice from an explicit attribution
       span; preserve whether the text reports, endorses or contests the voice. Keep the quoted position and its
       attribution together.'
+    - Before asserting an A-to-B presentation sequence, reread the actual adjacent source paragraphs, including
+      across page breaks. Preserve the order of the author’s final scholarly task, policy advice and conditional
+      prescription. The analyst may end with an open question, but must not relocate the source’s research question
+      to the end to fit that analytical ending. Both prose and sequence cells must follow the source’s actual order.
   - key: synthesize
     kind: synthesize
     consumes:
@@ -220,7 +231,14 @@ process:
 
       After the check, rewrite or drop cells resting on rejected or unverified findings; rewrite weakened claims
       everywhere they occur. A rejection tag is acceptable only in prose, not as validation of a table cell. Keep
-      separate granular support when deduplicating. Apply the method-card repairs to the final reading and its tables.'
+      separate granular support when deduplicating. Apply the method-card repairs to the final reading and its tables.
+
+
+      Final source-read repair: Before asserting an A-to-B presentation sequence, reread the actual adjacent source
+      paragraphs, including across page breaks. Preserve the order of the author’s final scholarly task, policy
+      advice and conditional prescription. The analyst may end with an open question, but must not relocate the
+      source’s research question to the end to fit that analytical ending. Both prose and sequence cells must follow
+      the source’s actual order.'
 stance_operationalizations: []
 depth_sequences:
 - depth_key: surface
