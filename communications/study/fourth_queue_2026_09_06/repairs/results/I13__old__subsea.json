@@ -1,0 +1,56 @@
+{
+  "status": "complete",
+  "job": {
+    "id": "I13",
+    "engine": "deal_flow_tracker",
+    "papers": [
+      "subsea"
+    ],
+    "condition": "old"
+  },
+  "output_sha256": "8e68e8c9d23e59139816b009c0a0eded77e68f15b9a6d9fa972ae2a372ead8c8",
+  "seconds": 93.57667922973633,
+  "process": {
+    "calls": [
+      {
+        "step": "old_oneshot",
+        "model_used": "openrouter/openai/gpt-5.6-sol",
+        "input_tokens": 19354,
+        "output_tokens": 5815,
+        "stop_reason": "stop",
+        "partial": false,
+        "duration_ms": 93572,
+        "retries": 0
+      }
+    ]
+  },
+  "audit": {
+    "wall": {
+      "rows": 28,
+      "with_anchor": 28,
+      "verified": 26,
+      "trimmed": 3,
+      "anchor_rate": 0.929,
+      "failed_ids": [
+        "F26",
+        "F27"
+      ],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 28,
+      "verified_anchors": 26,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "rows": 28,
+    "raw_anchors": 28,
+    "raw_exact": 8,
+    "unknown_dimensions": [],
+    "missing_table_ids": [],
+    "missing_prose_ids": []
+  }
+}

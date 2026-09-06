@@ -1,0 +1,956 @@
+{
+  "status": "complete",
+  "job": {
+    "id": "C5",
+    "engine": "conditional_relations",
+    "papers": [
+      "chen"
+    ],
+    "condition": "checked"
+  },
+  "output_sha256": "731940d0b3bd2a7de83e2f65221eef4f4281f127fcb6a8f441d9f233ca45e4c3",
+  "seconds": 315.7570903301239,
+  "process": {
+    "engine": "conditional_relations",
+    "process": "dvs",
+    "cost_usd": 0.2156,
+    "input_tokens": 63380,
+    "output_tokens": 18221,
+    "seconds": 312.2,
+    "final_model": "openrouter/openai/gpt-5.6-sol",
+    "final_wall": {
+      "rows": 14,
+      "with_anchor": 14,
+      "verified": 14,
+      "trimmed": 0,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 25,
+      "verified_anchors": 25,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "checked",
+        "scope": "retained_ledger",
+        "missing_rejected_ids": [],
+        "missing_other_ids": []
+      },
+      "synthesis_contract": {
+        "failed_ids": [],
+        "incomplete_cross_document_ids": [],
+        "duplicate_ids": [],
+        "missing_cited": [],
+        "unknown_dimensions": [],
+        "missing_ledger": false,
+        "parse_error": "",
+        "incomplete_invocation": false
+      },
+      "synthesis_repair_attempts": [],
+      "rows_without_dimension": 0,
+      "check_ruling_coverage": {
+        "original_count": 13,
+        "explicitly_ruled_count": 13,
+        "missing_or_unruled_ids": [],
+        "unexpected_nonadded_ids": [],
+        "invalid_original_status_ids": [],
+        "duplicate_original_ids": [],
+        "duplicate_ruling_ids": [],
+        "coverage_complete": true
+      },
+      "scope_outcomes": [
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "relations",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "Problem-solving and forms of live: Jaeggi’s pragmatist theory of progress",
+            "Criticism: Ignorance of the problem of incommensurability",
+            "Alternative: From pragmatist to psychologist understanding of progress",
+            "Conclusion"
+          ],
+          "coverage": "complete",
+          "criterion": "Stated or reconstructable if, only‑if, unless, or equivalent implication relations connecting selected propositions",
+          "basis": "The inspected sections contain explicit if‑then, in‑so‑far‑as, and when‑clauses used as conditional relations about progress, problem‑solving, and accumulation.",
+          "limitations": [
+            "Not every descriptive dependency is treated as a conditional relation.",
+            "All anchors are verbatim and separately carry the finding’s predicate or condition."
+          ],
+          "finding_ids": [
+            "F1",
+            "F5",
+            "F12"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "Each finding has a verbatim anchor that directly supports the stated conditional relation; revised rows now supply complete predicate anchors.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "direction",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "Criticism: Ignorance of the problem of incommensurability",
+            "Alternative: From pragmatist to psychologist understanding of progress",
+            "Conclusion"
+          ],
+          "coverage": "complete",
+          "criterion": "Conditions whose wording supports classification as necessary, sufficient, or both",
+          "basis": "The text contains explicit if‑then sufficient conditions (F3, F4), an only‑if necessary condition (F8), and a newly added conditional (F14) that states a sufficient condition.",
+          "limitations": [
+            "No retained relation establishes a biconditional."
+          ],
+          "finding_ids": [
+            "F3",
+            "F4",
+            "F8",
+            "F14"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "All direction findings are backed by verbatim anchors that indicate the claimed direction (sufficient, necessary).",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "nesting",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "Problem-solving and forms of live: Jaeggi’s pragmatist theory of progress",
+            "Criticism: Ignorance of the problem of incommensurability"
+          ],
+          "coverage": "complete",
+          "criterion": "Qualifications, exceptions, and case restrictions nested within conditional relations",
+          "basis": "The mode of crisis resolution is conditioned by the crisis’s form and radicality (F6), and the know‑how analogy is qualified by the absence of a shared social goal (F13, revised).",
+          "limitations": [
+            "The scientific‑community limitation is Chen’s argumentative qualification, not a universally tested empirical condition."
+          ],
+          "finding_ids": [
+            "F6",
+            "F13"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "Each nesting finding now carries verbatim anchors that capture the outer condition and the inner qualification.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "force",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "Problem-solving and forms of live: Jaeggi’s pragmatist theory of progress",
+            "Criticism: Ignorance of the problem of incommensurability"
+          ],
+          "coverage": "complete",
+          "criterion": "Necessity, possibility, or uncertainty attached to an implication, distinguished from causal claims",
+          "basis": "The text uses qualified modal language: “can be described” (F2) and “can simultaneously mean” (F7), both of which are evaluative possibilities, not causal laws.",
+          "limitations": [
+            "These formulations support evaluative or conceptual implications, not causal laws."
+          ],
+          "finding_ids": [
+            "F2",
+            "F7"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "The anchors directly contain the modal markers (can) that convey the claimed possibility force.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "tests",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "Criticism: Ignorance of the problem of incommensurability"
+          ],
+          "coverage": "complete",
+          "criterion": "Source counterexamples or limiting cases that test a conditional without automatically licensing its converse",
+          "basis": "Marriage (F9), Nazism/right‑wing populism (F10), and childhood (F11) are used as limiting cases against problem‑solving and accumulation criteria; all are now fully anchored.",
+          "limitations": [
+            "The cases are philosophical illustrations rather than systematic empirical tests."
+          ],
+          "finding_ids": [
+            "F9",
+            "F10",
+            "F11"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "Each test finding is backed by verbatim anchors that show the progress claim alongside the alleged problem or limitation.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        }
+      ]
+    },
+    "calls": [
+      {
+        "step": "read",
+        "kind": "synthesize",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/openai/gpt-5.6-sol",
+        "model_used": "openrouter/openai/gpt-5.6-sol",
+        "input_tokens": 16658,
+        "output_tokens": 4223,
+        "duration_ms": 52843,
+        "cost_usd": 0.0755,
+        "retries": 0,
+        "wall": {
+          "rows": 13,
+          "with_anchor": 13,
+          "verified": 13,
+          "trimmed": 6,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 13,
+          "verified_anchors": 13,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "has_ledger": true,
+          "prose_chars": 7646,
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "relations",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract",
+                "Problem-solving and forms of live: Jaeggi’s pragmatist theory of progress",
+                "Criticism: Ignorance of the problem of incommensurability",
+                "Alternative: From pragmatist to psychologist understanding of progress",
+                "Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "Stated or reconstructable if, only-if, unless, or equivalent implication relations connecting selected propositions",
+              "basis": "The inspected article contains explicit if-then, in-so-far-as, and equivalent conditional relations concerning progress, problem-solving, accumulation, and the proposed psychologist alternative.",
+              "limitations": [
+                "The inventory is selective and does not treat every descriptive dependency as a conditional relation."
+              ],
+              "finding_ids": [
+                "F1",
+                "F5",
+                "F12"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "direction",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Criticism: Ignorance of the problem of incommensurability"
+              ],
+              "coverage": "complete",
+              "criterion": "Conditions whose wording supports classification as necessary, sufficient, or both",
+              "basis": "The text contains explicit if-then sufficient conditions and an attributed only-if necessary condition.",
+              "limitations": [
+                "No retained relation establishes a biconditional."
+              ],
+              "finding_ids": [
+                "F3",
+                "F4",
+                "F8"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "nesting",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Problem-solving and forms of live: Jaeggi’s pragmatist theory of progress",
+                "Criticism: Ignorance of the problem of incommensurability"
+              ],
+              "coverage": "complete",
+              "criterion": "Qualifications, exceptions, and case restrictions nested within conditional relations",
+              "basis": "The mode of crisis resolution is conditioned by the crisis’s form and radicality, while the know-how reply is restricted by scientific community conditions.",
+              "limitations": [
+                "The scientific-community limitation is Chen’s argumentative qualification, not a universally tested empirical condition."
+              ],
+              "finding_ids": [
+                "F6",
+                "F13"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "force",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Problem-solving and forms of live: Jaeggi’s pragmatist theory of progress",
+                "Criticism: Ignorance of the problem of incommensurability"
+              ],
+              "coverage": "complete",
+              "criterion": "Necessity, possibility, or uncertainty attached to an implication, distinguished from causal claims",
+              "basis": "The text uses qualified classificatory and possibility language, including 'can be described' and 'can simultaneously mean.'",
+              "limitations": [
+                "These formulations support evaluative or conceptual implications, not causal laws."
+              ],
+              "finding_ids": [
+                "F2",
+                "F7"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "tests",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Criticism: Ignorance of the problem of incommensurability"
+              ],
+              "coverage": "complete",
+              "criterion": "Source counterexamples or limiting cases that test a conditional without automatically licensing its converse",
+              "basis": "Marriage, Nazism and right-wing populism, and childhood are used as limiting or counterexample cases against problem-solving and accumulation criteria.",
+              "limitations": [
+                "The cases are philosophical illustrations rather than systematic empirical tests."
+              ],
+              "finding_ids": [
+                "F9",
+                "F10",
+                "F11"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 17660
+      },
+      {
+        "step": "check",
+        "kind": "verify",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+        "model_used": "openrouter/deepseek/deepseek-v4-pro",
+        "input_tokens": 21681,
+        "output_tokens": 9178,
+        "duration_ms": 190654,
+        "cost_usd": 0.0417,
+        "retries": 0,
+        "wall": {
+          "rows": 14,
+          "with_anchor": 14,
+          "verified": 14,
+          "trimmed": 0,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 18,
+          "verified_anchors": 18,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "checked",
+            "scope": "retained_ledger",
+            "missing_rejected_ids": [],
+            "missing_other_ids": []
+          },
+          "check_in": 13,
+          "check_confirmed": 9,
+          "check_weakened": 4,
+          "check_rejected": 0,
+          "check_added": 1,
+          "check_added_dropped": 0,
+          "check_carried": 0,
+          "check_unverified": 0,
+          "check_ruling_coverage": {
+            "original_count": 13,
+            "explicitly_ruled_count": 13,
+            "missing_or_unruled_ids": [],
+            "unexpected_nonadded_ids": [],
+            "invalid_original_status_ids": [],
+            "duplicate_original_ids": [],
+            "duplicate_ruling_ids": [],
+            "coverage_complete": true
+          },
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "relations",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Problem-solving and forms of live: Jaeggi’s pragmatist theory of progress",
+                "Criticism: Ignorance of the problem of incommensurability",
+                "Alternative: From pragmatist to psychologist understanding of progress",
+                "Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "Stated or reconstructable if, only‑if, unless, or equivalent implication relations connecting selected propositions",
+              "basis": "The inspected sections contain explicit if‑then, in‑so‑far‑as, and when‑clauses used as conditional relations about progress, problem‑solving, and accumulation.",
+              "limitations": [
+                "Not every descriptive dependency is treated as a conditional relation.",
+                "All anchors are verbatim and separately carry the finding’s predicate or condition."
+              ],
+              "finding_ids": [
+                "F1",
+                "F5",
+                "F12"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "Each finding has a verbatim anchor that directly supports the stated conditional relation; revised rows now supply complete predicate anchors.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "direction",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Criticism: Ignorance of the problem of incommensurability",
+                "Alternative: From pragmatist to psychologist understanding of progress",
+                "Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "Conditions whose wording supports classification as necessary, sufficient, or both",
+              "basis": "The text contains explicit if‑then sufficient conditions (F3, F4), an only‑if necessary condition (F8), and a newly added conditional (F14) that states a sufficient condition.",
+              "limitations": [
+                "No retained relation establishes a biconditional."
+              ],
+              "finding_ids": [
+                "F3",
+                "F4",
+                "F8",
+                "F14"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "All direction findings are backed by verbatim anchors that indicate the claimed direction (sufficient, necessary).",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "nesting",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Problem-solving and forms of live: Jaeggi’s pragmatist theory of progress",
+                "Criticism: Ignorance of the problem of incommensurability"
+              ],
+              "coverage": "complete",
+              "criterion": "Qualifications, exceptions, and case restrictions nested within conditional relations",
+              "basis": "The mode of crisis resolution is conditioned by the crisis’s form and radicality (F6), and the know‑how analogy is qualified by the absence of a shared social goal (F13, revised).",
+              "limitations": [
+                "The scientific‑community limitation is Chen’s argumentative qualification, not a universally tested empirical condition."
+              ],
+              "finding_ids": [
+                "F6",
+                "F13"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "Each nesting finding now carries verbatim anchors that capture the outer condition and the inner qualification.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "force",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Problem-solving and forms of live: Jaeggi’s pragmatist theory of progress",
+                "Criticism: Ignorance of the problem of incommensurability"
+              ],
+              "coverage": "complete",
+              "criterion": "Necessity, possibility, or uncertainty attached to an implication, distinguished from causal claims",
+              "basis": "The text uses qualified modal language: “can be described” (F2) and “can simultaneously mean” (F7), both of which are evaluative possibilities, not causal laws.",
+              "limitations": [
+                "These formulations support evaluative or conceptual implications, not causal laws."
+              ],
+              "finding_ids": [
+                "F2",
+                "F7"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "The anchors directly contain the modal markers (can) that convey the claimed possibility force.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "tests",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Criticism: Ignorance of the problem of incommensurability"
+              ],
+              "coverage": "complete",
+              "criterion": "Source counterexamples or limiting cases that test a conditional without automatically licensing its converse",
+              "basis": "Marriage (F9), Nazism/right‑wing populism (F10), and childhood (F11) are used as limiting cases against problem‑solving and accumulation criteria; all are now fully anchored.",
+              "limitations": [
+                "The cases are philosophical illustrations rather than systematic empirical tests."
+              ],
+              "finding_ids": [
+                "F9",
+                "F10",
+                "F11"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "Each test finding is backed by verbatim anchors that show the progress claim alongside the alleged problem or limitation.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 15604
+      },
+      {
+        "step": "reconcile_checked",
+        "kind": "synthesize",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/openai/gpt-5.6-sol",
+        "model_used": "openrouter/openai/gpt-5.6-sol",
+        "input_tokens": 25041,
+        "output_tokens": 4820,
+        "duration_ms": 68502,
+        "cost_usd": 0.0983,
+        "retries": 0,
+        "wall": {
+          "rows": 14,
+          "with_anchor": 14,
+          "verified": 14,
+          "trimmed": 0,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 25,
+          "verified_anchors": 25,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "checked",
+            "scope": "retained_ledger",
+            "missing_rejected_ids": [],
+            "missing_other_ids": []
+          },
+          "synthesis_contract": {
+            "failed_ids": [],
+            "incomplete_cross_document_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [],
+            "unknown_dimensions": [],
+            "missing_ledger": false,
+            "parse_error": "",
+            "incomplete_invocation": false
+          },
+          "synthesis_repair_attempts": [],
+          "rows_without_dimension": 0,
+          "check_ruling_coverage": {
+            "original_count": 13,
+            "explicitly_ruled_count": 13,
+            "missing_or_unruled_ids": [],
+            "unexpected_nonadded_ids": [],
+            "invalid_original_status_ids": [],
+            "duplicate_original_ids": [],
+            "duplicate_ruling_ids": [],
+            "coverage_complete": true
+          },
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "relations",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Problem-solving and forms of live: Jaeggi’s pragmatist theory of progress",
+                "Criticism: Ignorance of the problem of incommensurability",
+                "Alternative: From pragmatist to psychologist understanding of progress",
+                "Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "Stated or reconstructable if, only‑if, unless, or equivalent implication relations connecting selected propositions",
+              "basis": "The inspected sections contain explicit if‑then, in‑so‑far‑as, and when‑clauses used as conditional relations about progress, problem‑solving, and accumulation.",
+              "limitations": [
+                "Not every descriptive dependency is treated as a conditional relation.",
+                "All anchors are verbatim and separately carry the finding’s predicate or condition."
+              ],
+              "finding_ids": [
+                "F1",
+                "F5",
+                "F12"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "Each finding has a verbatim anchor that directly supports the stated conditional relation; revised rows now supply complete predicate anchors.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "direction",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Criticism: Ignorance of the problem of incommensurability",
+                "Alternative: From pragmatist to psychologist understanding of progress",
+                "Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "Conditions whose wording supports classification as necessary, sufficient, or both",
+              "basis": "The text contains explicit if‑then sufficient conditions (F3, F4), an only‑if necessary condition (F8), and a newly added conditional (F14) that states a sufficient condition.",
+              "limitations": [
+                "No retained relation establishes a biconditional."
+              ],
+              "finding_ids": [
+                "F3",
+                "F4",
+                "F8",
+                "F14"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "All direction findings are backed by verbatim anchors that indicate the claimed direction (sufficient, necessary).",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "nesting",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Problem-solving and forms of live: Jaeggi’s pragmatist theory of progress",
+                "Criticism: Ignorance of the problem of incommensurability"
+              ],
+              "coverage": "complete",
+              "criterion": "Qualifications, exceptions, and case restrictions nested within conditional relations",
+              "basis": "The mode of crisis resolution is conditioned by the crisis’s form and radicality (F6), and the know‑how analogy is qualified by the absence of a shared social goal (F13, revised).",
+              "limitations": [
+                "The scientific‑community limitation is Chen’s argumentative qualification, not a universally tested empirical condition."
+              ],
+              "finding_ids": [
+                "F6",
+                "F13"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "Each nesting finding now carries verbatim anchors that capture the outer condition and the inner qualification.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "force",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Problem-solving and forms of live: Jaeggi’s pragmatist theory of progress",
+                "Criticism: Ignorance of the problem of incommensurability"
+              ],
+              "coverage": "complete",
+              "criterion": "Necessity, possibility, or uncertainty attached to an implication, distinguished from causal claims",
+              "basis": "The text uses qualified modal language: “can be described” (F2) and “can simultaneously mean” (F7), both of which are evaluative possibilities, not causal laws.",
+              "limitations": [
+                "These formulations support evaluative or conceptual implications, not causal laws."
+              ],
+              "finding_ids": [
+                "F2",
+                "F7"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "The anchors directly contain the modal markers (can) that convey the claimed possibility force.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "tests",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Criticism: Ignorance of the problem of incommensurability"
+              ],
+              "coverage": "complete",
+              "criterion": "Source counterexamples or limiting cases that test a conditional without automatically licensing its converse",
+              "basis": "Marriage (F9), Nazism/right‑wing populism (F10), and childhood (F11) are used as limiting cases against problem‑solving and accumulation criteria; all are now fully anchored.",
+              "limitations": [
+                "The cases are philosophical illustrations rather than systematic empirical tests."
+              ],
+              "finding_ids": [
+                "F9",
+                "F10",
+                "F11"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "Each test finding is backed by verbatim anchors that show the progress claim alongside the alleged problem or limitation.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 22388
+      }
+    ]
+  },
+  "audit": {
+    "wall": {
+      "rows": 14,
+      "with_anchor": 14,
+      "verified": 14,
+      "trimmed": 0,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 25,
+      "verified_anchors": 25,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "rows": 14,
+    "raw_anchors": 25,
+    "raw_exact": 6,
+    "unknown_dimensions": [],
+    "missing_table_ids": [],
+    "missing_prose_ids": []
+  }
+}

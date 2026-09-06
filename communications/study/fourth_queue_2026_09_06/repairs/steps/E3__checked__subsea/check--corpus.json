@@ -1,0 +1,249 @@
+{
+  "step": "check",
+  "kind": "verify",
+  "dimension": "",
+  "doc": "",
+  "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+  "model_used": "openrouter/deepseek/deepseek-v4-pro",
+  "input_tokens": 27139,
+  "output_tokens": 14639,
+  "duration_ms": 320925,
+  "cost_usd": 0.0588,
+  "retries": 0,
+  "wall": {
+    "rows": 21,
+    "with_anchor": 21,
+    "verified": 21,
+    "trimmed": 14,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 33,
+    "verified_anchors": 33,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "checked",
+      "scope": "retained_ledger",
+      "missing_rejected_ids": [],
+      "missing_other_ids": []
+    },
+    "check_in": 17,
+    "check_confirmed": 14,
+    "check_weakened": 3,
+    "check_rejected": 0,
+    "check_added": 4,
+    "check_added_dropped": 1,
+    "check_carried": 0,
+    "check_unverified": 0,
+    "check_ruling_coverage": {
+      "original_count": 17,
+      "explicitly_ruled_count": 17,
+      "missing_or_unruled_ids": [],
+      "unexpected_nonadded_ids": [],
+      "invalid_original_status_ids": [],
+      "duplicate_original_ids": [],
+      "duplicate_ruling_ids": [],
+      "coverage_complete": true
+    },
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "problem",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Abstract",
+          "Sections 1–2",
+          "Conclusion"
+        ],
+        "coverage": "complete",
+        "criterion": "A specific explanandum and bounded source‑proposed rival explanations must be explicitly anchored.",
+        "basis": "The text specifies the statecraft/market disconnect, discusses state‑ and capital‑centric positions, and adopts an intermediate private‑network‑realignment explanation. All retained finding anchors are verbatim and support the claims.",
+        "limitations": [
+          "The rivals are theoretical families and can overlap when statecraft is defined permissively."
+        ],
+        "finding_ids": [
+          "F1",
+          "F2",
+          "F3",
+          "F4"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "Every problem‑dimension finding is either confirmed verbatim or adjusted only to supply the full sentence that carries the claim. The dimension is fully covered by explicit source statements.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "predictions",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Section 2",
+          "Sections 4–5",
+          "Conclusion"
+        ],
+        "coverage": "complete",
+        "criterion": "Expected observations must be source‑stated or transparently derived from anchored hypotheses and kept separate from observations.",
+        "basis": "The framework predicts positional variation, uneven effects, and autonomous strategies. Added miss [V.F1] captures an explicit expectation of resistance and corporate circumvention.",
+        "limitations": [
+          "Most rival‑specific predictions are analyst‑derived, but the retained rows use source‑stated expectations."
+        ],
+        "finding_ids": [
+          "F5",
+          "F11",
+          "F18"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "The two confirmed rows and the added source‑stated prediction cover the main predictions advanced by the paper; no unsupported prediction has been retained.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "evidence",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Section 3",
+          "Section 4",
+          "Section 5",
+          "Conclusion"
+        ],
+        "coverage": "complete",
+        "criterion": "Reported observations must bear on a bounded rival and remain distinct from the paper’s interpretation.",
+        "basis": "The cases report private procurement, US pressure, investor withdrawal and replacement, French selective engagement, and state acquisition of ASN. Added misses fill in the plant‑closure motivation and Orange’s dual partnerships.",
+        "limitations": [
+          "Evidence is primarily process tracing from reporting, official materials, and interviews; no counterfactual control case is supplied."
+        ],
+        "finding_ids": [
+          "F6",
+          "F7",
+          "F9",
+          "F12",
+          "F13",
+          "F19",
+          "F21"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "Each retained or added evidence row is anchored directly in the text and provides observations relevant to the identified rivals. The dimension is now comprehensive for the two case studies.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "diagnosticity",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Section 2",
+          "Section 4",
+          "Section 5",
+          "Conclusion"
+        ],
+        "coverage": "complete",
+        "criterion": "An observation must be tested against contrasting expectations of the strongest bounded rivals; shared fit must remain unresolved.",
+        "basis": "The procurement chronology discriminates against direct orchestration and strong corporate insulation, while parallel Chinese projects demonstrate incomplete US control. Added rows supply route similarity and regional variation.",
+        "limitations": [
+          "Weak statecraft and private‑network realignment share the prediction that credible state leverage can change corporate choices."
+        ],
+        "finding_ids": [
+          "F8",
+          "F10",
+          "V.F3",
+          "V.F5"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "All diagnostic rows now rest on verbatim anchors. F8 remains the central discriminating observation; F10 and V.F5 together establish displacement rather than full exclusion; V.F3 adds regional unevenness.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Findings in this scope lost anchor evidence; this does not establish absence",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "sensitivity",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Section 3",
+          "Section 5",
+          "Conclusion"
+        ],
+        "coverage": "complete",
+        "criterion": "Counter‑passages, assumptions, missing tests, and identification limits capable of changing the conclusion must be retained.",
+        "basis": "The text identifies financial, fiscal, technological, and sanctions constraints and explains its purposive case selection and differing source bases. The strengthened F14 and F15 anchors confirm these limits verbatim.",
+        "limitations": [
+          "The paper does not test representativeness across the full subsea cable network or isolate the motives behind ASN nationalization."
+        ],
+        "finding_ids": [
+          "F14",
+          "F15",
+          "F16",
+          "F17"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "All four sensitivity rows are confirmed or tightened to verbatim limits. The case‑selection criteria are now limited to what the text explicitly states, maintaining their role as sensitivity caveats.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 23103
+}
