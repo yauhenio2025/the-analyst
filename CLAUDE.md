@@ -244,9 +244,11 @@ POST /v1/presenter/polish-section        # Per-section polish with user feedback
 - Change history: `docs/CHANGELOG.md` (read on demand)
 
 ## Deployment
-- **Live URL**: https://the-analyst-kcuc.onrender.com (CAII workspace, created 2026-09-03). Repo: https://github.com/yauhenio2025/the-analyst (forked from analyzer-v2 @4d7bb5b).
+- **Render, CAII workspace, project `the-analyst`** (created 2026-09-03): `the-analyst` (this API, Python; https://the-analyst-kcuc.onrender.com; `/health` reports the deployed commit), `the-analyst-desk` (static site built from `web/`; https://the-analyst-desk.onrender.com), `the-analyst-db` (PostgreSQL 16). Repo: https://github.com/yauhenio2025/the-analyst (forked from analyzer-v2 @4d7bb5b). The blueprint `render.yaml` documents the API service; the services were created in the dashboard.
+- **The Mastermind** (governance console: the registry of methods, organs, engine editing) is a separate repo, https://github.com/yauhenio2025/analyzer-mgmt (Next.js), deployed as `the-mastermind` (https://the-mastermind.onrender.com). It reads engines, organs, processes and the rest from this API. Its legacy FastAPI + Postgres (`analyzer-mgmt-api`) served only its Grids, Rhetoric, Pipelines and Changes pages; snapshot in `communications/legacy_mgmt_api_snapshot_2026-09-06/` before retirement.
 - **DO NOT TOUCH** the gsi workspace (client production): analyzer-43fk, visualizer-alu5, analyzer-v2-3blo (pinned to branch `client-frozen-2026-09-03`).
-- **Auto-deploy**: push to `master` deploys the-analyst on CAII.
+- **Auto-deploy**: push to `master` deploys the API and the desk on CAII; in-flight dossier jobs survive a deploy.
+- **Definition edits persist through GitHub**: `GITHUB_TOKEN` + `GITHUB_REPO` on the API service (`src/persistence/github_client.py`); `GITHUB_REPO` must be `yauhenio2025/the-analyst`.
 - **Implementation plan**: `communications/IMPLEMENTATION_TRACKER.md` — READ FIRST. Bugs: `communications/BUG_TRACKING.md`.
 
 ## Implementation Roadmap (See docs/CURRENT-TASKS.md for details)

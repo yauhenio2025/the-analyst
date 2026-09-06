@@ -1,6 +1,10 @@
+# The Analyst on Render (CAII workspace, project the-analyst). The live services were created in the
+# dashboard, not from this blueprint: the-analyst (this API, slug the-analyst-kcuc), the-analyst-desk
+# (static site: cd web && npm ci && npm run build, publish web/dist, env VITE_API_BASE) and the-analyst-db
+# (PostgreSQL 16). This file documents the API service's intended configuration.
 services:
   - type: web
-    name: analyzer-v2
+    name: the-analyst
     runtime: python
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn src.api.main:app --host 0.0.0.0 --port $PORT
@@ -11,6 +15,6 @@ services:
       - key: GITHUB_TOKEN
         sync: false  # Set manually in Render dashboard
       - key: GITHUB_REPO
-        value: "yauhenio2025/analyzer-v2"
+        value: "yauhenio2025/the-analyst"
     healthCheckPath: /health
     autoDeploy: true
