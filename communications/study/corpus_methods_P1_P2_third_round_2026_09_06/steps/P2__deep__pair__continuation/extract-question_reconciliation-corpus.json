@@ -1,0 +1,95 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "question_reconciliation",
+  "doc": "",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 7657,
+  "output_tokens": 1198,
+  "duration_ms": 0,
+  "cost_usd": 0.003,
+  "retries": 0,
+  "wall": {
+    "rows": 1,
+    "with_anchor": 1,
+    "verified": 1,
+    "trimmed": 0,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 2,
+    "verified_anchors": 2,
+    "cross_document_rows": 1,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 1,
+      "with_anchor": 1,
+      "verified": 1,
+      "trimmed": 0,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 2,
+      "verified_anchors": 2,
+      "cross_document_rows": 1,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "aukus",
+          "subsea"
+        ],
+        "dimension_key": "question_reconciliation",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Earlier per-document findings and scope reports for aukus",
+          "Earlier per-document findings and scope reports for subsea"
+        ],
+        "coverage": "partial",
+        "criterion": "A shared substantive question must be answerable from at least two supplied sources after comparison of object, time, definition, qualification and warrant, with distinct anchored source evidence.",
+        "basis": "One cross-document alignment was retained concerning how state intervention relates to market or infrastructure reorganisation. The alignment is explicitly classified as different scope rather than agreement or contradiction.",
+        "limitations": [
+          "This reconciliation uses earlier reports rather than direct inspection of every source passage.",
+          "The supplied reports do not provide a complete basis for aligning all source-specific questions or determining corpus-wide absence of additional shared questions.",
+          "Theme frequency is reported only for the two named supplied sources and does not establish substantive consensus."
+        ],
+        "finding_ids": [
+          "[RM.F1]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "aukus": "provided",
+            "subsea": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ],
+          "basis_material": "Per-document ledgers and scope reports; no direct source inspection in this invocation"
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 4617
+}

@@ -1,0 +1,95 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "answer_limits",
+  "doc": "subsea",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 20040,
+  "output_tokens": 1433,
+  "duration_ms": 13,
+  "cost_usd": 0.0057,
+  "retries": 0,
+  "wall": {
+    "rows": 5,
+    "with_anchor": 5,
+    "verified": 5,
+    "trimmed": 4,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 5,
+    "verified_anchors": 5,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 5,
+      "with_anchor": 5,
+      "verified": 5,
+      "trimmed": 4,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 5,
+      "verified_anchors": 5,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "subsea"
+        ],
+        "dimension_key": "answer_limits",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Section 2 | Non-Alignment and Re-Alignment of Privately Owned Networks",
+          "Section 4 | Case 1: The US–Chinese Conflict Over SeaMeWe-6",
+          "Section 5 | Case 2: France's Nationalization of Alcatel Submarine Networks",
+          "Section 6 | Conclusion"
+        ],
+        "coverage": "complete",
+        "criterion": "A finding qualifies, narrows, contests, distinguishes the scope of an answer, or leaves an issue unresolved, with a verbatim supporting passage.",
+        "basis": "The inspected sections contain explicit qualifications about partial effectiveness, resistance, sectoral limits, French resource and budgetary constraints, external pressure, and the ideal-type status of the strategy categories.",
+        "limitations": [
+          "The assessment concerns the supplied article and the inspected sections; it does not establish how these qualifications apply across the wider literature or other infrastructure sectors.",
+          "Open questions are retained where the article does not provide a settled long-term or generalizable answer."
+        ],
+        "finding_ids": [
+          "R3.DOC2.F1",
+          "R3.DOC2.F2",
+          "R3.DOC2.F3",
+          "R3.DOC2.F4",
+          "R3.DOC2.F5"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "subsea": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 6399
+}

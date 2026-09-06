@@ -1,0 +1,87 @@
+{
+  "step": "verify",
+  "kind": "verify",
+  "dimension": "",
+  "doc": "",
+  "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+  "model_used": "openrouter/deepseek/deepseek-v4-pro",
+  "input_tokens": 43515,
+  "output_tokens": 7877,
+  "duration_ms": 171844,
+  "cost_usd": 0.0618,
+  "retries": 0,
+  "wall": {
+    "rows": 1,
+    "with_anchor": 1,
+    "verified": 1,
+    "trimmed": 0,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 2,
+    "verified_anchors": 2,
+    "cross_document_rows": 1,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "carried_forward": 0,
+    "rejected": 0,
+    "added": 0,
+    "ruling_coverage": {
+      "original_count": 1,
+      "explicitly_ruled_count": 1,
+      "missing_or_unruled_ids": [],
+      "unexpected_nonadded_ids": [],
+      "invalid_original_status_ids": [],
+      "duplicate_original_ids": [],
+      "duplicate_ruling_ids": [],
+      "coverage_complete": true
+    },
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "aukus",
+          "subsea"
+        ],
+        "dimension_key": "question_reconciliation",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Full text of aukus article",
+          "Full text of subsea article"
+        ],
+        "coverage": "complete",
+        "criterion": "A shared substantive question about state‑driven market/infrastructure reshaping must be answered with distinct anchored evidence from both sources; object, time, definition and warrant should be compared to determine agreement, qualification, contradiction or different scope.",
+        "basis": "One cross‑document finding ([RM.F1]) was confirmed. The aukus anchor (regulatory controls generate market opportunities) and the subsea anchor (network realignment strategies encounter infrastructural resistance) are verbatim and support the claimed different‑scope relation. The objects (AUKUS political economy vs. subsea cable infrastructure), mechanisms, and theory warrants differ, so no contradiction arises. No counter‑passage undermines the finding.",
+        "limitations": [
+          "Only one shared question was evaluated; other potential alignments were not scanned.",
+          "The finding labels the relation as different scope; it does not assert substantive agreement or consensus."
+        ],
+        "finding_ids": [
+          "[RM.F1]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "Both anchors are verbatim, the scope‑test is clearly justified, and the sources contain no contradictory evidence. The cross‑source relation is appropriately characterised as different scope.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "aukus": "provided",
+            "subsea": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 7248
+}
