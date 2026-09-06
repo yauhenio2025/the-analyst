@@ -1,0 +1,199 @@
+# Fourth queue: communications/study/REDESIGN_fourth_queue_2026-09-06.md
+engine_key: citation_invocation_map
+engine_name: Citation and invocation map
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: How do the supplied works cite one another and use those citations? One text with references or a
+    supplied set of citing texts; access to cited texts is optional and separately recorded.
+  framing: A selective citation-use register (citing passage, cited work, attributed proposition, use, access) and
+    an engagement table distinguishing support, criticism, background and uncertain allusion; explain the consequential
+    citation pattern without certifying fidelity to unsupplied works. Keep works cited, citation context/location/text
+    and substantive engagement. The legacy schema demands hub_score, authority_score and internal_density from any
+    input; a single bibliography cannot establish field influence, mutual citation or prestige. Recognition asymmetry
+    and allusion are local observations or hypotheses, not intent.
+  scoped_outcomes: true
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: references
+    name: References
+    scope: document
+    id_prefix: D1
+    load_bearing: true
+    questions:
+    - Which named works or thinkers are invoked in the argument, and which are only listed in the references?
+    answer_shape: cited identity; location; in-text or bibliography-only; supplied access; doc; verbatim anchor(s);
+      uncertainty
+    method_card: 'Do: Copy the citation and its operative sentence; disambiguate same-author works with the bibliography
+      without inventing citation edges. Select literal spans that together carry the finding’s actor, predicate,
+      object and necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span,
+      including within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality,
+      status and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+    indicators:
+    - cited identity
+    - location
+    - in-text or bibliography-only
+  - key: propositions
+    name: Propositions
+    scope: document
+    id_prefix: D2
+    load_bearing: true
+    questions:
+    - What proposition is assigned to each selected source, and who is making that attribution?
+    answer_shape: citing voice; attributed source; proposition; attribution chain; doc; verbatim anchor(s); uncertainty
+    method_card: 'Do: Read both the attribution and the predicate it assigns. Preserve quotations inside quotations
+      and distinguish a citing author’s reconstruction from the cited thinker’s own supplied writing. Select literal
+      spans that together carry the finding’s actor, predicate, object and necessary qualification. If one short
+      span cannot do so, use anchor-b/doc-b for a separate span, including within one document. Never concatenate
+      separated phrases into a quotation. Keep attribution, modality, status and chronology; re-anchor, narrow or
+      reject a verbatim quote that omits the claimed predicate.'
+    indicators:
+    - citing voice
+    - attributed source
+    - proposition
+  - key: uses
+    name: Uses
+    scope: document
+    id_prefix: D3
+    load_bearing: true
+    questions:
+    - 'How is each citation used here: as support, criticism, method, example or background?'
+    answer_shape: invocation; local argumentative use; relation to claim; limits; doc; verbatim anchor(s); uncertainty
+    method_card: 'Do: Keep citation context and substantive engagement. Anchor the sentence performing the use,
+      not just the parenthetical name. Select literal spans that together carry the finding’s actor, predicate,
+      object and necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span,
+      including within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality,
+      status and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+    indicators:
+    - invocation
+    - local argumentative use
+    - relation to claim
+  - key: clusters
+    name: Clusters
+    scope: document
+    id_prefix: D4
+    load_bearing: false
+    questions:
+    - Which references are grouped or opposed by the supplied text, and on what shared question?
+    answer_shape: co-invoked works; grouping or opposition; explicit/reconstructed relation; doc; verbatim anchor(s);
+      uncertainty
+    method_card: 'Do: Show the wording that groups or contrasts them. Co-citation is not proof that those sources
+      cite or influence each other. Select literal spans that together carry the finding’s actor, predicate, object
+      and necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including
+      within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status
+      and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+    indicators:
+    - co-invoked works
+    - grouping or opposition
+    - explicit/reconstructed relation
+  - key: recognition
+    name: Recognition
+    scope: document
+    id_prefix: D5
+    load_bearing: false
+    questions:
+    - Where does the passage confer authority, acknowledge a debt or leave a possible allusion uncertain?
+    answer_shape: recognition move; evidence; alternative; unresolved access; doc; verbatim anchor(s); uncertainty
+    method_card: 'Do: Retain status-conferral and possible allusions as textual moves. Do not infer concealment,
+      actual field prestige or source fidelity from citation frequency. Select literal spans that together carry
+      the finding’s actor, predicate, object and necessary qualification. If one short span cannot do so, use anchor-b/doc-b
+      for a separate span, including within one document. Never concatenate separated phrases into a quotation.
+      Keep attribution, modality, status and chronology; re-anchor, narrow or reject a verbatim quote that omits
+      the claimed predicate.'
+    indicators:
+    - recognition move
+    - evidence
+    - alternative
+  - key: across_documents
+    name: Aligned supplied accounts
+    scope: corpus
+    id_prefix: CORPUS
+    load_bearing: false
+    questions:
+    - If multiple documents are supplied, what common question can be aligned using a supported local finding from
+      each, and what stays incomparable?
+    answer_shape: aligned object/question; per-document answer; supported relation; doc/anchor and doc-b/anchor-b;
+      coverage limit
+    method_card: 'Do: Inventory each supplied work first, then pair actual answers to the same question. Require
+      two different document keys for a cross-document claim. A single-paper contrast stays in its document dimension.
+      Do not infer transmission, chronological change or field-wide consensus from similarity. Select literal spans
+      that together carry the finding’s actor, predicate, object and necessary qualification. If one short span
+      cannot do so, use anchor-b/doc-b for a separate span, including within one document. Never concatenate separated
+      phrases into a quotation. Keep attribution, modality, status and chronology; re-anchor, narrow or reject a
+      verbatim quote that omits the claimed predicate.'
+    indicators:
+    - same object across supplied texts
+    - different answers to an aligned question
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension_x_document
+    model_tier: cheap
+    output: ledger
+    max_rows: 6
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - reject_biography
+    - merge_duplicates
+    - hunt_misses
+    - name_must_keep
+    - check_matrix_cell_support
+    - 'Every substantive table cell cites retained final finding IDs using separate [F1] [F2] citations. Reread
+      the actual final tables against the applied ledger and the source: rewrite or drop cells supported by rejected,
+      unverified or narrowed-away claims. Keep granular evidence when merging; use comma-separated full IDs in from:.
+      Scope records state coverage or uncertainty and never supply positive evidence. Code checks anchors and IDs;
+      models judge meaning. Select literal spans that together carry the finding’s actor, predicate, object and
+      necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including
+      within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status
+      and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: 'a reader with the supplied paper open who needs to answer: How do the supplied works cite one another
+      and use those citations?'
+    tables:
+    - citation_invocation_map_inventory
+    - citation_invocation_map_relations
+    brief: '1. A selective citation-use register (citing passage, cited work, attributed proposition, use, access)
+      and an engagement table distinguishing support, criticism, background and uncertain allusion; explain the
+      consequential citation pattern without certifying fidelity to unsupplied works.
+
+      2. Lead with the most useful source-supported distinction and its limits; give a selective accurate inventory,
+      without forcing a novel thesis.
+
+      3. Render the two named Markdown tables with citable rows; distinguish established relations, interpretations
+      and missing evidence.
+
+      4. On one paper, do not pretend there is a supplied corpus. On multiple papers, retain each local inventory
+      before aligning.
+
+      Every substantive table cell cites retained final finding IDs using separate [F1] [F2] citations. Reread the
+      actual final tables against the applied ledger and the source: rewrite or drop cells supported by rejected,
+      unverified or narrowed-away claims. Keep granular evidence when merging; use comma-separated full IDs in from:.
+      Scope records state coverage or uncertainty and never supply positive evidence. Code checks anchors and IDs;
+      models judge meaning. Select literal spans that together carry the finding’s actor, predicate, object and
+      necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including
+      within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status
+      and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'

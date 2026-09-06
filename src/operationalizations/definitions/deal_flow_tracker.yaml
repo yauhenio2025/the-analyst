@@ -1,0 +1,196 @@
+# Fourth queue: communications/study/REDESIGN_fourth_queue_2026-09-06.md
+engine_key: deal_flow_tracker
+engine_name: Transactions and changing holdings
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: Which documented transactions connect market actors and change their holdings or partnerships? Supplied
+    dated transaction reports or agreements; record undisclosed values and terms.
+  framing: A transaction register (parties, type, date precision, status, reported value/currency and source) and
+    a changed-holdings/rights table separating bids, announcements, completed deals and retained interests. Retain
+    deals, parties, deal edges and documented consolidation. The legacy sector_analysis/meta infer market transformation
+    and winner/loser power from selected transactions. Replace generic graph steps with dated transaction identity
+    and reported-rights changes; no comprehensive market or future deal inference.
+  scoped_outcomes: true
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: transactions
+    name: Transactions
+    scope: document
+    id_prefix: D1
+    load_bearing: true
+    questions:
+    - Which distinct acquisitions, investments, licenses or partnerships are actually reported?
+    answer_shape: transaction identity; parties; type; source; scope; doc; verbatim anchor(s); uncertainty
+    method_card: 'Do: Anchor the action connecting the parties. Keep deals distinct from general capital flows,
+      tenders and proposed projects. Select literal spans that together carry the finding’s actor, predicate, object
+      and necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including
+      within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status
+      and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+    indicators:
+    - transaction identity
+    - parties
+    - type
+  - key: status
+    name: Status
+    scope: document
+    id_prefix: D2
+    load_bearing: true
+    questions:
+    - When is each transaction reported, and is it proposed, agreed, completed, cancelled or unresolved?
+    answer_shape: deal; date; precision; action status; as-of limit; doc; verbatim anchor(s); uncertainty
+    method_card: 'Do: Copy the date with the predicate it dates. An announced acquisition is not completed and a
+      report publication date is not a deal date. Select literal spans that together carry the finding’s actor,
+      predicate, object and necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate
+      span, including within one document. Never concatenate separated phrases into a quotation. Keep attribution,
+      modality, status and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+    indicators:
+    - deal
+    - date
+    - precision
+  - key: terms
+    name: Terms
+    scope: document
+    id_prefix: D3
+    load_bearing: true
+    questions:
+    - What value, currency, stake, asset or material term is reported, and what is undisclosed?
+    answer_shape: deal; reported amount/unit; stake/asset; term; missing field; doc; verbatim anchor(s); uncertainty
+    method_card: 'Do: Attach each number to its transaction and unit. Preserve retained stakes and avoid calculating
+      unstated total valuations. Select literal spans that together carry the finding’s actor, predicate, object
+      and necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including
+      within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status
+      and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+    indicators:
+    - deal
+    - reported amount/unit
+    - stake/asset
+  - key: holdings
+    name: Holdings
+    scope: document
+    id_prefix: D4
+    load_bearing: false
+    questions:
+    - Which rights, holdings or partnership relationships change, and which remain?
+    answer_shape: before holder; after holder; asset/right; retained interest; evidence; doc; verbatim anchor(s);
+      uncertainty
+    method_card: 'Do: Anchor both the transfer and any retained stake. Ownership alone does not establish every
+      form of operational or political control. Select literal spans that together carry the finding’s actor, predicate,
+      object and necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span,
+      including within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality,
+      status and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+    indicators:
+    - before holder
+    - after holder
+    - asset/right
+  - key: patterns
+    name: Patterns
+    scope: document
+    id_prefix: D5
+    load_bearing: false
+    questions:
+    - Which relationships among the reported deals are supported, and what broader consolidation remains unestablished?
+    answer_shape: deal relation; common party/asset; observed pattern; coverage limit; doc; verbatim anchor(s);
+      uncertainty
+    method_card: 'Do: Report only the source-supported relation among transactions. Do not turn a selective deal
+      list into a complete market or an investment forecast. Select literal spans that together carry the finding’s
+      actor, predicate, object and necessary qualification. If one short span cannot do so, use anchor-b/doc-b for
+      a separate span, including within one document. Never concatenate separated phrases into a quotation. Keep
+      attribution, modality, status and chronology; re-anchor, narrow or reject a verbatim quote that omits the
+      claimed predicate.'
+    indicators:
+    - deal relation
+    - common party/asset
+    - observed pattern
+  - key: across_documents
+    name: Aligned supplied accounts
+    scope: corpus
+    id_prefix: CORPUS
+    load_bearing: false
+    questions:
+    - If multiple documents are supplied, what common question can be aligned using a supported local finding from
+      each, and what stays incomparable?
+    answer_shape: aligned object/question; per-document answer; supported relation; doc/anchor and doc-b/anchor-b;
+      coverage limit
+    method_card: 'Do: Inventory each supplied work first, then pair actual answers to the same question. Require
+      two different document keys for a cross-document claim. A single-paper contrast stays in its document dimension.
+      Do not infer transmission, chronological change or field-wide consensus from similarity. Select literal spans
+      that together carry the finding’s actor, predicate, object and necessary qualification. If one short span
+      cannot do so, use anchor-b/doc-b for a separate span, including within one document. Never concatenate separated
+      phrases into a quotation. Keep attribution, modality, status and chronology; re-anchor, narrow or reject a
+      verbatim quote that omits the claimed predicate.'
+    indicators:
+    - same object across supplied texts
+    - different answers to an aligned question
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension_x_document
+    model_tier: cheap
+    output: ledger
+    max_rows: 6
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - reject_biography
+    - merge_duplicates
+    - hunt_misses
+    - name_must_keep
+    - check_matrix_cell_support
+    - 'Every substantive table cell cites retained final finding IDs using separate [F1] [F2] citations. Reread
+      the actual final tables against the applied ledger and the source: rewrite or drop cells supported by rejected,
+      unverified or narrowed-away claims. Keep granular evidence when merging; use comma-separated full IDs in from:.
+      Scope records state coverage or uncertainty and never supply positive evidence. Code checks anchors and IDs;
+      models judge meaning. Select literal spans that together carry the finding’s actor, predicate, object and
+      necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including
+      within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status
+      and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: 'a reader with the supplied paper open who needs to answer: Which documented transactions connect market
+      actors and change their holdings or partnerships?'
+    tables:
+    - deal_flow_tracker_inventory
+    - deal_flow_tracker_relations
+    brief: '1. A transaction register (parties, type, date precision, status, reported value/currency and source)
+      and a changed-holdings/rights table separating bids, announcements, completed deals and retained interests.
+
+      2. Lead with the most useful source-supported distinction and its limits; give a selective accurate inventory,
+      without forcing a novel thesis.
+
+      3. Render the two named Markdown tables with citable rows; distinguish established relations, interpretations
+      and missing evidence.
+
+      4. On one paper, do not pretend there is a supplied corpus. On multiple papers, retain each local inventory
+      before aligning.
+
+      Every substantive table cell cites retained final finding IDs using separate [F1] [F2] citations. Reread the
+      actual final tables against the applied ledger and the source: rewrite or drop cells supported by rejected,
+      unverified or narrowed-away claims. Keep granular evidence when merging; use comma-separated full IDs in from:.
+      Scope records state coverage or uncertainty and never supply positive evidence. Code checks anchors and IDs;
+      models judge meaning. Select literal spans that together carry the finding’s actor, predicate, object and
+      necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including
+      within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status
+      and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'

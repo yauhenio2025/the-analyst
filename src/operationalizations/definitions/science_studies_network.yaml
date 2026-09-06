@@ -1,0 +1,198 @@
+# Fourth queue: communications/study/REDESIGN_fourth_queue_2026-09-06.md
+engine_key: science_studies_network
+engine_name: Sociotechnical assembly
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: How does the supplied account assemble people, artifacts and inscriptions into a working arrangement?
+    Accounts of actors, artifacts, inscriptions, institutions and their observable enrollment or mediation.
+  framing: An assembly inventory of people, organizations, artifacts and inscriptions with their supported roles,
+    plus a mediation/enrollment/contestation table that distinguishes a working arrangement from a proposed or incomplete
+    one. Retain actants, translations, black boxes, controversies, inscriptions and obligatory passage points. Rewrite
+    mandatory ANT categories as evidence questions; a named object is not evidence of enrollment, an inscription
+    or an obligatory bottleneck, and material agency does not imply human intent.
+  scoped_outcomes: true
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: components
+    name: Components
+    scope: document
+    id_prefix: D1
+    load_bearing: true
+    questions:
+    - Which people, organizations, artifacts and inscriptions have an evidenced role in the arrangement?
+    answer_shape: component; human/material/documentary kind; role; status; doc; verbatim anchor(s); uncertainty
+    method_card: 'Do: Anchor what the component does, not only its name. An inscription must be an actual described
+      representation or document, not an invented technical standard. Select literal spans that together carry the
+      finding’s actor, predicate, object and necessary qualification. If one short span cannot do so, use anchor-b/doc-b
+      for a separate span, including within one document. Never concatenate separated phrases into a quotation.
+      Keep attribution, modality, status and chronology; re-anchor, narrow or reject a verbatim quote that omits
+      the claimed predicate.'
+    indicators:
+    - component
+    - human/material/documentary kind
+    - role
+  - key: enrollment
+    name: Enrollment
+    scope: document
+    id_prefix: D2
+    load_bearing: true
+    questions:
+    - How are participants or artifacts recruited, aligned or linked to make the arrangement work?
+    answer_shape: participants; linking/enrollment action; mediator; agreement or resistance; doc; verbatim anchor(s);
+      uncertainty
+    method_card: 'Do: Describe the concrete action before an ANT label. Keep proposed agreements separate from completed
+      enrollment. Select literal spans that together carry the finding’s actor, predicate, object and necessary
+      qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including within one
+      document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status and chronology;
+      re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+    indicators:
+    - participants
+    - linking/enrollment action
+    - mediator
+  - key: mediation
+    name: Mediation
+    scope: document
+    id_prefix: D3
+    load_bearing: true
+    questions:
+    - What does a device, document or institutional procedure change in what other actors can do?
+    answer_shape: mediator; input/action; changed capacity; evidence; doc; verbatim anchor(s); uncertainty
+    method_card: 'Do: Quote the transformation or constraint and its actor. Do not infer that every cable, contract
+      or license is an obligatory passage point. Select literal spans that together carry the finding’s actor, predicate,
+      object and necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span,
+      including within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality,
+      status and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+    indicators:
+    - mediator
+    - input/action
+    - changed capacity
+  - key: stabilization
+    name: Stabilization
+    scope: document
+    id_prefix: D4
+    load_bearing: false
+    questions:
+    - What makes the arrangement durable or apparently routine, and where does it depend on maintenance or control?
+    answer_shape: arrangement; support; dependency; observed/proposed status; doc; verbatim anchor(s); uncertainty
+    method_card: 'Do: Retain black-box and stabilization questions where the source shows them. State missing operational
+      evidence rather than inventing technical detail. Select literal spans that together carry the finding’s actor,
+      predicate, object and necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate
+      span, including within one document. Never concatenate separated phrases into a quotation. Keep attribution,
+      modality, status and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+    indicators:
+    - arrangement
+    - support
+    - dependency
+  - key: controversy
+    name: Controversy
+    scope: document
+    id_prefix: D5
+    load_bearing: false
+    questions:
+    - Which controversies or refusals expose how the arrangement is assembled and could change?
+    answer_shape: contested link; actors; response; outcome or unresolved possibility; doc; verbatim anchor(s);
+      uncertainty
+    method_card: 'Do: Preserve source case identity and timing. A different proposed cable is not the same construction
+      project and its chronology must not be transferred. Select literal spans that together carry the finding’s
+      actor, predicate, object and necessary qualification. If one short span cannot do so, use anchor-b/doc-b for
+      a separate span, including within one document. Never concatenate separated phrases into a quotation. Keep
+      attribution, modality, status and chronology; re-anchor, narrow or reject a verbatim quote that omits the
+      claimed predicate.'
+    indicators:
+    - contested link
+    - actors
+    - response
+  - key: across_documents
+    name: Aligned supplied accounts
+    scope: corpus
+    id_prefix: CORPUS
+    load_bearing: false
+    questions:
+    - If multiple documents are supplied, what common question can be aligned using a supported local finding from
+      each, and what stays incomparable?
+    answer_shape: aligned object/question; per-document answer; supported relation; doc/anchor and doc-b/anchor-b;
+      coverage limit
+    method_card: 'Do: Inventory each supplied work first, then pair actual answers to the same question. Require
+      two different document keys for a cross-document claim. A single-paper contrast stays in its document dimension.
+      Do not infer transmission, chronological change or field-wide consensus from similarity. Select literal spans
+      that together carry the finding’s actor, predicate, object and necessary qualification. If one short span
+      cannot do so, use anchor-b/doc-b for a separate span, including within one document. Never concatenate separated
+      phrases into a quotation. Keep attribution, modality, status and chronology; re-anchor, narrow or reject a
+      verbatim quote that omits the claimed predicate.'
+    indicators:
+    - same object across supplied texts
+    - different answers to an aligned question
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension_x_document
+    model_tier: cheap
+    output: ledger
+    max_rows: 6
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - reject_biography
+    - merge_duplicates
+    - hunt_misses
+    - name_must_keep
+    - check_matrix_cell_support
+    - 'Every substantive table cell cites retained final finding IDs using separate [F1] [F2] citations. Reread
+      the actual final tables against the applied ledger and the source: rewrite or drop cells supported by rejected,
+      unverified or narrowed-away claims. Keep granular evidence when merging; use comma-separated full IDs in from:.
+      Scope records state coverage or uncertainty and never supply positive evidence. Code checks anchors and IDs;
+      models judge meaning. Select literal spans that together carry the finding’s actor, predicate, object and
+      necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including
+      within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status
+      and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: 'a reader with the supplied paper open who needs to answer: How does the supplied account assemble people,
+      artifacts and inscriptions into a working arrangement?'
+    tables:
+    - science_studies_network_inventory
+    - science_studies_network_relations
+    brief: '1. An assembly inventory of people, organizations, artifacts and inscriptions with their supported roles,
+      plus a mediation/enrollment/contestation table that distinguishes a working arrangement from a proposed or
+      incomplete one.
+
+      2. Lead with the most useful source-supported distinction and its limits; give a selective accurate inventory,
+      without forcing a novel thesis.
+
+      3. Render the two named Markdown tables with citable rows; distinguish established relations, interpretations
+      and missing evidence.
+
+      4. On one paper, do not pretend there is a supplied corpus. On multiple papers, retain each local inventory
+      before aligning.
+
+      Every substantive table cell cites retained final finding IDs using separate [F1] [F2] citations. Reread the
+      actual final tables against the applied ledger and the source: rewrite or drop cells supported by rejected,
+      unverified or narrowed-away claims. Keep granular evidence when merging; use comma-separated full IDs in from:.
+      Scope records state coverage or uncertainty and never supply positive evidence. Code checks anchors and IDs;
+      models judge meaning. Select literal spans that together carry the finding’s actor, predicate, object and
+      necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including
+      within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status
+      and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'

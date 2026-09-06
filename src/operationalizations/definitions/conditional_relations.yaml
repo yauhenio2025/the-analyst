@@ -1,0 +1,199 @@
+# Fourth queue: communications/study/REDESIGN_fourth_queue_2026-09-06.md
+engine_key: conditional_relations
+engine_name: Conditional relations
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: What qualified implication relations connect the selected concept to other propositions? Text containing
+    stated or reconstructable implication relations involving selected concepts or propositions.
+  framing: 'A conditional-relation inventory with antecedent, consequent, direction, modal force, speaker and stated/reconstructed
+    status; a second table preserves nesting, exceptions and tested counterexamples without turning a condition
+    into a causal claim. The map requires new questions: concept_conditional_web has only a generic five-step graph
+    recipe and schema {type: object}. Keep its if-then reader question and the antecedent/consequent/nested/necessary/sufficient
+    distinctions from the mapped mini-engines; replace the generic graph checklist with answerable relations.'
+  scoped_outcomes: true
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: relations
+    name: Relations
+    scope: document
+    id_prefix: D1
+    load_bearing: true
+    questions:
+    - Which stated if, only-if, unless or equivalent relations connect the selected propositions?
+    answer_shape: antecedent; consequent; connective; speaker; local scope; doc; verbatim anchor(s); uncertainty
+    method_card: 'Do: Copy the complete conditional, including negation. Name the propositions before using symbols.
+      Select literal spans that together carry the finding’s actor, predicate, object and necessary qualification.
+      If one short span cannot do so, use anchor-b/doc-b for a separate span, including within one document. Never
+      concatenate separated phrases into a quotation. Keep attribution, modality, status and chronology; re-anchor,
+      narrow or reject a verbatim quote that omits the claimed predicate.'
+    indicators:
+    - antecedent
+    - consequent
+    - connective
+  - key: direction
+    name: Direction
+    scope: document
+    id_prefix: D2
+    load_bearing: true
+    questions:
+    - Which conditions are claimed to be necessary, sufficient or both, and what wording supports that direction?
+    answer_shape: condition; conditioned proposition; direction; explicit/reconstructed; doc; verbatim anchor(s);
+      uncertainty
+    method_card: 'Do: Read only if and if in their actual direction. Treat a reconstructed implication as analysis,
+      not as a quotation or biconditional. Select literal spans that together carry the finding’s actor, predicate,
+      object and necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span,
+      including within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality,
+      status and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+    indicators:
+    - condition
+    - conditioned proposition
+    - direction
+  - key: nesting
+    name: Nesting
+    scope: document
+    id_prefix: D3
+    load_bearing: true
+    questions:
+    - Which qualifications are nested within a condition or restrict the relation to a particular case?
+    answer_shape: outer condition; inner condition; scope; qualified conclusion; doc; verbatim anchor(s); uncertainty
+    method_card: 'Do: Keep nested exceptions, quantifiers and temporal limits in separate fields. Do not flatten
+      a conditional conclusion into an unconditional one. Select literal spans that together carry the finding’s
+      actor, predicate, object and necessary qualification. If one short span cannot do so, use anchor-b/doc-b for
+      a separate span, including within one document. Never concatenate separated phrases into a quotation. Keep
+      attribution, modality, status and chronology; re-anchor, narrow or reject a verbatim quote that omits the
+      claimed predicate.'
+    indicators:
+    - outer condition
+    - inner condition
+    - scope
+  - key: force
+    name: Force
+    scope: document
+    id_prefix: D4
+    load_bearing: false
+    questions:
+    - What necessity, possibility or uncertainty belongs to each implication, and does it express logic, causality
+      or a practical rule?
+    answer_shape: implication; modal force; relation kind; attribution; doc; verbatim anchor(s); uncertainty
+    method_card: 'Do: Anchor the modal predicate and preserve the text’s distinction between what follows logically
+      and what may happen. Select literal spans that together carry the finding’s actor, predicate, object and necessary
+      qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including within one
+      document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status and chronology;
+      re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+    indicators:
+    - implication
+    - modal force
+    - relation kind
+  - key: tests
+    name: Tests
+    scope: document
+    id_prefix: D5
+    load_bearing: false
+    questions:
+    - Which counterexamples or limiting cases test a conditional, and what remains untested?
+    answer_shape: conditional tested; source case or analyst countermodel; effect; limit; doc; verbatim anchor(s);
+      uncertainty
+    method_card: 'Do: Use source counterexamples first; label analyst countermodels as hypothetical. A converse
+      or counterfactual is not automatically licensed by the original conditional. Select literal spans that together
+      carry the finding’s actor, predicate, object and necessary qualification. If one short span cannot do so,
+      use anchor-b/doc-b for a separate span, including within one document. Never concatenate separated phrases
+      into a quotation. Keep attribution, modality, status and chronology; re-anchor, narrow or reject a verbatim
+      quote that omits the claimed predicate.'
+    indicators:
+    - conditional tested
+    - source case or analyst countermodel
+    - effect
+  - key: across_documents
+    name: Aligned supplied accounts
+    scope: corpus
+    id_prefix: CORPUS
+    load_bearing: false
+    questions:
+    - If multiple documents are supplied, what common question can be aligned using a supported local finding from
+      each, and what stays incomparable?
+    answer_shape: aligned object/question; per-document answer; supported relation; doc/anchor and doc-b/anchor-b;
+      coverage limit
+    method_card: 'Do: Inventory each supplied work first, then pair actual answers to the same question. Require
+      two different document keys for a cross-document claim. A single-paper contrast stays in its document dimension.
+      Do not infer transmission, chronological change or field-wide consensus from similarity. Select literal spans
+      that together carry the finding’s actor, predicate, object and necessary qualification. If one short span
+      cannot do so, use anchor-b/doc-b for a separate span, including within one document. Never concatenate separated
+      phrases into a quotation. Keep attribution, modality, status and chronology; re-anchor, narrow or reject a
+      verbatim quote that omits the claimed predicate.'
+    indicators:
+    - same object across supplied texts
+    - different answers to an aligned question
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension_x_document
+    model_tier: cheap
+    output: ledger
+    max_rows: 6
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - reject_biography
+    - merge_duplicates
+    - hunt_misses
+    - name_must_keep
+    - check_matrix_cell_support
+    - 'Every substantive table cell cites retained final finding IDs using separate [F1] [F2] citations. Reread
+      the actual final tables against the applied ledger and the source: rewrite or drop cells supported by rejected,
+      unverified or narrowed-away claims. Keep granular evidence when merging; use comma-separated full IDs in from:.
+      Scope records state coverage or uncertainty and never supply positive evidence. Code checks anchors and IDs;
+      models judge meaning. Select literal spans that together carry the finding’s actor, predicate, object and
+      necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including
+      within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status
+      and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: 'a reader with the supplied paper open who needs to answer: What qualified implication relations connect
+      the selected concept to other propositions?'
+    tables:
+    - conditional_relations_inventory
+    - conditional_relations_relations
+    brief: '1. A conditional-relation inventory with antecedent, consequent, direction, modal force, speaker and
+      stated/reconstructed status; a second table preserves nesting, exceptions and tested counterexamples without
+      turning a condition into a causal claim.
+
+      2. Lead with the most useful source-supported distinction and its limits; give a selective accurate inventory,
+      without forcing a novel thesis.
+
+      3. Render the two named Markdown tables with citable rows; distinguish established relations, interpretations
+      and missing evidence.
+
+      4. On one paper, do not pretend there is a supplied corpus. On multiple papers, retain each local inventory
+      before aligning.
+
+      Every substantive table cell cites retained final finding IDs using separate [F1] [F2] citations. Reread the
+      actual final tables against the applied ledger and the source: rewrite or drop cells supported by rejected,
+      unverified or narrowed-away claims. Keep granular evidence when merging; use comma-separated full IDs in from:.
+      Scope records state coverage or uncertainty and never supply positive evidence. Code checks anchors and IDs;
+      models judge meaning. Select literal spans that together carry the finding’s actor, predicate, object and
+      necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including
+      within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status
+      and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'

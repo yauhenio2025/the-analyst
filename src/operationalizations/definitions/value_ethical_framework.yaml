@@ -1,0 +1,193 @@
+# Fourth queue: communications/study/REDESIGN_fourth_queue_2026-09-06.md
+engine_key: value_ethical_framework
+engine_name: Values and moral priorities
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: Which values and moral priorities support the text's judgments? Text making evaluative or normative
+    judgments; reader preferences only for a separately commissioned decision application.
+  framing: A value-to-judgment inventory and a priorities/tradeoffs table, each preserving whose value it is, explicit
+    or reconstructed status, the reason it supports a judgment and any unresolved conflict. Retain VALUES, ETHICAL
+    FRAMEWORKS, MORAL JUDGMENTS, VALUE CONFLICTS and NORMATIVE CLAIMS. Replace importance_ranking and normative_intensity
+    numbers and forced school labels with evidenced priorities and source-attributed reasoning; do not adopt a criticized
+    position as the author’s value.
+  scoped_outcomes: true
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: values
+    name: Values
+    scope: document
+    id_prefix: D1
+    load_bearing: true
+    questions:
+    - What does the text explicitly value or disvalue, and what values are implied by its evaluations?
+    answer_shape: value; holder; explicit/inferred; evaluative passage; doc; verbatim anchor(s); uncertainty
+    method_card: 'Do: Start from a valuation verb or adjective, preserve speaker and target, and label a reconstructed
+      value. Select literal spans that together carry the finding’s actor, predicate, object and necessary qualification.
+      If one short span cannot do so, use anchor-b/doc-b for a separate span, including within one document. Never
+      concatenate separated phrases into a quotation. Keep attribution, modality, status and chronology; re-anchor,
+      narrow or reject a verbatim quote that omits the claimed predicate.'
+    indicators:
+    - value
+    - holder
+    - explicit/inferred
+  - key: judgments
+    name: Judgments
+    scope: document
+    id_prefix: D2
+    load_bearing: true
+    questions:
+    - Which moral or evaluative judgments depend on those values, and how is the dependence stated?
+    answer_shape: judgment; subject; value; supporting reason; doc; verbatim anchor(s); uncertainty
+    method_card: 'Do: Pair the evaluation with its offered justification. A value appearing nearby does not establish
+      that it justifies the judgment. Select literal spans that together carry the finding’s actor, predicate, object
+      and necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including
+      within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status
+      and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+    indicators:
+    - judgment
+    - subject
+    - value
+  - key: principles
+    name: Principles
+    scope: document
+    id_prefix: D3
+    load_bearing: true
+    questions:
+    - Which principles or ethical reasoning patterns does the text actually use?
+    answer_shape: principle; application; attributed voice; optional framework; doc; verbatim anchor(s); uncertainty
+    method_card: 'Do: Describe the operative principle before any tradition label. Do not force utilitarian/deontological
+      categories onto an immanent critique. Select literal spans that together carry the finding’s actor, predicate,
+      object and necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span,
+      including within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality,
+      status and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+    indicators:
+    - principle
+    - application
+    - attributed voice
+  - key: priorities
+    name: Priorities
+    scope: document
+    id_prefix: D4
+    load_bearing: false
+    questions:
+    - Where does the account rank values or accept a tradeoff, and whose priority is it?
+    answer_shape: values compared; priority; cost accepted; qualification; doc; verbatim anchor(s); uncertainty
+    method_card: 'Do: Anchor both values and the priority predicate. Separate the economic doctrine being criticized
+      from the author’s assessment. Select literal spans that together carry the finding’s actor, predicate, object
+      and necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including
+      within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status
+      and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+    indicators:
+    - values compared
+    - priority
+    - cost accepted
+  - key: prescriptions
+    name: Prescriptions
+    scope: document
+    id_prefix: D5
+    load_bearing: false
+    questions:
+    - What ought to be done or preserved, by whom, and which conflicts or limits remain?
+    answer_shape: prescription; addressee; justification; conflict/resolution status; doc; verbatim anchor(s); uncertainty
+    method_card: 'Do: Keep must/should and conditions. Report an unresolved conflict instead of manufacturing the
+      reader’s preferred recommendation. Select literal spans that together carry the finding’s actor, predicate,
+      object and necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span,
+      including within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality,
+      status and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+    indicators:
+    - prescription
+    - addressee
+    - justification
+  - key: across_documents
+    name: Aligned supplied accounts
+    scope: corpus
+    id_prefix: CORPUS
+    load_bearing: false
+    questions:
+    - If multiple documents are supplied, what common question can be aligned using a supported local finding from
+      each, and what stays incomparable?
+    answer_shape: aligned object/question; per-document answer; supported relation; doc/anchor and doc-b/anchor-b;
+      coverage limit
+    method_card: 'Do: Inventory each supplied work first, then pair actual answers to the same question. Require
+      two different document keys for a cross-document claim. A single-paper contrast stays in its document dimension.
+      Do not infer transmission, chronological change or field-wide consensus from similarity. Select literal spans
+      that together carry the finding’s actor, predicate, object and necessary qualification. If one short span
+      cannot do so, use anchor-b/doc-b for a separate span, including within one document. Never concatenate separated
+      phrases into a quotation. Keep attribution, modality, status and chronology; re-anchor, narrow or reject a
+      verbatim quote that omits the claimed predicate.'
+    indicators:
+    - same object across supplied texts
+    - different answers to an aligned question
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension_x_document
+    model_tier: cheap
+    output: ledger
+    max_rows: 6
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - reject_biography
+    - merge_duplicates
+    - hunt_misses
+    - name_must_keep
+    - check_matrix_cell_support
+    - 'Every substantive table cell cites retained final finding IDs using separate [F1] [F2] citations. Reread
+      the actual final tables against the applied ledger and the source: rewrite or drop cells supported by rejected,
+      unverified or narrowed-away claims. Keep granular evidence when merging; use comma-separated full IDs in from:.
+      Scope records state coverage or uncertainty and never supply positive evidence. Code checks anchors and IDs;
+      models judge meaning. Select literal spans that together carry the finding’s actor, predicate, object and
+      necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including
+      within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status
+      and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: 'a reader with the supplied paper open who needs to answer: Which values and moral priorities support
+      the text''s judgments?'
+    tables:
+    - value_ethical_framework_inventory
+    - value_ethical_framework_relations
+    brief: '1. A value-to-judgment inventory and a priorities/tradeoffs table, each preserving whose value it is,
+      explicit or reconstructed status, the reason it supports a judgment and any unresolved conflict.
+
+      2. Lead with the most useful source-supported distinction and its limits; give a selective accurate inventory,
+      without forcing a novel thesis.
+
+      3. Render the two named Markdown tables with citable rows; distinguish established relations, interpretations
+      and missing evidence.
+
+      4. On one paper, do not pretend there is a supplied corpus. On multiple papers, retain each local inventory
+      before aligning.
+
+      Every substantive table cell cites retained final finding IDs using separate [F1] [F2] citations. Reread the
+      actual final tables against the applied ledger and the source: rewrite or drop cells supported by rejected,
+      unverified or narrowed-away claims. Keep granular evidence when merging; use comma-separated full IDs in from:.
+      Scope records state coverage or uncertainty and never supply positive evidence. Code checks anchors and IDs;
+      models judge meaning. Select literal spans that together carry the finding’s actor, predicate, object and
+      necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including
+      within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status
+      and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'

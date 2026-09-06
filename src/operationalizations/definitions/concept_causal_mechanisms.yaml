@@ -1,0 +1,196 @@
+# Fourth queue: communications/study/REDESIGN_fourth_queue_2026-09-06.md
+engine_key: concept_causal_mechanisms
+engine_name: A concept's causal role
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: What causal role does the text assign to the selected concept or phenomenon? Text using a selected
+    concept or naming a phenomenon in causal claims.
+  framing: A causal-role map for the central concept selected from the paper (name that choice), with cause/effect/mechanism/conditions/status
+    rows and a second table of reciprocal claims, interventions and noncausal relations that must remain distinct.
+    Preserve the existing as-cause/as-effect, mechanisms, conditions and counterfactual questions. Its causal_prominence/causal_certainty_average
+    scores and mandatory feedback topology lack measurements; its logical mechanism category can conflate implication
+    or constitution with causation. Require actual direction and relationship type.
+  scoped_outcomes: true
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: target
+    name: Target
+    scope: document
+    id_prefix: D1
+    load_bearing: true
+    questions:
+    - Which concept or phenomenon is central to the causal question, and which uses are definition, constitution
+      or association instead?
+    answer_shape: target; local sense; relation type; attribution; doc; verbatim anchor(s); uncertainty
+    method_card: 'Do: Use the commissioned concept if supplied; otherwise name one central source concept. Keep
+      noncausal definitions out of causal arrows. Select literal spans that together carry the finding’s actor,
+      predicate, object and necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate
+      span, including within one document. Never concatenate separated phrases into a quotation. Keep attribution,
+      modality, status and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+    indicators:
+    - target
+    - local sense
+    - relation type
+  - key: as_cause
+    name: As cause
+    scope: document
+    id_prefix: D2
+    load_bearing: true
+    questions:
+    - Where does the text claim that the concept causes, enables or blocks another outcome?
+    answer_shape: cause; predicate; effect; direction; certainty; doc; verbatim anchor(s); uncertainty
+    method_card: 'Do: Preserve the legacy FIND CONCEPT AS CAUSE question. Quote the causal verb with its endpoints
+      and distinguish enabling from guaranteeing. Select literal spans that together carry the finding’s actor,
+      predicate, object and necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate
+      span, including within one document. Never concatenate separated phrases into a quotation. Keep attribution,
+      modality, status and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+    indicators:
+    - cause
+    - predicate
+    - effect
+  - key: as_effect
+    name: As effect
+    scope: document
+    id_prefix: D3
+    load_bearing: true
+    questions:
+    - What does the text say produces or sustains the concept or phenomenon?
+    answer_shape: upstream cause; target effect; mediator; conditions; doc; verbatim anchor(s); uncertainty
+    method_card: 'Do: Preserve FIND CONCEPT AS EFFECT. Read the full causal sentence and keep reported theories
+      attributed. Select literal spans that together carry the finding’s actor, predicate, object and necessary
+      qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including within one
+      document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status and chronology;
+      re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+    indicators:
+    - upstream cause
+    - target effect
+    - mediator
+  - key: mechanisms
+    name: Mechanisms
+    scope: document
+    id_prefix: D4
+    load_bearing: false
+    questions:
+    - How is the proposed causal process said to work, and which steps and conditions are actually supplied?
+    answer_shape: mechanism; ordered links; enabling/blocking conditions; missing link; doc; verbatim anchor(s);
+      uncertainty
+    method_card: 'Do: Preserve MAP MECHANISMS and EXTRACT CONDITIONS. Give a separate supported finding for each
+      link; label unspecified mediators as unknown. Select literal spans that together carry the finding’s actor,
+      predicate, object and necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate
+      span, including within one document. Never concatenate separated phrases into a quotation. Keep attribution,
+      modality, status and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+    indicators:
+    - mechanism
+    - ordered links
+    - enabling/blocking conditions
+  - key: reciprocity
+    name: Reciprocity
+    scope: document
+    id_prefix: D5
+    load_bearing: false
+    questions:
+    - Are reciprocal relations, counterfactuals or interventions supported, and what limits their force?
+    answer_shape: reciprocal links or intervention; status; evidence; open edge; doc; verbatim anchor(s); uncertainty
+    method_card: 'Do: Retain feedback and counterfactual questions conditionally. Trace each claimed return edge;
+      do not close a loop from two names or promote a hypothetical intervention to an observed effect. Select literal
+      spans that together carry the finding’s actor, predicate, object and necessary qualification. If one short
+      span cannot do so, use anchor-b/doc-b for a separate span, including within one document. Never concatenate
+      separated phrases into a quotation. Keep attribution, modality, status and chronology; re-anchor, narrow or
+      reject a verbatim quote that omits the claimed predicate.'
+    indicators:
+    - reciprocal links or intervention
+    - status
+    - evidence
+  - key: across_documents
+    name: Aligned supplied accounts
+    scope: corpus
+    id_prefix: CORPUS
+    load_bearing: false
+    questions:
+    - If multiple documents are supplied, what common question can be aligned using a supported local finding from
+      each, and what stays incomparable?
+    answer_shape: aligned object/question; per-document answer; supported relation; doc/anchor and doc-b/anchor-b;
+      coverage limit
+    method_card: 'Do: Inventory each supplied work first, then pair actual answers to the same question. Require
+      two different document keys for a cross-document claim. A single-paper contrast stays in its document dimension.
+      Do not infer transmission, chronological change or field-wide consensus from similarity. Select literal spans
+      that together carry the finding’s actor, predicate, object and necessary qualification. If one short span
+      cannot do so, use anchor-b/doc-b for a separate span, including within one document. Never concatenate separated
+      phrases into a quotation. Keep attribution, modality, status and chronology; re-anchor, narrow or reject a
+      verbatim quote that omits the claimed predicate.'
+    indicators:
+    - same object across supplied texts
+    - different answers to an aligned question
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension_x_document
+    model_tier: cheap
+    output: ledger
+    max_rows: 6
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - reject_biography
+    - merge_duplicates
+    - hunt_misses
+    - name_must_keep
+    - check_matrix_cell_support
+    - 'Every substantive table cell cites retained final finding IDs using separate [F1] [F2] citations. Reread
+      the actual final tables against the applied ledger and the source: rewrite or drop cells supported by rejected,
+      unverified or narrowed-away claims. Keep granular evidence when merging; use comma-separated full IDs in from:.
+      Scope records state coverage or uncertainty and never supply positive evidence. Code checks anchors and IDs;
+      models judge meaning. Select literal spans that together carry the finding’s actor, predicate, object and
+      necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including
+      within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status
+      and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: 'a reader with the supplied paper open who needs to answer: What causal role does the text assign to
+      the selected concept or phenomenon?'
+    tables:
+    - concept_causal_mechanisms_inventory
+    - concept_causal_mechanisms_relations
+    brief: '1. A causal-role map for the central concept selected from the paper (name that choice), with cause/effect/mechanism/conditions/status
+      rows and a second table of reciprocal claims, interventions and noncausal relations that must remain distinct.
+
+      2. Lead with the most useful source-supported distinction and its limits; give a selective accurate inventory,
+      without forcing a novel thesis.
+
+      3. Render the two named Markdown tables with citable rows; distinguish established relations, interpretations
+      and missing evidence.
+
+      4. On one paper, do not pretend there is a supplied corpus. On multiple papers, retain each local inventory
+      before aligning.
+
+      Every substantive table cell cites retained final finding IDs using separate [F1] [F2] citations. Reread the
+      actual final tables against the applied ledger and the source: rewrite or drop cells supported by rejected,
+      unverified or narrowed-away claims. Keep granular evidence when merging; use comma-separated full IDs in from:.
+      Scope records state coverage or uncertainty and never supply positive evidence. Code checks anchors and IDs;
+      models judge meaning. Select literal spans that together carry the finding’s actor, predicate, object and
+      necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including
+      within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status
+      and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'

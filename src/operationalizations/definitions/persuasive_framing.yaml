@@ -1,0 +1,197 @@
+# Fourth queue: communications/study/REDESIGN_fourth_queue_2026-09-06.md
+engine_key: persuasive_framing
+engine_name: Persuasive appeals and framing
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: How do the text's appeals, framing and style work together to invite assent? The text and its stated
+    context; audience reception data only if evaluating actual effects.
+  framing: 'A reading of the paper’s strongest persuasive movement and its tension or limit, supported by an appeals/framing
+    table and a sequence-of-reinforcement table; describe invited audience positions while leaving actual reception
+    and private motives unknown. Preserve appeals, identification/division, frames, presence, style and the interaction
+    question. Rewrite the legacy implied_motives, intentional fallacy and audience-effects demands: private intent
+    and actual persuasion are not observed in prose. Avoid a compulsory Burke/Aristotle taxonomy that replaces a
+    reading.'
+  scoped_outcomes: true
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: invitation
+    name: Invitation
+    scope: document
+    id_prefix: D1
+    load_bearing: true
+    questions:
+    - What problem and reader position does the text establish as a reason to listen?
+    answer_shape: stated exigence; text-implied reader; invitation; constraint; doc; verbatim anchor(s); uncertainty
+    method_card: 'Do: Anchor the address, problem and response it invites. Distinguish textual audience positioning
+      from actual audience research. Select literal spans that together carry the finding’s actor, predicate, object
+      and necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including
+      within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status
+      and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+    indicators:
+    - stated exigence
+    - text-implied reader
+    - invitation
+  - key: appeals
+    name: Appeals
+    scope: document
+    id_prefix: D2
+    load_bearing: true
+    questions:
+    - How do reason, credibility and emotion support particular claims in these passages?
+    answer_shape: appeal; passage; claim supported; interaction; doc; verbatim anchor(s); uncertainty
+    method_card: 'Do: Retain ethos/pathos/logos as optional operations. Start with the claim and the predicate performing
+      the appeal, not a checklist of labels. Select literal spans that together carry the finding’s actor, predicate,
+      object and necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span,
+      including within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality,
+      status and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+    indicators:
+    - appeal
+    - passage
+    - claim supported
+  - key: frames
+    name: Frames
+    scope: document
+    id_prefix: D3
+    load_bearing: true
+    questions:
+    - Which framing contrasts or acts of identification make a position salient and an alternative less available?
+    answer_shape: frame/contrast; selected aspect; alternative; speaker; doc; verbatim anchor(s); uncertainty
+    method_card: 'Do: Anchor both sides of a consequential contrast. Distinguish criticism quoted from another writer
+      from the article’s own invitation. Select literal spans that together carry the finding’s actor, predicate,
+      object and necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span,
+      including within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality,
+      status and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+    indicators:
+    - frame/contrast
+    - selected aspect
+    - alternative
+  - key: presence
+    name: Presence
+    scope: document
+    id_prefix: D4
+    load_bearing: false
+    questions:
+    - How do repetition, amplification, examples and style give particular considerations weight?
+    answer_shape: device; repeated/amplified object; argumentative job; limit; doc; verbatim anchor(s); uncertainty
+    method_card: 'Do: Read neighboring passages to show what is amplified. Describe an invitation to respond, not
+      a proven emotion or manipulation motive. Select literal spans that together carry the finding’s actor, predicate,
+      object and necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span,
+      including within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality,
+      status and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+    indicators:
+    - device
+    - repeated/amplified object
+    - argumentative job
+  - key: interaction
+    name: Interaction
+    scope: document
+    id_prefix: D5
+    load_bearing: false
+    questions:
+    - How do these moves combine across the argument, and which counter-passage complicates that persuasive reading?
+    answer_shape: linked moves; supported reading; strongest complication; bounded conclusion; doc; verbatim anchor(s);
+      uncertainty
+    method_card: 'Do: Carry one text-specific interpretation through linked evidence. Retain qualifications that
+      make the position more defensible; do not infer deliberate deception. Select literal spans that together carry
+      the finding’s actor, predicate, object and necessary qualification. If one short span cannot do so, use anchor-b/doc-b
+      for a separate span, including within one document. Never concatenate separated phrases into a quotation.
+      Keep attribution, modality, status and chronology; re-anchor, narrow or reject a verbatim quote that omits
+      the claimed predicate.'
+    indicators:
+    - linked moves
+    - supported reading
+    - strongest complication
+  - key: across_documents
+    name: Aligned supplied accounts
+    scope: corpus
+    id_prefix: CORPUS
+    load_bearing: false
+    questions:
+    - If multiple documents are supplied, what common question can be aligned using a supported local finding from
+      each, and what stays incomparable?
+    answer_shape: aligned object/question; per-document answer; supported relation; doc/anchor and doc-b/anchor-b;
+      coverage limit
+    method_card: 'Do: Inventory each supplied work first, then pair actual answers to the same question. Require
+      two different document keys for a cross-document claim. A single-paper contrast stays in its document dimension.
+      Do not infer transmission, chronological change or field-wide consensus from similarity. Select literal spans
+      that together carry the finding’s actor, predicate, object and necessary qualification. If one short span
+      cannot do so, use anchor-b/doc-b for a separate span, including within one document. Never concatenate separated
+      phrases into a quotation. Keep attribution, modality, status and chronology; re-anchor, narrow or reject a
+      verbatim quote that omits the claimed predicate.'
+    indicators:
+    - same object across supplied texts
+    - different answers to an aligned question
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension_x_document
+    model_tier: cheap
+    output: ledger
+    max_rows: 6
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - reject_biography
+    - merge_duplicates
+    - hunt_misses
+    - name_must_keep
+    - check_matrix_cell_support
+    - 'Every substantive table cell cites retained final finding IDs using separate [F1] [F2] citations. Reread
+      the actual final tables against the applied ledger and the source: rewrite or drop cells supported by rejected,
+      unverified or narrowed-away claims. Keep granular evidence when merging; use comma-separated full IDs in from:.
+      Scope records state coverage or uncertainty and never supply positive evidence. Code checks anchors and IDs;
+      models judge meaning. Select literal spans that together carry the finding’s actor, predicate, object and
+      necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including
+      within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status
+      and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: 'a reader with the supplied paper open who needs to answer: How do the text''s appeals, framing and
+      style work together to invite assent?'
+    tables:
+    - persuasive_framing_inventory
+    - persuasive_framing_relations
+    brief: '1. A reading of the paper’s strongest persuasive movement and its tension or limit, supported by an
+      appeals/framing table and a sequence-of-reinforcement table; describe invited audience positions while leaving
+      actual reception and private motives unknown.
+
+      2. Lead with one consequential text-specific judgment, carry its reasoning through the evidence, and test
+      the strongest counter-passage.
+
+      3. Render the two named Markdown tables with citable rows; distinguish established relations, interpretations
+      and missing evidence.
+
+      4. On one paper, do not pretend there is a supplied corpus. On multiple papers, retain each local inventory
+      before aligning.
+
+      Every substantive table cell cites retained final finding IDs using separate [F1] [F2] citations. Reread the
+      actual final tables against the applied ledger and the source: rewrite or drop cells supported by rejected,
+      unverified or narrowed-away claims. Keep granular evidence when merging; use comma-separated full IDs in from:.
+      Scope records state coverage or uncertainty and never supply positive evidence. Code checks anchors and IDs;
+      models judge meaning. Select literal spans that together carry the finding’s actor, predicate, object and
+      necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including
+      within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status
+      and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'

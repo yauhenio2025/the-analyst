@@ -14,7 +14,12 @@ UNDER_THE_SHAPE = ("conditions_of_possibility_analyzer", "argument_architecture"
                    "metaphorical_mappings", "quote_attribution_voice", "stakeholder_power_interest",
                    "resource_distribution", "incentives_constrained_choices", "rules_and_responses",
                    "chronology_simultaneity", "periodization_critic", "categories_boundaries",
-                   "claim_provenance", "entity_extraction", "exemplar_catalog")
+                   "claim_provenance", "entity_extraction", "exemplar_catalog",
+                   # Fourth queue: twelve single-document methods (2026-09-06)
+                   "citation_invocation_map", "value_ethical_framework", "concept_causal_mechanisms",
+                   "conditional_relations", "pedagogical_pathway", "persuasive_framing", "rival_explanations",
+                   "collective_action_problem_identifier", "system_boundary_analyzer", "science_studies_network",
+                   "deal_flow_tracker", "feedback_loop_mapper")
 BANNED = ("author's prior work", "reputational", "embarrass", "would the author be comfortable", "husserlian critique", "the author's own social position")
 
 
@@ -38,7 +43,7 @@ def test_four_engines_share_the_shape():
 
 def test_prompts_compose_for_the_new_engines():
     reg = get_operationalization_registry(); ereg = get_engine_registry()
-    for key in ("inferential_commitment_mapper", "epistemological_method_detector", "deep_summarization", "statistical_evidence", "event_timeline_causal"):
+    for key in ("inferential_commitment_mapper", "epistemological_method_detector", "deep_summarization", "statistical_evidence", "event_timeline_causal", *UNDER_THE_SHAPE[-12:]):
         cap = ereg.get_capability_definition(key); spec = reg.get(key).process
         one = compose_oneshot_prompt(cap, spec, {"doc": "text"})
         assert LEDGER_HEADING in one.system and "Anchoring law" in one.system and spec.dimensions[0].questions[0] in one.system

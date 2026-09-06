@@ -1,0 +1,200 @@
+# Fourth queue: communications/study/REDESIGN_fourth_queue_2026-09-06.md
+engine_key: feedback_loop_mapper
+engine_name: System stocks, flows and feedback
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: Which feedback structures account for the system behavior described in the supplied material? Source-described
+    system variables, interactions and dates; numeric rates require measurements at specified intervals.
+  framing: A qualitative stocks/flows/link inventory and a feedback-path table showing each supported edge, sign,
+    delay, loop closure or open edge; distinguish source claims from reconstructed dynamics and hypothetical interventions.
+    Retain stocks, flows, loops, delays, interactions, behavior and intervention questions from the already broad
+    base definition. Replace the imperative find the loops, compulsory archetypes, quantitative tipping points and
+    rate estimates with supported edges and open paths. A causal chain need not close, and qualitative prose cannot
+    yield a simulation.
+  scoped_outcomes: true
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: variables
+    name: Variables
+    scope: document
+    id_prefix: D1
+    load_bearing: true
+    questions:
+    - Which quantities or capacities accumulate, and which processes increase or decrease them in the source’s system?
+    answer_shape: stock/capacity; inflow/outflow; source definition; qualitative/numeric status; doc; verbatim anchor(s);
+      uncertainty
+    method_card: 'Do: Retain stocks and flows without relabeling every concept a measurable stock. Quote the accumulation
+      or change predicate. Select literal spans that together carry the finding’s actor, predicate, object and necessary
+      qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including within one
+      document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status and chronology;
+      re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+    indicators:
+    - stock/capacity
+    - inflow/outflow
+    - source definition
+  - key: links
+    name: Links
+    scope: document
+    id_prefix: D2
+    load_bearing: true
+    questions:
+    - Which directional effects connect the variables, with what sign and conditions?
+    answer_shape: from; to; increase/decrease relation; condition; attribution; doc; verbatim anchor(s); uncertainty
+    method_card: 'Do: Anchor both endpoints and direction. A positive word is not a positive causal sign, and correlation
+      is not a causal edge. Select literal spans that together carry the finding’s actor, predicate, object and
+      necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including
+      within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status
+      and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+    indicators:
+    - from
+    - to
+    - increase/decrease relation
+  - key: loops
+    name: Loops
+    scope: document
+    id_prefix: D3
+    load_bearing: true
+    questions:
+    - Which paths return to their starting variable through separately supported links, and which remain open?
+    answer_shape: path; edge evidence; reinforcing/balancing if supported; missing return edge; doc; verbatim anchor(s);
+      uncertainty
+    method_card: 'Do: Trace every return link. Do not invent closure to satisfy a feedback label; label an analyst
+      reconstruction and preserve open chains. Select literal spans that together carry the finding’s actor, predicate,
+      object and necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span,
+      including within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality,
+      status and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+    indicators:
+    - path
+    - edge evidence
+    - reinforcing/balancing if supported
+  - key: time
+    name: Time
+    scope: document
+    id_prefix: D4
+    load_bearing: false
+    questions:
+    - What delays, rates, phases or changes in behavior are reported, and how precisely?
+    answer_shape: relation; delay/rate/phase; interval or unknown; behavioral implication; doc; verbatim anchor(s);
+      uncertainty
+    method_card: 'Do: Retain delays and rates only at reported precision. A metaphor of acceleration does not supply
+      measured velocity or a dated cycle. Select literal spans that together carry the finding’s actor, predicate,
+      object and necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span,
+      including within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality,
+      status and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+    indicators:
+    - relation
+    - delay/rate/phase
+    - interval or unknown
+  - key: interventions
+    name: Interventions
+    scope: document
+    id_prefix: D5
+    load_bearing: false
+    questions:
+    - What changes or counterforces could alter the described dynamic, and are their effects observed or hypothetical?
+    answer_shape: intervention/counterforce; link affected; source/analyst status; effect; limit; doc; verbatim
+      anchor(s); uncertainty
+    method_card: 'Do: Keep interaction, resistance and leverage questions conditional. Do not turn the author’s
+      speculative end scenario into an observed system transition. Select literal spans that together carry the
+      finding’s actor, predicate, object and necessary qualification. If one short span cannot do so, use anchor-b/doc-b
+      for a separate span, including within one document. Never concatenate separated phrases into a quotation.
+      Keep attribution, modality, status and chronology; re-anchor, narrow or reject a verbatim quote that omits
+      the claimed predicate.'
+    indicators:
+    - intervention/counterforce
+    - link affected
+    - source/analyst status
+  - key: across_documents
+    name: Aligned supplied accounts
+    scope: corpus
+    id_prefix: CORPUS
+    load_bearing: false
+    questions:
+    - If multiple documents are supplied, what common question can be aligned using a supported local finding from
+      each, and what stays incomparable?
+    answer_shape: aligned object/question; per-document answer; supported relation; doc/anchor and doc-b/anchor-b;
+      coverage limit
+    method_card: 'Do: Inventory each supplied work first, then pair actual answers to the same question. Require
+      two different document keys for a cross-document claim. A single-paper contrast stays in its document dimension.
+      Do not infer transmission, chronological change or field-wide consensus from similarity. Select literal spans
+      that together carry the finding’s actor, predicate, object and necessary qualification. If one short span
+      cannot do so, use anchor-b/doc-b for a separate span, including within one document. Never concatenate separated
+      phrases into a quotation. Keep attribution, modality, status and chronology; re-anchor, narrow or reject a
+      verbatim quote that omits the claimed predicate.'
+    indicators:
+    - same object across supplied texts
+    - different answers to an aligned question
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension_x_document
+    model_tier: cheap
+    output: ledger
+    max_rows: 6
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - reject_biography
+    - merge_duplicates
+    - hunt_misses
+    - name_must_keep
+    - check_matrix_cell_support
+    - 'Every substantive table cell cites retained final finding IDs using separate [F1] [F2] citations. Reread
+      the actual final tables against the applied ledger and the source: rewrite or drop cells supported by rejected,
+      unverified or narrowed-away claims. Keep granular evidence when merging; use comma-separated full IDs in from:.
+      Scope records state coverage or uncertainty and never supply positive evidence. Code checks anchors and IDs;
+      models judge meaning. Select literal spans that together carry the finding’s actor, predicate, object and
+      necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including
+      within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status
+      and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: 'a reader with the supplied paper open who needs to answer: Which feedback structures account for the
+      system behavior described in the supplied material?'
+    tables:
+    - feedback_loop_mapper_inventory
+    - feedback_loop_mapper_relations
+    brief: '1. A qualitative stocks/flows/link inventory and a feedback-path table showing each supported edge,
+      sign, delay, loop closure or open edge; distinguish source claims from reconstructed dynamics and hypothetical
+      interventions.
+
+      2. Lead with the most useful source-supported distinction and its limits; give a selective accurate inventory,
+      without forcing a novel thesis.
+
+      3. Render the two named Markdown tables with citable rows; distinguish established relations, interpretations
+      and missing evidence.
+
+      4. On one paper, do not pretend there is a supplied corpus. On multiple papers, retain each local inventory
+      before aligning.
+
+      Every substantive table cell cites retained final finding IDs using separate [F1] [F2] citations. Reread the
+      actual final tables against the applied ledger and the source: rewrite or drop cells supported by rejected,
+      unverified or narrowed-away claims. Keep granular evidence when merging; use comma-separated full IDs in from:.
+      Scope records state coverage or uncertainty and never supply positive evidence. Code checks anchors and IDs;
+      models judge meaning. Select literal spans that together carry the finding’s actor, predicate, object and
+      necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including
+      within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status
+      and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'

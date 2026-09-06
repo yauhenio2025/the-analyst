@@ -1,0 +1,200 @@
+# Fourth queue: communications/study/REDESIGN_fourth_queue_2026-09-06.md
+engine_key: rival_explanations
+engine_name: Rival explanations and diagnostic evidence
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: Which rival explanations are distinguished by the supplied evidence? A specified explanatory question,
+    source-proposed hypotheses and evidence; additional analyst alternatives must be labeled.
+  framing: A reading of what the supplied evidence actually distinguishes between the paper’s rival explanations,
+    with hypothesis/prediction/evidence-relation rows and a diagnostic-evidence table stating the reason, assumptions
+    and remaining uncertainty for each comparison. Retain source hypothesis inventory, predictions, evidence, disconfirmation,
+    assumptions and sensitivity. Replace generate ALL hypotheses, numeric diagnosticity/likelihood scores and detected
+    cognitive biases/deception with bounded source rivals and explicitly labeled analyst alternatives. Shared evidence
+    cannot mechanically crown a winner.
+  scoped_outcomes: true
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: problem
+    name: Problem
+    scope: document
+    id_prefix: D1
+    load_bearing: true
+    questions:
+    - What specific outcome is being explained, and what alternative explanations does the source actually propose?
+    answer_shape: explanandum; source hypotheses; advocate; scope; doc; verbatim anchor(s); uncertainty
+    method_card: 'Do: Anchor each rival’s actual proposition and allow complementary explanations. Analyst alternatives
+      must be labeled and bounded. Select literal spans that together carry the finding’s actor, predicate, object
+      and necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including
+      within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status
+      and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+    indicators:
+    - explanandum
+    - source hypotheses
+    - advocate
+  - key: predictions
+    name: Predictions
+    scope: document
+    id_prefix: D2
+    load_bearing: true
+    questions:
+    - What observation would each explanation lead one to expect under its stated assumptions?
+    answer_shape: hypothesis; expected observation; source-stated/analyst-derived; assumption; doc; verbatim anchor(s);
+      uncertainty
+    method_card: 'Do: Derive predictions transparently from an anchored hypothesis. Do not report a derived prediction
+      as observed evidence. Select literal spans that together carry the finding’s actor, predicate, object and
+      necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including
+      within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status
+      and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+    indicators:
+    - hypothesis
+    - expected observation
+    - source-stated/analyst-derived
+  - key: evidence
+    name: Evidence
+    scope: document
+    id_prefix: D3
+    load_bearing: true
+    questions:
+    - Which reported observations bear on each rival, and are they supportive, adverse, shared or silent?
+    answer_shape: observation; provenance; rival; relation; reason; doc; verbatim anchor(s); uncertainty
+    method_card: 'Do: Keep the reported observation separate from the author’s interpretation. Give each consequential
+      matrix cell its own evidence and reasoning. Select literal spans that together carry the finding’s actor,
+      predicate, object and necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate
+      span, including within one document. Never concatenate separated phrases into a quotation. Keep attribution,
+      modality, status and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+    indicators:
+    - observation
+    - provenance
+    - rival
+  - key: diagnosticity
+    name: Diagnosticity
+    scope: document
+    id_prefix: D4
+    load_bearing: false
+    questions:
+    - Which observations discriminate between rivals rather than merely fitting both, and why?
+    answer_shape: rival pair; contrasting expectations; observation; discriminator or ambiguity; doc; verbatim anchor(s);
+      uncertainty
+    method_card: 'Do: Test the strongest rival against the same evidence. Say unresolved when assumptions or shared
+      predictions erase discrimination; do not compute unsupported scores. Select literal spans that together carry
+      the finding’s actor, predicate, object and necessary qualification. If one short span cannot do so, use anchor-b/doc-b
+      for a separate span, including within one document. Never concatenate separated phrases into a quotation.
+      Keep attribution, modality, status and chronology; re-anchor, narrow or reject a verbatim quote that omits
+      the claimed predicate.'
+    indicators:
+    - rival pair
+    - contrasting expectations
+    - observation
+  - key: sensitivity
+    name: Sensitivity
+    scope: document
+    id_prefix: D5
+    load_bearing: false
+    questions:
+    - Which assumptions or untested alternatives could change the conclusion, and what does the source evidence
+      permit now?
+    answer_shape: linchpin; counter-evidence; missing test; bounded conclusion; doc; verbatim anchor(s); uncertainty
+    method_card: 'Do: Use source counter-passages and expose identification limits. No alleged deception, probability
+      estimate or psychological diagnosis without supplied evidence. Select literal spans that together carry the
+      finding’s actor, predicate, object and necessary qualification. If one short span cannot do so, use anchor-b/doc-b
+      for a separate span, including within one document. Never concatenate separated phrases into a quotation.
+      Keep attribution, modality, status and chronology; re-anchor, narrow or reject a verbatim quote that omits
+      the claimed predicate.'
+    indicators:
+    - linchpin
+    - counter-evidence
+    - missing test
+  - key: across_documents
+    name: Aligned supplied accounts
+    scope: corpus
+    id_prefix: CORPUS
+    load_bearing: false
+    questions:
+    - If multiple documents are supplied, what common question can be aligned using a supported local finding from
+      each, and what stays incomparable?
+    answer_shape: aligned object/question; per-document answer; supported relation; doc/anchor and doc-b/anchor-b;
+      coverage limit
+    method_card: 'Do: Inventory each supplied work first, then pair actual answers to the same question. Require
+      two different document keys for a cross-document claim. A single-paper contrast stays in its document dimension.
+      Do not infer transmission, chronological change or field-wide consensus from similarity. Select literal spans
+      that together carry the finding’s actor, predicate, object and necessary qualification. If one short span
+      cannot do so, use anchor-b/doc-b for a separate span, including within one document. Never concatenate separated
+      phrases into a quotation. Keep attribution, modality, status and chronology; re-anchor, narrow or reject a
+      verbatim quote that omits the claimed predicate.'
+    indicators:
+    - same object across supplied texts
+    - different answers to an aligned question
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension_x_document
+    model_tier: cheap
+    output: ledger
+    max_rows: 6
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - reject_biography
+    - merge_duplicates
+    - hunt_misses
+    - name_must_keep
+    - check_matrix_cell_support
+    - 'Every substantive table cell cites retained final finding IDs using separate [F1] [F2] citations. Reread
+      the actual final tables against the applied ledger and the source: rewrite or drop cells supported by rejected,
+      unverified or narrowed-away claims. Keep granular evidence when merging; use comma-separated full IDs in from:.
+      Scope records state coverage or uncertainty and never supply positive evidence. Code checks anchors and IDs;
+      models judge meaning. Select literal spans that together carry the finding’s actor, predicate, object and
+      necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including
+      within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status
+      and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: 'a reader with the supplied paper open who needs to answer: Which rival explanations are distinguished
+      by the supplied evidence?'
+    tables:
+    - rival_explanations_inventory
+    - rival_explanations_relations
+    brief: '1. A reading of what the supplied evidence actually distinguishes between the paper’s rival explanations,
+      with hypothesis/prediction/evidence-relation rows and a diagnostic-evidence table stating the reason, assumptions
+      and remaining uncertainty for each comparison.
+
+      2. Lead with one consequential text-specific judgment, carry its reasoning through the evidence, and test
+      the strongest counter-passage.
+
+      3. Render the two named Markdown tables with citable rows; distinguish established relations, interpretations
+      and missing evidence.
+
+      4. On one paper, do not pretend there is a supplied corpus. On multiple papers, retain each local inventory
+      before aligning.
+
+      Every substantive table cell cites retained final finding IDs using separate [F1] [F2] citations. Reread the
+      actual final tables against the applied ledger and the source: rewrite or drop cells supported by rejected,
+      unverified or narrowed-away claims. Keep granular evidence when merging; use comma-separated full IDs in from:.
+      Scope records state coverage or uncertainty and never supply positive evidence. Code checks anchors and IDs;
+      models judge meaning. Select literal spans that together carry the finding’s actor, predicate, object and
+      necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including
+      within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status
+      and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'

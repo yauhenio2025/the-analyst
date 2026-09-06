@@ -1,0 +1,308 @@
+{
+  "cap_usd": 15.0,
+  "jobs": {
+    "G5__checked__chen": {
+      "id": "G5",
+      "engine": "citation_invocation_map",
+      "papers": [
+        "chen"
+      ],
+      "condition": "checked"
+    },
+    "G5__old__chen": {
+      "id": "G5",
+      "engine": "citation_invocation_map",
+      "papers": [
+        "chen"
+      ],
+      "condition": "old"
+    },
+    "A7__checked__rationality": {
+      "id": "A7",
+      "engine": "value_ethical_framework",
+      "papers": [
+        "rationality"
+      ],
+      "condition": "checked"
+    },
+    "A7__old__rationality": {
+      "id": "A7",
+      "engine": "value_ethical_framework",
+      "papers": [
+        "rationality"
+      ],
+      "condition": "old"
+    },
+    "C4__checked__promise": {
+      "id": "C4",
+      "engine": "concept_causal_mechanisms",
+      "papers": [
+        "promise"
+      ],
+      "condition": "checked"
+    },
+    "C4__old__promise": {
+      "id": "C4",
+      "engine": "concept_causal_mechanisms",
+      "papers": [
+        "promise"
+      ],
+      "condition": "old"
+    },
+    "C5__checked__chen": {
+      "id": "C5",
+      "engine": "conditional_relations",
+      "papers": [
+        "chen"
+      ],
+      "condition": "checked"
+    },
+    "C5__old__chen": {
+      "id": "C5",
+      "engine": "conditional_relations",
+      "papers": [
+        "chen"
+      ],
+      "condition": "old"
+    },
+    "S5__checked__chen": {
+      "id": "S5",
+      "engine": "pedagogical_pathway",
+      "papers": [
+        "chen"
+      ],
+      "condition": "checked"
+    },
+    "S5__old__chen": {
+      "id": "S5",
+      "engine": "pedagogical_pathway",
+      "papers": [
+        "chen"
+      ],
+      "condition": "old"
+    },
+    "R2__checked__harris": {
+      "id": "R2",
+      "engine": "persuasive_framing",
+      "papers": [
+        "harris"
+      ],
+      "condition": "checked"
+    },
+    "R2__old__harris": {
+      "id": "R2",
+      "engine": "persuasive_framing",
+      "papers": [
+        "harris"
+      ],
+      "condition": "old"
+    },
+    "E3__checked__subsea": {
+      "id": "E3",
+      "engine": "rival_explanations",
+      "papers": [
+        "subsea"
+      ],
+      "condition": "checked"
+    },
+    "E3__old__subsea": {
+      "id": "E3",
+      "engine": "rival_explanations",
+      "papers": [
+        "subsea"
+      ],
+      "condition": "old"
+    },
+    "I4__checked__rationality": {
+      "id": "I4",
+      "engine": "collective_action_problem_identifier",
+      "papers": [
+        "rationality"
+      ],
+      "condition": "checked"
+    },
+    "I4__old__rationality": {
+      "id": "I4",
+      "engine": "collective_action_problem_identifier",
+      "papers": [
+        "rationality"
+      ],
+      "condition": "old"
+    },
+    "I9__checked__rationality": {
+      "id": "I9",
+      "engine": "system_boundary_analyzer",
+      "papers": [
+        "rationality"
+      ],
+      "condition": "checked"
+    },
+    "I9__old__rationality": {
+      "id": "I9",
+      "engine": "system_boundary_analyzer",
+      "papers": [
+        "rationality"
+      ],
+      "condition": "old"
+    },
+    "I11__checked__subsea": {
+      "id": "I11",
+      "engine": "science_studies_network",
+      "papers": [
+        "subsea"
+      ],
+      "condition": "checked"
+    },
+    "I11__old__subsea": {
+      "id": "I11",
+      "engine": "science_studies_network",
+      "papers": [
+        "subsea"
+      ],
+      "condition": "old"
+    },
+    "I13__checked__subsea": {
+      "id": "I13",
+      "engine": "deal_flow_tracker",
+      "papers": [
+        "subsea"
+      ],
+      "condition": "checked"
+    },
+    "I13__old__subsea": {
+      "id": "I13",
+      "engine": "deal_flow_tracker",
+      "papers": [
+        "subsea"
+      ],
+      "condition": "old"
+    },
+    "T5__checked__promise": {
+      "id": "T5",
+      "engine": "feedback_loop_mapper",
+      "papers": [
+        "promise"
+      ],
+      "condition": "checked"
+    },
+    "T5__old__promise": {
+      "id": "T5",
+      "engine": "feedback_loop_mapper",
+      "papers": [
+        "promise"
+      ],
+      "condition": "old"
+    }
+  },
+  "models": {
+    "cheap": "openrouter/openai/gpt-5.6-luna",
+    "mid": "openrouter/deepseek/deepseek-v4-pro",
+    "strong": "openrouter/openai/gpt-5.6-sol",
+    "sonnet": "claude-sonnet-4-6",
+    "sol": "openrouter/openai/gpt-5.6-sol"
+  },
+  "prices": {
+    "cheap": [
+      0.2,
+      1.2
+    ],
+    "mid": [
+      1.042,
+      2.085
+    ],
+    "strong": [
+      2,
+      10
+    ],
+    "sonnet": [
+      3,
+      15
+    ],
+    "sol": [
+      2,
+      10
+    ]
+  },
+  "output_limits": {
+    "cheap": 6000,
+    "mid": 32000,
+    "strong": 14000,
+    "sonnet": 1800,
+    "sol": 1800
+  },
+  "rubric": "Score this single ANALYSIS against the supplied SOURCES, independently. No comparison or winner.\nSix integer scores from 1 to 10, higher always better:\nspecificity: captures these sources and their distinct roles rather than generic themes;\nanchoring: quotes occur in the named sources AND support the actual interpretation and scope;\nnon_obviousness: useful expert distinctions a casual reader misses;\ncoherence: consistent source attribution, scope and claims across prose, tables and findings;\nusefulness: the requested reading or inventory and its tables help a reader with these texts open; inventories need accurate useful coverage, not a compulsory novel thesis;\nhallucination_risk: 10 means no unsupported claims, invented consensus, false contradiction, or invented absence.\nRead all sources and all substantive output. A verbatim quote verifies occurrence, not meaning. Judge table cells,\nrelation labels, definitions, quantifiers, dates, attribution, warrants and silence against the actual passages.\nDifferent scope is not contradiction; recurring vocabulary is not agreement. An honest inconclusive or bounded\nnegative cell can be useful. Do not reward length, row count, special fields or asserted verification/check status.\nIdentify any decisive error with the analysis claim and counter-passage. Give a concise source-specific reason\nfor each criterion. Return only JSON with all six scores and nonempty reasons:\n{\"specificity\":n,\"anchoring\":n,\"non_obviousness\":n,\"coherence\":n,\"usefulness\":n,\"hallucination_risk\":n,\n\"reasons\":{\"specificity\":\"...\",\"anchoring\":\"...\",\"non_obviousness\":\"...\",\"coherence\":\"...\",\n\"usefulness\":\"...\",\"hallucination_risk\":\"...\"},\"decisive_errors\":[],\"one_line\":\"...\"}",
+  "frozen_at": 1788670884.9098012,
+  "commit": "75aa7d47e6df4b0c7ecd8e7fb2e9a103b3e723d1",
+  "inputs": {
+    "communications/study/PROTOCOL_fourth_queue_2026-09-06.md": "ddee5b8be28909cd2b96ed9135e5737123e7ab6ab7947c9b43949a3bf414af58",
+    "communications/study/fourth_queue_2026_09_06/designs.json": "9db25338e05730eabeedeffb267ad168b7b116aeb917c11b7625e91d91e11a33",
+    "communications/study/fourth_queue_2026_09_06/original_definitions/citation_network.json": "6f91bc3a1ac98eabe60e9e5fbbe36d14e0720cb494543fcec4cd48b0a439cba5",
+    "communications/study/fourth_queue_2026_09_06/original_definitions/collective_action_problem_identifier.json": "d01e97e6bc68a675fecdf216c939f5af7351edc45269640326eac3fcfbef0838",
+    "communications/study/fourth_queue_2026_09_06/original_definitions/competing_explanations_analyzer.json": "58772ce41e36e86932fcded5ad1b4a30ba15d30ac1ee9039933c3cd89c615f9f",
+    "communications/study/fourth_queue_2026_09_06/original_definitions/concept_causal_mechanisms.json": "a2765ab0522febc18ac56ad3c33484b4628df91e720a437770f5f7f5495d8882",
+    "communications/study/fourth_queue_2026_09_06/original_definitions/concept_conditional_web.json": "a17d1ece66f1a19cc54638132446ac42770043bbde91adafe49bad8e420234c1",
+    "communications/study/fourth_queue_2026_09_06/original_definitions/deal_flow_tracker.json": "84db61a54b1dfa230ca8a43a8c6318bf80d85c2192b5de05f8131e6d944cd319",
+    "communications/study/fourth_queue_2026_09_06/original_definitions/feedback_loop_mapper.json": "edc9d0d67c5572fd6d28ac6397e9ffe2532c17365f8f64825035bb55e113f8d0",
+    "communications/study/fourth_queue_2026_09_06/original_definitions/pedagogical_pathway.json": "fadc54250fb8a5e0a803c2644371e990d1a5e457ff00325838149521f5b609c8",
+    "communications/study/fourth_queue_2026_09_06/original_definitions/rhetorical_strategy.json": "b23db9131902fcaf4591916d14235f5b5756a2a7b72ea735c3aec674bc8f59bb",
+    "communications/study/fourth_queue_2026_09_06/original_definitions/science_studies_network.json": "83a4abcfec0a408f8a3c5977a03b99e90e3517ec63bdad0750d085972eb1b9e4",
+    "communications/study/fourth_queue_2026_09_06/original_definitions/system_boundary_analyzer.json": "020bd56544d69ccd18ecf0ef2e87bb315391d1748b3fbecb939359d2a7b8b879",
+    "communications/study/fourth_queue_2026_09_06/original_definitions/value_ethical_framework.json": "d1db0ee89ab9d041abfdbef5abd098046f740c3f13976c6ec33def00765beaa3",
+    "communications/study/fourth_queue_2026_09_06/original_prompts/A7.txt": "c206e52b0b7a599385b4057e3b7c2b377f08c6552ef69274c5713493e6aa2efc",
+    "communications/study/fourth_queue_2026_09_06/original_prompts/C4.txt": "3cb4ffe4b2da20ed553017a3b683938a0d3b4f09c4d658443c498619718cfb8b",
+    "communications/study/fourth_queue_2026_09_06/original_prompts/C5.txt": "d36310379f8070bec4aa472887fdbfd85be72a32a1b911e4fef3f0059905c531",
+    "communications/study/fourth_queue_2026_09_06/original_prompts/E3.txt": "9e4c8bdbfb03dc0979e42d3315c7ecade4cbd7d41a686ed51310a86ee1195ae5",
+    "communications/study/fourth_queue_2026_09_06/original_prompts/G5.txt": "67b72fbeb5cef52433f39544b51fccc1eaa83dc21989cb8f5193bdc9956cee98",
+    "communications/study/fourth_queue_2026_09_06/original_prompts/I11.txt": "dea5972c126eb5b8773c67f6b2b5ebf18ea3cdeb623d2aec8a09942f4dca6008",
+    "communications/study/fourth_queue_2026_09_06/original_prompts/I13.txt": "96b9cd78ee11257a999c0194d1463a00dc8170fe01fa7b76d32a5ff4c11ecb0f",
+    "communications/study/fourth_queue_2026_09_06/original_prompts/I4.txt": "f469c9bb397c068008ab20daaa8524239f50d6e330e8b09a04bf05d1934af130",
+    "communications/study/fourth_queue_2026_09_06/original_prompts/I9.txt": "dd701949e1b31f3f10efdaa61538f4b5a7f2dfb70f842c112c15d5a187f9d8e0",
+    "communications/study/fourth_queue_2026_09_06/original_prompts/R2.txt": "6c8008c4d3318901ab9631a589ac5cddb39668722bb32ee72c71dff8ed62b32b",
+    "communications/study/fourth_queue_2026_09_06/original_prompts/S5.txt": "29c37e26329e7117aea4e7d67bbead302346df0ab9970c9bba048821b5bc9ddc",
+    "communications/study/fourth_queue_2026_09_06/original_prompts/T5.txt": "5ccc4ecb8e77f4c87308c04416ac24c9d2974b01230ff04d036493a86cf2aa6b",
+    "data/study/source_subsea.txt": "1c788e8d05dd98d699dc614b9f2e2d3d22794834adf86c5203932451538dcce1",
+    "data/study/sources_ideas/castoriadis1997_rationality_of_capitalism.md": "ef090da9111fa3f4fa435641c7cc3fabda744c1ee939976c3df01021ceaec857",
+    "data/study/sources_ideas/chen2025_progress_without_progress_jaeggi.txt": "c49d69012db5a515f25e20602928768b8621e0ebd1021dce9f9168a8cd685f94",
+    "data/study/sources_ideas/deutschmann2001_promise_of_absolute_wealth.md": "a2d1fe4a0f63ed7da3ac7af395884331a55ddeda6997a09c1fbaeec586d599dc",
+    "data/study/sources_ideas/harris2026_eight_arguments_against_honneth.txt": "6daf2fecf707a3a81b54bde1cd59e1532d733b76365fb6d2acd832b22994c113",
+    "scripts/study_corpus_methods_P1_P2_2026_09_06.py": "11f059da89c0c681fd8b300757006b70c9fed6ce520acf123de94d166ce627ec",
+    "scripts/study_first_queue.py": "46384e09dd7ecc560373c3ba0e9299e121e17537ec6e754321a93c6c65fd4194",
+    "scripts/study_fourth_queue.py": "f828820cd62ab2748e3d460781f8ac79684498222f9d1da482d6007c6f067865",
+    "scripts/study_second_queue.py": "93639048a2b7f78dc644d611049927beb015f46365bed0aa9dd1705721263f3e",
+    "scripts/study_two_engines.py": "c157c4a1cd88198430670774ba62f1b126eddb292f2ebc66e87a0e6794331f93",
+    "src/engines/capability_definitions/citation_invocation_map.yaml": "f82653e7a8651eb3b9acc28ce00222b00505d9fff24f90fac9eb56370316814e",
+    "src/engines/capability_definitions/collective_action_problem_identifier.yaml": "40c63d8d5826b3a3d42d7068c28f8fd6b5d5834281f8518a9fd744a874c8d4c8",
+    "src/engines/capability_definitions/concept_causal_mechanisms.yaml": "a38f65a95938da99defe84a6390f511479b652a7026d5952c297537f6f450d8c",
+    "src/engines/capability_definitions/conditional_relations.yaml": "f7794ae7a145b3efaef7a5fd20f4a2d0c2981c68a81a54a4b5ba7a5f79fd6dbd",
+    "src/engines/capability_definitions/deal_flow_tracker.yaml": "bb4aac95a7db0f3de5f4e76c008c2e46e5445518fc6c70a4675a44d2991308b0",
+    "src/engines/capability_definitions/feedback_loop_mapper.yaml": "e75e8d748965feb03e7bcb1268e6ac72ba3009a26ad8e818a647a0c162d6a92f",
+    "src/engines/capability_definitions/pedagogical_pathway.yaml": "25d3e7c51e240f065e81ab6add903b7a05642e66228215ee6d706ca2f4942f9e",
+    "src/engines/capability_definitions/persuasive_framing.yaml": "3c4f7aab344c7e81b840d6200c2e2db5e32debdbd8d8136971294134f5bbdba8",
+    "src/engines/capability_definitions/rival_explanations.yaml": "922f04cff9730054b19616200d70b78c5ca925f4d210d67b34e8f2d917703d2d",
+    "src/engines/capability_definitions/science_studies_network.yaml": "2b62d6a40d75e6be3d5fc830b8f292376351cfdb2abb792d619b8bfc42b833d9",
+    "src/engines/capability_definitions/system_boundary_analyzer.yaml": "cd1d960532e67cb9e5f30b564387a3c66c4a58bd34a80608effce33778589cf4",
+    "src/engines/capability_definitions/value_ethical_framework.yaml": "53a9bc31d34f639144855545e4998e26cb88b3a931598eece63802177c727eb7",
+    "src/engines/schemas_v2.py": "9632ad61727e1f2025c61a83fbd03b8c89f763b70087358b5783b02cf52f9789",
+    "src/events/pricing.py": "142dd59fa7f9185c2d6838745f6049011315079f6270a8f749ca1c8613d11399",
+    "src/executor/context_broker.py": "014ebc6abbc1c9b257306e0d1a1ea9a6fd30ef3fb6c56c7056dd099c46e1543d",
+    "src/executor/ledger_walls.py": "1f6f3afb1043b35fc42f85e94b67274b37e98ad0e700e03a0d755948084d7f13",
+    "src/executor/process_runner.py": "a3d2b5b26e4ca5b9c7cbd36a471ec8fcec30a27889883e4564b33aaf74d89ebd",
+    "src/executor/ruling_coverage.py": "154a6889a61204ede20bca0ede14178ee8116c1f2360626c14cd397b98d9648e",
+    "src/executor/scoped_outcomes.py": "b2f6fdcc7de13be8628e440474fae9de4af7dd3078cb5d82dbfd0cf332634ab7",
+    "src/operationalizations/definitions/citation_invocation_map.yaml": "7e66d5319f17705028f749c6812ee2b5ee9ac7dfbe1230fb4e7f0167a8996744",
+    "src/operationalizations/definitions/collective_action_problem_identifier.yaml": "0fee16be0a0ca3511695a0369834a00d34134880a4252e1633b18cf70e9aafbd",
+    "src/operationalizations/definitions/concept_causal_mechanisms.yaml": "f8506ec7be02966c5734c914c68aa17318207c7f3274691c3b52ee668adcbcd3",
+    "src/operationalizations/definitions/conditional_relations.yaml": "6c68f00b0f144ad1f7b4d5ea77ca265e42b61b28afc7aedd96a139b3ad29ada0",
+    "src/operationalizations/definitions/deal_flow_tracker.yaml": "ec36191728ae05c1995ccc44d71eb27a3c0384da5e33e1fd02b8fa41031c75b1",
+    "src/operationalizations/definitions/feedback_loop_mapper.yaml": "d7702b011a57bc9fa0e5ee6250f4ccc442850ce01dcb0e78ce8f8d07b03c94e3",
+    "src/operationalizations/definitions/pedagogical_pathway.yaml": "cdaa669e8f8908490a0c8046ddd94755f5bb096a496666069e0caeac25b42f14",
+    "src/operationalizations/definitions/persuasive_framing.yaml": "b27e39b68b4dcb82c2c7e7883a831cafb35893e30a089194e5f218d742cc730b",
+    "src/operationalizations/definitions/rival_explanations.yaml": "c2f281df2163fc7b8cb8a965969b6b52e1a295dc9317d7f381566617d3bd2a03",
+    "src/operationalizations/definitions/science_studies_network.yaml": "ce2df2638e9e139be9796343f23942be28eddf50d8d333554edb60f25867d81f",
+    "src/operationalizations/definitions/system_boundary_analyzer.yaml": "8044366b06b2d57189745436b6b71fa7cfa0453639176fdc5b48be6891d6f724",
+    "src/operationalizations/definitions/value_ethical_framework.yaml": "294d019bc56b852257c1239e5cc12b603f7229008893c58feba84b016a79c120",
+    "src/operationalizations/schemas.py": "b20cdec494a3326d9fac7f3ad8bd8b58446c86e45511c848918148388d767637",
+    "src/stages/process_composer.py": "133e86b8b87e2ae30b37c1d47e35f6394214d2bf733e10fdce79ed929dd32d89"
+  },
+  "identity": "de2460caa232dcb7937efcb35337cdc0dc55f8a34a5ad84e72d58f79e16e82b1"
+}

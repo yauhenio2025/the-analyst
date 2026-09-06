@@ -1,0 +1,197 @@
+# Fourth queue: communications/study/REDESIGN_fourth_queue_2026-09-06.md
+engine_key: collective_action_problem_identifier
+engine_name: Barriers to cooperation
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: What documented incentive conflict prevents a group from achieving a shared outcome? A documented
+    group, proposed common good, individual incentives and collective outcomes.
+  framing: A reading of the documented cooperation problem or of why the evidence does not establish one, with actors/shared-outcome/incentive/barrier
+    rows and a responses table separating existing cooperation, proposed arrangements and unresolved constraints.
+    Keep collective good, actor incentives, group characteristics, existing and proposed solutions. The legacy assessment
+    and potential_solutions demand feasibility and effectiveness scores; its free-riding/commons fields can force
+    a diagnosis on any conflict. Establish a shared outcome and its actual obstruction before labeling a game.
+  scoped_outcomes: true
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: outcome
+    name: Outcome
+    scope: document
+    id_prefix: D1
+    load_bearing: true
+    questions:
+    - Which group and shared outcome does the source describe, and in whose terms is that outcome desirable?
+    answer_shape: group; outcome; stated holder; common or disputed interest; doc; verbatim anchor(s); uncertainty
+    method_card: 'Do: Do not assume managers and workers share every goal. Quote the intended outcome and its scope.
+      Select literal spans that together carry the finding’s actor, predicate, object and necessary qualification.
+      If one short span cannot do so, use anchor-b/doc-b for a separate span, including within one document. Never
+      concatenate separated phrases into a quotation. Keep attribution, modality, status and chronology; re-anchor,
+      narrow or reject a verbatim quote that omits the claimed predicate.'
+    indicators:
+    - group
+    - outcome
+    - stated holder
+  - key: incentives
+    name: Incentives
+    scope: document
+    id_prefix: D2
+    load_bearing: true
+    questions:
+    - Which actions benefit individual actors while making the named shared outcome harder?
+    answer_shape: actor; action; benefit; group consequence; mechanism; doc; verbatim anchor(s); uncertainty
+    method_card: 'Do: Keep the incentive-to-outcome link supported; dissent alone is not free riding and conflict
+      alone is not a commons problem. Select literal spans that together carry the finding’s actor, predicate, object
+      and necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including
+      within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status
+      and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+    indicators:
+    - actor
+    - action
+    - benefit
+  - key: barriers
+    name: Barriers
+    scope: document
+    id_prefix: D3
+    load_bearing: true
+    questions:
+    - 'What makes cooperation difficult: incentives, coordination, information, enforcement or disputed goals?'
+    answer_shape: barrier; actors; mechanism; evidence; optional problem type; doc; verbatim anchor(s); uncertainty
+    method_card: 'Do: Retain problem structure and group characteristics. Name the documented mechanism before an
+      optional game-theory label. Select literal spans that together carry the finding’s actor, predicate, object
+      and necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including
+      within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status
+      and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+    indicators:
+    - barrier
+    - actors
+    - mechanism
+  - key: responses
+    name: Responses
+    scope: document
+    id_prefix: D4
+    load_bearing: false
+    questions:
+    - Which actual or proposed rules, norms or informal arrangements address the barrier, and with what reported
+      result?
+    answer_shape: response; observed/proposed; mechanism; result or unknown; doc; verbatim anchor(s); uncertainty
+    method_card: 'Do: Preserve existing solutions, including informal cooperation. Quote the result rather than
+      claiming an institutional cure from its proposal. Select literal spans that together carry the finding’s actor,
+      predicate, object and necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate
+      span, including within one document. Never concatenate separated phrases into a quotation. Keep attribution,
+      modality, status and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+    indicators:
+    - response
+    - observed/proposed
+    - mechanism
+  - key: limits
+    name: Limits
+    scope: document
+    id_prefix: D5
+    load_bearing: false
+    questions:
+    - What challenges the cooperation diagnosis or limits the proposed response?
+    answer_shape: rival explanation; counter-passage; feasibility condition; conclusion; doc; verbatim anchor(s);
+      uncertainty
+    method_card: 'Do: Compare the strongest supported alternative and preserve group disagreement. Do not invent
+      effectiveness percentages or advice for an unsupplied organization. Select literal spans that together carry
+      the finding’s actor, predicate, object and necessary qualification. If one short span cannot do so, use anchor-b/doc-b
+      for a separate span, including within one document. Never concatenate separated phrases into a quotation.
+      Keep attribution, modality, status and chronology; re-anchor, narrow or reject a verbatim quote that omits
+      the claimed predicate.'
+    indicators:
+    - rival explanation
+    - counter-passage
+    - feasibility condition
+  - key: across_documents
+    name: Aligned supplied accounts
+    scope: corpus
+    id_prefix: CORPUS
+    load_bearing: false
+    questions:
+    - If multiple documents are supplied, what common question can be aligned using a supported local finding from
+      each, and what stays incomparable?
+    answer_shape: aligned object/question; per-document answer; supported relation; doc/anchor and doc-b/anchor-b;
+      coverage limit
+    method_card: 'Do: Inventory each supplied work first, then pair actual answers to the same question. Require
+      two different document keys for a cross-document claim. A single-paper contrast stays in its document dimension.
+      Do not infer transmission, chronological change or field-wide consensus from similarity. Select literal spans
+      that together carry the finding’s actor, predicate, object and necessary qualification. If one short span
+      cannot do so, use anchor-b/doc-b for a separate span, including within one document. Never concatenate separated
+      phrases into a quotation. Keep attribution, modality, status and chronology; re-anchor, narrow or reject a
+      verbatim quote that omits the claimed predicate.'
+    indicators:
+    - same object across supplied texts
+    - different answers to an aligned question
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension_x_document
+    model_tier: cheap
+    output: ledger
+    max_rows: 6
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - reject_biography
+    - merge_duplicates
+    - hunt_misses
+    - name_must_keep
+    - check_matrix_cell_support
+    - 'Every substantive table cell cites retained final finding IDs using separate [F1] [F2] citations. Reread
+      the actual final tables against the applied ledger and the source: rewrite or drop cells supported by rejected,
+      unverified or narrowed-away claims. Keep granular evidence when merging; use comma-separated full IDs in from:.
+      Scope records state coverage or uncertainty and never supply positive evidence. Code checks anchors and IDs;
+      models judge meaning. Select literal spans that together carry the finding’s actor, predicate, object and
+      necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including
+      within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status
+      and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: 'a reader with the supplied paper open who needs to answer: What documented incentive conflict prevents
+      a group from achieving a shared outcome?'
+    tables:
+    - collective_action_problem_identifier_inventory
+    - collective_action_problem_identifier_relations
+    brief: '1. A reading of the documented cooperation problem or of why the evidence does not establish one, with
+      actors/shared-outcome/incentive/barrier rows and a responses table separating existing cooperation, proposed
+      arrangements and unresolved constraints.
+
+      2. Lead with one consequential text-specific judgment, carry its reasoning through the evidence, and test
+      the strongest counter-passage.
+
+      3. Render the two named Markdown tables with citable rows; distinguish established relations, interpretations
+      and missing evidence.
+
+      4. On one paper, do not pretend there is a supplied corpus. On multiple papers, retain each local inventory
+      before aligning.
+
+      Every substantive table cell cites retained final finding IDs using separate [F1] [F2] citations. Reread the
+      actual final tables against the applied ledger and the source: rewrite or drop cells supported by rejected,
+      unverified or narrowed-away claims. Keep granular evidence when merging; use comma-separated full IDs in from:.
+      Scope records state coverage or uncertainty and never supply positive evidence. Code checks anchors and IDs;
+      models judge meaning. Select literal spans that together carry the finding’s actor, predicate, object and
+      necessary qualification. If one short span cannot do so, use anchor-b/doc-b for a separate span, including
+      within one document. Never concatenate separated phrases into a quotation. Keep attribution, modality, status
+      and chronology; re-anchor, narrow or reject a verbatim quote that omits the claimed predicate.'
