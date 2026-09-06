@@ -194,8 +194,14 @@ def main():
     })
     after = json.dumps(catalog, indent=2, ensure_ascii=False) + '\n'
     patch('090_catalogue_offer_after_validation.patch', 'Offer cohort synthesis under Trace the citations only after adapter integration and the real Brenner-cohort release gate: source/anchor/cell checks, both-order comparison with the Stacks essay desk and owner reading. Apply this patch last. It uses existing catalogue fields and introduces no fictitious applicability gate.', [(path, before, after)])
+    path = 'src/sources/schemas.py'
+    before = source(path)
+    old_role = 'SourceRole = Literal["source", "evidence_index", "plan", "profile", "statements"]'
+    assert before.count(old_role) == 1, 'review SourceRole against the selected main HEAD'
+    after = before.replace(old_role, old_role[:-1] + ', "cohort"]')
+    patch('020_source_role_cohort.patch', 'Admit the cohort context role with a one-line SourceRole change, preserving the main tree\'s profile and statements roles. This is schema admission only: Claude must separately route cohort metadata to C2 and its wall while excluding it from profiling and member/corpus counts; the plan remains noncitable.', [(path, before, after)])
     (DEST / 'design_patch_baselines.json').write_text(json.dumps({'base_commit': base, 'files': records}, indent=2) + '\n')
-    print(f'Wrote four deferred patches at {base}; no target files changed.')
+    print(f'Wrote five deferred patches at {base}; no target files changed.')
 
 
 if __name__ == '__main__':
