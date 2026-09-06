@@ -26,6 +26,23 @@ def test_the_engines_are_refused_when_spent_plus_the_plans_estimate_exceeds_the_
     assert failed and failed[0]["error"] == "RuntimeError: spend cap: $1.80 spent and the plan estimates $7.50 more for the engines, over the cap of $8.00; raise the cap or shorten the path"
 
 
+def test_a_resume_into_a_completed_analysis_is_not_refused(monkeypatch):
+    """dossier-d2f1a77d8cc0 (2026-09-06): resumed after the cap failure, the runner re-entered 'analysis' by name and the
+    estimate rule refused it although the engines were done and would be reused."""
+    from src.dossier.schemas import DossierPlan
+    steps = []
+    job = _job(9.59, 8.0, status="analysis", step="analysis"); job.plan = DossierPlan(plan_id="p1", estimated_cost_usd=4.71)
+    job.analysis = {"4.1": {"phase_number": 4.1, "engine_key": "citation_engagement_map", "final_output": "done"}}
+    monkeypatch.setattr(runner, "get_job", lambda job_id: job)
+    monkeypatch.setattr(runner, "load_documents", lambda job: [])
+    monkeypatch.setattr(runner, "_next_step", lambda job: "analysis")
+    monkeypatch.setattr(runner, "_run_step", lambda job, step, docs: steps.append(step))
+    monkeypatch.setattr(runner, "update_job", lambda job_id, **f: None)
+    monkeypatch.setattr(runner.events, "emit", lambda *a, **k: None)
+    runner._run("d-cap")
+    assert steps[:2] == ["analysis", "spine"]
+
+
 def test_after_paid_engines_the_desks_finish_and_the_overrun_is_noted_once(monkeypatch):
     """The Stacks' first pair (2026-09-06): $9.59 of engines against a cap of 8; the desks must not be refused."""
     seen, steps = [], []

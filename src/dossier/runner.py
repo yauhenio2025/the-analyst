@@ -228,6 +228,8 @@ def _over_cap(job: DossierJob, next_step: str) -> None:
         return
     spent = float(job.totals.cost_usd or 0)
     if next_step == "analysis":
+        if job.analysis:
+            return  # the engines already ran (a resume re-enters the step by name and reuses the executor job at no cost)
         est = float(getattr(job.plan, "estimated_cost_usd", 0) or 0) if job.plan is not None else 0.0
         if spent + est > cap:
             raise RuntimeError(f"spend cap: ${spent:.2f} spent and the plan estimates ${est:.2f} more for the engines, "
