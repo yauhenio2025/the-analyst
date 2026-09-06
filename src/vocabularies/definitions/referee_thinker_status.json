@@ -24,6 +24,10 @@
     {
       "value": "complete",
       "gloss": "harvest closed"
+    },
+    {
+      "value": "exhausted_with_gaps",
+      "gloss": "harvest closed, gaps could not be resolved (rare; the closure path can still set it)"
     }
   ],
   "used_by": [
@@ -34,5 +38,5 @@
       "kind": "external"
     }
   ],
-  "note": "Corrected by the Referee 2026-09-06 (the mirror had missed pending and disambiguated). Field `status` on cohort-context members[], /api/thinkers/{id} and /api/thinkers/search; a free column by convention, the Referee tells first if a value is added; one legacy row 'exhausted_with_gaps' reads as incomplete. A zero against a complete thinker is stronger than one against a pending one."
+  "note": "Confirmed by the Referee 2026-09-06 (docs corrected on their main). Field `status` on cohort-context members[], /api/thinkers/{id} and /api/thinkers/search; a free column by convention, the Referee tells first if a value is added. incomplete = a closed harvest with gaps (since the 2026-09-05 harvest fixes); complete = coverage closed; exhausted_with_gaps is a rare sixth state, not legacy. A zero against a complete thinker is stronger than one against a pending one."
 }
