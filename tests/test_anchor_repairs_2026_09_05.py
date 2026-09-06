@@ -258,7 +258,8 @@ def test_checked_receipt_discloses_ledger_changes_while_preserving_original_pros
     if ruling == "added":
         critic += f'\n- [V.F1] A new finding. — anchor: "{quote}" — status: added'
     cap = get_engine_registry().get_capability_definition("conditions_of_possibility_analyzer")
-    spec = get_operationalization_registry().get(cap.engine_key).process
+    spec = get_operationalization_registry().get(cap.engine_key).process.model_copy(deep=True)
+    spec.final_step.tables = []  # This fixture exercises the table-free prose/receipt path.
     def fake(*args, model_hint, **kwargs):
         return {"content": critic, "model_used": model_hint}
     result = run_oneshot_checked(cap, spec, {"paper": quote}, reading=reading, call_fn=fake)
@@ -281,7 +282,8 @@ def test_auxiliary_references_are_not_duplicate_rulings_and_raw_tail_is_preserve
     critic = f'## Findings ledger\n- [F1] Original — anchor: "{quote}" — status: confirmed\n'
     critic += '### Must keep\n- [F1] This is an important reference.\n### Counter-evidence\n- [F1] A reference, not a ruling.\n### Open questions\n- [F1] Another reference.'
     cap = get_engine_registry().get_capability_definition("argument_architecture")
-    spec = get_operationalization_registry().get("argument_architecture").process
+    spec = get_operationalization_registry().get("argument_architecture").process.model_copy(deep=True)
+    spec.final_step.tables = []  # This fixture exercises the table-free prose/receipt path.
     def fake(*args, model_hint, **kwargs):
         return {"content": critic, "model_used": model_hint}
     result = run_oneshot_checked(cap, spec, {"paper": quote}, reading=reading, call_fn=fake)

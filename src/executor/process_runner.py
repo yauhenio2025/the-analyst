@@ -345,12 +345,18 @@ def _check_corpus_synthesis(sc, prompt, spec, index, corpus_ids, call_fn, model,
             raise RuntimeError("Corpus synthesis contract failed after bounded repair: " + json.dumps(issues))
         repair = prompt.model_copy(deep=True)
         repair.label += " (repair corpus synthesis)"
+        scope_repair = (
+            "Corpus descendants need anchors from two distinct document keys. A single-source "
+            "row must narrow its claim, use a declared document dimension and only document-level lineage. "
+            "Do not merely drop a corpus dimension while keeping its ancestor. "
+            if len(index.norm) > 1 else
+            "Only one document is supplied: use document dimensions and that source key. "
+            "A within-article comparison is a document finding, not a cross-document relation. "
+        )
         repair.user += ("\n\n=====\n\nPREVIOUS READING TO REPAIR:\n" + clean
                         + "\n\nCODE WALL FAILURES:\n" + json.dumps(issues)
                         + "\nReturn the complete corrected reading, tables and final findings ledger. Preserve supported "
-                        "content. Corpus descendants need anchors from two distinct document keys. A single-source "
-                        "row must narrow its claim, use a declared document dimension and only document-level lineage. "
-                        "Do not merely drop a corpus dimension while keeping its ancestor. Every prose/table citation "
+                        "content. " + scope_repair + "Every prose/table citation "
                         "must resolve to a supported final finding; update or remove cells whose evidence cannot be repaired. "
                         "Use individual [F1] [F2] citations, not lists or ranges. Do not invent supporting quotations.")
         sc = _invoke(call_fn, repair, model, depth=depth, big=big, cancellation_check=cancellation_check)
@@ -653,7 +659,7 @@ def apply_rulings(rows: list[LedgerRow], rulings: list[LedgerRow], index: Source
             r.confidence, r.status = v.confidence or r.confidence, "weakened"
         else:
             rep["confirmed"] += 1; target = kept
-            if v.anchor_verified and not r.anchor_verified:   # the critic supplied a matching anchor
+            if v.anchor_verified:   # retain a critic's fuller support even when the old fragment matched
                 r.copy_anchors_from(v)
                 r.text = v.text
         if target is kept and not r.anchor_verified:
@@ -746,6 +752,7 @@ def run_oneshot_checked(
     result = ProcessRunResult(engine_key=cap_def.engine_key, process_key=spec.key)
     index = SourceIndex(documents)
     corpus_dimensions = {d.key for d in spec.dimensions if d.scope == "corpus"} if len(documents) > 1 else set()
+    reconcile_tables = bool(corpus_dimensions or (spec.final_step and spec.final_step.tables))
     big = sum(len(v) for v in documents.values()) > 600_000
     read_step = ProcessStep(key="read", kind="synthesize", model_tier="strong", is_final=True)
     strong = resolve_step_model(read_step, spec, tier_overrides=tier_overrides, model_hint=model_hint)
@@ -798,7 +805,7 @@ def run_oneshot_checked(
     for r in rows:   # the wall's verdicts travel with the rows so the critic re-anchors paraphrased quotes
         flagged.append(r.render() + ("" if r.anchor_verified else " — wall: anchor not verbatim in the source; re-anchor or reject"))
     handoff = LEDGER_HEADING + "\n" + "\n".join(flagged)
-    if corpus_dimensions:
+    if reconcile_tables:
         handoff = "READING AND MATRIX CELLS TO CHECK:\n" + prose + "\n\n" + handoff
     if spec.scoped_outcomes:
         handoff += "\n\n" + render_scope_json(reader_scopes)
@@ -816,7 +823,7 @@ def run_oneshot_checked(
                                       reviewing=True, previous=reader_scopes,
                                       failed_rows=[r for r in rulings if not r.anchor_verified])
     _record(vc)
-    if corpus_dimensions:
+    if reconcile_tables:
         # The critic changes evidence and may find a cell unsupported even when its
         # old ID still exists. Reconcile the reading with the applied ledger once.
         synthesis_step = spec.final_step
@@ -832,7 +839,10 @@ def run_oneshot_checked(
         sprompt.label = f"{cap_def.engine_key} | reconcile checked tables"
         sprompt.user += ("\n\nORIGINAL READING (input finding Fn is now CHECK.Fn; use CHECK.Fn in lineage, "
                          "renumber final F1..Fn and revise every affected cell and citation):\n"
-                         + prose + "\n\nCRITIC REVIEW (rulings already applied; use cell/coverage advice):\n" + vc.content)
+                         + prose + "\n\nCRITIC REVIEW (rulings already applied; use cell/coverage advice):\n" + vc.content
+                         + "\n\nRewrite or drop every cell resting on a rejected or unverified row. "
+                         "Rewrite cells to the narrowed claim of a weakened row; an inline rejection tag "
+                         "does not make a table cell valid. Preserve granular evidence when merging duplicates.")
         synthesis = _invoke(call_fn, sprompt, strong, depth=depth, big=big, cancellation_check=cancellation_check)
         # IDs here refer to the supplied applied ledger; single-source additions
         # have document prefixes, so corpus call scope cannot taint their lineage.

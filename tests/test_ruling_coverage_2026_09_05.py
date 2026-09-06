@@ -110,8 +110,10 @@ def test_checked_result_exposes_renamed_ids_without_guessing_or_retrying():
             content = f'# Reading\nOriginal prose [F1].\n\n## Findings ledger\n- [F1] Original — anchor: "{quote}"'
         return {"content": content, "model_used": model_hint}
     saved = []
+    spec = get_operationalization_registry().get(key).process.model_copy(deep=True)
+    spec.final_step.tables = []  # Isolate the table-free receipt path.
     result = run_oneshot_checked(get_engine_registry().get_capability_definition(key),
-        get_operationalization_registry().get(key).process, {"doc": quote}, call_fn=fake, on_call=saved.append)
+        spec, {"doc": quote}, call_fn=fake, on_call=saved.append)
     assert len(calls) == len(saved) == 2
     coverage = result.final_wall["check_ruling_coverage"]
     assert coverage == saved[-1].wall["check_ruling_coverage"]

@@ -81,7 +81,7 @@ def scopes(result):
     return result.final_wall["scope_outcomes"]
 
 
-def test_68_production_prompts_are_unchanged():
+def test_68_production_prompts_match_declared_law_baseline():
     baseline = json.loads((Path(__file__).parent / "fixtures/scoped_outcomes/production_prompt_hashes_3426419.json").read_text())
     actual = {}
     for engine in ("conditions_of_possibility_analyzer", "argument_architecture", "inferential_commitment_mapper", "epistemological_method_detector"):

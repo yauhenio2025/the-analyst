@@ -260,7 +260,8 @@ def test_run_oneshot_checked_with_a_fake_model(monkeypatch):
     from src.executor.process_runner import run_oneshot_checked
     for tier in ("CHEAP", "MID", "STRONG"):
         monkeypatch.delenv(f"PROCESS_ROUTING_{tier}", raising=False)
-    key = "conditions_of_possibility_analyzer"; cap, spec = _cap(key), _op(key).process
+    key = "conditions_of_possibility_analyzer"; cap, spec = _cap(key), _op(key).process.model_copy(deep=True)
+    spec.final_step.tables = []  # Isolate the table-free receipt path.
     log = []
     def fake(system, user, *, model_hint, label, **_):
         log.append((label, model_hint))
