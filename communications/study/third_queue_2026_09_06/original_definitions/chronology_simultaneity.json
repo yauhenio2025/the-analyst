@@ -1,0 +1,240 @@
+{
+  "engine_key": "chronology_simultaneity",
+  "engine_name": "Chronology Simultaneity Mapper",
+  "description": "Maps overlapping timelines, contradictions, and simultaneous events. Reveals how different actors or processes unfold in parallel, where they intersect, and identifies temporal contradictions or discrepancies.",
+  "version": 1,
+  "category": "temporal",
+  "kind": "relational",
+  "reasoning_domain": "temporality",
+  "researcher_question": "What was happening simultaneously, and how do different timelines overlap or contradict?",
+  "canonical_schema": {
+    "timelines": [
+      {
+        "timeline_id": "string",
+        "timeline_name": "string",
+        "timeline_type": "actor | process | institution | theme | geographic",
+        "actor_or_subject": "string",
+        "start_date": "string (ISO date or period)",
+        "end_date": "string (ISO date or period) or null",
+        "description": "string",
+        "events": [
+          "event_id"
+        ],
+        "source_articles": [
+          "string"
+        ]
+      }
+    ],
+    "events": [
+      {
+        "event_id": "string",
+        "timeline_id": "string",
+        "event_name": "string",
+        "event_type": "action | decision | announcement | crisis | transition | milestone",
+        "date": "string (ISO date or period)",
+        "date_precision": "exact | approximate | inferred",
+        "duration": "instant | hours | days | weeks | months | years",
+        "description": "string",
+        "actors_involved": [
+          "string"
+        ],
+        "location": "string or null",
+        "significance": "high | medium | low",
+        "source_articles": [
+          "string"
+        ]
+      }
+    ],
+    "simultaneous_events": [
+      {
+        "simultaneity_id": "string",
+        "event_ids": [
+          "string"
+        ],
+        "simultaneity_type": "exact_same_time | same_day | same_week | same_period | overlapping_duration",
+        "period": "string",
+        "interaction_type": "independent | coordinated | reactive | competing | conflicting | reinforcing",
+        "description": "string",
+        "significance": "string (why simultaneity matters)",
+        "source_articles": [
+          "string"
+        ]
+      }
+    ],
+    "synchronization_points": [
+      {
+        "sync_id": "string",
+        "timeline_ids": [
+          "string"
+        ],
+        "sync_event": "string (what brings timelines together)",
+        "date": "string",
+        "sync_type": "meeting | announcement | crisis | deadline | launch | merger",
+        "description": "string",
+        "consequences": [
+          "string"
+        ],
+        "source_articles": [
+          "string"
+        ]
+      }
+    ],
+    "temporal_contradictions": [
+      {
+        "contradiction_id": "string",
+        "contradiction_type": "date_discrepancy | sequence_dispute | simultaneity_claim | duration_conflict",
+        "description": "string",
+        "claim_a": {
+          "source": "string",
+          "claim": "string",
+          "date_or_sequence": "string"
+        },
+        "claim_b": {
+          "source": "string",
+          "claim": "string",
+          "date_or_sequence": "string"
+        },
+        "resolution": "string or null",
+        "source_articles": [
+          "string"
+        ]
+      }
+    ],
+    "temporal_relationships": [
+      {
+        "relationship_id": "string",
+        "event_a": "string",
+        "event_b": "string",
+        "relationship_type": "before | after | during | concurrent | overlaps | starts_with | ends_with | causes",
+        "time_gap": "string or null",
+        "causal_link": "boolean",
+        "description": "string or null",
+        "source_articles": [
+          "string"
+        ]
+      }
+    ],
+    "parallel_processes": [
+      {
+        "process_id": "string",
+        "process_name": "string",
+        "timeline_ids": [
+          "string"
+        ],
+        "process_type": "negotiation | development | crisis | transition | competition | cooperation",
+        "start_period": "string",
+        "end_period": "string or null",
+        "phases": [
+          {
+            "phase_name": "string",
+            "period": "string",
+            "description": "string"
+          }
+        ],
+        "interactions_with_other_processes": [
+          "process_id"
+        ],
+        "source_articles": [
+          "string"
+        ]
+      }
+    ],
+    "meta": {
+      "total_timelines": "number",
+      "total_events": "number",
+      "simultaneous_event_clusters": "number",
+      "synchronization_points": "number",
+      "contradictions_found": "number",
+      "time_span": {
+        "earliest_date": "string",
+        "latest_date": "string"
+      },
+      "timelines_by_type": {
+        "type": "number"
+      }
+    }
+  },
+  "extraction_focus": [
+    "timelines",
+    "simultaneous_events",
+    "parallel_processes",
+    "synchronization",
+    "contradictions",
+    "temporal_relationships"
+  ],
+  "primary_output_modes": [
+    "gemini_timeline",
+    "gemini_parallel_timeline",
+    "structured_text_report",
+    "table"
+  ],
+  "paradigm_keys": [],
+  "source_file": "analyzer/src/engines/chronology_simultaneity.py",
+  "stage_context": {
+    "framework_key": null,
+    "additional_frameworks": [],
+    "extraction": {
+      "analysis_type": "chronology simultaneity",
+      "analysis_type_plural": "chronology simultaneitys",
+      "core_question": "What was happening simultaneously, and how do different timelines overlap or contradict?",
+      "extraction_steps": [
+        "Read the document carefully to understand the context",
+        "Identify key items matching the analysis type",
+        "Extract relationships between items",
+        "Build the relationship graph",
+        "Verify completeness and accuracy"
+      ],
+      "key_fields": {},
+      "id_field": "chronology_id",
+      "key_relationships": [
+        "contradicts"
+      ],
+      "special_instructions": null
+    },
+    "curation": {
+      "item_type": "chronology simultaneity",
+      "item_type_plural": "chronology simultaneitys",
+      "consolidation_rules": [
+        "CONSOLIDATE TIMELINES: Build distinct timelines for different actors/processes",
+        "IDENTIFY SIMULTANEOUS EVENTS: - Find events that happened at the same time",
+        "MAP SYNCHRONIZATION POINTS: - Where do different timelines intersect?",
+        "DOCUMENT CONTRADICTIONS: - Where do sources disagree on timing?",
+        "BUILD TEMPORAL RELATIONSHIPS: - Map before/after/during relationships",
+        "IDENTIFY PARALLEL PROCESSES: - What processes unfold simultaneously?"
+      ],
+      "cross_doc_patterns": [
+        "shared_items",
+        "contested_items",
+        "response_network"
+      ],
+      "synthesis_outputs": [
+        "consolidated_item_list",
+        "relationship_map",
+        "cross_document_dynamics"
+      ],
+      "special_instructions": null
+    },
+    "concretization": {
+      "id_examples": [
+        {
+          "from": "E1",
+          "to": "FTC Investigation Launched (March 2023)"
+        },
+        {
+          "from": "S1",
+          "to": "Parallel Investigations Cluster (Q2 2023)"
+        }
+      ],
+      "naming_guidance": "",
+      "recommended_table_types": [],
+      "recommended_visual_patterns": []
+    },
+    "audience_vocabulary": {
+      "researcher": {},
+      "analyst": {},
+      "executive": {},
+      "activist": {}
+    },
+    "skip_concretization": false
+  }
+}

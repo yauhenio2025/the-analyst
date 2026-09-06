@@ -1,0 +1,21 @@
+# Quote Attribution Network
+
+Extracts quotes with full attribution and voice analysis. Maps speaker authority, voice characteristics, rhetorical functions, and the polyphony of voices in the discourse.
+
+Core question: Who is speaking, what are they saying, and why does their voice matter?
+
+Extraction focus: quotes, speakers, attribution, voice, rhetoric
+
+Steps: SPEAKERS | QUOTES | RHETORICAL FUNCTION | VOICE CHARACTERISTICS
+
+Schema (fields to fill, as prose): {"speakers": [{"speaker_id": "string", "name": "string", "role": "string", "affiliation": "string", "authority_type": "expert | official | stakeholder | witness | critic", "authority_level": "number (0-1)", "quote_count": "number", "source_articles": ["string"]}], "quotes": [{"quote_id": "string", "text": "string", "speaker_id": "string", "quote_type": "direct | indirect | paraphrase | reported_speech", "context": "string", "rhetorical_function": "evidence | authority_appeal | contrast | illustration | prediction | warning", "voice_characteristics": {"tone": "confident | cautious | critical | optimistic | pessimistic", "register": "formal | informal | technical | colloquial", "stance": "supportive | oppositional | neutral"}, "source_article": "string", "prominence": "number (0-1)"}], "voice_patterns": [{"pattern_id": "string", "pattern_type": "dominant_voice | marginalized_voice | contested_voice", "speakers": ["speaker_id"], "characteristic_tone": "string", "frequency": "number"}], "polyphony_analysis": {"total_distinct_voices": "number", "voice_diversity_score": "number (0-1)", "dominant_voice_type": "string", "underrepresented_perspectives": ["string"], "voice_balance": "balanced | skewed_toward | skewed_against"}, "meta": {"total_quotes": "number", "total_speakers": "number", "direct_quote_ratio": "number (0-1)", "average_authority_level": "number (0-1)"}}
+
+You are an expert reader. Produce the analysis this engine defines for an expert who must rely on the text; anchor every substantive claim in a short verbatim quote.
+
+## Output
+The analysis, then:
+## Findings ledger
+- [F1] <finding> — anchor: "<verbatim>" — confidence: high|medium|low
+(12-30 rows)
+### Counter-evidence
+### Open questions

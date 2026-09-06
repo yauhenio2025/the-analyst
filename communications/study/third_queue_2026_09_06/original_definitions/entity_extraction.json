@@ -1,0 +1,156 @@
+{
+  "engine_key": "entity_extraction",
+  "engine_name": "Entity Extraction Catalog",
+  "description": "Extracts and catalogs named entities across a collection. Identifies people, organizations, locations, products, and events with their roles, relationships, and significance to the discourse.",
+  "version": 1,
+  "category": "evidence",
+  "kind": "primitive",
+  "reasoning_domain": "extraction",
+  "researcher_question": "Who and what are the key actors and objects in this discourse?",
+  "canonical_schema": {
+    "entities": [
+      {
+        "entity_id": "string",
+        "name": "string",
+        "type": "person | organization | place | product | event",
+        "subtype": "string (e.g., company, agency, executive, city, technology)",
+        "description": "string",
+        "attributes": {
+          "role": "string (for persons)",
+          "title": "string (for persons)",
+          "affiliation": "string (for persons)",
+          "industry": "string (for organizations)",
+          "headquarters": "string (for organizations)",
+          "country": "string (for locations)",
+          "region": "string (for locations)"
+        },
+        "significance": "high | medium | low",
+        "mention_count": "number",
+        "first_mention_context": "string",
+        "source_articles": [
+          "string"
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "rel_id": "string",
+        "from_entity": "entity_id",
+        "to_entity": "entity_id",
+        "relationship_type": "employs | owns | regulates | competes_with | partners_with | located_in | produces | acquired",
+        "description": "string",
+        "strength": "number (0-1)",
+        "source_articles": [
+          "string"
+        ]
+      }
+    ],
+    "entity_clusters": [
+      {
+        "cluster_id": "string",
+        "cluster_name": "string",
+        "cluster_type": "industry | region | alliance | sector",
+        "member_entities": [
+          "entity_id"
+        ],
+        "description": "string"
+      }
+    ],
+    "meta": {
+      "total_entities": "number",
+      "entities_by_type": {
+        "person": "number",
+        "organization": "number",
+        "place": "number",
+        "product": "number",
+        "event": "number"
+      },
+      "total_relationships": "number",
+      "most_connected_entities": [
+        "entity_id"
+      ]
+    }
+  },
+  "extraction_focus": [
+    "entities",
+    "people",
+    "organizations",
+    "locations",
+    "products",
+    "events"
+  ],
+  "primary_output_modes": [
+    "table",
+    "structured_text_report",
+    "gemini_network_graph"
+  ],
+  "paradigm_keys": [],
+  "source_file": "analyzer/src/engines/entity_extraction.py",
+  "stage_context": {
+    "framework_key": null,
+    "additional_frameworks": [],
+    "extraction": {
+      "analysis_type": "entity",
+      "analysis_type_plural": "entities",
+      "core_question": "Who and what are the key actors and objects in this discourse?",
+      "extraction_steps": [
+        "Read the document carefully to understand the context",
+        "Identify key items matching the analysis type",
+        "Extract relationships between items",
+        "Build the relationship graph",
+        "Verify completeness and accuracy"
+      ],
+      "key_fields": {},
+      "id_field": "entity_id",
+      "key_relationships": [
+        "relates_to"
+      ],
+      "special_instructions": null
+    },
+    "curation": {
+      "item_type": "entity",
+      "item_type_plural": "entities",
+      "consolidation_rules": [
+        "CONSOLIDATE ENTITIES: Merge references to the same entity",
+        "CLASSIFY AND SUBTYPE: Assign precise types",
+        "ASSESS SIGNIFICANCE: - HIGH: Central to the discourse, mentioned repeatedly",
+        "MAP RELATIONSHIPS: - Employment (person \u2192 organization)",
+        "IDENTIFY CLUSTERS: - Industry clusters (tech companies, pharma, etc.)",
+        "CALCULATE METRICS: - Total entities by type"
+      ],
+      "cross_doc_patterns": [
+        "shared_items",
+        "contested_items",
+        "response_network"
+      ],
+      "synthesis_outputs": [
+        "consolidated_item_list",
+        "relationship_map",
+        "cross_document_dynamics"
+      ],
+      "special_instructions": null
+    },
+    "concretization": {
+      "id_examples": [
+        {
+          "from": "E1",
+          "to": "Satya Nadella (CEO, Microsoft)"
+        },
+        {
+          "from": "O1",
+          "to": "European Commission (EU regulatory body)"
+        }
+      ],
+      "naming_guidance": "",
+      "recommended_table_types": [],
+      "recommended_visual_patterns": []
+    },
+    "audience_vocabulary": {
+      "researcher": {},
+      "analyst": {},
+      "executive": {},
+      "activist": {}
+    },
+    "skip_concretization": false
+  }
+}

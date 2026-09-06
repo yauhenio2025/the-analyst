@@ -1,0 +1,173 @@
+{
+  "engine_key": "stakeholder_power_interest",
+  "engine_name": "Stakeholder Power Matrix",
+  "description": "Maps stakeholders by their power (ability to influence outcomes) and interest (stake in the issue), identifying alliances, conflicts, and strategic positions.",
+  "version": 1,
+  "category": "power",
+  "kind": "relational",
+  "reasoning_domain": "flows",
+  "researcher_question": "Who has power? Who benefits/loses?",
+  "canonical_schema": {
+    "stakeholders": [
+      {
+        "stakeholder_id": "string",
+        "name": "string",
+        "type": "government | corporation | ngo | academic | individual | coalition | media | international",
+        "power_score": "number (0-1) - ability to influence outcomes",
+        "interest_score": "number (0-1) - stake in the issue",
+        "position": "supporter | opponent | neutral | ambivalent",
+        "stated_interests": [
+          "string - explicitly mentioned interests"
+        ],
+        "inferred_interests": [
+          "string - implied but not stated"
+        ],
+        "resources": [
+          "string - power sources: money, authority, expertise, etc."
+        ],
+        "constraints": [
+          "string - limitations on action"
+        ],
+        "source_articles": [
+          "string"
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "rel_id": "string",
+        "from_stakeholder": "stakeholder_id",
+        "to_stakeholder": "stakeholder_id",
+        "relationship_type": "alliance | opposition | dependency | competition | neutral | influence",
+        "strength": "number (0-1)",
+        "description": "string",
+        "evidence": "string"
+      }
+    ],
+    "power_dynamics": [
+      {
+        "dynamic_id": "string",
+        "description": "string",
+        "winners": [
+          "stakeholder_id"
+        ],
+        "losers": [
+          "stakeholder_id"
+        ],
+        "mechanism": "string - how power is exercised",
+        "source_articles": [
+          "string"
+        ]
+      }
+    ],
+    "coalitions": [
+      {
+        "coalition_id": "string",
+        "name": "string",
+        "members": [
+          "stakeholder_id"
+        ],
+        "shared_interest": "string",
+        "combined_power": "number (0-1)"
+      }
+    ],
+    "meta": {
+      "total_stakeholders": "number",
+      "stakeholder_type_distribution": {
+        "type": "count"
+      },
+      "average_power": "number",
+      "average_interest": "number",
+      "conflict_intensity": "number (0-1)"
+    }
+  },
+  "extraction_focus": [
+    "actors",
+    "interests",
+    "power",
+    "relationships",
+    "outcomes",
+    "positions"
+  ],
+  "primary_output_modes": [
+    "gemini_stakeholder_matrix",
+    "comparative_matrix_table"
+  ],
+  "paradigm_keys": [
+    "marxist",
+    "pragmatist_praxis"
+  ],
+  "source_file": "analyzer/src/engines/stakeholder_power_interest.py",
+  "stage_context": {
+    "framework_key": null,
+    "additional_frameworks": [],
+    "extraction": {
+      "analysis_type": "stakeholder power matrix",
+      "analysis_type_plural": "stakeholder power matrixs",
+      "core_question": "Who has power? Who benefits/loses?",
+      "extraction_steps": [
+        "STAKEHOLDER IDENTIFICATION",
+        "POWER ASSESSMENT",
+        "INTEREST ASSESSMENT",
+        "POSITION MAPPING",
+        "RELATIONSHIPS",
+        "POWER DYNAMICS"
+      ],
+      "key_fields": {},
+      "id_field": "stakeholder_id",
+      "key_relationships": [
+        "relates_to"
+      ],
+      "special_instructions": null
+    },
+    "curation": {
+      "item_type": "stakeholder power matrix",
+      "item_type_plural": "stakeholder power matrixs",
+      "consolidation_rules": [
+        "CONSOLIDATE STAKEHOLDERS: - Merge same stakeholders across articles",
+        "CALIBRATE SCORES: - Ensure power scores are consistent across stakeholders",
+        "MAP RELATIONSHIPS: - Identify all alliance/opposition/dependency patterns",
+        "IDENTIFY COALITIONS: - Group stakeholders with aligned interests",
+        "DOCUMENT POWER DYNAMICS: - What patterns of winning/losing emerge?",
+        "CALCULATE METRICS: - Conflict intensity: how opposed are stakeholder interests?"
+      ],
+      "cross_doc_patterns": [
+        "shared_items",
+        "contested_items",
+        "response_network"
+      ],
+      "synthesis_outputs": [
+        "consolidated_item_list",
+        "relationship_map",
+        "cross_document_dynamics"
+      ],
+      "special_instructions": null
+    },
+    "concretization": {
+      "id_examples": [
+        {
+          "from": "S1",
+          "to": "U.S. Department of Commerce"
+        },
+        {
+          "from": "S2",
+          "to": "NVIDIA Corporation"
+        },
+        {
+          "from": "S3",
+          "to": "European Commission"
+        }
+      ],
+      "naming_guidance": "",
+      "recommended_table_types": [],
+      "recommended_visual_patterns": []
+    },
+    "audience_vocabulary": {
+      "researcher": {},
+      "analyst": {},
+      "executive": {},
+      "activist": {}
+    },
+    "skip_concretization": false
+  }
+}

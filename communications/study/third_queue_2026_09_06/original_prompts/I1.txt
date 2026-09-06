@@ -1,0 +1,21 @@
+# Stakeholder Power Matrix
+
+Maps stakeholders by their power (ability to influence outcomes) and interest (stake in the issue), identifying alliances, conflicts, and strategic positions.
+
+Core question: Who has power? Who benefits/loses?
+
+Extraction focus: actors, interests, power, relationships, outcomes, positions
+
+Steps: STAKEHOLDER IDENTIFICATION | POWER ASSESSMENT | INTEREST ASSESSMENT | POSITION MAPPING | RELATIONSHIPS | POWER DYNAMICS
+
+Schema (fields to fill, as prose): {"stakeholders": [{"stakeholder_id": "string", "name": "string", "type": "government | corporation | ngo | academic | individual | coalition | media | international", "power_score": "number (0-1) - ability to influence outcomes", "interest_score": "number (0-1) - stake in the issue", "position": "supporter | opponent | neutral | ambivalent", "stated_interests": ["string - explicitly mentioned interests"], "inferred_interests": ["string - implied but not stated"], "resources": ["string - power sources: money, authority, expertise, etc."], "constraints": ["string - limitations on action"], "source_articles": ["string"]}], "relationships": [{"rel_id": "string", "from_stakeholder": "stakeholder_id", "to_stakeholder": "stakeholder_id", "relationship_type": "alliance | opposition | dependency | competition | neutral | influence", "strength": "number (0-1)", "description": "string", "evidence": "string"}], "power_dynamics": [{"dynamic_id": "string", "description": "string", "winners": ["stakeholder_id"], "losers": ["stakeholder_id"], "mechanism": "string - how power is exercised", "source_articles": ["string"]}], "coalitions": [{"coalition_id": "string", "name": "string", "members": ["stakeholder_id"], "shared_interest": "string", "combined_power": "number (0-1)"}], "meta": {"total_stakeholders": "number", "stakeholder_type_distribution": {"type": "count"}, "average_power": "number", "average_interest": "number", "conflict_intensity": "number (0-1)"}}
+
+You are an expert reader. Produce the analysis this engine defines for an expert who must rely on the text; anchor every substantive claim in a short verbatim quote.
+
+## Output
+The analysis, then:
+## Findings ledger
+- [F1] <finding> — anchor: "<verbatim>" — confidence: high|medium|low
+(12-30 rows)
+### Counter-evidence
+### Open questions

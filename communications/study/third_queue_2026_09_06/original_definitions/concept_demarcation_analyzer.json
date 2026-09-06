@@ -1,0 +1,215 @@
+{
+  "engine_key": "concept_demarcation_analyzer",
+  "engine_name": "Concept Demarcation Analyzer",
+  "description": "Analyzes concept boundaries and demarcation criteria. Maps inclusion/exclusion rules, edge cases, boundary sharpness, and contested demarcations. Reveals where concepts end and what polices their borders.",
+  "version": 1,
+  "category": "concepts",
+  "kind": "synthesis",
+  "reasoning_domain": "boundary_analysis",
+  "researcher_question": "Where does this concept end and what maintains its boundaries?",
+  "canonical_schema": {
+    "concepts_analyzed": [
+      {
+        "concept_id": "string",
+        "term": "string",
+        "definition": "string",
+        "boundary_sharpness": "number (0-1, where 1 = perfectly sharp)",
+        "source_articles": [
+          "string"
+        ]
+      }
+    ],
+    "boundary_specifications": [
+      {
+        "boundary_id": "string",
+        "concept": "concept_id",
+        "boundary_type": "extensional | intensional | prototypical | criterial",
+        "sharpness": "sharp | gradient | vague | context_dependent",
+        "stability": "stable | shifting | contested",
+        "articulation_level": "explicit | implicit | tacit"
+      }
+    ],
+    "inclusion_criteria": [
+      {
+        "criterion_id": "string",
+        "concept": "concept_id",
+        "criterion": "string",
+        "criterion_type": "necessary | sufficient | necessary_and_sufficient | prototype_feature | family_resemblance",
+        "weight": "number (0-1)",
+        "operationalization": "string (how is it applied?)",
+        "contested": "boolean"
+      }
+    ],
+    "exclusion_criteria": [
+      {
+        "exclusion_id": "string",
+        "concept": "concept_id",
+        "excludes_what": "string",
+        "exclusion_type": "definitional | normative | pragmatic | historical",
+        "strictness": "absolute | defeasible | contextual",
+        "rationale": "string"
+      }
+    ],
+    "edge_cases": [
+      {
+        "case_id": "string",
+        "concept": "concept_id",
+        "case_description": "string",
+        "why_borderline": "string",
+        "inclusion_arguments": [
+          "string"
+        ],
+        "exclusion_arguments": [
+          "string"
+        ],
+        "typical_resolution": "include | exclude | depends | unresolved",
+        "sorites_susceptible": "boolean"
+      }
+    ],
+    "boundary_contests": [
+      {
+        "contest_id": "string",
+        "concept": "concept_id",
+        "disputed_boundary": "string",
+        "expansion_advocates": [
+          "string"
+        ],
+        "restriction_advocates": [
+          "string"
+        ],
+        "stakes": "string (what's at stake in this dispute)",
+        "current_status": "ongoing | resolved | dormant"
+      }
+    ],
+    "demarcation_mechanisms": [
+      {
+        "mechanism_id": "string",
+        "concept": "concept_id",
+        "mechanism_type": "definitional | institutional | expert | social | legal",
+        "who_enforces": [
+          "string"
+        ],
+        "how_enforced": "string",
+        "effectiveness": "high | medium | low",
+        "challenges": [
+          "string"
+        ]
+      }
+    ],
+    "natural_vs_constructed": [
+      {
+        "assessment_id": "string",
+        "concept": "concept_id",
+        "natural_kind_status": "natural_kind | human_kind | social_construct | hybrid | unclear",
+        "carves_nature": "boolean",
+        "inductive_potential": "high | medium | low",
+        "cross_cultural_stability": "high | medium | low",
+        "rationale": "string"
+      }
+    ],
+    "boundary_relations": [
+      {
+        "relation_id": "string",
+        "concept_a": "concept_id",
+        "concept_b": "concept_id",
+        "relation_type": "containment | overlap | exclusion | gradient | complement",
+        "boundary_interaction": "string"
+      }
+    ],
+    "meta": {
+      "total_concepts": "number",
+      "average_boundary_sharpness": "number",
+      "most_contested_concept": "concept_id",
+      "sharpest_concept": "concept_id",
+      "vaguest_concept": "concept_id",
+      "natural_kind_count": "number"
+    }
+  },
+  "extraction_focus": [
+    "concept_boundaries",
+    "inclusion_criteria",
+    "exclusion_criteria",
+    "edge_cases",
+    "boundary_disputes",
+    "demarcation_mechanisms"
+  ],
+  "primary_output_modes": [
+    "structured_text_report",
+    "smart_table",
+    "gemini_concept_tree",
+    "mermaid_mindmap"
+  ],
+  "paradigm_keys": [],
+  "source_file": "analyzer/src/engines/concept_demarcation_analyzer.py",
+  "stage_context": {
+    "framework_key": null,
+    "additional_frameworks": [],
+    "extraction": {
+      "analysis_type": "concept",
+      "analysis_type_plural": "concepts",
+      "core_question": "Where does this concept end and what maintains its boundaries?",
+      "extraction_steps": [
+        "Read the document carefully to understand the context",
+        "Identify key items matching the analysis type",
+        "Extract relationships between items",
+        "Build the relationship graph",
+        "Verify completeness and accuracy"
+      ],
+      "key_fields": {},
+      "id_field": "concept_id",
+      "key_relationships": [
+        "relates_to"
+      ],
+      "special_instructions": null
+    },
+    "curation": {
+      "item_type": "concept",
+      "item_type_plural": "concepts",
+      "consolidation_rules": [],
+      "cross_doc_patterns": [
+        "shared_items",
+        "contested_items",
+        "response_network"
+      ],
+      "synthesis_outputs": [
+        "consolidated_item_list",
+        "relationship_map",
+        "cross_document_dynamics"
+      ],
+      "special_instructions": null
+    },
+    "concretization": {
+      "id_examples": [
+        {
+          "from": "C1",
+          "to": "Consciousness"
+        },
+        {
+          "from": "C2",
+          "to": "Intelligence"
+        },
+        {
+          "from": "B1",
+          "to": "The Consciousness/Mere Responsiveness Boundary"
+        },
+        {
+          "from": "B2",
+          "to": "The Human/Animal Intelligence Divide"
+        }
+      ],
+      "naming_guidance": "",
+      "recommended_table_types": [],
+      "recommended_visual_patterns": []
+    },
+    "audience_vocabulary": {
+      "researcher": {},
+      "analyst": {},
+      "executive": {},
+      "activist": {}
+    },
+    "skip_concretization": false
+  },
+  "apps": [
+    "critic"
+  ]
+}

@@ -1,0 +1,21 @@
+# Chronology Simultaneity Mapper
+
+Maps overlapping timelines, contradictions, and simultaneous events. Reveals how different actors or processes unfold in parallel, where they intersect, and identifies temporal contradictions or discrepancies.
+
+Core question: What was happening simultaneously, and how do different timelines overlap or contradict?
+
+Extraction focus: timelines, simultaneous_events, parallel_processes, synchronization, contradictions, temporal_relationships
+
+Steps: Read the document carefully to understand the context | Identify key items matching the analysis type | Extract relationships between items | Build the relationship graph | Verify completeness and accuracy
+
+Schema (fields to fill, as prose): {"timelines": [{"timeline_id": "string", "timeline_name": "string", "timeline_type": "actor | process | institution | theme | geographic", "actor_or_subject": "string", "start_date": "string (ISO date or period)", "end_date": "string (ISO date or period) or null", "description": "string", "events": ["event_id"], "source_articles": ["string"]}], "events": [{"event_id": "string", "timeline_id": "string", "event_name": "string", "event_type": "action | decision | announcement | crisis | transition | milestone", "date": "string (ISO date or period)", "date_precision": "exact | approximate | inferred", "duration": "instant | hours | days | weeks | months | years", "description": "string", "actors_involved": ["string"], "location": "string or null", "significance": "high | medium | low", "source_articles": ["string"]}], "simultaneous_events": [{"simultaneity_id": "string", "event_ids": ["string"], "simultaneity_type": "exact_same_time | same_day | same_week | same_period | overlapping_duration", "period": "string", "interaction_type": "independent | coordinated | reactive | competing | conflicting | reinforcing", "description": "string", "significance": "string (why simultaneity matters)", "source_articles": ["string"]}], "synchronization_points": [{"sync_id": "string", "timeline_ids": ["string"], "sync_event": "string (what brings timelines together)", "date": "string", "sync_type": "meeting | announcement | crisis | deadline | launch | merger", "description": "string", "consequences": ["string"], "source_articles": ["string"]}], "temporal_contradictions": [{"contradiction_id": "string", "contradiction_type": "date_discrepancy | sequence_dispute | simultaneity_claim | duration_conflict", "description": "string", "claim_a": {"source": "string", "claim": "string", "date_or_sequence": "string"}, "claim_b": {"source": "string", "claim": "string", "date_or_sequence": "string"}, "resolution": "string or null", "source_articles": ["string"]}], "temporal_relationships": [{"relationship_id": "string", "event_a": "string", "event_b": "string", "relationship_type": "before | after | during | concurrent | overlaps | starts_with | ends_with | causes", "time_gap": "string or null", "causal_link": "boolean", "description": "string or null", "source_articles": ["string"]}], "parallel_processes": [{"process_id": "string", "process_name": "string", "timeline_ids": ["string"], "process_type": "negotiation | development | crisis | transition | competition | cooperation", "start_period": "string", "end_period": "string or null", "phases": [{"phase_name": "string", "period": "string", "description": "string"}], "interactions_with_other_processes": ["process_id"], "source_articles": ["string"]}], "meta": {"total_timelines": "number", "total_events": "number", "simultaneous_event_clusters": "number", "synchronization_points": "number", "contradictions_found": "number", "time_span": {"earliest_date": "string", "latest_date": "string"}, "timelines_by_type": {"type": "number"}}}
+
+You are an expert reader. Produce the analysis this engine defines for an expert who must rely on the text; anchor every substantive claim in a short verbatim quote.
+
+## Output
+The analysis, then:
+## Findings ledger
+- [F1] <finding> — anchor: "<verbatim>" — confidence: high|medium|low
+(12-30 rows)
+### Counter-evidence
+### Open questions

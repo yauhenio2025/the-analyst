@@ -1,0 +1,219 @@
+{
+  "engine_key": "regulatory_pulse",
+  "engine_name": "Regulatory Pulse Tracker",
+  "description": "Tracks policy changes, regulatory actions, and institutional decisions across jurisdictions. Maps affected sectors, compliance timelines, and regulatory trends to reveal the evolving policy landscape.",
+  "version": 1,
+  "category": "market",
+  "kind": "relational",
+  "reasoning_domain": "landscape",
+  "researcher_question": "How is regulation evolving, and who is affected by policy changes?",
+  "canonical_schema": {
+    "regulations": [
+      {
+        "regulation_id": "string",
+        "title": "string",
+        "short_name": "string (acronym or common name)",
+        "description": "string",
+        "regulation_type": "legislation | rule | executive_order | guidance | judicial_decision | treaty | standard",
+        "jurisdiction": {
+          "name": "string",
+          "type": "country | state | supranational | city | agency",
+          "region": "string (Americas, Europe, Asia-Pacific, etc.)"
+        },
+        "regulator": {
+          "name": "string",
+          "type": "legislative | executive | judicial | independent_agency"
+        },
+        "timeline": {
+          "proposed_date": "string (YYYY-MM-DD or null)",
+          "enacted_date": "string (YYYY-MM-DD or null)",
+          "effective_date": "string (YYYY-MM-DD or null)",
+          "compliance_deadline": "string (YYYY-MM-DD or null)"
+        },
+        "status": "proposed | pending | enacted | effective | repealed | challenged",
+        "affected_sectors": [
+          "string"
+        ],
+        "affected_entity_types": [
+          "string (companies, individuals, etc.)"
+        ],
+        "key_provisions": [
+          {
+            "provision": "string",
+            "requirement_type": "prohibition | mandate | disclosure | standard | penalty"
+          }
+        ],
+        "penalties": {
+          "description": "string",
+          "max_fine": "number or null",
+          "criminal_liability": "boolean"
+        },
+        "source_articles": [
+          "string"
+        ]
+      }
+    ],
+    "jurisdictions": [
+      {
+        "jurisdiction_id": "string",
+        "name": "string",
+        "type": "country | state | supranational | agency",
+        "region": "string",
+        "regulation_count": "number",
+        "regulatory_trend": "tightening | loosening | stable | mixed",
+        "key_focus_areas": [
+          "string"
+        ],
+        "notable_regulators": [
+          "string"
+        ],
+        "source_articles": [
+          "string"
+        ]
+      }
+    ],
+    "impacts": [
+      {
+        "impact_id": "string",
+        "regulation_id": "string",
+        "affected_party": "string",
+        "party_type": "company | sector | individual | institution",
+        "impact_type": "compliance_cost | operational_change | market_access | liability | opportunity",
+        "severity": "high | medium | low",
+        "description": "string",
+        "timeline": "string (immediate, 6 months, etc.)",
+        "source_articles": [
+          "string"
+        ]
+      }
+    ],
+    "enforcement_actions": [
+      {
+        "action_id": "string",
+        "regulation_id": "string or null",
+        "target": "string (company or individual)",
+        "regulator": "string",
+        "action_type": "investigation | fine | settlement | lawsuit | ban | warning",
+        "amount": "number or null",
+        "date": "string (YYYY-MM-DD)",
+        "outcome": "string",
+        "source_articles": [
+          "string"
+        ]
+      }
+    ],
+    "policy_trends": [
+      {
+        "trend_id": "string",
+        "trend_name": "string",
+        "description": "string",
+        "direction": "tightening | loosening | evolving",
+        "jurisdictions_involved": [
+          "jurisdiction_id"
+        ],
+        "regulations_involved": [
+          "regulation_id"
+        ],
+        "drivers": [
+          "string"
+        ]
+      }
+    ],
+    "meta": {
+      "total_regulations": "number",
+      "regulations_by_type": {
+        "legislation": "number",
+        "rule": "number",
+        "guidance": "number",
+        "judicial_decision": "number"
+      },
+      "jurisdictions_covered": "number",
+      "enforcement_actions_count": "number",
+      "date_range": "string",
+      "dominant_trend": "string"
+    }
+  },
+  "extraction_focus": [
+    "regulations",
+    "policies",
+    "laws",
+    "jurisdictions",
+    "compliance",
+    "enforcement"
+  ],
+  "primary_output_modes": [
+    "table",
+    "structured_text_report",
+    "gemini_landscape",
+    "gemini_timeline"
+  ],
+  "paradigm_keys": [],
+  "source_file": "analyzer/src/engines/regulatory_pulse.py",
+  "stage_context": {
+    "framework_key": null,
+    "additional_frameworks": [],
+    "extraction": {
+      "analysis_type": "regulatory pulse tracker",
+      "analysis_type_plural": "regulatory pulse trackers",
+      "core_question": "How is regulation evolving, and who is affected by policy changes?",
+      "extraction_steps": [
+        "Read the document carefully to understand the context",
+        "Identify key items matching the analysis type",
+        "Extract relationships between items",
+        "Build the relationship graph",
+        "Verify completeness and accuracy"
+      ],
+      "key_fields": {},
+      "id_field": "regulatory_id",
+      "key_relationships": [
+        "relates_to"
+      ],
+      "special_instructions": null
+    },
+    "curation": {
+      "item_type": "regulatory pulse tracker",
+      "item_type_plural": "regulatory pulse trackers",
+      "consolidation_rules": [
+        "CONSOLIDATE REGULATIONS: Merge references to the same regulation",
+        "BUILD JURISDICTION PROFILES: - Group regulations by jurisdiction",
+        "MAP IMPACTS: - Who is affected by each regulation",
+        "CATALOG ENFORCEMENT: - List all enforcement actions",
+        "IDENTIFY POLICY TRENDS: - Cross-jurisdictional trends",
+        "CALCULATE METRICS: - Total regulations by type"
+      ],
+      "cross_doc_patterns": [
+        "shared_items",
+        "contested_items",
+        "response_network"
+      ],
+      "synthesis_outputs": [
+        "consolidated_item_list",
+        "relationship_map",
+        "cross_document_dynamics"
+      ],
+      "special_instructions": null
+    },
+    "concretization": {
+      "id_examples": [
+        {
+          "from": "R1",
+          "to": "EU AI Act (2024)"
+        },
+        {
+          "from": "J1",
+          "to": "European Union"
+        }
+      ],
+      "naming_guidance": "",
+      "recommended_table_types": [],
+      "recommended_visual_patterns": []
+    },
+    "audience_vocabulary": {
+      "researcher": {},
+      "analyst": {},
+      "executive": {},
+      "activist": {}
+    },
+    "skip_concretization": false
+  }
+}

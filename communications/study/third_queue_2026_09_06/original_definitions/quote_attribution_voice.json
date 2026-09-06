@@ -1,0 +1,144 @@
+{
+  "engine_key": "quote_attribution_voice",
+  "engine_name": "Quote Attribution Network",
+  "description": "Extracts quotes with full attribution and voice analysis. Maps speaker authority, voice characteristics, rhetorical functions, and the polyphony of voices in the discourse.",
+  "version": 1,
+  "category": "rhetoric",
+  "kind": "extraction",
+  "reasoning_domain": "discourse_analysis",
+  "researcher_question": "Who is speaking, what are they saying, and why does their voice matter?",
+  "canonical_schema": {
+    "speakers": [
+      {
+        "speaker_id": "string",
+        "name": "string",
+        "role": "string",
+        "affiliation": "string",
+        "authority_type": "expert | official | stakeholder | witness | critic",
+        "authority_level": "number (0-1)",
+        "quote_count": "number",
+        "source_articles": [
+          "string"
+        ]
+      }
+    ],
+    "quotes": [
+      {
+        "quote_id": "string",
+        "text": "string",
+        "speaker_id": "string",
+        "quote_type": "direct | indirect | paraphrase | reported_speech",
+        "context": "string",
+        "rhetorical_function": "evidence | authority_appeal | contrast | illustration | prediction | warning",
+        "voice_characteristics": {
+          "tone": "confident | cautious | critical | optimistic | pessimistic",
+          "register": "formal | informal | technical | colloquial",
+          "stance": "supportive | oppositional | neutral"
+        },
+        "source_article": "string",
+        "prominence": "number (0-1)"
+      }
+    ],
+    "voice_patterns": [
+      {
+        "pattern_id": "string",
+        "pattern_type": "dominant_voice | marginalized_voice | contested_voice",
+        "speakers": [
+          "speaker_id"
+        ],
+        "characteristic_tone": "string",
+        "frequency": "number"
+      }
+    ],
+    "polyphony_analysis": {
+      "total_distinct_voices": "number",
+      "voice_diversity_score": "number (0-1)",
+      "dominant_voice_type": "string",
+      "underrepresented_perspectives": [
+        "string"
+      ],
+      "voice_balance": "balanced | skewed_toward | skewed_against"
+    },
+    "meta": {
+      "total_quotes": "number",
+      "total_speakers": "number",
+      "direct_quote_ratio": "number (0-1)",
+      "average_authority_level": "number (0-1)"
+    }
+  },
+  "extraction_focus": [
+    "quotes",
+    "speakers",
+    "attribution",
+    "voice",
+    "rhetoric"
+  ],
+  "primary_output_modes": [
+    "structured_text_report",
+    "table",
+    "gemini_network_graph"
+  ],
+  "paradigm_keys": [],
+  "source_file": "analyzer/src/engines/quote_attribution_voice.py",
+  "stage_context": {
+    "framework_key": null,
+    "additional_frameworks": [],
+    "extraction": {
+      "analysis_type": "quote attribution network",
+      "analysis_type_plural": "quote attribution networks",
+      "core_question": "Who is speaking, what are they saying, and why does their voice matter?",
+      "extraction_steps": [
+        "SPEAKERS",
+        "QUOTES",
+        "RHETORICAL FUNCTION",
+        "VOICE CHARACTERISTICS"
+      ],
+      "key_fields": {},
+      "id_field": "quote_id",
+      "key_relationships": [
+        "supports"
+      ],
+      "special_instructions": null
+    },
+    "curation": {
+      "item_type": "quote attribution network",
+      "item_type_plural": "quote attribution networks",
+      "consolidation_rules": [
+        "CONSOLIDATE SPEAKERS: Merge references to the same person",
+        "CATALOG QUOTES: Organize all quotes",
+        "IDENTIFY VOICE PATTERNS: - Dominant voices (most frequently quoted)",
+        "ANALYZE POLYPHONY: - How many distinct voices?",
+        "CALCULATE METRICS: - Total quotes and speakers"
+      ],
+      "cross_doc_patterns": [
+        "shared_items",
+        "contested_items",
+        "response_network"
+      ],
+      "synthesis_outputs": [
+        "consolidated_item_list",
+        "relationship_map",
+        "cross_document_dynamics"
+      ],
+      "special_instructions": null
+    },
+    "concretization": {
+      "id_examples": [
+        {
+          "from": "S1",
+          "to": "Dr. Jane Smith, Chief Economist at World Bank"
+        }
+      ],
+      "naming_guidance": "",
+      "recommended_table_types": [],
+      "recommended_visual_patterns": []
+    },
+    "audience_vocabulary": {
+      "researcher": {},
+      "analyst": {},
+      "executive": {},
+      "activist": {}
+    },
+    "skip_concretization": false
+  }
+}

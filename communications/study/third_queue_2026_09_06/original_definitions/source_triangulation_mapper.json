@@ -1,0 +1,161 @@
+{
+  "engine_key": "source_triangulation_mapper",
+  "engine_name": "Source Triangulation Mapper",
+  "description": "Maps corroboration across independent sources. Analyzes triangulation, source independence, corroboration patterns, and contradictions. Essential for assessing evidential strength.",
+  "version": 1,
+  "category": "evidence",
+  "kind": "relational",
+  "reasoning_domain": "epistemology",
+  "researcher_question": "Do independent sources corroborate these claims?",
+  "canonical_schema": {
+    "claims_analyzed": [
+      {
+        "claim_id": "string - CL1, CL2, etc.",
+        "claim_text": "string",
+        "claim_type": "factual | interpretive | predictive",
+        "sources_supporting": [
+          "string - source_ids"
+        ],
+        "sources_contradicting": [
+          "string - source_ids"
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "source_id": "string - S1, S2, etc.",
+        "source_name": "string",
+        "source_type": "primary | secondary | tertiary",
+        "credibility": "high | medium | low",
+        "potential_biases": [
+          "string"
+        ]
+      }
+    ],
+    "source_independence": [
+      {
+        "pair_id": "string",
+        "source_a": "string - source_id",
+        "source_b": "string - source_id",
+        "independence_level": "fully_independent | partially_independent | dependent",
+        "shared_origin": "string - if dependent, what they share",
+        "independence_concerns": [
+          "string"
+        ]
+      }
+    ],
+    "triangulation_map": [
+      {
+        "claim_id": "string",
+        "triangulation_level": "strong | moderate | weak | single_source",
+        "independent_sources": "number",
+        "dependent_sources": "number",
+        "triangulation_details": "string"
+      }
+    ],
+    "corroboration_patterns": [
+      {
+        "pattern_id": "string",
+        "sources_involved": [
+          "string - source_ids"
+        ],
+        "claims_corroborated": [
+          "string - claim_ids"
+        ],
+        "corroboration_strength": "strong | moderate | weak",
+        "notes": "string"
+      }
+    ],
+    "contradictions": [
+      {
+        "contradiction_id": "string",
+        "claim_a": "string",
+        "source_a": "string - source_id",
+        "claim_b": "string",
+        "source_b": "string - source_id",
+        "contradiction_type": "direct | partial | interpretive",
+        "resolution": "string - if any"
+      }
+    ],
+    "single_source_claims": [
+      {
+        "claim_id": "string",
+        "claim_text": "string",
+        "sole_source": "string - source_id",
+        "vulnerability": "high | medium | low",
+        "corroboration_possible": "yes | no | unknown"
+      }
+    ],
+    "meta": {
+      "claims_analyzed": "number",
+      "strongly_triangulated": "number",
+      "single_source_claims": "number",
+      "contradictions_found": "number"
+    }
+  },
+  "extraction_focus": [
+    "claims",
+    "sources",
+    "source_relationships",
+    "corroboration",
+    "contradictions"
+  ],
+  "primary_output_modes": [
+    "structured_text_report",
+    "table"
+  ],
+  "paradigm_keys": [],
+  "source_file": "analyzer/src/engines/source_triangulation_mapper.py",
+  "stage_context": {
+    "framework_key": null,
+    "additional_frameworks": [],
+    "extraction": {
+      "analysis_type": "source triangulation",
+      "analysis_type_plural": "source triangulations",
+      "core_question": "Do independent sources corroborate these claims?",
+      "extraction_steps": [
+        "IDENTIFY CLAIMS",
+        "IDENTIFY SOURCES",
+        "ASSESS SOURCE INDEPENDENCE",
+        "MAP TRIANGULATION",
+        "IDENTIFY CONTRADICTIONS",
+        "FLAG SINGLE-SOURCE CLAIMS"
+      ],
+      "key_fields": {},
+      "id_field": "claim_id",
+      "key_relationships": [
+        "contradicts"
+      ],
+      "special_instructions": null
+    },
+    "curation": {
+      "item_type": "source triangulation",
+      "item_type_plural": "source triangulations",
+      "consolidation_rules": [],
+      "cross_doc_patterns": [
+        "shared_items",
+        "contested_items",
+        "response_network"
+      ],
+      "synthesis_outputs": [
+        "consolidated_item_list",
+        "relationship_map",
+        "cross_document_dynamics"
+      ],
+      "special_instructions": null
+    },
+    "concretization": {
+      "id_examples": [],
+      "naming_guidance": "",
+      "recommended_table_types": [],
+      "recommended_visual_patterns": []
+    },
+    "audience_vocabulary": {
+      "researcher": {},
+      "analyst": {},
+      "executive": {},
+      "activist": {}
+    },
+    "skip_concretization": false
+  }
+}

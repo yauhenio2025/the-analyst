@@ -1,0 +1,303 @@
+{
+  "engine_key": "rational_actor_modeling",
+  "engine_name": "Rational Actor Modeling",
+  "description": "Profiles key decision-makers to predict behavior. Maps worldviews and belief systems, characterizes decision-making styles, identifies constraints, analyzes track records, and predicts responses to scenarios. Essential for anticipating how key actors will respond to events.",
+  "version": 1,
+  "category": "power",
+  "kind": "synthesis",
+  "reasoning_domain": "power",
+  "researcher_question": "How do key decision-makers think, and how would they respond?",
+  "canonical_schema": {
+    "actors": [
+      {
+        "actor_id": "string - A1, A2, etc.",
+        "name": "string",
+        "role": "string - position/title",
+        "organization": "string - where they operate",
+        "actor_type": "individual | collective | institutional",
+        "profile_confidence": "high | medium | low",
+        "worldview": {
+          "core_beliefs": [
+            {
+              "belief": "string - fundamental belief",
+              "evidence": "string - how we know this",
+              "strength": "foundational | strong | moderate"
+            }
+          ],
+          "mental_model": "string - how they understand the situation",
+          "threat_perception": {
+            "primary_threats": [
+              "string - what they see as threatening"
+            ],
+            "threat_drivers": "string - why they see these as threats",
+            "threat_threshold": "low | moderate | high - how easily threatened"
+          },
+          "opportunity_perception": {
+            "perceived_opportunities": [
+              "string"
+            ],
+            "opportunity_drivers": "string"
+          },
+          "in_group": [
+            "string - who they consider allies/us"
+          ],
+          "out_group": [
+            "string - who they consider opponents/them"
+          ],
+          "historical_analogies": [
+            "string - past events they reference"
+          ],
+          "blind_spots": [
+            {
+              "blind_spot": "string - what they miss",
+              "why_blind": "string - reason for gap",
+              "implications": "string - what this could cause"
+            }
+          ]
+        },
+        "decision_style": {
+          "risk_tolerance": {
+            "level": "risk_seeking | risk_neutral | risk_averse | highly_risk_averse",
+            "evidence": "string",
+            "domain_variation": "string - differs by context?"
+          },
+          "time_horizon": {
+            "orientation": "short_term | medium_term | long_term | mixed",
+            "planning_depth": "string"
+          },
+          "information_processing": {
+            "style": "analytical | intuitive | ideological | reactive",
+            "detail_orientation": "high | moderate | low",
+            "openness_to_new_info": "high | moderate | low",
+            "confirmation_bias_tendency": "high | moderate | low"
+          },
+          "decision_mode": {
+            "style": "decisive | deliberative | consultative | avoidant",
+            "speed": "fast | moderate | slow",
+            "reversibility": "willing_to_reverse | reluctant_to_reverse | never_reverses"
+          },
+          "consistency": {
+            "ideological_vs_pragmatic": "strongly_ideological | lean_ideological | balanced | lean_pragmatic | strongly_pragmatic",
+            "predictability": "highly_predictable | moderately_predictable | unpredictable"
+          },
+          "under_pressure": {
+            "response": "doubles_down | escalates | seeks_compromise | retreats | freezes",
+            "stress_tolerance": "high | moderate | low"
+          }
+        },
+        "constraints": {
+          "institutional": [
+            {
+              "constraint": "string - institutional limit",
+              "binding_strength": "hard | soft | negligible",
+              "workaround_possible": "boolean"
+            }
+          ],
+          "political": [
+            {
+              "constraint": "string - political limit",
+              "source": "string - where pressure comes from",
+              "binding_strength": "hard | soft | negligible"
+            }
+          ],
+          "resource": [
+            {
+              "constraint": "string - resource limit",
+              "scarcity_level": "severe | moderate | mild"
+            }
+          ],
+          "domestic": [
+            {
+              "constraint": "string - domestic political limit",
+              "source": "string",
+              "binding_strength": "hard | soft | negligible"
+            }
+          ],
+          "international": [
+            {
+              "constraint": "string - international limit",
+              "source": "string",
+              "binding_strength": "hard | soft | negligible"
+            }
+          ],
+          "personal": [
+            {
+              "constraint": "string - personal limit (health, family, etc.)",
+              "relevance": "string"
+            }
+          ],
+          "overall_freedom_of_action": "highly_constrained | moderately_constrained | relatively_free | very_free"
+        },
+        "track_record": [
+          {
+            "decision": "string - what they decided",
+            "context": "string - situation when decided",
+            "outcome": "string - what happened",
+            "what_it_reveals": "string - insight about their pattern",
+            "consistency_with_profile": "confirms | neutral | contradicts"
+          }
+        ],
+        "key_influences": [
+          {
+            "influence": "string - person, group, or factor",
+            "influence_type": "advisor | constituency | ideology | personal | institutional",
+            "strength": "strong | moderate | weak",
+            "direction": "string - how they influence"
+          }
+        ],
+        "predicted_responses": [
+          {
+            "scenario": "string - hypothetical situation",
+            "likely_response": "string - predicted action",
+            "confidence": "high | medium | low",
+            "rationale": "string - why we predict this",
+            "alternative_response": "string - what else they might do",
+            "red_lines": [
+              "string - triggers for different response"
+            ]
+          }
+        ]
+      }
+    ],
+    "interaction_dynamics": [
+      {
+        "actor_pair": [
+          "string - actor_id",
+          "string - actor_id"
+        ],
+        "relationship_type": "alliance | rivalry | hierarchy | cooperation | competition | neutral",
+        "power_differential": "A_dominant | B_dominant | balanced | fluctuating",
+        "trust_level": "high | moderate | low | negative",
+        "communication_quality": "open | guarded | hostile | none",
+        "history": "string - how relationship has evolved",
+        "likely_interaction_pattern": "string - how they typically engage"
+      }
+    ],
+    "collective_dynamics": {
+      "group_think_risk": {
+        "level": "high | medium | low",
+        "indicators": [
+          "string"
+        ]
+      },
+      "factional_analysis": [
+        {
+          "faction": "string - name",
+          "members": [
+            "string - actor_ids"
+          ],
+          "position": "string - what they advocate",
+          "strength": "dominant | strong | moderate | weak"
+        }
+      ],
+      "veto_players": [
+        {
+          "actor_id": "string",
+          "veto_over": "string - what they can block",
+          "veto_likelihood": "high | medium | low"
+        }
+      ]
+    },
+    "prediction_summary": {
+      "most_predictable_actors": [
+        "string - actor_ids"
+      ],
+      "least_predictable_actors": [
+        "string - actor_ids"
+      ],
+      "key_uncertainties": [
+        {
+          "uncertainty": "string - what we don't know",
+          "affects_prediction_for": [
+            "string - actor_ids"
+          ],
+          "how_might_resolve": "string"
+        }
+      ],
+      "wild_cards": [
+        {
+          "scenario": "string - unexpected development",
+          "would_change": "string - how predictions would shift"
+        }
+      ]
+    },
+    "meta": {
+      "actors_profiled": "number",
+      "interactions_mapped": "number",
+      "predictions_made": "number",
+      "overall_confidence": "high | medium | low",
+      "data_quality": "rich | adequate | limited | poor",
+      "key_gaps": [
+        "string - what we wish we knew"
+      ]
+    }
+  },
+  "extraction_focus": [
+    "actor_identification",
+    "worldview_mapping",
+    "decision_style_analysis",
+    "constraint_identification",
+    "response_prediction"
+  ],
+  "primary_output_modes": [
+    "structured_text_report",
+    "table"
+  ],
+  "paradigm_keys": [],
+  "source_file": "analyzer/src/engines/rational_actor_modeling.py",
+  "stage_context": {
+    "framework_key": null,
+    "additional_frameworks": [],
+    "extraction": {
+      "analysis_type": "rational actor modeling",
+      "analysis_type_plural": "rational actor modelings",
+      "core_question": "How do key decision-makers think, and how would they respond?",
+      "extraction_steps": [
+        "IDENTIFY KEY ACTORS",
+        "MAP WORLDVIEWS",
+        "CHARACTERIZE DECISION STYLE",
+        "IDENTIFY CONSTRAINTS",
+        "ANALYZE TRACK RECORD",
+        "MAP INFLUENCES",
+        "PREDICT RESPONSES",
+        "MAP INTERACTIONS",
+        "COLLECTIVE DYNAMICS"
+      ],
+      "key_fields": {},
+      "id_field": "rational_id",
+      "key_relationships": [
+        "contradicts"
+      ],
+      "special_instructions": null
+    },
+    "curation": {
+      "item_type": "rational actor modeling",
+      "item_type_plural": "rational actor modelings",
+      "consolidation_rules": [],
+      "cross_doc_patterns": [
+        "shared_items",
+        "contested_items",
+        "response_network"
+      ],
+      "synthesis_outputs": [
+        "consolidated_item_list",
+        "relationship_map",
+        "cross_document_dynamics"
+      ],
+      "special_instructions": null
+    },
+    "concretization": {
+      "id_examples": [],
+      "naming_guidance": "",
+      "recommended_table_types": [],
+      "recommended_visual_patterns": []
+    },
+    "audience_vocabulary": {
+      "researcher": {},
+      "analyst": {},
+      "executive": {},
+      "activist": {}
+    },
+    "skip_concretization": false
+  }
+}

@@ -1,0 +1,161 @@
+{
+  "engine_key": "periodization_critic",
+  "engine_name": "Periodization Critic",
+  "description": "Evaluates whether proposed time periods are analytically justified. Examines periodization schemes, boundary justification, coherence, and continuity vs. rupture. Essential for assessing temporal frameworks.",
+  "version": 1,
+  "category": "temporal",
+  "kind": "synthesis",
+  "reasoning_domain": "temporal",
+  "researcher_question": "Are the proposed time periods analytically justified?",
+  "canonical_schema": {
+    "periodization_schemes": [
+      {
+        "scheme_id": "string - PS1, PS2, etc.",
+        "scheme_name": "string",
+        "periods": [
+          "string - list of periods"
+        ],
+        "domain": "string - what's being periodized",
+        "source": "string - who proposes this",
+        "purpose": "string - why periodize this way"
+      }
+    ],
+    "periods": [
+      {
+        "period_id": "string - PER1, PER2, etc.",
+        "scheme_id": "string",
+        "period_name": "string",
+        "start_date": "string",
+        "end_date": "string",
+        "defining_characteristics": [
+          "string"
+        ],
+        "internal_coherence": "high | medium | low"
+      }
+    ],
+    "boundaries": [
+      {
+        "boundary_id": "string - BD1, BD2, etc.",
+        "scheme_id": "string",
+        "boundary_date": "string",
+        "period_before": "string - period_id",
+        "period_after": "string - period_id",
+        "stated_justification": "string",
+        "what_changes": [
+          "string - ruptures"
+        ],
+        "what_continues": [
+          "string - continuities"
+        ]
+      }
+    ],
+    "boundary_critique": [
+      {
+        "critique_id": "string",
+        "boundary_id": "string",
+        "critique_type": "arbitrary | oversimplified | event_driven | teleological | eurocentric | other",
+        "critique_detail": "string",
+        "alternative_boundary": "string - if any",
+        "strength_of_critique": "strong | moderate | weak"
+      }
+    ],
+    "coherence_assessment": [
+      {
+        "assessment_id": "string",
+        "period_id": "string",
+        "coherence_problems": [
+          "string - what doesn't fit"
+        ],
+        "internal_diversity": "string - variation within period",
+        "unifying_features": [
+          "string - what holds it together"
+        ],
+        "coherence_verdict": "coherent | somewhat_coherent | problematic"
+      }
+    ],
+    "alternative_periodizations": [
+      {
+        "alternative_id": "string",
+        "original_scheme": "string - scheme_id",
+        "alternative_scheme": "string - description",
+        "rationale": "string - why this alternative",
+        "advantages": [
+          "string"
+        ],
+        "disadvantages": [
+          "string"
+        ]
+      }
+    ],
+    "meta": {
+      "schemes_analyzed": "number",
+      "boundaries_critiqued": "number",
+      "arbitrary_boundaries": "number",
+      "overall_periodization_quality": "well_justified | mixed | problematic"
+    }
+  },
+  "extraction_focus": [
+    "periodization_schemes",
+    "period_boundaries",
+    "boundary_justification",
+    "internal_coherence",
+    "continuity_rupture"
+  ],
+  "primary_output_modes": [
+    "structured_text_report",
+    "table"
+  ],
+  "paradigm_keys": [],
+  "source_file": "analyzer/src/engines/periodization_critic.py",
+  "stage_context": {
+    "framework_key": null,
+    "additional_frameworks": [],
+    "extraction": {
+      "analysis_type": "periodization critic",
+      "analysis_type_plural": "periodization critics",
+      "core_question": "Are the proposed time periods analytically justified?",
+      "extraction_steps": [
+        "IDENTIFY PERIODIZATION SCHEMES",
+        "EXAMINE BOUNDARIES",
+        "ASSESS INTERNAL COHERENCE",
+        "CRITIQUE BOUNDARIES",
+        "CONSIDER ALTERNATIVES"
+      ],
+      "key_fields": {},
+      "id_field": "periodization_id",
+      "key_relationships": [
+        "relates_to"
+      ],
+      "special_instructions": null
+    },
+    "curation": {
+      "item_type": "periodization critic",
+      "item_type_plural": "periodization critics",
+      "consolidation_rules": [],
+      "cross_doc_patterns": [
+        "shared_items",
+        "contested_items",
+        "response_network"
+      ],
+      "synthesis_outputs": [
+        "consolidated_item_list",
+        "relationship_map",
+        "cross_document_dynamics"
+      ],
+      "special_instructions": null
+    },
+    "concretization": {
+      "id_examples": [],
+      "naming_guidance": "",
+      "recommended_table_types": [],
+      "recommended_visual_patterns": []
+    },
+    "audience_vocabulary": {
+      "researcher": {},
+      "analyst": {},
+      "executive": {},
+      "activist": {}
+    },
+    "skip_concretization": false
+  }
+}

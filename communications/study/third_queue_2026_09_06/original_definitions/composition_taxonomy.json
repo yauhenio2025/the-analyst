@@ -1,0 +1,214 @@
+{
+  "engine_key": "composition_taxonomy",
+  "engine_name": "Composition Taxonomy Builder",
+  "description": "Categorizes and classifies types within a domain. Builds taxonomies, identifies classification criteria, maps hierarchical relationships, and reveals how knowledge is organized and contested.",
+  "version": 1,
+  "category": "concepts",
+  "kind": "relational",
+  "reasoning_domain": "composition",
+  "researcher_question": "How are things classified in this domain, and what do the categories reveal?",
+  "canonical_schema": {
+    "taxonomies": [
+      {
+        "taxonomy_id": "string",
+        "taxonomy_name": "string",
+        "domain": "string",
+        "description": "string",
+        "purpose": "string (analytical, regulatory, practical, etc.)",
+        "source_type": "explicit | reconstructed | contested",
+        "classification_criteria": [
+          {
+            "criterion": "string",
+            "criterion_type": "function | structure | origin | impact | size | other",
+            "measurement": "categorical | ordinal | continuous"
+          }
+        ],
+        "root_categories": [
+          "category_id"
+        ],
+        "source_articles": [
+          "string"
+        ]
+      }
+    ],
+    "categories": [
+      {
+        "category_id": "string",
+        "category_name": "string",
+        "taxonomy_id": "string",
+        "parent_category": "string or null",
+        "level": "number (0 = root)",
+        "definition": "string",
+        "defining_characteristics": [
+          "string"
+        ],
+        "examples": [
+          "string"
+        ],
+        "instance_count": "number or null",
+        "child_categories": [
+          "category_id"
+        ],
+        "source_articles": [
+          "string"
+        ]
+      }
+    ],
+    "instances": [
+      {
+        "instance_id": "string",
+        "instance_name": "string",
+        "category_id": "string",
+        "description": "string",
+        "attributes": {
+          "key": "value"
+        },
+        "exemplar_status": "typical | atypical | boundary | contested",
+        "source_articles": [
+          "string"
+        ]
+      }
+    ],
+    "cross_classifications": [
+      {
+        "cross_id": "string",
+        "taxonomy_a": "string",
+        "taxonomy_b": "string",
+        "relationship": "orthogonal | overlapping | nested | competing",
+        "description": "string",
+        "source_articles": [
+          "string"
+        ]
+      }
+    ],
+    "contested_classifications": [
+      {
+        "contest_id": "string",
+        "item": "string (what is being classified)",
+        "classification_a": {
+          "category": "string",
+          "proponents": [
+            "string"
+          ],
+          "reasoning": "string"
+        },
+        "classification_b": {
+          "category": "string",
+          "proponents": [
+            "string"
+          ],
+          "reasoning": "string"
+        },
+        "stakes": "string (why classification matters)",
+        "source_articles": [
+          "string"
+        ]
+      }
+    ],
+    "category_evolution": [
+      {
+        "evolution_id": "string",
+        "category_id": "string",
+        "change_type": "split | merge | rename | redefinition | emergence | obsolescence",
+        "description": "string",
+        "time_period": "string",
+        "driver": "string",
+        "source_articles": [
+          "string"
+        ]
+      }
+    ],
+    "meta": {
+      "total_taxonomies": "number",
+      "total_categories": "number",
+      "total_instances": "number",
+      "max_hierarchy_depth": "number",
+      "contested_classifications_count": "number",
+      "taxonomies_by_domain": {
+        "domain": "number"
+      }
+    }
+  },
+  "extraction_focus": [
+    "taxonomies",
+    "categories",
+    "types",
+    "classifications",
+    "hierarchies",
+    "criteria"
+  ],
+  "primary_output_modes": [
+    "gemini_hierarchy_diagram",
+    "structured_text_report",
+    "table"
+  ],
+  "paradigm_keys": [],
+  "source_file": "analyzer/src/engines/composition_taxonomy.py",
+  "stage_context": {
+    "framework_key": null,
+    "additional_frameworks": [],
+    "extraction": {
+      "analysis_type": "composition taxonomy builder",
+      "analysis_type_plural": "composition taxonomy builders",
+      "core_question": "How are things classified in this domain, and what do the categories reveal?",
+      "extraction_steps": [
+        "Read the document carefully to understand the context",
+        "Identify key items matching the analysis type",
+        "Extract relationships between items",
+        "Build the relationship graph",
+        "Verify completeness and accuracy"
+      ],
+      "key_fields": {},
+      "id_field": "composition_id",
+      "key_relationships": [
+        "supports"
+      ],
+      "special_instructions": null
+    },
+    "curation": {
+      "item_type": "composition taxonomy builder",
+      "item_type_plural": "composition taxonomy builders",
+      "consolidation_rules": [
+        "CONSOLIDATE TAXONOMIES: Build coherent classification systems",
+        "BUILD CATEGORY HIERARCHIES: - Identify parent-child relationships",
+        "CATALOG INSTANCES: - Map specific items to categories",
+        "MAP CROSS-CLASSIFICATIONS: - How do different taxonomies relate?",
+        "DOCUMENT CONTESTATION: - Where is classification disputed?",
+        "TRACK EVOLUTION: - How have categories changed?"
+      ],
+      "cross_doc_patterns": [
+        "shared_items",
+        "contested_items",
+        "response_network"
+      ],
+      "synthesis_outputs": [
+        "consolidated_item_list",
+        "relationship_map",
+        "cross_document_dynamics"
+      ],
+      "special_instructions": null
+    },
+    "concretization": {
+      "id_examples": [
+        {
+          "from": "T1",
+          "to": "AI System Types Taxonomy"
+        },
+        {
+          "from": "C1",
+          "to": "Generative AI (under AI System Types)"
+        }
+      ],
+      "naming_guidance": "",
+      "recommended_table_types": [],
+      "recommended_visual_patterns": []
+    },
+    "audience_vocabulary": {
+      "researcher": {},
+      "analyst": {},
+      "executive": {},
+      "activist": {}
+    },
+    "skip_concretization": false
+  }
+}

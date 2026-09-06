@@ -1,0 +1,163 @@
+{
+  "engine_key": "boundary_probe",
+  "engine_name": "Boundary Probe",
+  "description": "Applies Sortes-style analysis to key concepts \u2014 where exactly is the boundary? Reveals hidden arbitrariness in categories and thresholds that arguments depend upon. Based on Dennett's use of the Sortes paradox to expose fuzzy concept boundaries.",
+  "version": 1,
+  "category": "concepts",
+  "kind": "synthesis",
+  "reasoning_domain": "concepts",
+  "researcher_question": "Where are the boundary lines, and are they defensible?",
+  "canonical_schema": {
+    "boundary_analyses": [
+      {
+        "concept_id": "string - unique identifier",
+        "concept_name": "string - the concept being probed",
+        "how_used": "string - how the text uses this concept",
+        "boundary_definition": {
+          "explicit_definition": "string - if the text defines it, what is the definition?",
+          "implicit_definition": "string - if implicit, what definition is being assumed?",
+          "definitional_source": "author | field_standard | legal | colloquial | unclear"
+        },
+        "sortes_probe": {
+          "clear_case_inside": "string - an obvious member of the category",
+          "clear_case_outside": "string - an obvious non-member",
+          "borderline_cases": [
+            {
+              "case": "string - the borderline example",
+              "why_problematic": "string - why it challenges the boundary",
+              "argument_impact": "string - how classifying it either way affects the argument"
+            }
+          ],
+          "continuum_exists": "boolean - is there a continuum with no natural break?",
+          "boundary_location": "string - where the text draws the line",
+          "boundary_justification": "string - how/if the text justifies this location"
+        },
+        "arbitrariness_assessment": {
+          "score": "number (0-1) - 0 = well-justified, 1 = purely arbitrary",
+          "rationale": "string - why this score",
+          "alternative_boundaries": [
+            {
+              "location": "string - where else could the line be drawn",
+              "justification": "string - what would justify this alternative",
+              "argument_impact": "string - how this would change the argument"
+            }
+          ]
+        },
+        "argument_dependence": {
+          "how_critical": "essential | important | minor - how much the argument depends on this boundary",
+          "what_fails": "string - what happens to the argument if boundary is contested"
+        },
+        "source_article": "string - article reference"
+      }
+    ],
+    "threshold_analyses": [
+      {
+        "threshold_id": "string - unique identifier",
+        "threshold_description": "string - what the threshold is",
+        "value": "string - the specific threshold value if any",
+        "precision_illusion": {
+          "appears_precise": "boolean - does it look like a natural boundary?",
+          "actually_arbitrary": "boolean - is it actually arbitrary?",
+          "why": "string - explanation"
+        },
+        "alternatives": [
+          {
+            "alternative_threshold": "string",
+            "pros": "string",
+            "cons": "string"
+          }
+        ],
+        "source_article": "string"
+      }
+    ],
+    "category_systems": [
+      {
+        "system_id": "string",
+        "categories": [
+          "string - the categories in this system"
+        ],
+        "mutual_exclusivity": "boolean - are categories mutually exclusive?",
+        "exhaustiveness": "boolean - do they cover all cases?",
+        "boundary_problems": [
+          {
+            "case": "string - problematic case",
+            "which_boundaries": [
+              "string - which category boundaries it stresses"
+            ],
+            "problem_type": "overlap | gap | continuum | context_dependent"
+          }
+        ]
+      }
+    ],
+    "meta": {
+      "total_concepts_probed": "number",
+      "high_arbitrariness_count": "number - concepts with score > 0.7",
+      "argument_critical_boundaries": "number - boundaries the argument depends on",
+      "most_vulnerable_boundaries": [
+        "string - concept_ids with highest arbitrariness + highest dependence"
+      ]
+    }
+  },
+  "extraction_focus": [
+    "key_concepts",
+    "boundary_definitions",
+    "threshold_claims",
+    "category_boundaries",
+    "definitional_arbitrariness"
+  ],
+  "primary_output_modes": [
+    "structured_text_report",
+    "table"
+  ],
+  "paradigm_keys": [],
+  "source_file": "analyzer/src/engines/boundary_probe.py",
+  "stage_context": {
+    "framework_key": null,
+    "additional_frameworks": [],
+    "extraction": {
+      "analysis_type": "boundary probe",
+      "analysis_type_plural": "boundary probes",
+      "core_question": "Where are the boundary lines, and are they defensible?",
+      "extraction_steps": [
+        "The argument depends on a category distinction",
+        "The boundary of that category is not self-evident",
+        "Probing the boundary would reveal hidden arbitrariness"
+      ],
+      "key_fields": {},
+      "id_field": "concept_id",
+      "key_relationships": [
+        "relates_to"
+      ],
+      "special_instructions": null
+    },
+    "curation": {
+      "item_type": "boundary probe",
+      "item_type_plural": "boundary probes",
+      "consolidation_rules": [],
+      "cross_doc_patterns": [
+        "shared_items",
+        "contested_items",
+        "response_network"
+      ],
+      "synthesis_outputs": [
+        "consolidated_item_list",
+        "relationship_map",
+        "cross_document_dynamics"
+      ],
+      "special_instructions": null
+    },
+    "concretization": {
+      "id_examples": [],
+      "naming_guidance": "",
+      "recommended_table_types": [],
+      "recommended_visual_patterns": []
+    },
+    "audience_vocabulary": {
+      "researcher": {},
+      "analyst": {},
+      "executive": {},
+      "activist": {}
+    },
+    "skip_concretization": false
+  }
+}

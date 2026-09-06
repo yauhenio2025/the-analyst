@@ -1,0 +1,156 @@
+{
+  "engine_key": "exemplar_catalog",
+  "engine_name": "Exemplar Catalog",
+  "description": "Catalogs concrete examples, case studies, and illustrations used across a collection. Maps how examples support arguments and identifies patterns in example usage.",
+  "version": 1,
+  "category": "evidence",
+  "kind": "primitive",
+  "reasoning_domain": "empirical",
+  "researcher_question": "What concrete cases illustrate the arguments?",
+  "canonical_schema": {
+    "exemplars": [
+      {
+        "exemplar_id": "string",
+        "name": "string",
+        "description": "string",
+        "exemplar_type": "case_study | anecdote | historical_precedent | data_point | thought_experiment | comparison",
+        "domain": "string",
+        "time_period": "string | null",
+        "location": "string | null",
+        "actors_involved": [
+          "string"
+        ],
+        "usage": {
+          "function": "illustration | proof | warning | counterexample | analogy",
+          "arguments_supported": [
+            "string"
+          ],
+          "how_cited": "direct_analysis | brief_mention | extended_discussion"
+        },
+        "quality_assessment": {
+          "relevance": "number (0-1)",
+          "representativeness": "typical | atypical | extreme | unknown",
+          "verifiability": "verified | unverified | unverifiable",
+          "detail_level": "rich | moderate | sparse"
+        },
+        "source_articles": [
+          "string"
+        ]
+      }
+    ],
+    "example_patterns": {
+      "by_type": {
+        "case_study": "number",
+        "anecdote": "number",
+        "historical_precedent": "number",
+        "data_point": "number",
+        "thought_experiment": "number",
+        "comparison": "number"
+      },
+      "by_domain": {
+        "domain": "number"
+      },
+      "by_function": {
+        "illustration": "number",
+        "proof": "number",
+        "warning": "number",
+        "counterexample": "number",
+        "analogy": "number"
+      }
+    },
+    "recurring_exemplars": [
+      {
+        "exemplar_id": "string",
+        "citation_count": "number",
+        "citing_articles": [
+          "string"
+        ],
+        "usage_consistency": "consistent | varied | contradictory"
+      }
+    ],
+    "argument_example_map": [
+      {
+        "argument": "string",
+        "supporting_examples": [
+          "exemplar_id"
+        ],
+        "example_coverage": "well_supported | moderately_supported | under_supported"
+      }
+    ],
+    "meta": {
+      "total_exemplars": "number",
+      "unique_exemplars": "number",
+      "most_cited_exemplar": "string",
+      "example_richness": "number (0-1)"
+    }
+  },
+  "extraction_focus": [
+    "examples",
+    "case_studies",
+    "illustrations",
+    "anecdotes",
+    "precedents"
+  ],
+  "primary_output_modes": [
+    "structured_text_report",
+    "comparative_matrix_table"
+  ],
+  "paradigm_keys": [],
+  "source_file": "analyzer/src/engines/exemplar_catalog.py",
+  "stage_context": {
+    "framework_key": null,
+    "additional_frameworks": [],
+    "extraction": {
+      "analysis_type": "exemplar catalog",
+      "analysis_type_plural": "exemplar catalogs",
+      "core_question": "What concrete cases illustrate the arguments?",
+      "extraction_steps": [
+        "IDENTIFICATION",
+        "CONTEXT",
+        "USAGE",
+        "QUALITY"
+      ],
+      "key_fields": {},
+      "id_field": "exemplar_id",
+      "key_relationships": [
+        "contradicts"
+      ],
+      "special_instructions": null
+    },
+    "curation": {
+      "item_type": "exemplar catalog",
+      "item_type_plural": "exemplar catalogs",
+      "consolidation_rules": [
+        "CONSOLIDATE EXEMPLARS: Merge same examples across articles",
+        "IDENTIFY RECURRING EXAMPLES: - Which examples appear across multiple articles?",
+        "MAP TO ARGUMENTS: - Which arguments are well-supported by examples?",
+        "ASSESS COLLECTION-LEVEL PATTERNS: - What domains dominate?",
+        "EVALUATE QUALITY: - Overall representativeness of examples"
+      ],
+      "cross_doc_patterns": [
+        "shared_items",
+        "contested_items",
+        "response_network"
+      ],
+      "synthesis_outputs": [
+        "consolidated_item_list",
+        "relationship_map",
+        "cross_document_dynamics"
+      ],
+      "special_instructions": null
+    },
+    "concretization": {
+      "id_examples": [],
+      "naming_guidance": "",
+      "recommended_table_types": [],
+      "recommended_visual_patterns": []
+    },
+    "audience_vocabulary": {
+      "researcher": {},
+      "analyst": {},
+      "executive": {},
+      "activist": {}
+    },
+    "skip_concretization": false
+  }
+}

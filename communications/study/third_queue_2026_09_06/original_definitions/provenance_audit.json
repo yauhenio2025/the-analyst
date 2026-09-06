@@ -1,0 +1,200 @@
+{
+  "engine_key": "provenance_audit",
+  "engine_name": "Provenance Audit",
+  "description": "Maps the sources of claims and evaluates their epistemic quality. Separates the claim-as-data from the claim-as-true. Traces how information enters the discourse and transforms along the way. Based on Dennett's heterophenomenological method.",
+  "version": 1,
+  "category": "evidence",
+  "kind": "synthesis",
+  "reasoning_domain": "evidence",
+  "researcher_question": "Where do these claims come from, and how reliable are those sources?",
+  "canonical_schema": {
+    "sources": [
+      {
+        "source_id": "string - unique identifier",
+        "name": "string - source name",
+        "source_type": "primary | secondary | tertiary | unknown",
+        "access_type": "direct_observation | interview | document | study | hearsay | inference | unknown",
+        "source_category": "academic | government | industry | journalism | advocacy | individual | anonymous",
+        "credibility_factors": {
+          "expertise_relevant": {
+            "score": "number (0-1)",
+            "rationale": "string - why this score"
+          },
+          "track_record": {
+            "score": "number (0-1)",
+            "rationale": "string - past accuracy/reliability"
+          },
+          "independence": {
+            "score": "number (0-1)",
+            "rationale": "string - freedom from bias/conflict"
+          },
+          "transparency": {
+            "score": "number (0-1)",
+            "rationale": "string - methodology/data accessibility"
+          },
+          "corroboration": {
+            "score": "number (0-1)",
+            "rationale": "string - confirmed by independent sources?"
+          }
+        },
+        "overall_credibility": "number (0-1) - weighted average",
+        "bias_indicators": [
+          {
+            "bias_type": "financial | ideological | institutional | personal | selection",
+            "description": "string - what bias is suspected",
+            "severity": "low | medium | high"
+          }
+        ],
+        "heterophenomenological_note": "string - what we learn from the fact this claim was made, regardless of truth",
+        "cited_in_articles": [
+          "string - article references"
+        ]
+      }
+    ],
+    "provenance_chains": [
+      {
+        "chain_id": "string",
+        "claim": "string - the claim being traced",
+        "original_source": "string - source_id of origin",
+        "transformation_steps": [
+          {
+            "step_number": "number",
+            "intermediate_source": "string",
+            "transformation_type": "verbatim | paraphrase | interpretation | exaggeration | distortion",
+            "what_changed": "string - how the claim was altered"
+          }
+        ],
+        "final_form": "string - how the claim appears in the analyzed text",
+        "fidelity_degradation": {
+          "score": "number (0-1) - how much signal loss",
+          "main_degradation": "string - primary source of distortion"
+        },
+        "chain_length": "number - steps from origin to final",
+        "telephone_game_severity": "low | medium | high - overall degradation"
+      }
+    ],
+    "citation_patterns": {
+      "echo_chamber_indicators": [
+        {
+          "cluster": [
+            "string - source_ids that cite each other"
+          ],
+          "severity": "low | medium | high",
+          "description": "string"
+        }
+      ],
+      "circular_citations": [
+        {
+          "claim": "string",
+          "cycle": [
+            "string - source_ids forming the cycle"
+          ],
+          "description": "string"
+        }
+      ],
+      "single_points_of_failure": [
+        {
+          "claim": "string - claim that depends on single source",
+          "source_id": "string",
+          "dependence_severity": "low | medium | high"
+        }
+      ],
+      "orphan_claims": [
+        {
+          "claim": "string - claim with no traceable source",
+          "how_presented": "string - how text presents it (as fact? as common knowledge?)"
+        }
+      ]
+    },
+    "heterophenomenological_insights": [
+      {
+        "claim": "string",
+        "as_data": "string - what the fact of this claim tells us",
+        "as_truth_candidate": "string - separate question: is it actually true?",
+        "divergence_significance": "string - why separating these matters"
+      }
+    ],
+    "meta": {
+      "total_sources_identified": "number",
+      "primary_source_count": "number",
+      "secondary_source_count": "number",
+      "average_credibility": "number",
+      "longest_provenance_chain": "number",
+      "single_point_failure_count": "number",
+      "orphan_claim_count": "number",
+      "most_cited_sources": [
+        "string - source_ids"
+      ],
+      "most_credible_sources": [
+        "string - source_ids"
+      ],
+      "most_concerning_sources": [
+        "string - source_ids with low credibility but high citation"
+      ]
+    }
+  },
+  "extraction_focus": [
+    "source_identification",
+    "source_credibility",
+    "provenance_chains",
+    "transformation_tracking",
+    "citation_patterns"
+  ],
+  "primary_output_modes": [
+    "structured_text_report",
+    "table"
+  ],
+  "paradigm_keys": [],
+  "source_file": "analyzer/src/engines/provenance_audit.py",
+  "stage_context": {
+    "framework_key": null,
+    "additional_frameworks": [],
+    "extraction": {
+      "analysis_type": "provenance audit",
+      "analysis_type_plural": "provenance audits",
+      "core_question": "Where do these claims come from, and how reliable are those sources?",
+      "extraction_steps": [
+        "Where information actually comes from",
+        "How reliable those sources are",
+        "How much transformation/degradation occurred",
+        "Where the argument has epistemic vulnerabilities"
+      ],
+      "key_fields": {},
+      "id_field": "provenance_id",
+      "key_relationships": [
+        "cites",
+        "references"
+      ],
+      "special_instructions": null
+    },
+    "curation": {
+      "item_type": "provenance audit",
+      "item_type_plural": "provenance audits",
+      "consolidation_rules": [],
+      "cross_doc_patterns": [
+        "shared_items",
+        "contested_items",
+        "response_network"
+      ],
+      "synthesis_outputs": [
+        "consolidated_item_list",
+        "relationship_map",
+        "cross_document_dynamics"
+      ],
+      "special_instructions": null
+    },
+    "concretization": {
+      "id_examples": [],
+      "naming_guidance": "",
+      "recommended_table_types": [],
+      "recommended_visual_patterns": []
+    },
+    "audience_vocabulary": {
+      "researcher": {},
+      "analyst": {},
+      "executive": {},
+      "activist": {}
+    },
+    "skip_concretization": false
+  }
+}

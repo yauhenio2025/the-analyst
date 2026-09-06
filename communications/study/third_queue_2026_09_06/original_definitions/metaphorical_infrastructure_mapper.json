@@ -1,0 +1,224 @@
+{
+  "engine_key": "metaphorical_infrastructure_mapper",
+  "engine_name": "Metaphorical Infrastructure Mapper",
+  "description": "Maps the metaphorical substrata driving concepts. Identifies root metaphors, traces metaphorical inheritance, and projects transformation vectors. Reveals the hidden imagery that shapes conceptual development.",
+  "version": 1,
+  "category": "concepts",
+  "kind": "synthesis",
+  "reasoning_domain": "blumenberg_metaphorology",
+  "researcher_question": "What metaphors drive this concept and where might they lead?",
+  "canonical_schema": {
+    "concepts_analyzed": [
+      {
+        "concept_id": "string",
+        "term": "string",
+        "definition": "string",
+        "metaphorical_density": "number (0-1, how metaphor-laden)",
+        "source_articles": [
+          "string"
+        ]
+      }
+    ],
+    "root_metaphors": [
+      {
+        "metaphor_id": "string",
+        "metaphor": "string",
+        "source_domain": "string",
+        "target_domain": "string",
+        "concepts_structured": [
+          "concept_id"
+        ],
+        "metaphor_type": "orientational | ontological | structural | container | journey | war | machine | organic | etc",
+        "absoluteness": "absolute | near_absolute | translatable | dead",
+        "what_it_highlights": [
+          "string"
+        ],
+        "what_it_hides": [
+          "string"
+        ],
+        "historical_origin": "string"
+      }
+    ],
+    "metaphorical_mappings": [
+      {
+        "mapping_id": "string",
+        "root_metaphor": "metaphor_id",
+        "source_element": "string",
+        "target_element": "string",
+        "entailment": "string (what follows from this mapping)",
+        "productivity": "high | medium | low"
+      }
+    ],
+    "metaphor_clusters": [
+      {
+        "cluster_id": "string",
+        "name": "string",
+        "member_metaphors": [
+          "metaphor_id"
+        ],
+        "coherence_principle": "string",
+        "dominant_source_domain": "string",
+        "concepts_affected": [
+          "concept_id"
+        ]
+      }
+    ],
+    "conceptual_personas": [
+      {
+        "persona_id": "string",
+        "concept": "concept_id",
+        "persona_name": "string",
+        "character_traits": [
+          "string"
+        ],
+        "typical_actions": [
+          "string"
+        ],
+        "typical_relations": [
+          "string"
+        ],
+        "emotional_valence": "positive | negative | neutral | ambivalent",
+        "derived_from_metaphor": "metaphor_id"
+      }
+    ],
+    "transformation_vectors": [
+      {
+        "vector_id": "string",
+        "concept": "concept_id",
+        "current_metaphor": "metaphor_id",
+        "potential_direction": "string",
+        "trigger_conditions": [
+          "string"
+        ],
+        "destination_metaphor": "string",
+        "likelihood": "high | medium | low",
+        "historical_precedent": "string"
+      }
+    ],
+    "metaphor_tensions": [
+      {
+        "tension_id": "string",
+        "concept": "concept_id",
+        "metaphor_a": "metaphor_id",
+        "metaphor_b": "metaphor_id",
+        "tension_type": "contradiction | competition | complementary | hierarchical",
+        "manifestation": "string",
+        "resolution_patterns": [
+          "string"
+        ]
+      }
+    ],
+    "dead_metaphors": [
+      {
+        "dead_id": "string",
+        "expression": "string",
+        "original_metaphor": "string",
+        "current_status": "dead | dormant | reviving",
+        "concepts_affected": [
+          "concept_id"
+        ],
+        "residual_effects": [
+          "string"
+        ]
+      }
+    ],
+    "metaphor_archaeology": [
+      {
+        "layer_id": "string",
+        "concept": "concept_id",
+        "historical_layers": [
+          {
+            "period": "string",
+            "dominant_metaphor": "string",
+            "what_it_enabled": "string"
+          }
+        ],
+        "sedimentation_pattern": "string"
+      }
+    ],
+    "meta": {
+      "total_concepts": "number",
+      "total_root_metaphors": "number",
+      "most_metaphor_laden_concept": "concept_id",
+      "dominant_source_domain": "string",
+      "absolute_metaphor_count": "number",
+      "active_tensions": "number"
+    }
+  },
+  "extraction_focus": [
+    "root_metaphors",
+    "metaphorical_expressions",
+    "conceptual_imagery",
+    "transformation_potentials",
+    "conceptual_personas",
+    "metaphor_tensions"
+  ],
+  "primary_output_modes": [
+    "structured_text_report",
+    "gemini_concept_tree",
+    "mermaid_mindmap",
+    "smart_table"
+  ],
+  "paradigm_keys": [],
+  "source_file": "analyzer/src/engines/metaphorical_infrastructure_mapper.py",
+  "stage_context": {
+    "framework_key": null,
+    "additional_frameworks": [],
+    "extraction": {
+      "analysis_type": "metaphorical infrastructure",
+      "analysis_type_plural": "metaphorical infrastructures",
+      "core_question": "What metaphors drive this concept and where might they lead?",
+      "extraction_steps": [
+        "Read the document carefully to understand the context",
+        "Identify key items matching the analysis type",
+        "Extract relationships between items",
+        "Build the relationship graph",
+        "Verify completeness and accuracy"
+      ],
+      "key_fields": {},
+      "id_field": "concept_id",
+      "key_relationships": [
+        "contradicts"
+      ],
+      "special_instructions": null
+    },
+    "curation": {
+      "item_type": "metaphorical infrastructure",
+      "item_type_plural": "metaphorical infrastructures",
+      "consolidation_rules": [],
+      "cross_doc_patterns": [
+        "shared_items",
+        "contested_items",
+        "response_network"
+      ],
+      "synthesis_outputs": [
+        "consolidated_item_list",
+        "relationship_map",
+        "cross_document_dynamics"
+      ],
+      "special_instructions": null
+    },
+    "concretization": {
+      "id_examples": [
+        {
+          "from": "C1",
+          "to": "Artificial Intelligence"
+        },
+        {
+          "from": "C2",
+          "to": "Machine Learning"
+        }
+      ],
+      "naming_guidance": "",
+      "recommended_table_types": [],
+      "recommended_visual_patterns": []
+    },
+    "audience_vocabulary": {
+      "researcher": {},
+      "analyst": {},
+      "executive": {},
+      "activist": {}
+    },
+    "skip_concretization": false
+  }
+}

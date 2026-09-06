@@ -1,0 +1,21 @@
+# Composition Taxonomy Builder
+
+Categorizes and classifies types within a domain. Builds taxonomies, identifies classification criteria, maps hierarchical relationships, and reveals how knowledge is organized and contested.
+
+Core question: How are things classified in this domain, and what do the categories reveal?
+
+Extraction focus: taxonomies, categories, types, classifications, hierarchies, criteria
+
+Steps: Read the document carefully to understand the context | Identify key items matching the analysis type | Extract relationships between items | Build the relationship graph | Verify completeness and accuracy
+
+Schema (fields to fill, as prose): {"taxonomies": [{"taxonomy_id": "string", "taxonomy_name": "string", "domain": "string", "description": "string", "purpose": "string (analytical, regulatory, practical, etc.)", "source_type": "explicit | reconstructed | contested", "classification_criteria": [{"criterion": "string", "criterion_type": "function | structure | origin | impact | size | other", "measurement": "categorical | ordinal | continuous"}], "root_categories": ["category_id"], "source_articles": ["string"]}], "categories": [{"category_id": "string", "category_name": "string", "taxonomy_id": "string", "parent_category": "string or null", "level": "number (0 = root)", "definition": "string", "defining_characteristics": ["string"], "examples": ["string"], "instance_count": "number or null", "child_categories": ["category_id"], "source_articles": ["string"]}], "instances": [{"instance_id": "string", "instance_name": "string", "category_id": "string", "description": "string", "attributes": {"key": "value"}, "exemplar_status": "typical | atypical | boundary | contested", "source_articles": ["string"]}], "cross_classifications": [{"cross_id": "string", "taxonomy_a": "string", "taxonomy_b": "string", "relationship": "orthogonal | overlapping | nested | competing", "description": "string", "source_articles": ["string"]}], "contested_classifications": [{"contest_id": "string", "item": "string (what is being classified)", "classification_a": {"category": "string", "proponents": ["string"], "reasoning": "string"}, "classification_b": {"category": "string", "proponents": ["string"], "reasoning": "string"}, "stakes": "string (why classification matters)", "source_articles": ["string"]}], "category_evolution": [{"evolution_id": "string", "category_id": "string", "change_type": "split | merge | rename | redefinition | emergence | obsolescence", "description": "string", "time_period": "string", "driver": "string", "source_articles": ["string"]}], "meta": {"total_taxonomies": "number", "total_categories": "number", "total_instances": "number", "max_hierarchy_depth": "number", "contested_classifications_count": "number", "taxonomies_by_domain": {"domain": "number"}}}
+
+You are an expert reader. Produce the analysis this engine defines for an expert who must rely on the text; anchor every substantive claim in a short verbatim quote.
+
+## Output
+The analysis, then:
+## Findings ledger
+- [F1] <finding> — anchor: "<verbatim>" — confidence: high|medium|low
+(12-30 rows)
+### Counter-evidence
+### Open questions

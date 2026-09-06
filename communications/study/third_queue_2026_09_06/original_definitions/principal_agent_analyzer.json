@@ -1,0 +1,171 @@
+{
+  "engine_key": "principal_agent_analyzer",
+  "engine_name": "Principal-Agent Analyzer",
+  "description": "Identifies and analyzes principal-agent problems. Maps who are principals and agents, where interests diverge, information asymmetries, and how agents might exploit their position. Essential for understanding organizational dysfunction.",
+  "version": 1,
+  "category": "institutional",
+  "kind": "synthesis",
+  "reasoning_domain": "institutional",
+  "researcher_question": "What principal-agent problems exist and how do they create dysfunction?",
+  "canonical_schema": {
+    "principal_agent_relationships": [
+      {
+        "relationship_id": "string - PA1, PA2, etc.",
+        "principal": "string - who delegates",
+        "agent": "string - who acts",
+        "relationship_context": "string - organizational context",
+        "delegation_scope": "string - what's delegated",
+        "power_balance": "principal_dominant | balanced | agent_dominant"
+      }
+    ],
+    "interest_divergence": [
+      {
+        "divergence_id": "string",
+        "relationship_id": "string",
+        "principal_interest": "string - what principal wants",
+        "agent_interest": "string - what agent wants",
+        "divergence_type": "financial | effort | risk | time_horizon | quality | other",
+        "divergence_description": "string - how interests differ",
+        "severity": "severe | significant | moderate | minor"
+      }
+    ],
+    "information_asymmetry": [
+      {
+        "asymmetry_id": "string",
+        "relationship_id": "string",
+        "information_type": "action | effort | quality | risk | expertise | intentions",
+        "who_knows_more": "principal | agent | third_party",
+        "asymmetry_description": "string - what's hidden",
+        "why_asymmetry_exists": "string - source of asymmetry",
+        "exploitation_potential": "high | medium | low"
+      }
+    ],
+    "moral_hazard": [
+      {
+        "hazard_id": "string",
+        "relationship_id": "string",
+        "hazard_type": "hidden_action | hidden_information | adverse_selection",
+        "description": "string - what agent might do",
+        "enabled_by": "string - what asymmetry enables this",
+        "harm_to_principal": "string - how principal is hurt",
+        "likelihood": "very_likely | likely | possible | unlikely",
+        "examples": [
+          "string - cases where this occurs"
+        ]
+      }
+    ],
+    "control_mechanisms": [
+      {
+        "mechanism_id": "string",
+        "relationship_id": "string",
+        "mechanism_type": "monitoring | incentive_alignment | bonding | reputation | competition | regulation",
+        "description": "string - how control is attempted",
+        "effectiveness": "effective | partially_effective | ineffective",
+        "limitations": [
+          "string - why mechanism fails"
+        ],
+        "unintended_consequences": [
+          "string - problems created"
+        ]
+      }
+    ],
+    "dysfunction_patterns": [
+      {
+        "pattern_id": "string",
+        "relationship_ids": [
+          "string - which relationships"
+        ],
+        "pattern": "string - recurring dysfunction",
+        "root_cause": "string - underlying principal-agent problem",
+        "manifestations": [
+          "string - how it shows up"
+        ]
+      }
+    ],
+    "improvement_recommendations": [
+      {
+        "recommendation_id": "string",
+        "relationship_id": "string",
+        "problem_addressed": "string",
+        "proposed_mechanism": "string - how to address",
+        "expected_benefit": "string",
+        "potential_problems": [
+          "string - risks of solution"
+        ]
+      }
+    ],
+    "meta": {
+      "relationships_analyzed": "number",
+      "severe_divergences": "number",
+      "high_asymmetry_cases": "number",
+      "moral_hazard_risks": "number",
+      "effective_controls": "number",
+      "overall_agency_problem_severity": "high | medium | low"
+    }
+  },
+  "extraction_focus": [
+    "principal_agent_relationships",
+    "interest_divergence",
+    "information_asymmetry",
+    "moral_hazard",
+    "control_mechanisms"
+  ],
+  "primary_output_modes": [
+    "structured_text_report",
+    "table"
+  ],
+  "paradigm_keys": [],
+  "source_file": "analyzer/src/engines/principal_agent_analyzer.py",
+  "stage_context": {
+    "framework_key": null,
+    "additional_frameworks": [],
+    "extraction": {
+      "analysis_type": "principal-agent",
+      "analysis_type_plural": "principal-agents",
+      "core_question": "What principal-agent problems exist and how do they create dysfunction?",
+      "extraction_steps": [
+        "IDENTIFY PRINCIPAL-AGENT RELATIONSHIPS",
+        "MAP INTEREST DIVERGENCE",
+        "IDENTIFY INFORMATION ASYMMETRIES",
+        "IDENTIFY MORAL HAZARD",
+        "ASSESS CONTROL MECHANISMS",
+        "IDENTIFY DYSFUNCTION PATTERNS"
+      ],
+      "key_fields": {},
+      "id_field": "principal_id",
+      "key_relationships": [
+        "relates_to"
+      ],
+      "special_instructions": null
+    },
+    "curation": {
+      "item_type": "principal-agent",
+      "item_type_plural": "principal-agents",
+      "consolidation_rules": [],
+      "cross_doc_patterns": [
+        "shared_items",
+        "contested_items",
+        "response_network"
+      ],
+      "synthesis_outputs": [
+        "consolidated_item_list",
+        "relationship_map",
+        "cross_document_dynamics"
+      ],
+      "special_instructions": null
+    },
+    "concretization": {
+      "id_examples": [],
+      "naming_guidance": "",
+      "recommended_table_types": [],
+      "recommended_visual_patterns": []
+    },
+    "audience_vocabulary": {
+      "researcher": {},
+      "analyst": {},
+      "executive": {},
+      "activist": {}
+    },
+    "skip_concretization": false
+  }
+}

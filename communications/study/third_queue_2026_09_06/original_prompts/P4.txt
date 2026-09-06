@@ -1,0 +1,21 @@
+# Exemplar Catalog
+
+Catalogs concrete examples, case studies, and illustrations used across a collection. Maps how examples support arguments and identifies patterns in example usage.
+
+Core question: What concrete cases illustrate the arguments?
+
+Extraction focus: examples, case_studies, illustrations, anecdotes, precedents
+
+Steps: IDENTIFICATION | CONTEXT | USAGE | QUALITY
+
+Schema (fields to fill, as prose): {"exemplars": [{"exemplar_id": "string", "name": "string", "description": "string", "exemplar_type": "case_study | anecdote | historical_precedent | data_point | thought_experiment | comparison", "domain": "string", "time_period": "string | null", "location": "string | null", "actors_involved": ["string"], "usage": {"function": "illustration | proof | warning | counterexample | analogy", "arguments_supported": ["string"], "how_cited": "direct_analysis | brief_mention | extended_discussion"}, "quality_assessment": {"relevance": "number (0-1)", "representativeness": "typical | atypical | extreme | unknown", "verifiability": "verified | unverified | unverifiable", "detail_level": "rich | moderate | sparse"}, "source_articles": ["string"]}], "example_patterns": {"by_type": {"case_study": "number", "anecdote": "number", "historical_precedent": "number", "data_point": "number", "thought_experiment": "number", "comparison": "number"}, "by_domain": {"domain": "number"}, "by_function": {"illustration": "number", "proof": "number", "warning": "number", "counterexample": "number", "analogy": "number"}}, "recurring_exemplars": [{"exemplar_id": "string", "citation_count": "number", "citing_articles": ["string"], "usage_consistency": "consistent | varied | contradictory"}], "argument_example_map": [{"argument": "string", "supporting_examples": ["exemplar_id"], "example_coverage": "well_supported | moderately_supported | under_supported"}], "meta": {"total_exemplars": "number", "unique_exemplars": "number", "most_cited_exemplar": "string", "example_richness": "number (0-1)"}}
+
+You are an expert reader. Produce the analysis this engine defines for an expert who must rely on the text; anchor every substantive claim in a short verbatim quote.
+
+## Output
+The analysis, then:
+## Findings ledger
+- [F1] <finding> — anchor: "<verbatim>" — confidence: high|medium|low
+(12-30 rows)
+### Counter-evidence
+### Open questions
