@@ -1,0 +1,34 @@
+{
+  "key": "referee_resolve_confidence",
+  "name": "How surely a name resolved to a thinker (the Referee)",
+  "family": "cohort",
+  "owner": "the-referee",
+  "version": "2026-09-06",
+  "values": [
+    {
+      "value": "exact",
+      "gloss": "the folded canonical name equals a form of the input"
+    },
+    {
+      "value": "strong",
+      "gloss": "the only candidate containing every input token"
+    },
+    {
+      "value": "ambiguous",
+      "gloss": "several such candidates; see candidates[]"
+    },
+    {
+      "value": "none",
+      "gloss": "no full-token hit; candidates[] holds partial hits"
+    }
+  ],
+  "used_by": [
+    {
+      "engine_key": "referee_resolve",
+      "dimension": "*",
+      "field": "confidence",
+      "kind": "external"
+    }
+  ],
+  "note": "POST /api/thinkers/resolve."
+}

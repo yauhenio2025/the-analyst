@@ -1,0 +1,30 @@
+{
+  "key": "referee_reconcile_action",
+  "name": "What the operator does with a provisional school (the Referee)",
+  "family": "cohort",
+  "owner": "the-referee",
+  "version": "2026-09-06",
+  "values": [
+    {
+      "value": "absorb",
+      "gloss": "members move into an existing school; the row stays with merged_into_folder_id"
+    },
+    {
+      "value": "nest",
+      "gloss": "becomes a child of an existing school and is promoted to school"
+    },
+    {
+      "value": "keep",
+      "gloss": "promoted to school as it is"
+    }
+  ],
+  "used_by": [
+    {
+      "engine_key": "referee_reconcile",
+      "dimension": "*",
+      "field": "action",
+      "kind": "external"
+    }
+  ],
+  "note": "POST /api/schools/{id}/reconcile and reconciled.action."
+}

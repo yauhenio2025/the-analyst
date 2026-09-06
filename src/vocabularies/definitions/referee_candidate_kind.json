@@ -1,0 +1,26 @@
+{
+  "key": "referee_candidate_kind",
+  "name": "What a school-member candidate proposes (the Referee)",
+  "family": "cohort",
+  "owner": "the-referee",
+  "version": "2026-09-06",
+  "values": [
+    {
+      "value": "add",
+      "gloss": "recruit into the school"
+    },
+    {
+      "value": "remove",
+      "gloss": "a boundary-review flag on a current member"
+    }
+  ],
+  "used_by": [
+    {
+      "engine_key": "referee_candidates",
+      "dimension": "*",
+      "field": "kind",
+      "kind": "external"
+    }
+  ],
+  "note": "school_member_candidates.kind; prod: add 24,703, remove 0."
+}

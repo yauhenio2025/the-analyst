@@ -7,15 +7,15 @@
   "values": [
     {
       "value": "core",
-      "gloss": ""
+      "gloss": "founder or defining figure; the school is unthinkable without them"
     },
     {
       "value": "major",
-      "gloss": ""
+      "gloss": "full member whose work carries the school's programme"
     },
     {
       "value": "peripheral",
-      "gloss": ""
+      "gloss": "associate, fellow-traveller, later or adjacent contributor"
     }
   ],
   "used_by": [
@@ -26,5 +26,5 @@
       "kind": "external"
     }
   ],
-  "note": "GET /api/schools/{id}/cohort-context; null when unplaced; centrality_source says hand | generator | member_centrality:<run_id>. Mirrored here so the cohort engines and the Stacks' tables read one list; changes are the Referee's and are told to the Mastermind."
+  "note": "Confirmed by the Referee 2026-09-06. null = unplaced. centrality_source is a pattern, not enumerated: hand | generator | member_centrality:<run_id>; the API renders a null source as 'generator' whenever centrality is present (legacy rows), null when centrality is null. Read from GET /api/schools/{id}/cohort-context."
 }

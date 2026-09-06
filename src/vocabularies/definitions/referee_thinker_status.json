@@ -6,25 +6,33 @@
   "version": "2026-09-06",
   "values": [
     {
-      "value": "complete",
-      "gloss": ""
+      "value": "pending",
+      "gloss": "created, identity not yet confirmed (the column default)"
+    },
+    {
+      "value": "disambiguated",
+      "gloss": "identity confirmed, harvest not started (the UI says Ready)"
     },
     {
       "value": "harvesting",
-      "gloss": ""
+      "gloss": "works and citations being fetched"
     },
     {
       "value": "incomplete",
-      "gloss": ""
+      "gloss": "harvest finished with gaps, coverage not closed"
+    },
+    {
+      "value": "complete",
+      "gloss": "harvest closed"
     }
   ],
   "used_by": [
     {
-      "engine_key": "referee_cohort_context",
+      "engine_key": "referee_thinkers",
       "dimension": "*",
-      "field": "members.status",
+      "field": "status",
       "kind": "external"
     }
   ],
-  "note": "A zero against a complete thinker is stronger than one against a pending one (the cohort residue's coverage snapshot)."
+  "note": "Corrected by the Referee 2026-09-06 (the mirror had missed pending and disambiguated). Field `status` on cohort-context members[], /api/thinkers/{id} and /api/thinkers/search; a free column by convention, the Referee tells first if a value is added; one legacy row 'exhausted_with_gaps' reads as incomplete. A zero against a complete thinker is stronger than one against a pending one."
 }

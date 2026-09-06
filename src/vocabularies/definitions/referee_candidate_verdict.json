@@ -1,0 +1,38 @@
+{
+  "key": "referee_candidate_verdict",
+  "name": "The judge's verdict on a candidate (the Referee)",
+  "family": "cohort",
+  "owner": "the-referee",
+  "version": "2026-09-06",
+  "values": [
+    {
+      "value": "strong_fit",
+      "gloss": ""
+    },
+    {
+      "value": "likely",
+      "gloss": ""
+    },
+    {
+      "value": "unclear",
+      "gloss": ""
+    },
+    {
+      "value": "unlikely",
+      "gloss": ""
+    },
+    {
+      "value": "reject",
+      "gloss": ""
+    }
+  ],
+  "used_by": [
+    {
+      "engine_key": "referee_candidates",
+      "dimension": "*",
+      "field": "llm_verdict",
+      "kind": "external"
+    }
+  ],
+  "note": "null = not yet judged."
+}

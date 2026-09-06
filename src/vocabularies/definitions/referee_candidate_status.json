@@ -1,0 +1,38 @@
+{
+  "key": "referee_candidate_status",
+  "name": "Where a candidate stands in review (the Referee)",
+  "family": "cohort",
+  "owner": "the-referee",
+  "version": "2026-09-06",
+  "values": [
+    {
+      "value": "pending",
+      "gloss": "awaiting review"
+    },
+    {
+      "value": "approved",
+      "gloss": "accepted; transient, approve promotes at once"
+    },
+    {
+      "value": "rejected",
+      "gloss": "the operator rejected"
+    },
+    {
+      "value": "auto_rejected",
+      "gloss": "rejected by the judge without an operator"
+    },
+    {
+      "value": "promoted",
+      "gloss": "became a member (thinker created or linked)"
+    }
+  ],
+  "used_by": [
+    {
+      "engine_key": "referee_candidates",
+      "dimension": "*",
+      "field": "status",
+      "kind": "external"
+    }
+  ],
+  "note": "prod 2026-09-06: pending 15,456, promoted 8,586, auto_rejected 469, rejected 192."
+}

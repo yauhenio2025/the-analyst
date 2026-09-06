@@ -1,0 +1,66 @@
+{
+  "key": "referee_candidate_source_kind",
+  "name": "Where a candidate came from (the Referee; an OPEN set by contract)",
+  "family": "cohort",
+  "owner": "the-referee",
+  "version": "2026-09-06",
+  "values": [
+    {
+      "value": "citing_authors",
+      "gloss": "scholars citing two or more members"
+    },
+    {
+      "value": "llm_web",
+      "gloss": "model web search"
+    },
+    {
+      "value": "topic_authors",
+      "gloss": "recurring authors in linked topics"
+    },
+    {
+      "value": "journal_authors",
+      "gloss": "recurring authors in linked journals"
+    },
+    {
+      "value": "journal_overlap",
+      "gloss": "authors citing both a journal's corpus and the school"
+    },
+    {
+      "value": "tree_extension",
+      "gloss": "seed thinkers from a whole-tree extension proposal"
+    },
+    {
+      "value": "boundary_review",
+      "gloss": "kind=remove flags"
+    },
+    {
+      "value": "co_citation",
+      "gloss": ""
+    },
+    {
+      "value": "collection",
+      "gloss": ""
+    },
+    {
+      "value": "cross_query",
+      "gloss": ""
+    },
+    {
+      "value": "manual",
+      "gloss": ""
+    },
+    {
+      "value": "stacks-cohort",
+      "gloss": "external: the Stacks' cohort page"
+    }
+  ],
+  "used_by": [
+    {
+      "engine_key": "referee_candidates",
+      "dimension": "*",
+      "field": "source_kind",
+      "kind": "external"
+    }
+  ],
+  "note": "Open: external sources post their own slug matching ^[a-z0-9_-]{2,30}$; the internal routes are listed. prod: citing_authors 20,118, llm_web 4,358, tree_extension 126, topic_authors 45, journal_authors 34, journal_overlap 22."
+}

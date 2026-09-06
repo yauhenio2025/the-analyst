@@ -1,0 +1,46 @@
+{
+  "key": "referee_reconcile_relationship",
+  "name": "How a candidate school relates to an existing one (the Referee, model-declared)",
+  "family": "cohort",
+  "owner": "the-referee",
+  "version": "2026-09-06",
+  "values": [
+    {
+      "value": "same_school",
+      "gloss": ""
+    },
+    {
+      "value": "nested",
+      "gloss": ""
+    },
+    {
+      "value": "siblings",
+      "gloss": ""
+    },
+    {
+      "value": "shared_canon",
+      "gloss": ""
+    },
+    {
+      "value": "possible_duplicate",
+      "gloss": ""
+    },
+    {
+      "value": "unrelated",
+      "gloss": ""
+    },
+    {
+      "value": "unclear",
+      "gloss": ""
+    }
+  ],
+  "used_by": [
+    {
+      "engine_key": "referee_reconcile",
+      "dimension": "*",
+      "field": "relationship",
+      "kind": "external"
+    }
+  ],
+  "note": "reconcile-options candidates; each carries suggested_action ∈ absorb · nest · keep · unclear."
+}
