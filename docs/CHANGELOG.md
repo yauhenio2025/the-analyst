@@ -5,6 +5,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Changed (2026-09-06 evening — P1 repair, still withheld)
+
+- P1 v4 cards preserve PEACE's complete operational-date wording and separate the June Eximbank proposal from the December differently named decree. One natural-pair deep run corrects those meanings, but the final PEACE/EMA fields contain physical newlines and fail the existing ledger parser after its bounded repair. The exclusion now names that defect; no failed candidate is promoted to a production output.
+- Committed source read before independent quarantined-candidate ratings (Sonnet 7.83 / Sol 8.50). Actual USD0.958937, conservative ledger USD0.972560 against USD4 guidance, no unknown reserve. Full suite remains 1309 passed, 2 skipped, the same 11 failures and 8 old collection errors; 30 focused tests pass. FEATURES now describes the existing conditional checked-table reconcile gate accurately. [Report and evidence](../communications/study/STUDY_P1_repair_2026-09-06.md).
+
 ### Added (2026-09-06 evening — third queue)
 
 - Released eleven methods across six question families for single-paper reading and inventories: metaphor mappings, attributed voices, actors/influence, resource flows, constrained choices, reported rules/responses, period boundaries, category boundaries, claim provenance, entities and examples. Each is explicitly offered in its fitting purpose group with all three depth modes. T2 parallel timelines remains excluded: it still joins a June Eximbank proposal and a separately named December decree as linked stages.

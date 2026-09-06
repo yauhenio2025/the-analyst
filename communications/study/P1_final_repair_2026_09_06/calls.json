@@ -1,10 +1,10 @@
 {
   "costs": {
-    "calls": 17,
-    "known_usd": 0.689549,
+    "calls": 19,
+    "known_usd": 0.97256,
     "reserved_usd": 0,
     "incomplete_calls": 0,
-    "provider_reported_usd": 0.675925
+    "provider_reported_usd": 0.796964
   },
   "calls": [
     {
@@ -754,6 +754,82 @@
       "stop_reason": "stop",
       "output_sha256": "647b7ede7cc90b6f2083d2ecc8a11a0db773dae41b6b5d83f33ae39a20dbd9e4",
       "duration_ms": 96924
+    },
+    {
+      "path": "calls/judge__P1__quarantined__aukus_subsea__sol/0001.json",
+      "status": "complete",
+      "model_requested": "openrouter/openai/gpt-5.6-sol",
+      "role": "sol",
+      "label": "independent quarantined-candidate score",
+      "started_at": 1788668150.4878178,
+      "reservation_usd": 0.4545970000000001,
+      "cost_usd": 0.121038,
+      "prompt_sha256": "00d980e7ff9debd3520b1417707f299e159225488ba9a942be30ceee0b22a385",
+      "max_output_tokens": 1800,
+      "provider_cost_usd": 0.1210385,
+      "provider_usage": {
+        "completion_tokens": 838,
+        "prompt_tokens": 45064,
+        "total_tokens": 45902,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 417,
+          "rejected_prediction_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 45061,
+          "video_tokens": 0
+        },
+        "cost": 0.1210385,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.1210385,
+          "upstream_inference_prompt_cost": 0.1126585,
+          "upstream_inference_completions_cost": 0.00838
+        }
+      },
+      "input_tokens": 45064,
+      "output_tokens": 838,
+      "model_used": "openai/gpt-5.6-sol",
+      "stop_reason": "stop",
+      "output_sha256": "6137ad6f01f18d33ed5fb956b95558e810104d9de6c0a25abe44e13b850b3e01",
+      "duration_ms": 13777
+    },
+    {
+      "path": "calls/judge__P1__quarantined__aukus_subsea__sonnet/0001.json",
+      "status": "complete",
+      "model_requested": "claude-sonnet-4-6",
+      "role": "sonnet",
+      "label": "independent quarantined-candidate score",
+      "started_at": 1788668125.4954774,
+      "reservation_usd": 0.6818955,
+      "cost_usd": 0.161973,
+      "prompt_sha256": "00d980e7ff9debd3520b1417707f299e159225488ba9a942be30ceee0b22a385",
+      "max_output_tokens": 1800,
+      "provider_usage": {
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "inference_geo": "global",
+        "input_tokens": 49996,
+        "output_tokens": 799,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": "standard"
+      },
+      "input_tokens": 49996,
+      "output_tokens": 799,
+      "model_used": "claude-sonnet-4-6",
+      "stop_reason": "end_turn",
+      "output_sha256": "070d852d5e63e6bfcf39e6f5b0a8d2b401a0f3a73443858e448cf2f2d4b32570",
+      "duration_ms": 24985
     }
   ]
 }

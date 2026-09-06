@@ -51,4 +51,4 @@ Each released key is explicitly listed in its fitting `catalog_purpose.json` gro
 
 `UNDER_THE_SHAPE`:2 passed. Required complete suite: **1309 passed,2 skipped,11 failed,8 old collection errors**; the failures are the same ten pre-existing failures plus order-flaky `test_events_store`. No runner changes or new failure IDs in this task. [Full-suite record](third_queue_2026_09_06/final_tests.json). Purpose offers, path resolution and modes are checked against the runtime registry in the [release integration record](third_queue_2026_09_06/release_integration.json).
 
-P1 is a separate subsequent phase with USD4 guidance; its existing failure remains excluded until its new source adjudication. Its cost is not included above.
+The subsequent [P1 repair](STUDY_P1_repair_2026-09-06.md) cost USD0.958937 actual (USD0.972560 conservative ledger) against USD4 guidance. P1 remains withheld: semantic attributions improve, but physical multiline PEACE/EMA ledger fields fail parsing after the bounded repair. Its cost is separate from this queue; the overall count remains 33 offered and 48 remaining.
