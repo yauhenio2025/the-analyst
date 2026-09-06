@@ -5,6 +5,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Changed (2026-09-06 — P1/P2 third round, release withheld)
+
+- P1/P2 v3 prompts and cards require complete local evidence packets, a finding for each counted source, exact lineage separators and a self-check of the delivered table. P1 positively distinguishes PEACE/EMA; P2 corrects autonomy coverage and separates record integrity from source meaning. No runner, composer or wall changes.
+- The natural-pair deep validation leaves P1 rejected after its bounded repair and P2 accepted after one predeclared continuation of an empty provider response. P2's 15 findings, 19 normalized anchors and three two-key corpus rows pass the desk handoff; consequential cell support and qualification defects keep both methods excluded. Four independent ratings, with both source memos committed first, cost **USD1.821247 of USD6** including generation, failure and continuation; no unknown reserve. [Report and preserved failures](../communications/study/STUDY_corpus_methods_P1_P2_third_round_2026-09-06.md).
+
 ### Added (2026-09-06 — second queue, release withheld)
 
 - Registered eleven ideal-output-first methods with capability/process definitions, text-facing questions, method cards and surface/checked/deep routing; A3 replaces its lifted comparison-device taxonomy. A4/A5 incorporate the prior source-led corrections. All eleven remain excluded from offers with observed hold reasons.
