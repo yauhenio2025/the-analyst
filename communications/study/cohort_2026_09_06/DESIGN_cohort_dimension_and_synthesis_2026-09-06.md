@@ -328,3 +328,17 @@ The protected pilot prevented installing revised YAMLs/scripts, adding the live 
 4. Apply 010, 011 and 012 as separately reviewable revisions and run their listed original-versus-revision checks: complete source reads, every anchor and final cell, and Sonnet in both orders. For fidelity include index-only, held-source, OCR-loss and editorial-notes controls. Freeze a changed `markers=1`/section rendition as a separate evidence condition. Repair and rerun affected conditions before accepting changed method behavior; a role label alone does not certify the combined reception patch as cosmetic.
 5. Obtain the real approved Brenner/regulation-school cohort table, plan and pair job IDs from the Stacks; assemble its packet from the Mastermind's job store. Freeze models, artifacts, the two preregistered old-lane pair comparators and budget. Run standard cohort synthesis and the Stacks essay-over-tables desk on identical evidence. Verify all anchors/cells, read every retained finding and source endpoint, and commit source-read memos **before** opening judge scores. Run independent Sonnet A/B and B/A ratings under the recorded rubric; resolve source defects and order reversals.
 6. Have the owner read both cohort memos and the two pair comparisons; retain the old lane until that gate is satisfied. Apply `090_catalogue_offer_after_validation.patch` **last**, only after adapter integration and the real release gate pass. Record actual available provider charges and missing billing explicitly in the validation receipts. This design branch authorizes no push or merge.
+
+### Offline verification completed in this worktree
+
+Ran the two saved cohort test files on 6 September 2026:
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 python -m pytest -p no:cacheprovider -q tests/test_cohort_synthesis_definitions_2026_09_06.py tests/test_cohort_synthesis_harness_2026_09_06.py
+```
+
+Result: **36 passed, 1 warning in 0.30s** (4 definition/loader checks and 32 fixture/harness checks). The warning is the frozen `cohort_loader_snapshot/engine_schemas.py:105` class-based Pydantic Config deprecation; it is not a failed test. The tests use the saved isolated loader copies and execute the new harness payload in memory. They do not import the live protected implementation or validate the proposed job-store adapter.
+
+All **seven deferred patches** also passed combined `git apply --check` and application to disposable copies of the pinned main-HEAD files under the study directory; those copies were removed. All eight modified-file base and candidate SHA-256 values match the manifest. The six revised citation YAMLs passed the isolated schemas/loaders; the final fidelity answer shape explicitly retains `verdict`, `how`, retrieval status, section identity/title and both witness anchors. An AST check confirms the source-role patch preserves all five existing roles and adds only `cohort`. Both new script payloads compile; the catalogue JSON parses with exactly one new entry under `trace_citations`. These are patch/schema checks, not execution of the real fixture generator or a semantic release gate.
+
+The final patch hashes and test result are recorded in [validation_resume_2026-09-06.json](validation_resume_2026-09-06.json). `git diff --check` passed. The worktree has no protected-path changes relative to `ca27e95`, and the main tree's eight patch targets still match the frozen HEAD bytes. No server or long-running process was started or left running.
