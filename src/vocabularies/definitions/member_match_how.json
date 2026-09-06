@@ -1,0 +1,38 @@
+{
+  "key": "member_match_how",
+  "name": "How a proposed member was matched to the ledger's person key",
+  "family": "cohort",
+  "owner": "the-stacks",
+  "version": "2026-09-06",
+  "values": [
+    {
+      "value": "key",
+      "gloss": "the ledger key itself"
+    },
+    {
+      "value": "initial",
+      "gloss": "the ledger kept a full first name"
+    },
+    {
+      "value": "fold",
+      "gloss": "a bare surname folded into the one initialled key"
+    },
+    {
+      "value": "surname",
+      "gloss": "surname only"
+    },
+    {
+      "value": "none",
+      "gloss": "no match"
+    }
+  ],
+  "used_by": [
+    {
+      "engine_key": "cohort_table",
+      "dimension": "*",
+      "field": "match.how",
+      "kind": "external"
+    }
+  ],
+  "note": ""
+}

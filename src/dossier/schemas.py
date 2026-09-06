@@ -12,6 +12,7 @@ from datetime import datetime
 from typing import Any, Literal, Optional
 
 from pydantic import BaseModel, Field, model_validator
+from src.vocabularies.registry import values as _voc   # the enumerations live in src/vocabularies/definitions (2026-09-06)
 
 from src.sources.schemas import SourceSpec
 
@@ -28,8 +29,8 @@ STEPS = (
     "reconnaissance", "brief", "plan", "analysis", "spine", "tables", "figures",
     "plates", "compose", "crosscheck", "receipts",
 )
-AUDIENCES = ("executive", "researcher", "analyst")
-DEPTHS = ("simple", "medium", "advanced")
+AUDIENCES = tuple(_voc("audiences", ["executive", "researcher", "analyst"]))
+DEPTHS = tuple(_voc("dossier_depths", ["simple", "medium", "advanced"]))
 
 
 def _now() -> str:
@@ -93,13 +94,11 @@ class OutputShape(BaseModel):
 
 # ── Brief v2: deliverable-first (communications/DESIGN_brief_deliverables.md §B) ──
 
-DELIVERABLE_KINDS = ("stress_test", "decision_memo", "briefing", "playbook", "comparison",
-                     "watchlist", "reading_guide", "decoder", "risk_register", "case_file")
-USE_KINDS = ("decide", "brief", "prepare", "stress_test", "compare", "watch", "learn", "argue")
-ENTRIES = ("use", "chosen", "material")
-FIGURE_FORMATS = ("two_axis_grid", "timeline", "flow", "before_after", "map", "spectrum",
-                  "stack", "network", "scene")
-STEP_DEPTHS = ("surface", "standard", "deep")
+DELIVERABLE_KINDS = tuple(_voc("deliverable_kinds"))
+USE_KINDS = tuple(_voc("use_kinds"))
+ENTRIES = tuple(_voc("entry_lanes"))
+FIGURE_FORMATS = tuple(_voc("figure_formats"))
+STEP_DEPTHS = tuple(_voc("step_depths"))
 
 
 class ShapeRef(BaseModel):
@@ -459,7 +458,7 @@ class Sections(BaseModel):
 
 # ── Pass S: the spine (what the dossier argues; one claim per section; the exhibits each claim needs) ──
 
-EVIDENCE_KINDS = ("case_comparison", "mechanism", "vocabulary", "cost_ledger", "chronology", "implication")
+EVIDENCE_KINDS = tuple(_voc("spine_evidence_kinds"))
 
 
 class ReaderProfile(BaseModel):
@@ -550,21 +549,9 @@ class DossierSpine(BaseModel):
 
 # ── Pass X: findings (the target ledger) ───────────────────────────────
 
-FINDING_KINDS = (
-    "figure_depicts_other", "caption_restates_text", "caption_carries_number",
-    "table_rows_off_claim", "table_unreferenced", "exhibit_pointer_wrong",
-    "claim_unbacked", "anchor_fragment", "anchor_off_claim", "number_drift",
-    "section_off_spine", "redundant_summary_conclusion", "register_break",
-    "jargon_unglossed", "exhibit_missing_where_claim_needs_one",
-    # minted by code from the exhibit desks (pass E) — recorded facts, not impressions
-    "table_unavailable", "table_rows_dropped", "figure_unavailable", "exhibit_unpointed", "exhibit_unplaced",
-)
-AFFORDANCES = (
-    "revise_figure_spec", "rerender_figure", "drop_figure",
-    "rewrite_section", "rewrite_paragraph", "revise_table_rows", "add_table", "drop_table",
-    "reanchor_claim", "drop_anchor", "rewrite_caption", "merge_summary_conclusion", "none",
-)
-FATES = ("resolved", "persists", "regressed", "superseded", "executed", "skipped", "failed")
+FINDING_KINDS = tuple(_voc("finding_kinds"))
+AFFORDANCES = tuple(_voc("finding_affordances"))
+FATES = tuple(_voc("finding_fates"))
 
 
 class FindingWhere(BaseModel):

@@ -1,0 +1,30 @@
+{
+  "key": "referee_thinker_status",
+  "name": "A thinker's harvest status (the Referee)",
+  "family": "cohort",
+  "owner": "the-referee",
+  "version": "2026-09-06",
+  "values": [
+    {
+      "value": "complete",
+      "gloss": ""
+    },
+    {
+      "value": "harvesting",
+      "gloss": ""
+    },
+    {
+      "value": "incomplete",
+      "gloss": ""
+    }
+  ],
+  "used_by": [
+    {
+      "engine_key": "referee_cohort_context",
+      "dimension": "*",
+      "field": "members.status",
+      "kind": "external"
+    }
+  ],
+  "note": "A zero against a complete thinker is stronger than one against a pending one (the cohort residue's coverage snapshot)."
+}

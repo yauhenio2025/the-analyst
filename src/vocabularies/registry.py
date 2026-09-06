@@ -20,9 +20,10 @@ class VocabularyValue(BaseModel):
 
 
 class VocabularyUse(BaseModel):
-    engine_key: str
+    engine_key: str                  # an engine key, or the desk / schema / external record that carries the field
     dimension: str = "*"
     field: str
+    kind: str = "engine"             # engine | desk | schema | external — only engine uses are pinned to an answer shape
 
 
 class Vocabulary(BaseModel):
@@ -70,3 +71,13 @@ def get_vocabulary_registry() -> VocabularyRegistry:
     if _registry is None:
         _registry = VocabularyRegistry()
     return _registry
+
+
+def values(key: str, fallback: Optional[list[str]] = None) -> list[str]:
+    """The value list of a vocabulary, for code that must not keep its own copy (the desks' tuples)."""
+    v = get_vocabulary_registry().get(key)
+    if v is None:
+        if fallback is None:
+            raise KeyError(f"no vocabulary {key}")
+        return list(fallback)
+    return v.value_list()

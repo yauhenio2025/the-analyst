@@ -1,0 +1,30 @@
+{
+  "key": "referee_centrality",
+  "name": "A thinker's centrality in a school (the Referee)",
+  "family": "cohort",
+  "owner": "the-referee",
+  "version": "2026-09-06",
+  "values": [
+    {
+      "value": "core",
+      "gloss": ""
+    },
+    {
+      "value": "major",
+      "gloss": ""
+    },
+    {
+      "value": "peripheral",
+      "gloss": ""
+    }
+  ],
+  "used_by": [
+    {
+      "engine_key": "referee_cohort_context",
+      "dimension": "*",
+      "field": "members.centrality",
+      "kind": "external"
+    }
+  ],
+  "note": "GET /api/schools/{id}/cohort-context; null when unplaced; centrality_source says hand | generator | member_centrality:<run_id>. Mirrored here so the cohort engines and the Stacks' tables read one list; changes are the Referee's and are told to the Mastermind."
+}

@@ -1,0 +1,34 @@
+{
+  "key": "packet_row_status",
+  "name": "A ledger row's status in the cohort packet",
+  "family": "cohort",
+  "owner": "the-mastermind",
+  "version": "2026-09-06",
+  "values": [
+    {
+      "value": "confirmed",
+      "gloss": "retained after the critic and the wall"
+    },
+    {
+      "value": "rejected",
+      "gloss": "struck by the critic"
+    },
+    {
+      "value": "unresolved",
+      "gloss": "kept, not citable: an anchor the wall could not verify"
+    },
+    {
+      "value": "superseded",
+      "gloss": "replaced by a later row (linked, never filed twice)"
+    }
+  ],
+  "used_by": [
+    {
+      "engine_key": "cohort_packet_row",
+      "dimension": "*",
+      "field": "status",
+      "kind": "schema"
+    }
+  ],
+  "note": ""
+}

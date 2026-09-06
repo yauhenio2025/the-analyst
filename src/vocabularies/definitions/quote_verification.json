@@ -1,0 +1,30 @@
+{
+  "key": "quote_verification",
+  "name": "How a quoted passage re-found in its text",
+  "family": "house",
+  "owner": "the-stacks",
+  "version": "2026-09-06",
+  "values": [
+    {
+      "value": "exact",
+      "gloss": "verbatim after folding whitespace, line-break hyphens, soft hyphens, non-breaking spaces and quotation marks"
+    },
+    {
+      "value": "partial",
+      "gloss": "a run of 40+ characters or eight consecutive words found; the words are there, the boundary is the model's"
+    },
+    {
+      "value": "no",
+      "gloss": "not found: not evidence"
+    }
+  ],
+  "used_by": [
+    {
+      "engine_key": "shared_work_profile",
+      "dimension": "*",
+      "field": "verified",
+      "kind": "schema"
+    }
+  ],
+  "note": "The Stacks' profile verification rule (app/profiles.py), shared with the work profile schema."
+}

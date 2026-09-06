@@ -1,0 +1,42 @@
+{
+  "key": "spine_evidence_kinds",
+  "name": "What kind of evidence a spine section rests on",
+  "family": "house",
+  "owner": "the-mastermind",
+  "version": "2026-09-06",
+  "values": [
+    {
+      "value": "case_comparison",
+      "gloss": "cases set beside each other on shared questions"
+    },
+    {
+      "value": "mechanism",
+      "gloss": "how something works or comes about"
+    },
+    {
+      "value": "vocabulary",
+      "gloss": "the terms and distinctions at stake"
+    },
+    {
+      "value": "cost_ledger",
+      "gloss": "counted costs, quantities, prices"
+    },
+    {
+      "value": "chronology",
+      "gloss": "dated sequence"
+    },
+    {
+      "value": "implication",
+      "gloss": "what follows if the claim holds"
+    }
+  ],
+  "used_by": [
+    {
+      "engine_key": "spine",
+      "dimension": "*",
+      "field": "evidence_kind",
+      "kind": "desk"
+    }
+  ],
+  "note": "The spine desk's evidence_kind per section (src/dossier/spine.py validate_spine)."
+}
