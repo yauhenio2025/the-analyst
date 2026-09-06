@@ -1,0 +1,46 @@
+{
+  "key": "citation_roles",
+  "name": "A citation's role in a text (the Stacks' work layer)",
+  "family": "citation",
+  "owner": "the-stacks",
+  "version": "2026-09-06",
+  "values": [
+    {
+      "value": "builds-on",
+      "gloss": "the text builds on the cited work"
+    },
+    {
+      "value": "criticizes",
+      "gloss": "argues against it"
+    },
+    {
+      "value": "responds-to",
+      "gloss": "answers it"
+    },
+    {
+      "value": "applies",
+      "gloss": "uses it on a case"
+    },
+    {
+      "value": "evidence",
+      "gloss": "cites it as evidence"
+    },
+    {
+      "value": "compares",
+      "gloss": "sets it beside another"
+    },
+    {
+      "value": "mentions",
+      "gloss": "names it without a role"
+    }
+  ],
+  "used_by": [
+    {
+      "engine_key": "stacks_profiles",
+      "dimension": "*",
+      "field": "_Role.role",
+      "kind": "external"
+    }
+  ],
+  "note": "profiles.py tier 2 of the direct analysis (the per-citation role); a different list from profile_person_roles (a person's place in a profile). Mirrored 2026-09-06 at the Stacks' request."
+}
