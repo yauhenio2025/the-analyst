@@ -1,0 +1,117 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "use_in_context",
+  "doc": "religion2022",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 23390,
+  "output_tokens": 2085,
+  "duration_ms": 20382,
+  "cost_usd": 0.0072,
+  "retries": 0,
+  "wall": {
+    "reanchor_receipts": [
+      {
+        "content": "## Findings ledger\n- [D1.DOC2.F1] Capitalism is used as a label for a social system in which markets are spatially, socially, materially, and temporally unbounded, rather than merely as an economic system — dim: use_in_context — concept: capitalism — purpose: distinguish a market-centred social system from the narrower idea of a market economy — conditions: markets form the core of society and society becomes an “appendage” of markets and money — anchor: \"To designate this process, the term \\\"capitalism\\\" is more appropriate than the harmless expression \\\"market economy.\\\"\" — doc: religion2022 — confidence: high\n- [D1.DOC2.F3] Markets are used as a self-description of society that processes dispersed knowledge and makes society communicable without providing a truthful total observation — dim: use_in_context — concept: markets — purpose: explain how society mediates and represents its own unity from participant perspectives — conditions: no observer can access society as a whole, while prices synthesize information unavailable to any one person — anchor: \"Thus markets—more precisely: the neoliberal ideology of a society founded on markets—fulfill the function of what Luhmann calls a \\\"self-description\\\" of society.\" — doc: religion2022 — confidence: high\n- [D1.DOC2.F8] Capitalism is used as a demonic, permanently restless process that converts creative possibilities into continual innovation, growth, and destruction rather than contemplation or reconciliation — dim: use_in_context — concept: capitalism — purpose: characterize the dynamic and non-finalizing structure of capitalist expansion — conditions: unbounded private property rights and competition drive ever-new visions, innovations, and exploitation of creative labor — anchor: \"It is therefore not far-fetched to characterize capitalism as something \\\"demonic,\\\" as Paul Tillich (1988) did.\" — doc: religion2022 — confidence: high",
+        "partial": false,
+        "stop_reason": "stop",
+        "error": null
+      }
+    ],
+    "rows": 8,
+    "with_anchor": 5,
+    "verified": 5,
+    "trimmed": 2,
+    "anchor_rate": 0.625,
+    "failed_ids": [
+      "D1.DOC2.F1",
+      "D1.DOC2.F3",
+      "D1.DOC2.F8"
+    ],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 8,
+    "verified_anchors": 5,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [
+      "D1.DOC2.F1",
+      "D1.DOC2.F3",
+      "D1.DOC2.F8"
+    ],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 8,
+      "with_anchor": 8,
+      "verified": 8,
+      "trimmed": 2,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 8,
+      "verified_anchors": 8,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "religion2022"
+        ],
+        "dimension_key": "use_in_context",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Religious and Secular Critique of Money",
+          "The Unbounding of Markets as the Basis of Modern Capitalism",
+          "The Intransparency of World Society to Itself: Luhmann and Hayek",
+          "The Religious Worldview and the Consequences of Its Dethronement",
+          "Universalism and the Contingency of the World: A Comparative Perspective on Capitalism and Religion",
+          "Conclusions"
+        ],
+        "coverage": "complete",
+        "criterion": "A concept is eligible when the text gives it a local object, purpose, and defining conditions or contrasts in context.",
+        "basis": "The inspected sections explicitly reconstruct distinct uses of capitalism, the liberal narrative, markets, religion, money, moral minimalism, and the demonic characterization of capitalism.",
+        "limitations": [
+          "This assessment concerns use in context only and does not establish borrowing, transmission, or provenance."
+        ],
+        "finding_ids": [
+          "[D1.DOC2.F1]",
+          "[D1.DOC2.F2]",
+          "[D1.DOC2.F3]",
+          "[D1.DOC2.F4]",
+          "[D1.DOC2.F5]",
+          "[D1.DOC2.F6]",
+          "[D1.DOC2.F7]",
+          "[D1.DOC2.F8]"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "religion2022": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 3,
+  "dropped_ids": [],
+  "chars": 7505
+}

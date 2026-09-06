@@ -1,0 +1,104 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "revision_record",
+  "doc": "",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 13173,
+  "output_tokens": 1473,
+  "duration_ms": 12813,
+  "cost_usd": 0.0044,
+  "retries": 0,
+  "wall": {
+    "rows": 3,
+    "with_anchor": 3,
+    "verified": 3,
+    "trimmed": 0,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 6,
+    "verified_anchors": 6,
+    "cross_document_rows": 3,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 3,
+      "with_anchor": 3,
+      "verified": 3,
+      "trimmed": 0,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 6,
+      "verified_anchors": 6,
+      "cross_document_rows": 3,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "promise",
+          "religion2022"
+        ],
+        "dimension_key": "revision_record",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "promise: Abstract",
+          "promise: Sections I–IV",
+          "promise: Notes",
+          "promise: References",
+          "religion2022: Religious and Secular Critique of Money",
+          "religion2022: The Unbounding of Markets as the Basis of Modern Capitalism",
+          "religion2022: The Intransparency of World Society to Itself: Luhmann and Hayek",
+          "religion2022: The Religious Worldview and the Consequences of Its Dethronement",
+          "religion2022: Universalism and the Contingency of the World: A Comparative Perspective on Capitalism and Religion",
+          "religion2022: Conclusions"
+        ],
+        "coverage": "complete",
+        "criterion": "A later or otherwise ordered supplied text must explicitly present continuity, qualification, extension, correction or revision of a position found in another supplied text, with both formulations anchored.",
+        "basis": "The two supplied reports contain anchored overlapping formulations concerning capitalism and religion, money’s socially universal significance, and capitalist growth through innovation. The retained findings record textual continuity or changed emphasis, but the reports do not establish chronology between the documents.",
+        "limitations": [
+          "Composition and publication dates are not supplied or settled.",
+          "The reports do not establish an explicit cross-reference from religion2022 to promise.",
+          "The assessment relies on per-document findings rather than direct inspection of every source.",
+          "Earlier works cited within the documents were not supplied in full."
+        ],
+        "finding_ids": [
+          "X6.F1",
+          "X6.F2",
+          "X6.F3"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "promise": "provided",
+            "religion2022": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [],
+          "basis_material": "Per-document ledgers and scope reports; no direct source inspection in this invocation"
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 5652
+}

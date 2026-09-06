@@ -1,0 +1,854 @@
+{
+  "status": "complete",
+  "job": {
+    "id": "S3",
+    "engine": "narrative_form_perspective",
+    "papers": [
+      "subsea"
+    ],
+    "condition": "checked"
+  },
+  "output_sha256": "683ac4e099d34df1d7f741a7b708b4a33fefb2970405b46471672475ce1e9784",
+  "seconds": 215.44633197784424,
+  "process": {
+    "engine": "narrative_form_perspective",
+    "process": "dvs",
+    "cost_usd": 0.1178,
+    "input_tokens": 45190,
+    "output_tokens": 10084,
+    "seconds": 215.4,
+    "final_model": "openrouter/openai/gpt-5.6-sol",
+    "final_wall": {
+      "rows": 16,
+      "with_anchor": 16,
+      "verified": 16,
+      "trimmed": 0,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [
+        "F13"
+      ],
+      "anchors": 21,
+      "verified_anchors": 21,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "checked",
+        "scope": "retained_ledger",
+        "missing_rejected_ids": [
+          "F13"
+        ],
+        "missing_other_ids": []
+      },
+      "check_in": 15,
+      "check_confirmed": 14,
+      "check_weakened": 0,
+      "check_rejected": 1,
+      "check_added": 2,
+      "check_added_dropped": 0,
+      "check_carried": 0,
+      "check_unverified": 0,
+      "check_ruling_coverage": {
+        "original_count": 15,
+        "explicitly_ruled_count": 15,
+        "missing_or_unruled_ids": [],
+        "unexpected_nonadded_ids": [],
+        "invalid_original_status_ids": [],
+        "duplicate_original_ids": [],
+        "duplicate_ruling_ids": [],
+        "coverage_complete": true
+      },
+      "scope_outcomes": [
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "sequence",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "Abstract",
+            "Sections 1–6"
+          ],
+          "coverage": "complete",
+          "criterion": "Identify the order of presentation, local turning points, and whether the text develops a local or sustained arc.",
+          "basis": "The article moves from theoretical mismatch to definition, two ordered case studies, and a qualified conclusion; the SeaMeWe-6 case contains a clear reversal.",
+          "limitations": [
+            "This is a single-work local inventory, so no corpus-level sequence relation can be established."
+          ],
+          "finding_ids": [
+            "F1",
+            "F2",
+            "F4",
+            "F5",
+            "F8"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "",
+          "evidence_state": {
+            "scope_identity_validated": false,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "Malformed/missing scope records: 1 validation error for ScopeOutcome\nreview_state\n  Input should be 'unchecked', 'supported_within_stated_scope' or 'disputed' [type=literal_error, input_value='checked', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/literal_error"
+            ]
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "perspective",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "Section 3",
+            "Sections 4–6"
+          ],
+          "coverage": "complete",
+          "criterion": "Separate the analytical narrator, cited or quoted voices, and represented institutional experience.",
+          "basis": "The article uses an analytical narrator, reconstructs institutional calculations through mediated sources, and adopts a collective scholarly voice in the conclusion.",
+          "limitations": [
+            "The consortium's calculation is represented by the narrator rather than supplied as direct participant testimony.",
+            "Interview evidence is more prominent in the France case than in the SeaMeWe-6 case."
+          ],
+          "finding_ids": [
+            "F6",
+            "F11"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "",
+          "evidence_state": {
+            "scope_identity_validated": false,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "Malformed/missing scope records: 1 validation error for ScopeOutcome\nreview_state\n  Input should be 'unchecked', 'supported_within_stated_scope' or 'disputed' [type=literal_error, input_value='checked', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/literal_error"
+            ]
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "time",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "Section 2",
+            "Sections 4–5"
+          ],
+          "coverage": "complete",
+          "criterion": "Anchor retrospection, dates, time scales, and the distinction between presented order and narrated time.",
+          "basis": "The text compresses decades of market development before narrating dated reversals in 2021 and the sequence leading to France's 2024 acquisition.",
+          "limitations": [
+            "Chronological succession supports the article's reconstruction but does not independently prove causation."
+          ],
+          "finding_ids": [
+            "F3",
+            "F7"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "",
+          "evidence_state": {
+            "scope_identity_validated": false,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "Malformed/missing scope records: 1 validation error for ScopeOutcome\nreview_state\n  Input should be 'unchecked', 'supported_within_stated_scope' or 'disputed' [type=literal_error, input_value='checked', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/literal_error"
+            ]
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "register",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "Sections 2",
+            "Section 4",
+            "Section 6"
+          ],
+          "coverage": "complete",
+          "criterion": "Identify passage-specific changes in wording or register and their local argumentative function.",
+          "basis": "Technical definition gives way to chronological case narration and qualified evaluation, including the phrase 'at least partially effective.'",
+          "limitations": [
+            "The report does not infer whether register changes were deliberate."
+          ],
+          "finding_ids": [
+            "F10"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "",
+          "evidence_state": {
+            "scope_identity_validated": false,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "Malformed/missing scope records: 1 validation error for ScopeOutcome\nreview_state\n  Input should be 'unchecked', 'supported_within_stated_scope' or 'disputed' [type=literal_error, input_value='checked', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/literal_error"
+            ]
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "devices",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "Sections 2",
+            "Sections 4–6"
+          ],
+          "coverage": "complete",
+          "criterion": "Retain concrete textual devices or actor roles only where repetition, anticipation, obstacles, or spatial patterning are evidenced.",
+          "basis": "Repeated descriptions of hubs, routes, and parallel systems make network position a spatial organizing device across the cases.",
+          "limitations": [
+            "Narrative prominence of network hubs does not by itself establish causal agency."
+          ],
+          "finding_ids": [
+            "F15"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "",
+          "evidence_state": {
+            "scope_identity_validated": false,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "Malformed/missing scope records: 1 validation error for ScopeOutcome\nreview_state\n  Input should be 'unchecked', 'supported_within_stated_scope' or 'disputed' [type=literal_error, input_value='checked', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/literal_error"
+            ]
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "closure",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "End of Section 5",
+            "Section 6"
+          ],
+          "coverage": "complete",
+          "criterion": "Compare the ending's settlement or openness with the article's evidence and stated explanatory question.",
+          "basis": "The conclusion settles the mixed market-state model while leaving comparative variation and generalizability open.",
+          "limitations": [
+            "Two instructive cases do not resolve the cross-sector generalizability question."
+          ],
+          "finding_ids": [
+            "F9",
+            "F12",
+            "F13",
+            "F14"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "",
+          "evidence_state": {
+            "scope_identity_validated": false,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "Malformed/missing scope records: 1 validation error for ScopeOutcome\nreview_state\n  Input should be 'unchecked', 'supported_within_stated_scope' or 'disputed' [type=literal_error, input_value='checked', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/literal_error",
+              "Findings in this scope lost anchor evidence; this does not establish absence",
+              "One or more declared finding references lack retained verified evidence"
+            ]
+          }
+        }
+      ]
+    },
+    "calls": [
+      {
+        "step": "read",
+        "kind": "synthesize",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/openai/gpt-5.6-sol",
+        "model_used": "openrouter/openai/gpt-5.6-sol",
+        "input_tokens": 20943,
+        "output_tokens": 3743,
+        "duration_ms": 128460,
+        "cost_usd": 0.0793,
+        "retries": 0,
+        "wall": {
+          "rows": 15,
+          "with_anchor": 15,
+          "verified": 14,
+          "trimmed": 0,
+          "anchor_rate": 0.933,
+          "failed_ids": [
+            "F13"
+          ],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 20,
+          "verified_anchors": 19,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "has_ledger": true,
+          "prose_chars": 6774,
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "sequence",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract",
+                "Sections 1–6"
+              ],
+              "coverage": "complete",
+              "criterion": "Identify the order of presentation, local turning points, and whether the text develops a local or sustained arc.",
+              "basis": "The article moves from theoretical mismatch to definition, two ordered case studies, and a qualified conclusion; the SeaMeWe-6 case contains a clear reversal.",
+              "limitations": [
+                "This is a single-work local inventory, so no corpus-level sequence relation can be established."
+              ],
+              "finding_ids": [
+                "F1",
+                "F2",
+                "F4",
+                "F5",
+                "F8"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "perspective",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Section 3",
+                "Sections 4–6"
+              ],
+              "coverage": "complete",
+              "criterion": "Separate the analytical narrator, cited or quoted voices, and represented institutional experience.",
+              "basis": "The article uses an analytical narrator, reconstructs institutional calculations through mediated sources, and adopts a collective scholarly voice in the conclusion.",
+              "limitations": [
+                "The consortium's calculation is represented by the narrator rather than supplied as direct participant testimony.",
+                "Interview evidence is more prominent in the France case than in the SeaMeWe-6 case."
+              ],
+              "finding_ids": [
+                "F6",
+                "F11"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "time",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Section 2",
+                "Sections 4–5"
+              ],
+              "coverage": "complete",
+              "criterion": "Anchor retrospection, dates, time scales, and the distinction between presented order and narrated time.",
+              "basis": "The text compresses decades of market development before narrating dated reversals in 2021 and the sequence leading to France's 2024 acquisition.",
+              "limitations": [
+                "Chronological succession supports the article's reconstruction but does not independently prove causation."
+              ],
+              "finding_ids": [
+                "F3",
+                "F7"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "register",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Sections 2",
+                "Section 4",
+                "Section 6"
+              ],
+              "coverage": "complete",
+              "criterion": "Identify passage-specific changes in wording or register and their local argumentative function.",
+              "basis": "Technical definition gives way to chronological case narration and qualified evaluation, including the phrase 'at least partially effective.'",
+              "limitations": [
+                "The report does not infer whether register changes were deliberate."
+              ],
+              "finding_ids": [
+                "F10"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "devices",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Sections 2",
+                "Sections 4–6"
+              ],
+              "coverage": "complete",
+              "criterion": "Retain concrete textual devices or actor roles only where repetition, anticipation, obstacles, or spatial patterning are evidenced.",
+              "basis": "Repeated descriptions of hubs, routes, and parallel systems make network position a spatial organizing device across the cases.",
+              "limitations": [
+                "Narrative prominence of network hubs does not by itself establish causal agency."
+              ],
+              "finding_ids": [
+                "F15"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "closure",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "End of Section 5",
+                "Section 6"
+              ],
+              "coverage": "complete",
+              "criterion": "Compare the ending's settlement or openness with the article's evidence and stated explanatory question.",
+              "basis": "The conclusion settles the mixed market-state model while leaving comparative variation and generalizability open.",
+              "limitations": [
+                "Two instructive cases do not resolve the cross-sector generalizability question."
+              ],
+              "finding_ids": [
+                "F9",
+                "F12",
+                "F13",
+                "F14"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Findings in this scope lost anchor evidence; this does not establish absence",
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 17356
+      },
+      {
+        "step": "check",
+        "kind": "verify",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+        "model_used": "openrouter/deepseek/deepseek-v4-pro",
+        "input_tokens": 24247,
+        "output_tokens": 6341,
+        "duration_ms": 86926,
+        "cost_usd": 0.0385,
+        "retries": 0,
+        "wall": {
+          "rows": 16,
+          "with_anchor": 16,
+          "verified": 16,
+          "trimmed": 0,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [
+            "F13"
+          ],
+          "anchors": 21,
+          "verified_anchors": 21,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "checked",
+            "scope": "retained_ledger",
+            "missing_rejected_ids": [
+              "F13"
+            ],
+            "missing_other_ids": []
+          },
+          "check_in": 15,
+          "check_confirmed": 14,
+          "check_weakened": 0,
+          "check_rejected": 1,
+          "check_added": 2,
+          "check_added_dropped": 0,
+          "check_carried": 0,
+          "check_unverified": 0,
+          "check_ruling_coverage": {
+            "original_count": 15,
+            "explicitly_ruled_count": 15,
+            "missing_or_unruled_ids": [],
+            "unexpected_nonadded_ids": [],
+            "invalid_original_status_ids": [],
+            "duplicate_original_ids": [],
+            "duplicate_ruling_ids": [],
+            "coverage_complete": true
+          },
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "sequence",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Abstract",
+                "Sections 1–6"
+              ],
+              "coverage": "complete",
+              "criterion": "Identify the order of presentation, local turning points, and whether the text develops a local or sustained arc.",
+              "basis": "The article moves from theoretical mismatch to definition, two ordered case studies, and a qualified conclusion; the SeaMeWe-6 case contains a clear reversal.",
+              "limitations": [
+                "This is a single-work local inventory, so no corpus-level sequence relation can be established."
+              ],
+              "finding_ids": [
+                "F1",
+                "F2",
+                "F4",
+                "F5",
+                "F8"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": false,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Malformed/missing scope records: 1 validation error for ScopeOutcome\nreview_state\n  Input should be 'unchecked', 'supported_within_stated_scope' or 'disputed' [type=literal_error, input_value='checked', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/literal_error"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "perspective",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Section 3",
+                "Sections 4–6"
+              ],
+              "coverage": "complete",
+              "criterion": "Separate the analytical narrator, cited or quoted voices, and represented institutional experience.",
+              "basis": "The article uses an analytical narrator, reconstructs institutional calculations through mediated sources, and adopts a collective scholarly voice in the conclusion.",
+              "limitations": [
+                "The consortium's calculation is represented by the narrator rather than supplied as direct participant testimony.",
+                "Interview evidence is more prominent in the France case than in the SeaMeWe-6 case."
+              ],
+              "finding_ids": [
+                "F6",
+                "F11"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": false,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Malformed/missing scope records: 1 validation error for ScopeOutcome\nreview_state\n  Input should be 'unchecked', 'supported_within_stated_scope' or 'disputed' [type=literal_error, input_value='checked', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/literal_error"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "time",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Section 2",
+                "Sections 4–5"
+              ],
+              "coverage": "complete",
+              "criterion": "Anchor retrospection, dates, time scales, and the distinction between presented order and narrated time.",
+              "basis": "The text compresses decades of market development before narrating dated reversals in 2021 and the sequence leading to France's 2024 acquisition.",
+              "limitations": [
+                "Chronological succession supports the article's reconstruction but does not independently prove causation."
+              ],
+              "finding_ids": [
+                "F3",
+                "F7"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": false,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Malformed/missing scope records: 1 validation error for ScopeOutcome\nreview_state\n  Input should be 'unchecked', 'supported_within_stated_scope' or 'disputed' [type=literal_error, input_value='checked', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/literal_error"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "register",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Sections 2",
+                "Section 4",
+                "Section 6"
+              ],
+              "coverage": "complete",
+              "criterion": "Identify passage-specific changes in wording or register and their local argumentative function.",
+              "basis": "Technical definition gives way to chronological case narration and qualified evaluation, including the phrase 'at least partially effective.'",
+              "limitations": [
+                "The report does not infer whether register changes were deliberate."
+              ],
+              "finding_ids": [
+                "F10"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": false,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Malformed/missing scope records: 1 validation error for ScopeOutcome\nreview_state\n  Input should be 'unchecked', 'supported_within_stated_scope' or 'disputed' [type=literal_error, input_value='checked', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/literal_error"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "devices",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Sections 2",
+                "Sections 4–6"
+              ],
+              "coverage": "complete",
+              "criterion": "Retain concrete textual devices or actor roles only where repetition, anticipation, obstacles, or spatial patterning are evidenced.",
+              "basis": "Repeated descriptions of hubs, routes, and parallel systems make network position a spatial organizing device across the cases.",
+              "limitations": [
+                "Narrative prominence of network hubs does not by itself establish causal agency."
+              ],
+              "finding_ids": [
+                "F15"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": false,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Malformed/missing scope records: 1 validation error for ScopeOutcome\nreview_state\n  Input should be 'unchecked', 'supported_within_stated_scope' or 'disputed' [type=literal_error, input_value='checked', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/literal_error"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "closure",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "End of Section 5",
+                "Section 6"
+              ],
+              "coverage": "complete",
+              "criterion": "Compare the ending's settlement or openness with the article's evidence and stated explanatory question.",
+              "basis": "The conclusion settles the mixed market-state model while leaving comparative variation and generalizability open.",
+              "limitations": [
+                "Two instructive cases do not resolve the cross-sector generalizability question."
+              ],
+              "finding_ids": [
+                "F9",
+                "F12",
+                "F13",
+                "F14"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": false,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Malformed/missing scope records: 1 validation error for ScopeOutcome\nreview_state\n  Input should be 'unchecked', 'supported_within_stated_scope' or 'disputed' [type=literal_error, input_value='checked', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.10/v/literal_error",
+                  "Findings in this scope lost anchor evidence; this does not establish absence",
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 12919
+      }
+    ]
+  },
+  "audit": {
+    "wall": {
+      "rows": 16,
+      "with_anchor": 16,
+      "verified": 16,
+      "trimmed": 0,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 21,
+      "verified_anchors": 21,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "rows": 16,
+    "raw_anchors": 21,
+    "raw_exact": 1,
+    "unknown_dimensions": [],
+    "missing_table_ids": [],
+    "missing_prose_ids": []
+  }
+}

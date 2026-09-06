@@ -1,0 +1,283 @@
+{
+  "step": "check",
+  "kind": "verify",
+  "dimension": "",
+  "doc": "",
+  "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+  "model_used": "openrouter/deepseek/deepseek-v4-pro",
+  "input_tokens": 24682,
+  "output_tokens": 18152,
+  "duration_ms": 232796,
+  "cost_usd": 0.0636,
+  "retries": 0,
+  "wall": {
+    "rows": 19,
+    "with_anchor": 19,
+    "verified": 19,
+    "trimmed": 0,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 19,
+    "verified_anchors": 19,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "checked",
+      "scope": "retained_ledger",
+      "missing_rejected_ids": [],
+      "missing_other_ids": []
+    },
+    "check_in": 15,
+    "check_confirmed": 13,
+    "check_weakened": 2,
+    "check_rejected": 0,
+    "check_added": 4,
+    "check_added_dropped": 0,
+    "check_carried": 0,
+    "check_unverified": 0,
+    "check_ruling_coverage": {
+      "original_count": 15,
+      "explicitly_ruled_count": 15,
+      "missing_or_unruled_ids": [],
+      "unexpected_nonadded_ids": [],
+      "invalid_original_status_ids": [],
+      "duplicate_original_ids": [],
+      "duplicate_ruling_ids": [],
+      "coverage_complete": true
+    },
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "operators",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Abstract",
+          "Introduction",
+          "1 The Antinomy of Habit",
+          "2 Two Aspects of Societal Death",
+          "3 Historicizing the Antinomy",
+          "4 Conclusion"
+        ],
+        "coverage": "complete",
+        "criterion": "Claims using must, may, cannot, ought, necessity, possibility, probability, or equivalent modal/epistemic hedges, with proposition and owner preserved.",
+        "basis": "I checked the full article and verified each retained operator finding anchor verbatim; the necessary risk, contingent spiritual death, conditional historical necessity, and deontic conclusion are all present.",
+        "limitations": [
+          "Some necessities are attributed to Hegel or quoted opponents; owners are preserved in the retained findings."
+        ],
+        "finding_ids": [
+          "F1",
+          "F2",
+          "F3",
+          "F8",
+          "F9",
+          "F13",
+          "F16"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "All retained operator findings have verbatim anchors and their surrounding contexts support the modal claims; no unsupported operator row was retained.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "scope",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Abstract",
+          "Introduction",
+          "2.1 The Natural Death of the National Spirit",
+          "2.2 The Spiritual Death of the Social Subject",
+          "3 Historicizing the Antinomy"
+        ],
+        "coverage": "complete",
+        "criterion": "Object, quantifier, condition, and temporal range falling under each modal operator, especially the distinction between exposure and realization.",
+        "basis": "The article explicitly limits natural death to periods of full actualization while making spiritual death a constant but contingent risk, and the retained scope findings capture this.",
+        "limitations": [
+          "The article does not quantify the probability or frequency of spiritual death."
+        ],
+        "finding_ids": [
+          "F4",
+          "F17"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "The retained scope findings were checked against surrounding paragraphs and their anchors are verbatim.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "warrant",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "1.1 Habit and Freedom",
+          "1.2 Critical and Reflective Readings of Habit",
+          "1.3 Habit, Life, and Death",
+          "2.2 The Spiritual Death of the Social Subject",
+          "3.3 The Parabasis of Modern Subjectivity",
+          "4 Conclusion"
+        ],
+        "coverage": "complete",
+        "criterion": "Conceptual, empirical, normative, or practical support offered for the exact modal force claimed.",
+        "basis": "The article supports its force distinctions through habit's practical role, mediation of universal and particular, free flexible enactment, formal unfreedom, and the limits of institutional reconciliation.",
+        "limitations": [
+          "The warrants are primarily conceptual and interpretive rather than statistical or empirical."
+        ],
+        "finding_ids": [
+          "F5",
+          "F7",
+          "F10",
+          "F15",
+          "F18"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "Each retained warrant finding was checked against its anchor and the immediately surrounding argument.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "force_changes",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Introduction",
+          "2.2 The Spiritual Death of the Social Subject",
+          "3 Historicizing the Antinomy",
+          "3.3 The Parabasis of Modern Subjectivity",
+          "4 Conclusion"
+        ],
+        "coverage": "complete",
+        "criterion": "Changes between modal registers for aligned propositions, retaining differences in conditions and distinguishing drift from legitimate scope changes.",
+        "basis": "The article explicitly contrasts conceptual non-necessity with near historical necessity and relocates necessity from unfreedom itself to its threat.",
+        "limitations": [
+          "The paper does not assign a precise probability to the historically intensified threat."
+        ],
+        "finding_ids": [
+          "F14"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "The retained force-change finding was verified against the explicit contrast in the cited passage.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "possibility_tests",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "1.2 Critical and Reflective Readings of Habit"
+        ],
+        "coverage": "complete",
+        "criterion": "Examples, scenarios, or alternatives testing whether a claimed outcome is possible or necessary while holding relevant background conditions fixed.",
+        "basis": "The tooth-brushing example supplies a practical counterexample to the claim that habits must operate mechanically.",
+        "limitations": [
+          "The example establishes coherent adaptable habit, not the historical likelihood that whole societies avoid spiritual death."
+        ],
+        "finding_ids": [
+          "F11"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "The retained possibility test was checked against its anchor and its role in the reflective reading.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "thresholds",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "2.1 The Natural Death of the National Spirit",
+          "2.2 The Spiritual Death of the Social Subject",
+          "3 Historicizing the Antinomy",
+          "3.1 The Old Age of the Spirit"
+        ],
+        "coverage": "complete",
+        "criterion": "Boundaries that perform modal work, including conditions under which possibility becomes necessity or a category changes.",
+        "basis": "Full realization of a national spirit's principle marks a developmental threshold for necessary stagnation/natural death, and adulthood supplies a second criterion for mature ethical relation.",
+        "limitations": [
+          "The criteria are developmental and interpretive; no independent test establishes when full realization has occurred."
+        ],
+        "finding_ids": [
+          "F6",
+          "F12",
+          "F19"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "The retained threshold findings were checked against their anchors and surrounding explanatory paragraphs.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 17391
+}

@@ -1,0 +1,243 @@
+{
+  "step": "check",
+  "kind": "verify",
+  "dimension": "",
+  "doc": "",
+  "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+  "model_used": "openrouter/deepseek/deepseek-v4-pro",
+  "input_tokens": 28013,
+  "output_tokens": 19417,
+  "duration_ms": 325477,
+  "cost_usd": 0.0697,
+  "retries": 0,
+  "wall": {
+    "rows": 13,
+    "with_anchor": 13,
+    "verified": 11,
+    "trimmed": 0,
+    "anchor_rate": 0.846,
+    "failed_ids": [
+      "F4",
+      "F10"
+    ],
+    "duplicate_ids": [],
+    "missing_cited": [
+      "F5"
+    ],
+    "anchors": 21,
+    "verified_anchors": 19,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "checked",
+      "scope": "retained_ledger",
+      "missing_rejected_ids": [
+        "F5"
+      ],
+      "missing_other_ids": []
+    },
+    "check_in": 13,
+    "check_confirmed": 12,
+    "check_weakened": 0,
+    "check_rejected": 1,
+    "check_added": 1,
+    "check_added_dropped": 0,
+    "check_carried": 0,
+    "check_unverified": 2,
+    "check_ruling_coverage": {
+      "original_count": 13,
+      "explicitly_ruled_count": 13,
+      "missing_or_unruled_ids": [],
+      "unexpected_nonadded_ids": [],
+      "invalid_original_status_ids": [],
+      "duplicate_original_ids": [],
+      "duplicate_ruling_ids": [],
+      "coverage_complete": true
+    },
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "supposition_and_function",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Abstract",
+          "I. Introduction",
+          "II. Two varieties of psychologism: formalism and subjectivism",
+          "III. Shedding Kant’s subjectivist construal of self-consciousness",
+          "IV. Hegel’s concept as objective",
+          "V. Rectifying Kant’s formalistic account of apperception",
+          "VI. Hegel’s concept as contentful",
+          "VII. Conclusion",
+          "Notes"
+        ],
+        "coverage": "complete",
+        "criterion": "A supposition qualifies when varying, granting, denying, or assuming a condition performs an identifiable inferential task, including counterfactuals, conditionals, concessions, reductios, and justified reconstructed dependencies.",
+        "basis": "The article contains an explicit otherwise-counterfactual (F1), a reported interpretive counterfactual (F6), and a reconstructed dependency from self-contradiction to reconception (F4).",
+        "limitations": [],
+        "finding_ids": [
+          "F1",
+          "F4",
+          "F6"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "All anchors verified verbatim against the source; the findings accurately capture the suppositional structure and inferential roles described in the text.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Findings in this scope lost anchor evidence; this does not establish absence",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "fixed_and_changed_conditions",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "III. Shedding Kant’s subjectivist construal",
+          "V. Rectifying Kant’s formalistic account",
+          "VI. Hegel’s concept as contentful"
+        ],
+        "coverage": "complete",
+        "criterion": "The audit identifies what the text varies, what it holds fixed, and what additional premises are introduced to obtain the result.",
+        "basis": "The text deliberately contrasts the concept-forming act with its indeterminate result (F7) and identifies Koch’s added initial hypothesis (F12).",
+        "limitations": [],
+        "finding_ids": [
+          "F7",
+          "F12"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "Both anchors are verbatim; the rows correctly state the changed elements, held-fixed conditions, and additional assumptions as presented in the text.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "inferential_path",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "VI. Hegel’s concept as contentful"
+        ],
+        "coverage": "complete",
+        "criterion": "A retained path must supply or reconstruct an inspectable conceptual, causal, historical, normative, definitional, or cited bridge while preserving its modal strength and scope.",
+        "basis": "The article explicitly connects determinacy to contradiction, determination to negation, performative contradiction to revision, and self-division to the singular; the whole-Logic extension is asserted conditionally.",
+        "limitations": [
+          "The whole-Logic extension is claimed but not demonstrated transition by transition in the supplied text."
+        ],
+        "finding_ids": [
+          "F2",
+          "F3",
+          "F8",
+          "F9"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "All anchors verbatim; the inferential links are stated and their modal strength and scope are correctly qualified.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "alternatives_and_scope",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "V. Rectifying Kant’s formalistic account",
+          "VI. Hegel’s concept as contentful"
+        ],
+        "coverage": "complete",
+        "criterion": "A relevant alternative must address a comparable consequent while differences in starting conditions, object, modality, or argumentative task are kept visible.",
+        "basis": "The text compares its empty-simple starting point with Pippin’s internally complex unity, with the limitations of Longuenesse/de Boer, and with the metaphysical reading’s subjectivism worry; all are presented as interpretive alternatives.",
+        "limitations": [],
+        "finding_ids": [
+          "F10",
+          "F11",
+          "V.F1"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "All anchors verbatim; the alternatives and their scope differences are correctly identified and sourced.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Findings in this scope lost anchor evidence; this does not establish absence",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "survival_and_robustness",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "VI. Hegel’s concept as contentful"
+        ],
+        "coverage": "complete",
+        "criterion": "The audit withdraws one premise at a time and distinguishes loss of a formulation or route from loss of every route, retaining independent support where the text supplies it.",
+        "basis": "The text explicitly removes the need to assume Koch’s artificial operation by identifying self-relating negation with self-relating thinking, providing an independent conceptual route.",
+        "limitations": [
+          "No further independent routes are tested in the inspected material beyond the one explicitly stated."
+        ],
+        "finding_ids": [
+          "F13"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "Anchor verbatim; the survival claim is directly supported by the text’s own assertion of equivalence.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 18354
+}

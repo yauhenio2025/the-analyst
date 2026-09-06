@@ -1,0 +1,17 @@
+# G4__dvs__promise_religion2022 — source-read memo before scores
+
+Output SHA256: cebd81282798ff352c87fc2ac62cd8d1b04a24f421b094309782fc1e9224f5de
+
+Read the substantive reading, both comparative tables and all twenty retained findings; inspected scope states separately. Checked the main continuity/change claims against Promise's money-as-generalized-property, Luhmann/cipher, creative-labour and closing sections and the 2022 religious-scope, knowledge and containment passages.
+
+This run correctly preserves the earlier money-beyond-subsistence restriction, the conditional halt-of-creative-destruction prediction, Marx's qualification and the later Abrahamic scope. It does not invent a declared self-revision or a direct citation between the supplied works. F6 offers a useful paired Benjamin comparison: 2001 announces elaboration, 2022 describes the fragment as short-circuiting two money critiques. This is a supported change in local presentation, with limits on its significance.
+
+The leading comparison remains too dependent on differences of exposition. F3 pairs 'secularized religion' with 'comparative perspective' to infer greater caution, although the earlier abstract already says 'comparable to religion' and develops a qualified analogy. F4's shift from paradox to social unity overlooks the earlier Luhmann passage which already gives money society-wide influence, transforms indeterminable world-complexity and calls money a cipher like God. F5's purported relocation of the primary structural basis likewise underplays Promise's explicit generalized property rights, access to labour and potential products. The output sometimes says only changed emphasis, which is defensible; its assertions that this changes the scale or explanatory hierarchy are stronger than the paired evidence establishes.
+
+The anti-utopian continuity is less well demonstrated than in the checked output. The deep ending compares an earlier conditional crisis warning to later present containment and does not quote the 2001 rejection of new utopias. This is not quite the old false redemptive-to-sober conversion, but the claimed later practical turn requires that counter-passage alongside the difference.
+
+The table evidence is incomplete in multiple consequential places. F1's tiny 'takes up and elaborates Benjamin' span is asked to support a whole position map including money, innovation, Simmel/Marx/Schumpeter and a categorical religion distinction. F5 supplies neither creative labour nor the later unbounding context despite carrying the growth comparison. F13 quotes only Hayek while its finding/table name both Hayek and Luhmann. F18 ends before stating which contributions of monotheism were neglected. F19 says 'this phase' without identifying the stabilization phase, and F20 anchors the conditional wage/unemployment consequence but not the critique-of-money prescription used in its table cell. These are source-true ideas with an incomplete citable path.
+
+Mechanical result: twenty rows, 27/27 normalized anchors (24 raw exact), five complete two-key rows, no missing IDs or undeclared dimensions. Five scope outcomes are findings_present and six inconclusive; that does not establish absence or exhaustive semantic review. At 41,893 characters the compact output target is also missed. Provisional method judgment: withhold G4 in both tested modes until the final cells carry complete evidence and the comparison consistently distinguishes changed presentation from demonstrably changed commitments or support.
+
+No scores requested or consulted.

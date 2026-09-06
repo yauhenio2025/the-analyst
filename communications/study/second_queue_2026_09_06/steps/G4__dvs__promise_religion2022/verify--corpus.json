@@ -1,0 +1,110 @@
+{
+  "step": "verify",
+  "kind": "verify",
+  "dimension": "",
+  "doc": "",
+  "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+  "model_used": "openrouter/deepseek/deepseek-v4-pro",
+  "input_tokens": 31410,
+  "output_tokens": 22495,
+  "duration_ms": 329017,
+  "cost_usd": 0.0796,
+  "retries": 0,
+  "wall": {
+    "rows": 5,
+    "with_anchor": 5,
+    "verified": 4,
+    "trimmed": 0,
+    "anchor_rate": 0.8,
+    "failed_ids": [
+      "V.CORPUS.F2"
+    ],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 10,
+    "verified_anchors": 9,
+    "cross_document_rows": 5,
+    "incomplete_cross_document_ids": [
+      "V.CORPUS.F2"
+    ],
+    "invalid_anchor_ids": [
+      "V.CORPUS.F2"
+    ],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "carried_forward": 0,
+    "rejected": 0,
+    "added": 2,
+    "ruling_coverage": {
+      "original_count": 3,
+      "explicitly_ruled_count": 3,
+      "missing_or_unruled_ids": [],
+      "unexpected_nonadded_ids": [],
+      "invalid_original_status_ids": [],
+      "duplicate_original_ids": [],
+      "duplicate_ruling_ids": [],
+      "coverage_complete": true
+    },
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "promise",
+          "religion2022"
+        ],
+        "dimension_key": "revision_record",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "promise: Abstract",
+          "promise: I",
+          "promise: II",
+          "promise: III",
+          "promise: IV",
+          "religion2022: Religious and Secular Critique of Money",
+          "religion2022: The Unbounding of Markets as the Basis of Modern Capitalism",
+          "religion2022: The Intransparency of World Society to Itself: Luhmann and Hayek",
+          "religion2022: The Religious Worldview and the Consequences of Its Dethronement",
+          "religion2022: Universalism and the Contingency of the World: A Comparative Perspective on Capitalism and Religion",
+          "religion2022: Conclusions"
+        ],
+        "coverage": "complete",
+        "criterion": "Compare the later account with the earlier text itself and its qualifications; quote both sides of every relation and a separate presentation finding where needed.",
+        "basis": "Verified the three supplied rows against the supplied texts; all original anchor strings were located. X6.F1 and X6.F3 required narrowing to match their anchors. Two added cross-document rows capture overlooked paired passages. The retained findings record text-level revision_record comparisons, not author motives.",
+        "limitations": [
+          "religion2022 does not explicitly cite promise; the later relation is observed through paired formulations, not declared by the later text as a revision of the 2001 article.",
+          "Publication dates are supplied only at source level; composition order within those dates is not independently established.",
+          "Only the two supplied documents were checked; earlier cited works such as Benjamin, Simmel, Marx, Schumpeter and Deutschmann 2019 were not supplied in full."
+        ],
+        "finding_ids": [
+          "X6.F1",
+          "X6.F2",
+          "X6.F3",
+          "V.CORPUS.F1",
+          "V.CORPUS.F2"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "Each retained row was checked against the named document and surrounding context. X6.F1 and X6.F3 were narrowed where the original wording exceeded the anchors; the added rows have verbatim anchors in both documents. The scoped outcome is supported for the listed sections.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "promise": "provided",
+            "religion2022": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Findings in this scope lost anchor evidence; this does not establish absence",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [
+    "V.CORPUS.F2"
+  ],
+  "chars": 10362
+}

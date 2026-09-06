@@ -1,0 +1,15 @@
+# A4__checked__hegel — source-read memo before scores
+
+Output SHA256: eb5a865a51651332c242ec00e86fc8dd31dc23bea258a3e3fdfea79df9876581
+
+Read the complete substantive analysis, three tables, retained ledger and the rejected F5 record. Checked the pure-apperception condition, positive Concept derivation, metaphysical nature argument and Pippin quotation against the source, including PDF page-boundary effects.
+
+The source-led positive-derivation correction holds: the reading reconstructs determinate content, differentiation, absolute negation, performative contradiction and universal/particular/singular. It distinguishes existence of that argument from whether its necessity and full-Logic generalization are demonstrated. F6 owns the Schellingian-nature necessity claim as a reported metaphysical reading, while F10–F11 mark Pippin's original complexity as an alternative rather than a positive premise. Subtracting the constructive derivation is not said to eliminate the independent criticism of already-complex starting points.
+
+The claim labeled an even-if concession in F5 is not well classified. The quoted 'precisely because it is entirely empty' is a positive explanatory claim, not by itself an arguendo grant; the critic's narrower rejection of that classification is reasonable here. However, the final reading and scenario table retain the rejected row, visibly annotated '[F5, rejected by the check]'. The reader must adjudicate a contradiction between table and check. This is a known checked-assembly limitation now honestly disclosed, not a completed audit table.
+
+Two retained rows have unverified anchors. F4 introduces a hyphen into the source's line-rendered 'selfcontradiction'; F10 turns quoted '[w]e begin' into 'We begin' and is cut at a page boundary. The source supports the underlying arguments, but the method has not delivered verified evidence for those retained findings. F1's 'Otherwise' span omits the content-production condition. F6 ends at 'seeking', before the nature-to-self-consciousness consequence attributed to it. These incomplete fragments are precisely why normalized quote membership must be separated from evidence completeness.
+
+Mechanical result: thirteen retained rows, nineteen of twenty-one normalized anchors verified; F4/F10 fail row verification (11/13). One raw-exact span. Production citation checking records missing rejected F5 with two inline annotations. The independent parser finds no new bare missing IDs after annotation, which must not be reported as a clean original citation contract. All thirteen input rows receive explicit rulings; two scope states are inconclusive and three findings_present. Provisional method judgment: withhold A4. The philosophical correction largely holds, but this required second output still fails evidence and final-table delivery. A final model review of the actual retained table would be needed; no runner change or paid replay is made during this frozen study.
+
+No scores requested or consulted.

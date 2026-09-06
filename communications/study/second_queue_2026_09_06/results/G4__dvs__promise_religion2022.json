@@ -1,0 +1,2899 @@
+{
+  "status": "complete",
+  "job": {
+    "id": "G4",
+    "engine": "revision_presentation",
+    "papers": [
+      "promise",
+      "religion2022"
+    ],
+    "condition": "dvs"
+  },
+  "output_sha256": "cebd81282798ff352c87fc2ac62cd8d1b04a24f421b094309782fc1e9224f5de",
+  "seconds": 915.2438497543335,
+  "process": {
+    "engine": "revision_presentation",
+    "process": "dvs",
+    "cost_usd": 0.4107,
+    "input_tokens": 300606,
+    "output_tokens": 81512,
+    "seconds": 915.2,
+    "final_model": "openrouter/openai/gpt-5.6-sol",
+    "final_wall": {
+      "rows": 20,
+      "with_anchor": 20,
+      "verified": 20,
+      "trimmed": 0,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 27,
+      "verified_anchors": 27,
+      "cross_document_rows": 5,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "checked",
+        "scope": "retained_ledger",
+        "missing_rejected_ids": [],
+        "missing_other_ids": []
+      },
+      "synthesis_contract": {
+        "failed_ids": [],
+        "incomplete_cross_document_ids": [],
+        "duplicate_ids": [],
+        "missing_cited": [],
+        "unknown_dimensions": [],
+        "missing_ledger": false,
+        "parse_error": "",
+        "incomplete_invocation": false
+      },
+      "synthesis_repair_attempts": [],
+      "rows_without_dimension": 0,
+      "has_ledger": true,
+      "prose_chars": 18905,
+      "missing_lineage": [],
+      "check_ruling_coverage": {
+        "coverage_complete": true,
+        "original_count": 62,
+        "explicitly_ruled_count": 62,
+        "reviews": [
+          {
+            "step": "verify",
+            "document": "promise",
+            "original_count": 27,
+            "explicitly_ruled_count": 27,
+            "missing_or_unruled_ids": [],
+            "unexpected_nonadded_ids": [],
+            "invalid_original_status_ids": [],
+            "duplicate_original_ids": [],
+            "duplicate_ruling_ids": [],
+            "coverage_complete": true
+          },
+          {
+            "step": "verify",
+            "document": "religion2022",
+            "original_count": 32,
+            "explicitly_ruled_count": 32,
+            "missing_or_unruled_ids": [],
+            "unexpected_nonadded_ids": [],
+            "invalid_original_status_ids": [],
+            "duplicate_original_ids": [],
+            "duplicate_ruling_ids": [],
+            "coverage_complete": true
+          },
+          {
+            "step": "verify",
+            "document": "",
+            "original_count": 3,
+            "explicitly_ruled_count": 3,
+            "missing_or_unruled_ids": [],
+            "unexpected_nonadded_ids": [],
+            "invalid_original_status_ids": [],
+            "duplicate_original_ids": [],
+            "duplicate_ruling_ids": [],
+            "coverage_complete": true
+          }
+        ]
+      },
+      "scope_outcomes": [
+        {
+          "document_keys": [
+            "promise"
+          ],
+          "dimension_key": "position",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "Abstract",
+            "I",
+            "II",
+            "III",
+            "IV"
+          ],
+          "coverage": "complete",
+          "criterion": "A position the text undertakes about an object under stated conditions, distinguished from positions it attributes to prior works or opponents.",
+          "basis": "All retained findings are anchored in explicit textual statements; the added attribution to Weber further fills a gap. No finding was rejected or weakened, and the text supplies clear positions and attributions throughout.",
+          "limitations": [
+            "Earlier works cited by the article were not supplied in full, so cross‑text continuity cannot be independently verified."
+          ],
+          "finding_ids": [
+            "D1.DOC1.F1",
+            "D1.DOC1.F2",
+            "D1.DOC1.F3",
+            "D1.DOC1.F4",
+            "D1.DOC1.F5",
+            "D1.DOC1.F6",
+            "V.DOC1.F1"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "Verbatim anchors were checked against the source; each finding accurately reflects the quoted material and its context. The added row fills an attribution gap. No contradictions or over‑readings were found.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "promise": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        },
+        {
+          "document_keys": [
+            "promise"
+          ],
+          "dimension_key": "claimed_relation",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "Abstract",
+            "I",
+            "II",
+            "III",
+            "IV"
+          ],
+          "coverage": "complete",
+          "criterion": "An explicit statement that the text clarifies, extends, corrects, concedes, departs from, or declares continuity with a position in an earlier work.",
+          "basis": "All extracted findings are supported by the corresponding anchors; the text correctly identifies corrections, combinations, continuities and extensions. No rows were weakened or rejected.",
+          "limitations": [
+            "Earlier supplied works are cited or summarised but not reproduced in full, limiting direct comparison with their exact wording."
+          ],
+          "finding_ids": [
+            "D2.DOC1.F1",
+            "D2.DOC1.F2",
+            "D2.DOC1.F3",
+            "D2.DOC1.F4"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "Each claimed relation is directly expressed in the source; the anchors match the declared relations of correction, combination, continuity with qualification, and extension.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "promise": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        },
+        {
+          "document_keys": [
+            "promise"
+          ],
+          "dimension_key": "scope_and_force",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "I",
+            "II",
+            "III",
+            "IV"
+          ],
+          "coverage": "complete",
+          "criterion": "A scoped formulation that qualifies a proposition by quantifier, modality, time, domain or condition, or alters its argumentative force through local wording.",
+          "basis": "All eight extracted findings are confirmed; each captures a clear scope or force qualifier present in the text. No duplicates or over‑reaching claims were detected.",
+          "limitations": [
+            "Assessment confined to the wording of this article; earlier texts were not supplied for comparison."
+          ],
+          "finding_ids": [
+            "D3.DOC1.F1",
+            "D3.DOC1.F2",
+            "D3.DOC1.F3",
+            "D3.DOC1.F4",
+            "D3.DOC1.F5",
+            "D3.DOC1.F6",
+            "D3.DOC1.F7",
+            "D3.DOC1.F8"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "Anchors directly show the qualifying language (e.g., ‘only’, ‘if’, ‘can only choose’, ‘can only be justified’) and the findings accurately report those scopes.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "promise": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "One or more declared finding references lack retained verified evidence"
+            ]
+          }
+        },
+        {
+          "document_keys": [
+            "promise"
+          ],
+          "dimension_key": "support",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "Abstract",
+            "I",
+            "II",
+            "III",
+            "IV"
+          ],
+          "coverage": "complete",
+          "criterion": "Evidence or derivation offered for a position, including any identified new evidence or argument used to change its formulation.",
+          "basis": "All five support findings are anchored in the source; they cover the combination of Simmel, Marx and constructivist myths, the logical paradox of money, the creative‑destruction requirement, the myth cycle model, and the corroboration with Benjamin.",
+          "limitations": [
+            "Comparison with independently supplied earlier works was beyond the scope of this single‑source verification."
+          ],
+          "finding_ids": [
+            "D4.DOC1.F1",
+            "D4.DOC1.F2",
+            "D4.DOC1.F3",
+            "D4.DOC1.F4",
+            "D4.DOC1.F5"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "Each support claim is rooted in a verbatim anchor; the text explicitly declares the combination and uses the quoted support to build its argument.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "promise": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "One or more declared finding references lack retained verified evidence"
+            ]
+          }
+        },
+        {
+          "document_keys": [
+            "promise"
+          ],
+          "dimension_key": "concession_consequence",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "III",
+            "IV"
+          ],
+          "coverage": "complete",
+          "criterion": "A retained finding must identify an explicit concession or limitation and explain whether the text narrows, preserves, distinguishes or leaves open the affected claim.",
+          "basis": "Four concession rows are anchored in explicit acknowledgements of shortcomings in Marx, Schumpeter, the permanence of myths, and entrepreneurial individualism; each specifies the response and consequence.",
+          "limitations": [
+            "Earlier works by Deutschmann (1998, 1999) were not supplied as separate texts, so cross‑document revision cannot be fully assessed."
+          ],
+          "finding_ids": [
+            "D5.DOC1.F1",
+            "D5.DOC1.F2",
+            "D5.DOC1.F3",
+            "D5.DOC1.F4"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "Anchors directly reveal the concessions; the text’s responses and resulting consequences are unambiguously stated, confirming the findings.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "promise": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "One or more declared finding references lack retained verified evidence"
+            ]
+          }
+        },
+        {
+          "document_keys": [
+            "religion2022"
+          ],
+          "dimension_key": "position",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "Religious and Secular Critique of Money",
+            "The Unbounding of Markets as the Basis of Modern Capitalism",
+            "The Intransparency of World Society to Itself: Luhmann and Hayek",
+            "The Religious Worldview and the Consequences of Its Dethronement",
+            "Universalism and the Contingency of the World: A Comparative Perspective on Capitalism and Religion",
+            "Conclusions"
+          ],
+          "coverage": "complete",
+          "criterion": "A position the text undertakes about an object under stated conditions, distinguished from positions it attributes to prior works or opponents.",
+          "basis": "The inspected text explicitly states the speaker’s sociological standpoint, defines capitalism and unbounded markets, advances comparative claims about capitalism and religion, and proposes a practical conclusion.",
+          "limitations": [
+            "The analysis relies on the provided source text and does not independently verify the cited earlier works."
+          ],
+          "finding_ids": [
+            "D1.DOC2.F1",
+            "D1.DOC2.F2",
+            "D1.DOC2.F3",
+            "D1.DOC2.F4",
+            "D1.DOC2.F6",
+            "V.DOC2.F1"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "Verification against the source confirms the findings with verbatim anchors and appropriate scope qualifiers; the original D1.DOC2.F5 was rejected for an invalid anchor and replaced by V.DOC2.F1 with a complete verbatim anchor.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "religion2022": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        },
+        {
+          "document_keys": [
+            "religion2022"
+          ],
+          "dimension_key": "claimed_relation",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "Religious and Secular Critique of Money",
+            "The Unbounding of Markets as the Basis of Modern Capitalism",
+            "The Intransparency of World Society to Itself: Luhmann and Hayek",
+            "The Religious Worldview and the Consequences of Its Dethronement",
+            "Universalism and the Contingency of the World: A Comparative Perspective on Capitalism and Religion",
+            "Conclusions"
+          ],
+          "coverage": "complete",
+          "criterion": "Explicit textual statements presenting a move as a clarification, extension, correction, concession, or departure from an earlier position or cited account, including statements of what is retained or relinquished.",
+          "basis": "The inspected text contains explicit claims of bracketing theological money critique, extending Marx’s critique, clarifying capitalism against market economy, correcting readings of Smith and religion, extending the intransparency thesis, and rejecting rival explanations of capitalist growth.",
+          "limitations": [
+            "The source does not provide a full dated comparison with all of the author’s earlier works."
+          ],
+          "finding_ids": [
+            "D2.DOC2.F1",
+            "D2.DOC2.F3",
+            "D2.DOC2.F5",
+            "D2.DOC2.F6",
+            "D2.DOC2.F7",
+            "D2.DOC2.F8",
+            "V.DOC2.F2",
+            "V.DOC2.F3"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "Verification against the source confirms the findings with verbatim anchors; the original D2.DOC2.F2 and D2.DOC2.F4 were rejected for truncated or typographically mismatched anchors, and replaced by V.DOC2.F2 and V.DOC2.F3 respectively.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "religion2022": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "One or more declared finding references lack retained verified evidence"
+            ]
+          }
+        },
+        {
+          "document_keys": [
+            "religion2022"
+          ],
+          "dimension_key": "scope_and_force",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "Religious and Secular Critique of Money",
+            "The Unbounding of Markets as the Basis of Modern Capitalism",
+            "The Intransparency of World Society to Itself: Luhmann and Hayek",
+            "The Religious Worldview and the Consequences of Its Dethronement",
+            "Universalism and the Contingency of the World: A Comparative Perspective on Capitalism and Religion",
+            "Conclusions"
+          ],
+          "coverage": "complete",
+          "criterion": "A relevant instance qualifies a proposition by quantifier, modality, time, domain or an adjacent limiting clause.",
+          "basis": "The source contains explicit scope and force markers, including restrictions to Abrahamic world religions, historical-comparative qualifiers, partial efficacy claims and explicit limits on capitalism’s religious or practical capacities.",
+          "limitations": [
+            "The assessment concerns the supplied source text and does not independently verify the cited works."
+          ],
+          "finding_ids": [
+            "D3.DOC2.F2",
+            "D3.DOC2.F4",
+            "D3.DOC2.F5",
+            "D3.DOC2.F7",
+            "V.DOC2.F4",
+            "V.DOC2.F5",
+            "V.DOC2.F6"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "Verification against the source confirms the findings with verbatim anchors; original rows D3.DOC2.F1, D3.DOC2.F3, and D3.DOC2.F6 were rejected for truncated or misaligned anchors and replaced with properly anchored rows V.DOC2.F4, V.DOC2.F5, and V.DOC2.F6.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "religion2022": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        },
+        {
+          "document_keys": [
+            "religion2022"
+          ],
+          "dimension_key": "support",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "Religious and Secular Critique of Money",
+            "The Unbounding of Markets as the Basis of Modern Capitalism",
+            "The Intransparency of World Society to Itself: Luhmann and Hayek",
+            "The Religious Worldview and the Consequences of Its Dethronement",
+            "Universalism and the Contingency of the World: A Comparative Perspective on Capitalism and Religion",
+            "Conclusions"
+          ],
+          "coverage": "complete",
+          "criterion": "Evidence or derivation is offered for the position, including any identified new evidence or new argument supporting a changed formulation.",
+          "basis": "The inspected source supplies historical derivations, theoretical comparisons, cited authorities, examples of consequences, and an explicitly stated concluding recommendation supporting its positions.",
+          "limitations": [
+            "The source relies substantially on cited scholarship and does not independently verify all cited evidence.",
+            "Several broad historical and global claims are supported primarily by synthesis and illustrative examples rather than systematic quantitative evidence."
+          ],
+          "finding_ids": [
+            "D4.DOC2.F3",
+            "V.DOC2.F7",
+            "V.DOC2.F8",
+            "V.DOC2.F9",
+            "V.DOC2.F10",
+            "V.DOC2.F11"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "Verification against the source confirms the findings with verbatim anchors; original rows D4.DOC2.F1, D4.DOC2.F2, D4.DOC2.F4, D4.DOC2.F5, and D4.DOC2.F6 were rejected for truncated or misaligned anchors and replaced with properly anchored rows V.DOC2.F7 through V.DOC2.F11.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "religion2022": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        },
+        {
+          "document_keys": [
+            "religion2022"
+          ],
+          "dimension_key": "concession_consequence",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "Religious and Secular Critique of Money",
+            "The Unbounding of Markets as the Basis of Modern Capitalism",
+            "The Religious Worldview and the Consequences of Its Dethronement",
+            "Universalism and the Contingency of the World: A Comparative Perspective on Capitalism and Religion",
+            "Conclusions"
+          ],
+          "coverage": "complete",
+          "criterion": "A finding must identify an explicit concession, limitation or qualification and show how the text responds to it and what claim it narrows or preserves.",
+          "basis": "The inspected sections contain explicit qualifications concerning capitalism’s destructive effects, religion’s rationalizing contributions, capitalism’s inability to answer ultimate religious questions, its material performance, and the open society’s mixed consequences.",
+          "limitations": [
+            "The assessment concerns the supplied text and its cited positions; it does not compare the argument with uncited earlier works or establish the authors’ intentions."
+          ],
+          "finding_ids": [
+            "D5.DOC2.F1",
+            "D5.DOC2.F3",
+            "D5.DOC2.F4",
+            "V.DOC2.F12",
+            "V.DOC2.F13"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "Verification against the source confirms the findings with verbatim anchors; original rows D5.DOC2.F2 and D5.DOC2.F5 were rejected for typographically mismatched anchors and replaced with properly anchored rows V.DOC2.F12 and V.DOC2.F13.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "religion2022": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "One or more declared finding references lack retained verified evidence"
+            ]
+          }
+        },
+        {
+          "document_keys": [
+            "promise",
+            "religion2022"
+          ],
+          "dimension_key": "revision_record",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "promise: Abstract",
+            "promise: I",
+            "promise: II",
+            "promise: III",
+            "promise: IV",
+            "religion2022: Religious and Secular Critique of Money",
+            "religion2022: The Unbounding of Markets as the Basis of Modern Capitalism",
+            "religion2022: The Intransparency of World Society to Itself: Luhmann and Hayek",
+            "religion2022: The Religious Worldview and the Consequences of Its Dethronement",
+            "religion2022: Universalism and the Contingency of the World: A Comparative Perspective on Capitalism and Religion",
+            "religion2022: Conclusions"
+          ],
+          "coverage": "complete",
+          "criterion": "Compare the later account with the earlier text itself and its qualifications; quote both sides of every relation and a separate presentation finding where needed.",
+          "basis": "Verified the three supplied rows against the supplied texts; all original anchor strings were located. X6.F1 and X6.F3 required narrowing to match their anchors. Two added cross-document rows capture overlooked paired passages. The retained findings record text-level revision_record comparisons, not author motives.",
+          "limitations": [
+            "religion2022 does not explicitly cite promise; the later relation is observed through paired formulations, not declared by the later text as a revision of the 2001 article.",
+            "Publication dates are supplied only at source level; composition order within those dates is not independently established.",
+            "Only the two supplied documents were checked; earlier cited works such as Benjamin, Simmel, Marx, Schumpeter and Deutschmann 2019 were not supplied in full."
+          ],
+          "finding_ids": [
+            "X6.F1",
+            "X6.F2",
+            "X6.F3",
+            "V.CORPUS.F1",
+            "V.CORPUS.F2"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "Each retained row was checked against the named document and surrounding context. X6.F1 and X6.F3 were narrowed where the original wording exceeded the anchors; the added rows have verbatim anchors in both documents. The scoped outcome is supported for the listed sections.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "promise": "provided",
+              "religion2022": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "Findings in this scope lost anchor evidence; this does not establish absence",
+              "One or more declared finding references lack retained verified evidence"
+            ]
+          }
+        }
+      ],
+      "synthesis_evidence": {
+        "partial": false,
+        "stop_reason": "stop",
+        "error": null,
+        "ledger_parse_error": null
+      }
+    },
+    "calls": [
+      {
+        "step": "extract",
+        "kind": "extract",
+        "dimension": "position",
+        "doc": "promise",
+        "model_requested": "openrouter/openai/gpt-5.6-luna",
+        "model_used": "openrouter/openai/gpt-5.6-luna",
+        "input_tokens": 17894,
+        "output_tokens": 1448,
+        "duration_ms": 17459,
+        "cost_usd": 0.0053,
+        "retries": 0,
+        "wall": {
+          "rows": 6,
+          "with_anchor": 6,
+          "verified": 6,
+          "trimmed": 0,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 6,
+          "verified_anchors": 6,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "after_reanchor": {
+            "rows": 6,
+            "with_anchor": 6,
+            "verified": 6,
+            "trimmed": 0,
+            "anchor_rate": 1.0,
+            "failed_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [],
+            "anchors": 6,
+            "verified_anchors": 6,
+            "cross_document_rows": 0,
+            "incomplete_cross_document_ids": [],
+            "invalid_anchor_ids": [],
+            "citation_check": {
+              "status": "not_checked"
+            }
+          },
+          "scope_failed_rows": [],
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "promise"
+              ],
+              "dimension_key": "position",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract",
+                "Sections I–IV",
+                "Notes"
+              ],
+              "coverage": "complete",
+              "criterion": "A position the text undertakes about an object under stated conditions, distinguished from positions it attributes to prior works or opponents",
+              "basis": "The text explicitly states and develops positions concerning capitalism as religion, money, capital, creative labour, entrepreneurship, economic myths and contemporary market radicalism.",
+              "limitations": [
+                "Earlier works cited by the text were not supplied in full, so cross-text continuity or revision cannot be independently established."
+              ],
+              "finding_ids": [
+                "D1.DOC1.F1",
+                "D1.DOC1.F2",
+                "D1.DOC1.F3",
+                "D1.DOC1.F4",
+                "D1.DOC1.F5",
+                "D1.DOC1.F6"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "promise": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 5946
+      },
+      {
+        "step": "extract",
+        "kind": "extract",
+        "dimension": "position",
+        "doc": "religion2022",
+        "model_requested": "openrouter/openai/gpt-5.6-luna",
+        "model_used": "openrouter/openai/gpt-5.6-luna",
+        "input_tokens": 11436,
+        "output_tokens": 1584,
+        "duration_ms": 12086,
+        "cost_usd": 0.0042,
+        "retries": 0,
+        "wall": {
+          "rows": 6,
+          "with_anchor": 6,
+          "verified": 6,
+          "trimmed": 1,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 6,
+          "verified_anchors": 6,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "after_reanchor": {
+            "rows": 6,
+            "with_anchor": 6,
+            "verified": 6,
+            "trimmed": 1,
+            "anchor_rate": 1.0,
+            "failed_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [],
+            "anchors": 6,
+            "verified_anchors": 6,
+            "cross_document_rows": 0,
+            "incomplete_cross_document_ids": [],
+            "invalid_anchor_ids": [],
+            "citation_check": {
+              "status": "not_checked"
+            }
+          },
+          "scope_failed_rows": [],
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "religion2022"
+              ],
+              "dimension_key": "position",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Religious and Secular Critique of Money",
+                "The Unbounding of Markets as the Basis of Modern Capitalism",
+                "The Intransparency of World Society to Itself: Luhmann and Hayek",
+                "The Religious Worldview and the Consequences of Its Dethronement",
+                "Universalism and the Contingency of the World: A Comparative Perspective on Capitalism and Religion",
+                "Conclusions"
+              ],
+              "coverage": "complete",
+              "criterion": "A position the text undertakes about an object under stated conditions, distinguished from positions it attributes to prior works or opponents.",
+              "basis": "The inspected text explicitly states the speaker’s sociological standpoint, defines capitalism and unbounded markets, advances comparative claims about capitalism and religion, and proposes a practical conclusion.",
+              "limitations": [
+                "The report analyzes the supplied text and does not independently inspect the cited earlier works."
+              ],
+              "finding_ids": [
+                "D1.DOC2.F1",
+                "D1.DOC2.F2",
+                "D1.DOC2.F3",
+                "D1.DOC2.F4",
+                "D1.DOC2.F5",
+                "D1.DOC2.F6"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "religion2022": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 6267
+      },
+      {
+        "step": "extract",
+        "kind": "extract",
+        "dimension": "claimed_relation",
+        "doc": "promise",
+        "model_requested": "openrouter/openai/gpt-5.6-luna",
+        "model_used": "openrouter/openai/gpt-5.6-luna",
+        "input_tokens": 17903,
+        "output_tokens": 1100,
+        "duration_ms": 9478,
+        "cost_usd": 0.0049,
+        "retries": 0,
+        "wall": {
+          "rows": 4,
+          "with_anchor": 4,
+          "verified": 4,
+          "trimmed": 0,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 4,
+          "verified_anchors": 4,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "after_reanchor": {
+            "rows": 4,
+            "with_anchor": 4,
+            "verified": 4,
+            "trimmed": 0,
+            "anchor_rate": 1.0,
+            "failed_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [],
+            "anchors": 4,
+            "verified_anchors": 4,
+            "cross_document_rows": 0,
+            "incomplete_cross_document_ids": [],
+            "invalid_anchor_ids": [],
+            "citation_check": {
+              "status": "not_checked"
+            }
+          },
+          "scope_failed_rows": [],
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "promise"
+              ],
+              "dimension_key": "claimed_relation",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract",
+                "Sections I–IV",
+                "Notes",
+                "References"
+              ],
+              "coverage": "complete",
+              "criterion": "An explicit statement that the text clarifies, extends, corrects, concedes, departs from, or declares continuity with a position in an earlier work",
+              "basis": "The article explicitly corrects Marx, combines Marx and Schumpeter, extends the analyses of money, and declares that its conclusions align with Benjamin while qualifying the comparison.",
+              "limitations": [
+                "Earlier supplied works are cited or summarized but not reproduced in full, limiting direct comparison with their exact wording."
+              ],
+              "finding_ids": [
+                "D2.DOC1.F1",
+                "D2.DOC1.F2",
+                "D2.DOC1.F3",
+                "D2.DOC1.F4"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "promise": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 4505
+      },
+      {
+        "step": "extract",
+        "kind": "extract",
+        "dimension": "claimed_relation",
+        "doc": "religion2022",
+        "model_requested": "openrouter/openai/gpt-5.6-luna",
+        "model_used": "openrouter/openai/gpt-5.6-luna",
+        "input_tokens": 11445,
+        "output_tokens": 2002,
+        "duration_ms": 15393,
+        "cost_usd": 0.0047,
+        "retries": 0,
+        "wall": {
+          "rows": 8,
+          "with_anchor": 8,
+          "verified": 8,
+          "trimmed": 1,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 8,
+          "verified_anchors": 8,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "after_reanchor": {
+            "rows": 8,
+            "with_anchor": 8,
+            "verified": 8,
+            "trimmed": 1,
+            "anchor_rate": 1.0,
+            "failed_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [],
+            "anchors": 8,
+            "verified_anchors": 8,
+            "cross_document_rows": 0,
+            "incomplete_cross_document_ids": [],
+            "invalid_anchor_ids": [],
+            "citation_check": {
+              "status": "not_checked"
+            }
+          },
+          "scope_failed_rows": [],
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "religion2022"
+              ],
+              "dimension_key": "claimed_relation",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Religious and Secular Critique of Money",
+                "The Unbounding of Markets as the Basis of Modern Capitalism",
+                "The Intransparency of World Society to Itself: Luhmann and Hayek",
+                "The Religious Worldview and the Consequences of Its Dethronement",
+                "Universalism and the Contingency of the World: A Comparative Perspective on Capitalism and Religion",
+                "Conclusions"
+              ],
+              "coverage": "complete",
+              "criterion": "Explicit textual statements presenting a move as a clarification, extension, correction, concession, or departure from an earlier position or cited account, including statements of what is retained or relinquished.",
+              "basis": "The inspected text contains explicit claims of bracketing theological money critique, extending Marx’s critique, clarifying capitalism against market economy, correcting readings of Smith and religion, extending the intransparency thesis, and rejecting rival explanations of capitalist growth.",
+              "limitations": [
+                "The source does not provide a full dated comparison with all of the author’s earlier works."
+              ],
+              "finding_ids": [
+                "[D2.DOC2.F1]",
+                "[D2.DOC2.F2]",
+                "[D2.DOC2.F3]",
+                "[D2.DOC2.F4]",
+                "[D2.DOC2.F5]",
+                "[D2.DOC2.F6]",
+                "[D2.DOC2.F7]",
+                "[D2.DOC2.F8]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "religion2022": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 8517
+      },
+      {
+        "step": "extract",
+        "kind": "extract",
+        "dimension": "scope_and_force",
+        "doc": "promise",
+        "model_requested": "openrouter/openai/gpt-5.6-luna",
+        "model_used": "openrouter/openai/gpt-5.6-luna",
+        "input_tokens": 36037,
+        "output_tokens": 1715,
+        "duration_ms": 16012,
+        "cost_usd": 0.0093,
+        "retries": 0,
+        "wall": {
+          "reanchor_receipts": [
+            {
+              "content": "## Findings ledger\n- [D3.DOC1.F5] Capitalist economic myths are distinguished from traditional religious myths by their historical transience — dim: scope_and_force — position: capitalist myths guide action but do not claim permanent validity — force: comparative and temporally bounded — conditions: capitalist myths undergo generation, diffusion, institutionalization and decline, unlike religious myths that generally claim timeless validity — anchor: \"In contrast to religious myths, which – as a rule – claim timeless validity, their development is characterized by a cyclical process of generation-diffusion-institutionalization and decline\" — doc: promise — confidence: high — trimmed-anchor: yes",
+              "partial": false,
+              "stop_reason": "stop",
+              "error": null
+            }
+          ],
+          "rows": 8,
+          "with_anchor": 8,
+          "verified": 7,
+          "trimmed": 0,
+          "anchor_rate": 0.875,
+          "failed_ids": [
+            "D3.DOC1.F5"
+          ],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 8,
+          "verified_anchors": 7,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "after_reanchor": {
+            "rows": 8,
+            "with_anchor": 8,
+            "verified": 8,
+            "trimmed": 1,
+            "anchor_rate": 1.0,
+            "failed_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [],
+            "anchors": 8,
+            "verified_anchors": 8,
+            "cross_document_rows": 0,
+            "incomplete_cross_document_ids": [],
+            "invalid_anchor_ids": [],
+            "citation_check": {
+              "status": "not_checked"
+            }
+          },
+          "scope_failed_rows": [],
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "promise"
+              ],
+              "dimension_key": "scope_and_force",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Abstract",
+                "I",
+                "II",
+                "III",
+                "IV"
+              ],
+              "coverage": "complete",
+              "criterion": "A scoped formulation must qualify a proposition by quantifier, modality, time, domain or condition, or alter its argumentative force through local wording.",
+              "basis": "The inspected text contains explicit qualifications including 'only', 'necessarily', conditional formulations, temporal phase restrictions, comparative contrasts and interrogative uncertainty.",
+              "limitations": [
+                "The assessment concerns scope and force of wording, not the truth of the article's substantive claims."
+              ],
+              "finding_ids": [
+                "[D3.DOC1.F1]",
+                "[D3.DOC1.F2]",
+                "[D3.DOC1.F3]",
+                "[D3.DOC1.F4]",
+                "[D3.DOC1.F5]",
+                "[D3.DOC1.F6]",
+                "[D3.DOC1.F7]",
+                "[D3.DOC1.F8]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "promise": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 1,
+        "dropped_ids": [],
+        "chars": 7060
+      },
+      {
+        "step": "extract",
+        "kind": "extract",
+        "dimension": "scope_and_force",
+        "doc": "religion2022",
+        "model_requested": "openrouter/openai/gpt-5.6-luna",
+        "model_used": "openrouter/openai/gpt-5.6-luna",
+        "input_tokens": 11443,
+        "output_tokens": 1421,
+        "duration_ms": 15579,
+        "cost_usd": 0.004,
+        "retries": 0,
+        "wall": {
+          "rows": 7,
+          "with_anchor": 7,
+          "verified": 7,
+          "trimmed": 2,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 7,
+          "verified_anchors": 7,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "after_reanchor": {
+            "rows": 7,
+            "with_anchor": 7,
+            "verified": 7,
+            "trimmed": 2,
+            "anchor_rate": 1.0,
+            "failed_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [],
+            "anchors": 7,
+            "verified_anchors": 7,
+            "cross_document_rows": 0,
+            "incomplete_cross_document_ids": [],
+            "invalid_anchor_ids": [],
+            "citation_check": {
+              "status": "not_checked"
+            }
+          },
+          "scope_failed_rows": [],
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "religion2022"
+              ],
+              "dimension_key": "scope_and_force",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Religious and Secular Critique of Money",
+                "The Unbounding of Markets as the Basis of Modern Capitalism",
+                "The Intransparency of World Society to Itself: Luhmann and Hayek",
+                "The Religious Worldview and the Consequences of Its Dethronement",
+                "Universalism and the Contingency of the World: A Comparative Perspective on Capitalism and Religion",
+                "Conclusions"
+              ],
+              "coverage": "complete",
+              "criterion": "A relevant instance qualifies a proposition by quantifier, modality, time, domain or an adjacent limiting clause.",
+              "basis": "The source contains explicit scope and force markers, including restrictions to Abrahamic world religions, historical-comparative qualifiers, partial efficacy claims and explicit limits on capitalism’s religious or practical capacities.",
+              "limitations": [
+                "The assessment concerns the supplied source text and does not independently verify the cited works."
+              ],
+              "finding_ids": [
+                "D3.DOC2.F1",
+                "D3.DOC2.F2",
+                "D3.DOC2.F3",
+                "D3.DOC2.F4",
+                "D3.DOC2.F5",
+                "D3.DOC2.F6",
+                "D3.DOC2.F7"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "religion2022": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 6473
+      },
+      {
+        "step": "extract",
+        "kind": "extract",
+        "dimension": "support",
+        "doc": "promise",
+        "model_requested": "openrouter/openai/gpt-5.6-luna",
+        "model_used": "openrouter/openai/gpt-5.6-luna",
+        "input_tokens": 17899,
+        "output_tokens": 1138,
+        "duration_ms": 12491,
+        "cost_usd": 0.0049,
+        "retries": 0,
+        "wall": {
+          "rows": 5,
+          "with_anchor": 5,
+          "verified": 5,
+          "trimmed": 0,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 5,
+          "verified_anchors": 5,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "after_reanchor": {
+            "rows": 5,
+            "with_anchor": 5,
+            "verified": 5,
+            "trimmed": 0,
+            "anchor_rate": 1.0,
+            "failed_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [],
+            "anchors": 5,
+            "verified_anchors": 5,
+            "cross_document_rows": 0,
+            "incomplete_cross_document_ids": [],
+            "invalid_anchor_ids": [],
+            "citation_check": {
+              "status": "not_checked"
+            }
+          },
+          "scope_failed_rows": [],
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "promise"
+              ],
+              "dimension_key": "support",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Abstract",
+                "Sections I-IV",
+                "Notes"
+              ],
+              "coverage": "complete",
+              "criterion": "Evidence or derivation offered for a position, including any identified new evidence or argument used to change its formulation",
+              "basis": "The source supplies multiple explicit derivations for its claims, including analyses of money and capital, a proposed Marx-Schumpeter synthesis, and a cyclical account of economic myths.",
+              "limitations": [
+                "The assessment concerns the supplied source text and does not compare its support with independently supplied earlier works."
+              ],
+              "finding_ids": [
+                "[D4.DOC1.F1]",
+                "[D4.DOC1.F2]",
+                "[D4.DOC1.F3]",
+                "[D4.DOC1.F4]",
+                "[D4.DOC1.F5]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "promise": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 5150
+      },
+      {
+        "step": "extract",
+        "kind": "extract",
+        "dimension": "support",
+        "doc": "religion2022",
+        "model_requested": "openrouter/openai/gpt-5.6-luna",
+        "model_used": "openrouter/openai/gpt-5.6-luna",
+        "input_tokens": 11441,
+        "output_tokens": 1561,
+        "duration_ms": 16347,
+        "cost_usd": 0.0042,
+        "retries": 0,
+        "wall": {
+          "rows": 6,
+          "with_anchor": 6,
+          "verified": 6,
+          "trimmed": 3,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 6,
+          "verified_anchors": 6,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "after_reanchor": {
+            "rows": 6,
+            "with_anchor": 6,
+            "verified": 6,
+            "trimmed": 3,
+            "anchor_rate": 1.0,
+            "failed_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [],
+            "anchors": 6,
+            "verified_anchors": 6,
+            "cross_document_rows": 0,
+            "incomplete_cross_document_ids": [],
+            "invalid_anchor_ids": [],
+            "citation_check": {
+              "status": "not_checked"
+            }
+          },
+          "scope_failed_rows": [],
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "religion2022"
+              ],
+              "dimension_key": "support",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Religious and Secular Critique of Money",
+                "The Unbounding of Markets as the Basis of Modern Capitalism",
+                "The Intransparency of World Society to Itself: Luhmann and Hayek",
+                "The Religious Worldview and the Consequences of Its Dethronement",
+                "Universalism and the Contingency of the World: A Comparative Perspective on Capitalism and Religion",
+                "Conclusions"
+              ],
+              "coverage": "complete",
+              "criterion": "Evidence or derivation is offered for the position, including any identified new evidence or new argument supporting a changed formulation.",
+              "basis": "The inspected source supplies historical derivations, theoretical comparisons, cited authorities, examples of consequences, and an explicitly stated concluding recommendation supporting its positions.",
+              "limitations": [
+                "The source relies substantially on cited scholarship and does not independently verify all cited evidence.",
+                "Several broad historical and global claims are supported primarily by synthesis and illustrative examples rather than systematic quantitative evidence."
+              ],
+              "finding_ids": [
+                "D4.DOC2.F1",
+                "D4.DOC2.F2",
+                "D4.DOC2.F3",
+                "D4.DOC2.F4",
+                "D4.DOC2.F5",
+                "D4.DOC2.F6"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "religion2022": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 6934
+      },
+      {
+        "step": "extract",
+        "kind": "extract",
+        "dimension": "concession_consequence",
+        "doc": "promise",
+        "model_requested": "openrouter/openai/gpt-5.6-luna",
+        "model_used": "openrouter/openai/gpt-5.6-luna",
+        "input_tokens": 17905,
+        "output_tokens": 1389,
+        "duration_ms": 11122,
+        "cost_usd": 0.0052,
+        "retries": 0,
+        "wall": {
+          "rows": 4,
+          "with_anchor": 4,
+          "verified": 4,
+          "trimmed": 0,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 4,
+          "verified_anchors": 4,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "after_reanchor": {
+            "rows": 4,
+            "with_anchor": 4,
+            "verified": 4,
+            "trimmed": 0,
+            "anchor_rate": 1.0,
+            "failed_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [],
+            "anchors": 4,
+            "verified_anchors": 4,
+            "cross_document_rows": 0,
+            "incomplete_cross_document_ids": [],
+            "invalid_anchor_ids": [],
+            "citation_check": {
+              "status": "not_checked"
+            }
+          },
+          "scope_failed_rows": [],
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "promise"
+              ],
+              "dimension_key": "concession_consequence",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Abstract",
+                "Sections I-IV",
+                "Notes"
+              ],
+              "coverage": "complete",
+              "criterion": "A retained finding must identify an explicit concession or limitation and explain whether the text narrows, preserves, distinguishes or leaves open the affected claim.",
+              "basis": "The inspected text explicitly concedes limitations in Marx's, Schumpeter's and traditional religion's accounts, then states how those concessions qualify or preserve the article's claims.",
+              "limitations": [
+                "Earlier works cited by the article, including Deutschmann's 1998 and 1999 works, were not supplied as separate texts, so cross-document revision cannot be fully assessed."
+              ],
+              "finding_ids": [
+                "[D5.DOC1.F1]",
+                "[D5.DOC1.F2]",
+                "[D5.DOC1.F3]",
+                "[D5.DOC1.F4]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "promise": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 6557
+      },
+      {
+        "step": "extract",
+        "kind": "extract",
+        "dimension": "concession_consequence",
+        "doc": "religion2022",
+        "model_requested": "openrouter/openai/gpt-5.6-luna",
+        "model_used": "openrouter/openai/gpt-5.6-luna",
+        "input_tokens": 11447,
+        "output_tokens": 1370,
+        "duration_ms": 12867,
+        "cost_usd": 0.0039,
+        "retries": 0,
+        "wall": {
+          "rows": 5,
+          "with_anchor": 5,
+          "verified": 5,
+          "trimmed": 0,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 5,
+          "verified_anchors": 5,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "after_reanchor": {
+            "rows": 5,
+            "with_anchor": 5,
+            "verified": 5,
+            "trimmed": 0,
+            "anchor_rate": 1.0,
+            "failed_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [],
+            "anchors": 5,
+            "verified_anchors": 5,
+            "cross_document_rows": 0,
+            "incomplete_cross_document_ids": [],
+            "invalid_anchor_ids": [],
+            "citation_check": {
+              "status": "not_checked"
+            }
+          },
+          "scope_failed_rows": [],
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "religion2022"
+              ],
+              "dimension_key": "concession_consequence",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Religious and Secular Critique of Money",
+                "The Unbounding of Markets as the Basis of Modern Capitalism",
+                "The Religious Worldview and the Consequences of Its Dethronement",
+                "Universalism and the Contingency of the World: A Comparative Perspective on Capitalism and Religion",
+                "Conclusions"
+              ],
+              "coverage": "complete",
+              "criterion": "A finding must identify an explicit concession, limitation or qualification and show how the text responds to it and what claim it narrows or preserves.",
+              "basis": "The inspected sections contain explicit qualifications concerning capitalism’s destructive effects, religion’s rationalizing contributions, capitalism’s inability to answer ultimate religious questions, its material performance, and the open society’s mixed consequences.",
+              "limitations": [
+                "The assessment concerns the supplied text and its cited positions; it does not compare the argument with uncited earlier works or establish the authors’ intentions."
+              ],
+              "finding_ids": [
+                "[D5.DOC2.F1]",
+                "[D5.DOC2.F2]",
+                "[D5.DOC2.F3]",
+                "[D5.DOC2.F4]",
+                "[D5.DOC2.F5]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "religion2022": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 6262
+      },
+      {
+        "step": "extract",
+        "kind": "extract",
+        "dimension": "revision_record",
+        "doc": "",
+        "model_requested": "openrouter/openai/gpt-5.6-luna",
+        "model_used": "openrouter/openai/gpt-5.6-luna",
+        "input_tokens": 13173,
+        "output_tokens": 1473,
+        "duration_ms": 12813,
+        "cost_usd": 0.0044,
+        "retries": 0,
+        "wall": {
+          "rows": 3,
+          "with_anchor": 3,
+          "verified": 3,
+          "trimmed": 0,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 6,
+          "verified_anchors": 6,
+          "cross_document_rows": 3,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "after_reanchor": {
+            "rows": 3,
+            "with_anchor": 3,
+            "verified": 3,
+            "trimmed": 0,
+            "anchor_rate": 1.0,
+            "failed_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [],
+            "anchors": 6,
+            "verified_anchors": 6,
+            "cross_document_rows": 3,
+            "incomplete_cross_document_ids": [],
+            "invalid_anchor_ids": [],
+            "citation_check": {
+              "status": "not_checked"
+            }
+          },
+          "scope_failed_rows": [],
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "promise",
+                "religion2022"
+              ],
+              "dimension_key": "revision_record",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "promise: Abstract",
+                "promise: Sections I–IV",
+                "promise: Notes",
+                "promise: References",
+                "religion2022: Religious and Secular Critique of Money",
+                "religion2022: The Unbounding of Markets as the Basis of Modern Capitalism",
+                "religion2022: The Intransparency of World Society to Itself: Luhmann and Hayek",
+                "religion2022: The Religious Worldview and the Consequences of Its Dethronement",
+                "religion2022: Universalism and the Contingency of the World: A Comparative Perspective on Capitalism and Religion",
+                "religion2022: Conclusions"
+              ],
+              "coverage": "complete",
+              "criterion": "A later or otherwise ordered supplied text must explicitly present continuity, qualification, extension, correction or revision of a position found in another supplied text, with both formulations anchored.",
+              "basis": "The two supplied reports contain anchored overlapping formulations concerning capitalism and religion, money’s socially universal significance, and capitalist growth through innovation. The retained findings record textual continuity or changed emphasis, but the reports do not establish chronology between the documents.",
+              "limitations": [
+                "Composition and publication dates are not supplied or settled.",
+                "The reports do not establish an explicit cross-reference from religion2022 to promise.",
+                "The assessment relies on per-document findings rather than direct inspection of every source.",
+                "Earlier works cited within the documents were not supplied in full."
+              ],
+              "finding_ids": [
+                "X6.F1",
+                "X6.F2",
+                "X6.F3"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "promise": "provided",
+                  "religion2022": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [],
+                "basis_material": "Per-document ledgers and scope reports; no direct source inspection in this invocation"
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 5652
+      },
+      {
+        "step": "verify",
+        "kind": "verify",
+        "dimension": "",
+        "doc": "promise",
+        "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+        "model_used": "openrouter/deepseek/deepseek-v4-pro",
+        "input_tokens": 25013,
+        "output_tokens": 13645,
+        "duration_ms": 185812,
+        "cost_usd": 0.0545,
+        "retries": 0,
+        "wall": {
+          "rows": 28,
+          "with_anchor": 28,
+          "verified": 28,
+          "trimmed": 3,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 28,
+          "verified_anchors": 28,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "carried_forward": 0,
+          "rejected": 0,
+          "added": 1,
+          "ruling_coverage": {
+            "original_count": 27,
+            "explicitly_ruled_count": 27,
+            "missing_or_unruled_ids": [],
+            "unexpected_nonadded_ids": [],
+            "invalid_original_status_ids": [],
+            "duplicate_original_ids": [],
+            "duplicate_ruling_ids": [],
+            "coverage_complete": true
+          },
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "promise"
+              ],
+              "dimension_key": "position",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract",
+                "I",
+                "II",
+                "III",
+                "IV"
+              ],
+              "coverage": "complete",
+              "criterion": "A position the text undertakes about an object under stated conditions, distinguished from positions it attributes to prior works or opponents.",
+              "basis": "All retained findings are anchored in explicit textual statements; the added attribution to Weber further fills a gap. No finding was rejected or weakened, and the text supplies clear positions and attributions throughout.",
+              "limitations": [
+                "Earlier works cited by the article were not supplied in full, so cross‑text continuity cannot be independently verified."
+              ],
+              "finding_ids": [
+                "D1.DOC1.F1",
+                "D1.DOC1.F2",
+                "D1.DOC1.F3",
+                "D1.DOC1.F4",
+                "D1.DOC1.F5",
+                "D1.DOC1.F6",
+                "V.DOC1.F1"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "Verbatim anchors were checked against the source; each finding accurately reflects the quoted material and its context. The added row fills an attribution gap. No contradictions or over‑readings were found.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "promise": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "promise"
+              ],
+              "dimension_key": "claimed_relation",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract",
+                "I",
+                "II",
+                "III",
+                "IV"
+              ],
+              "coverage": "complete",
+              "criterion": "An explicit statement that the text clarifies, extends, corrects, concedes, departs from, or declares continuity with a position in an earlier work.",
+              "basis": "All extracted findings are supported by the corresponding anchors; the text correctly identifies corrections, combinations, continuities and extensions. No rows were weakened or rejected.",
+              "limitations": [
+                "Earlier supplied works are cited or summarised but not reproduced in full, limiting direct comparison with their exact wording."
+              ],
+              "finding_ids": [
+                "D2.DOC1.F1",
+                "D2.DOC1.F2",
+                "D2.DOC1.F3",
+                "D2.DOC1.F4"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "Each claimed relation is directly expressed in the source; the anchors match the declared relations of correction, combination, continuity with qualification, and extension.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "promise": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "promise"
+              ],
+              "dimension_key": "scope_and_force",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "I",
+                "II",
+                "III",
+                "IV"
+              ],
+              "coverage": "complete",
+              "criterion": "A scoped formulation that qualifies a proposition by quantifier, modality, time, domain or condition, or alters its argumentative force through local wording.",
+              "basis": "All eight extracted findings are confirmed; each captures a clear scope or force qualifier present in the text. No duplicates or over‑reaching claims were detected.",
+              "limitations": [
+                "Assessment confined to the wording of this article; earlier texts were not supplied for comparison."
+              ],
+              "finding_ids": [
+                "D3.DOC1.F1",
+                "D3.DOC1.F2",
+                "D3.DOC1.F3",
+                "D3.DOC1.F4",
+                "D3.DOC1.F5",
+                "D3.DOC1.F6",
+                "D3.DOC1.F7",
+                "D3.DOC1.F8"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "Anchors directly show the qualifying language (e.g., ‘only’, ‘if’, ‘can only choose’, ‘can only be justified’) and the findings accurately report those scopes.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "promise": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "promise"
+              ],
+              "dimension_key": "support",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Abstract",
+                "I",
+                "II",
+                "III",
+                "IV"
+              ],
+              "coverage": "complete",
+              "criterion": "Evidence or derivation offered for a position, including any identified new evidence or argument used to change its formulation.",
+              "basis": "All five support findings are anchored in the source; they cover the combination of Simmel, Marx and constructivist myths, the logical paradox of money, the creative‑destruction requirement, the myth cycle model, and the corroboration with Benjamin.",
+              "limitations": [
+                "Comparison with independently supplied earlier works was beyond the scope of this single‑source verification."
+              ],
+              "finding_ids": [
+                "D4.DOC1.F1",
+                "D4.DOC1.F2",
+                "D4.DOC1.F3",
+                "D4.DOC1.F4",
+                "D4.DOC1.F5"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "Each support claim is rooted in a verbatim anchor; the text explicitly declares the combination and uses the quoted support to build its argument.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "promise": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "promise"
+              ],
+              "dimension_key": "concession_consequence",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "III",
+                "IV"
+              ],
+              "coverage": "complete",
+              "criterion": "A retained finding must identify an explicit concession or limitation and explain whether the text narrows, preserves, distinguishes or leaves open the affected claim.",
+              "basis": "Four concession rows are anchored in explicit acknowledgements of shortcomings in Marx, Schumpeter, the permanence of myths, and entrepreneurial individualism; each specifies the response and consequence.",
+              "limitations": [
+                "Earlier works by Deutschmann (1998, 1999) were not supplied as separate texts, so cross‑document revision cannot be fully assessed."
+              ],
+              "finding_ids": [
+                "D5.DOC1.F1",
+                "D5.DOC1.F2",
+                "D5.DOC1.F3",
+                "D5.DOC1.F4"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "Anchors directly reveal the concessions; the text’s responses and resulting consequences are unambiguously stated, confirming the findings.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "promise": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 29659
+      },
+      {
+        "step": "verify",
+        "kind": "verify",
+        "dimension": "",
+        "doc": "religion2022",
+        "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+        "model_used": "openrouter/deepseek/deepseek-v4-pro",
+        "input_tokens": 19826,
+        "output_tokens": 23191,
+        "duration_ms": 264001,
+        "cost_usd": 0.069,
+        "retries": 0,
+        "wall": {
+          "rows": 45,
+          "with_anchor": 45,
+          "verified": 45,
+          "trimmed": 9,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 45,
+          "verified_anchors": 45,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "carried_forward": 0,
+          "rejected": 13,
+          "added": 13,
+          "ruling_coverage": {
+            "original_count": 32,
+            "explicitly_ruled_count": 32,
+            "missing_or_unruled_ids": [],
+            "unexpected_nonadded_ids": [],
+            "invalid_original_status_ids": [],
+            "duplicate_original_ids": [],
+            "duplicate_ruling_ids": [],
+            "coverage_complete": true
+          },
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "religion2022"
+              ],
+              "dimension_key": "position",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Religious and Secular Critique of Money",
+                "The Unbounding of Markets as the Basis of Modern Capitalism",
+                "The Intransparency of World Society to Itself: Luhmann and Hayek",
+                "The Religious Worldview and the Consequences of Its Dethronement",
+                "Universalism and the Contingency of the World: A Comparative Perspective on Capitalism and Religion",
+                "Conclusions"
+              ],
+              "coverage": "complete",
+              "criterion": "A position the text undertakes about an object under stated conditions, distinguished from positions it attributes to prior works or opponents.",
+              "basis": "The inspected text explicitly states the speaker’s sociological standpoint, defines capitalism and unbounded markets, advances comparative claims about capitalism and religion, and proposes a practical conclusion.",
+              "limitations": [
+                "The analysis relies on the provided source text and does not independently verify the cited earlier works."
+              ],
+              "finding_ids": [
+                "D1.DOC2.F1",
+                "D1.DOC2.F2",
+                "D1.DOC2.F3",
+                "D1.DOC2.F4",
+                "D1.DOC2.F6",
+                "V.DOC2.F1"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "Verification against the source confirms the findings with verbatim anchors and appropriate scope qualifiers; the original D1.DOC2.F5 was rejected for an invalid anchor and replaced by V.DOC2.F1 with a complete verbatim anchor.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "religion2022": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "religion2022"
+              ],
+              "dimension_key": "claimed_relation",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Religious and Secular Critique of Money",
+                "The Unbounding of Markets as the Basis of Modern Capitalism",
+                "The Intransparency of World Society to Itself: Luhmann and Hayek",
+                "The Religious Worldview and the Consequences of Its Dethronement",
+                "Universalism and the Contingency of the World: A Comparative Perspective on Capitalism and Religion",
+                "Conclusions"
+              ],
+              "coverage": "complete",
+              "criterion": "Explicit textual statements presenting a move as a clarification, extension, correction, concession, or departure from an earlier position or cited account, including statements of what is retained or relinquished.",
+              "basis": "The inspected text contains explicit claims of bracketing theological money critique, extending Marx’s critique, clarifying capitalism against market economy, correcting readings of Smith and religion, extending the intransparency thesis, and rejecting rival explanations of capitalist growth.",
+              "limitations": [
+                "The source does not provide a full dated comparison with all of the author’s earlier works."
+              ],
+              "finding_ids": [
+                "D2.DOC2.F1",
+                "D2.DOC2.F3",
+                "D2.DOC2.F5",
+                "D2.DOC2.F6",
+                "D2.DOC2.F7",
+                "D2.DOC2.F8",
+                "V.DOC2.F2",
+                "V.DOC2.F3"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "Verification against the source confirms the findings with verbatim anchors; the original D2.DOC2.F2 and D2.DOC2.F4 were rejected for truncated or typographically mismatched anchors, and replaced by V.DOC2.F2 and V.DOC2.F3 respectively.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "religion2022": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "religion2022"
+              ],
+              "dimension_key": "scope_and_force",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Religious and Secular Critique of Money",
+                "The Unbounding of Markets as the Basis of Modern Capitalism",
+                "The Intransparency of World Society to Itself: Luhmann and Hayek",
+                "The Religious Worldview and the Consequences of Its Dethronement",
+                "Universalism and the Contingency of the World: A Comparative Perspective on Capitalism and Religion",
+                "Conclusions"
+              ],
+              "coverage": "complete",
+              "criterion": "A relevant instance qualifies a proposition by quantifier, modality, time, domain or an adjacent limiting clause.",
+              "basis": "The source contains explicit scope and force markers, including restrictions to Abrahamic world religions, historical-comparative qualifiers, partial efficacy claims and explicit limits on capitalism’s religious or practical capacities.",
+              "limitations": [
+                "The assessment concerns the supplied source text and does not independently verify the cited works."
+              ],
+              "finding_ids": [
+                "D3.DOC2.F2",
+                "D3.DOC2.F4",
+                "D3.DOC2.F5",
+                "D3.DOC2.F7",
+                "V.DOC2.F4",
+                "V.DOC2.F5",
+                "V.DOC2.F6"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "Verification against the source confirms the findings with verbatim anchors; original rows D3.DOC2.F1, D3.DOC2.F3, and D3.DOC2.F6 were rejected for truncated or misaligned anchors and replaced with properly anchored rows V.DOC2.F4, V.DOC2.F5, and V.DOC2.F6.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "religion2022": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "religion2022"
+              ],
+              "dimension_key": "support",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Religious and Secular Critique of Money",
+                "The Unbounding of Markets as the Basis of Modern Capitalism",
+                "The Intransparency of World Society to Itself: Luhmann and Hayek",
+                "The Religious Worldview and the Consequences of Its Dethronement",
+                "Universalism and the Contingency of the World: A Comparative Perspective on Capitalism and Religion",
+                "Conclusions"
+              ],
+              "coverage": "complete",
+              "criterion": "Evidence or derivation is offered for the position, including any identified new evidence or new argument supporting a changed formulation.",
+              "basis": "The inspected source supplies historical derivations, theoretical comparisons, cited authorities, examples of consequences, and an explicitly stated concluding recommendation supporting its positions.",
+              "limitations": [
+                "The source relies substantially on cited scholarship and does not independently verify all cited evidence.",
+                "Several broad historical and global claims are supported primarily by synthesis and illustrative examples rather than systematic quantitative evidence."
+              ],
+              "finding_ids": [
+                "D4.DOC2.F3",
+                "V.DOC2.F7",
+                "V.DOC2.F8",
+                "V.DOC2.F9",
+                "V.DOC2.F10",
+                "V.DOC2.F11"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "Verification against the source confirms the findings with verbatim anchors; original rows D4.DOC2.F1, D4.DOC2.F2, D4.DOC2.F4, D4.DOC2.F5, and D4.DOC2.F6 were rejected for truncated or misaligned anchors and replaced with properly anchored rows V.DOC2.F7 through V.DOC2.F11.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "religion2022": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "religion2022"
+              ],
+              "dimension_key": "concession_consequence",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Religious and Secular Critique of Money",
+                "The Unbounding of Markets as the Basis of Modern Capitalism",
+                "The Religious Worldview and the Consequences of Its Dethronement",
+                "Universalism and the Contingency of the World: A Comparative Perspective on Capitalism and Religion",
+                "Conclusions"
+              ],
+              "coverage": "complete",
+              "criterion": "A finding must identify an explicit concession, limitation or qualification and show how the text responds to it and what claim it narrows or preserves.",
+              "basis": "The inspected sections contain explicit qualifications concerning capitalism’s destructive effects, religion’s rationalizing contributions, capitalism’s inability to answer ultimate religious questions, its material performance, and the open society’s mixed consequences.",
+              "limitations": [
+                "The assessment concerns the supplied text and its cited positions; it does not compare the argument with uncited earlier works or establish the authors’ intentions."
+              ],
+              "finding_ids": [
+                "D5.DOC2.F1",
+                "D5.DOC2.F3",
+                "D5.DOC2.F4",
+                "V.DOC2.F12",
+                "V.DOC2.F13"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "Verification against the source confirms the findings with verbatim anchors; original rows D5.DOC2.F2 and D5.DOC2.F5 were rejected for typographically mismatched anchors and replaced with properly anchored rows V.DOC2.F12 and V.DOC2.F13.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "religion2022": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 44500
+      },
+      {
+        "step": "verify",
+        "kind": "verify",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+        "model_used": "openrouter/deepseek/deepseek-v4-pro",
+        "input_tokens": 31410,
+        "output_tokens": 22495,
+        "duration_ms": 329017,
+        "cost_usd": 0.0796,
+        "retries": 0,
+        "wall": {
+          "rows": 5,
+          "with_anchor": 5,
+          "verified": 4,
+          "trimmed": 0,
+          "anchor_rate": 0.8,
+          "failed_ids": [
+            "V.CORPUS.F2"
+          ],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 10,
+          "verified_anchors": 9,
+          "cross_document_rows": 5,
+          "incomplete_cross_document_ids": [
+            "V.CORPUS.F2"
+          ],
+          "invalid_anchor_ids": [
+            "V.CORPUS.F2"
+          ],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "carried_forward": 0,
+          "rejected": 0,
+          "added": 2,
+          "ruling_coverage": {
+            "original_count": 3,
+            "explicitly_ruled_count": 3,
+            "missing_or_unruled_ids": [],
+            "unexpected_nonadded_ids": [],
+            "invalid_original_status_ids": [],
+            "duplicate_original_ids": [],
+            "duplicate_ruling_ids": [],
+            "coverage_complete": true
+          },
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "promise",
+                "religion2022"
+              ],
+              "dimension_key": "revision_record",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "promise: Abstract",
+                "promise: I",
+                "promise: II",
+                "promise: III",
+                "promise: IV",
+                "religion2022: Religious and Secular Critique of Money",
+                "religion2022: The Unbounding of Markets as the Basis of Modern Capitalism",
+                "religion2022: The Intransparency of World Society to Itself: Luhmann and Hayek",
+                "religion2022: The Religious Worldview and the Consequences of Its Dethronement",
+                "religion2022: Universalism and the Contingency of the World: A Comparative Perspective on Capitalism and Religion",
+                "religion2022: Conclusions"
+              ],
+              "coverage": "complete",
+              "criterion": "Compare the later account with the earlier text itself and its qualifications; quote both sides of every relation and a separate presentation finding where needed.",
+              "basis": "Verified the three supplied rows against the supplied texts; all original anchor strings were located. X6.F1 and X6.F3 required narrowing to match their anchors. Two added cross-document rows capture overlooked paired passages. The retained findings record text-level revision_record comparisons, not author motives.",
+              "limitations": [
+                "religion2022 does not explicitly cite promise; the later relation is observed through paired formulations, not declared by the later text as a revision of the 2001 article.",
+                "Publication dates are supplied only at source level; composition order within those dates is not independently established.",
+                "Only the two supplied documents were checked; earlier cited works such as Benjamin, Simmel, Marx, Schumpeter and Deutschmann 2019 were not supplied in full."
+              ],
+              "finding_ids": [
+                "X6.F1",
+                "X6.F2",
+                "X6.F3",
+                "V.CORPUS.F1",
+                "V.CORPUS.F2"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "Each retained row was checked against the named document and surrounding context. X6.F1 and X6.F3 were narrowed where the original wording exceeded the anchors; the added rows have verbatim anchors in both documents. The scoped outcome is supported for the listed sections.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "promise": "provided",
+                  "religion2022": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Findings in this scope lost anchor evidence; this does not establish absence",
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [
+          "V.CORPUS.F2"
+        ],
+        "chars": 10362
+      },
+      {
+        "step": "synthesize",
+        "kind": "synthesize",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/openai/gpt-5.6-sol",
+        "model_used": "openrouter/openai/gpt-5.6-sol",
+        "input_tokens": 46334,
+        "output_tokens": 5980,
+        "duration_ms": 73055,
+        "cost_usd": 0.1525,
+        "retries": 0,
+        "wall": {
+          "rows": 20,
+          "with_anchor": 20,
+          "verified": 20,
+          "trimmed": 0,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 27,
+          "verified_anchors": 27,
+          "cross_document_rows": 5,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "checked",
+            "scope": "retained_ledger",
+            "missing_rejected_ids": [],
+            "missing_other_ids": []
+          },
+          "synthesis_contract": {
+            "failed_ids": [],
+            "incomplete_cross_document_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [],
+            "unknown_dimensions": [],
+            "missing_ledger": false,
+            "parse_error": "",
+            "incomplete_invocation": false
+          },
+          "synthesis_repair_attempts": [],
+          "rows_without_dimension": 0,
+          "has_ledger": true,
+          "prose_chars": 18905,
+          "missing_lineage": [],
+          "check_ruling_coverage": {
+            "coverage_complete": true,
+            "original_count": 62,
+            "explicitly_ruled_count": 62,
+            "reviews": [
+              {
+                "step": "verify",
+                "document": "promise",
+                "original_count": 27,
+                "explicitly_ruled_count": 27,
+                "missing_or_unruled_ids": [],
+                "unexpected_nonadded_ids": [],
+                "invalid_original_status_ids": [],
+                "duplicate_original_ids": [],
+                "duplicate_ruling_ids": [],
+                "coverage_complete": true
+              },
+              {
+                "step": "verify",
+                "document": "religion2022",
+                "original_count": 32,
+                "explicitly_ruled_count": 32,
+                "missing_or_unruled_ids": [],
+                "unexpected_nonadded_ids": [],
+                "invalid_original_status_ids": [],
+                "duplicate_original_ids": [],
+                "duplicate_ruling_ids": [],
+                "coverage_complete": true
+              },
+              {
+                "step": "verify",
+                "document": "",
+                "original_count": 3,
+                "explicitly_ruled_count": 3,
+                "missing_or_unruled_ids": [],
+                "unexpected_nonadded_ids": [],
+                "invalid_original_status_ids": [],
+                "duplicate_original_ids": [],
+                "duplicate_ruling_ids": [],
+                "coverage_complete": true
+              }
+            ]
+          },
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "promise"
+              ],
+              "dimension_key": "position",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract",
+                "I",
+                "II",
+                "III",
+                "IV"
+              ],
+              "coverage": "complete",
+              "criterion": "A position the text undertakes about an object under stated conditions, distinguished from positions it attributes to prior works or opponents.",
+              "basis": "All retained findings are anchored in explicit textual statements; the added attribution to Weber further fills a gap. No finding was rejected or weakened, and the text supplies clear positions and attributions throughout.",
+              "limitations": [
+                "Earlier works cited by the article were not supplied in full, so cross‑text continuity cannot be independently verified."
+              ],
+              "finding_ids": [
+                "D1.DOC1.F1",
+                "D1.DOC1.F2",
+                "D1.DOC1.F3",
+                "D1.DOC1.F4",
+                "D1.DOC1.F5",
+                "D1.DOC1.F6",
+                "V.DOC1.F1"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "Verbatim anchors were checked against the source; each finding accurately reflects the quoted material and its context. The added row fills an attribution gap. No contradictions or over‑readings were found.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "promise": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "promise"
+              ],
+              "dimension_key": "claimed_relation",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract",
+                "I",
+                "II",
+                "III",
+                "IV"
+              ],
+              "coverage": "complete",
+              "criterion": "An explicit statement that the text clarifies, extends, corrects, concedes, departs from, or declares continuity with a position in an earlier work.",
+              "basis": "All extracted findings are supported by the corresponding anchors; the text correctly identifies corrections, combinations, continuities and extensions. No rows were weakened or rejected.",
+              "limitations": [
+                "Earlier supplied works are cited or summarised but not reproduced in full, limiting direct comparison with their exact wording."
+              ],
+              "finding_ids": [
+                "D2.DOC1.F1",
+                "D2.DOC1.F2",
+                "D2.DOC1.F3",
+                "D2.DOC1.F4"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "Each claimed relation is directly expressed in the source; the anchors match the declared relations of correction, combination, continuity with qualification, and extension.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "promise": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "promise"
+              ],
+              "dimension_key": "scope_and_force",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "I",
+                "II",
+                "III",
+                "IV"
+              ],
+              "coverage": "complete",
+              "criterion": "A scoped formulation that qualifies a proposition by quantifier, modality, time, domain or condition, or alters its argumentative force through local wording.",
+              "basis": "All eight extracted findings are confirmed; each captures a clear scope or force qualifier present in the text. No duplicates or over‑reaching claims were detected.",
+              "limitations": [
+                "Assessment confined to the wording of this article; earlier texts were not supplied for comparison."
+              ],
+              "finding_ids": [
+                "D3.DOC1.F1",
+                "D3.DOC1.F2",
+                "D3.DOC1.F3",
+                "D3.DOC1.F4",
+                "D3.DOC1.F5",
+                "D3.DOC1.F6",
+                "D3.DOC1.F7",
+                "D3.DOC1.F8"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "Anchors directly show the qualifying language (e.g., ‘only’, ‘if’, ‘can only choose’, ‘can only be justified’) and the findings accurately report those scopes.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "promise": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "promise"
+              ],
+              "dimension_key": "support",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Abstract",
+                "I",
+                "II",
+                "III",
+                "IV"
+              ],
+              "coverage": "complete",
+              "criterion": "Evidence or derivation offered for a position, including any identified new evidence or argument used to change its formulation.",
+              "basis": "All five support findings are anchored in the source; they cover the combination of Simmel, Marx and constructivist myths, the logical paradox of money, the creative‑destruction requirement, the myth cycle model, and the corroboration with Benjamin.",
+              "limitations": [
+                "Comparison with independently supplied earlier works was beyond the scope of this single‑source verification."
+              ],
+              "finding_ids": [
+                "D4.DOC1.F1",
+                "D4.DOC1.F2",
+                "D4.DOC1.F3",
+                "D4.DOC1.F4",
+                "D4.DOC1.F5"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "Each support claim is rooted in a verbatim anchor; the text explicitly declares the combination and uses the quoted support to build its argument.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "promise": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "promise"
+              ],
+              "dimension_key": "concession_consequence",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "III",
+                "IV"
+              ],
+              "coverage": "complete",
+              "criterion": "A retained finding must identify an explicit concession or limitation and explain whether the text narrows, preserves, distinguishes or leaves open the affected claim.",
+              "basis": "Four concession rows are anchored in explicit acknowledgements of shortcomings in Marx, Schumpeter, the permanence of myths, and entrepreneurial individualism; each specifies the response and consequence.",
+              "limitations": [
+                "Earlier works by Deutschmann (1998, 1999) were not supplied as separate texts, so cross‑document revision cannot be fully assessed."
+              ],
+              "finding_ids": [
+                "D5.DOC1.F1",
+                "D5.DOC1.F2",
+                "D5.DOC1.F3",
+                "D5.DOC1.F4"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "Anchors directly reveal the concessions; the text’s responses and resulting consequences are unambiguously stated, confirming the findings.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "promise": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "religion2022"
+              ],
+              "dimension_key": "position",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Religious and Secular Critique of Money",
+                "The Unbounding of Markets as the Basis of Modern Capitalism",
+                "The Intransparency of World Society to Itself: Luhmann and Hayek",
+                "The Religious Worldview and the Consequences of Its Dethronement",
+                "Universalism and the Contingency of the World: A Comparative Perspective on Capitalism and Religion",
+                "Conclusions"
+              ],
+              "coverage": "complete",
+              "criterion": "A position the text undertakes about an object under stated conditions, distinguished from positions it attributes to prior works or opponents.",
+              "basis": "The inspected text explicitly states the speaker’s sociological standpoint, defines capitalism and unbounded markets, advances comparative claims about capitalism and religion, and proposes a practical conclusion.",
+              "limitations": [
+                "The analysis relies on the provided source text and does not independently verify the cited earlier works."
+              ],
+              "finding_ids": [
+                "D1.DOC2.F1",
+                "D1.DOC2.F2",
+                "D1.DOC2.F3",
+                "D1.DOC2.F4",
+                "D1.DOC2.F6",
+                "V.DOC2.F1"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "Verification against the source confirms the findings with verbatim anchors and appropriate scope qualifiers; the original D1.DOC2.F5 was rejected for an invalid anchor and replaced by V.DOC2.F1 with a complete verbatim anchor.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "religion2022": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "religion2022"
+              ],
+              "dimension_key": "claimed_relation",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Religious and Secular Critique of Money",
+                "The Unbounding of Markets as the Basis of Modern Capitalism",
+                "The Intransparency of World Society to Itself: Luhmann and Hayek",
+                "The Religious Worldview and the Consequences of Its Dethronement",
+                "Universalism and the Contingency of the World: A Comparative Perspective on Capitalism and Religion",
+                "Conclusions"
+              ],
+              "coverage": "complete",
+              "criterion": "Explicit textual statements presenting a move as a clarification, extension, correction, concession, or departure from an earlier position or cited account, including statements of what is retained or relinquished.",
+              "basis": "The inspected text contains explicit claims of bracketing theological money critique, extending Marx’s critique, clarifying capitalism against market economy, correcting readings of Smith and religion, extending the intransparency thesis, and rejecting rival explanations of capitalist growth.",
+              "limitations": [
+                "The source does not provide a full dated comparison with all of the author’s earlier works."
+              ],
+              "finding_ids": [
+                "D2.DOC2.F1",
+                "D2.DOC2.F3",
+                "D2.DOC2.F5",
+                "D2.DOC2.F6",
+                "D2.DOC2.F7",
+                "D2.DOC2.F8",
+                "V.DOC2.F2",
+                "V.DOC2.F3"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "Verification against the source confirms the findings with verbatim anchors; the original D2.DOC2.F2 and D2.DOC2.F4 were rejected for truncated or typographically mismatched anchors, and replaced by V.DOC2.F2 and V.DOC2.F3 respectively.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "religion2022": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "religion2022"
+              ],
+              "dimension_key": "scope_and_force",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Religious and Secular Critique of Money",
+                "The Unbounding of Markets as the Basis of Modern Capitalism",
+                "The Intransparency of World Society to Itself: Luhmann and Hayek",
+                "The Religious Worldview and the Consequences of Its Dethronement",
+                "Universalism and the Contingency of the World: A Comparative Perspective on Capitalism and Religion",
+                "Conclusions"
+              ],
+              "coverage": "complete",
+              "criterion": "A relevant instance qualifies a proposition by quantifier, modality, time, domain or an adjacent limiting clause.",
+              "basis": "The source contains explicit scope and force markers, including restrictions to Abrahamic world religions, historical-comparative qualifiers, partial efficacy claims and explicit limits on capitalism’s religious or practical capacities.",
+              "limitations": [
+                "The assessment concerns the supplied source text and does not independently verify the cited works."
+              ],
+              "finding_ids": [
+                "D3.DOC2.F2",
+                "D3.DOC2.F4",
+                "D3.DOC2.F5",
+                "D3.DOC2.F7",
+                "V.DOC2.F4",
+                "V.DOC2.F5",
+                "V.DOC2.F6"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "Verification against the source confirms the findings with verbatim anchors; original rows D3.DOC2.F1, D3.DOC2.F3, and D3.DOC2.F6 were rejected for truncated or misaligned anchors and replaced with properly anchored rows V.DOC2.F4, V.DOC2.F5, and V.DOC2.F6.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "religion2022": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "religion2022"
+              ],
+              "dimension_key": "support",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Religious and Secular Critique of Money",
+                "The Unbounding of Markets as the Basis of Modern Capitalism",
+                "The Intransparency of World Society to Itself: Luhmann and Hayek",
+                "The Religious Worldview and the Consequences of Its Dethronement",
+                "Universalism and the Contingency of the World: A Comparative Perspective on Capitalism and Religion",
+                "Conclusions"
+              ],
+              "coverage": "complete",
+              "criterion": "Evidence or derivation is offered for the position, including any identified new evidence or new argument supporting a changed formulation.",
+              "basis": "The inspected source supplies historical derivations, theoretical comparisons, cited authorities, examples of consequences, and an explicitly stated concluding recommendation supporting its positions.",
+              "limitations": [
+                "The source relies substantially on cited scholarship and does not independently verify all cited evidence.",
+                "Several broad historical and global claims are supported primarily by synthesis and illustrative examples rather than systematic quantitative evidence."
+              ],
+              "finding_ids": [
+                "D4.DOC2.F3",
+                "V.DOC2.F7",
+                "V.DOC2.F8",
+                "V.DOC2.F9",
+                "V.DOC2.F10",
+                "V.DOC2.F11"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "Verification against the source confirms the findings with verbatim anchors; original rows D4.DOC2.F1, D4.DOC2.F2, D4.DOC2.F4, D4.DOC2.F5, and D4.DOC2.F6 were rejected for truncated or misaligned anchors and replaced with properly anchored rows V.DOC2.F7 through V.DOC2.F11.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "religion2022": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "religion2022"
+              ],
+              "dimension_key": "concession_consequence",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Religious and Secular Critique of Money",
+                "The Unbounding of Markets as the Basis of Modern Capitalism",
+                "The Religious Worldview and the Consequences of Its Dethronement",
+                "Universalism and the Contingency of the World: A Comparative Perspective on Capitalism and Religion",
+                "Conclusions"
+              ],
+              "coverage": "complete",
+              "criterion": "A finding must identify an explicit concession, limitation or qualification and show how the text responds to it and what claim it narrows or preserves.",
+              "basis": "The inspected sections contain explicit qualifications concerning capitalism’s destructive effects, religion’s rationalizing contributions, capitalism’s inability to answer ultimate religious questions, its material performance, and the open society’s mixed consequences.",
+              "limitations": [
+                "The assessment concerns the supplied text and its cited positions; it does not compare the argument with uncited earlier works or establish the authors’ intentions."
+              ],
+              "finding_ids": [
+                "D5.DOC2.F1",
+                "D5.DOC2.F3",
+                "D5.DOC2.F4",
+                "V.DOC2.F12",
+                "V.DOC2.F13"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "Verification against the source confirms the findings with verbatim anchors; original rows D5.DOC2.F2 and D5.DOC2.F5 were rejected for typographically mismatched anchors and replaced with properly anchored rows V.DOC2.F12 and V.DOC2.F13.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "religion2022": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "promise",
+                "religion2022"
+              ],
+              "dimension_key": "revision_record",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "promise: Abstract",
+                "promise: I",
+                "promise: II",
+                "promise: III",
+                "promise: IV",
+                "religion2022: Religious and Secular Critique of Money",
+                "religion2022: The Unbounding of Markets as the Basis of Modern Capitalism",
+                "religion2022: The Intransparency of World Society to Itself: Luhmann and Hayek",
+                "religion2022: The Religious Worldview and the Consequences of Its Dethronement",
+                "religion2022: Universalism and the Contingency of the World: A Comparative Perspective on Capitalism and Religion",
+                "religion2022: Conclusions"
+              ],
+              "coverage": "complete",
+              "criterion": "Compare the later account with the earlier text itself and its qualifications; quote both sides of every relation and a separate presentation finding where needed.",
+              "basis": "Verified the three supplied rows against the supplied texts; all original anchor strings were located. X6.F1 and X6.F3 required narrowing to match their anchors. Two added cross-document rows capture overlooked paired passages. The retained findings record text-level revision_record comparisons, not author motives.",
+              "limitations": [
+                "religion2022 does not explicitly cite promise; the later relation is observed through paired formulations, not declared by the later text as a revision of the 2001 article.",
+                "Publication dates are supplied only at source level; composition order within those dates is not independently established.",
+                "Only the two supplied documents were checked; earlier cited works such as Benjamin, Simmel, Marx, Schumpeter and Deutschmann 2019 were not supplied in full."
+              ],
+              "finding_ids": [
+                "X6.F1",
+                "X6.F2",
+                "X6.F3",
+                "V.CORPUS.F1",
+                "V.CORPUS.F2"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "Each retained row was checked against the named document and surrounding context. X6.F1 and X6.F3 were narrowed where the original wording exceeded the anchors; the added rows have verbatim anchors in both documents. The scoped outcome is supported for the listed sections.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "promise": "provided",
+                  "religion2022": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Findings in this scope lost anchor evidence; this does not establish absence",
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            }
+          ],
+          "synthesis_evidence": {
+            "partial": false,
+            "stop_reason": "stop",
+            "error": null,
+            "ledger_parse_error": null
+          }
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 28355
+      }
+    ]
+  },
+  "audit": {
+    "wall": {
+      "rows": 20,
+      "with_anchor": 20,
+      "verified": 20,
+      "trimmed": 0,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 27,
+      "verified_anchors": 27,
+      "cross_document_rows": 5,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "rows": 20,
+    "raw_anchors": 27,
+    "raw_exact": 24,
+    "unknown_dimensions": [],
+    "missing_table_ids": [],
+    "missing_prose_ids": []
+  }
+}

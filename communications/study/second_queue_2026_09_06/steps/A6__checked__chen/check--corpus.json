@@ -1,0 +1,283 @@
+{
+  "step": "check",
+  "kind": "verify",
+  "dimension": "",
+  "doc": "",
+  "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+  "model_used": "openrouter/deepseek/deepseek-v4-pro",
+  "input_tokens": 20110,
+  "output_tokens": 11249,
+  "duration_ms": 71058,
+  "cost_usd": 0.0444,
+  "retries": 0,
+  "wall": {
+    "rows": 14,
+    "with_anchor": 14,
+    "verified": 13,
+    "trimmed": 4,
+    "anchor_rate": 0.929,
+    "failed_ids": [
+      "F10"
+    ],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 18,
+    "verified_anchors": 17,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "checked",
+      "scope": "retained_ledger",
+      "missing_rejected_ids": [],
+      "missing_other_ids": []
+    },
+    "check_in": 14,
+    "check_confirmed": 14,
+    "check_weakened": 0,
+    "check_rejected": 0,
+    "check_added": 0,
+    "check_added_dropped": 2,
+    "check_carried": 0,
+    "check_unverified": 1,
+    "check_ruling_coverage": {
+      "original_count": 14,
+      "explicitly_ruled_count": 14,
+      "missing_or_unruled_ids": [],
+      "unexpected_nonadded_ids": [],
+      "invalid_original_status_ids": [],
+      "duplicate_original_ids": [],
+      "duplicate_ruling_ids": [],
+      "coverage_complete": true
+    },
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "operators",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Abstract and introduction",
+          "Jaeggi’s critique of moralism and historicism",
+          "Problem-solving and forms of live: Jaeggi’s pragmatist theory of progress",
+          "Criticism: Ignorance of the problem of incommensurability",
+          "Alternative: From pragmatist to psychologist understanding of progress",
+          "Conclusion"
+        ],
+        "coverage": "complete",
+        "criterion": "Explicit must, may, cannot, should, ought, possibility, necessity, or epistemic hedges retained with proposition and owner",
+        "basis": "All modal claims identified are supported by verbatim anchors and correctly attributed to their authors.",
+        "limitations": [
+          "Quoted claims by Jaeggi, Kuhn, and others are distinguished from Chen’s commitments.",
+          "Coverage is local to the supplied article."
+        ],
+        "finding_ids": [
+          "F1",
+          "F2",
+          "F3",
+          "F4",
+          "F6"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "Each finding was checked against the source; all anchors are verbatim and the modality matches the text.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "scope",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Problem-solving and forms of live: Jaeggi’s pragmatist theory of progress",
+          "Criticism: Ignorance of the problem of incommensurability",
+          "Alternative: From pragmatist to psychologist understanding of progress"
+        ],
+        "coverage": "complete",
+        "criterion": "Conditions, objects, quantifiers, and realization clauses falling under modal operators",
+        "basis": "The regression condition is clearly scoped with an if‑clause and the associated finding faithfully represents it.",
+        "limitations": [
+          "The text uses qualitative rather than formal quantifiers.",
+          "Only one scope finding was retained; additional scope conditions may be implicit but not explicitly flagged."
+        ],
+        "finding_ids": [
+          "F8"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "Anchor for F8 is now a verbatim complete sentence; the condition is correctly extracted.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "warrant",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Criticism: Ignorance of the problem of incommensurability",
+          "Alternative: From pragmatist to psychologist understanding of progress",
+          "Conclusion"
+        ],
+        "coverage": "complete",
+        "criterion": "Conceptual, empirical, normative, or practical support offered for the exact modal force",
+        "basis": "Warrants drawn from incommensurability, community-based choice, and intentionality‑relative social facts are present and supported by verbatim citations.",
+        "limitations": [
+          "The absolute impossibility claim relies on philosophical argument rather than empirical evidence.",
+          "The warrant for non‑accumulation is conceptual, not empirical."
+        ],
+        "finding_ids": [
+          "F5",
+          "F13",
+          "F14"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "Anchors verified; the warrants are logically connected to the modal conclusions.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "force_changes",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Criticism: Ignorance of the problem of incommensurability",
+          "Alternative: From pragmatist to psychologist understanding of progress",
+          "Conclusion"
+        ],
+        "coverage": "complete",
+        "criterion": "Aligned formulations in which the force changes while proposition and conditions are compared",
+        "basis": "The shift from case‑level possibility to a broader near‑impossibility claim is clearly documented in the same paragraph.",
+        "limitations": [
+          "The broader claim is not an outright impossibility; the force change correctly reflects this."
+        ],
+        "finding_ids": [
+          "F12"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "Both anchors are verbatim; the transition in force is accurately traced.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "possibility_tests",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Problem-solving and forms of live: Jaeggi’s pragmatist theory of progress",
+          "Criticism: Ignorance of the problem of incommensurability",
+          "Alternative: From pragmatist to psychologist understanding of progress"
+        ],
+        "coverage": "complete",
+        "criterion": "Scenarios or alternatives that vary a relevant condition and test a modal conclusion",
+        "basis": "The article uses reform/revolution, know‑how redefinition, marriage, Nazi problem‑solving, and childhood as thought experiments to test Jaeggi’s claims.",
+        "limitations": [
+          "The marriage case is asserted rather than independently defended.",
+          "The know‑how scenario establishes conditional growth, not unrestricted accumulation.",
+          "The Nazi and childhood examples serve as counterexamples, not full‑fledged alternative theories."
+        ],
+        "finding_ids": [
+          "F9",
+          "F10",
+          "F11",
+          "V.F1",
+          "V.F2"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "Anchors for all five findings are verbatim; each scenario challenges a modal aspect of Jaeggi’s or pragmatist claims.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Findings in this scope lost anchor evidence; this does not establish absence",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "thresholds",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Problem-solving and forms of live: Jaeggi’s pragmatist theory of progress",
+          "Criticism: Ignorance of the problem of incommensurability"
+        ],
+        "coverage": "complete",
+        "criterion": "A boundary between progress and non‑progress or regression that performs classificatory work",
+        "basis": "Jaeggi’s criterion (solved‑problems threshold) is explicitly stated and tested against counterexamples.",
+        "limitations": [
+          "The boundary is qualitative and contested, not numerically precise."
+        ],
+        "finding_ids": [
+          "F7"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "Anchor now verbatim; the threshold is correctly attributed to Jaeggi as presented in the article.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 18075
+}

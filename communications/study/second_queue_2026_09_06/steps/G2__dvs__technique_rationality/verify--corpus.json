@@ -1,0 +1,85 @@
+{
+  "step": "verify",
+  "kind": "verify",
+  "dimension": "",
+  "doc": "",
+  "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+  "model_used": "openrouter/deepseek/deepseek-v4-pro",
+  "input_tokens": 32903,
+  "output_tokens": 4458,
+  "duration_ms": 104978,
+  "cost_usd": 0.0436,
+  "retries": 0,
+  "wall": {
+    "rows": 1,
+    "with_anchor": 1,
+    "verified": 1,
+    "trimmed": 1,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 2,
+    "verified_anchors": 2,
+    "cross_document_rows": 1,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "carried_forward": 0,
+    "rejected": 0,
+    "added": 1,
+    "ruling_coverage": {
+      "original_count": 0,
+      "explicitly_ruled_count": 0,
+      "missing_or_unruled_ids": [],
+      "unexpected_nonadded_ids": [],
+      "invalid_original_status_ids": [],
+      "duplicate_original_ids": [],
+      "duplicate_ruling_ids": [],
+      "coverage_complete": false
+    },
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "technique",
+          "rationality"
+        ],
+        "dimension_key": "concept_trajectories",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Technique and social organisation (technique)",
+          "Specificity and Social-Historical Relativity of the Capitalist Institution (rationality)"
+        ],
+        "coverage": "partial",
+        "criterion": "A cross-document finding requires the same concept or explicitly paired formulations in at least two supplied works, with anchored passages supporting an aligned comparison; an ordered trajectory additionally requires dates, uptake, or another explicit order basis.",
+        "basis": "The two works share a concrete claim about the orientation of capitalist technology toward eliminating human role. The anchors are verbatim, the relationship is one of aligned assertion without explicit ordering.",
+        "limitations": [
+          "Only the specific claim on technique’s orientation is compared; other potential continuities or shifts are not covered.",
+          "No explicit inter-textual reference exists; the findings rest solely on the co-presence of similar formulations."
+        ],
+        "finding_ids": [
+          "V.CORPUS.F1"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "Both texts contain passages asserting that capitalist technology is oriented toward eliminating human role; the anchors are verbatim and the relationship is aligned. No contradictory evidence appears within the inspected sections.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "technique": "provided",
+            "rationality": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 2802
+}

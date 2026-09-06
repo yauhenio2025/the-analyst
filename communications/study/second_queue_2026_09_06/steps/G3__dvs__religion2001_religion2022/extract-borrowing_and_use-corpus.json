@@ -1,0 +1,86 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "borrowing_and_use",
+  "doc": "",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 13076,
+  "output_tokens": 1552,
+  "duration_ms": 17327,
+  "cost_usd": 0.0045,
+  "retries": 0,
+  "wall": {
+    "rows": 3,
+    "with_anchor": 3,
+    "verified": 3,
+    "trimmed": 0,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 6,
+    "verified_anchors": 6,
+    "cross_document_rows": 3,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 3,
+      "with_anchor": 3,
+      "verified": 3,
+      "trimmed": 0,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 6,
+      "verified_anchors": 6,
+      "cross_document_rows": 3,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "religion2001",
+          "religion2022"
+        ],
+        "dimension_key": "borrowing_and_use",
+        "outcome": "inconclusive",
+        "sections_inspected": [],
+        "coverage": "unknown",
+        "criterion": "Not reported; consult the process framing and method cards.",
+        "basis": "No valid scoped assessment was returned.",
+        "limitations": [],
+        "finding_ids": [],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": false,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "religion2001": "provided",
+            "religion2022": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Malformed/missing scope records: 1 validation error for ScopeOutcome\nsections_inspected\n  Value error, scope lists require distinct nonblank strings [type=value_error, input_value=['Abstract', 'The Paradox...eligion', 'Conclusions'], input_type=list]\n    For further information visit https://errors.pydantic.dev/2.10/v/value_error"
+          ],
+          "basis_material": "Per-document ledgers and scope reports; no direct source inspection in this invocation"
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 6456
+}

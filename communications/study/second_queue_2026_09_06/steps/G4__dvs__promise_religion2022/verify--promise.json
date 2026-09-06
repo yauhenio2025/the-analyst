@@ -1,0 +1,254 @@
+{
+  "step": "verify",
+  "kind": "verify",
+  "dimension": "",
+  "doc": "promise",
+  "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+  "model_used": "openrouter/deepseek/deepseek-v4-pro",
+  "input_tokens": 25013,
+  "output_tokens": 13645,
+  "duration_ms": 185812,
+  "cost_usd": 0.0545,
+  "retries": 0,
+  "wall": {
+    "rows": 28,
+    "with_anchor": 28,
+    "verified": 28,
+    "trimmed": 3,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 28,
+    "verified_anchors": 28,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "carried_forward": 0,
+    "rejected": 0,
+    "added": 1,
+    "ruling_coverage": {
+      "original_count": 27,
+      "explicitly_ruled_count": 27,
+      "missing_or_unruled_ids": [],
+      "unexpected_nonadded_ids": [],
+      "invalid_original_status_ids": [],
+      "duplicate_original_ids": [],
+      "duplicate_ruling_ids": [],
+      "coverage_complete": true
+    },
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "promise"
+        ],
+        "dimension_key": "position",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Abstract",
+          "I",
+          "II",
+          "III",
+          "IV"
+        ],
+        "coverage": "complete",
+        "criterion": "A position the text undertakes about an object under stated conditions, distinguished from positions it attributes to prior works or opponents.",
+        "basis": "All retained findings are anchored in explicit textual statements; the added attribution to Weber further fills a gap. No finding was rejected or weakened, and the text supplies clear positions and attributions throughout.",
+        "limitations": [
+          "Earlier works cited by the article were not supplied in full, so cross‑text continuity cannot be independently verified."
+        ],
+        "finding_ids": [
+          "D1.DOC1.F1",
+          "D1.DOC1.F2",
+          "D1.DOC1.F3",
+          "D1.DOC1.F4",
+          "D1.DOC1.F5",
+          "D1.DOC1.F6",
+          "V.DOC1.F1"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "Verbatim anchors were checked against the source; each finding accurately reflects the quoted material and its context. The added row fills an attribution gap. No contradictions or over‑readings were found.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "promise": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "promise"
+        ],
+        "dimension_key": "claimed_relation",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Abstract",
+          "I",
+          "II",
+          "III",
+          "IV"
+        ],
+        "coverage": "complete",
+        "criterion": "An explicit statement that the text clarifies, extends, corrects, concedes, departs from, or declares continuity with a position in an earlier work.",
+        "basis": "All extracted findings are supported by the corresponding anchors; the text correctly identifies corrections, combinations, continuities and extensions. No rows were weakened or rejected.",
+        "limitations": [
+          "Earlier supplied works are cited or summarised but not reproduced in full, limiting direct comparison with their exact wording."
+        ],
+        "finding_ids": [
+          "D2.DOC1.F1",
+          "D2.DOC1.F2",
+          "D2.DOC1.F3",
+          "D2.DOC1.F4"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "Each claimed relation is directly expressed in the source; the anchors match the declared relations of correction, combination, continuity with qualification, and extension.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "promise": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "promise"
+        ],
+        "dimension_key": "scope_and_force",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "I",
+          "II",
+          "III",
+          "IV"
+        ],
+        "coverage": "complete",
+        "criterion": "A scoped formulation that qualifies a proposition by quantifier, modality, time, domain or condition, or alters its argumentative force through local wording.",
+        "basis": "All eight extracted findings are confirmed; each captures a clear scope or force qualifier present in the text. No duplicates or over‑reaching claims were detected.",
+        "limitations": [
+          "Assessment confined to the wording of this article; earlier texts were not supplied for comparison."
+        ],
+        "finding_ids": [
+          "D3.DOC1.F1",
+          "D3.DOC1.F2",
+          "D3.DOC1.F3",
+          "D3.DOC1.F4",
+          "D3.DOC1.F5",
+          "D3.DOC1.F6",
+          "D3.DOC1.F7",
+          "D3.DOC1.F8"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "Anchors directly show the qualifying language (e.g., ‘only’, ‘if’, ‘can only choose’, ‘can only be justified’) and the findings accurately report those scopes.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "promise": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "promise"
+        ],
+        "dimension_key": "support",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Abstract",
+          "I",
+          "II",
+          "III",
+          "IV"
+        ],
+        "coverage": "complete",
+        "criterion": "Evidence or derivation offered for a position, including any identified new evidence or argument used to change its formulation.",
+        "basis": "All five support findings are anchored in the source; they cover the combination of Simmel, Marx and constructivist myths, the logical paradox of money, the creative‑destruction requirement, the myth cycle model, and the corroboration with Benjamin.",
+        "limitations": [
+          "Comparison with independently supplied earlier works was beyond the scope of this single‑source verification."
+        ],
+        "finding_ids": [
+          "D4.DOC1.F1",
+          "D4.DOC1.F2",
+          "D4.DOC1.F3",
+          "D4.DOC1.F4",
+          "D4.DOC1.F5"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "Each support claim is rooted in a verbatim anchor; the text explicitly declares the combination and uses the quoted support to build its argument.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "promise": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      },
+      {
+        "document_keys": [
+          "promise"
+        ],
+        "dimension_key": "concession_consequence",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "III",
+          "IV"
+        ],
+        "coverage": "complete",
+        "criterion": "A retained finding must identify an explicit concession or limitation and explain whether the text narrows, preserves, distinguishes or leaves open the affected claim.",
+        "basis": "Four concession rows are anchored in explicit acknowledgements of shortcomings in Marx, Schumpeter, the permanence of myths, and entrepreneurial individualism; each specifies the response and consequence.",
+        "limitations": [
+          "Earlier works by Deutschmann (1998, 1999) were not supplied as separate texts, so cross‑document revision cannot be fully assessed."
+        ],
+        "finding_ids": [
+          "D5.DOC1.F1",
+          "D5.DOC1.F2",
+          "D5.DOC1.F3",
+          "D5.DOC1.F4"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "Anchors directly reveal the concessions; the text’s responses and resulting consequences are unambiguously stated, confirming the findings.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "promise": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 29659
+}

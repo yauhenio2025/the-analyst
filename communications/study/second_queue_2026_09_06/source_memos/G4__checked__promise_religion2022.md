@@ -1,0 +1,15 @@
+# G4__checked__promise_religion2022 — source-read memo before scores
+
+Output SHA256: 6d910400ac9c59ab8b029259edeee1618a654085b8252097f217ca99f631009b
+
+Read the substantive comparative reading, position map, both requested tables and all 18 findings; inspected scope counts separately. Checked paired money/growth and conclusion passages in both supplied sources, and reread Promise's general-property-rights, Simmel/Luhmann, Marx and Schumpeter sections.
+
+The ending is responsibly compared: Promise already rejects new utopias, describes future disillusionment conditionally and says creative destruction's future is not guaranteed. The output correctly treats 2022 sobriety as continuity with a different practical emphasis rather than a new anti-utopian conversion. It also distinguishes actual declared elaboration of Benjamin from an analyst comparison of the two supplied Deutschmann works; no explicit 2022 reference to the supplied Promise is invented. The Abrahamic restriction and the non-identity of capitalism/religion are correctly recognized.
+
+The main 'major reorganization of support' needs a stronger continuity check. Promise already describes money as generalized property rights and claims over labour, and explicitly uses Luhmann's transformation of indeterminable world-complexity into determinate complexity, society-wide influence and cipher status. The new chapter foregrounds unbounded markets and self-description, but it is too strong to say the earlier support is only monetary paradox/general reach or that the later account relocates the basis of growth. The output sometimes acknowledges changed emphasis; its strongest summary and table formulations exceed that careful version. Tenbruck's provisional uptake ('if we follow ... for the moment') is not retained in the negative-comparison row.
+
+Evidence delivery has decisive defects despite 23/23 normalized matching spans. F10 and the 2022 side of F12 end at 'also', excluding the words 'transfer to money' that establish the asserted transfer. F16 ends inside the word 'money' as 'mo', omitting the object of the proposed critique. F4's single combination-of-Marx/Schumpeter quote does not evidence the detailed creativity/exploitation qualification or all the myth-cycle material its table/prose carries. F13's later span omits the temporalizing clause and creative-labour premise. All these claims can be checked in the source, but the final table's findings do not yet carry complete supporting spans.
+
+Mechanical result: 18 rows, 23/23 normalized anchors (22 raw exact), five complete two-key corpus rows, no missing final IDs or undeclared dimensions. Scope reports show eleven findings_present; these are not semantic certifications. The deliverable is 39,421 characters and substantially exceeds the one-page ideal. Provisional release judgment: withhold G4 pending complete final evidence and a more exact account of changed emphasis versus changed grounds; the anti-utopian correction itself holds.
+
+No scores requested or consulted.

@@ -1,0 +1,280 @@
+{
+  "step": "check",
+  "kind": "verify",
+  "dimension": "",
+  "doc": "",
+  "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+  "model_used": "openrouter/deepseek/deepseek-v4-pro",
+  "input_tokens": 17236,
+  "output_tokens": 8454,
+  "duration_ms": 153910,
+  "cost_usd": 0.0356,
+  "retries": 0,
+  "wall": {
+    "rows": 18,
+    "with_anchor": 18,
+    "verified": 18,
+    "trimmed": 1,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 18,
+    "verified_anchors": 18,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "checked",
+      "scope": "retained_ledger",
+      "missing_rejected_ids": [],
+      "missing_other_ids": []
+    },
+    "check_in": 16,
+    "check_confirmed": 16,
+    "check_weakened": 0,
+    "check_rejected": 0,
+    "check_added": 2,
+    "check_added_dropped": 0,
+    "check_carried": 0,
+    "check_unverified": 0,
+    "check_ruling_coverage": {
+      "original_count": 16,
+      "explicitly_ruled_count": 16,
+      "missing_or_unruled_ids": [],
+      "unexpected_nonadded_ids": [],
+      "invalid_original_status_ids": [],
+      "duplicate_original_ids": [],
+      "duplicate_ruling_ids": [],
+      "coverage_complete": true
+    },
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "senses",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Abstract",
+          "Speculative thinking",
+          "Commodity fetishism",
+          "Self-valorization",
+          "Final reflections"
+        ],
+        "coverage": "complete",
+        "criterion": "Inventory definitions and actual uses, distinguishing supported senses by predicates and examples.",
+        "basis": "All defined terms (severe style, speculative thinking, actuality, mystification) were checked against explicit anchors and have stable senses.",
+        "limitations": [
+          "Only the article’s own uses are confirmed; cited works were not independently inspected."
+        ],
+        "finding_ids": [
+          "F1",
+          "F2",
+          "F5",
+          "F8"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "Every finding was verified by locating its anchor in the source text; each anchor supports the stated sense.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "neighbors",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Speculative thinking",
+          "Commodity fetishism",
+          "Self-valorization",
+          "Final reflections"
+        ],
+        "coverage": "complete",
+        "criterion": "Identify contextual synonyms, contrasts, and neighboring terms without inferring relations from co-occurrence alone.",
+        "basis": "Contrasts between speculative/representational thinking, essence/appearance, and actuality/existence/reality are explicitly stated.",
+        "limitations": [
+          "The article’s neighbor relations are local to its argument; no standard disciplinary pairings are tested."
+        ],
+        "finding_ids": [
+          "F3",
+          "F15",
+          "F17"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "All retained and added findings rest on direct textual contrasts with supporting anchors.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "boundaries",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Commodity fetishism",
+          "Self-valorization",
+          "Final reflections",
+          "Notes"
+        ],
+        "coverage": "complete",
+        "criterion": "Use explicit membership and contrast criteria to locate sharp or contested boundaries and edge cases.",
+        "basis": "The article draws clear boundaries: fetishism vs mystification, commodity form vs wider capital logic, and prehistory vs capitalist system.",
+        "limitations": [
+          "Cross-text stability cannot be determined from this single source."
+        ],
+        "finding_ids": [
+          "F7",
+          "F10",
+          "F11"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "Each boundary is backed by a verbatim anchor that states the distinction or edge case.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "paired_usage",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Abstract",
+          "Speculative thinking",
+          "Commodity fetishism",
+          "Self-valorization",
+          "Final reflections"
+        ],
+        "coverage": "complete",
+        "criterion": "Pair apparently inconsistent passages and distinguish genuine sense change from changes of voice, object, or scope.",
+        "basis": "Voice contrasts between Rose’s assessment and the article’s claim, and different scopes of ‘lack of identity,’ are clearly anchored.",
+        "limitations": [
+          "Only intra-document voice and scope changes are assessed."
+        ],
+        "finding_ids": [
+          "F4",
+          "F13",
+          "F14"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "All pairs are verified with their anchors; no genuine sense change outside voice/scope shifts detected.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "connotations",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Commodity fetishism",
+          "Self-valorization",
+          "Final reflections"
+        ],
+        "coverage": "complete",
+        "criterion": "Locate evaluation in modifiers and contrasts and explain its local inferential function.",
+        "basis": "The article uses evaluative phrases (‘much truth,’ ‘irrational,’ ‘most flagrant form’) with explicit textual function.",
+        "limitations": [
+          "No claims about predicted reader response are made."
+        ],
+        "finding_ids": [
+          "F6",
+          "F16"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "Both findings are anchored in evaluative wording that is read in context and linked to its argumentative purpose.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      },
+      {
+        "document_keys": [
+          "doc"
+        ],
+        "dimension_key": "literalization",
+        "outcome": "findings_present",
+        "sections_inspected": [
+          "Speculative thinking",
+          "Commodity fetishism",
+          "Self-valorization",
+          "Final reflections"
+        ],
+        "coverage": "complete",
+        "criterion": "Check causal predicates assigned to abstractions against the surrounding specification of agents or mechanisms.",
+        "basis": "Abstractions (value, capital, actuality) are assigned agency with explicit mechanisms (organization of spheres, unfolding through material conditions).",
+        "limitations": [
+          "The text does not individuate every institutional or human agent."
+        ],
+        "finding_ids": [
+          "F9",
+          "F12",
+          "F18"
+        ],
+        "review_state": "supported_within_stated_scope",
+        "review_basis": "All attributed actions are tied to specific mechanisms in the surrounding discourse; the added row captures the ‘actuality acts’ claim.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "doc": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": []
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 16177
+}
