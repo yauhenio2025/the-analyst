@@ -8,6 +8,7 @@ This API serves analytical definitions without execution logic:
 
 import asyncio
 import logging
+import os
 import signal
 import uuid as _uuid
 from contextlib import asynccontextmanager
@@ -359,7 +360,8 @@ async def root():
 
 @app.get("/health")
 async def health():
-    """Health check endpoint."""
+    """Health check endpoint. `commit` is the deployed git commit (Render sets RENDER_GIT_COMMIT), so a caller can tell
+    whether a fix has landed before resuming a job on it (2026-09-06)."""
     engine_registry = get_engine_registry()
     paradigm_registry = get_paradigm_registry()
     chain_registry = get_chain_registry()
@@ -381,6 +383,9 @@ async def health():
 
     return {
         "status": "healthy",
+        "commit": (os.environ.get("RENDER_GIT_COMMIT") or "")[:12],
+        "db_pool_max": __import__("src.executor.db", fromlist=["POOL_MAX"]).POOL_MAX,
+        
         "engines_loaded": engine_registry.count(),
         "paradigms_loaded": paradigm_registry.count(),
         "chains_loaded": chain_registry.count(),
