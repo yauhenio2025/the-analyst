@@ -113,3 +113,14 @@ def test_a_statements_source_reaches_the_engine_on_the_job_path_too():
     assert set(docs) == {"turn-8", "em:KXEL24MY"} and "st1/SEWELL" in context
     # an engine outside the family keeps the envelope as context
     assert _citation_context_envelopes("argument_architecture", {"d": "x"}, upstream) == ({"d": "x"}, upstream)
+
+
+def test_a_source_text_sent_as_a_pair_is_read_as_its_text():
+    """The Stacks' first turn-8 export carried each source's text as [text, "rendition"] (their text_of() pair); the
+    adapter takes the longest string, so the work is a witness rather than a list that fails the walls."""
+    from src.sources.citation_evidence import prepare_citation_sources
+    obj = {"memo": {"uid": "turn-8", "title": "Evgeny on part 1, turn 8"},
+           "statements": [{"no": 1, "section": "part 1", "statement": "Sewell's critique of Brenner turns on the Dutch case.", "sources": ["S1"], "kind": "attribution"}],
+           "sources": [{"label": "S1", "uid": "em:KXEL24MY", "title": "On the Emergence of Capitalism", "year": "2024", "creators": "Sewell", "text": [SEWELL, "rendition"], "chars": 2}]}
+    docs, context = prepare_citation_sources("reference_reread", {"statements": json.dumps(obj)})
+    assert set(docs) == {"turn-8", "em:KXEL24MY"} and "seigneurial" in docs["em:KXEL24MY"] and "rendition" not in docs["em:KXEL24MY"].split("\n", 3)[-1]

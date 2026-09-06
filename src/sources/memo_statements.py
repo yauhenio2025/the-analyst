@@ -37,6 +37,18 @@ def _kind_from_section(section: str) -> str:
     return "attribution"
 
 
+def _text_of(source: dict) -> str:
+    """A source's text as one string. The Stacks' first references export (turn 8, 2026-09-07) carried `text` as the
+    pair (text, "rendition") their text_of() returns; a list or tuple yields its longest string, a dict its `text`."""
+    t = source.get("text")
+    if isinstance(t, (list, tuple)):
+        strings = [x for x in t if isinstance(x, str)]
+        return max(strings, key=len) if strings else ""
+    if isinstance(t, dict):
+        return str(t.get("text") or "")
+    return t or ""
+
+
 def _label_map(sources: list[dict]) -> dict[str, str]:
     out = {}
     for s in sources:
@@ -81,7 +93,7 @@ def statements_to_evidence_index(obj: dict) -> dict:
               "text": body, "passages": passages}]
     checks = []
     for s in obj["sources"]:
-        text = s.get("text") or ""
+        text = _text_of(s)
         if not text.strip():
             continue
         checks.append({"copy": {"uid": s.get("uid"), "label": s.get("label"), "title": s.get("title"), "year": s.get("year"),
