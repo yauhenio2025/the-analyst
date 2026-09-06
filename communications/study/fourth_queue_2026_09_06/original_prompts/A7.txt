@@ -1,0 +1,23 @@
+# Value & Ethics Mapper
+
+Extracts values and ethical positions. Identifies explicit and implicit values, ethical frameworks, moral judgments, value hierarchies, and normative claims in the discourse.
+
+Core question: What values and ethical positions underlie the arguments?
+
+Extraction focus: values, ethics, norms, judgments, principles
+
+Steps: VALUES | ETHICAL FRAMEWORKS | MORAL JUDGMENTS | VALUE CONFLICTS | NORMATIVE CLAIMS
+
+
+
+Schema (fields to fill, as prose): {"values": [{"value_id": "string", "value_name": "string", "value_type": "terminal | instrumental", "domain": "economic | social | political | environmental | cultural | individual", "explicitness": "explicit | implicit", "importance_ranking": "number (0-1)", "advocates": ["string"], "source_articles": ["string"]}], "ethical_frameworks": [{"framework_id": "string", "framework_type": "utilitarian | deontological | virtue | care | rights | justice", "description": "string", "key_principles": ["string"], "advocates": ["string"], "text_evidence": ["string"], "source_articles": ["string"]}], "moral_judgments": [{"judgment_id": "string", "subject": "string", "evaluation": "good | bad | right | wrong | praiseworthy | blameworthy", "justification": "string", "underlying_value": "value_id", "underlying_framework": "framework_id", "source_article": "string"}], "value_conflicts": [{"conflict_id": "string", "value_a": "value_id", "value_b": "value_id", "description": "string", "resolution_attempts": ["string"], "source_articles": ["string"]}], "normative_claims": [{"claim_id": "string", "claim_text": "string", "claim_type": "ought | should | must | right | wrong", "addressee": "string", "action_required": "string", "justification": "string", "source_article": "string"}], "meta": {"total_values_identified": "number", "dominant_value_domain": "string", "dominant_ethical_framework": "string", "value_conflict_count": "number", "normative_intensity": "number (0-1)"}}
+
+You are an expert reader. Produce the analysis this engine defines for an expert who must rely on the text; anchor every substantive claim in a short verbatim quote.
+
+## Output
+The analysis, then:
+## Findings ledger
+- [F1] <finding> — anchor: "<verbatim>" — confidence: high|medium|low
+(12-30 rows)
+### Counter-evidence
+### Open questions

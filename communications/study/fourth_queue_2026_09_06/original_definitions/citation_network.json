@@ -1,0 +1,153 @@
+{
+  "engine_key": "citation_network",
+  "engine_name": "Citation Network Mapper",
+  "description": "Maps citation relationships between works. Identifies hub papers, authority sources, citation clusters, and the context of citations (supporting, critical, background).",
+  "version": 1,
+  "category": "scholarly",
+  "kind": "relational",
+  "reasoning_domain": "genealogical",
+  "researcher_question": "How do works in this field cite and reference each other?",
+  "canonical_schema": {
+    "works": [
+      {
+        "work_id": "string",
+        "title": "string",
+        "authors": [
+          "string"
+        ],
+        "year": "string",
+        "publication_venue": "string",
+        "work_type": "article | book | chapter | report | thesis",
+        "in_corpus": "boolean",
+        "citation_count": "number",
+        "reference_count": "number"
+      }
+    ],
+    "citations": [
+      {
+        "citation_id": "string",
+        "citing_work": "work_id",
+        "cited_work": "work_id",
+        "citation_context": "supporting | critical | background | methodological | data_source",
+        "citation_text": "string",
+        "section_location": "introduction | literature_review | methods | results | discussion",
+        "importance": "number (0-1)"
+      }
+    ],
+    "citation_clusters": [
+      {
+        "cluster_id": "string",
+        "cluster_name": "string",
+        "theme": "string",
+        "member_works": [
+          "work_id"
+        ],
+        "internal_density": "number (0-1)",
+        "key_connecting_works": [
+          "work_id"
+        ]
+      }
+    ],
+    "hub_works": [
+      {
+        "work_id": "string",
+        "hub_score": "number (0-1)",
+        "cited_by_count": "number",
+        "influence_breadth": "string"
+      }
+    ],
+    "authority_works": [
+      {
+        "work_id": "string",
+        "authority_score": "number (0-1)",
+        "references_count": "number",
+        "synthesis_quality": "high | medium | low"
+      }
+    ],
+    "meta": {
+      "total_works": "number",
+      "total_citations": "number",
+      "average_citations_per_work": "number",
+      "network_density": "number (0-1)",
+      "most_cited_work": "work_id",
+      "citation_time_span": "string"
+    }
+  },
+  "extraction_focus": [
+    "citations",
+    "references",
+    "authors",
+    "works",
+    "citation_context"
+  ],
+  "primary_output_modes": [
+    "gemini_network_graph",
+    "structured_text_report",
+    "table"
+  ],
+  "paradigm_keys": [],
+  "source_file": "analyzer/src/engines/citation_network.py",
+  "stage_context": {
+    "framework_key": null,
+    "additional_frameworks": [],
+    "extraction": {
+      "analysis_type": "citation",
+      "analysis_type_plural": "citations",
+      "core_question": "How do works in this field cite and reference each other?",
+      "extraction_steps": [
+        "WORKS CITED",
+        "CITATION CONTEXT",
+        "CITATION LOCATION",
+        "CITATION IMPORTANCE",
+        "CITATION TEXT"
+      ],
+      "key_fields": {},
+      "id_field": "citation_id",
+      "key_relationships": [
+        "references"
+      ],
+      "special_instructions": null
+    },
+    "curation": {
+      "item_type": "citation",
+      "item_type_plural": "citations",
+      "consolidation_rules": [
+        "DEDUPLICATE WORKS: Merge references to the same work",
+        "BUILD CITATION NETWORK: Map who cites whom",
+        "IDENTIFY CLUSTERS: Find groups of works that cite each other",
+        "FIND HUB WORKS: Identify highly-cited works",
+        "FIND AUTHORITY WORKS: Identify comprehensive reviews/syntheses",
+        "CALCULATE NETWORK METRICS: - Total works and citations"
+      ],
+      "cross_doc_patterns": [
+        "shared_items",
+        "contested_items",
+        "response_network"
+      ],
+      "synthesis_outputs": [
+        "consolidated_item_list",
+        "relationship_map",
+        "cross_document_dynamics"
+      ],
+      "special_instructions": null
+    },
+    "concretization": {
+      "id_examples": [
+        {
+          "from": "W1",
+          "to": "Smith, J. (2020). The Future of AI. Nature, 580(7801), 22-25."
+        }
+      ],
+      "naming_guidance": "",
+      "recommended_table_types": [],
+      "recommended_visual_patterns": []
+    },
+    "audience_vocabulary": {
+      "researcher": {},
+      "analyst": {},
+      "executive": {},
+      "activist": {}
+    },
+    "skip_concretization": false
+  }
+}

@@ -1,0 +1,188 @@
+{
+  "engine_key": "collective_action_problem_identifier",
+  "engine_name": "Collective Action Problem Identifier",
+  "description": "Identifies collective action problems: free riding, tragedy of commons, coordination failures. Analyzes why individual rationality leads to collectively bad outcomes and what institutions can enable cooperation.",
+  "version": 1,
+  "category": "institutional",
+  "kind": "synthesis",
+  "reasoning_domain": "institutional_analysis",
+  "researcher_question": "What collective action problems prevent cooperation?",
+  "canonical_schema": {
+    "context": {
+      "domain": "string - area where collective action is needed",
+      "collective_good": "string - what would benefit everyone",
+      "current_outcome": "string - what's happening now",
+      "optimal_outcome": "string - what could happen with cooperation"
+    },
+    "collective_action_problems": [
+      {
+        "problem_id": "string - CAP1, CAP2, etc.",
+        "problem_type": "free_rider | tragedy_commons | coordination | assurance | chicken | other",
+        "description": "string - what the problem is",
+        "actors": [
+          "string - who is involved"
+        ],
+        "individual_incentives": "string - what individuals want",
+        "collective_interest": "string - what would benefit everyone",
+        "gap": "string - how individual and collective diverge",
+        "severity": "mild | moderate | severe",
+        "evidence": [
+          "string - supporting observations"
+        ]
+      }
+    ],
+    "free_riding_analysis": [
+      {
+        "situation": "string - where free riding occurs",
+        "public_good": "string - what's being free-ridden on",
+        "excludability": "excludable | partially | non_excludable",
+        "rivalry": "rival | partially | non_rival",
+        "free_rider_strategy": "string - how people free ride",
+        "underprovision_result": "string - what doesn't get provided"
+      }
+    ],
+    "tragedy_of_commons": [
+      {
+        "resource": "string - shared resource",
+        "users": [
+          "string - who uses it"
+        ],
+        "overuse_mechanism": "string - how overuse occurs",
+        "depletion_trajectory": "stable | gradual | rapid | critical",
+        "private_benefits": "string - what individuals gain",
+        "social_costs": "string - what everyone loses"
+      }
+    ],
+    "coordination_failures": [
+      {
+        "coordination_need": "string - what needs to be coordinated",
+        "multiple_equilibria": [
+          "string - possible coordination points"
+        ],
+        "stuck_at": "string - where currently stuck",
+        "better_equilibria": [
+          "string - where could be instead"
+        ],
+        "barrier": "string - what prevents moving"
+      }
+    ],
+    "group_characteristics": {
+      "group_size": "small | medium | large | very_large",
+      "heterogeneity": "homogeneous | moderate | heterogeneous",
+      "repeated_interaction": "one_shot | occasional | frequent | continuous",
+      "observability": "full | partial | minimal",
+      "communication": "none | limited | full",
+      "trust_level": "low | moderate | high",
+      "collective_action_difficulty": "easy | moderate | difficult | very_difficult"
+    },
+    "existing_solutions": [
+      {
+        "solution_id": "string",
+        "solution_type": "privatization | regulation | community_management | selective_incentives | norms | other",
+        "description": "string - how it works",
+        "effectiveness": "ineffective | partial | effective | highly_effective",
+        "limitations": [
+          "string - where it falls short"
+        ]
+      }
+    ],
+    "potential_solutions": [
+      {
+        "solution_id": "string",
+        "solution_type": "string - type of intervention",
+        "mechanism": "string - how it would work",
+        "feasibility": "low | medium | high",
+        "barriers_to_implementation": [
+          "string - obstacles"
+        ],
+        "likely_effectiveness": "low | medium | high"
+      }
+    ],
+    "assessment": {
+      "primary_problem": "string - most important collective action problem",
+      "severity": "mild | moderate | severe | critical",
+      "solvability": "easy | moderate | difficult | intractable",
+      "key_barriers": [
+        "string - main obstacles to cooperation"
+      ],
+      "most_promising_solution": "string - best path forward"
+    },
+    "meta": {
+      "problems_identified": "number",
+      "severe_problems": "number",
+      "solutions_analyzed": "number"
+    }
+  },
+  "extraction_focus": [
+    "collective_goods",
+    "individual_incentives",
+    "cooperation_barriers",
+    "free_riding",
+    "institutional_solutions"
+  ],
+  "primary_output_modes": [
+    "structured_text_report",
+    "table"
+  ],
+  "paradigm_keys": [],
+  "source_file": "analyzer/src/engines/collective_action_problem_identifier.py",
+  "stage_context": {
+    "framework_key": null,
+    "additional_frameworks": [],
+    "extraction": {
+      "analysis_type": "collective action problem identifier",
+      "analysis_type_plural": "collective action problem identifiers",
+      "core_question": "What collective action problems prevent cooperation?",
+      "extraction_steps": [
+        "IDENTIFY THE COLLECTIVE GOOD",
+        "IDENTIFY COLLECTIVE ACTION PROBLEMS",
+        "ANALYZE PROBLEM STRUCTURE",
+        "ASSESS GROUP CHARACTERISTICS",
+        "EXAMINE EXISTING SOLUTIONS",
+        "IDENTIFY POTENTIAL SOLUTIONS",
+        "OVERALL ASSESSMENT"
+      ],
+      "key_fields": {},
+      "id_field": "collective_id",
+      "key_relationships": [
+        "relates_to"
+      ],
+      "special_instructions": null
+    },
+    "curation": {
+      "item_type": "collective action problem identifier",
+      "item_type_plural": "collective action problem identifiers",
+      "consolidation_rules": [
+        "TRIANGULATE PROBLEMS: Multiple sources confirm same problems?",
+        "COMPARE SOLUTIONS: Agreement on what works?",
+        "ASSESS CONDITIONS: What conditions enable/prevent cooperation?",
+        "EVALUATE INTERVENTIONS: Which solutions are most promising?",
+        "SYNTHESIZE: Overall collective action assessment"
+      ],
+      "cross_doc_patterns": [
+        "shared_items",
+        "contested_items",
+        "response_network"
+      ],
+      "synthesis_outputs": [
+        "consolidated_item_list",
+        "relationship_map",
+        "cross_document_dynamics"
+      ],
+      "special_instructions": null
+    },
+    "concretization": {
+      "id_examples": [],
+      "naming_guidance": "",
+      "recommended_table_types": [],
+      "recommended_visual_patterns": []
+    },
+    "audience_vocabulary": {
+      "researcher": {},
+      "analyst": {},
+      "executive": {},
+      "activist": {}
+    },
+    "skip_concretization": false
+  }
+}

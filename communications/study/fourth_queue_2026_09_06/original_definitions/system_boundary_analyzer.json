@@ -1,0 +1,183 @@
+{
+  "engine_key": "system_boundary_analyzer",
+  "engine_name": "System Boundary Analyzer",
+  "description": "Analyzes how system boundaries are drawn and their consequences. Examines what's included/excluded, how boundary choices affect problem definition, and what externalities are pushed outside. Essential for understanding how framing shapes conclusions.",
+  "version": 1,
+  "category": "systems",
+  "kind": "synthesis",
+  "reasoning_domain": "systems",
+  "researcher_question": "How are system boundaries drawn and what does that choice include/exclude?",
+  "canonical_schema": {
+    "system_boundaries": [
+      {
+        "boundary_id": "string - B1, B2, etc.",
+        "system_name": "string - what system is being bounded",
+        "stated_boundary": "string - how boundary is defined",
+        "boundary_type": "spatial | temporal | organizational | conceptual | functional",
+        "inclusions": [
+          "string - what's inside"
+        ],
+        "exclusions": [
+          "string - what's outside"
+        ],
+        "boundary_justification": "string - why this boundary is drawn here",
+        "who_defined_boundary": "string - whose framing"
+      }
+    ],
+    "externalities": [
+      {
+        "externality_id": "string",
+        "boundary_id": "string - which boundary creates this",
+        "what_externalized": "string - what's pushed outside",
+        "externality_type": "cost | benefit | effect | stakeholder",
+        "who_bears_externality": [
+          "string - who's affected"
+        ],
+        "magnitude": "large | medium | small",
+        "visibility": "visible | hidden | ignored"
+      }
+    ],
+    "boundary_tensions": [
+      {
+        "tension_id": "string",
+        "boundary_id": "string",
+        "tension_description": "string - what conflict exists at boundary",
+        "parties_involved": [
+          "string"
+        ],
+        "nature_of_tension": "resource_flow | responsibility | authority | identity",
+        "resolution_attempts": "string - how tension is managed"
+      }
+    ],
+    "boundary_critique": {
+      "strategic_boundaries": [
+        {
+          "boundary_id": "string",
+          "who_benefits": [
+            "string - who gains from this boundary"
+          ],
+          "who_loses": [
+            "string - who loses"
+          ],
+          "hidden_agenda": "string - what boundary choice conceals"
+        }
+      ],
+      "arbitrary_boundaries": [
+        {
+          "boundary_id": "string",
+          "why_arbitrary": "string - what makes this choice questionable",
+          "alternatives_not_considered": [
+            "string"
+          ]
+        }
+      ]
+    },
+    "alternative_boundaries": [
+      {
+        "alternative_id": "string",
+        "original_boundary_id": "string - what it replaces",
+        "new_boundary": "string - alternative boundary definition",
+        "what_changes": {
+          "new_inclusions": [
+            "string"
+          ],
+          "new_exclusions": [
+            "string"
+          ],
+          "problem_redefinition": "string - how problem looks different",
+          "solution_implications": "string - how solutions change"
+        },
+        "advantages": [
+          "string"
+        ],
+        "disadvantages": [
+          "string"
+        ]
+      }
+    ],
+    "boundary_permeability": [
+      {
+        "boundary_id": "string",
+        "what_crosses": "string - what flows across boundary",
+        "direction": "inward | outward | bidirectional",
+        "control_mechanisms": [
+          "string - how crossing is regulated"
+        ],
+        "permeability_level": "high | medium | low | variable"
+      }
+    ],
+    "meta": {
+      "boundaries_analyzed": "number",
+      "externalities_identified": "number",
+      "tensions_mapped": "number",
+      "alternatives_proposed": "number",
+      "confidence_in_analysis": "high | medium | low"
+    }
+  },
+  "extraction_focus": [
+    "boundary_definition",
+    "inclusions_exclusions",
+    "externalities",
+    "boundary_tensions",
+    "alternative_boundaries"
+  ],
+  "primary_output_modes": [
+    "structured_text_report",
+    "table"
+  ],
+  "paradigm_keys": [],
+  "source_file": "analyzer/src/engines/system_boundary_analyzer.py",
+  "stage_context": {
+    "framework_key": null,
+    "additional_frameworks": [],
+    "extraction": {
+      "analysis_type": "system boundary",
+      "analysis_type_plural": "system boundarys",
+      "core_question": "How are system boundaries drawn and what does that choice include/exclude?",
+      "extraction_steps": [
+        "IDENTIFY STATED BOUNDARIES",
+        "MAP INCLUSIONS AND EXCLUSIONS",
+        "IDENTIFY EXTERNALITIES",
+        "ANALYZE BOUNDARY TENSIONS",
+        "CRITIQUE BOUNDARY CHOICES",
+        "PROPOSE ALTERNATIVES",
+        "ASSESS PERMEABILITY"
+      ],
+      "key_fields": {},
+      "id_field": "system_id",
+      "key_relationships": [
+        "relates_to"
+      ],
+      "special_instructions": null
+    },
+    "curation": {
+      "item_type": "system boundary",
+      "item_type_plural": "system boundarys",
+      "consolidation_rules": [],
+      "cross_doc_patterns": [
+        "shared_items",
+        "contested_items",
+        "response_network"
+      ],
+      "synthesis_outputs": [
+        "consolidated_item_list",
+        "relationship_map",
+        "cross_document_dynamics"
+      ],
+      "special_instructions": null
+    },
+    "concretization": {
+      "id_examples": [],
+      "naming_guidance": "",
+      "recommended_table_types": [],
+      "recommended_visual_patterns": []
+    },
+    "audience_vocabulary": {
+      "researcher": {},
+      "analyst": {},
+      "executive": {},
+      "activist": {}
+    },
+    "skip_concretization": false
+  }
+}

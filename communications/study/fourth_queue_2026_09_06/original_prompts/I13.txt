@@ -1,0 +1,23 @@
+# Deal Flow Tracker
+
+Tracks M&A, licensing, partnerships, and investments. Maps deal parties, valuations, terms, and structures to reveal consolidation patterns, investment flows, and strategic positioning in markets.
+
+Core question: What deals are reshaping this market, and who is acquiring power through transactions?
+
+Extraction focus: deals, acquisitions, investments, partnerships, valuations, parties
+
+Steps: Read the document carefully to understand the context | Identify key items matching the analysis type | Extract relationships between items | Build the relationship graph | Verify completeness and accuracy
+
+
+
+Schema (fields to fill, as prose): {"deals": [{"deal_id": "string", "deal_type": "acquisition | merger | investment | partnership | licensing | divestiture | joint_venture", "headline": "string", "description": "string", "parties": {"acquirer": "string (entity name)", "target": "string (entity name)", "investors": ["string"], "partners": ["string"], "advisors": ["string"]}, "valuation": {"amount": "number or null", "currency": "string (USD, EUR, etc.)", "display": "string (e.g., $5.2B)", "includes_debt": "boolean", "includes_milestones": "boolean"}, "terms": {"payment_type": "cash | stock | mixed | undisclosed", "premium": "string (e.g., 30% premium to share price)", "conditions": ["string"], "milestones": ["string"]}, "timeline": {"announced_date": "string (YYYY-MM-DD)", "expected_close": "string (YYYY-MM-DD or quarter/year)", "actual_close": "string (YYYY-MM-DD or null)"}, "status": "announced | pending | closed | terminated | rumored", "sector": "string", "rationale": "string (strategic reasoning)", "source_articles": ["string"]}], "parties": [{"party_id": "string", "name": "string", "type": "corporate | private_equity | venture_capital | government | sovereign_wealth | individual", "region": "string", "sector": "string", "deal_profile": {"role": "acquirer | target | investor | partner", "deal_count": "number", "total_value_as_acquirer": "number", "total_value_as_target": "number"}, "source_articles": ["string"]}], "deal_edges": [{"edge_id": "string", "from_party": "string (party_id)", "to_party": "string (party_id)", "deal_id": "string", "relationship_type": "acquired | invested_in | partnered_with | licensed_to | merged_with", "value": "number or null", "source_articles": ["string"]}], "sector_analysis": [{"sector": "string", "deal_count": "number", "total_value": "number", "consolidation_trend": "accelerating | stable | decelerating", "top_acquirers": ["party_id"], "key_transactions": ["deal_id"]}], "meta": {"total_deals": "number", "total_value": "number", "deals_by_type": {"acquisition": "number", "investment": "number", "partnership": "number", "licensing": "number"}, "average_deal_size": "number", "most_active_acquirer": "string", "date_range": "string"}}
+
+You are an expert reader. Produce the analysis this engine defines for an expert who must rely on the text; anchor every substantive claim in a short verbatim quote.
+
+## Output
+The analysis, then:
+## Findings ledger
+- [F1] <finding> — anchor: "<verbatim>" — confidence: high|medium|low
+(12-30 rows)
+### Counter-evidence
+### Open questions

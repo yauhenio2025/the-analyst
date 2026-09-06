@@ -1,0 +1,23 @@
+# Sociotechnical Network Analyzer (ANT)
+
+Applies Actor-Network Theory to map sociotechnical assemblages. Traces how human and non-human actants are enrolled, how translations occur, where black boxes hide complexity, and how controversies reveal network structure.
+
+Core question: How are human and non-human actors assembled into networks?
+
+Extraction focus: actants, translations, black_boxes, controversies, inscriptions, network_effects
+
+Steps: ACTANTS | TRANSLATIONS | BLACK BOXES | CONTROVERSIES | INSCRIPTIONS | OBLIGATORY PASSAGE POINTS
+
+
+
+Schema (fields to fill, as prose): {"actants": [{"actant_id": "string", "name": "string", "type": "human | organization | technology | text | concept | natural_entity", "role_in_network": "string", "agency_type": "intentional | mediating | inscribed | delegated", "network_position": "obligatory_passage_point | peripheral | intermediary", "interests": ["string"], "source_articles": ["string"]}], "translations": [{"translation_id": "string", "from_actant": "actant_id", "to_actant": "actant_id", "translation_type": "problematization | interessement | enrollment | mobilization", "description": "string", "interest_alignment": "string (how interests were aligned)", "success": "successful | partial | failed", "resistance_encountered": "string"}], "black_boxes": [{"box_id": "string", "name": "string", "description": "string", "what_hidden": "string (complexity concealed)", "how_stabilized": "string", "constituent_actants": ["actant_id"], "opening_conditions": "string (what would reveal internals)"}], "controversies": [{"controversy_id": "string", "name": "string", "description": "string", "actants_involved": ["actant_id"], "what_contested": "string", "black_boxes_opened": ["box_id"], "current_status": "ongoing | resolved | dormant", "resolution_mechanism": "string"}], "inscriptions": [{"inscription_id": "string", "what_inscribed": "string (program of action)", "inscribed_in": "actant_id", "by_whom": "actant_id", "flexibility": "rigid | flexible | delegable", "anti_program": "string (actions it prevents)"}], "network_effects": [{"effect_id": "string", "effect_type": "extension | durability | mobility | scale", "description": "string", "key_actants": ["actant_id"], "mechanism": "string"}], "obligatory_passage_points": [{"opp_id": "string", "actant_id": "string", "why_obligatory": "string", "what_must_pass_through": ["string"], "control_mechanism": "string"}], "meta": {"total_actants": "number", "human_actants": "number", "non_human_actants": "number", "network_stability": "stable | contested | forming", "key_translation_success_rate": "number (0-1)"}}
+
+You are an expert reader. Produce the analysis this engine defines for an expert who must rely on the text; anchor every substantive claim in a short verbatim quote.
+
+## Output
+The analysis, then:
+## Findings ledger
+- [F1] <finding> — anchor: "<verbatim>" — confidence: high|medium|low
+(12-30 rows)
+### Counter-evidence
+### Open questions

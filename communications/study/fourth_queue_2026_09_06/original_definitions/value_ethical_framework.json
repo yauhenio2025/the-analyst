@@ -1,0 +1,178 @@
+{
+  "engine_key": "value_ethical_framework",
+  "engine_name": "Value & Ethics Mapper",
+  "description": "Extracts values and ethical positions. Identifies explicit and implicit values, ethical frameworks, moral judgments, value hierarchies, and normative claims in the discourse.",
+  "version": 1,
+  "category": "epistemology",
+  "kind": "synthesis",
+  "reasoning_domain": "epistemology",
+  "researcher_question": "What values and ethical positions underlie the arguments?",
+  "canonical_schema": {
+    "values": [
+      {
+        "value_id": "string",
+        "value_name": "string",
+        "value_type": "terminal | instrumental",
+        "domain": "economic | social | political | environmental | cultural | individual",
+        "explicitness": "explicit | implicit",
+        "importance_ranking": "number (0-1)",
+        "advocates": [
+          "string"
+        ],
+        "source_articles": [
+          "string"
+        ]
+      }
+    ],
+    "ethical_frameworks": [
+      {
+        "framework_id": "string",
+        "framework_type": "utilitarian | deontological | virtue | care | rights | justice",
+        "description": "string",
+        "key_principles": [
+          "string"
+        ],
+        "advocates": [
+          "string"
+        ],
+        "text_evidence": [
+          "string"
+        ],
+        "source_articles": [
+          "string"
+        ]
+      }
+    ],
+    "moral_judgments": [
+      {
+        "judgment_id": "string",
+        "subject": "string",
+        "evaluation": "good | bad | right | wrong | praiseworthy | blameworthy",
+        "justification": "string",
+        "underlying_value": "value_id",
+        "underlying_framework": "framework_id",
+        "source_article": "string"
+      }
+    ],
+    "value_conflicts": [
+      {
+        "conflict_id": "string",
+        "value_a": "value_id",
+        "value_b": "value_id",
+        "description": "string",
+        "resolution_attempts": [
+          "string"
+        ],
+        "source_articles": [
+          "string"
+        ]
+      }
+    ],
+    "normative_claims": [
+      {
+        "claim_id": "string",
+        "claim_text": "string",
+        "claim_type": "ought | should | must | right | wrong",
+        "addressee": "string",
+        "action_required": "string",
+        "justification": "string",
+        "source_article": "string"
+      }
+    ],
+    "meta": {
+      "total_values_identified": "number",
+      "dominant_value_domain": "string",
+      "dominant_ethical_framework": "string",
+      "value_conflict_count": "number",
+      "normative_intensity": "number (0-1)"
+    }
+  },
+  "extraction_focus": [
+    "values",
+    "ethics",
+    "norms",
+    "judgments",
+    "principles"
+  ],
+  "primary_output_modes": [
+    "structured_text_report",
+    "table",
+    "gemini_network_graph"
+  ],
+  "paradigm_keys": [],
+  "source_file": "analyzer/src/engines/value_ethical_framework.py",
+  "stage_context": {
+    "framework_key": null,
+    "additional_frameworks": [],
+    "extraction": {
+      "analysis_type": "value & ethics",
+      "analysis_type_plural": "value & ethics",
+      "core_question": "What values and ethical positions underlie the arguments?",
+      "extraction_steps": [
+        "VALUES",
+        "ETHICAL FRAMEWORKS",
+        "MORAL JUDGMENTS",
+        "VALUE CONFLICTS",
+        "NORMATIVE CLAIMS"
+      ],
+      "key_fields": {},
+      "id_field": "claim_id",
+      "key_relationships": [
+        "relates_to"
+      ],
+      "special_instructions": null
+    },
+    "curation": {
+      "item_type": "value & ethics",
+      "item_type_plural": "value & ethics",
+      "consolidation_rules": [
+        "CONSOLIDATE VALUES: Build value inventory",
+        "MAP ETHICAL FRAMEWORKS: Identify moral reasoning patterns",
+        "CATALOG MORAL JUDGMENTS: Track evaluations",
+        "ANALYZE VALUE CONFLICTS: Map tensions",
+        "SYNTHESIZE NORMATIVE CLAIMS: Track prescriptions"
+      ],
+      "cross_doc_patterns": [
+        "shared_items",
+        "contested_items",
+        "response_network"
+      ],
+      "synthesis_outputs": [
+        "consolidated_item_list",
+        "relationship_map",
+        "cross_document_dynamics"
+      ],
+      "special_instructions": null
+    },
+    "concretization": {
+      "id_examples": [
+        {
+          "from": "V1",
+          "to": "Economic Efficiency (instrumental value)"
+        },
+        {
+          "from": "F1",
+          "to": "Utilitarian Framework (tech industry advocates)"
+        },
+        {
+          "from": "C1",
+          "to": "Privacy vs. Security: Individual rights tension"
+        },
+        {
+          "from": "N1",
+          "to": "Governments SHOULD regulate AI (addressed to policymakers)"
+        }
+      ],
+      "naming_guidance": "",
+      "recommended_table_types": [],
+      "recommended_visual_patterns": []
+    },
+    "audience_vocabulary": {
+      "researcher": {},
+      "analyst": {},
+      "executive": {},
+      "activist": {}
+    },
+    "skip_concretization": false
+  }
+}

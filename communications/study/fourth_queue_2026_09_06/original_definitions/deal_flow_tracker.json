@@ -1,0 +1,201 @@
+{
+  "engine_key": "deal_flow_tracker",
+  "engine_name": "Deal Flow Tracker",
+  "description": "Tracks M&A, licensing, partnerships, and investments. Maps deal parties, valuations, terms, and structures to reveal consolidation patterns, investment flows, and strategic positioning in markets.",
+  "version": 1,
+  "category": "power",
+  "kind": "relational",
+  "reasoning_domain": "flows",
+  "researcher_question": "What deals are reshaping this market, and who is acquiring power through transactions?",
+  "canonical_schema": {
+    "deals": [
+      {
+        "deal_id": "string",
+        "deal_type": "acquisition | merger | investment | partnership | licensing | divestiture | joint_venture",
+        "headline": "string",
+        "description": "string",
+        "parties": {
+          "acquirer": "string (entity name)",
+          "target": "string (entity name)",
+          "investors": [
+            "string"
+          ],
+          "partners": [
+            "string"
+          ],
+          "advisors": [
+            "string"
+          ]
+        },
+        "valuation": {
+          "amount": "number or null",
+          "currency": "string (USD, EUR, etc.)",
+          "display": "string (e.g., $5.2B)",
+          "includes_debt": "boolean",
+          "includes_milestones": "boolean"
+        },
+        "terms": {
+          "payment_type": "cash | stock | mixed | undisclosed",
+          "premium": "string (e.g., 30% premium to share price)",
+          "conditions": [
+            "string"
+          ],
+          "milestones": [
+            "string"
+          ]
+        },
+        "timeline": {
+          "announced_date": "string (YYYY-MM-DD)",
+          "expected_close": "string (YYYY-MM-DD or quarter/year)",
+          "actual_close": "string (YYYY-MM-DD or null)"
+        },
+        "status": "announced | pending | closed | terminated | rumored",
+        "sector": "string",
+        "rationale": "string (strategic reasoning)",
+        "source_articles": [
+          "string"
+        ]
+      }
+    ],
+    "parties": [
+      {
+        "party_id": "string",
+        "name": "string",
+        "type": "corporate | private_equity | venture_capital | government | sovereign_wealth | individual",
+        "region": "string",
+        "sector": "string",
+        "deal_profile": {
+          "role": "acquirer | target | investor | partner",
+          "deal_count": "number",
+          "total_value_as_acquirer": "number",
+          "total_value_as_target": "number"
+        },
+        "source_articles": [
+          "string"
+        ]
+      }
+    ],
+    "deal_edges": [
+      {
+        "edge_id": "string",
+        "from_party": "string (party_id)",
+        "to_party": "string (party_id)",
+        "deal_id": "string",
+        "relationship_type": "acquired | invested_in | partnered_with | licensed_to | merged_with",
+        "value": "number or null",
+        "source_articles": [
+          "string"
+        ]
+      }
+    ],
+    "sector_analysis": [
+      {
+        "sector": "string",
+        "deal_count": "number",
+        "total_value": "number",
+        "consolidation_trend": "accelerating | stable | decelerating",
+        "top_acquirers": [
+          "party_id"
+        ],
+        "key_transactions": [
+          "deal_id"
+        ]
+      }
+    ],
+    "meta": {
+      "total_deals": "number",
+      "total_value": "number",
+      "deals_by_type": {
+        "acquisition": "number",
+        "investment": "number",
+        "partnership": "number",
+        "licensing": "number"
+      },
+      "average_deal_size": "number",
+      "most_active_acquirer": "string",
+      "date_range": "string"
+    }
+  },
+  "extraction_focus": [
+    "deals",
+    "acquisitions",
+    "investments",
+    "partnerships",
+    "valuations",
+    "parties"
+  ],
+  "primary_output_modes": [
+    "gemini_network_graph",
+    "table",
+    "structured_text_report",
+    "gemini_sankey"
+  ],
+  "paradigm_keys": [],
+  "source_file": "analyzer/src/engines/deal_flow_tracker.py",
+  "stage_context": {
+    "framework_key": null,
+    "additional_frameworks": [],
+    "extraction": {
+      "analysis_type": "deal flow tracker",
+      "analysis_type_plural": "deal flow trackers",
+      "core_question": "What deals are reshaping this market, and who is acquiring power through transactions?",
+      "extraction_steps": [
+        "Read the document carefully to understand the context",
+        "Identify key items matching the analysis type",
+        "Extract relationships between items",
+        "Build the relationship graph",
+        "Verify completeness and accuracy"
+      ],
+      "key_fields": {},
+      "id_field": "deal_id",
+      "key_relationships": [
+        "relates_to"
+      ],
+      "special_instructions": null
+    },
+    "curation": {
+      "item_type": "deal flow tracker",
+      "item_type_plural": "deal flow trackers",
+      "consolidation_rules": [
+        "CONSOLIDATE DEALS: Merge references to the same deal",
+        "BUILD PARTY PROFILES: - Identify all unique parties",
+        "CREATE DEAL NETWORK: - Map who acquired/invested in whom",
+        "ANALYZE BY SECTOR: - Count deals per sector",
+        "CALCULATE METRICS: - Total deal count and value"
+      ],
+      "cross_doc_patterns": [
+        "shared_items",
+        "contested_items",
+        "response_network"
+      ],
+      "synthesis_outputs": [
+        "consolidated_item_list",
+        "relationship_map",
+        "cross_document_dynamics"
+      ],
+      "special_instructions": null
+    },
+    "concretization": {
+      "id_examples": [
+        {
+          "from": "D1",
+          "to": "Microsoft-Activision Acquisition ($69B)"
+        },
+        {
+          "from": "P1",
+          "to": "Microsoft Corporation"
+        }
+      ],
+      "naming_guidance": "",
+      "recommended_table_types": [],
+      "recommended_visual_patterns": []
+    },
+    "audience_vocabulary": {
+      "researcher": {},
+      "analyst": {},
+      "executive": {},
+      "activist": {}
+    },
+    "skip_concretization": false
+  }
+}

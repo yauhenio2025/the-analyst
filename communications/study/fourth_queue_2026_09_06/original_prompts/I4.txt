@@ -1,0 +1,23 @@
+# Collective Action Problem Identifier
+
+Identifies collective action problems: free riding, tragedy of commons, coordination failures. Analyzes why individual rationality leads to collectively bad outcomes and what institutions can enable cooperation.
+
+Core question: What collective action problems prevent cooperation?
+
+Extraction focus: collective_goods, individual_incentives, cooperation_barriers, free_riding, institutional_solutions
+
+Steps: IDENTIFY THE COLLECTIVE GOOD | IDENTIFY COLLECTIVE ACTION PROBLEMS | ANALYZE PROBLEM STRUCTURE | ASSESS GROUP CHARACTERISTICS | EXAMINE EXISTING SOLUTIONS | IDENTIFY POTENTIAL SOLUTIONS | OVERALL ASSESSMENT
+
+
+
+Schema (fields to fill, as prose): {"context": {"domain": "string - area where collective action is needed", "collective_good": "string - what would benefit everyone", "current_outcome": "string - what's happening now", "optimal_outcome": "string - what could happen with cooperation"}, "collective_action_problems": [{"problem_id": "string - CAP1, CAP2, etc.", "problem_type": "free_rider | tragedy_commons | coordination | assurance | chicken | other", "description": "string - what the problem is", "actors": ["string - who is involved"], "individual_incentives": "string - what individuals want", "collective_interest": "string - what would benefit everyone", "gap": "string - how individual and collective diverge", "severity": "mild | moderate | severe", "evidence": ["string - supporting observations"]}], "free_riding_analysis": [{"situation": "string - where free riding occurs", "public_good": "string - what's being free-ridden on", "excludability": "excludable | partially | non_excludable", "rivalry": "rival | partially | non_rival", "free_rider_strategy": "string - how people free ride", "underprovision_result": "string - what doesn't get provided"}], "tragedy_of_commons": [{"resource": "string - shared resource", "users": ["string - who uses it"], "overuse_mechanism": "string - how overuse occurs", "depletion_trajectory": "stable | gradual | rapid | critical", "private_benefits": "string - what individuals gain", "social_costs": "string - what everyone loses"}], "coordination_failures": [{"coordination_need": "string - what needs to be coordinated", "multiple_equilibria": ["string - possible coordination points"], "stuck_at": "string - where currently stuck", "better_equilibria": ["string - where could be instead"], "barrier": "string - what prevents moving"}], "group_characteristics": {"group_size": "small | medium | large | very_large", "heterogeneity": "homogeneous | moderate | heterogeneous", "repeated_interaction": "one_shot | occasional | frequent | continuous", "observability": "full | partial | minimal", "communication": "none | limited | full", "trust_level": "low | moderate | high", "collective_action_difficulty": "easy | moderate | difficult | very_difficult"}, "existing_solutions": [{"solution_id": "string", "solution_type": "privatization | regulation | community_management | selective_incentives | norms | other", "description": "string - how it works", "effectiveness": "ineffective | partial | effective | highly_effective", "limitations": ["string - where it falls short"]}], "potential_solutions": [{"solution_id": "string", "solution_type": "string - type of intervention", "mechanism": "string - how it would work", "feasibility": "low | medium | high", "barriers_to_implementation": ["string - obstacles"], "likely_effectiveness": "low | medium | high"}], "assessment": {"primary_problem": "string - most important collective action problem", "severity": "mild | moderate | severe | critical", "solvability": "easy | moderate | difficult | intractable", "key_barriers": ["string - main obstacles to cooperation"], "most_promising_solution": "string - best path forward"}, "meta": {"problems_identified": "number", "severe_problems": "number", "solutions_analyzed": "number"}}
+
+You are an expert reader. Produce the analysis this engine defines for an expert who must rely on the text; anchor every substantive claim in a short verbatim quote.
+
+## Output
+The analysis, then:
+## Findings ledger
+- [F1] <finding> — anchor: "<verbatim>" — confidence: high|medium|low
+(12-30 rows)
+### Counter-evidence
+### Open questions
