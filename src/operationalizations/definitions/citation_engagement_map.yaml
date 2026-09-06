@@ -1,0 +1,227 @@
+# Citation family: Stacks prompts preserved in the study seed archive.
+engine_key: citation_engagement_map
+engine_name: Engagement with a thinker across texts
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: How does this author use and read this thinker across the supplied citing texts?
+  framing: A bibliographic reading of A on P, led by P's place in these arguments. Give a passage × cited object
+    × move × stance × reading × locus table, then a text/year trajectory table. Distinguish evidence, foil and dialogue;
+    pair the actual passages before claiming development. Give a scholar three to five passages to open first and
+    say why. Use the supplied author/person identities and source roles. If a document is an evidence index, treat
+    its routing, locations and counts as metadata; its duplicated quotations do not create an independent source.
+    Anchor substantive claims in the actual citing text, held primary window or secondary text. Keep coauthorship
+    and nested quotations. Read the body, not just titles, bibliographies or headers. A document outside a dimension's
+    role gets no positive row in that dimension. Report that scope explicitly. Do not turn an incomplete check into
+    a source's silence. The held sample is not the author's complete work or the thinker's entire reception. Dates
+    missing from metadata stay unknown unless stated in the source.
+  scoped_outcomes: true
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: place_in_text
+    name: The thinker's place in this argument
+    questions:
+    - What does this text argue, and what place does the named thinker have in that argument?
+    method_card: 'Do: Read the whole citing text for its argument and P''s role. A quoted reader''s position is
+      not automatically A''s. On a secondary or primary-work document report outside scope. Select literal spans
+      that carry the actor, predicate, object and necessary qualification. A name or topic alone cannot support
+      a reading. Use separate anchor-b/doc-b for a second span; never stitch quotations. Keep attribution, negation,
+      modality, edition and chronology. Re-anchor, narrow or reject a claim whose quotation omits its predicate.
+      Code checks only anchors and IDs; the model must judge the reading against the supplied text.'
+    indicators:
+    - argument
+    - framework
+    - however
+    scope: document
+    load_bearing: true
+    id_prefix: D1
+    answer_shape: '[D1.F<n>] <one scoped finding> — dim: place_in_text — text-argument: <claim> — place: <evidence,
+      adopted framework, opponent, courtesy or qualified role> — anchor: "<verbatim supporting clause, <=200 chars>"
+      — doc: <actual supplied source key> — confidence: high|medium|low'
+  - key: cited_object
+    name: What each passage cites
+    questions:
+    - For each supplied passage, what work, idea or named thinker is cited, and at what locus?
+    method_card: 'Do: Copy the cited identity and locus from the passage and bibliography. Record mentions without
+      works. Separate a secondary reader''s report of P from a direct citation of P. Never supply a work from memory.
+      Select literal spans that carry the actor, predicate, object and necessary qualification. A name or topic
+      alone cannot support a reading. Use separate anchor-b/doc-b for a second span; never stitch quotations. Keep
+      attribution, negation, modality, edition and chronology. Re-anchor, narrow or reject a claim whose quotation
+      omits its predicate. Code checks only anchors and IDs; the model must judge the reading against the supplied
+      text.'
+    indicators:
+    - Weber
+    - cites
+    - p.
+    scope: document
+    load_bearing: true
+    id_prefix: D2
+    answer_shape: '[D2.F<n>] <one scoped finding> — dim: cited_object — ref: <index ref or local passage ID> — cited:
+      <work or idea> — locus: <printed/PDF page; cited locus if present> — access: <held window or unknown> — anchor:
+      "<verbatim supporting clause, <=200 chars>" — doc: <actual supplied source key> — confidence: high|medium|low'
+  - key: citation_move
+    name: The move made with the citation
+    questions:
+    - 'What does the author do with the thinker at each passage: authority, evidence, foil, dialogue, genealogy,
+      illustration, courtesy, or self-positioning?'
+    method_card: 'Do: Classify the argumentative act, keeping the premise or contrast that makes the label true.
+      The same cited work can serve different moves in different passages. Select literal spans that carry the actor,
+      predicate, object and necessary qualification. A name or topic alone cannot support a reading. Use separate
+      anchor-b/doc-b for a second span; never stitch quotations. Keep attribution, negation, modality, edition and
+      chronology. Re-anchor, narrow or reject a claim whose quotation omits its predicate. Code checks only anchors
+      and IDs; the model must judge the reading against the supplied text.'
+    indicators:
+    - following
+    - against
+    - as an example
+    scope: document
+    load_bearing: true
+    id_prefix: D3
+    answer_shape: '[D3.F<n>] <one scoped finding> — dim: citation_move — ref: <passage ID> — move: authority|evidence|foil|dialogue|genealogy|illustration|courtesy|self-positioning
+      — supports: <local claim> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <actual supplied source
+      key> — confidence: high|medium|low'
+  - key: citation_stance
+    name: The stance toward what is cited
+    questions:
+    - At each passage does the author adopt, build on, qualify, dispute or merely mention the cited position?
+    method_card: 'Do: Classify stance toward a proposition, not toward the person globally. Adoption in one respect
+      and dispute in another are separate findings. Preserve a report of another reader''s stance as a report. Select
+      literal spans that carry the actor, predicate, object and necessary qualification. A name or topic alone cannot
+      support a reading. Use separate anchor-b/doc-b for a second span; never stitch quotations. Keep attribution,
+      negation, modality, edition and chronology. Re-anchor, narrow or reject a claim whose quotation omits its
+      predicate. Code checks only anchors and IDs; the model must judge the reading against the supplied text.'
+    indicators:
+    - adapting
+    - rather different
+    - as noted
+    scope: document
+    load_bearing: true
+    id_prefix: D4
+    answer_shape: '[D4.F<n>] <one scoped finding> — dim: citation_stance — ref: <passage ID> — stance: adopts|builds_on|qualifies|disputes|mentions
+      — object: <exact proposition> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <actual supplied
+      source key> — confidence: high|medium|low'
+  - key: passage_reading
+    name: What the citation accomplishes here
+    questions:
+    - Which claim, evidence or distinction does the author advance with the thinker here, and what qualification
+      limits that reading?
+    method_card: 'Do: Explain two to four sentences of the local move using the source''s distinctions. Do not certify
+      what P actually wrote unless the primary window has separately been checked. Cover secondary uses as well
+      as headline concepts. Select literal spans that carry the actor, predicate, object and necessary qualification.
+      A name or topic alone cannot support a reading. Use separate anchor-b/doc-b for a second span; never stitch
+      quotations. Keep attribution, negation, modality, edition and chronology. Re-anchor, narrow or reject a claim
+      whose quotation omits its predicate. Code checks only anchors and IDs; the model must judge the reading against
+      the supplied text.'
+    indicators:
+    - distinction
+    - because
+    - in this sense
+    scope: document
+    load_bearing: false
+    id_prefix: D5
+    answer_shape: '[D5.F<n>] <one scoped finding> — dim: passage_reading — ref: <passage ID> — reading: <specific
+      interpretive move> — qualification: <limit> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <actual
+      supplied source key> — confidence: high|medium|low'
+  - key: engagement_trajectory
+    name: P's place across A's supplied work
+    questions:
+    - How does the thinker's role persist or change across the author's supplied texts, and which dated paired passages
+      establish that trajectory?
+    method_card: 'Do: Align the same cited idea and argumentative role in two citing texts before assigning a trajectory.
+      Coauthored works remain coauthored. Input order or same-year publication proves no sequence. Mere omission
+      is neither abandonment nor concealment. State precisely what the inspected texts support. Select literal spans
+      that carry the actor, predicate, object and necessary qualification. A name or topic alone cannot support
+      a reading. Use separate anchor-b/doc-b for a second span; never stitch quotations. Keep attribution, negation,
+      modality, edition and chronology. Re-anchor, narrow or reject a claim whose quotation omits its predicate.
+      Code checks only anchors and IDs; the model must judge the reading against the supplied text.'
+    indicators:
+    - earlier
+    - adapting
+    - paired formulations
+    scope: corpus
+    load_bearing: false
+    id_prefix: X6
+    answer_shape: '[X6.F<n>] <one scoped finding> — dim: engagement_trajectory — texts-years: <A1/year; A2/year>
+      — relation: <continuity, change, contrast or unordered> — reading: <aligned role> — coverage: <texts actually
+      supporting it> — anchor: "<verbatim clause from A, <=200 chars>" — doc: <A source key> — anchor-b: "<verbatim
+      clause from W or reader B, <=200 chars>" — doc-b: <different actual supplied source key> — confidence: high|medium|low'
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension_x_document
+    model_tier: cheap
+    output: ledger
+    max_rows: 12
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - merge_duplicates
+    - hunt_misses
+    - name_must_keep
+    - Use the supplied author/person identities and source roles. If a document is an evidence index, treat its
+      routing, locations and counts as metadata; its duplicated quotations do not create an independent source.
+      Anchor substantive claims in the actual citing text, held primary window or secondary text. Keep coauthorship
+      and nested quotations. Read the body, not just titles, bibliographies or headers. A document outside a dimension's
+      role gets no positive row in that dimension. Report that scope explicitly. Do not turn an incomplete check
+      into a source's silence. The held sample is not the author's complete work or the thinker's entire reception.
+      Dates missing from metadata stay unknown unless stated in the source.
+    - ' Select literal spans that carry the actor, predicate, object and necessary qualification. A name or topic
+      alone cannot support a reading. Use separate anchor-b/doc-b for a second span; never stitch quotations. Keep
+      attribution, negation, modality, edition and chronology. Re-anchor, narrow or reject a claim whose quotation
+      omits its predicate. Code checks only anchors and IDs; the model must judge the reading against the supplied
+      text.'
+    - Check every passage/pair against its actual source role and preserve both keys for relational claims. Verify
+      table meanings, voice and edition uncertainty; a search hit is not a confirmed cited page.
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: a scholar of A with the cited works and secondary texts open
+    tables:
+    - passage_move_stance_locus
+    - trajectory_by_text_and_year
+    brief: '1. A bibliographic reading of A on P, led by P''s place in these arguments. Give a passage × cited object
+      × move × stance × reading × locus table, then a text/year trajectory table. Distinguish evidence, foil and
+      dialogue; pair the actual passages before claiming development. Give a scholar three to five passages to open
+      first and say why.
+
+      2. Give the source-specific reading with qualifications, then render the named Markdown tables. Every positive
+      cell cites its final supporting finding ID; unknown cells state the actual limit.
+
+      3. Preserve granular evidence through reconciliation: inspect each final table cell against its cited final
+      row and source context. Renumber citations with rows; no old ID may silently acquire a new meaning. Count
+      passage/pair IDs, not findings, for coverage.
+
+      4. Give a short read-first route and the unsettled question. No claim of exhaustive coverage without a complete
+      supplied inventory and actual inspection. Use the supplied author/person identities and source roles. If a
+      document is an evidence index, treat its routing, locations and counts as metadata; its duplicated quotations
+      do not create an independent source. Anchor substantive claims in the actual citing text, held primary window
+      or secondary text. Keep coauthorship and nested quotations. Read the body, not just titles, bibliographies
+      or headers. A document outside a dimension''s role gets no positive row in that dimension. Report that scope
+      explicitly. Do not turn an incomplete check into a source''s silence. The held sample is not the author''s
+      complete work or the thinker''s entire reception. Dates missing from metadata stay unknown unless stated in
+      the source. Select literal spans that carry the actor, predicate, object and necessary qualification. A name
+      or topic alone cannot support a reading. Use separate anchor-b/doc-b for a second span; never stitch quotations.
+      Keep attribution, negation, modality, edition and chronology. Re-anchor, narrow or reject a claim whose quotation
+      omits its predicate. Code checks only anchors and IDs; the model must judge the reading against the supplied
+      text.'

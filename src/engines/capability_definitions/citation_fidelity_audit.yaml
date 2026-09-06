@@ -1,0 +1,39 @@
+# Citation family: Stacks prompts preserved in the study seed archive.
+engine_key: citation_fidelity_audit
+engine_name: Citation fidelity audit
+version: 1
+category: scholarly
+kind: comparison
+problematique: 'A paired audit of the evidence index: for every indexed attribution, A''s actual claim and anchor
+  beside P''s own words and anchor, attribution kind, accurate/fair/selective/stretched/misattributed/unverifiable
+  verdict with a reason, and edition/locus notes. State how many pairs and works were checked, unresolved and outside
+  the sample. A practice conclusion applies only to the checked sample.'
+researcher_question: Does each attribution hold against the supplied page window of the work it cites?
+intellectual_lineage:
+  primary: source_criticism
+analytical_dimensions:
+- key: attribution_kind
+  description: Who attributes what to whom
+  probing_questions:
+  - Does A directly attribute a claim to P, report P reporting another view, contrast P with another, or merely
+    name P?
+- key: attributed_claim
+  description: A's actual attribution
+  probing_questions:
+  - What exactly does A attribute at this citation, in A's own terms and with A's qualification?
+- key: source_position
+  description: P's own position at the retrieved place
+  probing_questions:
+  - What does P say in the held page window, and whose voice is speaking there?
+- key: source_context
+  description: Qualifications around the cited words
+  probing_questions:
+  - Which surrounding distinction or qualification affects the weight of the words A invokes?
+- key: edition_locus
+  description: Edition and retrieval limits
+  probing_questions:
+  - Which edition, printed page, PDF page and retrieval method are actually supplied, and what remains unresolved?
+apps:
+- critic
+function: genealogy
+family: analytical

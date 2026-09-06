@@ -19,7 +19,9 @@ UNDER_THE_SHAPE = ("conditions_of_possibility_analyzer", "argument_architecture"
                    "citation_invocation_map", "value_ethical_framework", "concept_causal_mechanisms",
                    "conditional_relations", "pedagogical_pathway", "persuasive_framing", "rival_explanations",
                    "collective_action_problem_identifier", "system_boundary_analyzer", "science_studies_network",
-                   "deal_flow_tracker", "feedback_loop_mapper")
+                   "deal_flow_tracker", "feedback_loop_mapper",
+                   # Citation family: one author/person pair across a corpus.
+                   "citation_engagement_map", "citation_fidelity_audit", "citation_reception_map")
 BANNED = ("author's prior work", "reputational", "embarrass", "would the author be comfortable", "husserlian critique", "the author's own social position")
 
 
@@ -43,7 +45,7 @@ def test_four_engines_share_the_shape():
 
 def test_prompts_compose_for_the_new_engines():
     reg = get_operationalization_registry(); ereg = get_engine_registry()
-    for key in ("inferential_commitment_mapper", "epistemological_method_detector", "deep_summarization", "statistical_evidence", "event_timeline_causal", *UNDER_THE_SHAPE[-12:]):
+    for key in ("inferential_commitment_mapper", "epistemological_method_detector", "deep_summarization", "statistical_evidence", "event_timeline_causal", *UNDER_THE_SHAPE[-15:]):
         cap = ereg.get_capability_definition(key); spec = reg.get(key).process
         one = compose_oneshot_prompt(cap, spec, {"doc": "text"})
         assert LEDGER_HEADING in one.system and "Anchoring law" in one.system and spec.dimensions[0].questions[0] in one.system
