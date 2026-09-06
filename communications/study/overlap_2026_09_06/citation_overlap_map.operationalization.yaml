@@ -1,0 +1,290 @@
+# Review candidate; withheld until source reads, owner read and both-order validation.
+engine_key: citation_overlap_map
+engine_name: Two authors on a shared cited person
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: What does each author do with this shared figure, and what does the comparison mean?
+  framing: 'What does each author do with this shared figure, and what does the comparison mean? Distinguish common
+    names from common works, readings and argumentative reliance. Explain contrasts through the supplied passages
+    and preserve the author axis, dated coverage and scoped residues.
+
+
+    Do: Preserve the ordered authors axis as UIDs, never infer the side from prose, names or a document''s position.
+    A cross-author interpretation requires at least one exact passage anchor from each author, with distinct original
+    document keys and author-qualified event IDs; repeated copies, a shared P witness, and co-authored texts cannot
+    supply the second author. Keep every necessary qualification and nested voice. Counts and missingness come only
+    from the frozen overlap table, never the number of findings. The plan is context, never evidence. Distinguish
+    bibliographic sharing, argumentative sharing and fidelity. A missing or unresolved witness cannot become an
+    adverse verdict. Code checks identities, arithmetic and anchors; the model must explain what the passages warrant.
+    No new quotation from memory, repaired OCR, stitched anchor or unsourced chapter title. Rejected, superseded,
+    unresolved or anchor-failed rows cannot support retained prose or a table cell. Co-authored A+B texts are excluded
+    from the comparison and retained only in a separate metadata annex. Unknown dates remain unknown. Do not claim
+    influence, mutual reading, personal affiliation, ignorance or intent from shared names or scoped zeros.
+
+
+    Required input: One two-author evidence index for P, both authors’ actual citing passages/full texts, P held
+    cited-work windows, role overlap_table and plan contexts. The transport, identity admission, metadata-only routing
+    and structured provenance sidecar described in the design are required runtime work. YAML loading alone proves
+    none of these. The plan is not citable; context:overlap can support metadata only and cannot count as an author
+    or person.'
+  scoped_outcomes: true
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: works_overlap
+    name: Which works of P are actually shared?
+    questions:
+    - Which works of P does each side cite, and which are shared under the declared work-identity rule?
+    - Is the apparent common person a shared text, different texts, different editions, or an unresolved bibliographic
+      match?
+    method_card: 'Do: Read each side’s cited-work inventory and its passage-to-work links. Report exact key and
+      edition intersections separately from supplied registry work-family equivalences; a held copy is not the cited
+      edition. Preserve titles as cited, cited key, registry work/edition IDs, held copies, retrieval how and unresolved
+      matches. Cite table rows for inventory arithmetic; accompany an interpretive claim with both sides’ passages.
+      A person-only mention does not identify a work. The brief’s 0.2% works and 2.9% persons are global Jaccards
+      from one snapshot, not P-specific probabilities or proof most shared people cite different texts. Test that
+      sharper question per P. Distinguish no common identified work from proven disjoint reading.
+
+
+      Do: Preserve the ordered authors axis as UIDs, never infer the side from prose, names or a document''s position.
+      A cross-author interpretation requires at least one exact passage anchor from each author, with distinct original
+      document keys and author-qualified event IDs; repeated copies, a shared P witness, and co-authored texts cannot
+      supply the second author. Keep every necessary qualification and nested voice. Counts and missingness come
+      only from the frozen overlap table, never the number of findings. The plan is context, never evidence. Distinguish
+      bibliographic sharing, argumentative sharing and fidelity. A missing or unresolved witness cannot become an
+      adverse verdict. Code checks identities, arithmetic and anchors; the model must explain what the passages
+      warrant. No new quotation from memory, repaired OCR, stitched anchor or unsourced chapter title. Rejected,
+      superseded, unresolved or anchor-failed rows cannot support retained prose or a table cell. Co-authored A+B
+      texts are excluded from the comparison and retained only in a separate metadata annex. Unknown dates remain
+      unknown. Do not claim influence, mutual reading, personal affiliation, ignorance or intent from shared names
+      or scoped zeros.'
+    indicators: []
+    scope: corpus
+    load_bearing: true
+    id_prefix: O1
+    answer_shape: '[O1.F<n>] <one bounded finding> — dim: works_overlap — person: <P_uid> — claim-kind: bibliographic|interpretive
+      — work-rule: key|registry_work|edition — works-a: <keys> — works-b: <keys> — intersection: <keys> — unresolved:
+      <entries> — metadata-refs: <rows> — author-a: <A_uid> — pair-row-a: <immutable ref or direct map row> — anchor:
+      "<A exact passage>" — doc: <A original key> — locus: <A locus> — author-b: <B_uid> — pair-row-b: <immutable
+      ref or direct map row> — anchor-b: "<B exact passage>" — doc-b: <B distinct original key> — locus-b: <B locus>;
+      repeat labelled groups for every additional endpoint and qualification — confidence: high|medium|low'
+  - key: passage_use
+    name: Move and stance in the passage
+    questions:
+    - What does this author accomplish with P at this exact place in the argument?
+    - Whose proposition is voiced, and which qualification changes the apparent move or stance?
+    method_card: 'Do: On a citing_author document read the actual surrounding argument for every indexed canonical
+      event. Emit proposition-specific rows, preserving reference/footnote/intext/mention kind. Use move authority|evidence|foil|dialogue|genealogy|illustration|courtesy|self-positioning
+      and stance adopts|builds_on|qualifies|disputes|mentions. Keep adopted_framework from older engagement maps
+      as an explicit inherited move or proposition qualifier; do not silently relabel it authority. A quote attributed
+      to a reviewer or third party is not automatically A or B’s view. Unlocated ledger hits are explicitly unlocated;
+      they support neither page verification nor a decisive comparison. Primary windows are outside this dimension;
+      reading them does not license a new fidelity audit.
+
+
+      Do: Preserve the ordered authors axis as UIDs, never infer the side from prose, names or a document''s position.
+      A cross-author interpretation requires at least one exact passage anchor from each author, with distinct original
+      document keys and author-qualified event IDs; repeated copies, a shared P witness, and co-authored texts cannot
+      supply the second author. Keep every necessary qualification and nested voice. Counts and missingness come
+      only from the frozen overlap table, never the number of findings. The plan is context, never evidence. Distinguish
+      bibliographic sharing, argumentative sharing and fidelity. A missing or unresolved witness cannot become an
+      adverse verdict. Code checks identities, arithmetic and anchors; the model must explain what the passages
+      warrant. No new quotation from memory, repaired OCR, stitched anchor or unsourced chapter title. Rejected,
+      superseded, unresolved or anchor-failed rows cannot support retained prose or a table cell. Co-authored A+B
+      texts are excluded from the comparison and retained only in a separate metadata annex. Unknown dates remain
+      unknown. Do not claim influence, mutual reading, personal affiliation, ignorance or intent from shared names
+      or scoped zeros.'
+    indicators: []
+    scope: document
+    load_bearing: true
+    id_prefix: O2
+    answer_shape: '[O2.F<n>] <one bounded finding> — dim: passage_use — move: <move> — stance: <stance> — proposition:
+      <bounded reading> — cited-work: <key or unknown> — voice: <speaker/attributor chain> — qualification: <limit>
+      — inspected: <event/eligible> — author: <uid> — person: <P_uid> — pair: <author_uid>__<P_uid> — event-ids:
+      <author-qualified canonical IDs> — anchor: "<exact passage>" — doc: <original key> — locus: <printed/PDF page
+      or registry section, edition, how> — confidence: high|medium|low'
+  - key: topic_alignment
+    name: The question each side advances with P
+    questions:
+    - Do both authors use P to answer the same question, or does a shared phrase conceal different explanatory tasks?
+    - Where do comparable passages agree, disagree or remain incomparable?
+    method_card: 'Do: Align explicit propositions and their argumentative tasks, not topic keywords. Name each side’s
+      question, concept and explanatory object, and retain difference of genre or target. Label theme origin plan_spine|passage_addition.
+      Same text different reading requires an identified common work and a genuine interpretive contrast, not merely
+      different page numbers; cite the registry equivalence if editions differ. Distinguish complementary uses from
+      disagreement, and offer the strongest contrary passage or a coverage limit.
+
+
+      Do: Preserve the ordered authors axis as UIDs, never infer the side from prose, names or a document''s position.
+      A cross-author interpretation requires at least one exact passage anchor from each author, with distinct original
+      document keys and author-qualified event IDs; repeated copies, a shared P witness, and co-authored texts cannot
+      supply the second author. Keep every necessary qualification and nested voice. Counts and missingness come
+      only from the frozen overlap table, never the number of findings. The plan is context, never evidence. Distinguish
+      bibliographic sharing, argumentative sharing and fidelity. A missing or unresolved witness cannot become an
+      adverse verdict. Code checks identities, arithmetic and anchors; the model must explain what the passages
+      warrant. No new quotation from memory, repaired OCR, stitched anchor or unsourced chapter title. Rejected,
+      superseded, unresolved or anchor-failed rows cannot support retained prose or a table cell. Co-authored A+B
+      texts are excluded from the comparison and retained only in a separate metadata annex. Unknown dates remain
+      unknown. Do not claim influence, mutual reading, personal affiliation, ignorance or intent from shared names
+      or scoped zeros.'
+    indicators: []
+    scope: corpus
+    load_bearing: true
+    id_prefix: O3
+    answer_shape: '[O3.F<n>] <one bounded finding> — dim: topic_alignment — person: <P_uid> — theme: <key/origin>
+      — topic-a: <task> — topic-b: <task> — relation: agreement|complement|disagreement|different_question|unresolved
+      — counterevidence: <rows or limit> — author-a: <A_uid> — pair-row-a: <immutable ref or direct map row> — anchor:
+      "<A exact passage>" — doc: <A original key> — locus: <A locus> — author-b: <B_uid> — pair-row-b: <immutable
+      ref or direct map row> — anchor-b: "<B exact passage>" — doc-b: <B distinct original key> — locus-b: <B locus>;
+      repeat labelled groups for every additional endpoint and qualification — confidence: high|medium|low'
+  - key: side_trajectory
+    name: Each author’s dated trajectory
+    questions:
+    - How does each side’s use of P persist or change across dated texts?
+    - Is a proposed turn in the argument visible in passages, or only in counts and publication dates?
+    method_card: 'Do: Emit a separate trajectory for each author. A before/after claim needs that author in at least
+      two distinct dated texts with ordered years; same-year material is unordered unless explicit sequence provenance
+      is supplied. Quote every endpoint. Separate a turn within one text (argumentative hinge, with before/after
+      clauses) from a career change. Report single-observation or unknown-date limits for the other side; do not
+      invent a parallel trajectory. Distinguish altered works, topics and held coverage from conversion.
+
+
+      Do: Preserve the ordered authors axis as UIDs, never infer the side from prose, names or a document''s position.
+      A cross-author interpretation requires at least one exact passage anchor from each author, with distinct original
+      document keys and author-qualified event IDs; repeated copies, a shared P witness, and co-authored texts cannot
+      supply the second author. Keep every necessary qualification and nested voice. Counts and missingness come
+      only from the frozen overlap table, never the number of findings. The plan is context, never evidence. Distinguish
+      bibliographic sharing, argumentative sharing and fidelity. A missing or unresolved witness cannot become an
+      adverse verdict. Code checks identities, arithmetic and anchors; the model must explain what the passages
+      warrant. No new quotation from memory, repaired OCR, stitched anchor or unsourced chapter title. Rejected,
+      superseded, unresolved or anchor-failed rows cannot support retained prose or a table cell. Co-authored A+B
+      texts are excluded from the comparison and retained only in a separate metadata annex. Unknown dates remain
+      unknown. Do not claim influence, mutual reading, personal affiliation, ignorance or intent from shared names
+      or scoped zeros.'
+    indicators: []
+    scope: corpus
+    load_bearing: true
+    id_prefix: O4
+    answer_shape: '[O4.F<n>] <one bounded finding> — dim: side_trajectory — author: <uid> — person: <P_uid> — relation:
+      continuity|change|argument_hinge|unordered|insufficient — endpoints: <text keys/years/events> — alternative:
+      <coverage or changed question> — anchor: "<earlier passage>" — doc: <earlier original key> — locus: <locus>
+      — anchor-b: "<later passage>" — doc-b: <later original key> — locus-b: <locus> — confidence: high|medium|low'
+  - key: asymmetry_verdict
+    name: What sharing P means
+    questions:
+    - Is P a shared authority, one’s authority and the other’s foil, or a name covering different texts or readings?
+    - Is courtesy or a consequential argumentative hinge confined to one side, and how much of the eligible evidence
+      supports that judgment?
+    method_card: 'Do: Give a primary verdict and optional coexisting tags: shared_authority|authority_vs_foil|same_person_different_texts|same_text_different_reading|courtesy_one_side|turning_point_one_side,
+      plus mixed or unresolved. Name the authority/foil/courtesy/turning side by UID, not “first”. These tags can
+      coexist. Joint authority requires substantive use on both sides; sparse counts alone prove neither courtesy
+      nor a hinge. A one-sided hinge needs the argument’s before/after warrant and evidence of what the other side
+      does, without asserting it never turns unless its full eligible scope was read. Give reliance a reasoned partial
+      ordering with ties/incomparability, alongside weaker-side and normalized count measures labelled descriptive.
+
+
+      Do: Preserve the ordered authors axis as UIDs, never infer the side from prose, names or a document''s position.
+      A cross-author interpretation requires at least one exact passage anchor from each author, with distinct original
+      document keys and author-qualified event IDs; repeated copies, a shared P witness, and co-authored texts cannot
+      supply the second author. Keep every necessary qualification and nested voice. Counts and missingness come
+      only from the frozen overlap table, never the number of findings. The plan is context, never evidence. Distinguish
+      bibliographic sharing, argumentative sharing and fidelity. A missing or unresolved witness cannot become an
+      adverse verdict. Code checks identities, arithmetic and anchors; the model must explain what the passages
+      warrant. No new quotation from memory, repaired OCR, stitched anchor or unsourced chapter title. Rejected,
+      superseded, unresolved or anchor-failed rows cannot support retained prose or a table cell. Co-authored A+B
+      texts are excluded from the comparison and retained only in a separate metadata annex. Unknown dates remain
+      unknown. Do not claim influence, mutual reading, personal affiliation, ignorance or intent from shared names
+      or scoped zeros.'
+    indicators: []
+    scope: corpus
+    load_bearing: true
+    id_prefix: O5
+    answer_shape: '[O5.F<n>] <one bounded finding> — dim: asymmetry_verdict — person: <P_uid> — verdict: <tag> —
+      tags: <list> — affected-author: <uid or both> — joint-reliance: <argued assessment> — asymmetry: <bounded
+      contrast> — inspected-a/b: <eligible denominators> — exception: <row or limit> — author-a: <A_uid> — pair-row-a:
+      <immutable ref or direct map row> — anchor: "<A exact passage>" — doc: <A original key> — locus: <A locus>
+      — author-b: <B_uid> — pair-row-b: <immutable ref or direct map row> — anchor-b: "<B exact passage>" — doc-b:
+      <B distinct original key> — locus-b: <B locus>; repeat labelled groups for every additional endpoint and qualification
+      — confidence: high|medium|low'
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension_x_document
+    model_tier: cheap
+    output: ledger
+    max_rows: 20
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - merge_duplicates
+    - hunt_misses
+    - name_must_keep
+    - 'Do: Preserve the ordered authors axis as UIDs, never infer the side from prose, names or a document''s position.
+      A cross-author interpretation requires at least one exact passage anchor from each author, with distinct original
+      document keys and author-qualified event IDs; repeated copies, a shared P witness, and co-authored texts cannot
+      supply the second author. Keep every necessary qualification and nested voice. Counts and missingness come
+      only from the frozen overlap table, never the number of findings. The plan is context, never evidence. Distinguish
+      bibliographic sharing, argumentative sharing and fidelity. A missing or unresolved witness cannot become an
+      adverse verdict. Code checks identities, arithmetic and anchors; the model must explain what the passages
+      warrant. No new quotation from memory, repaired OCR, stitched anchor or unsourced chapter title. Rejected,
+      superseded, unresolved or anchor-failed rows cannot support retained prose or a table cell. Co-authored A+B
+      texts are excluded from the comparison and retained only in a separate metadata annex. Unknown dates remain
+      unknown. Do not claim influence, mutual reading, personal affiliation, ignorance or intent from shared names
+      or scoped zeros.'
+    - Check both author endpoints, every compared person, work identity rule, dated coverage and residue completeness;
+      apply rulings to all final cells. Never count two authors as two shared persons.
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: a scholar with both authors’ passages open
+    tables:
+    - person_work_overlap
+    - person_passage_uses
+    - person_trajectories
+    - person_asymmetries
+    brief: "Do: Follow the approved plan, lead with the supported comparison, and keep every substantive sentence\
+      \ and table cell attached to final retained IDs. Preserve all immutable ancestry and original witnesses after\
+      \ critic rulings. Unknowns remain unresolved; a count table cannot supply a semantic conclusion. Complete\
+      \ the passage inventory with explicit inspected/eligible counts; missing material prevents an exhaustive label.\
+      \ No unilateral source or coauthored text can satisfy the cross-author gate. \n\nTables (full columns):\n\
+      person_work_overlap: P | cited-work key/title per side | registry work/edition IDs | held copy per side |\
+      \ shared exact key / registry equivalence / edition | unresolved | canonical event IDs | table row refs; interpretive\
+      \ cells additionally cite map IDs and both passage anchors.\nperson_passage_uses: P | author UID | pair key\
+      \ | original text key/title/year | event/ref ID/kind | work cited | proposition/topic/theme origin | move\
+      \ | stance | voice/qualification | map ID | exact anchor | printed/PDF/section/edition/how. One row per event\
+      \ × proposition; no max_rows truncation presented as exhaustive.\nperson_trajectories: P | author | dated\
+      \ original text endpoints | continuity/change/argument hinge/unordered/insufficient | topic/work shift | alternative\
+      \ | map IDs | every endpoint anchor/key/locus.\nperson_asymmetries: P | primary verdict/coexisting tags |\
+      \ affected author UID | joint reliance reasoning | weaker-side events | inspected/eligible each side | contrary\
+      \ finding | map IDs | both sides’ anchors/keys/loci.\n\nThe mandatory partiality paragraph names both authors\
+      \ and the ordered axis; held, inspected and missing text keys/counts and years per side; A+B co-authored keys\
+      \ excluded from both analytical universes (other coauthors and attribution limits separately); kinds/types/self-citation\
+      \ settings; ledger and identity/alias snapshots; exact shared threshold, eligible shared size, selected K,\
+      \ owner additions/strikes, unselected shared and below-threshold positives; person/work intersection and union\
+      \ denominators and identity rule; unresolved works/editions, held/fetched/wanted per side; inspected canonical\
+      \ events and rejected/unlocated anchors; unknown years; complete or top-N residues and omitted counts; separate\
+      \ collective terms and missing collective analyses; audits run/not run/unavailable with assessed denominators.\
+      \ Synthetic content disqualifies release even when mixed with a real pilot. Say which missing source or changed\
+      \ snapshot could change the result.\n\nClose with three to five source passages worth opening, using existing\
+      \ memo links, original keys and inherited loci."
