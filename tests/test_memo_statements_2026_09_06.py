@@ -5,7 +5,7 @@ import json
 import pytest
 
 from src.sources.citation_evidence import evidence_indexes, prepare_citation_sources
-from src.sources.memo_statements import is_statements_file, statements_documents, statements_to_evidence_index
+from src.sources.memo_statements import batches, is_statements_file, statements_documents, statements_to_evidence_index
 
 FILE = {
     "memo": {"uid": "em:U3HITB25", "title": "Weber's basic concepts", "date": "2026-09-05", "markdown": "# Memo\n\nWeber's concepts arose in comparative economic history."},
@@ -31,6 +31,9 @@ def test_the_translation_makes_the_memo_the_citing_text_and_each_source_a_held_w
     memo, = idx["texts"]
     assert memo["uid"] == "em:U3HITB25" and memo["text"].startswith("# Memo") and len(memo["passages"]) == 4
     assert memo["passages"][0]["cites"] == ["em:RJRLLVLQ", "em:NQZYBP6Y"] and memo["passages"][0]["locus"] == "statement 1"
+    assert memo["passages"][0]["pair_ids"] == ["st1/S1", "st1/S4"] and memo["passages"][0]["ref_id"] == "st1"
+    assert [(p["pair_id"], p["held"]) for p in idx["pairs"]] == [("st1/S1", True), ("st1/S4", False), ("st2/S2", True)]
+    assert idx["settings"]["pairs"] == 3 and "pair-ref" in idx["plan"]["pair_ids"]
     assert [c["copy"]["uid"] for c in idx["checks"]] == ["em:RJRLLVLQ", "em:YASGM27U"]          # the empty text is no witness
     assert idx["checks"][0]["cited_by"] == [1] and idx["checks"][0]["windows"][0]["how"] == "section"
     assert idx["unchecked"] == [{"no": 4, "label": "S9"}]
@@ -56,3 +59,11 @@ def test_it_refuses_what_is_not_a_statements_file():
     assert not is_statements_file({"statements": [], "sources": []}) and not is_statements_file({"author": "x"})
     with pytest.raises(ValueError):
         statements_to_evidence_index({"statements": [{"statement": "s"}], "sources": [{"uid": "u", "text": ""}]})
+
+
+def test_batches_cut_the_statements_and_keep_every_source():
+    bs = batches(FILE, size=3)
+    assert [b["batch"]["statements"] for b in bs] == [[1, 2, 3], [4]] and bs[1]["batch"] == {"index": 2, "of": 2, "statements": [4]}
+    assert all(len(b["sources"]) == 3 for b in bs)
+    idx = statements_to_evidence_index(bs[0])
+    assert idx["settings"]["statements"] == 3 and [p["pair_id"] for p in idx["pairs"]] == ["st1/S1", "st1/S4", "st2/S2"]

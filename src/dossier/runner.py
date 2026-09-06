@@ -186,6 +186,7 @@ def _run(job_id: str) -> None:
                 _pause_for_drain(job_id, step_name, "between steps", record_step=True)
                 return
             job = get_job(job_id) or job
+            _over_cap(job, step_name)
             _run_step(job, step_name, docs)
             if step_name == "brief" and not job.options.autopilot:
                 job = get_job(job_id) or job
@@ -214,6 +215,19 @@ def _run(job_id: str) -> None:
     finally:
         with _lock:
             _running.discard(job_id)
+
+
+def _over_cap(job: DossierJob, next_step: str) -> None:
+    """The spend cap, enforced between steps (2026-09-06, promised to the Stacks): a job whose receipts already exceed
+    `spend_cap_usd` does not start another model-bearing step. `receipts` costs nothing and always runs so the
+    appendix carries the final totals. The step in flight is never interrupted: the cap is a ceiling on starting work,
+    not a kill switch mid-call."""
+    cap = job.options.spend_cap_usd
+    if not cap or next_step == "receipts":
+        return
+    spent = float(job.totals.cost_usd or 0)
+    if spent > cap:
+        raise RuntimeError(f"spend cap reached: ${spent:.2f} of ${cap:.2f} before {next_step}")
 
 
 def ledger_line(job_id: str) -> str:

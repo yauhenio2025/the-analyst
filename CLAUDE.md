@@ -225,6 +225,8 @@ GET  /v1/engines?family=&organ=          # families: analytical, storytelling, e
 GET  /v1/engines/{key}/doctrine          # hash-pinned prompt/doctrine files (mirrored organs + the Analyst's desks)
 POST /v1/story/jobs · GET /v1/story/jobs/{id} · GET|POST /v1/story/jobs/{id}/brief · GET /v1/story/jobs/{id}/handoff
 GET  /v1/story/handoff-schema · /v1/story/demands
+GET  /v1/dossier/jobs/{id}/profiles?shape=shared|native   # reconnaissance profiles in the shared work-profile shape (2026-09-06)
+# Dossier source roles: source | evidence_index | plan | profile (a Stacks WorkProfile: the desk starts from it) | statements (a memo's numbered statements against the sources they cite: the fidelity audit's second input)
 PUT  /v1/dossier/admin/blobs/{key} · /v1/dossier/admin/jobs/{id}   # re-hydration (X-Admin-Token)
 
 # Presenter

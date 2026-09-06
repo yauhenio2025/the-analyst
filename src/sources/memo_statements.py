@@ -44,6 +44,7 @@ def statements_to_evidence_index(obj: dict) -> dict:
     memo_uid = memo.get("uid") or "memo"
     memo_title = memo.get("title") or "the memo"
     labels = _label_map(obj["sources"])
+    labels_by_uid = {s.get("uid"): (s.get("label") or s.get("uid")) for s in obj["sources"] if s.get("uid")}
     passages, unresolved = [], []
     for s in obj["statements"]:
         cited = []
@@ -53,8 +54,9 @@ def statements_to_evidence_index(obj: dict) -> dict:
                 cited.append(uid)
             else:
                 unresolved.append({"no": s.get("no"), "label": lab})
-        passages.append({"no": s.get("no"), "section": s.get("section", ""), "hit": " ".join(str(s.get("statement", "")).split()),
-                         "cites": cited, "locus": f"statement {s.get('no')}"})
+        passages.append({"ref_id": f"st{s.get('no')}", "no": s.get("no"), "section": s.get("section", ""),
+                         "hit": " ".join(str(s.get("statement", "")).split()), "cites": cited, "locus": f"statement {s.get('no')}",
+                         "pair_ids": [f"st{s.get('no')}/{labels_by_uid.get(u, u)}" for u in cited]})
     body = memo.get("markdown") or "\n\n".join(f"[{p['no']}] ({p['section']}) {p['hit']}" for p in passages)
     texts = [{"uid": memo_uid, "title": memo_title, "year": memo.get("date") or "", "kind": "memo",
               "text": body, "passages": passages}]
@@ -71,6 +73,9 @@ def statements_to_evidence_index(obj: dict) -> dict:
                        "windows": [{"how": "section", "section": "whole held text", "text": text}]})
     if not checks:
         raise ValueError("a statements file needs at least one source with text")
+    held = {c["copy"]["uid"] for c in checks}
+    pairs = [{"pair_id": pid, "statement": p["no"], "source": u, "label": labels_by_uid.get(u, u), "held": u in held}
+             for p in passages for pid, u in zip(p["pair_ids"], p["cites"])]
     plan = {"purpose": f"Check every statement of '{memo_title}' against the sources it cites; a statement that cites no source is checked against all supplied sources and marked so.",
             "questions": ["Does the source say what the statement attributes to it, at the cited place or anywhere in the held text?",
                           "Is the attribution accurate, fair, selective, stretched, misattributed, or unverifiable in the held text?"],
@@ -80,9 +85,23 @@ def statements_to_evidence_index(obj: dict) -> dict:
             "themes": sorted({p["section"] for p in passages if p["section"]}),
             "stacks_verdict_vocabulary": obj.get("verdicts") or "supported | partly | unsupported | misattributed | unchecked",
             "stacks_check_runs": [{k: v for k, v in r.items() if k != "check"} for r in (obj.get("stacks_check_runs") or [])][:8]}
+    plan["pair_ids"] = ("Every statement × cited-source pair has an index ID of the form st<statement no>/<source label> "
+                        "(listed under pairs); use it as pair-ref. Audit every pair whose source is held; a pair whose source "
+                        "is not held is unverifiable. A statement citing no source is checked against every held source once.")
     return {"role": "evidence_index", "mode": "memo_against_sources", "author": memo_title, "person": "the cited sources",
-            "texts": texts, "checks": checks, "unchecked": unresolved, "plan": plan,
-            "settings": {"statements": len(passages), "sources": len(checks), "source": "stacks digest_check inputs"}}
+            "texts": texts, "checks": checks, "unchecked": unresolved, "plan": plan, "pairs": pairs,
+            "settings": {"statements": len(passages), "sources": len(checks), "pairs": len(pairs), "source": "stacks digest_check inputs"}}
+
+
+def batches(obj: dict, size: int = 8) -> list[dict]:
+    """The same file cut into slices of `size` statements, every source kept: the one-call modes cap a ledger at a few
+    dozen rows, and a memo of fifty statements over four sources is a hundred pairs. Callers merge the ledgers."""
+    if not is_statements_file(obj):
+        raise ValueError("not a statements file")
+    sts = obj["statements"]
+    return [{**obj, "statements": sts[i:i + size], "batch": {"index": n, "of": (len(sts) + size - 1) // size,
+                                                              "statements": [s.get("no") for s in sts[i:i + size]]}}
+            for n, i in enumerate(range(0, len(sts), size), start=1)]
 
 
 def statements_documents(documents: dict[str, str]) -> dict[str, str]:

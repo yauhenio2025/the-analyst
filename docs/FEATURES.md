@@ -1591,3 +1591,23 @@ Ten advanced engines with deep theoretical foundations, cross-referencing ID sys
   - `web/src/pages/Library.tsx` - "Make a film" lane and films shelf
   - `web/src/router.ts` - `/s/:id[/station]`
 - **Added**: 2026-09-04
+
+## The Stacks bridge, second round (2026-09-06)
+
+### Shared work profile (`role: profile`)
+- **Status**: Active
+- **Description**: The Stacks' WorkProfile shape plus a verified verbatim anchor per claim; a `role: profile` source lets reconnaissance start from a supplied profile instead of re-reading the document (claims still go through the anchor wall); `GET /v1/dossier/jobs/{id}/profiles?shape=shared` emits the desk's profiles in the same shape
+- **Entry Points**: `src/sources/profiles.py`, `src/dossier/reconnaissance.py` (`context_documents`), `src/api/routes/dossier.py` (`get_profiles`), `tests/test_shared_profiles_2026_09_06.py`
+- **Added**: 2026-09-06
+
+### A memo against its sources (`role: statements`, the fidelity audit's second input)
+- **Status**: Active
+- **Description**: The Stacks' digest_check inputs (a memo's numbered statements with the source labels each cites, and the source texts by uid) translate into the citation evidence index without judgment: the memo is the citing author, each statement an indexed passage with pair ids `st<no>/<label>`, each cited source a held witness; `citation_fidelity_audit` reads it through its existing unpacking. Batched by statements for the one-call modes (`scripts/run_memo_fidelity_inprocess.py`)
+- **Entry Points**: `src/sources/memo_statements.py`, `src/sources/citation_evidence.py` (`prepare_citation_sources`), `scripts/run_memo_fidelity_inprocess.py`, `tests/test_memo_statements_2026_09_06.py`
+- **Added**: 2026-09-06
+
+### Dossier spend cap enforced
+- **Status**: Active
+- **Description**: `spend_cap_usd` is a ceiling on starting work: a job whose receipts exceed it does not start another model-bearing step (status failed, error "spend cap reached: $x of $y before <step>"); the receipts step always runs
+- **Entry Points**: `src/dossier/runner.py` (`_over_cap`), `tests/test_spend_cap_2026_09_06.py`
+- **Added**: 2026-09-06
