@@ -1,0 +1,19 @@
+{
+  "key": "joint-surnames-in-title",
+  "name": "Two surnames in one title",
+  "task_kinds": [
+    "paper-discovery"
+  ],
+  "when": "the secondary literature ABOUT two people together (a debate, a comparison, a school)",
+  "shape": "intitle:\"<surname A>\" intitle:\"<surname B>\" — no full-name anchor (it would drop reviews that never spell a full name)",
+  "ingredients": [
+    "two or more surnames, rare enough to be precise together"
+  ],
+  "yields": "comparisons, debates and reviews that name both in the title",
+  "misses": "common surnames; works naming one side only",
+  "origin": "the Referee's secondary-query planner (build_joint_title_query)",
+  "owner": "the-referee",
+  "version": "2026-09-06",
+  "evidence": [],
+  "note": ""
+}
