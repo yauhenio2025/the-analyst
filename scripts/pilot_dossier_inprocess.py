@@ -19,7 +19,7 @@ def main():
     from src.api.routes.dossier import validate_lane
     from src.dossier.schemas import CreateDossierRequest
     from src.dossier.schemas import DossierJob, DossierOptions, OutputOptions
-    from src.dossier.store import create_job, load_job
+    from src.dossier.store import create_job, get_job
     from src.dossier import runner
     from src.executor.document_store import store_document
     from src.sources.resolve import resolve_sources
@@ -50,7 +50,7 @@ def main():
     print(time.strftime("%H:%M:%S"), "started", job.id, "| documents", len(job.documents), "| context", sum(1 for d in job.documents if d.get("role") != "source"), flush=True)
     seen = None
     while True:
-        j = load_job(job.id)
+        j = get_job(job.id)
         if (j.status, j.step) != seen:
             seen = (j.status, j.step); print(time.strftime("%H:%M:%S"), "status", j.status, "step", j.step, flush=True)
         if j.status in ("done", "failed", "cancelled"):
