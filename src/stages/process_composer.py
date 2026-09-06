@@ -492,7 +492,8 @@ def compose_oneshot_prompt(cap_def, spec: ProcessSpec, documents: dict[str, str]
             LEDGER_HEADING,
             "- [F1] <finding> — dim: <key> — anchor: \"<verbatim>\""
             + (" — doc: <doc_key>" if len(documents) > 1 else "") + " — confidence: high|medium|low",
-            "(12-30 rows in the order the reading uses them)",
+            (f"(at most {final.max_rows} rows per dimension, in the order the reading uses them; no positive minimum)"
+             if final and final.max_rows < 12 else "(12-30 rows in the order the reading uses them)"),
             "### Counter-evidence",
             "### Open questions",
         ]),

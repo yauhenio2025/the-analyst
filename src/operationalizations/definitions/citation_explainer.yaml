@@ -1,0 +1,152 @@
+# Citation family: one citation explained in its place (2026-09-06). Surface = one call (the Stacks' panel);
+# standard = the call and the critic; deep = the full process. The moves and stances are the registry's
+# (src/vocabularies: citation_moves, citation_stances, citation_places).
+engine_key: citation_explainer
+engine_name: One citation explained in its place
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: How and why does this author cite this thinker here, and what does the citation do for the text's argument?
+  framing: The source is the section of a text by A in which one citation of a thinker P sits (or, given several
+    texts, the passages of each that cite P with their surrounding sentences). A packet supplied as upstream context
+    names the citation (the person, the cited work, the passage sentence, its page), the text's profile (thesis,
+    question, tradition, contribution, object) and the author's other citations of P in the text. Read the section
+    for what it argues and find the passage in it. Say how P is cited here, why the passage needs the citation, and
+    how the passage and the citation fit the text's argument. Quote the sentence that carries the citation verbatim
+    from the section; a row's anchor must be in the supplied source. Confine the reading to the section, the profile
+    and the other citations; never supply what P wrote from memory, and never call a reported reading of P the author's
+    own. Keep attribution, negation and modality. Do not turn one passage into the author's whole view of P.
+  scoped_outcomes: false
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: claude-sonnet-5
+  dimensions:
+  - key: how
+    name: How the thinker is cited here
+    questions:
+    - 'What does the author do with the thinker at this passage: authority, evidence, foil, dialogue, genealogy, illustration,
+      courtesy, or self-positioning; and does the author adopt, build on, qualify, dispute or merely mention the cited
+      position?'
+    method_card: 'Do: Name the form in two or three sentences (a named authority, a quoted passage, a foil to argue
+      against, a source of evidence or data, a genealogical placement, a courtesy nod) and keep the premise or contrast
+      that makes the move label true. Classify the stance toward a proposition, not toward the person globally. Anchor
+      in the sentence that carries the citation, verbatim. Code checks only anchors and IDs; the model must judge the
+      reading against the supplied section.'
+    indicators:
+    - following
+    - against
+    - as an example
+    - see
+    scope: document
+    load_bearing: true
+    id_prefix: E1
+    answer_shape: '[E1.F<n>] <how the thinker is cited here, two or three sentences> — dim: how — ref: <the citation id from
+      the packet> — move: authority|evidence|foil|dialogue|genealogy|illustration|courtesy|self-positioning — stance: adopts|builds_on|qualifies|disputes|mentions
+      — object: <the cited work, idea or proposition> — anchor: "<the sentence that carries the citation, verbatim, <=200 chars>"
+      — doc: <actual supplied source key> — confidence: high|medium|low'
+  - key: why_here
+    name: Why the passage needs the citation
+    questions:
+    - Which claim, evidence or distinction does the passage advance with the thinker, and what qualification limits that
+      reading?
+    method_card: 'Do: Say in two to four sentences what the passage needs the citation for, using the source''s own
+      distinctions: the local claim it carries, the step it licenses, the contrast it sets up. Name the qualification
+      that limits the reading (a hedge, a scope, a reported voice). Anchor in the passage or the sentences around it.
+      Code checks only anchors and IDs.'
+    indicators:
+    - because
+    - in this sense
+    - distinction
+    scope: document
+    load_bearing: true
+    id_prefix: E2
+    answer_shape: '[E2.F<n>] <why the passage needs the citation, two to four sentences> — dim: why_here — ref: <the citation
+      id from the packet> — supports: <the local claim> — qualification: <the limit, or none> — anchor: "<verbatim from
+      the section, <=200 chars>" — doc: <actual supplied source key> — confidence: high|medium|low'
+  - key: in_argument
+    name: How the passage and the citation fit the text's argument
+    questions:
+    - Where in the text's argument does this section sit, and what does the citation do for that argument?
+    method_card: 'Do: From the profile''s thesis and the section''s own words, say in three to five sentences where
+      this section sits in the text''s argument and what the citation does for it. Name the thinker''s place in that
+      argument with one label: evidence, adopted framework, opponent, courtesy or qualified role. A quoted reader''s
+      position is not the author''s. Anchor in the section. Code checks only anchors and IDs.'
+    indicators:
+    - argument
+    - framework
+    - however
+    - therefore
+    scope: document
+    load_bearing: true
+    id_prefix: E3
+    answer_shape: '[E3.F<n>] <how the passage and the citation fit the text''s argument, three to five sentences> — dim: in_argument
+      — ref: <the citation id from the packet> — section-role: <where in the argument this section sits, one clause>
+      — place: evidence|adopted_framework|opponent|courtesy|qualified_role — anchor: "<verbatim from the section, <=200
+      chars>" — doc: <actual supplied source key> — confidence: high|medium|low'
+  - key: across_texts
+    name: What shifts between the texts
+    questions:
+    - Across the supplied texts, does the thinker's role persist or change, and which paired passages establish that?
+    method_card: 'Do: Only when several texts are supplied. Align the same cited idea and role in two texts before
+      naming a shift: the stance, the works drawn on, the weight. Input order and same-year publication prove no
+      sequence; omission is not abandonment. Anchor in one text and anchor-b in another. Code checks only anchors and
+      IDs.'
+    indicators:
+    - earlier
+    - later
+    - no longer
+    scope: corpus
+    load_bearing: false
+    id_prefix: X4
+    answer_shape: '[X4.F<n>] <what shifts or persists, one or two sentences> — dim: across_texts — texts-years: <A1/year;
+      A2/year> — relation: continuity|change|contrast|unordered — anchor: "<verbatim from one text, <=200 chars>" — doc:
+      <A1 source key> — anchor-b: "<verbatim from the other text, <=200 chars>" — doc-b: <A2 source key> — confidence: high|medium|low'
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension_x_document
+    model_tier: cheap
+    output: ledger
+    max_rows: 3
+  - key: verify
+    kind: verify
+    parallel_over: document
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - merge_duplicates
+    - name_must_keep
+    - The anchor of the how row must be the sentence that carries the citation; re-anchor a row whose quotation is
+      a paraphrase. Strike a row that says what the cited thinker wrote beyond what the section says of it. One row
+      per dimension per citation.
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    max_rows: 2
+    reader: a scholar who knows the field and has the text open at this page
+    tables: []
+    brief: '1. Three short headed parts in this order, each two to five sentences in the reader''s terms: How (the
+      form, the move and the stance), Why here (what the passage needs the citation for and the qualification), In the
+      argument (where the section sits in the text''s argument and what the citation does for it). Given several texts,
+      a fourth part, Across the texts, on what shifts and what persists.
+
+      2. Then the ledger: one row per dimension per citation (a second only for a distinct further reading), in the answer shapes, the how row anchored in the sentence
+      that carries the citation verbatim. Every part cites its supporting row ID. Nothing about the cited thinker beyond
+      what the text itself says.'

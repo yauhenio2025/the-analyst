@@ -6,9 +6,12 @@ MIGRATION NOTES (2026-01-29):
 - Added new /stages/* endpoints for template/framework access
 """
 
-from typing import Literal, Optional
+from typing import Any, Literal, Optional
 
 from fastapi import APIRouter, HTTPException, Query
+from pydantic import BaseModel, Field
+
+from src.sources.schemas import SourceSpec
 
 from src.engines.discovery import (
     list_discoverable_engines,
@@ -736,6 +739,38 @@ async def get_single_pass_prompt(
         pass_def=pass_def,
         depth=depth,
     )
+
+
+class EngineCallRequest(BaseModel):
+    """A light engine call (2026-09-06): the engine over these sources, in the request, no dossier job. `sources` are
+    the same specs as a dossier job's (kind=paste with key, title, text; role=source is analysed, any other role is
+    handed to the engine as context). `packet` is context JSON the engine's framing expects (the citation packet for
+    citation_explainer). `refs` lets the caller get its own objects back on the shaped answer, keyed by the rows' ref."""
+
+    sources: list[SourceSpec]
+    packet: Optional[dict[str, Any]] = None
+    depth: Literal["surface", "standard"] = "surface"
+    model: Optional[str] = Field(default=None, description="claude-…, gemini-…, openrouter/<vendor>/<id>, or <vendor>/<id> (OpenRouter); anthropic/<id> goes direct")
+    spend_cap_usd: float = Field(default=0.5, ge=0.0, le=20.0)
+    refs: Optional[dict[str, Any]] = None
+
+
+@router.post("/{engine_key}/call")
+def call_engine_route(engine_key: str, req: EngineCallRequest) -> dict:
+    """Run one engine over a few sources and answer in the request: the rows with the wall's verdicts, the engine's
+    shaped JSON when it has a renderer (citation_explainer → the Stacks' explanation shape), the receipts. Refuses
+    before spending when the estimate passes `spend_cap_usd`."""
+    from src.dossier.engine_call import call_engine
+
+    try:
+        return call_engine(engine_key, req.sources, packet=req.packet, depth=req.depth, model=req.model,
+                           spend_cap_usd=req.spend_cap_usd, refs=req.refs)
+    except KeyError as e:
+        raise HTTPException(status_code=404, detail=str(e.args[0] if e.args else e))
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:  # a provider failure: the caller falls back to its own path
+        raise HTTPException(status_code=502, detail=f"{type(e).__name__}: {e}")
 
 
 @router.post("/reload")

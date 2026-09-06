@@ -223,6 +223,7 @@ POST /v1/results/by-job/{job_id}/attach-project      # Attach project_id to exte
 GET  /v1/organs · /v1/organs/by-layer · /v1/organs/{key} · /v1/organs/{key}/engines
 GET  /v1/engines?family=&organ=          # families: analytical, storytelling, editing, restructuring, search, rendering, composition, quality, imagination, governance
 GET  /v1/engines/{key}/doctrine          # hash-pinned prompt/doctrine files (mirrored organs + the Analyst's desks)
+POST /v1/engines/{key}/call              # a light engine call in the request, no dossier job (2026-09-06): sources[] + packet + depth surface|standard + model + spend_cap_usd → rows with the wall's verdicts, receipts, and the engine's shaped JSON (citation_explainer → the Stacks' How / Why here / In the argument)
 POST /v1/story/jobs · GET /v1/story/jobs/{id} · GET|POST /v1/story/jobs/{id}/brief · GET /v1/story/jobs/{id}/handoff
 GET  /v1/story/handoff-schema · /v1/story/demands
 GET  /v1/dossier/jobs/{id}/profiles?shape=shared|native   # reconnaissance profiles in the shared work-profile shape (2026-09-06)
