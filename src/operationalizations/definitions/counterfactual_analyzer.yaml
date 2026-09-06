@@ -1,4 +1,4 @@
-# Second queue: authored questions replace any earlier lifted process.
+# Second queue repair: prompts/cards only; analytical questions preserved.
 engine_key: counterfactual_analyzer
 engine_name: Audit a counterfactual
 process:
@@ -79,7 +79,9 @@ process:
 
       a causal attribution alone does not establish that removing this cause removes every possible route. A counterexample
       defeats a universal or primacy claim through its inference; literal conditional syntax is not an eligibility
-      test.'
+      test. Repair discipline: Keep granting an opponent premise for argument separate from endorsing it. Reconcile
+      attribution across the finding, explanatory prose and table; use separate spans for the speaker and the supposed
+      outcome.'
     indicators:
     - if
     - even if
@@ -185,7 +187,10 @@ process:
 
       label it and anchor the premise it tests, not imaginary dialogue. Do not select a closest world
 
-      or historical probability by intuition and report it as an established fact.'
+      or historical probability by intuition and report it as an established fact. Repair discipline: Inspect the
+      strongest actual dependencies and counterexamples, including an inference that survives without granting the
+      opponent premise and a rhetorical counterexample where supplied. Reconstruct the alternative route with complete
+      attributed support before deciding which assumption matters.'
     indicators:
     - by contrast
     - another possibility
@@ -314,6 +319,12 @@ process:
       counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source
       interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or
       silent.
+    - check_matrix_cell_support
+    - 'Apply these source-read repair checks: Inspect the strongest actual dependencies and counterexamples, including
+      an inference that survives without granting the opponent premise and a rhetorical counterexample where supplied.
+      Reconstruct the alternative route with complete attributed support before deciding which assumption matters.
+      Keep granting an opponent premise for argument separate from endorsing it. Reconcile attribution across the
+      finding, explanatory prose and table; use separate spans for the speaker and the supposed outcome.'
   - key: synthesize
     kind: synthesize
     consumes:
@@ -357,7 +368,10 @@ process:
       \ only anchors and IDs. Before returning, read the actual final tables against their cited final rows and\
       \ the source contexts, including each source counted in coverage; repair or narrow unsupported cells. Keep\
       \ execution/scope diagnostics separate from source interpretations; an unchecked record means the check was\
-      \ incomplete, not that the source is meaningless or silent."
+      \ incomplete, not that the source is meaningless or silent.\n\nAfter the check, rewrite or drop cells resting\
+      \ on rejected or unverified findings; rewrite weakened claims everywhere they occur. A rejection tag is acceptable\
+      \ only in prose, not as validation of a table cell. Keep separate granular support when deduplicating. Apply\
+      \ the method-card repairs to the final reading and its tables."
 stance_operationalizations: []
 depth_sequences:
 - depth_key: surface

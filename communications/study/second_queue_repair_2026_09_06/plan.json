@@ -1,0 +1,214 @@
+{
+  "cap_usd": 10.0,
+  "jobs": {
+    "G2__dvs__technique_rationality": {
+      "id": "G2",
+      "engine": "compare_concept_trajectories",
+      "papers": [
+        "technique",
+        "rationality"
+      ],
+      "condition": "dvs"
+    },
+    "G3__dvs__religion2001_religion2022": {
+      "id": "G3",
+      "engine": "concept_appropriation_tracker",
+      "papers": [
+        "religion2001",
+        "religion2022"
+      ],
+      "condition": "dvs"
+    },
+    "G4__dvs__promise_religion2022": {
+      "id": "G4",
+      "engine": "revision_presentation",
+      "papers": [
+        "promise",
+        "religion2022"
+      ],
+      "condition": "dvs"
+    },
+    "A4__checked__harris": {
+      "id": "A4",
+      "engine": "counterfactual_analyzer",
+      "papers": [
+        "harris"
+      ],
+      "condition": "checked"
+    },
+    "A5__checked__elling": {
+      "id": "A5",
+      "engine": "dialectical_structure",
+      "papers": [
+        "elling"
+      ],
+      "condition": "checked"
+    },
+    "A6__checked__chen": {
+      "id": "A6",
+      "engine": "modal_force_inventory",
+      "papers": [
+        "chen"
+      ],
+      "condition": "checked"
+    },
+    "C1__checked__zambrana": {
+      "id": "C1",
+      "engine": "meaning_in_use",
+      "papers": [
+        "zambrana"
+      ],
+      "condition": "checked"
+    },
+    "C6__checked__aukus": {
+      "id": "C6",
+      "engine": "framework_components",
+      "papers": [
+        "aukus"
+      ],
+      "condition": "checked"
+    },
+    "S3__checked__subsea": {
+      "id": "S3",
+      "engine": "narrative_form_perspective",
+      "papers": [
+        "subsea"
+      ],
+      "condition": "checked"
+    },
+    "E12__checked__promise": {
+      "id": "E12",
+      "engine": "theory_construction_analyzer",
+      "papers": [
+        "promise"
+      ],
+      "condition": "checked"
+    },
+    "A3__checked__aukus": {
+      "id": "A3",
+      "engine": "comparative_reasoning_analyzer",
+      "papers": [
+        "aukus"
+      ],
+      "condition": "checked"
+    }
+  },
+  "models": {
+    "cheap": "openrouter/openai/gpt-5.6-luna",
+    "mid": "openrouter/deepseek/deepseek-v4-pro",
+    "strong": "openrouter/openai/gpt-5.6-sol",
+    "sonnet": "claude-sonnet-4-6",
+    "sol": "openrouter/openai/gpt-5.6-sol"
+  },
+  "prices": {
+    "cheap": [
+      0.2,
+      1.2
+    ],
+    "mid": [
+      1.042,
+      2.085
+    ],
+    "strong": [
+      2,
+      10
+    ],
+    "sonnet": [
+      3,
+      15
+    ],
+    "sol": [
+      2,
+      10
+    ]
+  },
+  "output_limits": {
+    "cheap": 6000,
+    "mid": 32000,
+    "strong": 14000,
+    "sonnet": 1800,
+    "sol": 1800
+  },
+  "rubric": "Score this single ANALYSIS against the supplied SOURCES, independently. No comparison or winner.\nSix integer scores from 1 to 10, higher always better:\nspecificity: captures these sources and their distinct roles rather than generic themes;\nanchoring: quotes occur in the named sources AND support the actual interpretation and scope;\nnon_obviousness: useful expert distinctions a casual reader misses;\ncoherence: consistent source attribution, scope and claims across prose, tables and findings;\nusefulness: the requested reading or inventory and its tables help a reader with these texts open; inventories need accurate useful coverage, not a compulsory novel thesis;\nhallucination_risk: 10 means no unsupported claims, invented consensus, false contradiction, or invented absence.\nRead all sources and all substantive output. A verbatim quote verifies occurrence, not meaning. Judge table cells,\nrelation labels, definitions, quantifiers, dates, attribution, warrants and silence against the actual passages.\nDifferent scope is not contradiction; recurring vocabulary is not agreement. An honest inconclusive or bounded\nnegative cell can be useful. Do not reward length, row count, special fields or asserted verification/check status.\nIdentify any decisive error with the analysis claim and counter-passage. Give a concise source-specific reason\nfor each criterion. Return only JSON with all six scores and nonempty reasons:\n{\"specificity\":n,\"anchoring\":n,\"non_obviousness\":n,\"coherence\":n,\"usefulness\":n,\"hallucination_risk\":n,\n\"reasons\":{\"specificity\":\"...\",\"anchoring\":\"...\",\"non_obviousness\":\"...\",\"coherence\":\"...\",\n\"usefulness\":\"...\",\"hallucination_risk\":\"...\"},\"decisive_errors\":[],\"one_line\":\"...\"}",
+  "frozen_at": 1788658288.463281,
+  "commit": "1bda5ff8859677ed7b99ec0850f61a2bb5937d6f",
+  "inputs": {
+    "communications/study/PROTOCOL_second_queue_repair_2026-09-06.md": "b25309fb8349f8b3a83fa2b6099d4c431820bde5e3c2eb39b2592d895b406db0",
+    "communications/study/second_queue_2026_09_06/designs.json": "706517b4d16caeec25991ddaaee897722af3daea25d5987280495d5e3a9c23a3",
+    "communications/study/second_queue_2026_09_06/scores/A3__old__aukus__sol.json": "977740bab925025613f8ce61a2c33e7cb04c6ef09590c660235059273b569eb7",
+    "communications/study/second_queue_2026_09_06/scores/A4__old__harris__sol.json": "493600499c85b58c9c8cc3eb86dde7cfa94e890d9aaccec532eab3005642130e",
+    "communications/study/second_queue_2026_09_06/scores/A4__old__harris__sonnet.json": "7aa68170b264ffee138de08c2ff3ff8cfce47443853e31dea2eab2d34fcb551e",
+    "communications/study/second_queue_2026_09_06/scores/A4__old__hegel__sol.json": "06e521696612dfc5f26bf8c9aa87cbded040e11442e44e603c6b32e7744c8354",
+    "communications/study/second_queue_2026_09_06/scores/A4__old__hegel__sonnet.json": "cd73e3a3f2254ac611a58a111256df8ec9a8f3bf9234ee748f45d46dfa4e7c81",
+    "communications/study/second_queue_2026_09_06/scores/A5__old__elling__sol.json": "f2099d2f32d8fd56bdd8a0b0059f789f9593b5511e2c3491324d4a885a3a53fa",
+    "communications/study/second_queue_2026_09_06/scores/A5__old__elling__sonnet.json": "638fe50dbecde884860388b0f84bf58ce9eccdf767bf7943daba4d1189a7dc83",
+    "communications/study/second_queue_2026_09_06/scores/A5__old__zambrana__sol.json": "3e238127d2a980d771587bc8324306e1d72f996040d28b008be4af488113f295",
+    "communications/study/second_queue_2026_09_06/scores/A5__old__zambrana__sonnet.json": "41d9a1c00012b5b345dcd3dbcdaa2c1bdb4e424fca3024f2cba9ade38476ad5a",
+    "communications/study/second_queue_2026_09_06/scores/A6__old__chen__sol.json": "59546da6e519864e14c57dc3596da1a51685d63e422ef2bf6eae03df677f612f",
+    "communications/study/second_queue_2026_09_06/scores/A6__old__chen__sonnet.json": "75b91923e6dde7c016d57467150bf7a770d0dc7b59c43107a7c263bed4beb1cd",
+    "communications/study/second_queue_2026_09_06/scores/A6__old__elling__sol.json": "f933b707da8270413b464608b078d0d7a894ca4fb5737cd7339b63b917cc1cfe",
+    "communications/study/second_queue_2026_09_06/scores/A6__old__elling__sonnet.json": "5f509b0addbcc84fd0f3b514901489c285dd1ef8aefc8b870a3fc231f7644f91",
+    "communications/study/second_queue_2026_09_06/scores/C1__old__hegel__sol.json": "a648b1c82ae8acdbd887c5fd774a14032514962a6750316529567631c1029d02",
+    "communications/study/second_queue_2026_09_06/scores/C1__old__hegel__sonnet.json": "a8bbddba713d1f0a930d157ad9050159be97234ca3fe2799a7afc4655ab47368",
+    "communications/study/second_queue_2026_09_06/scores/C1__old__zambrana__sol.json": "59c0284770edb42e4b5f4ef5d3cf52e91dbed57df8eac834cfebf1371d77cfa3",
+    "communications/study/second_queue_2026_09_06/scores/C1__old__zambrana__sonnet.json": "7f17856988d4d75f64e85f1a54d25a8aace831a9ad58b41de26f7cd5768e35ce",
+    "communications/study/second_queue_2026_09_06/scores/C6__old__aukus__sol.json": "b521344a47f62e9010bac620826f3cf3c70693afdb582159b6fbc89493a183d5",
+    "communications/study/second_queue_2026_09_06/scores/C6__old__aukus__sonnet.json": "50dde40f5d9e91cdf2b6daa8c66bb11f6c549d5c7bc9104652ae1593e31efee0",
+    "communications/study/second_queue_2026_09_06/scores/C6__old__chen__sol.json": "15152aac4018cb73b02c2dd19d9ce512a0b432d7c6930e181789904b03b65215",
+    "communications/study/second_queue_2026_09_06/scores/C6__old__chen__sonnet.json": "1f7c23de6b772932b6daceca5e67e1495879e89bf0e8931b0765deb29cda9fe6",
+    "communications/study/second_queue_2026_09_06/scores/E12__old__aukus__sol.json": "b0cf15e27f33b6da9f042f4e2a06b66c224006e447a1f52780f01b6f4d5d0ad9",
+    "communications/study/second_queue_2026_09_06/scores/S3__old__promise__sol.json": "deb531d06e58000741f60998bd2b2e14c251e8322dfd07fe9db98eac20a3e25a",
+    "communications/study/second_queue_2026_09_06/scores/S3__old__promise__sonnet.json": "d43f3ee0caf06945d9dd8269d9d4fe623cec2918f5f1df52f3b160aa39cd2cdd",
+    "communications/study/second_queue_2026_09_06/scores/S3__old__subsea__sol.json": "d112a62f3a5763b099855100006422b6de9cda6cd7984be792adbd350d597b78",
+    "communications/study/second_queue_2026_09_06/scores/S3__old__subsea__sonnet.json": "cc12aa272c9494d8c2b81c7ef28265238d2d7da0c5c13df4f6dce5690f97a60e",
+    "communications/study/second_queue_repair_2026_09_06/repairs.json": "9385310d5362a5d1fc89a9f05f57db2999c8adcac0d97dc968b06e0c81a6d12a",
+    "data/study/source_aukus.txt": "b7e74a27320764af339eeb8840a24ec2e427eaaae157655a3d08192af253386a",
+    "data/study/source_subsea.txt": "1c788e8d05dd98d699dc614b9f2e2d3d22794834adf86c5203932451538dcce1",
+    "data/study/sources_ideas/castoriadis1984_technique.md": "7670d7493c3b2374cd88311f97884707045f8e0e5d984a9747a8981cdaa67d63",
+    "data/study/sources_ideas/castoriadis1997_rationality_of_capitalism.md": "ef090da9111fa3f4fa435641c7cc3fabda744c1ee939976c3df01021ceaec857",
+    "data/study/sources_ideas/chen2025_progress_without_progress_jaeggi.txt": "c49d69012db5a515f25e20602928768b8621e0ebd1021dce9f9168a8cd685f94",
+    "data/study/sources_ideas/deutschmann2001_capitalism_as_religion.md": "857a6f44dcbbfe23017207c80569e3715276396f12f5e98aac6e1d617da912a7",
+    "data/study/sources_ideas/deutschmann2001_promise_of_absolute_wealth.md": "a2d1fe4a0f63ed7da3ac7af395884331a55ddeda6997a09c1fbaeec586d599dc",
+    "data/study/sources_ideas/deutschmann2022_interpretation_of_capitalism_as_religion.md": "36370e40fb7800b1b04a05bd02065d94e294889c01814f3ee523188233e271d0",
+    "data/study/sources_ideas/elling2025_amphibian_habits_hegel_second_nature.txt": "3d1c2855afc1ea1bb0449876dd5a4a202aa42a20efe93c61d9d1f0920ba96a66",
+    "data/study/sources_ideas/harris2026_eight_arguments_against_honneth.txt": "6daf2fecf707a3a81b54bde1cd59e1532d733b76365fb6d2acd832b22994c113",
+    "data/study/sources_ideas/zambrana2025_philosophy_in_the_severe_style_rose.txt": "362196ce7e523be1794472c6b3586b399d1946ff29934fef014c851d18ec9073",
+    "scripts/study_corpus_methods_P1_P2_2026_09_06.py": "11f059da89c0c681fd8b300757006b70c9fed6ce520acf123de94d166ce627ec",
+    "scripts/study_first_queue.py": "46384e09dd7ecc560373c3ba0e9299e121e17537ec6e754321a93c6c65fd4194",
+    "scripts/study_second_queue.py": "93639048a2b7f78dc644d611049927beb015f46365bed0aa9dd1705721263f3e",
+    "scripts/study_second_queue_repair_2026_09_06.py": "c20b5f5b2310a3a1b6aeb6aa15fa658e763451a0a6124b38a6ed87abfe7bd809",
+    "scripts/study_two_engines.py": "c157c4a1cd88198430670774ba62f1b126eddb292f2ebc66e87a0e6794331f93",
+    "src/engines/capability_definitions/comparative_reasoning_analyzer.yaml": "6d7cb226fce1b65ab063b242293358df3bd7e68d6fd4b9d864ed68f6296b0ff3",
+    "src/engines/capability_definitions/compare_concept_trajectories.yaml": "3be65da9255605efb90e6251aa2c49d9fef44eba1a101d7f509f88d5938ac71f",
+    "src/engines/capability_definitions/concept_appropriation_tracker.yaml": "b32434d8360dcdea6dadcd63b5aa143371cfec7a94cfa21617925c0101e43e19",
+    "src/engines/capability_definitions/counterfactual_analyzer.yaml": "e15e63496efb23ca410f52899c1b7863671937b1955565d88bc8f43e9b25ffff",
+    "src/engines/capability_definitions/dialectical_structure.yaml": "b72a1d3a8faf4ea99da411c2c3ce8d140f74a6a69c04487a351f1c662ad0475b",
+    "src/engines/capability_definitions/framework_components.yaml": "3195a102552042a4a556ac03fd58316e8aa9b3b0fae3c34d44afe59d535dd790",
+    "src/engines/capability_definitions/meaning_in_use.yaml": "6e57f9ae351fdcb5e44f2b3ed958c49b907a3bdeaf7dd007ceac122004ea7039",
+    "src/engines/capability_definitions/modal_force_inventory.yaml": "b85c0cb7d25007a21e17e36145e37c8b18e9098d2c58fe4ce9117b4ed0e08e6a",
+    "src/engines/capability_definitions/narrative_form_perspective.yaml": "8e6d74a91fa7a83eb0610c74f6b438e6c70c3cb588b11afd9add79c43bce71cf",
+    "src/engines/capability_definitions/revision_presentation.yaml": "8b40520ea4dc21ddf98c884967a6a01cbf08732b7d34dc6052e0d7dd93fd73fb",
+    "src/engines/capability_definitions/theory_construction_analyzer.yaml": "6a9196c6921c7b4b7e02df28c38aa9cd311f5f2a7cc3aa6a61e6f6984f3b9661",
+    "src/engines/schemas_v2.py": "9632ad61727e1f2025c61a83fbd03b8c89f763b70087358b5783b02cf52f9789",
+    "src/events/pricing.py": "142dd59fa7f9185c2d6838745f6049011315079f6270a8f749ca1c8613d11399",
+    "src/executor/context_broker.py": "014ebc6abbc1c9b257306e0d1a1ea9a6fd30ef3fb6c56c7056dd099c46e1543d",
+    "src/executor/ledger_walls.py": "a2ccf362eff6428e6387287583eccadef3a868ed29d289b443f36ef238af6055",
+    "src/executor/process_runner.py": "a0803533f0e76f842856975c2604baa8a714a5daf8c33f92334b3e5f0946b346",
+    "src/executor/ruling_coverage.py": "154a6889a61204ede20bca0ede14178ee8116c1f2360626c14cd397b98d9648e",
+    "src/executor/scoped_outcomes.py": "b2f6fdcc7de13be8628e440474fae9de4af7dd3078cb5d82dbfd0cf332634ab7",
+    "src/operationalizations/definitions/comparative_reasoning_analyzer.yaml": "9037d3dd08b8e90e26807e34ee4e6c9d8c82e1a345c10e0795e1608378308909",
+    "src/operationalizations/definitions/compare_concept_trajectories.yaml": "1f7ecc7788193807d370001a4651451878dd277364b6d0828ad8feca0991fa3f",
+    "src/operationalizations/definitions/concept_appropriation_tracker.yaml": "b005c42fa26c6b62a7a9048b3cc502e4e3a03485a4dcf3eeda5b30c5883537aa",
+    "src/operationalizations/definitions/counterfactual_analyzer.yaml": "e825b79d66efd8a417300ddcfd17b5e9c7f85d7e875c585ec7f7d237fde6f164",
+    "src/operationalizations/definitions/dialectical_structure.yaml": "7ab70db1b75991ccb56f34888c133db4eafb5f6c4e33fcb0982e05cd0036f35a",
+    "src/operationalizations/definitions/framework_components.yaml": "14309d7f36a2429ee63d17a02490b51ced178eb4e4fd428d61fe5ee7a05b103a",
+    "src/operationalizations/definitions/meaning_in_use.yaml": "f716c18ddb970546f2e5ace54b6a01acaaaa51a44569396ef93b041ea5732636",
+    "src/operationalizations/definitions/modal_force_inventory.yaml": "214276efb920d056577511a4740c1a8b63954ed3e6d5978702c2ee36f9ba284b",
+    "src/operationalizations/definitions/narrative_form_perspective.yaml": "1b94ff30492af5d8a51e85433b85a179430985e36e2015ca33a0f07bf15741dd",
+    "src/operationalizations/definitions/revision_presentation.yaml": "17f528fe85ccb827c99230f143c0e165d7f092ad23b4b0e4c877775231e64c49",
+    "src/operationalizations/definitions/theory_construction_analyzer.yaml": "6a71c661bb65e00b0331dd5157368824d49b41026e9b678988795ed2e0b83e42",
+    "src/operationalizations/schemas.py": "b20cdec494a3326d9fac7f3ad8bd8b58446c86e45511c848918148388d767637",
+    "src/stages/process_composer.py": "133e86b8b87e2ae30b37c1d47e35f6394214d2bf733e10fdce79ed929dd32d89"
+  },
+  "identity": "87214c2a30de552113dc6115942d1d744f0fcd95dd2e29f6280d6bf5b366ce15"
+}

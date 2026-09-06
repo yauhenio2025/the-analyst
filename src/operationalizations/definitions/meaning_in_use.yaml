@@ -1,4 +1,4 @@
-# Second queue: authored questions replace any earlier lifted process.
+# Second queue repair: prompts/cards only; analytical questions preserved.
 engine_key: meaning_in_use
 engine_name: Meaning in use
 process:
@@ -27,7 +27,9 @@ process:
     - Which distinct senses are supported by the surrounding predicates and examples?
     answer_shape: '[D1.F<n>] <one scoped finding> — dim: senses — term: <term> — sense: <meaning> — context: <owned
       use> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source key> — confidence: high|medium|low'
-    method_card: 'Do: Inventory actual use beside definitions. Keep quoted rivals and the paper’s own senses separate.'
+    method_card: 'Do: Inventory actual use beside definitions. Keep quoted rivals and the paper’s own senses separate.
+      Repair discipline: Inventory each sense separately before comparing them. A finding about two uses needs evidence
+      for both; quote the noun or speaker antecedent separately when the local phrase only says she, this or it.'
     indicators:
     - means
     - defined as
@@ -62,7 +64,9 @@ process:
     answer_shape: '[D3.F<n>] <one scoped finding> — dim: boundaries — terms: <pair> — boundary: <criterion> — edge-case:
       <source example> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source key> — confidence: high|medium|low'
     method_card: 'Do: Use membership and contrast criteria the text supplies. Preserve acknowledged uncertainty
-      without assigning strategic intent.'
+      without assigning strategic intent. Repair discipline: Quote the complete dependence or independence predicate,
+      including what the process is independent of and whose claim it is. A nearby phrase cannot support a missing
+      object.'
     indicators:
     - distinguish
     - borderline
@@ -79,7 +83,9 @@ process:
       — use-b: <meaning and owner> — effect: <interpretive consequence> — anchor: "<verbatim supporting clause,
       <=200 chars>" — doc: <source key> — confidence: high|medium|low'
     method_card: 'Do: Pair passages before diagnosing equivocation. A changed object, quotation or application can
-      explain different predicates without changing sense.'
+      explain different predicates without changing sense. Repair discipline: For each contrast, retain literal
+      spans for both poles, including individual/universal and immediate/mediated where relevant. Do not attach
+      a second sense to the evidence for the first.'
     indicators:
     - earlier definition
     - later application
@@ -168,6 +174,13 @@ process:
       counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source
       interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or
       silent.
+    - check_matrix_cell_support
+    - 'Apply these source-read repair checks: Inventory each sense separately before comparing them. A finding about
+      two uses needs evidence for both; quote the noun or speaker antecedent separately when the local phrase only
+      says she, this or it. For each contrast, retain literal spans for both poles, including individual/universal
+      and immediate/mediated where relevant. Do not attach a second sense to the evidence for the first. Quote the
+      complete dependence or independence predicate, including what the process is independent of and whose claim
+      it is. A nearby phrase cannot support a missing object.'
   - key: synthesize
     kind: synthesize
     consumes:
@@ -203,7 +216,12 @@ process:
       read the actual final tables against their cited final rows and the source contexts, including each source
       counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source
       interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or
-      silent.'
+      silent.
+
+
+      After the check, rewrite or drop cells resting on rejected or unverified findings; rewrite weakened claims
+      everywhere they occur. A rejection tag is acceptable only in prose, not as validation of a table cell. Keep
+      separate granular support when deduplicating. Apply the method-card repairs to the final reading and its tables.'
 stance_operationalizations: []
 depth_sequences:
 - depth_key: surface

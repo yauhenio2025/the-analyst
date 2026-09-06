@@ -1,4 +1,4 @@
-# Second queue: authored questions replace any earlier lifted process.
+# Second queue repair: prompts/cards only; analytical questions preserved.
 engine_key: comparative_reasoning_analyzer
 engine_name: Audit comparisons and analogies
 stance_operationalizations: []
@@ -58,7 +58,9 @@ process:
       <mapped relation> — warrant: <why relevant> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source
       key> — confidence: high|medium|low'
     method_card: 'Do: Map the relevant relation, not shared adjectives. Give supporting spans for both compared
-      sides; unsupported external facts stay unverified.'
+      sides; unsupported external facts stay unverified. Repair discipline: Across page headers or intervening material,
+      give two literal spans, never a silently joined quotation. Preserve the full asserted correspondence and its
+      speaker.'
     indicators:
     - corresponds
     - same relation
@@ -94,7 +96,9 @@ process:
       reconstructed> — boundary: <endpoints or types> — anchor: "<verbatim supporting clause, <=200 chars>" — doc:
       <source key> — confidence: high|medium|low'
     method_card: 'Do: Run scale and typology probes only when used. Ask whether the same rule governs both items
-      and whether overlap is allowed, without imposing exclusive categories.'
+      and whether overlap is allowed, without imposing exclusive categories. Repair discipline: Distinguish salient
+      features, necessary conditions and sufficient criteria. Do not promote a feature list to a sufficient classification
+      without an explicit warrant. Quote the actual criterion and any passage limiting its force.'
     indicators:
     - more than
     - best
@@ -114,7 +118,9 @@ process:
       — alternative: <source case or analyst test> — anchor: "<verbatim supporting clause, <=200 chars>" — doc:
       <source key> — confidence: high|medium|low'
     method_card: 'Do: Use the text’s own third cases first. Do not infer case-selection motives or force an illustrative
-      example to be a representative sample.'
+      example to be a representative sample. Repair discipline: Read the strongest supplied alternative inference
+      before ranking it. Anchor the complete alternative, including its actor, resources and power where asserted;
+      a stock example alone cannot establish the conclusion.'
     indicators:
     - either
     - all cases
@@ -186,6 +192,13 @@ process:
       counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source
       interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or
       silent.
+    - check_matrix_cell_support
+    - 'Apply these source-read repair checks: Across page headers or intervening material, give two literal spans,
+      never a silently joined quotation. Preserve the full asserted correspondence and its speaker. Distinguish
+      salient features, necessary conditions and sufficient criteria. Do not promote a feature list to a sufficient
+      classification without an explicit warrant. Quote the actual criterion and any passage limiting its force.
+      Read the strongest supplied alternative inference before ranking it. Anchor the complete alternative, including
+      its actor, resources and power where asserted; a stock example alone cannot establish the conclusion.'
   - key: synthesize
     kind: synthesize
     consumes:
@@ -222,4 +235,9 @@ process:
       read the actual final tables against their cited final rows and the source contexts, including each source
       counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source
       interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or
-      silent.'
+      silent.
+
+
+      After the check, rewrite or drop cells resting on rejected or unverified findings; rewrite weakened claims
+      everywhere they occur. A rejection tag is acceptable only in prose, not as validation of a table cell. Keep
+      separate granular support when deduplicating. Apply the method-card repairs to the final reading and its tables.'

@@ -1,4 +1,4 @@
-# Second queue: authored questions replace any earlier lifted process.
+# Second queue repair: prompts/cards only; analytical questions preserved.
 engine_key: revision_presentation
 engine_name: How revisions are presented
 process:
@@ -64,7 +64,9 @@ process:
       — conditions: <scope> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source key> — confidence:
       high|medium|low'
     method_card: 'Do: Compare the same proposition; a firm conclusion and a tentative extension can coexist. Preserve
-      adjacent qualifying clauses.'
+      adjacent qualifying clauses. Repair discipline: Inventory the earlier conditional and anti-utopian qualifications
+      before interpreting later caution as change. Retain these qualifications in the earlier work cell beside the
+      later wording.'
     indicators:
     - sometimes
     - necessarily
@@ -81,7 +83,9 @@ process:
       <declared or unstated> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source key> — confidence:
       high|medium|low'
     method_card: 'Do: Inventory support appropriate to the claim. A stronger expression alone does not establish
-      unsupported escalation until the other work is read.'
+      unsupported escalation until the other work is read. Repair discipline: Inspect whether epistemic, social-complexity
+      and property-rights support already appears earlier. Support each component separately; a later prominence
+      or new wording is not a new argument.'
     indicators:
     - because
     - new evidence
@@ -120,7 +124,10 @@ process:
       source key> — confidence: high|medium|low'
     method_card: 'Do: Compare the later account with the earlier text itself and its qualifications. Quote both
       sides of every relation and a separate presentation finding where needed. Distinguish edition dates from composition,
-      no chronology from same-year order, and no concealment from unmentioned change.'
+      no chronology from same-year order, and no concealment from unmentioned change. Repair discipline: Compare
+      aligned concept-by-work cells and inspect the earlier positive argument as well as its limitations. Distinguish
+      new presentation or emphasis from new reasoning; carry earlier qualifications and avoid inventing a self-revision
+      relation.'
     indicators:
     - explicit reference
     - paired formulations
@@ -156,6 +163,14 @@ process:
       counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source
       interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or
       silent.
+    - check_matrix_cell_support
+    - 'Apply these source-read repair checks: Inventory the earlier conditional and anti-utopian qualifications
+      before interpreting later caution as change. Retain these qualifications in the earlier work cell beside the
+      later wording. Inspect whether epistemic, social-complexity and property-rights support already appears earlier.
+      Support each component separately; a later prominence or new wording is not a new argument. Compare aligned
+      concept-by-work cells and inspect the earlier positive argument as well as its limitations. Distinguish new
+      presentation or emphasis from new reasoning; carry earlier qualifications and avoid inventing a self-revision
+      relation.'
   - key: synthesize
     kind: synthesize
     consumes:
@@ -192,7 +207,12 @@ process:
       read the actual final tables against their cited final rows and the source contexts, including each source
       counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source
       interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or
-      silent.'
+      silent.
+
+
+      After the check, rewrite or drop cells resting on rejected or unverified findings; rewrite weakened claims
+      everywhere they occur. A rejection tag is acceptable only in prose, not as validation of a table cell. Keep
+      separate granular support when deduplicating. Apply the method-card repairs to the final reading and its tables.'
 stance_operationalizations: []
 depth_sequences:
 - depth_key: surface

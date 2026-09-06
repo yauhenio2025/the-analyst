@@ -1,4 +1,4 @@
-# Second queue: authored questions replace any earlier lifted process.
+# Second queue repair: prompts/cards only; analytical questions preserved.
 engine_key: concept_appropriation_tracker
 engine_name: Borrowing and changed use
 stance_operationalizations:
@@ -195,7 +195,9 @@ process:
     answer_shape: '[D2.F<n>] <one scoped finding> — dim: acknowledgment — source-mentioned: <work> — uptake: <specific
       relation> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source key> — confidence: high|medium|low'
     method_card: 'Do: Quote the uptake clause; citation alone does not show adoption of a whole system. Mark source
-      descriptions as this work’s reports until inspected independently.'
+      descriptions as this work’s reports until inspected independently. Repair discipline: Give every named attribution
+      its own supporting span. Evidence for one named theorist does not establish another theorist in the same cell;
+      split the attributions.'
     indicators:
     - following
     - drawing on
@@ -212,7 +214,9 @@ process:
       — new-job: <purpose> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source key> — confidence:
       high|medium|low'
     method_card: 'Do: Separate a new use from a claim to reproduce the origin faithfully. Record announced changes
-      without certifying them from one text.'
+      without certifying them from one text. Repair discipline: Inspect the earlier work for the full positive claim
+      before describing a later change. A sign-to-substance or salvation-to-money move already stated earlier is
+      continuity or renewed emphasis. Quote the transfer predicate completely, not an also prefix.'
     indicators:
     - adapt
     - narrower
@@ -267,7 +271,10 @@ process:
       source key> — confidence: high|medium|low'
     method_card: 'Do: Pair full local uses and acknowledgment evidence. Judge fidelity only to a represented source
       claim; changed purpose alone is legitimate adaptation. Keep transmission unresolved when no link is supplied,
-      even if meanings resemble each other; do not invent silent or unconscious borrowing.'
+      even if meanings resemble each other; do not invent silent or unconscious borrowing. Repair discipline: Align
+      each borrowed concept in both works and carry the earlier affirmative formulation alongside the later one.
+      Separate changed presentation, changed purpose and already-present argument. Do not infer transmission from
+      resemblance; preserve earlier qualifications.'
     indicators:
     - explicit reference
     - paired formulations
@@ -303,6 +310,14 @@ process:
       counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source
       interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or
       silent.
+    - check_matrix_cell_support
+    - 'Apply these source-read repair checks: Inspect the earlier work for the full positive claim before describing
+      a later change. A sign-to-substance or salvation-to-money move already stated earlier is continuity or renewed
+      emphasis. Quote the transfer predicate completely, not an also prefix. Give every named attribution its own
+      supporting span. Evidence for one named theorist does not establish another theorist in the same cell; split
+      the attributions. Align each borrowed concept in both works and carry the earlier affirmative formulation
+      alongside the later one. Separate changed presentation, changed purpose and already-present argument. Do not
+      infer transmission from resemblance; preserve earlier qualifications.'
   - key: synthesize
     kind: synthesize
     consumes:
@@ -339,4 +354,9 @@ process:
       read the actual final tables against their cited final rows and the source contexts, including each source
       counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source
       interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or
-      silent.'
+      silent.
+
+
+      After the check, rewrite or drop cells resting on rejected or unverified findings; rewrite weakened claims
+      everywhere they occur. A rejection tag is acceptable only in prose, not as validation of a table cell. Keep
+      separate granular support when deduplicating. Apply the method-card repairs to the final reading and its tables.'

@@ -1,4 +1,4 @@
-# Second queue: authored questions replace any earlier lifted process.
+# Second queue repair: prompts/cards only; analytical questions preserved.
 engine_key: theory_construction_analyzer
 engine_name: How a theory is built
 process:
@@ -63,7 +63,9 @@ process:
       <concept or mechanism> — warrant: <bridge> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source
       key> — confidence: high|medium|low'
     method_card: 'Do: Trace construction as a sequence of justified moves. A failed old formulation does not by
-      itself prove the proposed replacement.'
+      itself prove the proposed replacement. Repair discipline: Anchor what is added, transformed or combined with
+      its complete object and result, not just an announcement of a new framework. Separate each construction move
+      that needs different evidence.'
     indicators:
     - derive
     - therefore
@@ -82,7 +84,10 @@ process:
       — result: <new relation> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source key> — confidence:
       high|medium|low'
     method_card: 'Do: Judge compatibility at the level of selected components and their actual assumptions. Selective
-      borrowing can be coherent despite disagreement with the originator.'
+      borrowing can be coherent despite disagreement with the originator. Repair discipline: Preserve granular findings
+      for the distinct resources and the enacted combination through deduplication. A generic combining-strengths
+      announcement is not a duplicate of a finding that identifies a particular mechanism. If merging, carry all
+      supporting spans and update every dependent cell to the surviving evidence.'
     indicators:
     - synthesis
     - complement
@@ -173,6 +178,13 @@ process:
       counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source
       interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or
       silent.
+    - check_matrix_cell_support
+    - 'Apply these source-read repair checks: Preserve granular findings for the distinct resources and the enacted
+      combination through deduplication. A generic combining-strengths announcement is not a duplicate of a finding
+      that identifies a particular mechanism. If merging, carry all supporting spans and update every dependent
+      cell to the surviving evidence. Anchor what is added, transformed or combined with its complete object and
+      result, not just an announcement of a new framework. Separate each construction move that needs different
+      evidence.'
   - key: synthesize
     kind: synthesize
     consumes:
@@ -209,7 +221,12 @@ process:
       read the actual final tables against their cited final rows and the source contexts, including each source
       counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source
       interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or
-      silent.'
+      silent.
+
+
+      After the check, rewrite or drop cells resting on rejected or unverified findings; rewrite weakened claims
+      everywhere they occur. A rejection tag is acceptable only in prose, not as validation of a table cell. Keep
+      separate granular support when deduplicating. Apply the method-card repairs to the final reading and its tables.'
 stance_operationalizations: []
 depth_sequences:
 - depth_key: surface

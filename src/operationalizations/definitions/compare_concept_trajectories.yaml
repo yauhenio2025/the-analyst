@@ -1,4 +1,4 @@
-# Second queue: authored questions replace any earlier lifted process.
+# Second queue repair: prompts/cards only; analytical questions preserved.
 engine_key: compare_concept_trajectories
 engine_name: Concept comparison and trajectories
 process:
@@ -30,7 +30,9 @@ process:
       — boundary: <limit> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source key> — confidence:
       high|medium|low'
     method_card: 'Do: Inventory definitions and actual uses; preserve negation and local scope. Split distinct senses
-      before comparing works.'
+      before comparing works. Repair discipline: Build an aligned concept-by-work inventory: inspect EACH shared
+      concept in EACH work, including secondary uses. Do not give each work only its headline concept. Preserve
+      local concessions and general claims at their respective scopes.'
     indicators:
     - by X we mean
     - defined as
@@ -47,7 +49,8 @@ process:
       result> — supports: <claim> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source key> — confidence:
       high|medium|low'
     method_card: 'Do: Trace the move made with the concept and its warrant. Distinguish sharing a noun from sharing
-      an inferential role.'
+      an inferential role. Repair discipline: Quote the causal consequence as well as the initiating struggle or
+      action; a wage/hour conflict alone cannot evidence a consumer-market or expectation consequence.'
     indicators:
     - therefore
     - depends on
@@ -136,7 +139,10 @@ process:
       source key> — confidence: high|medium|low'
     method_card: 'Do: Build attributed cells first, each with its own finding and supporting spans. Preserve unordered
       cross-author comparison; same-year publication and input order establish no sequence. Pair both works and
-      retain counter-passages before claiming rupture, novelty or abandonment.'
+      retain counter-passages before claiming rupture, novelty or abandonment. Repair discipline: Before assigning
+      change, inspect the earlier positive claim and its qualifications. Align the same concept, object and role
+      across works. Keep a local neutrality concession distinct from a general non-neutrality claim; put paired
+      evidence and scope directly in the corresponding cells.'
     indicators:
     - explicit reference
     - paired formulations
@@ -172,6 +178,14 @@ process:
       counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source
       interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or
       silent.
+    - check_matrix_cell_support
+    - 'Apply these source-read repair checks: Build an aligned concept-by-work inventory: inspect EACH shared concept
+      in EACH work, including secondary uses. Do not give each work only its headline concept. Preserve local concessions
+      and general claims at their respective scopes. Quote the causal consequence as well as the initiating struggle
+      or action; a wage/hour conflict alone cannot evidence a consumer-market or expectation consequence. Before
+      assigning change, inspect the earlier positive claim and its qualifications. Align the same concept, object
+      and role across works. Keep a local neutrality concession distinct from a general non-neutrality claim; put
+      paired evidence and scope directly in the corresponding cells.'
   - key: synthesize
     kind: synthesize
     consumes:
@@ -208,7 +222,12 @@ process:
       read the actual final tables against their cited final rows and the source contexts, including each source
       counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source
       interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or
-      silent.'
+      silent.
+
+
+      After the check, rewrite or drop cells resting on rejected or unverified findings; rewrite weakened claims
+      everywhere they occur. A rejection tag is acceptable only in prose, not as validation of a table cell. Keep
+      separate granular support when deduplicating. Apply the method-card repairs to the final reading and its tables.'
 stance_operationalizations: []
 depth_sequences:
 - depth_key: surface

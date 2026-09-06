@@ -1,4 +1,4 @@
-# Second queue: authored questions replace any earlier lifted process.
+# Second queue repair: prompts/cards only; analytical questions preserved.
 engine_key: narrative_form_perspective
 engine_name: Narrative form and perspective
 process:
@@ -46,7 +46,9 @@ process:
       — shift: <passage> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source key> — confidence:
       high|medium|low'
     method_card: 'Do: Separate narrator, quoted voice and represented experience. Omitted testimony limits access;
-      it does not establish a deliberately excluded viewpoint.'
+      it does not establish a deliberately excluded viewpoint. Repair discipline: Name each attributed voice from
+      an explicit attribution span; preserve whether the text reports, endorses or contests the voice. Keep the
+      quoted position and its attribution together.'
     indicators:
     - we
     - they experienced
@@ -64,7 +66,9 @@ process:
       or scale> — effect: <local implication> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source
       key> — confidence: high|medium|low'
     method_card: 'Do: Anchor dates, retrospection and anticipation. A sequence can suggest causation without evidencing
-      it; keep those claims distinct.'
+      it; keep those claims distinct. Repair discipline: Retain complete temporal sequences and financial or historical
+      conditions: a conditional future is not an accomplished transition. Use separate literal spans for antecedent,
+      sequence and consequence where one short quote cannot carry them.'
     indicators:
     - before
     - by now
@@ -169,6 +173,12 @@ process:
       counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source
       interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or
       silent.
+    - check_matrix_cell_support
+    - 'Apply these source-read repair checks: Retain complete temporal sequences and financial or historical conditions:
+      a conditional future is not an accomplished transition. Use separate literal spans for antecedent, sequence
+      and consequence where one short quote cannot carry them. Name each attributed voice from an explicit attribution
+      span; preserve whether the text reports, endorses or contests the voice. Keep the quoted position and its
+      attribution together.'
   - key: synthesize
     kind: synthesize
     consumes:
@@ -205,7 +215,12 @@ process:
       read the actual final tables against their cited final rows and the source contexts, including each source
       counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source
       interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or
-      silent.'
+      silent.
+
+
+      After the check, rewrite or drop cells resting on rejected or unverified findings; rewrite weakened claims
+      everywhere they occur. A rejection tag is acceptable only in prose, not as validation of a table cell. Keep
+      separate granular support when deduplicating. Apply the method-card repairs to the final reading and its tables.'
 stance_operationalizations: []
 depth_sequences:
 - depth_key: surface

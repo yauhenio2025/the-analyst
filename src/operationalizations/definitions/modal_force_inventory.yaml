@@ -1,4 +1,4 @@
-# Second queue: authored questions replace any earlier lifted process.
+# Second queue repair: prompts/cards only; analytical questions preserved.
 engine_key: modal_force_inventory
 engine_name: Possibility, necessity and certainty
 process:
@@ -47,7 +47,10 @@ process:
     answer_shape: '[D2.F<n>] <one scoped finding> — dim: scope — claim: <proposition> — quantifier: <scope> — condition:
       <if clause> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source key> — confidence: high|medium|low'
     method_card: 'Do: Bracket the operator’s scope explicitly. Separate necessity of vulnerability, frequency of
-      realization and probability of a particular outcome.'
+      realization and probability of a particular outcome. Repair discipline: Give each materially distinct example
+      its own finding and literal evidence: an anchor for marriage cannot carry childhood, populism or Nazism. Retain
+      the full conditional antecedent and its consequent in separate spans if needed. Preserve bracketed letters
+      such as [i]f exactly; do not silently normalize them in a quotation.'
     indicators:
     - always
     - if
@@ -100,7 +103,9 @@ process:
       conditions> — supports: <modal conclusion> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source
       key> — confidence: high|medium|low'
     method_card: 'Do: Distinguish a coherent conceptual counterexample from a historical forecast. Lack of an imagined
-      alternative proves no impossibility.'
+      alternative proves no impossibility. Repair discipline: Distinguish an illustrative possibility, a necessary
+      condition and a blocked outcome. Quote the blockage contrast as well as the positive example; preserve whose
+      modal judgment is being inventoried.'
     indicators:
     - imagine
     - suppose
@@ -171,6 +176,13 @@ process:
       counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source
       interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or
       silent.
+    - check_matrix_cell_support
+    - 'Apply these source-read repair checks: Give each materially distinct example its own finding and literal
+      evidence: an anchor for marriage cannot carry childhood, populism or Nazism. Retain the full conditional antecedent
+      and its consequent in separate spans if needed. Preserve bracketed letters such as [i]f exactly; do not silently
+      normalize them in a quotation. Distinguish an illustrative possibility, a necessary condition and a blocked
+      outcome. Quote the blockage contrast as well as the positive example; preserve whose modal judgment is being
+      inventoried.'
   - key: synthesize
     kind: synthesize
     consumes:
@@ -207,7 +219,12 @@ process:
       read the actual final tables against their cited final rows and the source contexts, including each source
       counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source
       interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or
-      silent.'
+      silent.
+
+
+      After the check, rewrite or drop cells resting on rejected or unverified findings; rewrite weakened claims
+      everywhere they occur. A rejection tag is acceptable only in prose, not as validation of a table cell. Keep
+      separate granular support when deduplicating. Apply the method-card repairs to the final reading and its tables.'
 stance_operationalizations: []
 depth_sequences:
 - depth_key: surface

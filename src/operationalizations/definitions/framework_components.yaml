@@ -1,4 +1,4 @@
-# Second queue: authored questions replace any earlier lifted process.
+# Second queue repair: prompts/cards only; analytical questions preserved.
 engine_key: framework_components
 engine_name: Frameworks and their components
 process:
@@ -65,7 +65,10 @@ process:
       constraint> — support: <passage> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <source key>
       — confidence: high|medium|low'
     method_card: 'Do: Prove a dependency by the argument route, not frequency. Test competing lenses on the same
-      object and preserve independent routes.'
+      object and preserve independent routes. Repair discipline: A comparison of two frameworks inside ONE article
+      is a document finding in relations. Reserve framework_comparison for relations across two distinct supplied
+      documents; two theorists, lenses or examples are not two document keys. Quote each mechanism and attributed
+      component separately.'
     indicators:
     - requires
     - constitutes
@@ -117,7 +120,9 @@ process:
       <qualification> — alternative: <source view> — anchor: "<verbatim supporting clause, <=200 chars>" — doc:
       <source key> — confidence: high|medium|low'
     method_card: 'Do: Ground visibility in an actual finding and limits in a bracket or counter-passage. An unasked
-      question is not automatically impossible within the framework.'
+      question is not automatically impossible within the framework. Repair discipline: Give each application or
+      example its own anchored finding; a childhood example cannot also evidence a marriage claim. Preserve source-literal
+      bracketed letters and complete actor or country attribution.'
     indicators:
     - beyond our scope
     - cannot explain
@@ -135,7 +140,9 @@ process:
       clause, <=200 chars>" — doc: <source key> — anchor-b: "<verbatim supporting clause B>" — doc-b: <different
       source key> — confidence: high|medium|low'
     method_card: 'Do: Compare local architectures under aligned objects. Preserve uncertainty in inferred attribution
-      and do not turn resemblance into influence.'
+      and do not turn resemblance into influence. Repair discipline: Use this dimension only for at least two distinct
+      supplied works. With one article, put its internal framework comparison in the document dimension relations,
+      with that one document identity and no corpus lineage.'
     indicators:
     - explicit reference
     - paired formulations
@@ -171,6 +178,14 @@ process:
       counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source
       interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or
       silent.
+    - check_matrix_cell_support
+    - 'Apply these source-read repair checks: A comparison of two frameworks inside ONE article is a document finding
+      in relations. Reserve framework_comparison for relations across two distinct supplied documents; two theorists,
+      lenses or examples are not two document keys. Quote each mechanism and attributed component separately. Give
+      each application or example its own anchored finding; a childhood example cannot also evidence a marriage
+      claim. Preserve source-literal bracketed letters and complete actor or country attribution. Use this dimension
+      only for at least two distinct supplied works. With one article, put its internal framework comparison in
+      the document dimension relations, with that one document identity and no corpus lineage.'
   - key: synthesize
     kind: synthesize
     consumes:
@@ -207,7 +222,12 @@ process:
       read the actual final tables against their cited final rows and the source contexts, including each source
       counted in coverage; repair or narrow unsupported cells. Keep execution/scope diagnostics separate from source
       interpretations; an unchecked record means the check was incomplete, not that the source is meaningless or
-      silent.'
+      silent.
+
+
+      After the check, rewrite or drop cells resting on rejected or unverified findings; rewrite weakened claims
+      everywhere they occur. A rejection tag is acceptable only in prose, not as validation of a table cell. Keep
+      separate granular support when deduplicating. Apply the method-card repairs to the final reading and its tables.'
 stance_operationalizations: []
 depth_sequences:
 - depth_key: surface
