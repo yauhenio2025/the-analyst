@@ -1,0 +1,1591 @@
+{
+ "summary": {
+  "statements": 50,
+  "statements_with_our_verdict": 50,
+  "our_pair_verdicts": {
+   "fair": 30,
+   "accurate": 69,
+   "selective": 6
+  },
+  "our_worst_per_statement": {
+   "selective": 5,
+   "fair": 22,
+   "accurate": 23
+  },
+  "stacks_runs": {
+   "1": {
+    "model": "google/gemini-3.8-flash",
+    "n": 59,
+    "supported": 57,
+    "partly": 2,
+    "unsupported": 0,
+    "misattributed": 0,
+    "cost": 0.1002675
+   },
+   "2": {
+    "model": "anthropic/claude-sonnet-5",
+    "n": 22,
+    "supported": 17,
+    "partly": 5,
+    "unsupported": 0,
+    "misattributed": 0,
+    "cost": 0.263972
+   },
+   "4": {
+    "model": "anthropic/claude-sonnet-5",
+    "n": 50,
+    "supported": 39,
+    "partly": 10,
+    "unsupported": 0,
+    "misattributed": 1,
+    "cost": 0.329882
+   },
+   "5": {
+    "model": "google/gemini-3.8-flash",
+    "n": 50,
+    "supported": 48,
+    "partly": 2,
+    "unsupported": 0,
+    "misattributed": 0,
+    "cost": 0.10119225
+   }
+  },
+  "agreement_by_run": {
+   "run1:gemini-3.8-flash:differ": 20,
+   "run1:gemini-3.8-flash:same": 13,
+   "run4:claude-sonnet-5:differ": 28,
+   "run4:claude-sonnet-5:same": 22,
+   "run5:gemini-3.8-flash:differ": 26,
+   "run5:gemini-3.8-flash:same": 24
+  },
+  "flagged_by_us_not_them": [],
+  "flagged_by_them_not_us": [
+   17
+  ]
+ },
+ "table": [
+  {
+   "no": 1,
+   "section": "core finding",
+   "cited": [
+    "S1",
+    "S2",
+    "S4",
+    "S3"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st1/S1",
+     "verdict": "fair",
+     "reason": "The central contrast and comparative scope are explicit, although the memo compresses several portions of S1",
+     "id": "F105",
+     "source": "ledger"
+    },
+    {
+     "pair": "st1/S2",
+     "verdict": "accurate",
+     "reason": "S2 expressly joins the cases under the guiding question of factors promoting or inhibiting development",
+     "id": "F106",
+     "source": "ledger"
+    },
+    {
+     "pair": "st1/S4",
+     "verdict": "accurate",
+     "reason": "S4 explicitly rejects the alleged historical-to-sociological rupture",
+     "id": "F107",
+     "source": "ledger"
+    },
+    {
+     "pair": "st1/S3",
+     "verdict": "selective",
+     "reason": "S3 supports ideal-typical comparison but not the complete list of law, religion, urban associations, and coercion",
+     "id": "F108",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "selective",
+   "stacks": {
+    "run1:gemini-3.8-flash": "supported",
+    "run4:claude-sonnet-5": "partly",
+    "run5:gemini-3.8-flash": "supported"
+   }
+  },
+  {
+   "no": 2,
+   "section": "theme 1",
+   "cited": [
+    "S1",
+    "S2",
+    "S4"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st2/S1",
+     "verdict": "accurate",
+     "reason": "S1 supplies the principal differentiating criteria",
+     "id": "F109",
+     "source": "ledger"
+    },
+    {
+     "pair": "st2/S2",
+     "verdict": "accurate",
+     "reason": "The source’s research questions and comparison match the attribution",
+     "id": "F110",
+     "source": "ledger"
+    },
+    {
+     "pair": "st2/S4",
+     "verdict": "fair",
+     "reason": "Historical differentiation is explicit, but S4 is less detailed than the memo’s complete institutional configuration",
+     "id": "F111",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "fair",
+   "stacks": {
+    "run4:claude-sonnet-5": "supported",
+    "run5:gemini-3.8-flash": "supported"
+   }
+  },
+  {
+   "no": 3,
+   "section": "theme 2",
+   "cited": [
+    "S2",
+    "S3",
+    "S4"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st3/S2",
+     "verdict": "accurate",
+     "reason": "S2 states both the methodological function and the rejection of Bücher’s linear model",
+     "id": "F112",
+     "source": "ledger"
+    },
+    {
+     "pair": "st3/S3",
+     "verdict": "accurate",
+     "reason": "The review directly calls the stage-theoretical interpretation a misunderstanding",
+     "id": "F113",
+     "source": "ledger"
+    },
+    {
+     "pair": "st3/S4",
+     "verdict": "accurate",
+     "reason": "S4 expressly construes the stages as ideal types rather than a determinate chronological sequence",
+     "id": "F114",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "accurate",
+   "stacks": {
+    "run4:claude-sonnet-5": "supported",
+    "run5:gemini-3.8-flash": "supported"
+   }
+  },
+  {
+   "no": 4,
+   "section": "theme 3",
+   "cited": [
+    "S2",
+    "S4"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st4/S2",
+     "verdict": "accurate",
+     "reason": "Both historical investigation and theory-led ordering appear explicitly",
+     "id": "F115",
+     "source": "ledger"
+    },
+    {
+     "pair": "st4/S4",
+     "verdict": "accurate",
+     "reason": "Rejecting the empirical-then-sociological periodization is a central thesis of S4",
+     "id": "F116",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "accurate",
+   "stacks": {
+    "run4:claude-sonnet-5": "supported",
+    "run5:gemini-3.8-flash": "supported"
+   }
+  },
+  {
+   "no": 5,
+   "section": "theme 4",
+   "cited": [
+    "S1",
+    "S2",
+    "S4"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st5/S1",
+     "verdict": "accurate",
+     "reason": "S1’s detailed inventory closely matches the statement",
+     "id": "F117",
+     "source": "ledger"
+    },
+    {
+     "pair": "st5/S2",
+     "verdict": "accurate",
+     "reason": "S2 directly denies an immanent developmental path",
+     "id": "F118",
+     "source": "ledger"
+    },
+    {
+     "pair": "st5/S4",
+     "verdict": "fair",
+     "reason": "Structural divergence is direct, but S4 does not supply the memo’s complete list of mechanisms in this passage",
+     "id": "F119",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "fair",
+   "stacks": {
+    "run4:claude-sonnet-5": "supported",
+    "run5:gemini-3.8-flash": "supported"
+   }
+  },
+  {
+   "no": 6,
+   "section": "theme 5",
+   "cited": [
+    "S1",
+    "S2",
+    "S3",
+    "S4"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st6/S1",
+     "verdict": "fair",
+     "reason": "The principal political/market distinction is explicit, although the memo’s four-term constellation is distributed across S1",
+     "id": "F120",
+     "source": "ledger"
+    },
+    {
+     "pair": "st6/S2",
+     "verdict": "accurate",
+     "reason": "S2 treats the contrast as structurally produced rather than as a civilizational essence",
+     "id": "F121",
+     "source": "ledger"
+    },
+    {
+     "pair": "st6/S3",
+     "verdict": "accurate",
+     "reason": "The statement closely paraphrases S3’s explicit formulation",
+     "id": "F122",
+     "source": "ledger"
+    },
+    {
+     "pair": "st6/S4",
+     "verdict": "accurate",
+     "reason": "S4 reconstructs the contrasted categories and their institutional derivation",
+     "id": "F123",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "fair",
+   "stacks": {
+    "run4:claude-sonnet-5": "supported",
+    "run5:gemini-3.8-flash": "supported"
+   }
+  },
+  {
+   "no": 7,
+   "section": "theme 6",
+   "cited": [
+    "S1",
+    "S2",
+    "S4"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st7/S1",
+     "verdict": "accurate",
+     "reason": "The memo closely follows S1’s concluding formulation",
+     "id": "F124",
+     "source": "ledger"
+    },
+    {
+     "pair": "st7/S2",
+     "verdict": "accurate",
+     "reason": "Political organization, administration, and legal guarantees are recurring objects of S2’s analysis",
+     "id": "F125",
+     "source": "ledger"
+    },
+    {
+     "pair": "st7/S4",
+     "verdict": "fair",
+     "reason": "The regulatory mechanism is explicit, while the memo’s several concrete outcomes are broader than the cited passage",
+     "id": "F126",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "fair",
+   "stacks": {
+    "run4:claude-sonnet-5": "supported",
+    "run5:gemini-3.8-flash": "supported"
+   }
+  },
+  {
+   "no": 8,
+   "section": "theme 7",
+   "cited": [
+    "S2",
+    "S4"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st8/S2",
+     "verdict": "accurate",
+     "reason": "Both the institutional mechanisms and causal qualification appear directly",
+     "id": "F127",
+     "source": "ledger"
+    },
+    {
+     "pair": "st8/S4",
+     "verdict": "accurate",
+     "reason": "S4 matches the memo’s causal qualification directly",
+     "id": "F128",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "accurate",
+   "stacks": {
+    "run4:claude-sonnet-5": "supported",
+    "run5:gemini-3.8-flash": "supported"
+   }
+  },
+  {
+   "no": 9,
+   "section": "theme 8",
+   "cited": [
+    "S1",
+    "S2"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st9/S1",
+     "verdict": "accurate",
+     "reason": "The source directly contrasts favorable material indicators with the failure of modern capitalism to arise",
+     "id": "F201",
+     "source": "ledger"
+    },
+    {
+     "pair": "st9/S2",
+     "verdict": "accurate",
+     "reason": "The failed material correlation and institutional contrast are explicit in the held discussion",
+     "id": "F202",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "accurate",
+   "stacks": {
+    "run4:claude-sonnet-5": "supported",
+    "run5:gemini-3.8-flash": "supported"
+   }
+  },
+  {
+   "no": 10,
+   "section": "theme 9",
+   "cited": [
+    "S1",
+    "S2",
+    "S4"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st10/S1",
+     "verdict": "accurate",
+     "reason": "The source closely matches the memo’s “one among many” formulation",
+     "id": "F203",
+     "source": "ledger"
+    },
+    {
+     "pair": "st10/S2",
+     "verdict": "fair",
+     "reason": "The anti-monocausal implication is explicit, although the memo’s full list of conditions is assembled from the chapter more broadly",
+     "id": "F204",
+     "source": "ledger"
+    },
+    {
+     "pair": "st10/S4",
+     "verdict": "selective",
+     "reason": "The rejection is clear, but religion and the complete bundle are not S4’s principal developed claim",
+     "id": "F205",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "selective",
+   "stacks": {
+    "run4:claude-sonnet-5": "supported",
+    "run5:gemini-3.8-flash": "supported"
+   }
+  },
+  {
+   "no": 11,
+   "section": "theme 10",
+   "cited": [
+    "S3"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st11/S3",
+     "verdict": "accurate",
+     "reason": "The concluding question directly carries the empirical-revision portion of the attribution",
+     "id": "F206",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "accurate",
+   "stacks": {
+    "run4:claude-sonnet-5": "supported",
+    "run5:gemini-3.8-flash": "supported"
+   }
+  },
+  {
+   "no": 12,
+   "section": "path 1",
+   "cited": [
+    "S2",
+    "S3",
+    "S4"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st12/S2",
+     "verdict": "accurate",
+     "reason": "Both method and comparative scope are explicit",
+     "id": "F207",
+     "source": "ledger"
+    },
+    {
+     "pair": "st12/S3",
+     "verdict": "accurate",
+     "reason": "The source names the disputed primitivist placement directly",
+     "id": "F208",
+     "source": "ledger"
+    },
+    {
+     "pair": "st12/S4",
+     "verdict": "accurate",
+     "reason": "The memo closely paraphrases the source’s methodological statement",
+     "id": "F209",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "accurate",
+   "stacks": {
+    "run4:claude-sonnet-5": "partly",
+    "run5:gemini-3.8-flash": "supported"
+   }
+  },
+  {
+   "no": 13,
+   "section": "path 2",
+   "cited": [
+    "S1",
+    "S2",
+    "S3"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st13/S1",
+     "verdict": "accurate",
+     "reason": "Universality and structural differentiation are explicit in the held chapter",
+     "id": "F210",
+     "source": "ledger"
+    },
+    {
+     "pair": "st13/S2",
+     "verdict": "accurate",
+     "reason": "The chapter expressly rejects developmental transition while retaining the term capitalism",
+     "id": "F211",
+     "source": "ledger"
+    },
+    {
+     "pair": "st13/S3",
+     "verdict": "fair",
+     "reason": "This supports S3’s assigned portion; the universal-capitalism conclusion comes mainly from S1 and S2",
+     "id": "F212",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "fair",
+   "stacks": {
+    "run4:claude-sonnet-5": "supported",
+    "run5:gemini-3.8-flash": "supported"
+   }
+  },
+  {
+   "no": 14,
+   "section": "path 3",
+   "cited": [
+    "S2",
+    "S4"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st14/S2",
+     "verdict": "accurate",
+     "reason": "Ordering, weighting, and hypothesis guidance are directly stated",
+     "id": "F213",
+     "source": "ledger"
+    },
+    {
+     "pair": "st14/S4",
+     "verdict": "accurate",
+     "reason": "The rejected periodization and empirical derivation are explicit",
+     "id": "F214",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "accurate",
+   "stacks": {
+    "run4:claude-sonnet-5": "supported",
+    "run5:gemini-3.8-flash": "supported"
+   }
+  },
+  {
+   "no": 15,
+   "section": "path 4",
+   "cited": [
+    "S2",
+    "S4"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st15/S2",
+     "verdict": "accurate",
+     "reason": "The geographic distinction and institutional mechanisms are explicit in the held discussion",
+     "id": "F215",
+     "source": "ledger"
+    },
+    {
+     "pair": "st15/S4",
+     "verdict": "accurate",
+     "reason": "The source supplies the memo’s limiting contrast",
+     "id": "F216",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "accurate",
+   "stacks": {
+    "run4:claude-sonnet-5": "supported",
+    "run5:gemini-3.8-flash": "supported"
+   }
+  },
+  {
+   "no": 16,
+   "section": "path 5",
+   "cited": [
+    "S1",
+    "S2"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st16/S1",
+     "verdict": "accurate",
+     "reason": "Possession and absence both appear in the held discussion",
+     "id": "F217",
+     "source": "ledger"
+    },
+    {
+     "pair": "st16/S2",
+     "verdict": "accurate",
+     "reason": "The elements appear across the held China discussion and balance sheet",
+     "id": "F218",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "accurate",
+   "stacks": {
+    "run4:claude-sonnet-5": "supported",
+    "run5:gemini-3.8-flash": "supported"
+   }
+  },
+  {
+   "no": 17,
+   "section": "path 6",
+   "cited": [
+    "S1",
+    "S2",
+    "S4"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st17/S1",
+     "verdict": "accurate",
+     "reason": "S1 expressly states religious importance and causal plurality",
+     "id": "F301",
+     "source": "ledger"
+    },
+    {
+     "pair": "st17/S2",
+     "verdict": "accurate",
+     "reason": "S2 explicitly qualifies the scope of the religious inquiry",
+     "id": "F302",
+     "source": "ledger"
+    },
+    {
+     "pair": "st17/S4",
+     "verdict": "accurate",
+     "reason": "the source directly rejects the reduction",
+     "id": "F303",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "accurate",
+   "stacks": {
+    "run4:claude-sonnet-5": "misattributed",
+    "run5:gemini-3.8-flash": "supported"
+   }
+  },
+  {
+   "no": 18,
+   "section": "path 7",
+   "cited": [
+    "S3"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st18/S3",
+     "verdict": "fair",
+     "reason": "the redirection is direct, but other components are distributed among reviewed contributors",
+     "id": "F304",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "fair",
+   "stacks": {
+    "run4:claude-sonnet-5": "supported",
+    "run5:gemini-3.8-flash": "supported"
+   }
+  },
+  {
+   "no": 19,
+   "section": "divergence: Does antiquity instantiate an economic logic fundamentally d",
+   "cited": [
+    "S3"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st19/S3",
+     "verdict": "accurate",
+     "reason": "the source closely matches the attributed proposition",
+     "id": "F305",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "accurate",
+   "stacks": {
+    "run1:gemini-3.8-flash": "supported",
+    "run4:claude-sonnet-5": "supported",
+    "run5:gemini-3.8-flash": "supported"
+   }
+  },
+  {
+   "no": 20,
+   "section": "divergence: Does antiquity instantiate an economic logic fundamentally d",
+   "cited": [
+    "S3"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st20/S3",
+     "verdict": "accurate",
+     "reason": "both positions are expressly identified and challenged",
+     "id": "F306",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "accurate",
+   "stacks": {
+    "run1:gemini-3.8-flash": "supported",
+    "run4:claude-sonnet-5": "supported",
+    "run5:gemini-3.8-flash": "supported"
+   }
+  },
+  {
+   "no": 21,
+   "section": "divergence: Should economic forms be arranged as universal historical st",
+   "cited": [
+    "S2",
+    "S3",
+    "S4"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st21/S2",
+     "verdict": "accurate",
+     "reason": "the text explicitly opposes chronological succession",
+     "id": "F307",
+     "source": "ledger"
+    },
+    {
+     "pair": "st21/S3",
+     "verdict": "fair",
+     "reason": "the ideal-type core holds, but the checked passage does not elaborate the combinatory formula",
+     "id": "F308",
+     "source": "ledger"
+    },
+    {
+     "pair": "st21/S4",
+     "verdict": "accurate",
+     "reason": "the combinatory predicate appears directly",
+     "id": "F309",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "fair",
+   "stacks": {
+    "run1:gemini-3.8-flash": "supported",
+    "run4:claude-sonnet-5": "supported",
+    "run5:gemini-3.8-flash": "supported"
+   }
+  },
+  {
+   "no": 22,
+   "section": "divergence: Should economic forms be arranged as universal historical st",
+   "cited": [
+    "S2",
+    "S4"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st22/S2",
+     "verdict": "accurate",
+     "reason": "the source directly identifies Bücher’s linear sequence; Rodbertus is separately discussed in the window",
+     "id": "F310",
+     "source": "ledger"
+    },
+    {
+     "pair": "st22/S4",
+     "verdict": "selective",
+     "reason": "the anti-genetic conclusion holds, but Rodbertus is not identified in S4",
+     "id": "F314",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "selective",
+   "stacks": {
+    "run1:gemini-3.8-flash": "supported",
+    "run4:claude-sonnet-5": "partly",
+    "run5:gemini-3.8-flash": "supported"
+   }
+  },
+  {
+   "no": 23,
+   "section": "divergence: Was Athens economically disembedded and therefore an origin ",
+   "cited": [
+    "S3"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st23/S3",
+     "verdict": "accurate",
+     "reason": "the nested attribution is preserved",
+     "id": "F311",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "accurate",
+   "stacks": {
+    "run1:gemini-3.8-flash": "supported",
+    "run4:claude-sonnet-5": "supported",
+    "run5:gemini-3.8-flash": "supported"
+   }
+  },
+  {
+   "no": 24,
+   "section": "divergence: Was Athens economically disembedded and therefore an origin ",
+   "cited": [
+    "S3"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st24/S3",
+     "verdict": "accurate",
+     "reason": "the memo closely paraphrases the rhetorical criticism",
+     "id": "F312",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "accurate",
+   "stacks": {
+    "run1:gemini-3.8-flash": "supported",
+    "run4:claude-sonnet-5": "supported",
+    "run5:gemini-3.8-flash": "supported"
+   }
+  },
+  {
+   "no": 25,
+   "section": "divergence: Which medieval city mattered for modern capitalism?",
+   "cited": [
+    "S2"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st25/S2",
+     "verdict": "fair",
+     "reason": "mechanism and city type match, but S2 offers no measured ranking",
+     "id": "F401",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "fair",
+   "stacks": {
+    "run1:gemini-3.8-flash": "supported",
+    "run4:claude-sonnet-5": "supported",
+    "run5:gemini-3.8-flash": "supported"
+   }
+  },
+  {
+   "no": 26,
+   "section": "divergence: Which medieval city mattered for modern capitalism?",
+   "cited": [
+    "S2",
+    "S4"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st26/S2",
+     "verdict": "fair",
+     "reason": "S2 supports both components but restricts the relevant type to the northern industrial inland city",
+     "id": "F402",
+     "source": "ledger"
+    },
+    {
+     "pair": "st26/S4",
+     "verdict": "fair",
+     "reason": "S4 directly denies singular causality but does not foreground the southern city at this locus",
+     "id": "F403",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "fair",
+   "stacks": {
+    "run1:gemini-3.8-flash": "supported",
+    "run4:claude-sonnet-5": "supported",
+    "run5:gemini-3.8-flash": "supported"
+   }
+  },
+  {
+   "no": 27,
+   "section": "divergence: How should history and economic theory be related?",
+   "cited": [
+    "S2",
+    "S4"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st27/S2",
+     "verdict": "accurate",
+     "reason": "S2 connects historical evidence with conceptual ordering by a research problem",
+     "id": "F404",
+     "source": "ledger"
+    },
+    {
+     "pair": "st27/S4",
+     "verdict": "fair",
+     "reason": "S4 supports these functions across its methodological discussion rather than in one identical formula",
+     "id": "F405",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "fair",
+   "stacks": {
+    "run1:gemini-3.8-flash": "supported",
+    "run4:claude-sonnet-5": "supported",
+    "run5:gemini-3.8-flash": "supported"
+   }
+  },
+  {
+   "no": 28,
+   "section": "divergence: How should history and economic theory be related?",
+   "cited": [
+    "S2",
+    "S4"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st28/S2",
+     "verdict": "accurate",
+     "reason": "both rejected alternatives are explicit in S2",
+     "id": "F406",
+     "source": "ledger"
+    },
+    {
+     "pair": "st28/S4",
+     "verdict": "fair",
+     "reason": "S4 rejects the alternative, while the memo sharpens this into a symmetrical formula",
+     "id": "F407",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "fair",
+   "stacks": {
+    "run1:gemini-3.8-flash": "supported",
+    "run4:claude-sonnet-5": "supported",
+    "run5:gemini-3.8-flash": "supported"
+   }
+  },
+  {
+   "no": 29,
+   "section": "what is settled",
+   "cited": [
+    "S1",
+    "S2",
+    "S4"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st29/S1",
+     "verdict": "accurate",
+     "reason": "S1 directly formulates modern capitalism’s core, distinction, and origins as the problem",
+     "id": "F408",
+     "source": "ledger"
+    },
+    {
+     "pair": "st29/S2",
+     "verdict": "accurate",
+     "reason": "S2 directly identifies modern rational enterprise based on formally free labour",
+     "id": "F409",
+     "source": "ledger"
+    },
+    {
+     "pair": "st29/S4",
+     "verdict": "fair",
+     "reason": "S4 supports the proposition across its discussion of economic systems and modern capitalism’s origins",
+     "id": "F410",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "fair",
+   "stacks": {
+    "run1:gemini-3.8-flash": "supported",
+    "run4:claude-sonnet-5": "supported",
+    "run5:gemini-3.8-flash": "supported"
+   }
+  },
+  {
+   "no": 30,
+   "section": "what is settled",
+   "cited": [
+    "S1",
+    "S2",
+    "S4"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st30/S1",
+     "verdict": "accurate",
+     "reason": "S1 affirms ancient capitalism and explains its blocked movement toward modern capitalism",
+     "id": "F411",
+     "source": "ledger"
+    },
+    {
+     "pair": "st30/S2",
+     "verdict": "accurate",
+     "reason": "S2 expressly denies a path or immanent development from Roman to modern capitalism",
+     "id": "F412",
+     "source": "ledger"
+    },
+    {
+     "pair": "st30/S4",
+     "verdict": "accurate",
+     "reason": "divergence from modern capitalism’s structures rules out the attributed universal route",
+     "id": "F413",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "accurate",
+   "stacks": {
+    "run1:gemini-3.8-flash": "supported",
+    "run4:claude-sonnet-5": "supported",
+    "run5:gemini-3.8-flash": "supported"
+   }
+  },
+  {
+   "no": 31,
+   "section": "what is settled",
+   "cited": [
+    "S2",
+    "S4"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st31/S2",
+     "verdict": "accurate",
+     "reason": "S2 treats stages as analytical models rather than successive empirical forms",
+     "id": "F414",
+     "source": "ledger"
+    },
+    {
+     "pair": "st31/S4",
+     "verdict": "accurate",
+     "reason": "S4 expressly denies that ideal-typical stages constitute a determinate chronology",
+     "id": "F415",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "accurate",
+   "stacks": {
+    "run1:gemini-3.8-flash": "supported",
+    "run4:claude-sonnet-5": "supported",
+    "run5:gemini-3.8-flash": "supported"
+   }
+  },
+  {
+   "no": 32,
+   "section": "what is settled",
+   "cited": [
+    "S2",
+    "S4"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st32/S2",
+     "verdict": "fair",
+     "reason": "incorporation into sociological categories is explicit, while “foundational throughout” is more directly S4’s formulation",
+     "id": "F416",
+     "source": "ledger"
+    },
+    {
+     "pair": "st32/S4",
+     "verdict": "accurate",
+     "reason": "S4 explicitly makes economic history foundational across Weber’s writing and rejects its supersession by sociology",
+     "id": "F417",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "fair",
+   "stacks": {
+    "run1:gemini-3.8-flash": "supported",
+    "run4:claude-sonnet-5": "supported",
+    "run5:gemini-3.8-flash": "supported"
+   }
+  },
+  {
+   "no": 33,
+   "section": "what is settled",
+   "cited": [
+    "S1",
+    "S2",
+    "S4"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st33/S1",
+     "verdict": "accurate",
+     "reason": "S1 explicitly calls religion essential but only one of many factors",
+     "id": "F501",
+     "source": "ledger"
+    },
+    {
+     "pair": "st33/S2",
+     "verdict": "fair",
+     "reason": "S2 limits religious explanation to one side of the causal relationship",
+     "id": "F502",
+     "source": "ledger"
+    },
+    {
+     "pair": "st33/S4",
+     "verdict": "fair",
+     "reason": "S4 rejects the monocausal idealist reading without enumerating the memo’s complete bundle",
+     "id": "F503",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "fair",
+   "stacks": {
+    "run1:gemini-3.8-flash": "supported",
+    "run4:claude-sonnet-5": "supported",
+    "run5:gemini-3.8-flash": "supported"
+   }
+  },
+  {
+   "no": 34,
+   "section": "what is settled",
+   "cited": [
+    "S1",
+    "S2"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st34/S1",
+     "verdict": "accurate",
+     "reason": "S1 directly contrasts material endowments with additional prerequisites",
+     "id": "F504",
+     "source": "ledger"
+    },
+    {
+     "pair": "st34/S2",
+     "verdict": "fair",
+     "reason": "S2 supports the institutional claim, while “cultural configurations” is broader than this passage",
+     "id": "F505",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "fair",
+   "stacks": {
+    "run1:gemini-3.8-flash": "supported",
+    "run4:claude-sonnet-5": "supported",
+    "run5:gemini-3.8-flash": "supported"
+   }
+  },
+  {
+   "no": 35,
+   "section": "what is settled",
+   "cited": [
+    "S3"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st35/S3",
+     "verdict": "accurate",
+     "reason": "S3 directly questions both concepts’ clarity and operational value",
+     "id": "F506",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "accurate",
+   "stacks": {
+    "run1:gemini-3.8-flash": "supported",
+    "run4:claude-sonnet-5": "supported",
+    "run5:gemini-3.8-flash": "supported"
+   }
+  },
+  {
+   "no": 36,
+   "section": "still open",
+   "cited": [
+    "S1"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st36/S1",
+     "verdict": "accurate",
+     "reason": "S1 explicitly recommends flexible reconstruction for contemporary use",
+     "id": "F507",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "accurate",
+   "stacks": {
+    "run1:gemini-3.8-flash": "supported",
+    "run4:claude-sonnet-5": "partly",
+    "run5:gemini-3.8-flash": "supported"
+   }
+  },
+  {
+   "no": 37,
+   "section": "still open",
+   "cited": [
+    "S3"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st37/S3",
+     "verdict": "fair",
+     "reason": "S3 states the movement from partial evidence to systems, while non-reduction is the memo’s formulation",
+     "id": "F508",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "fair",
+   "stacks": {
+    "run1:gemini-3.8-flash": "supported",
+    "run4:claude-sonnet-5": "partly",
+    "run5:gemini-3.8-flash": "supported"
+   }
+  },
+  {
+   "no": 38,
+   "section": "still open",
+   "cited": [
+    "S3"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st38/S3",
+     "verdict": "fair",
+     "reason": "the analytical direction and elements are present, but the exact six-part question is the memo’s synthesis",
+     "id": "F509",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "fair",
+   "stacks": {
+    "run1:gemini-3.8-flash": "supported",
+    "run4:claude-sonnet-5": "partly",
+    "run5:gemini-3.8-flash": "supported"
+   }
+  },
+  {
+   "no": 39,
+   "section": "still open",
+   "cited": [
+    "S1",
+    "S2"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st39/S1",
+     "verdict": "fair",
+     "reason": "multifactorial inquiry is explicit, while “relative causal weight” is a methodological extension",
+     "id": "F510",
+     "source": "ledger"
+    },
+    {
+     "pair": "st39/S2",
+     "verdict": "fair",
+     "reason": "S2 connects weighting evidence to hypothesis formation, though it does not supply the memo’s exact list",
+     "id": "F511",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "fair",
+   "stacks": {
+    "run1:gemini-3.8-flash": "supported",
+    "run4:claude-sonnet-5": "partly",
+    "run5:gemini-3.8-flash": "supported"
+   }
+  },
+  {
+   "no": 40,
+   "section": "still open",
+   "cited": [
+    "S2",
+    "S4"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st40/S2",
+     "verdict": "selective",
+     "reason": "S2 licenses reconstruction for new questions but does not pose the beyond-sample question",
+     "id": "F512",
+     "source": "ledger"
+    },
+    {
+     "pair": "st40/S4",
+     "verdict": "selective",
+     "reason": "S4 establishes the existing instruments but not their reach in additional cases",
+     "id": "F513",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "selective",
+   "stacks": {
+    "run1:gemini-3.8-flash": "supported",
+    "run4:claude-sonnet-5": "partly",
+    "run5:gemini-3.8-flash": "supported"
+   }
+  },
+  {
+   "no": 41,
+   "section": "next steps",
+   "cited": [
+    "S3"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st41/S3",
+     "verdict": "accurate",
+     "reason": "the objects and forms of evidence match; only interrogative form becomes imperative",
+     "id": "F606",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "accurate",
+   "stacks": {
+    "run1:gemini-3.8-flash": "supported",
+    "run4:claude-sonnet-5": "supported",
+    "run5:gemini-3.8-flash": "supported"
+   }
+  },
+  {
+   "no": 42,
+   "section": "next steps",
+   "cited": [
+    "S1"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st42/S1",
+     "verdict": "fair",
+     "reason": "both components are explicit but occur in separate passages",
+     "id": "F607",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "fair",
+   "stacks": {
+    "run1:gemini-3.8-flash": "supported",
+    "run4:claude-sonnet-5": "supported",
+    "run5:gemini-3.8-flash": "supported"
+   }
+  },
+  {
+   "no": 43,
+   "section": "next steps",
+   "cited": [
+    "S2"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st43/S2",
+     "verdict": "accurate",
+     "reason": "the memo preserves both the rejection and the concrete alternative",
+     "id": "F608",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "accurate",
+   "stacks": {
+    "run1:gemini-3.8-flash": "supported",
+    "run4:claude-sonnet-5": "partly",
+    "run5:gemini-3.8-flash": "supported"
+   }
+  },
+  {
+   "no": 44,
+   "section": "next steps",
+   "cited": [
+    "S4"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st44/S4",
+     "verdict": "accurate",
+     "reason": "S4 supplies the derivational relation on which the recommendation rests",
+     "id": "F609",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "accurate",
+   "stacks": {
+    "run1:gemini-3.8-flash": "supported",
+    "run4:claude-sonnet-5": "supported",
+    "run5:gemini-3.8-flash": "supported"
+   }
+  },
+  {
+   "no": 45,
+   "section": "next steps",
+   "cited": [
+    "S2",
+    "S3",
+    "S4"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st45/S2",
+     "verdict": "fair",
+     "reason": "S2 supports configurational comparison but not the exact five-item list",
+     "id": "F610",
+     "source": "ledger"
+    },
+    {
+     "pair": "st45/S3",
+     "verdict": "fair",
+     "reason": "the system-level direction is explicit, but the memo expands S3’s vocabulary",
+     "id": "F611",
+     "source": "ledger"
+    },
+    {
+     "pair": "st45/S4",
+     "verdict": "fair",
+     "reason": "S4 warrants configurational comparison but not the precise enumerated bundle",
+     "id": "F612",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "fair",
+   "stacks": {
+    "run1:gemini-3.8-flash": "supported",
+    "run4:claude-sonnet-5": "supported",
+    "run5:gemini-3.8-flash": "supported"
+   }
+  },
+  {
+   "no": 46,
+   "section": "reading",
+   "cited": [
+    "S2",
+    "S4"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st46/S2",
+     "verdict": "accurate",
+     "reason": "the named components are placed in one research trajectory",
+     "id": "F613",
+     "source": "ledger"
+    },
+    {
+     "pair": "st46/S4",
+     "verdict": "accurate",
+     "reason": "the list following the source anchor contains the same works",
+     "id": "F614",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "accurate",
+   "stacks": {
+    "run1:gemini-3.8-flash": "supported",
+    "run4:claude-sonnet-5": "supported",
+    "run5:gemini-3.8-flash": "supported"
+   }
+  },
+  {
+   "no": 47,
+   "section": "reading",
+   "cited": [
+    "S1",
+    "S4"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st47/S1",
+     "verdict": "fair",
+     "reason": "the anti-isolation claim is explicit, but the exact companion titles are the memo’s specification",
+     "id": "F615",
+     "source": "ledger"
+    },
+    {
+     "pair": "st47/S4",
+     "verdict": "accurate",
+     "reason": "the source directly establishes the contextual relation",
+     "id": "F616",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "fair",
+   "stacks": {
+    "run1:gemini-3.8-flash": "supported",
+    "run4:claude-sonnet-5": "supported",
+    "run5:gemini-3.8-flash": "supported"
+   }
+  },
+  {
+   "no": 48,
+   "section": "reading",
+   "cited": [
+    "S1",
+    "S2",
+    "S3",
+    "S4"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st48/S1",
+     "verdict": "fair",
+     "reason": "the controversy is explicit, but the anti-chronological distinction is indirect at this locus",
+     "id": "F617",
+     "source": "ledger"
+    },
+    {
+     "pair": "st48/S2",
+     "verdict": "accurate",
+     "reason": "the source expressly states both sides of the distinction",
+     "id": "F618",
+     "source": "ledger"
+    },
+    {
+     "pair": "st48/S3",
+     "verdict": "accurate",
+     "reason": "the methodological distinction is explicit and tied to the controversy",
+     "id": "F619",
+     "source": "ledger"
+    },
+    {
+     "pair": "st48/S4",
+     "verdict": "accurate",
+     "reason": "S4 states the memo’s central distinction directly",
+     "id": "F620",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "fair",
+   "stacks": {
+    "run1:gemini-3.8-flash": "supported",
+    "run4:claude-sonnet-5": "supported",
+    "run5:gemini-3.8-flash": "partly"
+   }
+  },
+  {
+   "no": 49,
+   "section": "reading",
+   "cited": [
+    "S3"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st49/S3",
+     "verdict": "accurate",
+     "reason": "S3 discusses all four named participants, although they revise, criticize, and synthesize in different ways",
+     "id": "F708",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "accurate",
+   "stacks": {
+    "run1:gemini-3.8-flash": "supported",
+    "run4:claude-sonnet-5": "supported",
+    "run5:gemini-3.8-flash": "supported"
+   }
+  },
+  {
+   "no": 50,
+   "section": "reading",
+   "cited": [
+    "S1",
+    "S2",
+    "S3",
+    "S4"
+   ],
+   "ours_pairs": [
+    {
+     "pair": "st50/S1",
+     "verdict": "accurate",
+     "reason": "S1 directly covers capitalism, developmental history, spirit, religion, disagreement, and partial agreement",
+     "id": "F709",
+     "source": "ledger"
+    },
+    {
+     "pair": "st50/S2",
+     "verdict": "accurate",
+     "reason": "S2 explicitly frames the Protestant Ethic in relation to Sombart and differentiates their historical and conceptual projects",
+     "id": "F710",
+     "source": "ledger"
+    },
+    {
+     "pair": "st50/S3",
+     "verdict": "selective",
+     "reason": "its systems axis is substantive, but it does not develop an even Weber–Sombart comparison across all four topics",
+     "id": "F711",
+     "source": "ledger"
+    },
+    {
+     "pair": "st50/S4",
+     "verdict": "fair",
+     "reason": "the comparison is warranted, but the spirit axis is contextual rather than developed as evenly as theory, systems, and capitalism",
+     "id": "F712",
+     "source": "ledger"
+    }
+   ],
+   "ours_worst": "selective",
+   "stacks": {
+    "run1:gemini-3.8-flash": "supported",
+    "run4:claude-sonnet-5": "partly",
+    "run5:gemini-3.8-flash": "partly"
+   }
+  }
+ ]
+}
