@@ -1,0 +1,1007 @@
+{
+  "status": "complete",
+  "job": {
+    "id": "A4",
+    "engine": "counterfactual_analyzer",
+    "papers": [
+      "harris"
+    ],
+    "condition": "checked"
+  },
+  "output_sha256": "d2280ebbcda08e46b5c73a39610bfc8ccfd2a4a26e0d1ef677a525313f65f5b1",
+  "seconds": 522.6766998767853,
+  "process": {
+    "engine": "counterfactual_analyzer",
+    "process": "dvs",
+    "cost_usd": 0.2754,
+    "input_tokens": 76829,
+    "output_tokens": 31688,
+    "seconds": 522.7,
+    "final_model": "openrouter/openai/gpt-5.6-sol",
+    "final_wall": {
+      "rows": 13,
+      "with_anchor": 13,
+      "verified": 13,
+      "trimmed": 2,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 18,
+      "verified_anchors": 18,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "checked",
+        "scope": "retained_ledger",
+        "missing_rejected_ids": [],
+        "missing_other_ids": []
+      },
+      "synthesis_contract": {
+        "failed_ids": [],
+        "incomplete_cross_document_ids": [],
+        "duplicate_ids": [],
+        "missing_cited": [],
+        "unknown_dimensions": [],
+        "missing_ledger": false,
+        "parse_error": "",
+        "incomplete_invocation": false
+      },
+      "synthesis_repair_attempts": [],
+      "rows_without_dimension": 0,
+      "check_ruling_coverage": {
+        "original_count": 10,
+        "explicitly_ruled_count": 10,
+        "missing_or_unruled_ids": [],
+        "unexpected_nonadded_ids": [],
+        "invalid_original_status_ids": [],
+        "duplicate_original_ids": [],
+        "duplicate_ruling_ids": [],
+        "coverage_complete": true
+      },
+      "scope_outcomes": [
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "supposition_and_function",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "Abstract and introduction",
+            "Section 2: An unbreakable monism",
+            "Section 3.1: One",
+            "Section 3.2: Two",
+            "Section 3.4: Four",
+            "Section 4: Conclusion",
+            "Notes"
+          ],
+          "coverage": "partial",
+          "criterion": "A condition qualifies when varying, granting, or assuming it performs an identifiable inferential task, including counterfactuals, open conditionals, and even-if concessions.",
+          "basis": "The article contains an even-if concession, two counterfactual identity tests, and open conditionals for capitalism and normative adjudication.",
+          "limitations": [
+            "Only argumentative suppositions in the supplied article are assessed; cited sources are not independently verified.",
+            "Scope is partial: selected sections carrying the suppositions were inspected."
+          ],
+          "finding_ids": [
+            "F1",
+            "F2",
+            "F4",
+            "F11",
+            "F12"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "All listed anchors are verbatim and carry the speaker, antecedent and modal consequent; the added rows fill missed suppositions.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "fixed_and_changed_conditions",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "Section 2: An unbreakable monism",
+            "Section 3.1: One",
+            "Notes"
+          ],
+          "coverage": "partial",
+          "criterion": "Retain conditions explicitly varied or held fixed and identify reconstructed constraints or additional premises needed for the consequent.",
+          "basis": "The text varies recognition’s universality while holding fixed the requirement of a comprehensive critical theory; it characterizes the universal moral grammar as Honneth’s defining contribution.",
+          "limitations": [
+            "Conceptual rather than historical scenarios; no historical backtracking required.",
+            "The held-fixed standard in F6 is reconstructed from adjacent statements rather than expressed with all-else-equal wording."
+          ],
+          "finding_ids": [
+            "F6",
+            "F8"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "Anchors were corrected to full predicate spans; both rows are supported.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "inferential_path",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "Section 2: An unbreakable monism",
+            "Section 3.1: One",
+            "Section 3.4: Four",
+            "Notes"
+          ],
+          "coverage": "partial",
+          "criterion": "The antecedent-to-consequent bridge must be inspectable as conceptual, definitional, causal, historical, or normative with modal scope preserved.",
+          "basis": "The text provides a definitional identity bridge from monism, a causal-structural bridge from inaccessible social-structural forces, and a conceptual bridge from impersonal capitalist dynamics.",
+          "limitations": [
+            "The universal claim about every social pathology is asserted more broadly than the detailed examples demonstrate.",
+            "The comparative standard in the word optimally is not independently specified."
+          ],
+          "finding_ids": [
+            "F3",
+            "F5",
+            "F7"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "F3 was corrected to support-strength necessary; F5 and F7 anchors carry their stated bridges.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "alternatives_and_scope",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "Section 2: An unbreakable monism",
+            "Section 3.1: One",
+            "Section 4: Conclusion"
+          ],
+          "coverage": "partial",
+          "criterion": "A relevant alternative must be available in the text and compare the same explanatory task while identifying changes in framework, role, modality, or scope.",
+          "basis": "The text presents Fraser’s pluralist use of recognition and Herranen and Laitinen’s recognition-light adaptive revision as in-text alternatives.",
+          "limitations": [
+            "Neither alternative is fully developed as a viable successor; the text rejects them.",
+            "Thompson’s constructive alternative is not included as a controlled test of recognition’s subordinate role."
+          ],
+          "finding_ids": [
+            "F9",
+            "F13"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "F9 now has an attribution anchor-b; V.F3 adds the target revision the earlier ledger omitted.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "survival_and_robustness",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "Abstract and introduction",
+            "Section 2: An unbreakable monism",
+            "Sections 3.1–3.8",
+            "Section 4: Conclusion",
+            "Notes"
+          ],
+          "coverage": "partial",
+          "criterion": "Withdraw one premise or route at a time and distinguish loss of a formulation from loss of the conclusion where independent support remains.",
+          "basis": "The text bases its recommendation on the sheer plurality of criticisms, allowing the identity route and substantive inadequacy routes to be separated.",
+          "limitations": [
+            "The text does not individually perform every premise-withdrawal test; part of the robustness assessment is an analyst reconstruction.",
+            "The material does not prove every possible revised theory is defeated."
+          ],
+          "finding_ids": [
+            "F10"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "The anchor was corrected to include the object theoretical foundations; the row is supported.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        }
+      ]
+    },
+    "calls": [
+      {
+        "step": "read",
+        "kind": "synthesize",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/openai/gpt-5.6-sol",
+        "model_used": "openrouter/openai/gpt-5.6-sol",
+        "input_tokens": 21088,
+        "output_tokens": 4808,
+        "duration_ms": 109465,
+        "cost_usd": 0.0903,
+        "retries": 0,
+        "wall": {
+          "rows": 10,
+          "with_anchor": 10,
+          "verified": 10,
+          "trimmed": 3,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 13,
+          "verified_anchors": 13,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "has_ledger": true,
+          "prose_chars": 10455,
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "supposition_and_function",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract and introduction",
+                "Section 2: An unbreakable monism",
+                "Section 3.1: One",
+                "Section 3.3: Three",
+                "Section 3.4: Four",
+                "Section 4: Conclusion",
+                "Notes"
+              ],
+              "coverage": "complete",
+              "criterion": "A condition qualifies when varying, granting, or assuming it performs an identifiable inferential task, including counterfactuals, open conditionals, and even-if concessions.",
+              "basis": "The article contains an explicit even-if concession, an explicit counterfactual identity test, and an open conditional concerning capitalism.",
+              "limitations": [
+                "Classification concerns argumentative suppositions in the supplied article, not the validity of all cited sources.",
+                "No distinct reductio was retained: rhetorical questions support the identity argument but do not clearly assume a rejected proposition to derive a contradiction."
+              ],
+              "finding_ids": [
+                "F1",
+                "F2",
+                "F4"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "fixed_and_changed_conditions",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Section 2: An unbreakable monism",
+                "Section 3.1: One",
+                "Notes"
+              ],
+              "coverage": "complete",
+              "criterion": "Retain conditions explicitly varied or held fixed and identify reconstructed constraints or additional premises needed for the consequent.",
+              "basis": "The text varies recognition monism while holding fixed the demand for a comprehensive critical theory, and characterizes the comprehensive moral grammar as Honneth’s defining contribution.",
+              "limitations": [
+                "The scenarios are conceptual rather than historical, so no earlier historical backtracking conditions were required.",
+                "Some held-fixed standards are reconstructed from adjacent statements rather than expressed with all-else-equal wording."
+              ],
+              "finding_ids": [
+                "F6",
+                "F8"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "inferential_path",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Section 2: An unbreakable monism",
+                "Section 3.1: One",
+                "Section 3.4: Four",
+                "Notes"
+              ],
+              "coverage": "complete",
+              "criterion": "The antecedent-to-consequent bridge must be inspectable as a conceptual, definitional, causal, historical, or normative warrant with its modal scope preserved.",
+              "basis": "The text supplies a definitional bridge from monism to theoretical identity and causal-conceptual bridges from impersonal or structural forces to recognition theory’s explanatory limits.",
+              "limitations": [
+                "The universal claim about every social pathology is asserted more broadly than the detailed examples demonstrate.",
+                "The comparative standard implied by the word “optimally” is not independently specified."
+              ],
+              "finding_ids": [
+                "F3",
+                "F5",
+                "F7"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "alternatives_and_scope",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Section 2: An unbreakable monism",
+                "Section 4: Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "A relevant alternative must be available in the text and compare the same explanatory task while identifying changes in framework, role, modality, or scope.",
+              "basis": "The article presents Fraser’s pluralist alternative, which retains recognition for some struggles while assigning other pathologies to other approaches.",
+              "limitations": [
+                "The article does not fully develop or empirically test a pluralist successor that gives recognition only a subordinate role.",
+                "The Thompson alternative concerns replacement foundations and is not itself a controlled test of recognition’s limited usefulness."
+              ],
+              "finding_ids": [
+                "F9"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "survival_and_robustness",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract and introduction",
+                "Section 2: An unbreakable monism",
+                "Sections 3.1–3.8",
+                "Section 4: Conclusion",
+                "Notes"
+              ],
+              "coverage": "complete",
+              "criterion": "Withdraw one premise or route at a time and distinguish loss of a formulation from loss of the conclusion where independent support remains.",
+              "basis": "The article explicitly bases its final recommendation on the plurality and combined force of eight criticisms, allowing the identity argument and substantive inadequacy arguments to be separated.",
+              "limitations": [
+                "The text does not individually perform every premise-withdrawal test; part of the robustness assessment is an analyst reconstruction.",
+                "The material establishes multiple independent critical routes but does not prove that every possible revised theory is defeated."
+              ],
+              "finding_ids": [
+                "F10"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 23548
+      },
+      {
+        "step": "check",
+        "kind": "verify",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+        "model_used": "openrouter/deepseek/deepseek-v4-pro",
+        "input_tokens": 26769,
+        "output_tokens": 21420,
+        "duration_ms": 293493,
+        "cost_usd": 0.0726,
+        "retries": 0,
+        "wall": {
+          "rows": 13,
+          "with_anchor": 13,
+          "verified": 13,
+          "trimmed": 2,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 18,
+          "verified_anchors": 18,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "checked",
+            "scope": "retained_ledger",
+            "missing_rejected_ids": [],
+            "missing_other_ids": []
+          },
+          "check_in": 10,
+          "check_confirmed": 10,
+          "check_weakened": 0,
+          "check_rejected": 0,
+          "check_added": 3,
+          "check_added_dropped": 0,
+          "check_carried": 0,
+          "check_unverified": 0,
+          "check_ruling_coverage": {
+            "original_count": 10,
+            "explicitly_ruled_count": 10,
+            "missing_or_unruled_ids": [],
+            "unexpected_nonadded_ids": [],
+            "invalid_original_status_ids": [],
+            "duplicate_original_ids": [],
+            "duplicate_ruling_ids": [],
+            "coverage_complete": true
+          },
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "supposition_and_function",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract and introduction",
+                "Section 2: An unbreakable monism",
+                "Section 3.1: One",
+                "Section 3.2: Two",
+                "Section 3.4: Four",
+                "Section 4: Conclusion",
+                "Notes"
+              ],
+              "coverage": "partial",
+              "criterion": "A condition qualifies when varying, granting, or assuming it performs an identifiable inferential task, including counterfactuals, open conditionals, and even-if concessions.",
+              "basis": "The article contains an even-if concession, two counterfactual identity tests, and open conditionals for capitalism and normative adjudication.",
+              "limitations": [
+                "Only argumentative suppositions in the supplied article are assessed; cited sources are not independently verified.",
+                "Scope is partial: selected sections carrying the suppositions were inspected."
+              ],
+              "finding_ids": [
+                "F1",
+                "F2",
+                "F4",
+                "F11",
+                "F12"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "All listed anchors are verbatim and carry the speaker, antecedent and modal consequent; the added rows fill missed suppositions.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "fixed_and_changed_conditions",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Section 2: An unbreakable monism",
+                "Section 3.1: One",
+                "Notes"
+              ],
+              "coverage": "partial",
+              "criterion": "Retain conditions explicitly varied or held fixed and identify reconstructed constraints or additional premises needed for the consequent.",
+              "basis": "The text varies recognition’s universality while holding fixed the requirement of a comprehensive critical theory; it characterizes the universal moral grammar as Honneth’s defining contribution.",
+              "limitations": [
+                "Conceptual rather than historical scenarios; no historical backtracking required.",
+                "The held-fixed standard in F6 is reconstructed from adjacent statements rather than expressed with all-else-equal wording."
+              ],
+              "finding_ids": [
+                "F6",
+                "F8"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "Anchors were corrected to full predicate spans; both rows are supported.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "inferential_path",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Section 2: An unbreakable monism",
+                "Section 3.1: One",
+                "Section 3.4: Four",
+                "Notes"
+              ],
+              "coverage": "partial",
+              "criterion": "The antecedent-to-consequent bridge must be inspectable as conceptual, definitional, causal, historical, or normative with modal scope preserved.",
+              "basis": "The text provides a definitional identity bridge from monism, a causal-structural bridge from inaccessible social-structural forces, and a conceptual bridge from impersonal capitalist dynamics.",
+              "limitations": [
+                "The universal claim about every social pathology is asserted more broadly than the detailed examples demonstrate.",
+                "The comparative standard in the word optimally is not independently specified."
+              ],
+              "finding_ids": [
+                "F3",
+                "F5",
+                "F7"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "F3 was corrected to support-strength necessary; F5 and F7 anchors carry their stated bridges.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "alternatives_and_scope",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Section 2: An unbreakable monism",
+                "Section 3.1: One",
+                "Section 4: Conclusion"
+              ],
+              "coverage": "partial",
+              "criterion": "A relevant alternative must be available in the text and compare the same explanatory task while identifying changes in framework, role, modality, or scope.",
+              "basis": "The text presents Fraser’s pluralist use of recognition and Herranen and Laitinen’s recognition-light adaptive revision as in-text alternatives.",
+              "limitations": [
+                "Neither alternative is fully developed as a viable successor; the text rejects them.",
+                "Thompson’s constructive alternative is not included as a controlled test of recognition’s subordinate role."
+              ],
+              "finding_ids": [
+                "F9",
+                "F13"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "F9 now has an attribution anchor-b; V.F3 adds the target revision the earlier ledger omitted.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "survival_and_robustness",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract and introduction",
+                "Section 2: An unbreakable monism",
+                "Sections 3.1–3.8",
+                "Section 4: Conclusion",
+                "Notes"
+              ],
+              "coverage": "partial",
+              "criterion": "Withdraw one premise or route at a time and distinguish loss of a formulation from loss of the conclusion where independent support remains.",
+              "basis": "The text bases its recommendation on the sheer plurality of criticisms, allowing the identity route and substantive inadequacy routes to be separated.",
+              "limitations": [
+                "The text does not individually perform every premise-withdrawal test; part of the robustness assessment is an analyst reconstruction.",
+                "The material does not prove every possible revised theory is defeated."
+              ],
+              "finding_ids": [
+                "F10"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "The anchor was corrected to include the object theoretical foundations; the row is supported.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 17273
+      },
+      {
+        "step": "reconcile_checked",
+        "kind": "synthesize",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/openai/gpt-5.6-sol",
+        "model_used": "openrouter/openai/gpt-5.6-sol",
+        "input_tokens": 28972,
+        "output_tokens": 5460,
+        "duration_ms": 119656,
+        "cost_usd": 0.1125,
+        "retries": 0,
+        "wall": {
+          "rows": 13,
+          "with_anchor": 13,
+          "verified": 13,
+          "trimmed": 2,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 18,
+          "verified_anchors": 18,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "checked",
+            "scope": "retained_ledger",
+            "missing_rejected_ids": [],
+            "missing_other_ids": []
+          },
+          "synthesis_contract": {
+            "failed_ids": [],
+            "incomplete_cross_document_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [],
+            "unknown_dimensions": [],
+            "missing_ledger": false,
+            "parse_error": "",
+            "incomplete_invocation": false
+          },
+          "synthesis_repair_attempts": [],
+          "rows_without_dimension": 0,
+          "check_ruling_coverage": {
+            "original_count": 10,
+            "explicitly_ruled_count": 10,
+            "missing_or_unruled_ids": [],
+            "unexpected_nonadded_ids": [],
+            "invalid_original_status_ids": [],
+            "duplicate_original_ids": [],
+            "duplicate_ruling_ids": [],
+            "coverage_complete": true
+          },
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "supposition_and_function",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract and introduction",
+                "Section 2: An unbreakable monism",
+                "Section 3.1: One",
+                "Section 3.2: Two",
+                "Section 3.4: Four",
+                "Section 4: Conclusion",
+                "Notes"
+              ],
+              "coverage": "partial",
+              "criterion": "A condition qualifies when varying, granting, or assuming it performs an identifiable inferential task, including counterfactuals, open conditionals, and even-if concessions.",
+              "basis": "The article contains an even-if concession, two counterfactual identity tests, and open conditionals for capitalism and normative adjudication.",
+              "limitations": [
+                "Only argumentative suppositions in the supplied article are assessed; cited sources are not independently verified.",
+                "Scope is partial: selected sections carrying the suppositions were inspected."
+              ],
+              "finding_ids": [
+                "F1",
+                "F2",
+                "F4",
+                "F11",
+                "F12"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "All listed anchors are verbatim and carry the speaker, antecedent and modal consequent; the added rows fill missed suppositions.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "fixed_and_changed_conditions",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Section 2: An unbreakable monism",
+                "Section 3.1: One",
+                "Notes"
+              ],
+              "coverage": "partial",
+              "criterion": "Retain conditions explicitly varied or held fixed and identify reconstructed constraints or additional premises needed for the consequent.",
+              "basis": "The text varies recognition’s universality while holding fixed the requirement of a comprehensive critical theory; it characterizes the universal moral grammar as Honneth’s defining contribution.",
+              "limitations": [
+                "Conceptual rather than historical scenarios; no historical backtracking required.",
+                "The held-fixed standard in F6 is reconstructed from adjacent statements rather than expressed with all-else-equal wording."
+              ],
+              "finding_ids": [
+                "F6",
+                "F8"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "Anchors were corrected to full predicate spans; both rows are supported.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "inferential_path",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Section 2: An unbreakable monism",
+                "Section 3.1: One",
+                "Section 3.4: Four",
+                "Notes"
+              ],
+              "coverage": "partial",
+              "criterion": "The antecedent-to-consequent bridge must be inspectable as conceptual, definitional, causal, historical, or normative with modal scope preserved.",
+              "basis": "The text provides a definitional identity bridge from monism, a causal-structural bridge from inaccessible social-structural forces, and a conceptual bridge from impersonal capitalist dynamics.",
+              "limitations": [
+                "The universal claim about every social pathology is asserted more broadly than the detailed examples demonstrate.",
+                "The comparative standard in the word optimally is not independently specified."
+              ],
+              "finding_ids": [
+                "F3",
+                "F5",
+                "F7"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "F3 was corrected to support-strength necessary; F5 and F7 anchors carry their stated bridges.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "alternatives_and_scope",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Section 2: An unbreakable monism",
+                "Section 3.1: One",
+                "Section 4: Conclusion"
+              ],
+              "coverage": "partial",
+              "criterion": "A relevant alternative must be available in the text and compare the same explanatory task while identifying changes in framework, role, modality, or scope.",
+              "basis": "The text presents Fraser’s pluralist use of recognition and Herranen and Laitinen’s recognition-light adaptive revision as in-text alternatives.",
+              "limitations": [
+                "Neither alternative is fully developed as a viable successor; the text rejects them.",
+                "Thompson’s constructive alternative is not included as a controlled test of recognition’s subordinate role."
+              ],
+              "finding_ids": [
+                "F9",
+                "F13"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "F9 now has an attribution anchor-b; V.F3 adds the target revision the earlier ledger omitted.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "survival_and_robustness",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Abstract and introduction",
+                "Section 2: An unbreakable monism",
+                "Sections 3.1–3.8",
+                "Section 4: Conclusion",
+                "Notes"
+              ],
+              "coverage": "partial",
+              "criterion": "Withdraw one premise or route at a time and distinguish loss of a formulation from loss of the conclusion where independent support remains.",
+              "basis": "The text bases its recommendation on the sheer plurality of criticisms, allowing the identity route and substantive inadequacy routes to be separated.",
+              "limitations": [
+                "The text does not individually perform every premise-withdrawal test; part of the robustness assessment is an analyst reconstruction.",
+                "The material does not prove every possible revised theory is defeated."
+              ],
+              "finding_ids": [
+                "F10"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "The anchor was corrected to include the object theoretical foundations; the row is supported.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 26967
+      }
+    ]
+  },
+  "audit": {
+    "wall": {
+      "rows": 13,
+      "with_anchor": 13,
+      "verified": 13,
+      "trimmed": 2,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 18,
+      "verified_anchors": 18,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "rows": 13,
+    "raw_anchors": 18,
+    "raw_exact": 0,
+    "unknown_dimensions": [],
+    "missing_table_ids": [],
+    "missing_prose_ids": []
+  }
+}

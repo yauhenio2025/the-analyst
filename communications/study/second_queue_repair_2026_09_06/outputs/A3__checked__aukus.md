@@ -1,0 +1,145 @@
+# Reading
+
+## Local inventory: what the comparisons establish
+
+This is a local inventory of one article. It assesses whether the article’s own analogies, classifications, and alternatives support its conclusions. A corpus-level judgment would require at least one additional work and paired evidence; publication dates alone would not establish influence or uptake.
+
+## AUKUS as both security partnership and neoliberal mutation
+
+The article’s most consequential comparison concerns how AUKUS should be classified. It does not deny the conventional description of AUKUS as a security partnership. Instead, it transfers features of “militarised neoliberalism” (MN) to AUKUS and concludes that AUKUS “constitutes a mutation of neoliberalism” [F1].
+
+The relevant correspondence is institutional rather than merely verbal. MN is defined as market coordination linked to security institutions and alliances [F2]. The asserted mutation consists of state transformation that reconnects business, political, and military networks [F3]. The article then identifies capital reorganisation as a result of that connection: AUKUS brings “a new business class into the economic-security nexus” [F4]. Together, these relations warrant treating AUKUS’s security institutions as doing political-economic work as well as strategic work.
+
+| Comparison → conclusion | Correspondence warranting the transfer | Defeating difference or qualification | Scoped verdict |
+|---|---|---|---|
+| AUKUS as an ordinary security partnership → AUKUS is also a neoliberal mutation [F1] | MN links market coordination to security institutions and alliances [F2], while state transformation reconnects business, politics, and military networks [F3]. | The article denies that AUKUS is completely geopolitical fetishism and therefore retains its security character [F5]. | The comparison supports an overlapping, both/and classification, not replacement of the security account [F6]. |
+| AUKUS’s security architecture → reorganisation of capital | The article says AUKUS brings a new business class into the economic-security nexus [F4]. | This establishes an asserted institutional function, but not that the function is the sole or dominant cause of AUKUS policy. | The evidence supports political-economic supplementation: security institutions can also organise markets and accumulation [F2], [F4], [F6]. |
+| State-centric analysis versus the MN lens → the former is incomplete [F7] | The specified omission is AUKUS’s engagement with the emerging geoeconomic order [F7]. | Whether AUKUS will push the Indo-Pacific toward conflict is expressly outside the article’s scope [F8]. | The comparison supports an omission claim. It does not refute geopolitical predictions about deterrence or conflict [F7], [F8]. |
+
+The strongest surviving conclusion is therefore the article’s own both/and formulation: AUKUS is “both a security partnership and a mutation of neoliberalism” [F6]. That formulation is better supported than any claim that MN displaces geopolitical explanation. The article’s examples show that financing, regulation, procurement, and start-up support are compatible with the MN mechanism; they do not provide a counterfactual test showing that MN alone caused those measures.
+
+## Continuity and change within neoliberalism
+
+The next comparison places MN against the older Washington Consensus. The older endpoint is identified with market-led policies including fiscal discipline, liberalisation, and deregulation [F9]. The newer formation is characterised by reciprocal movement between economic and security policy: “the simultaneous securitisation of economic policy and economisation of strategic policy” [F10].
+
+That comparison supports mutation rather than complete rupture. The article calls the neoliberal legitimacy crisis only “partial” [F10], and it defines MN more specifically through the “layering of security imperatives on economic institutions and vice versa” [F11]. State intervention alone is therefore not the article’s operative criterion. What matters is the reciprocal reorganisation of economic and security institutions.
+
+| Classification → conclusion | Criterion or correspondence | Boundary that matters | Scoped verdict |
+|---|---|---|---|
+| Washington Consensus neoliberalism versus MN → neoliberalism has mutated [F9], [F10] | The older formation is associated with market-led liberalisation and deregulation [F9]; the newer one fuses economic and security policy [F10]. | The article describes only a partial legitimacy crisis, not neoliberalism’s complete termination [F10]. | The comparison supports continuity-with-transformation more securely than a clean historical break [F9], [F10]. |
+| State intervention versus MN → not every intervention is sufficient for the MN classification | MN requires reciprocal layering of security and economic imperatives [F11]. | The article does not state necessary and sufficient conditions separating MN from every adjacent form of state capitalism or security-led industrial policy. | Reciprocal institutional layering is a usable positive criterion, but the outer category boundary remains unsettled [F11]. |
+| Security partnership versus neoliberal mutation → categories may overlap | The market-security linkage [F2] and reciprocal layering criterion [F11] allow one arrangement to perform both functions. | AUKUS’s security character is expressly retained [F5]. | The text supports overlapping classifications rather than an exclusive dichotomy [F5], [F6], [F11]. |
+
+This classification is coherent as far as it goes: the same rule—reciprocal institutional fusion—is applied to the economic-security relationship. Its limitation is discriminating power. The article supplies salient characteristics of MN, but it does not show which are necessary, which are sufficient, or what observation would classify a comparable security-industrial programme as non-MN.
+
+## The Cold War analogy and its stated limit
+
+The article’s clearest historical analogy compares current AUKUS-linked industrial organisation with Cold War military-economic development in Japan and South Korea. The transferred mechanism is that US military procurement and resources helped build connected industries. In the historical case, South Korea, like Japan during the Korean War, could build industries connected to US offshore procurement and receive a major influx of procurement funds [F12].
+
+That correspondence makes military demand a plausible mechanism for defence-led industrial accumulation in the present. The article does not, however, infer institutional repetition. It expressly states that the current trajectory “only partially resembles” Cold War military-economic institutions [F13]. It then identifies a relevant difference: the present arrangement operates through state developmentalism in the Global North, with security apparatuses assuming the role of industrial-policy pilot agencies [F14].
+
+| Comparison → conclusion | Correspondence | Defeating difference | Scoped verdict |
+|---|---|---|---|
+| Cold War military-economic institutions versus the AUKUS-enabled complex → defence networks can foster industrial accumulation [F12] | Military procurement and US resources supported industries connected to defence demand [F12]. | The current trajectory resembles the Cold War institutions only partially [F13]. | The analogy establishes a candidate mechanism and historical family resemblance, not recurrence of the same institutional model [F12], [F13]. |
+| Earlier procurement-led development versus the current complex → an updated institutional model is needed | Both connect security demand, state resources, and industrial development [F12]. | Present security bodies exercise industrial-policy roles in a Global North developmental setting [F14]. | The difference warrants the article’s “upgraded” model, but the analogy alone cannot establish its scale, durability, or causal weight [F13], [F14]. |
+
+This is the article’s best-controlled analogy because it supplies both the relevant correspondence and the point at which transfer must stop. The Cold War history makes present defence-led accumulation plausible; it does not prove that contemporary outcomes will match earlier industrial transformations.
+
+## Alternative routes and cases beyond formal membership
+
+The article does not reduce AUKUS to a choice between geopolitical rivalry and political economy. Its conclusion lists multiple entry points, including industrial strategy, R&D, civil–military fusion, and venture capital’s inclusion in security apparatuses [F15]. These are alternative mechanisms or sites through which AUKUS may operate, not a causal ranking. The list therefore defeats a single-route interpretation but cannot determine which route matters most.
+
+The article also extends its inventory beyond the three AUKUS members to Japan and South Korea [F16]. These are relevant third cases because they allow the proposed economic-security mechanisms to be examined outside formal membership. Their inclusion does not make them representative of the Indo-Pacific, and formal AUKUS membership must remain distinct from cooperation connected with Pillar II.
+
+| Coverage or alternative issue | Text-supported alternative | Analyst test | Assessment |
+|---|---|---|---|
+| US hegemony as endpoint versus routes through which AUKUS operates | The article lists industrial strategy, R&D, civil–military fusion, and venture capital within security apparatuses [F15]. | Ask whether each route has independent evidence and whether any is shown to have greater causal weight. | The list supports causal plurality but supplies no ranking among the routes [F15]. |
+| Formal members versus participating non-members | The analysis extends to Japan and South Korea [F16]. | Keep formal membership separate from Pillar II engagement; do not infer regional representativeness from two selected cases. | The cases broaden the local inventory but do not establish a general Indo-Pacific pattern [F16]. |
+| Geopolitical explanation versus political-economic explanation | AUKUS retains a security role [F5] while the MN lens identifies market-security relations [F2], [F4]. | Test whether the explanations address different outcomes, coexist, or make conflicting predictions. | The article establishes coexistence more clearly than competition between the explanations [F5], [F6]. |
+
+## What is settled, and what remains open
+
+The comparisons support four qualified conclusions.
+
+1. AUKUS can consistently be classified as both a security partnership and a neoliberal mutation because the article identifies a relevant market-security correspondence and does not erase the security category [F2], [F5], [F6].
+2. State-centric accounts are incomplete insofar as they omit AUKUS’s geoeconomic engagement, but the article does not test or defeat their predictions about regional conflict [F7], [F8].
+3. The Washington Consensus comparison supports continuity with transformation, although the criteria do not sharply distinguish MN from all adjacent forms of state intervention [F9]–[F11].
+4. The Cold War analogy supports a possible procurement-led accumulation mechanism while expressly withholding institutional identity [F12]–[F14].
+
+The exact remaining question is: **What evidence would distinguish AUKUS as a specifically neoliberal mutation from security-driven industrial policy or state capitalism, and how much of the observed institutional development is caused by MN mechanisms rather than merely compatible with them?**
+
+## Scope assessments
+
+For **transfer claims**, the recorded scope covers the Abstract, Introduction, “AUKUS and militarised neoliberalism,” and Conclusion, with an outcome of findings present and reported complete coverage. The governing criterion is that a comparison must support a dependent prediction, explanation, evaluation, or classification. The basis is the article’s use of security-partnership and state-centric accounts to classify AUKUS as a neoliberal mutation and to identify an omission in geopolitical analysis. The assessment remains **unchecked**: its review was incomplete, not negative. Its limits are that this is a one-article inventory and that regional conflict is expressly outside the article’s assessment.
+
+For **correspondence**, the recorded scope covers the Abstract, Introduction, conceptual discussion, state-intervention discussion, and new-business-class section, with findings present and reported complete coverage. The criterion requires a relation relevant to the transferred conclusion rather than shared descriptions. The basis is the article’s mapping of market coordination, state transformation, military demand, financing, and capital accumulation, including the incorporation of a new business class. The assessment is **unchecked**. Its principal limitation is that several present-day examples establish compatibility with the proposed mechanism more clearly than exclusive causation.
+
+For **defeating differences**, the recorded scope covers the conceptual section, the bipartisanship and regulatory-control section, the state-intervention section, and the Conclusion. It reports findings present and complete coverage. The criterion is whether a difference weakens or changes the transferred conclusion. The basis includes preservation of AUKUS’s security role, limitation of the Cold War resemblance, exclusion of the conflict question, and recognition of implementation risks. The assessment is **unchecked**. It is also limited because the article does not systematically compare MN with every competing political-economy framework.
+
+For **criteria and boundaries**, the recorded scope covers “AUKUS and militarised neoliberalism” and the Conclusion, with findings present and reported complete coverage. The criterion requires stated or reconstructable classification rules and attention to overlap or limited boundaries. The basis is the definition of the Washington Consensus through market-led policies and of MN through reciprocal institutional layering. The assessment is **unchecked**. The central limitation is that the article gives salient features but not necessary and sufficient conditions sharply separating MN from adjacent categories.
+
+For **alternatives**, the recorded scope covers the Introduction, the bipartisanship and regulatory-control section, the state-intervention section, and the Conclusion. It reports findings present and complete coverage. The criterion is to retain supplied third cases and alternative routes that test exhaustiveness or representativeness. The basis is the article’s multiple entry points and its extension to Japan and South Korea. The assessment is **unchecked**. The non-member cases are not established as representative of the Indo-Pacific, and the listed routes are not causally ranked.
+
+For the **surviving conclusion**, the recorded scope covers the conceptual section and Conclusion, with findings present and reported complete coverage. The criterion requires a qualified conclusion after relevant differences are retained. The basis is the article’s express both/and classification. The assessment is **unchecked**. Its limitation is that the comparison does not establish MN as the sole or dominant cause of all AUKUS policies and outcomes.
+
+## Findings ledger
+
+- [F1] The article classifies AUKUS as not merely a security partnership but a mutation of neoliberalism. — dim: transfer_claim — anchor: "We argue that AUKUS is not simply a security partnership, but rather constitutes a mutation of neoliberalism emerging in the context of bipartisanship." — from: CHECK.F1 — confidence: high
+- [F2] MN supplies the relational warrant by linking market coordination to security institutions and alliances. — dim: correspondence — anchor: "militarised neoliberalism, which is a new system of market coordination that is now linked to security institutions and specific alliances." — from: CHECK.F2 — confidence: high
+- [F3] The mutation entails state transformation that reconnects business, politics, and military networks. — dim: correspondence — anchor: "The latter entails state transformation which reconnects business, politics, and military networks in new ways." — from: CHECK.F3 — confidence: high
+- [F4] AUKUS is presented as reorganising capital by bringing a new business class into the economic-security nexus. — dim: correspondence — anchor: "AUKUS, while a security partnership, is pivotal in reorganising capital and bringing a new business class into the economic-security nexus." — from: CHECK.F18 — confidence: high
+- [F5] The article retains AUKUS’s security character and rejects the exhaustive claim that it is wholly geopolitical fetishism. — dim: defeating_difference — anchor: "This is not to say that AUKUS as a security partnership is completely geopolitically fetishist." — from: CHECK.F5 — confidence: high
+- [F6] The supported result is that AUKUS is both a security partnership and a neoliberal mutation. — dim: surviving_conclusion — anchor: "AUKUS is distinctive in that it is both a security partnership and a mutation of neoliberalism emerging from the context of geoeconomic conflict and bipartisan politics." — from: CHECK.F6 — confidence: high
+- [F7] The criticism of state-centric analysis is that it omits AUKUS’s engagement with the emerging geoeconomic order. — dim: transfer_claim — anchor: "A common state-centric focus omits how AUKUS, as both a security partnership and a military alliance, engages in the emerging geoeconomic order." — from: CHECK.F7 — confidence: high
+- [F8] The article does not assess whether AUKUS will push the Indo-Pacific toward conflict. — dim: defeating_difference — anchor: "To reiterate, it is beyond the scope of this paper to assess whether AUKUS will tip the Indo-Pacific region towards conflict." — from: CHECK.F8 — confidence: high
+- [F9] The Washington Consensus endpoint is defined through market-led policies including fiscal discipline, liberalisation, and deregulation. — dim: criterion — anchor: "The term ‘Washington Consensus’ has for decades been used in reference to market-led neoliberal policies, such as fiscal discipline, trade and interest-rate liberalisation, and deregulation" — from: CHECK.F9 — confidence: high
+- [F10] The new formation fuses economic and security policy, while the article qualifies neoliberalism’s legitimacy crisis as partial. — dim: criterion — anchor: "being characterised by ‘the simultaneous securitisation of economic policy and economisation of strategic policy’" — anchor-b: "‘a partial crisis of the legitimacy of neoliberalism’." — doc-b: doc — from: CHECK.F10 — confidence: high
+- [F11] MN is further defined by reciprocal layering of security imperatives and economic institutions. — dim: criterion — anchor: "MN entails the gradual process of state transformation which is marked by the layering of security imperatives on economic institutions and vice versa." — from: CHECK.F11 — confidence: high
+- [F12] The Cold War analogy identifies US military procurement as a mechanism supporting connected industries in South Korea and Japan. — dim: correspondence — anchor: "South Korea, as with Japan during the Korean War, had the opportunity to build industries connected to US OSP, opening the door for a massive influx of OSP dollars" — from: CHECK.F12 — confidence: medium
+- [F13] The article expressly limits the present–Cold War comparison to partial resemblance. — dim: defeating_difference — anchor: "However, it is important to recognise that the current development trajectory only partially resembles the Cold War military-economic institutions." — from: CHECK.F13 — confidence: high
+- [F14] The present arrangement differs through Global North state developmentalism and security bodies’ industrial-policy role. — dim: defeating_difference — anchor: "security apparatuses have increasingly assigned themselves the role of a pilot agency controlling industrial policy" — anchor-b: "which operates in the context of state developmentalism in the Global North." — doc-b: doc — from: CHECK.F14 — confidence: high
+- [F15] The article supplies multiple entry points rather than a single route into AUKUS’s operation. — dim: alternatives — anchor: "the entry points have been varied, ranging from a catch-all industrial strategy, R&D activities, fusion of civil–military policies, the inclusion of venture capital in broader security apparatuses" — from: CHECK.F15 — confidence: high
+- [F16] The analysis extends beyond AUKUS members to Japan and South Korea. — dim: alternatives — anchor: "Our analysis is not only limited to AUKUS member states, but also extends to Japan and South Korea." — from: CHECK.F16 — confidence: high
+
+### Counter-evidence
+
+No passage directly contradicts the retained findings within the article’s stated scope. The strongest internal qualifications are:
+
+- The security interpretation is not erased: “This is not to say that AUKUS as a security partnership is completely geopolitically fetishist.” [F5]
+- The Cold War resemblance is expressly partial: “the current development trajectory only partially resembles the Cold War military-economic institutions.” [F13]
+- The conflict question remains outside the inquiry: “it is beyond the scope of this paper to assess whether AUKUS will tip the Indo-Pacific region towards conflict.” [F8]
+
+### Open questions
+
+- What necessary or sufficient evidence would distinguish MN from security-driven industrial policy, developmentalism, or state capitalism?
+- How much causal weight belongs to MN mechanisms rather than geopolitical rivalry, conventional alliance management, or other political-economic mechanisms?
+- Are Japan and South Korea representative extensions of the proposed pattern, or only illustrative non-member cases?
+- Which of the listed entry points—industrial strategy, R&D, civil–military fusion, or venture capital—has the greatest explanatory importance?
+- Do announced institutional and funding arrangements produce durable industrial outcomes?
+
+### Tables
+
+- comparison_audit: rows F1, F2, F3, F4, F5, F6, F7, F8, F12, F13, F14
+- criteria_and_alternatives: rows F2, F5, F6, F9, F10, F11, F15, F16
+
+## Scope assessment
+
+These are reader/reviewer assessments of the stated sections, not proofs of absence elsewhere.
+
+- Scope doc / transfer_claim: findings reported; not supported by a completed scope review. Inspected sections: Abstract, Introduction, AUKUS and militarised neoliberalism, Conclusion. Reported coverage: complete. Criterion: A comparison must support a dependent prediction, explanation, evaluation, or classification. Basis: The article uses comparisons with security-partnership and state-centric accounts to classify AUKUS as a mutation of neoliberalism and to argue that geopolitical analysis is incomplete.
+  Limits: This is a local inventory of one article, not a test across works.; The article excludes assessment of whether AUKUS will increase regional conflict.
+
+- Scope doc / correspondence: findings reported; not supported by a completed scope review. Inspected sections: Abstract, Introduction, AUKUS and militarised neoliberalism, State interventions and politico-business coalitions, The emergence of a new business class. Reported coverage: complete. Criterion: The source and target must share a relation relevant to the transferred conclusion, not merely descriptive similarities. Basis: The article maps market coordination, state transformation, military demand, financing, and capital accumulation across its compared formations, including the added new business class correspondence.
+  Limits: Several present-day examples demonstrate compatibility with the proposed mechanism more clearly than exclusive causation.
+
+- Scope doc / defeating_difference: findings reported; not supported by a completed scope review. Inspected sections: AUKUS and militarised neoliberalism, AUKUS, bipartisanship, and the regulatory control, State interventions and politico-business coalitions, Conclusion. Reported coverage: complete. Criterion: A stated difference is relevant when it weakens or changes the conclusion transferred by a comparison. Basis: The article preserves AUKUS's security role, limits the Cold War resemblance, brackets conflict assessment, and records implementation risks.
+  Limits: The article does not systematically compare the MN explanation with every competing political-economy framework.
+
+- Scope doc / criterion: findings reported; not supported by a completed scope review. Inspected sections: AUKUS and militarised neoliberalism, Conclusion. Reported coverage: complete. Criterion: A classification or scale requires stated or reconstructable criteria and attention to overlap or limited boundaries. Basis: The article defines the Washington Consensus by market-led policies and MN by reciprocal layering; the narrowed F9 remains supported.
+  Limits: The article provides salient features but does not state necessary and sufficient conditions that sharply distinguish MN from adjacent categories.
+
+- Scope doc / alternatives: findings reported; not supported by a completed scope review. Inspected sections: Introduction, AUKUS, bipartisanship, and the regulatory control, State interventions and politico-business coalitions, Conclusion. Reported coverage: complete. Criterion: The audit retains supplied third cases and alternative routes that test exhaustiveness or representativeness. Basis: The article supplies multiple entry points into AUKUS and extends its cases to Japan and South Korea rather than maintaining a binary geopolitics-versus-economics account.
+  Limits: The non-member cases are not shown to be representative of the wider Indo-Pacific.; The listed entry points are not causally ranked.
+
+- Scope doc / surviving_conclusion: findings reported; not supported by a completed scope review. Inspected sections: AUKUS and militarised neoliberalism, Conclusion. Reported coverage: complete. Criterion: After retaining relevant differences, the audit states the qualified conclusion that still follows and identifies any needed repair. Basis: The text itself supports the qualified both/and conclusion that AUKUS is a security partnership and a mutation of neoliberalism.
+  Limits: The comparison does not establish that MN is the sole or dominant cause of all AUKUS policies and outcomes.

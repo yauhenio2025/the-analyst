@@ -1,0 +1,1301 @@
+{
+  "status": "complete",
+  "job": {
+    "id": "S3",
+    "engine": "narrative_form_perspective",
+    "papers": [
+      "subsea"
+    ],
+    "condition": "checked"
+  },
+  "output_sha256": "850c64ea84e99ab1bf9d4c99562d785fd8f90902cd92def75a15761f2deef7f9",
+  "seconds": 222.48606872558594,
+  "process": {
+    "engine": "narrative_form_perspective",
+    "process": "dvs",
+    "cost_usd": 0.3557,
+    "input_tokens": 112381,
+    "output_tokens": 25331,
+    "seconds": 222.5,
+    "final_model": "openrouter/openai/gpt-5.6-sol",
+    "final_wall": {
+      "rows": 11,
+      "with_anchor": 11,
+      "verified": 11,
+      "trimmed": 6,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 16,
+      "verified_anchors": 16,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "checked",
+        "scope": "retained_ledger",
+        "missing_rejected_ids": [],
+        "missing_other_ids": []
+      },
+      "synthesis_contract": {
+        "failed_ids": [],
+        "incomplete_cross_document_ids": [],
+        "duplicate_ids": [],
+        "missing_cited": [],
+        "unknown_dimensions": [],
+        "missing_ledger": false,
+        "parse_error": "",
+        "incomplete_invocation": false
+      },
+      "synthesis_repair_attempts": [
+        {
+          "failed_ids": [
+            "F1",
+            "F8",
+            "F13",
+            "F14"
+          ],
+          "incomplete_cross_document_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [
+            "F1",
+            "F8",
+            "F13",
+            "F14"
+          ],
+          "unknown_dimensions": [],
+          "missing_ledger": false,
+          "parse_error": "",
+          "incomplete_invocation": false
+        }
+      ],
+      "rows_without_dimension": 0,
+      "check_ruling_coverage": {
+        "original_count": 12,
+        "explicitly_ruled_count": 12,
+        "missing_or_unruled_ids": [],
+        "unexpected_nonadded_ids": [],
+        "invalid_original_status_ids": [],
+        "duplicate_original_ids": [],
+        "duplicate_ruling_ids": [],
+        "coverage_complete": true
+      },
+      "scope_outcomes": [
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "sequence",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "Abstract",
+            "1 | Reconciling Market Dynamics and State Strategy in Global Networks",
+            "2 | Non-Alignment and Re-Alignment of Privately Owned Networks",
+            "3 | Case Studies and Methods",
+            "4 | Case 1: The US–Chinese Conflict Over SeaMeWe-6",
+            "5 | Case 2: France's Nationalization of Alcatel Submarine Networks",
+            "6 | Conclusion"
+          ],
+          "coverage": "complete",
+          "criterion": "Identify the opening situation, changes, turning points, results, and whether arcs are local or sustained.",
+          "basis": "The article contains an article-wide explanatory progression and dated local case sequences with identifiable reversals.",
+          "limitations": [
+            "Academic exposition contains two local case narratives rather than a single continuous narrative."
+          ],
+          "finding_ids": [
+            "F1",
+            "F3",
+            "F4",
+            "V.F1"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "All cited findings are anchored verbatim; the added row captures the argumentative function of case ordering.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "Findings in this scope lost anchor evidence; this does not establish absence",
+              "One or more declared finding references lack retained verified evidence"
+            ]
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "perspective",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "3 | Case Studies and Methods",
+            "4 | Case 1: The US–Chinese Conflict Over SeaMeWe-6",
+            "5 | Case 2: France's Nationalization of Alcatel Submarine Networks",
+            "6 | Conclusion"
+          ],
+          "coverage": "complete",
+          "criterion": "Separate analytical narration, attributed quotation, and represented experience, and identify the evidence governing access.",
+          "basis": "The article uses an analytical narrator, attributed quotations, institutionally identified interviews and documents, and a late shift to first-person plural.",
+          "limitations": [
+            "Interview testimony is generally summarized rather than reproduced at length.",
+            "The analysis provides little access to individual lived experience."
+          ],
+          "finding_ids": [
+            "F6",
+            "F7",
+            "V.F2"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "All cited findings are anchored verbatim; the added row notes the collective ‘we’ in the conclusion.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "Findings in this scope lost anchor evidence; this does not establish absence",
+              "One or more declared finding references lack retained verified evidence"
+            ]
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "time",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "2 | Non-Alignment and Re-Alignment of Privately Owned Networks",
+            "4 | Case 1: The US–Chinese Conflict Over SeaMeWe-6",
+            "5 | Case 2: France's Nationalization of Alcatel Submarine Networks",
+            "6 | Conclusion"
+          ],
+          "coverage": "complete",
+          "criterion": "Distinguish presentation order from narrated dates and scales, preserving retrospective and conditional temporal qualifications.",
+          "basis": "The text combines a decades-long infrastructure history with dated case chronologies and a conditional future outlook.",
+          "limitations": [
+            "Chronological succession does not by itself establish causation."
+          ],
+          "finding_ids": [
+            "F2",
+            "F5"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "Both findings are anchored verbatim and reflect the text’s temporal structure.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "register",
+          "outcome": "findings_present",
+          "sections_inspected": [
+            "1 | Reconciling Market Dynamics and State Strategy in Global Networks",
+            "2 | Non-Alignment and Re-Alignment of Privately Owned Networks",
+            "6 | Conclusion",
+            "Policy implications"
+          ],
+          "coverage": "complete",
+          "criterion": "Identify passage-specific wording changes and their local argumentative functions.",
+          "basis": "The article moves among technical definition, historical explanation, case narration, conditional policy prescription, and imperative advice.",
+          "limitations": [
+            "No claim is made about whether these register changes were deliberate."
+          ],
+          "finding_ids": [
+            "F8",
+            "F9",
+            "F15"
+          ],
+          "review_state": "supported_within_stated_scope",
+          "review_basis": "All cited findings are anchored verbatim; the added row captures the distinctive imperative register of the policy implications box.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": []
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "devices",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "4 | Case 1: The US–Chinese Conflict Over SeaMeWe-6",
+            "5 | Case 2: France's Nationalization of Alcatel Submarine Networks",
+            "6 | Conclusion"
+          ],
+          "coverage": "complete",
+          "criterion": "Identify concrete devices such as contrast, repetition, anticipation, or roles only where the passages show them.",
+          "basis": "The conclusion uses explicit parallel contrast between decoupling and duplication to revise a simpler fragmentation account.",
+          "limitations": [
+            "The contrast organizes interpretation but does not prove the eventual structure of the network."
+          ],
+          "finding_ids": [
+            "F10"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "The finding is anchored verbatim and correctly identifies the contrast device.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "Findings in this scope lost anchor evidence; this does not establish absence",
+              "One or more declared finding references lack retained verified evidence"
+            ]
+          }
+        },
+        {
+          "document_keys": [
+            "doc"
+          ],
+          "dimension_key": "closure",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "6 | Conclusion",
+            "Policy implications"
+          ],
+          "coverage": "complete",
+          "criterion": "Compare the ending's settlement with its qualifications and identify any exact remaining question.",
+          "basis": "The conclusion affirms uneven and partial realignment while ending with a comparative research task and conditional policy implications.",
+          "limitations": [
+            "The future effects of duplication and public investment remain prospective."
+          ],
+          "finding_ids": [
+            "F11",
+            "F12"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "Both findings are anchored verbatim and correctly reflect the qualified closure and open research agenda.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "doc": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "Findings in this scope lost anchor evidence; this does not establish absence",
+              "One or more declared finding references lack retained verified evidence"
+            ]
+          }
+        }
+      ]
+    },
+    "calls": [
+      {
+        "step": "read",
+        "kind": "synthesize",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/openai/gpt-5.6-sol",
+        "model_used": "openrouter/openai/gpt-5.6-sol",
+        "input_tokens": 21169,
+        "output_tokens": 4206,
+        "duration_ms": 49110,
+        "cost_usd": 0.0844,
+        "retries": 0,
+        "wall": {
+          "rows": 12,
+          "with_anchor": 12,
+          "verified": 8,
+          "trimmed": 5,
+          "anchor_rate": 0.667,
+          "failed_ids": [
+            "F1",
+            "F6",
+            "F10",
+            "F11"
+          ],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 19,
+          "verified_anchors": 15,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "has_ledger": true,
+          "prose_chars": 8306,
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "sequence",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Abstract",
+                "1 | Reconciling Market Dynamics and State Strategy in Global Networks",
+                "2 | Non-Alignment and Re-Alignment of Privately Owned Networks",
+                "3 | Case Studies and Methods",
+                "4 | Case 1: The US–Chinese Conflict Over SeaMeWe-6",
+                "5 | Case 2: France's Nationalization of Alcatel Submarine Networks",
+                "6 | Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "Identify the opening situation, changes, turning points, results, and whether arcs are local or sustained.",
+              "basis": "The article contains an article-wide explanatory progression and dated local case sequences with identifiable reversals.",
+              "limitations": [
+                "Academic exposition contains two local case narratives rather than a single continuous narrative."
+              ],
+              "finding_ids": [
+                "F1",
+                "F3",
+                "F4"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Findings in this scope lost anchor evidence; this does not establish absence",
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "perspective",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "3 | Case Studies and Methods",
+                "4 | Case 1: The US–Chinese Conflict Over SeaMeWe-6",
+                "Endnotes"
+              ],
+              "coverage": "complete",
+              "criterion": "Separate analytical narration, attributed quotation, and represented experience, and identify the evidence governing access.",
+              "basis": "The article uses an analytical narrator, attributed quotations, and institutionally identified interviews and documents.",
+              "limitations": [
+                "Interview testimony is generally summarized rather than reproduced at length.",
+                "The analysis provides little access to individual lived experience."
+              ],
+              "finding_ids": [
+                "F6",
+                "F7"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Findings in this scope lost anchor evidence; this does not establish absence",
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "time",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "2 | Non-Alignment and Re-Alignment of Privately Owned Networks",
+                "4 | Case 1: The US–Chinese Conflict Over SeaMeWe-6",
+                "5 | Case 2: France's Nationalization of Alcatel Submarine Networks",
+                "6 | Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "Distinguish presentation order from narrated dates and scales, preserving retrospective and conditional temporal qualifications.",
+              "basis": "The text combines a decades-long infrastructure history with dated case chronologies and a conditional future outlook.",
+              "limitations": [
+                "Chronological succession does not by itself establish causation."
+              ],
+              "finding_ids": [
+                "F2",
+                "F5"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "register",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "1 | Reconciling Market Dynamics and State Strategy in Global Networks",
+                "2 | Non-Alignment and Re-Alignment of Privately Owned Networks",
+                "6 | Conclusion",
+                "Policy implications"
+              ],
+              "coverage": "complete",
+              "criterion": "Identify passage-specific wording changes and their local argumentative functions.",
+              "basis": "The article moves among technical definition, historical explanation, case narration, and conditional policy prescription.",
+              "limitations": [
+                "No claim is made about whether these register changes were deliberate."
+              ],
+              "finding_ids": [
+                "F8",
+                "F9"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "devices",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "4 | Case 1: The US–Chinese Conflict Over SeaMeWe-6",
+                "5 | Case 2: France's Nationalization of Alcatel Submarine Networks",
+                "6 | Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "Identify concrete devices such as contrast, repetition, anticipation, or roles only where the passages show them.",
+              "basis": "The conclusion uses explicit parallel contrast between decoupling and duplication to revise a simpler fragmentation account.",
+              "limitations": [
+                "The contrast organizes interpretation but does not prove the eventual structure of the network."
+              ],
+              "finding_ids": [
+                "F10"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Findings in this scope lost anchor evidence; this does not establish absence",
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "closure",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "6 | Conclusion",
+                "Policy implications"
+              ],
+              "coverage": "complete",
+              "criterion": "Compare the ending's settlement with its qualifications and identify any exact remaining question.",
+              "basis": "The conclusion affirms uneven and partial realignment while ending with a comparative research task and conditional policy implications.",
+              "limitations": [
+                "The future effects of duplication and public investment remain prospective."
+              ],
+              "finding_ids": [
+                "F11",
+                "F12"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Findings in this scope lost anchor evidence; this does not establish absence",
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 19478
+      },
+      {
+        "step": "check",
+        "kind": "verify",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+        "model_used": "openrouter/deepseek/deepseek-v4-pro",
+        "input_tokens": 26532,
+        "output_tokens": 12248,
+        "duration_ms": 78281,
+        "cost_usd": 0.0532,
+        "retries": 0,
+        "wall": {
+          "rows": 15,
+          "with_anchor": 15,
+          "verified": 11,
+          "trimmed": 2,
+          "anchor_rate": 0.733,
+          "failed_ids": [
+            "F1",
+            "F6",
+            "F10",
+            "F11"
+          ],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 22,
+          "verified_anchors": 18,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "checked",
+            "scope": "retained_ledger",
+            "missing_rejected_ids": [],
+            "missing_other_ids": []
+          },
+          "check_in": 12,
+          "check_confirmed": 12,
+          "check_weakened": 0,
+          "check_rejected": 0,
+          "check_added": 3,
+          "check_added_dropped": 0,
+          "check_carried": 0,
+          "check_unverified": 4,
+          "check_ruling_coverage": {
+            "original_count": 12,
+            "explicitly_ruled_count": 12,
+            "missing_or_unruled_ids": [],
+            "unexpected_nonadded_ids": [],
+            "invalid_original_status_ids": [],
+            "duplicate_original_ids": [],
+            "duplicate_ruling_ids": [],
+            "coverage_complete": true
+          },
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "sequence",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Abstract",
+                "1 | Reconciling Market Dynamics and State Strategy in Global Networks",
+                "2 | Non-Alignment and Re-Alignment of Privately Owned Networks",
+                "3 | Case Studies and Methods",
+                "4 | Case 1: The US–Chinese Conflict Over SeaMeWe-6",
+                "5 | Case 2: France's Nationalization of Alcatel Submarine Networks",
+                "6 | Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "Identify the opening situation, changes, turning points, results, and whether arcs are local or sustained.",
+              "basis": "The article contains an article-wide explanatory progression and dated local case sequences with identifiable reversals.",
+              "limitations": [
+                "Academic exposition contains two local case narratives rather than a single continuous narrative."
+              ],
+              "finding_ids": [
+                "F1",
+                "F3",
+                "F4",
+                "V.F1"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "All cited findings are anchored verbatim; the added row captures the argumentative function of case ordering.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Findings in this scope lost anchor evidence; this does not establish absence",
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "perspective",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "3 | Case Studies and Methods",
+                "4 | Case 1: The US–Chinese Conflict Over SeaMeWe-6",
+                "5 | Case 2: France's Nationalization of Alcatel Submarine Networks",
+                "6 | Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "Separate analytical narration, attributed quotation, and represented experience, and identify the evidence governing access.",
+              "basis": "The article uses an analytical narrator, attributed quotations, institutionally identified interviews and documents, and a late shift to first-person plural.",
+              "limitations": [
+                "Interview testimony is generally summarized rather than reproduced at length.",
+                "The analysis provides little access to individual lived experience."
+              ],
+              "finding_ids": [
+                "F6",
+                "F7",
+                "V.F2"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "All cited findings are anchored verbatim; the added row notes the collective ‘we’ in the conclusion.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Findings in this scope lost anchor evidence; this does not establish absence",
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "time",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "2 | Non-Alignment and Re-Alignment of Privately Owned Networks",
+                "4 | Case 1: The US–Chinese Conflict Over SeaMeWe-6",
+                "5 | Case 2: France's Nationalization of Alcatel Submarine Networks",
+                "6 | Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "Distinguish presentation order from narrated dates and scales, preserving retrospective and conditional temporal qualifications.",
+              "basis": "The text combines a decades-long infrastructure history with dated case chronologies and a conditional future outlook.",
+              "limitations": [
+                "Chronological succession does not by itself establish causation."
+              ],
+              "finding_ids": [
+                "F2",
+                "F5"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "Both findings are anchored verbatim and reflect the text’s temporal structure.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "register",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "1 | Reconciling Market Dynamics and State Strategy in Global Networks",
+                "2 | Non-Alignment and Re-Alignment of Privately Owned Networks",
+                "6 | Conclusion",
+                "Policy implications"
+              ],
+              "coverage": "complete",
+              "criterion": "Identify passage-specific wording changes and their local argumentative functions.",
+              "basis": "The article moves among technical definition, historical explanation, case narration, conditional policy prescription, and imperative advice.",
+              "limitations": [
+                "No claim is made about whether these register changes were deliberate."
+              ],
+              "finding_ids": [
+                "F8",
+                "F9",
+                "F15"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "All cited findings are anchored verbatim; the added row captures the distinctive imperative register of the policy implications box.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "devices",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "4 | Case 1: The US–Chinese Conflict Over SeaMeWe-6",
+                "5 | Case 2: France's Nationalization of Alcatel Submarine Networks",
+                "6 | Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "Identify concrete devices such as contrast, repetition, anticipation, or roles only where the passages show them.",
+              "basis": "The conclusion uses explicit parallel contrast between decoupling and duplication to revise a simpler fragmentation account.",
+              "limitations": [
+                "The contrast organizes interpretation but does not prove the eventual structure of the network."
+              ],
+              "finding_ids": [
+                "F10"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "The finding is anchored verbatim and correctly identifies the contrast device.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Findings in this scope lost anchor evidence; this does not establish absence",
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "closure",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "6 | Conclusion",
+                "Policy implications"
+              ],
+              "coverage": "complete",
+              "criterion": "Compare the ending's settlement with its qualifications and identify any exact remaining question.",
+              "basis": "The conclusion affirms uneven and partial realignment while ending with a comparative research task and conditional policy implications.",
+              "limitations": [
+                "The future effects of duplication and public investment remain prospective."
+              ],
+              "finding_ids": [
+                "F11",
+                "F12"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "Both findings are anchored verbatim and correctly reflect the qualified closure and open research agenda.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Findings in this scope lost anchor evidence; this does not establish absence",
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 19962
+      },
+      {
+        "step": "reconcile_checked",
+        "kind": "synthesize",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/openai/gpt-5.6-sol",
+        "model_used": "openrouter/openai/gpt-5.6-sol",
+        "input_tokens": 30067,
+        "output_tokens": 4749,
+        "duration_ms": 50223,
+        "cost_usd": 0.1076,
+        "retries": 0,
+        "wall": {
+          "rows": 15,
+          "with_anchor": 15,
+          "verified": 11,
+          "trimmed": 6,
+          "anchor_rate": 0.733,
+          "failed_ids": [
+            "F1",
+            "F8",
+            "F13",
+            "F14"
+          ],
+          "duplicate_ids": [],
+          "missing_cited": [
+            "F1",
+            "F8",
+            "F13",
+            "F14"
+          ],
+          "anchors": 23,
+          "verified_anchors": 19,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "checked",
+            "scope": "retained_ledger",
+            "missing_rejected_ids": [],
+            "missing_other_ids": [
+              "F1",
+              "F8",
+              "F13",
+              "F14"
+            ]
+          },
+          "synthesis_contract": {
+            "failed_ids": [
+              "F1",
+              "F8",
+              "F13",
+              "F14"
+            ],
+            "incomplete_cross_document_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [
+              "F1",
+              "F8",
+              "F13",
+              "F14"
+            ],
+            "unknown_dimensions": [],
+            "missing_ledger": false,
+            "parse_error": "",
+            "incomplete_invocation": false
+          },
+          "synthesis_repair_attempts": [],
+          "rows_without_dimension": 0
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 22721
+      },
+      {
+        "step": "reconcile_checked",
+        "kind": "synthesize",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/openai/gpt-5.6-sol",
+        "model_used": "openrouter/openai/gpt-5.6-sol",
+        "input_tokens": 34613,
+        "output_tokens": 4128,
+        "duration_ms": 44787,
+        "cost_usd": 0.1105,
+        "retries": 0,
+        "wall": {
+          "rows": 11,
+          "with_anchor": 11,
+          "verified": 11,
+          "trimmed": 6,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 16,
+          "verified_anchors": 16,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "checked",
+            "scope": "retained_ledger",
+            "missing_rejected_ids": [],
+            "missing_other_ids": []
+          },
+          "synthesis_contract": {
+            "failed_ids": [],
+            "incomplete_cross_document_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [],
+            "unknown_dimensions": [],
+            "missing_ledger": false,
+            "parse_error": "",
+            "incomplete_invocation": false
+          },
+          "synthesis_repair_attempts": [
+            {
+              "failed_ids": [
+                "F1",
+                "F8",
+                "F13",
+                "F14"
+              ],
+              "incomplete_cross_document_ids": [],
+              "duplicate_ids": [],
+              "missing_cited": [
+                "F1",
+                "F8",
+                "F13",
+                "F14"
+              ],
+              "unknown_dimensions": [],
+              "missing_ledger": false,
+              "parse_error": "",
+              "incomplete_invocation": false
+            }
+          ],
+          "rows_without_dimension": 0,
+          "check_ruling_coverage": {
+            "original_count": 12,
+            "explicitly_ruled_count": 12,
+            "missing_or_unruled_ids": [],
+            "unexpected_nonadded_ids": [],
+            "invalid_original_status_ids": [],
+            "duplicate_original_ids": [],
+            "duplicate_ruling_ids": [],
+            "coverage_complete": true
+          },
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "sequence",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Abstract",
+                "1 | Reconciling Market Dynamics and State Strategy in Global Networks",
+                "2 | Non-Alignment and Re-Alignment of Privately Owned Networks",
+                "3 | Case Studies and Methods",
+                "4 | Case 1: The US–Chinese Conflict Over SeaMeWe-6",
+                "5 | Case 2: France's Nationalization of Alcatel Submarine Networks",
+                "6 | Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "Identify the opening situation, changes, turning points, results, and whether arcs are local or sustained.",
+              "basis": "The article contains an article-wide explanatory progression and dated local case sequences with identifiable reversals.",
+              "limitations": [
+                "Academic exposition contains two local case narratives rather than a single continuous narrative."
+              ],
+              "finding_ids": [
+                "F1",
+                "F3",
+                "F4",
+                "V.F1"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "All cited findings are anchored verbatim; the added row captures the argumentative function of case ordering.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Findings in this scope lost anchor evidence; this does not establish absence",
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "perspective",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "3 | Case Studies and Methods",
+                "4 | Case 1: The US–Chinese Conflict Over SeaMeWe-6",
+                "5 | Case 2: France's Nationalization of Alcatel Submarine Networks",
+                "6 | Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "Separate analytical narration, attributed quotation, and represented experience, and identify the evidence governing access.",
+              "basis": "The article uses an analytical narrator, attributed quotations, institutionally identified interviews and documents, and a late shift to first-person plural.",
+              "limitations": [
+                "Interview testimony is generally summarized rather than reproduced at length.",
+                "The analysis provides little access to individual lived experience."
+              ],
+              "finding_ids": [
+                "F6",
+                "F7",
+                "V.F2"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "All cited findings are anchored verbatim; the added row notes the collective ‘we’ in the conclusion.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Findings in this scope lost anchor evidence; this does not establish absence",
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "time",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "2 | Non-Alignment and Re-Alignment of Privately Owned Networks",
+                "4 | Case 1: The US–Chinese Conflict Over SeaMeWe-6",
+                "5 | Case 2: France's Nationalization of Alcatel Submarine Networks",
+                "6 | Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "Distinguish presentation order from narrated dates and scales, preserving retrospective and conditional temporal qualifications.",
+              "basis": "The text combines a decades-long infrastructure history with dated case chronologies and a conditional future outlook.",
+              "limitations": [
+                "Chronological succession does not by itself establish causation."
+              ],
+              "finding_ids": [
+                "F2",
+                "F5"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "Both findings are anchored verbatim and reflect the text’s temporal structure.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "register",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "1 | Reconciling Market Dynamics and State Strategy in Global Networks",
+                "2 | Non-Alignment and Re-Alignment of Privately Owned Networks",
+                "6 | Conclusion",
+                "Policy implications"
+              ],
+              "coverage": "complete",
+              "criterion": "Identify passage-specific wording changes and their local argumentative functions.",
+              "basis": "The article moves among technical definition, historical explanation, case narration, conditional policy prescription, and imperative advice.",
+              "limitations": [
+                "No claim is made about whether these register changes were deliberate."
+              ],
+              "finding_ids": [
+                "F8",
+                "F9",
+                "F15"
+              ],
+              "review_state": "supported_within_stated_scope",
+              "review_basis": "All cited findings are anchored verbatim; the added row captures the distinctive imperative register of the policy implications box.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "devices",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "4 | Case 1: The US–Chinese Conflict Over SeaMeWe-6",
+                "5 | Case 2: France's Nationalization of Alcatel Submarine Networks",
+                "6 | Conclusion"
+              ],
+              "coverage": "complete",
+              "criterion": "Identify concrete devices such as contrast, repetition, anticipation, or roles only where the passages show them.",
+              "basis": "The conclusion uses explicit parallel contrast between decoupling and duplication to revise a simpler fragmentation account.",
+              "limitations": [
+                "The contrast organizes interpretation but does not prove the eventual structure of the network."
+              ],
+              "finding_ids": [
+                "F10"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "The finding is anchored verbatim and correctly identifies the contrast device.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Findings in this scope lost anchor evidence; this does not establish absence",
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "doc"
+              ],
+              "dimension_key": "closure",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "6 | Conclusion",
+                "Policy implications"
+              ],
+              "coverage": "complete",
+              "criterion": "Compare the ending's settlement with its qualifications and identify any exact remaining question.",
+              "basis": "The conclusion affirms uneven and partial realignment while ending with a comparative research task and conditional policy implications.",
+              "limitations": [
+                "The future effects of duplication and public investment remain prospective."
+              ],
+              "finding_ids": [
+                "F11",
+                "F12"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "Both findings are anchored verbatim and correctly reflect the qualified closure and open research agenda.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "doc": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Findings in this scope lost anchor evidence; this does not establish absence",
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 19496
+      }
+    ]
+  },
+  "audit": {
+    "wall": {
+      "rows": 11,
+      "with_anchor": 11,
+      "verified": 11,
+      "trimmed": 6,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 16,
+      "verified_anchors": 16,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "rows": 11,
+    "raw_anchors": 16,
+    "raw_exact": 3,
+    "unknown_dimensions": [],
+    "missing_table_ids": [],
+    "missing_prose_ids": []
+  }
+}

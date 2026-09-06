@@ -1,0 +1,3383 @@
+{
+  "status": "complete",
+  "job": {
+    "id": "G2",
+    "engine": "compare_concept_trajectories",
+    "papers": [
+      "technique",
+      "rationality"
+    ],
+    "condition": "dvs"
+  },
+  "output_sha256": "8399e5b924e0e51736efef5e7996ada2f6a2d28dee68450716be09a4d87c18e2",
+  "seconds": 1016.0670325756073,
+  "process": {
+    "engine": "compare_concept_trajectories",
+    "process": "dvs",
+    "cost_usd": 0.4322,
+    "input_tokens": 372968,
+    "output_tokens": 74690,
+    "seconds": 1014.2,
+    "final_model": "openrouter/openai/gpt-5.6-sol",
+    "final_wall": {
+      "rows": 23,
+      "with_anchor": 23,
+      "verified": 23,
+      "trimmed": 0,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 32,
+      "verified_anchors": 32,
+      "cross_document_rows": 1,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "checked",
+        "scope": "retained_ledger",
+        "missing_rejected_ids": [],
+        "missing_other_ids": []
+      },
+      "synthesis_contract": {
+        "failed_ids": [],
+        "incomplete_cross_document_ids": [],
+        "duplicate_ids": [],
+        "missing_cited": [],
+        "unknown_dimensions": [],
+        "missing_ledger": false,
+        "parse_error": "",
+        "incomplete_invocation": false
+      },
+      "synthesis_repair_attempts": [],
+      "rows_without_dimension": 0,
+      "has_ledger": true,
+      "prose_chars": 25214,
+      "missing_lineage": [],
+      "check_ruling_coverage": {
+        "coverage_complete": true,
+        "original_count": 77,
+        "explicitly_ruled_count": 77,
+        "reviews": [
+          {
+            "step": "verify",
+            "document": "technique",
+            "original_count": 38,
+            "explicitly_ruled_count": 38,
+            "missing_or_unruled_ids": [],
+            "unexpected_nonadded_ids": [],
+            "invalid_original_status_ids": [],
+            "duplicate_original_ids": [],
+            "duplicate_ruling_ids": [],
+            "coverage_complete": true
+          },
+          {
+            "step": "verify",
+            "document": "rationality",
+            "original_count": 38,
+            "explicitly_ruled_count": 38,
+            "missing_or_unruled_ids": [],
+            "unexpected_nonadded_ids": [],
+            "invalid_original_status_ids": [],
+            "duplicate_original_ids": [],
+            "duplicate_ruling_ids": [],
+            "coverage_complete": true
+          },
+          {
+            "step": "verify",
+            "document": "",
+            "original_count": 1,
+            "explicitly_ruled_count": 1,
+            "missing_or_unruled_ids": [],
+            "unexpected_nonadded_ids": [],
+            "invalid_original_status_ids": [],
+            "duplicate_original_ids": [],
+            "duplicate_ruling_ids": [],
+            "coverage_complete": true
+          }
+        ]
+      },
+      "scope_outcomes": [
+        {
+          "document_keys": [
+            "technique"
+          ],
+          "dimension_key": "local_meanings",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "From the opening discussion of zoon logon echon and homo faber through “The meaning of technique,” “The western conception of technique,” “Technique, creation and the constitution of the human world,” “The neutrality of technique,” “Technique and social organisation,” and “Technique and politics”"
+          ],
+          "coverage": "complete",
+          "criterion": "A relevant instance requires an explicit definition, distinction, redefinition, or materially different local use of a concept in the supplied text, with its object and boundary preserved.",
+          "basis": "All retained findings were verified against the source; truncated anchors were repaired with verbatim spans that carry the asserted predicates.",
+          "limitations": [],
+          "finding_ids": [
+            "[D1.DOC1.F1]",
+            "[D1.DOC1.F2]",
+            "[D1.DOC1.F3]",
+            "[D1.DOC1.F4]",
+            "[D1.DOC1.F5]",
+            "[D1.DOC1.F6]",
+            "[V.DOC1.F1]"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "Each finding’s anchor(s) now fully support the claimed meaning, boundary, and separation; source coverage includes the mapped sections.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "technique": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "One or more declared finding references lack retained verified evidence",
+              "Findings in this scope lost anchor evidence; this does not establish absence"
+            ]
+          }
+        },
+        {
+          "document_keys": [
+            "technique"
+          ],
+          "dimension_key": "argumentative_roles",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "From the opening discussion of language and tools through “Technique in post-revolutionary society”"
+          ],
+          "coverage": "complete",
+          "criterion": "A finding must identify what claim the concept supports, the premise or mechanism connecting it to that claim, and the resulting argumentative role, anchored in a verbatim passage.",
+          "basis": "After repair, each row cites the specific sentences that carry the inferential role: parallelism of technique/language, refutation of Marxist determinism, substitution of dimension for instrument/cause, and class‑struggle shaping of technical application.",
+          "limitations": [
+            "One original row (D3.DOC1.F6, a method row) was rejected; its absence does not affect argumentative‑roles coverage."
+          ],
+          "finding_ids": [
+            "[D2.DOC1.F2]",
+            "[D2.DOC1.F3]",
+            "[D2.DOC1.F4]",
+            "[D2.DOC1.F5]",
+            "[D2.DOC1.F6]",
+            "[V.DOC1.F2]"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "All retained rows now have complete anchors showing the premise‑to‑claim movement.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "technique": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "Findings lost anchor evidence; this does not establish absence",
+              "One or more declared finding references lack retained verified evidence"
+            ]
+          }
+        },
+        {
+          "document_keys": [
+            "technique"
+          ],
+          "dimension_key": "method_and_evidence",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "Opening discussion of technique, language and anthropological evidence",
+            "The Meaning of Technique",
+            "The western conception of technique",
+            "Marx",
+            "The critics of technique",
+            "Technique, creation and the constitution of the human world",
+            "Technique and social organisation",
+            "Technique and economy",
+            "Technique and politics"
+          ],
+          "coverage": "complete",
+          "criterion": "The text explicitly derives, illustrates, applies or assumes a use of the concept through an identifiable analytical procedure and supporting passage.",
+          "basis": "Confirmed derivations (D3.DOC1.F1, F2), illustration (F3 repaired), assumption (F4), historical application (F5 repaired), conceptual derivation of ensembles (F7 repaired); one row rejected because its anchor was only a heading.",
+          "limitations": [
+            "Rejected row D3.DOC1.F6 does not establish absence; the remaining rows sufficiently document the methodological moves."
+          ],
+          "finding_ids": [
+            "[D3.DOC1.F1]",
+            "[D3.DOC1.F2]",
+            "[D3.DOC1.F3]",
+            "[D3.DOC1.F4]",
+            "[D3.DOC1.F5]",
+            "[D3.DOC1.F7]"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "Retained rows contain verbatim passages that perform the claimed derivations, illustrations, assumptions, and applications.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "technique": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "One or more declared finding references lack retained verified evidence"
+            ]
+          }
+        },
+        {
+          "document_keys": [
+            "technique"
+          ],
+          "dimension_key": "metaphor",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "Opening discussion of technique, language and technology",
+            "The meaning of technique",
+            "Technique, creation and the constitution of the human world",
+            "Technique and politics"
+          ],
+          "coverage": "complete",
+          "criterion": "Identify transferred relations carried by governing metaphors and mark where the text limits metaphorical use or makes a literal claim.",
+          "basis": "All seven metaphor rows are supported; two were repaired to include the full metaphorical mapping and the text’s own rejection/qualification.",
+          "limitations": [],
+          "finding_ids": [
+            "[D4.DOC1.F1]",
+            "[D4.DOC1.F2]",
+            "[D4.DOC1.F3]",
+            "[D4.DOC1.F4]",
+            "[D4.DOC1.F5]",
+            "[D4.DOC1.F6]",
+            "[D4.DOC1.F7]"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "Every metaphor finding rests on a verbatim passage that explicitly presents the mapping or marks its limits.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "technique": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "One or more declared finding references lack retained verified evidence"
+            ]
+          }
+        },
+        {
+          "document_keys": [
+            "technique"
+          ],
+          "dimension_key": "framing",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "Opening discussion of contemporary concern about technique",
+            "The western conception of technique",
+            "Technique, creation and the constitution of the human world",
+            "Technique and social organisation",
+            "Technique and politics"
+          ],
+          "coverage": "complete",
+          "criterion": "A finding qualifies when the text states the problem, scope, force, continuity, novelty or revision of technique, including explicit framing operators and relation claims.",
+          "basis": "Framing rows were verified; two were repaired to include the full antithesis and the evasion claim; the added row captures the explicit project‑statement.",
+          "limitations": [],
+          "finding_ids": [
+            "[D5.DOC1.F1]",
+            "[D5.DOC1.F2]",
+            "[D5.DOC1.F3]",
+            "[D5.DOC1.F4]",
+            "[D5.DOC1.F5]",
+            "[D5.DOC1.F6]",
+            "[D5.DOC1.F7]",
+            "[V.DOC1.F3]"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "The framing claims are directly anchored in the source’s own statements of problem, scope, force, and revision.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "technique": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "One or more declared finding references lack retained verified evidence"
+            ]
+          }
+        },
+        {
+          "document_keys": [
+            "technique"
+          ],
+          "dimension_key": "local_limits",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "Opening discussion of zoon logon echon, homo faber, anthropology, language and tools",
+            "The meaning of technique",
+            "The western conception of technique",
+            "Marx",
+            "The neutrality of technique",
+            "Technique and social organisation",
+            "The Marxist thesis",
+            "Technique and social life",
+            "Technique and economy",
+            "Technique and politics"
+          ],
+          "coverage": "complete",
+          "criterion": "A passage must qualify a proposed stable meaning or interpretation, or state which relevant sections were inspected for an alternative term or use and what remains outside that inspection.",
+          "basis": "Existing rows were verified and repaired; two additional qualifications were added to capture the limits of creation ex nihilo and the ambiguity of Greek creation.",
+          "limitations": [],
+          "finding_ids": [
+            "[D6.DOC1.F1]",
+            "[D6.DOC1.F2]",
+            "[D6.DOC1.F3]",
+            "[D6.DOC1.F4]",
+            "[D6.DOC1.F5]",
+            "[D6.DOC1.F6]",
+            "[V.DOC1.F4]",
+            "[V.DOC1.F5]"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "Each qualification is backed by a verbatim passage showing the explicit limit on the concept’s meaning, scope, or determinacy.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "technique": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "One or more declared finding references lack retained verified evidence"
+            ]
+          }
+        },
+        {
+          "document_keys": [
+            "rationality"
+          ],
+          "dimension_key": "local_meanings",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "The \"Rationality\" of Capitalism",
+            "Specificity and Social-Historical Relativity of the Capitalist Institution",
+            "The Theoretical Ideology of the Capitalist Economy",
+            "The Effective Reality of the Capitalist Economy",
+            "Relative Efficiency, Flexibility, and Resistance of Capitalism"
+          ],
+          "coverage": "complete",
+          "criterion": "Inventory definitions and actual uses of shared or salient terms, preserving distinct senses, negations, and local scope.",
+          "basis": "The source explicitly defines and distinguishes rationality, instrumental rationality, economic rationality, rationalization, rational mastery, homo oeconomicus, and capitalist rationality, with anchored uses across the inspected sections.",
+          "limitations": [
+            "Only one supplied work was available, so cross-work persistence or change cannot be assessed."
+          ],
+          "finding_ids": [
+            "[D1.DOC2.F1]",
+            "[D1.DOC2.F2]",
+            "[D1.DOC2.F3]",
+            "[D1.DOC2.F4]",
+            "[D1.DOC2.F5]",
+            "[D1.DOC2.F6]",
+            "[D1.DOC2.F7]",
+            "[D1.DOC2.F8]"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "All eight extracted findings are confirmed against the source; each is anchored in a verbatim passage that unambiguously supports the claimed sense and boundary.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "rationality": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "One or more declared finding references lack retained verified evidence"
+            ]
+          }
+        },
+        {
+          "document_keys": [
+            "rationality"
+          ],
+          "dimension_key": "argumentative_roles",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "The \"Rationality\" of Capitalism",
+            "Specificity and Social-Historical Relativity of the Capitalist Institution",
+            "The Theoretical Ideology of the Capitalist Economy",
+            "The Effective Reality of the Capitalist Economy",
+            "Relative Efficiency, Flexibility, and Resistance of Capitalism"
+          ],
+          "coverage": "complete",
+          "criterion": "A finding must identify what claim a concept supports, the premise or mechanism connecting the concept to that claim, and the text's argumentative architecture, anchored in a verbatim supporting clause.",
+          "basis": "Five anchored instances identify the premises, mechanisms, and results through which rationality, immanent critique, rational mastery, separate imputation, and efficiency function in the text's argument.",
+          "limitations": [
+            "Only one supplied document was inspected, so no cross-work development can be established."
+          ],
+          "finding_ids": [
+            "[D2.DOC2.F1]",
+            "[D2.DOC2.F2]",
+            "[D2.DOC2.F3]",
+            "[D2.DOC2.F4]",
+            "[D2.DOC2.F5]"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "All five findings are confirmed; each anchor and its context show the indicated concept playing the stated argumentative role for the specified claim.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "rationality": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "One or more declared finding references lack retained verified evidence"
+            ]
+          }
+        },
+        {
+          "document_keys": [
+            "rationality"
+          ],
+          "dimension_key": "method_and_evidence",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "Introduction",
+            "Specificity and Social-Historical Relativity of the Capitalist Institution",
+            "The Theoretical Ideology of the Capitalist Economy",
+            "The Effective Reality of the Capitalist Economy",
+            "Relative Efficiency, Flexibility, and Resistance of Capitalism"
+          ],
+          "coverage": "complete",
+          "criterion": "The text must record an actual procedure or analytical move establishing, deriving, illustrating, applying, or assuming a concept, with a supporting passage.",
+          "basis": "The inspected sections contain explicit statements of immanent critique, conceptual derivation, illustrative examples, theory-reality comparison, and methodological assumptions concerning rationality and economic rationality.",
+          "limitations": [
+            "The assessment concerns the supplied source text and does not independently verify the external works or empirical studies it cites."
+          ],
+          "finding_ids": [
+            "[D3.DOC2.F1]",
+            "[D3.DOC2.F2]",
+            "[D3.DOC2.F3]",
+            "[D3.DOC2.F4]",
+            "[D3.DOC2.F5]",
+            "[D3.DOC2.F6]"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "All six findings are confirmed; each anchor explicitly describes a derivation, application, illustration, or assumption that the text makes regarding the listed concept.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "rationality": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "One or more declared finding references lack retained verified evidence"
+            ]
+          }
+        },
+        {
+          "document_keys": [
+            "rationality"
+          ],
+          "dimension_key": "metaphor",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "Opening discussion of capitalism's rationality",
+            "Specificity and Social-Historical Relativity of the Capitalist Institution",
+            "The Theoretical Ideology of the Capitalist Economy",
+            "The Effective Reality of the Capitalist Economy",
+            "Relative Efficiency, Flexibility, and Resistance of Capitalism"
+          ],
+          "coverage": "complete",
+          "criterion": "Identify transferred relations and textual limits or literal uses of metaphor in the supplied work",
+          "basis": "The inspected text contains multiple explicit metaphors and figurative mappings, including \"planetary casino,\" \"circle of the institution,\" \"epiphany of reason,\" \"rational mastery,\" \"cupids and nymphs,\" \"jungle,\" and \"fossils,\" with textual evidence for their scope and limits.",
+          "limitations": [
+            "The assessment concerns metaphorical and literal use in this supplied document only.",
+            "Some terms, especially \"rational mastery,\" combine figurative language with literal claims about institutional power."
+          ],
+          "finding_ids": [
+            "[D4.DOC2.F1]",
+            "[D4.DOC2.F2]",
+            "[D4.DOC2.F3]",
+            "[D4.DOC2.F4]",
+            "[D4.DOC2.F5]",
+            "[D4.DOC2.F6]",
+            "[D4.DOC2.F7]",
+            "[D4.DOC2.F8]"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "All eight findings are confirmed; each metaphor is explicitly present in the source and the mapping is supported by the surrounding textual explanation.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "rationality": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "One or more declared finding references lack retained verified evidence"
+            ]
+          }
+        },
+        {
+          "document_keys": [
+            "rationality"
+          ],
+          "dimension_key": "framing",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "Introduction",
+            "Specificity and Social-Historical Relativity of the Capitalist Institution",
+            "The Theoretical Ideology of the Capitalist Economy",
+            "The Effective Reality of the Capitalist Economy",
+            "Relative Efficiency, Flexibility, and Resistance of Capitalism"
+          ],
+          "coverage": "complete",
+          "criterion": "Statements that define the problem a concept is made to answer, specify its scope, or state continuity, novelty, or revision claims with their force and qualifications",
+          "basis": "The source explicitly frames rationality as capitalism’s mode of legitimation, specifies an immanent theoretical and empirical critique, qualifies the concept’s historical scope, and states claims about continuity and revision in capitalism’s later phase.",
+          "limitations": [
+            "The assessment concerns the supplied source only and does not establish a trajectory across multiple works."
+          ],
+          "finding_ids": [
+            "[D5.DOC2.F1]",
+            "[D5.DOC2.F2]",
+            "[D5.DOC2.F3]",
+            "[D5.DOC2.F4]",
+            "[D5.DOC2.F5]",
+            "[D5.DOC2.F6]",
+            "[D5.DOC2.F7]",
+            "[D5.DOC2.F8]"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "All eight findings are confirmed; each identifies a framing statement, its force, and its problem or scope, with precise anchors.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "rationality": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "One or more declared finding references lack retained verified evidence"
+            ]
+          }
+        },
+        {
+          "document_keys": [
+            "rationality"
+          ],
+          "dimension_key": "local_limits",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "Introduction",
+            "Specificity and Social-Historical Relativity of the Capitalist Institution",
+            "The Theoretical Ideology of the Capitalist Economy",
+            "The Effective Reality of the Capitalist Economy",
+            "Relative Efficiency, Flexibility, and Resistance of Capitalism"
+          ],
+          "coverage": "complete",
+          "criterion": "A passage must qualify a proposed stable meaning or interpretation, or state which relevant sections were inspected for an alternative term or use and what remains outside that inspection.",
+          "basis": "Three anchored passages qualify the scope of capitalist rationality, rationalization, and economic laws.",
+          "limitations": [
+            "Only the supplied rationality document was inspected; no comparison with other works is possible.",
+            "The findings concern qualifications within this text and do not establish global absence of other uses."
+          ],
+          "finding_ids": [
+            "[D6.DOC2.F1]",
+            "[D6.DOC2.F2]",
+            "[D6.DOC2.F3]"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "All three findings are confirmed; the anchors explicitly limit or qualify the respective concepts, and the inspected sections were correctly identified.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "rationality": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "One or more declared finding references lack retained verified evidence"
+            ]
+          }
+        },
+        {
+          "document_keys": [
+            "technique",
+            "rationality"
+          ],
+          "dimension_key": "concept_trajectories",
+          "outcome": "inconclusive",
+          "sections_inspected": [
+            "Technique: “The neutrality of technique” section around “In this respect, technique does appear as value-free…”",
+            "Rationality: passage around “This rationality that is confined to means…” and discussion of instrumental rationality"
+          ],
+          "coverage": "partial",
+          "criterion": "A relevant cross-document instance requires the same or explicitly aligned concept, object and argumentative role to be supported by anchored passages in at least two supplied works; development requires dates or uptake evidence.",
+          "basis": "Anchored passages in both works support an unordered comparison between efficiency-based technical neutrality and means‑oriented instrumental rationality. The comparison identifies a shared qualification while preserving differences in object and scope.",
+          "limitations": [
+            "No dates or uptake evidence were supplied, so no ordered development can be claimed.",
+            "The comparison is limited to the inspected passages and does not establish corpus‑wide absence or persistence.",
+            "The finding captures only one aligned qualification; other possible alignments remain unexplored."
+          ],
+          "finding_ids": [
+            "[X7.F1]"
+          ],
+          "review_state": "unchecked",
+          "review_basis": "Inspected the source passages surrounding the quoted anchors in both works. The technique anchor shows technique appears value‑free only when considered in and for itself, and the rationality anchor declares instrumental rationality confined to means has no value. Together they support the finding’s claim of a shared restriction to means‑oriented evaluation and denial of its adequacy for social ends.",
+          "evidence_state": {
+            "scope_identity_validated": true,
+            "invocation_partial": false,
+            "invocation_stop_reason": "stop",
+            "invocation_error": null,
+            "source_access": {
+              "technique": "provided",
+              "rationality": "provided"
+            },
+            "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+            "blocking_issues": [
+              "One or more declared finding references lack retained verified evidence"
+            ]
+          }
+        }
+      ],
+      "synthesis_evidence": {
+        "partial": false,
+        "stop_reason": "stop",
+        "error": null,
+        "ledger_parse_error": null
+      }
+    },
+    "calls": [
+      {
+        "step": "extract",
+        "kind": "extract",
+        "dimension": "local_meanings",
+        "doc": "technique",
+        "model_requested": "openrouter/openai/gpt-5.6-luna",
+        "model_used": "openrouter/openai/gpt-5.6-luna",
+        "input_tokens": 15447,
+        "output_tokens": 1573,
+        "duration_ms": 12369,
+        "cost_usd": 0.005,
+        "retries": 0,
+        "wall": {
+          "rows": 6,
+          "with_anchor": 6,
+          "verified": 6,
+          "trimmed": 4,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 6,
+          "verified_anchors": 6,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "after_reanchor": {
+            "rows": 6,
+            "with_anchor": 6,
+            "verified": 6,
+            "trimmed": 4,
+            "anchor_rate": 1.0,
+            "failed_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [],
+            "anchors": 6,
+            "verified_anchors": 6,
+            "cross_document_rows": 0,
+            "incomplete_cross_document_ids": [],
+            "invalid_anchor_ids": [],
+            "citation_check": {
+              "status": "not_checked"
+            }
+          },
+          "scope_failed_rows": [],
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "technique"
+              ],
+              "dimension_key": "local_meanings",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "From the opening discussion of zoon logon echon and homo faber through “The meaning of technique,” “The western conception of technique,” “Technique, creation and the constitution of the human world,” “The neutrality of technique,” “Technique and social organisation,” and “Technique and politics”"
+              ],
+              "coverage": "complete",
+              "criterion": "A relevant instance requires an explicit definition, distinction, redefinition, or materially different local use of a concept in the supplied text, with its object and boundary preserved.",
+              "basis": "The source explicitly distinguishes Greek techne from contemporary technique, defines technique as absolute creation and as a constitutive social dimension, qualifies its neutrality, and rejects strict technical determination of social organisation.",
+              "limitations": [
+                "The assessment concerns the supplied source text only.",
+                "Some quoted formulations are discussed through cited figures and traditions, but the findings report how the text presents those formulations rather than independently verifying the cited works."
+              ],
+              "finding_ids": [
+                "[D1.DOC1.F1]",
+                "[D1.DOC1.F2]",
+                "[D1.DOC1.F3]",
+                "[D1.DOC1.F4]",
+                "[D1.DOC1.F5]",
+                "[D1.DOC1.F6]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "technique": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 7088
+      },
+      {
+        "step": "extract",
+        "kind": "extract",
+        "dimension": "local_meanings",
+        "doc": "rationality",
+        "model_requested": "openrouter/openai/gpt-5.6-luna",
+        "model_used": "openrouter/openai/gpt-5.6-luna",
+        "input_tokens": 33173,
+        "output_tokens": 2694,
+        "duration_ms": 21073,
+        "cost_usd": 0.0099,
+        "retries": 0,
+        "wall": {
+          "reanchor_receipts": [
+            {
+              "content": "## Findings ledger\n- [D1.DOC2.F3] Capitalist ideology reduces rationality to “economic” rationality by identifying welfare with an economic maximum or optimum measured through maximization and minimization — dim: local_meanings — term: economic rationality — sense: a quantitative orientation toward maximizing product and minimizing costs — boundary: the regime itself determines what counts as product and cost and how each is evaluated — anchor: \"In this way, rationality is reduced, directly or indirectly, to \\\"economic\\\" rationality, and the latter is defined in a purely quantitative way as maximization/minimization—maximization of a \\\"product\\\" and minimization of \\\"costs.\\\" It is obviously the regime itself that decides upon what a \\\"product\\\" is—and how this \\\"product\\\" will be evaluated—just as it decides upon what the \\\"costs\\\" will be and how much they will be.\" — doc: rationality — confidence: high\n- [D1.DOC2.F5] “Rationalization” is also locally characterized as the capitalist extension of the tendency toward mastery through calculability and maximization/minimization — dim: local_meanings — term: rationalization — sense: a socially expansive push toward mastery using quantitative extremization — boundary: it extends beyond production into consumption, education, law, and political life, and is not merely an instrumental feature of production — anchor: \"It is not only in production that such mastery is to be achieved but also, very much so, in consumption, and not only in the economy but in education, law, political life, and so on.\" — doc: rationality — confidence: high\n- [D1.DOC2.F6] “Rational mastery” names capitalism’s core social imaginary signification: the unlimited extension of mastery through rationalization — dim: local_meanings — term: rational mastery — sense: an unlimited extension of mastery across social spheres through capitalist rationalization — boundary: the phrase is placed in quotation marks because its capitalist content is historically specific rather than universally valid — anchor: \"we can characterize the core social imaginary signification of capitalism as the push toward the unlimited extension of \\\"rational mastery.\\\" Below I shall explain why I use the quotation marks.\" — doc: rationality — confidence: high\n- [D1.DOC2.F8] In the text’s later empirical use, capitalist “rationality” denotes a restricted pursuit of increased production and reduced costs rather than a socially comprehensive or optimal reason — dim: local_meanings — term: capitalist rationality — sense: the regime’s practical orientation toward increasing a specified kind of production and reducing narrowly defined costs — boundary: environmental destruction, damaged human lives, and other social harms are excluded from the calculation — anchor: \"Capitalism is the regime that aims, by every means, at increasing production—a certain kind of production, let us not forget—and, by every means, at reducing \\\"costs\\\"—costs, let us not forget either, that are defined very restrictively: neither the destruction of the environment, nor the flattening of human lives\" — doc: rationality — confidence: high",
+              "partial": false,
+              "stop_reason": "stop",
+              "error": null
+            }
+          ],
+          "rows": 8,
+          "with_anchor": 4,
+          "verified": 4,
+          "trimmed": 2,
+          "anchor_rate": 0.5,
+          "failed_ids": [
+            "D1.DOC2.F3",
+            "D1.DOC2.F5",
+            "D1.DOC2.F6",
+            "D1.DOC2.F8"
+          ],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 8,
+          "verified_anchors": 4,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [
+            "D1.DOC2.F3",
+            "D1.DOC2.F5",
+            "D1.DOC2.F6",
+            "D1.DOC2.F8"
+          ],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "after_reanchor": {
+            "rows": 8,
+            "with_anchor": 8,
+            "verified": 8,
+            "trimmed": 4,
+            "anchor_rate": 1.0,
+            "failed_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [],
+            "anchors": 8,
+            "verified_anchors": 8,
+            "cross_document_rows": 0,
+            "incomplete_cross_document_ids": [],
+            "invalid_anchor_ids": [],
+            "citation_check": {
+              "status": "not_checked"
+            }
+          },
+          "scope_failed_rows": [],
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "rationality"
+              ],
+              "dimension_key": "local_meanings",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "The \"Rationality\" of Capitalism",
+                "Specificity and Social-Historical Relativity of the Capitalist Institution",
+                "The Theoretical Ideology of the Capitalist Economy",
+                "The Effective Reality of the Capitalist Economy",
+                "Relative Efficiency, Flexibility, and Resistance of Capitalism"
+              ],
+              "coverage": "complete",
+              "criterion": "Inventory definitions and actual uses of shared or salient terms, preserving distinct senses, negations, and local scope.",
+              "basis": "The source explicitly defines and distinguishes rationality, instrumental rationality, economic rationality, rationalization, rational mastery, homo oeconomicus, and capitalist rationality, with anchored uses across the inspected sections.",
+              "limitations": [
+                "Only one supplied work was available, so cross-work persistence or change cannot be assessed."
+              ],
+              "finding_ids": [
+                "[D1.DOC2.F1]",
+                "[D1.DOC2.F2]",
+                "[D1.DOC2.F3]",
+                "[D1.DOC2.F4]",
+                "[D1.DOC2.F5]",
+                "[D1.DOC2.F6]",
+                "[D1.DOC2.F7]",
+                "[D1.DOC2.F8]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "rationality": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 4,
+        "dropped_ids": [],
+        "chars": 7810
+      },
+      {
+        "step": "extract",
+        "kind": "extract",
+        "dimension": "argumentative_roles",
+        "doc": "technique",
+        "model_requested": "openrouter/openai/gpt-5.6-luna",
+        "model_used": "openrouter/openai/gpt-5.6-luna",
+        "input_tokens": 31069,
+        "output_tokens": 1339,
+        "duration_ms": 14812,
+        "cost_usd": 0.0078,
+        "retries": 0,
+        "wall": {
+          "reanchor_receipts": [
+            {
+              "content": "## Findings ledger\n- [D2.DOC1.F1] Technique is presented as a creative mode of making that actualises possible forms through human agency rather than merely imitating nature — dim: argumentative_roles — term: technique — role: premise, mechanism, result — supports: technique constitutes an autonomous dimension of human creation because it brings into being what nature cannot accomplish — anchor: \"Technique creates ‘what nature is not capable of accomplishing’.\" — doc: technique — confidence: high — trimmed-anchor: yes",
+              "partial": false,
+              "stop_reason": "stop",
+              "error": null
+            }
+          ],
+          "rows": 6,
+          "with_anchor": 6,
+          "verified": 5,
+          "trimmed": 0,
+          "anchor_rate": 0.833,
+          "failed_ids": [
+            "D2.DOC1.F1"
+          ],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 6,
+          "verified_anchors": 5,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "after_reanchor": {
+            "rows": 5,
+            "with_anchor": 5,
+            "verified": 5,
+            "trimmed": 0,
+            "anchor_rate": 1.0,
+            "failed_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [],
+            "anchors": 5,
+            "verified_anchors": 5,
+            "cross_document_rows": 0,
+            "incomplete_cross_document_ids": [],
+            "invalid_anchor_ids": [],
+            "citation_check": {
+              "status": "not_checked"
+            }
+          },
+          "scope_failed_rows": [
+            {
+              "id": "D2.DOC1.F1",
+              "dimension": "argumentative_roles"
+            }
+          ],
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "technique"
+              ],
+              "dimension_key": "argumentative_roles",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "From the opening discussion of language and tools through “Technique in post-revolutionary society”"
+              ],
+              "coverage": "complete",
+              "criterion": "A finding must identify what claim the concept supports, the premise or mechanism connecting it to that claim, and the resulting argumentative role, anchored in a verbatim passage.",
+              "basis": "The supplied document was inspected throughout and contains multiple explicit claims about technique’s premises, mechanisms and consequences, including its relation to language, creation, social organisation, capitalism and politics.",
+              "limitations": [
+                "This outcome concerns argumentative roles within the supplied document and does not establish development across a broader corpus."
+              ],
+              "finding_ids": [
+                "[D2.DOC1.F1]",
+                "[D2.DOC1.F2]",
+                "[D2.DOC1.F3]",
+                "[D2.DOC1.F4]",
+                "[D2.DOC1.F5]",
+                "[D2.DOC1.F6]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "technique": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Findings lost anchor evidence; this does not establish absence",
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [
+          "D2.DOC1.F1"
+        ],
+        "chars": 5410
+      },
+      {
+        "step": "extract",
+        "kind": "extract",
+        "dimension": "argumentative_roles",
+        "doc": "rationality",
+        "model_requested": "openrouter/openai/gpt-5.6-luna",
+        "model_used": "openrouter/openai/gpt-5.6-luna",
+        "input_tokens": 16201,
+        "output_tokens": 1200,
+        "duration_ms": 12176,
+        "cost_usd": 0.0047,
+        "retries": 0,
+        "wall": {
+          "rows": 5,
+          "with_anchor": 5,
+          "verified": 5,
+          "trimmed": 3,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 5,
+          "verified_anchors": 5,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "after_reanchor": {
+            "rows": 5,
+            "with_anchor": 5,
+            "verified": 5,
+            "trimmed": 3,
+            "anchor_rate": 1.0,
+            "failed_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [],
+            "anchors": 5,
+            "verified_anchors": 5,
+            "cross_document_rows": 0,
+            "incomplete_cross_document_ids": [],
+            "invalid_anchor_ids": [],
+            "citation_check": {
+              "status": "not_checked"
+            }
+          },
+          "scope_failed_rows": [],
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "rationality"
+              ],
+              "dimension_key": "argumentative_roles",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "The \"Rationality\" of Capitalism",
+                "Specificity and Social-Historical Relativity of the Capitalist Institution",
+                "The Theoretical Ideology of the Capitalist Economy",
+                "The Effective Reality of the Capitalist Economy",
+                "Relative Efficiency, Flexibility, and Resistance of Capitalism"
+              ],
+              "coverage": "complete",
+              "criterion": "A finding must identify what claim a concept supports, the premise or mechanism connecting the concept to that claim, and the text's argumentative architecture, anchored in a verbatim supporting clause.",
+              "basis": "Five anchored instances identify the premises, mechanisms, and results through which rationality, immanent critique, rational mastery, separate imputation, and efficiency function in the text's argument.",
+              "limitations": [
+                "Only one supplied document was inspected, so no cross-work development can be established."
+              ],
+              "finding_ids": [
+                "[D2.DOC2.F1]",
+                "[D2.DOC2.F2]",
+                "[D2.DOC2.F3]",
+                "[D2.DOC2.F4]",
+                "[D2.DOC2.F5]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "rationality": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 5668
+      },
+      {
+        "step": "extract",
+        "kind": "extract",
+        "dimension": "method_and_evidence",
+        "doc": "technique",
+        "model_requested": "openrouter/openai/gpt-5.6-luna",
+        "model_used": "openrouter/openai/gpt-5.6-luna",
+        "input_tokens": 15407,
+        "output_tokens": 1453,
+        "duration_ms": 12813,
+        "cost_usd": 0.0048,
+        "retries": 0,
+        "wall": {
+          "rows": 7,
+          "with_anchor": 7,
+          "verified": 7,
+          "trimmed": 2,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 7,
+          "verified_anchors": 7,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "after_reanchor": {
+            "rows": 7,
+            "with_anchor": 7,
+            "verified": 7,
+            "trimmed": 2,
+            "anchor_rate": 1.0,
+            "failed_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [],
+            "anchors": 7,
+            "verified_anchors": 7,
+            "cross_document_rows": 0,
+            "incomplete_cross_document_ids": [],
+            "invalid_anchor_ids": [],
+            "citation_check": {
+              "status": "not_checked"
+            }
+          },
+          "scope_failed_rows": [],
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "technique"
+              ],
+              "dimension_key": "method_and_evidence",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Opening discussion of technique, language and anthropological evidence",
+                "The Meaning of Technique",
+                "The western conception of technique",
+                "Marx",
+                "The critics of technique",
+                "Technique, creation and the constitution of the human world",
+                "Technique and social organisation",
+                "Technique and economy",
+                "Technique and politics"
+              ],
+              "coverage": "complete",
+              "criterion": "The text explicitly derives, illustrates, applies or assumes a use of the concept through an identifiable analytical procedure and supporting passage.",
+              "basis": "The supplied document contains explicit derivations from Greek terminology and philosophical texts, concrete illustrations of technical creation, stated theoretical presuppositions, and comparative applications to social organisation, capitalism and historical cases.",
+              "limitations": [
+                "The assessment is limited to the supplied source text.",
+                "Some methodological claims are conceptual or interpretive rather than empirically tested."
+              ],
+              "finding_ids": [
+                "[D3.DOC1.F1]",
+                "[D3.DOC1.F2]",
+                "[D3.DOC1.F3]",
+                "[D3.DOC1.F4]",
+                "[D3.DOC1.F5]",
+                "[D3.DOC1.F6]",
+                "[D3.DOC1.F7]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "technique": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 5980
+      },
+      {
+        "step": "extract",
+        "kind": "extract",
+        "dimension": "method_and_evidence",
+        "doc": "rationality",
+        "model_requested": "openrouter/openai/gpt-5.6-luna",
+        "model_used": "openrouter/openai/gpt-5.6-luna",
+        "input_tokens": 16178,
+        "output_tokens": 1187,
+        "duration_ms": 11469,
+        "cost_usd": 0.0047,
+        "retries": 0,
+        "wall": {
+          "rows": 6,
+          "with_anchor": 6,
+          "verified": 6,
+          "trimmed": 3,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 6,
+          "verified_anchors": 6,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "after_reanchor": {
+            "rows": 6,
+            "with_anchor": 6,
+            "verified": 6,
+            "trimmed": 3,
+            "anchor_rate": 1.0,
+            "failed_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [],
+            "anchors": 6,
+            "verified_anchors": 6,
+            "cross_document_rows": 0,
+            "incomplete_cross_document_ids": [],
+            "invalid_anchor_ids": [],
+            "citation_check": {
+              "status": "not_checked"
+            }
+          },
+          "scope_failed_rows": [],
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "rationality"
+              ],
+              "dimension_key": "method_and_evidence",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Introduction",
+                "Specificity and Social-Historical Relativity of the Capitalist Institution",
+                "The Theoretical Ideology of the Capitalist Economy",
+                "The Effective Reality of the Capitalist Economy",
+                "Relative Efficiency, Flexibility, and Resistance of Capitalism"
+              ],
+              "coverage": "complete",
+              "criterion": "The text must record an actual procedure or analytical move establishing, deriving, illustrating, applying, or assuming a concept, with a supporting passage.",
+              "basis": "The inspected sections contain explicit statements of immanent critique, conceptual derivation, illustrative examples, theory-reality comparison, and methodological assumptions concerning rationality and economic rationality.",
+              "limitations": [
+                "The assessment concerns the supplied source text and does not independently verify the external works or empirical studies it cites."
+              ],
+              "finding_ids": [
+                "[D3.DOC2.F1]",
+                "[D3.DOC2.F2]",
+                "[D3.DOC2.F3]",
+                "[D3.DOC2.F4]",
+                "[D3.DOC2.F5]",
+                "[D3.DOC2.F6]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "rationality": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 5342
+      },
+      {
+        "step": "extract",
+        "kind": "extract",
+        "dimension": "metaphor",
+        "doc": "technique",
+        "model_requested": "openrouter/openai/gpt-5.6-luna",
+        "model_used": "openrouter/openai/gpt-5.6-luna",
+        "input_tokens": 15399,
+        "output_tokens": 1412,
+        "duration_ms": 14254,
+        "cost_usd": 0.0048,
+        "retries": 0,
+        "wall": {
+          "rows": 7,
+          "with_anchor": 7,
+          "verified": 7,
+          "trimmed": 2,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 7,
+          "verified_anchors": 7,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "after_reanchor": {
+            "rows": 7,
+            "with_anchor": 7,
+            "verified": 7,
+            "trimmed": 2,
+            "anchor_rate": 1.0,
+            "failed_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [],
+            "anchors": 7,
+            "verified_anchors": 7,
+            "cross_document_rows": 0,
+            "incomplete_cross_document_ids": [],
+            "invalid_anchor_ids": [],
+            "citation_check": {
+              "status": "not_checked"
+            }
+          },
+          "scope_failed_rows": [],
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "technique"
+              ],
+              "dimension_key": "metaphor",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Opening discussion of technique, language and technology",
+                "The meaning of technique",
+                "Technique, creation and the constitution of the human world",
+                "Technique and politics"
+              ],
+              "coverage": "complete",
+              "criterion": "Identify transferred relations carried by governing metaphors and mark where the text limits metaphorical use or makes a literal claim.",
+              "basis": "The inspected passage contains explicit metaphors concerning screens, enclosure, excavation, books and texts, topological density, realms, and absolute creation, together with qualifications concerning their scope.",
+              "limitations": [
+                "The assessment concerns the supplied extract only."
+              ],
+              "finding_ids": [
+                "[D4.DOC1.F1]",
+                "[D4.DOC1.F2]",
+                "[D4.DOC1.F3]",
+                "[D4.DOC1.F4]",
+                "[D4.DOC1.F5]",
+                "[D4.DOC1.F6]",
+                "[D4.DOC1.F7]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "technique": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 5912
+      },
+      {
+        "step": "extract",
+        "kind": "extract",
+        "dimension": "metaphor",
+        "doc": "rationality",
+        "model_requested": "openrouter/openai/gpt-5.6-luna",
+        "model_used": "openrouter/openai/gpt-5.6-luna",
+        "input_tokens": 16170,
+        "output_tokens": 1562,
+        "duration_ms": 19625,
+        "cost_usd": 0.0051,
+        "retries": 0,
+        "wall": {
+          "rows": 8,
+          "with_anchor": 8,
+          "verified": 8,
+          "trimmed": 0,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 8,
+          "verified_anchors": 8,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "after_reanchor": {
+            "rows": 8,
+            "with_anchor": 8,
+            "verified": 8,
+            "trimmed": 0,
+            "anchor_rate": 1.0,
+            "failed_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [],
+            "anchors": 8,
+            "verified_anchors": 8,
+            "cross_document_rows": 0,
+            "incomplete_cross_document_ids": [],
+            "invalid_anchor_ids": [],
+            "citation_check": {
+              "status": "not_checked"
+            }
+          },
+          "scope_failed_rows": [],
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "rationality"
+              ],
+              "dimension_key": "metaphor",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Opening discussion of capitalism's rationality",
+                "Specificity and Social-Historical Relativity of the Capitalist Institution",
+                "The Theoretical Ideology of the Capitalist Economy",
+                "The Effective Reality of the Capitalist Economy",
+                "Relative Efficiency, Flexibility, and Resistance of Capitalism"
+              ],
+              "coverage": "complete",
+              "criterion": "Identify transferred relations and textual limits or literal uses of metaphor in the supplied work",
+              "basis": "The inspected text contains multiple explicit metaphors and figurative mappings, including \"planetary casino,\" \"circle of the institution,\" \"epiphany of reason,\" \"rational mastery,\" \"cupids and nymphs,\" \"jungle,\" and \"fossils,\" with textual evidence for their scope and limits.",
+              "limitations": [
+                "The assessment concerns metaphorical and literal use in this supplied document only.",
+                "Some terms, especially \"rational mastery,\" combine figurative language with literal claims about institutional power."
+              ],
+              "finding_ids": [
+                "[D4.DOC2.F1]",
+                "[D4.DOC2.F2]",
+                "[D4.DOC2.F3]",
+                "[D4.DOC2.F4]",
+                "[D4.DOC2.F5]",
+                "[D4.DOC2.F6]",
+                "[D4.DOC2.F7]",
+                "[D4.DOC2.F8]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "rationality": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 6750
+      },
+      {
+        "step": "extract",
+        "kind": "extract",
+        "dimension": "framing",
+        "doc": "technique",
+        "model_requested": "openrouter/openai/gpt-5.6-luna",
+        "model_used": "openrouter/openai/gpt-5.6-luna",
+        "input_tokens": 15405,
+        "output_tokens": 1567,
+        "duration_ms": 13456,
+        "cost_usd": 0.005,
+        "retries": 0,
+        "wall": {
+          "rows": 7,
+          "with_anchor": 7,
+          "verified": 7,
+          "trimmed": 1,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 7,
+          "verified_anchors": 7,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "after_reanchor": {
+            "rows": 7,
+            "with_anchor": 7,
+            "verified": 7,
+            "trimmed": 1,
+            "anchor_rate": 1.0,
+            "failed_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [],
+            "anchors": 7,
+            "verified_anchors": 7,
+            "cross_document_rows": 0,
+            "incomplete_cross_document_ids": [],
+            "invalid_anchor_ids": [],
+            "citation_check": {
+              "status": "not_checked"
+            }
+          },
+          "scope_failed_rows": [],
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "technique"
+              ],
+              "dimension_key": "framing",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Opening discussion of contemporary concern about technique",
+                "The western conception of technique",
+                "Technique, creation and the constitution of the human world",
+                "Technique and social organisation",
+                "Technique and politics"
+              ],
+              "coverage": "complete",
+              "criterion": "A finding qualifies when the text states the problem, scope, force, continuity, novelty or revision of technique, including explicit framing operators and relation claims.",
+              "basis": "The inspected source contains explicit framing of technique’s political problem, scope, neutrality, relation to society, revision of determinist accounts, and contemporary questioning of technology.",
+              "limitations": [
+                "No second supplied work is available for a cross-work development claim."
+              ],
+              "finding_ids": [
+                "[D5.DOC1.F1]",
+                "[D5.DOC1.F2]",
+                "[D5.DOC1.F3]",
+                "[D5.DOC1.F4]",
+                "[D5.DOC1.F5]",
+                "[D5.DOC1.F6]",
+                "[D5.DOC1.F7]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "technique": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 6927
+      },
+      {
+        "step": "extract",
+        "kind": "extract",
+        "dimension": "framing",
+        "doc": "rationality",
+        "model_requested": "openrouter/openai/gpt-5.6-luna",
+        "model_used": "openrouter/openai/gpt-5.6-luna",
+        "input_tokens": 16176,
+        "output_tokens": 1978,
+        "duration_ms": 21383,
+        "cost_usd": 0.0056,
+        "retries": 0,
+        "wall": {
+          "rows": 8,
+          "with_anchor": 8,
+          "verified": 8,
+          "trimmed": 5,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 8,
+          "verified_anchors": 8,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "after_reanchor": {
+            "rows": 8,
+            "with_anchor": 8,
+            "verified": 8,
+            "trimmed": 5,
+            "anchor_rate": 1.0,
+            "failed_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [],
+            "anchors": 8,
+            "verified_anchors": 8,
+            "cross_document_rows": 0,
+            "incomplete_cross_document_ids": [],
+            "invalid_anchor_ids": [],
+            "citation_check": {
+              "status": "not_checked"
+            }
+          },
+          "scope_failed_rows": [],
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "rationality"
+              ],
+              "dimension_key": "framing",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Introduction",
+                "Specificity and Social-Historical Relativity of the Capitalist Institution",
+                "The Theoretical Ideology of the Capitalist Economy",
+                "The Effective Reality of the Capitalist Economy",
+                "Relative Efficiency, Flexibility, and Resistance of Capitalism"
+              ],
+              "coverage": "complete",
+              "criterion": "Statements that define the problem a concept is made to answer, specify its scope, or state continuity, novelty, or revision claims with their force and qualifications",
+              "basis": "The source explicitly frames rationality as capitalism’s mode of legitimation, specifies an immanent theoretical and empirical critique, qualifies the concept’s historical scope, and states claims about continuity and revision in capitalism’s later phase.",
+              "limitations": [
+                "The assessment concerns the supplied source only and does not establish a trajectory across multiple works."
+              ],
+              "finding_ids": [
+                "[D5.DOC2.F1]",
+                "[D5.DOC2.F2]",
+                "[D5.DOC2.F3]",
+                "[D5.DOC2.F4]",
+                "[D5.DOC2.F5]",
+                "[D5.DOC2.F6]",
+                "[D5.DOC2.F7]",
+                "[D5.DOC2.F8]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "rationality": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 8697
+      },
+      {
+        "step": "extract",
+        "kind": "extract",
+        "dimension": "local_limits",
+        "doc": "technique",
+        "model_requested": "openrouter/openai/gpt-5.6-luna",
+        "model_used": "openrouter/openai/gpt-5.6-luna",
+        "input_tokens": 15399,
+        "output_tokens": 1644,
+        "duration_ms": 17046,
+        "cost_usd": 0.0051,
+        "retries": 0,
+        "wall": {
+          "rows": 6,
+          "with_anchor": 6,
+          "verified": 6,
+          "trimmed": 1,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 6,
+          "verified_anchors": 6,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "after_reanchor": {
+            "rows": 6,
+            "with_anchor": 6,
+            "verified": 6,
+            "trimmed": 1,
+            "anchor_rate": 1.0,
+            "failed_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [],
+            "anchors": 6,
+            "verified_anchors": 6,
+            "cross_document_rows": 0,
+            "incomplete_cross_document_ids": [],
+            "invalid_anchor_ids": [],
+            "citation_check": {
+              "status": "not_checked"
+            }
+          },
+          "scope_failed_rows": [],
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "technique"
+              ],
+              "dimension_key": "local_limits",
+              "outcome": "findings_present",
+              "sections_inspected": [
+                "Opening discussion of zoon logn echon, homo faber, anthropology, language and tools",
+                "The meaning of technique",
+                "The western conception of technique",
+                "Marx",
+                "The neutrality of technique",
+                "Technique and social organisation",
+                "The Marxist thesis",
+                "Technique and social life",
+                "Technique and economy",
+                "Technique and politics"
+              ],
+              "coverage": "complete",
+              "criterion": "A passage must qualify a proposed stable meaning or interpretation, or state which relevant sections were inspected for an alternative term or use and what remains outside that inspection.",
+              "basis": "The supplied source was inspected throughout and contains multiple explicit qualifications concerning the meanings, uses and explanatory scope of technique, including qualifications of anthropological contrasts, neutrality, Marxist determination and technical problem-solving.",
+              "limitations": [
+                "The report is limited to the supplied source and does not establish absence of other qualifications in works or sections not supplied."
+              ],
+              "finding_ids": [
+                "D6.DOC1.F1",
+                "D6.DOC1.F2",
+                "D6.DOC1.F3",
+                "D6.DOC1.F4",
+                "D6.DOC1.F5",
+                "D6.DOC1.F6"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "technique": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": []
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 6114
+      },
+      {
+        "step": "extract",
+        "kind": "extract",
+        "dimension": "local_limits",
+        "doc": "rationality",
+        "model_requested": "openrouter/openai/gpt-5.6-luna",
+        "model_used": "openrouter/openai/gpt-5.6-luna",
+        "input_tokens": 16170,
+        "output_tokens": 991,
+        "duration_ms": 11904,
+        "cost_usd": 0.0044,
+        "retries": 0,
+        "wall": {
+          "rows": 3,
+          "with_anchor": 3,
+          "verified": 3,
+          "trimmed": 0,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 3,
+          "verified_anchors": 3,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "after_reanchor": {
+            "rows": 3,
+            "with_anchor": 3,
+            "verified": 3,
+            "trimmed": 0,
+            "anchor_rate": 1.0,
+            "failed_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [],
+            "anchors": 3,
+            "verified_anchors": 3,
+            "cross_document_rows": 0,
+            "incomplete_cross_document_ids": [],
+            "invalid_anchor_ids": [],
+            "citation_check": {
+              "status": "not_checked"
+            }
+          },
+          "scope_failed_rows": [],
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "rationality"
+              ],
+              "dimension_key": "local_limits",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Introduction",
+                "Specificity and Social-Historical Relativity of the Capitalist Institution",
+                "The Theoretical Ideology of the Capitalist Economy",
+                "The Effective Reality of the Capitalist Economy",
+                "Relative Efficiency, Flexibility, and Resistance of Capitalism"
+              ],
+              "coverage": "complete",
+              "criterion": "A passage must qualify a proposed stable meaning or interpretation, or state which relevant sections were inspected for an alternative term or use and what remains outside that inspection.",
+              "basis": "Three anchored passages qualify the scope of capitalist rationality, rationalization, and economic laws.",
+              "limitations": [
+                "Only the supplied rationality document was inspected; no comparison with other works is possible.",
+                "The findings concern qualifications within this text and do not establish global absence of other uses."
+              ],
+              "finding_ids": [
+                "[D6.DOC2.F1]",
+                "[D6.DOC2.F2]",
+                "[D6.DOC2.F3]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "rationality": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 4417
+      },
+      {
+        "step": "extract",
+        "kind": "extract",
+        "dimension": "concept_trajectories",
+        "doc": "",
+        "model_requested": "openrouter/openai/gpt-5.6-luna",
+        "model_used": "openrouter/openai/gpt-5.6-luna",
+        "input_tokens": 16196,
+        "output_tokens": 1001,
+        "duration_ms": 14282,
+        "cost_usd": 0.0044,
+        "retries": 0,
+        "wall": {
+          "rows": 1,
+          "with_anchor": 1,
+          "verified": 1,
+          "trimmed": 0,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 2,
+          "verified_anchors": 2,
+          "cross_document_rows": 1,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "after_reanchor": {
+            "rows": 1,
+            "with_anchor": 1,
+            "verified": 1,
+            "trimmed": 0,
+            "anchor_rate": 1.0,
+            "failed_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [],
+            "anchors": 2,
+            "verified_anchors": 2,
+            "cross_document_rows": 1,
+            "incomplete_cross_document_ids": [],
+            "invalid_anchor_ids": [],
+            "citation_check": {
+              "status": "not_checked"
+            }
+          },
+          "scope_failed_rows": [],
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "technique",
+                "rationality"
+              ],
+              "dimension_key": "concept_trajectories",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Technique: “The neutrality of technique” and related discussions of technique’s social and historical scale",
+                "Rationality: “The Rationality of Capitalism” and the discussion of instrumental rationality"
+              ],
+              "coverage": "partial",
+              "criterion": "A relevant cross-document instance requires the same or explicitly aligned concept, object and argumentative role to be supported by anchored passages in at least two supplied works; development requires dates or uptake evidence.",
+              "basis": "Anchored passages in both supplied works support an unordered comparison between efficiency-based technical neutrality and means-oriented instrumental rationality. The comparison identifies a shared qualification while preserving differences in object and scope.",
+              "limitations": [
+                "No dates or uptake evidence were supplied, so no ordered development can be claimed.",
+                "The reports do not establish explicit reference or borrowing between the works.",
+                "The comparison is limited to the inspected passages and does not establish corpus-wide absence or persistence."
+              ],
+              "finding_ids": [
+                "[X7.F1]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "technique": "provided",
+                  "rationality": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ],
+                "basis_material": "Per-document ledgers and scope reports; no direct source inspection in this invocation"
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 3344
+      },
+      {
+        "step": "verify",
+        "kind": "verify",
+        "dimension": "",
+        "doc": "technique",
+        "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+        "model_used": "openrouter/deepseek/deepseek-v4-pro",
+        "input_tokens": 25062,
+        "output_tokens": 25465,
+        "duration_ms": 351586,
+        "cost_usd": 0.0792,
+        "retries": 0,
+        "wall": {
+          "rows": 43,
+          "with_anchor": 43,
+          "verified": 42,
+          "trimmed": 13,
+          "anchor_rate": 0.977,
+          "failed_ids": [
+            "D1.DOC1.F1"
+          ],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 61,
+          "verified_anchors": 60,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "carried_forward": 0,
+          "rejected": 2,
+          "added": 5,
+          "ruling_coverage": {
+            "original_count": 38,
+            "explicitly_ruled_count": 38,
+            "missing_or_unruled_ids": [],
+            "unexpected_nonadded_ids": [],
+            "invalid_original_status_ids": [],
+            "duplicate_original_ids": [],
+            "duplicate_ruling_ids": [],
+            "coverage_complete": true
+          },
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "technique"
+              ],
+              "dimension_key": "local_meanings",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "From the opening discussion of zoon logon echon and homo faber through “The meaning of technique,” “The western conception of technique,” “Technique, creation and the constitution of the human world,” “The neutrality of technique,” “Technique and social organisation,” and “Technique and politics”"
+              ],
+              "coverage": "complete",
+              "criterion": "A relevant instance requires an explicit definition, distinction, redefinition, or materially different local use of a concept in the supplied text, with its object and boundary preserved.",
+              "basis": "All retained findings were verified against the source; truncated anchors were repaired with verbatim spans that carry the asserted predicates.",
+              "limitations": [],
+              "finding_ids": [
+                "[D1.DOC1.F1]",
+                "[D1.DOC1.F2]",
+                "[D1.DOC1.F3]",
+                "[D1.DOC1.F4]",
+                "[D1.DOC1.F5]",
+                "[D1.DOC1.F6]",
+                "[V.DOC1.F1]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "Each finding’s anchor(s) now fully support the claimed meaning, boundary, and separation; source coverage includes the mapped sections.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "technique": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence",
+                  "Findings in this scope lost anchor evidence; this does not establish absence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "technique"
+              ],
+              "dimension_key": "argumentative_roles",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "From the opening discussion of language and tools through “Technique in post-revolutionary society”"
+              ],
+              "coverage": "complete",
+              "criterion": "A finding must identify what claim the concept supports, the premise or mechanism connecting it to that claim, and the resulting argumentative role, anchored in a verbatim passage.",
+              "basis": "After repair, each row cites the specific sentences that carry the inferential role: parallelism of technique/language, refutation of Marxist determinism, substitution of dimension for instrument/cause, and class‑struggle shaping of technical application.",
+              "limitations": [
+                "One original row (D3.DOC1.F6, a method row) was rejected; its absence does not affect argumentative‑roles coverage."
+              ],
+              "finding_ids": [
+                "[D2.DOC1.F2]",
+                "[D2.DOC1.F3]",
+                "[D2.DOC1.F4]",
+                "[D2.DOC1.F5]",
+                "[D2.DOC1.F6]",
+                "[V.DOC1.F2]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "All retained rows now have complete anchors showing the premise‑to‑claim movement.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "technique": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Findings lost anchor evidence; this does not establish absence",
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "technique"
+              ],
+              "dimension_key": "method_and_evidence",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Opening discussion of technique, language and anthropological evidence",
+                "The Meaning of Technique",
+                "The western conception of technique",
+                "Marx",
+                "The critics of technique",
+                "Technique, creation and the constitution of the human world",
+                "Technique and social organisation",
+                "Technique and economy",
+                "Technique and politics"
+              ],
+              "coverage": "complete",
+              "criterion": "The text explicitly derives, illustrates, applies or assumes a use of the concept through an identifiable analytical procedure and supporting passage.",
+              "basis": "Confirmed derivations (D3.DOC1.F1, F2), illustration (F3 repaired), assumption (F4), historical application (F5 repaired), conceptual derivation of ensembles (F7 repaired); one row rejected because its anchor was only a heading.",
+              "limitations": [
+                "Rejected row D3.DOC1.F6 does not establish absence; the remaining rows sufficiently document the methodological moves."
+              ],
+              "finding_ids": [
+                "[D3.DOC1.F1]",
+                "[D3.DOC1.F2]",
+                "[D3.DOC1.F3]",
+                "[D3.DOC1.F4]",
+                "[D3.DOC1.F5]",
+                "[D3.DOC1.F7]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "Retained rows contain verbatim passages that perform the claimed derivations, illustrations, assumptions, and applications.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "technique": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "technique"
+              ],
+              "dimension_key": "metaphor",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Opening discussion of technique, language and technology",
+                "The meaning of technique",
+                "Technique, creation and the constitution of the human world",
+                "Technique and politics"
+              ],
+              "coverage": "complete",
+              "criterion": "Identify transferred relations carried by governing metaphors and mark where the text limits metaphorical use or makes a literal claim.",
+              "basis": "All seven metaphor rows are supported; two were repaired to include the full metaphorical mapping and the text’s own rejection/qualification.",
+              "limitations": [],
+              "finding_ids": [
+                "[D4.DOC1.F1]",
+                "[D4.DOC1.F2]",
+                "[D4.DOC1.F3]",
+                "[D4.DOC1.F4]",
+                "[D4.DOC1.F5]",
+                "[D4.DOC1.F6]",
+                "[D4.DOC1.F7]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "Every metaphor finding rests on a verbatim passage that explicitly presents the mapping or marks its limits.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "technique": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "technique"
+              ],
+              "dimension_key": "framing",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Opening discussion of contemporary concern about technique",
+                "The western conception of technique",
+                "Technique, creation and the constitution of the human world",
+                "Technique and social organisation",
+                "Technique and politics"
+              ],
+              "coverage": "complete",
+              "criterion": "A finding qualifies when the text states the problem, scope, force, continuity, novelty or revision of technique, including explicit framing operators and relation claims.",
+              "basis": "Framing rows were verified; two were repaired to include the full antithesis and the evasion claim; the added row captures the explicit project‑statement.",
+              "limitations": [],
+              "finding_ids": [
+                "[D5.DOC1.F1]",
+                "[D5.DOC1.F2]",
+                "[D5.DOC1.F3]",
+                "[D5.DOC1.F4]",
+                "[D5.DOC1.F5]",
+                "[D5.DOC1.F6]",
+                "[D5.DOC1.F7]",
+                "[V.DOC1.F3]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "The framing claims are directly anchored in the source’s own statements of problem, scope, force, and revision.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "technique": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "technique"
+              ],
+              "dimension_key": "local_limits",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Opening discussion of zoon logon echon, homo faber, anthropology, language and tools",
+                "The meaning of technique",
+                "The western conception of technique",
+                "Marx",
+                "The neutrality of technique",
+                "Technique and social organisation",
+                "The Marxist thesis",
+                "Technique and social life",
+                "Technique and economy",
+                "Technique and politics"
+              ],
+              "coverage": "complete",
+              "criterion": "A passage must qualify a proposed stable meaning or interpretation, or state which relevant sections were inspected for an alternative term or use and what remains outside that inspection.",
+              "basis": "Existing rows were verified and repaired; two additional qualifications were added to capture the limits of creation ex nihilo and the ambiguity of Greek creation.",
+              "limitations": [],
+              "finding_ids": [
+                "[D6.DOC1.F1]",
+                "[D6.DOC1.F2]",
+                "[D6.DOC1.F3]",
+                "[D6.DOC1.F4]",
+                "[D6.DOC1.F5]",
+                "[D6.DOC1.F6]",
+                "[V.DOC1.F4]",
+                "[V.DOC1.F5]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "Each qualification is backed by a verbatim passage showing the explicit limit on the concept’s meaning, scope, or determinacy.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "technique": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [
+          "D1.DOC1.F1"
+        ],
+        "chars": 41416
+      },
+      {
+        "step": "verify",
+        "kind": "verify",
+        "dimension": "",
+        "doc": "rationality",
+        "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+        "model_used": "openrouter/deepseek/deepseek-v4-pro",
+        "input_tokens": 25937,
+        "output_tokens": 18402,
+        "duration_ms": 324930,
+        "cost_usd": 0.0654,
+        "retries": 0,
+        "wall": {
+          "rows": 38,
+          "with_anchor": 38,
+          "verified": 38,
+          "trimmed": 15,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 38,
+          "verified_anchors": 38,
+          "cross_document_rows": 0,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "carried_forward": 0,
+          "rejected": 0,
+          "added": 0,
+          "ruling_coverage": {
+            "original_count": 38,
+            "explicitly_ruled_count": 38,
+            "missing_or_unruled_ids": [],
+            "unexpected_nonadded_ids": [],
+            "invalid_original_status_ids": [],
+            "duplicate_original_ids": [],
+            "duplicate_ruling_ids": [],
+            "coverage_complete": true
+          },
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "rationality"
+              ],
+              "dimension_key": "local_meanings",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "The \"Rationality\" of Capitalism",
+                "Specificity and Social-Historical Relativity of the Capitalist Institution",
+                "The Theoretical Ideology of the Capitalist Economy",
+                "The Effective Reality of the Capitalist Economy",
+                "Relative Efficiency, Flexibility, and Resistance of Capitalism"
+              ],
+              "coverage": "complete",
+              "criterion": "Inventory definitions and actual uses of shared or salient terms, preserving distinct senses, negations, and local scope.",
+              "basis": "The source explicitly defines and distinguishes rationality, instrumental rationality, economic rationality, rationalization, rational mastery, homo oeconomicus, and capitalist rationality, with anchored uses across the inspected sections.",
+              "limitations": [
+                "Only one supplied work was available, so cross-work persistence or change cannot be assessed."
+              ],
+              "finding_ids": [
+                "[D1.DOC2.F1]",
+                "[D1.DOC2.F2]",
+                "[D1.DOC2.F3]",
+                "[D1.DOC2.F4]",
+                "[D1.DOC2.F5]",
+                "[D1.DOC2.F6]",
+                "[D1.DOC2.F7]",
+                "[D1.DOC2.F8]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "All eight extracted findings are confirmed against the source; each is anchored in a verbatim passage that unambiguously supports the claimed sense and boundary.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "rationality": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "rationality"
+              ],
+              "dimension_key": "argumentative_roles",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "The \"Rationality\" of Capitalism",
+                "Specificity and Social-Historical Relativity of the Capitalist Institution",
+                "The Theoretical Ideology of the Capitalist Economy",
+                "The Effective Reality of the Capitalist Economy",
+                "Relative Efficiency, Flexibility, and Resistance of Capitalism"
+              ],
+              "coverage": "complete",
+              "criterion": "A finding must identify what claim a concept supports, the premise or mechanism connecting the concept to that claim, and the text's argumentative architecture, anchored in a verbatim supporting clause.",
+              "basis": "Five anchored instances identify the premises, mechanisms, and results through which rationality, immanent critique, rational mastery, separate imputation, and efficiency function in the text's argument.",
+              "limitations": [
+                "Only one supplied document was inspected, so no cross-work development can be established."
+              ],
+              "finding_ids": [
+                "[D2.DOC2.F1]",
+                "[D2.DOC2.F2]",
+                "[D2.DOC2.F3]",
+                "[D2.DOC2.F4]",
+                "[D2.DOC2.F5]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "All five findings are confirmed; each anchor and its context show the indicated concept playing the stated argumentative role for the specified claim.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "rationality": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "rationality"
+              ],
+              "dimension_key": "method_and_evidence",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Introduction",
+                "Specificity and Social-Historical Relativity of the Capitalist Institution",
+                "The Theoretical Ideology of the Capitalist Economy",
+                "The Effective Reality of the Capitalist Economy",
+                "Relative Efficiency, Flexibility, and Resistance of Capitalism"
+              ],
+              "coverage": "complete",
+              "criterion": "The text must record an actual procedure or analytical move establishing, deriving, illustrating, applying, or assuming a concept, with a supporting passage.",
+              "basis": "The inspected sections contain explicit statements of immanent critique, conceptual derivation, illustrative examples, theory-reality comparison, and methodological assumptions concerning rationality and economic rationality.",
+              "limitations": [
+                "The assessment concerns the supplied source text and does not independently verify the external works or empirical studies it cites."
+              ],
+              "finding_ids": [
+                "[D3.DOC2.F1]",
+                "[D3.DOC2.F2]",
+                "[D3.DOC2.F3]",
+                "[D3.DOC2.F4]",
+                "[D3.DOC2.F5]",
+                "[D3.DOC2.F6]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "All six findings are confirmed; each anchor explicitly describes a derivation, application, illustration, or assumption that the text makes regarding the listed concept.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "rationality": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "rationality"
+              ],
+              "dimension_key": "metaphor",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Opening discussion of capitalism's rationality",
+                "Specificity and Social-Historical Relativity of the Capitalist Institution",
+                "The Theoretical Ideology of the Capitalist Economy",
+                "The Effective Reality of the Capitalist Economy",
+                "Relative Efficiency, Flexibility, and Resistance of Capitalism"
+              ],
+              "coverage": "complete",
+              "criterion": "Identify transferred relations and textual limits or literal uses of metaphor in the supplied work",
+              "basis": "The inspected text contains multiple explicit metaphors and figurative mappings, including \"planetary casino,\" \"circle of the institution,\" \"epiphany of reason,\" \"rational mastery,\" \"cupids and nymphs,\" \"jungle,\" and \"fossils,\" with textual evidence for their scope and limits.",
+              "limitations": [
+                "The assessment concerns metaphorical and literal use in this supplied document only.",
+                "Some terms, especially \"rational mastery,\" combine figurative language with literal claims about institutional power."
+              ],
+              "finding_ids": [
+                "[D4.DOC2.F1]",
+                "[D4.DOC2.F2]",
+                "[D4.DOC2.F3]",
+                "[D4.DOC2.F4]",
+                "[D4.DOC2.F5]",
+                "[D4.DOC2.F6]",
+                "[D4.DOC2.F7]",
+                "[D4.DOC2.F8]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "All eight findings are confirmed; each metaphor is explicitly present in the source and the mapping is supported by the surrounding textual explanation.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "rationality": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "rationality"
+              ],
+              "dimension_key": "framing",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Introduction",
+                "Specificity and Social-Historical Relativity of the Capitalist Institution",
+                "The Theoretical Ideology of the Capitalist Economy",
+                "The Effective Reality of the Capitalist Economy",
+                "Relative Efficiency, Flexibility, and Resistance of Capitalism"
+              ],
+              "coverage": "complete",
+              "criterion": "Statements that define the problem a concept is made to answer, specify its scope, or state continuity, novelty, or revision claims with their force and qualifications",
+              "basis": "The source explicitly frames rationality as capitalism’s mode of legitimation, specifies an immanent theoretical and empirical critique, qualifies the concept’s historical scope, and states claims about continuity and revision in capitalism’s later phase.",
+              "limitations": [
+                "The assessment concerns the supplied source only and does not establish a trajectory across multiple works."
+              ],
+              "finding_ids": [
+                "[D5.DOC2.F1]",
+                "[D5.DOC2.F2]",
+                "[D5.DOC2.F3]",
+                "[D5.DOC2.F4]",
+                "[D5.DOC2.F5]",
+                "[D5.DOC2.F6]",
+                "[D5.DOC2.F7]",
+                "[D5.DOC2.F8]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "All eight findings are confirmed; each identifies a framing statement, its force, and its problem or scope, with precise anchors.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "rationality": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "rationality"
+              ],
+              "dimension_key": "local_limits",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Introduction",
+                "Specificity and Social-Historical Relativity of the Capitalist Institution",
+                "The Theoretical Ideology of the Capitalist Economy",
+                "The Effective Reality of the Capitalist Economy",
+                "Relative Efficiency, Flexibility, and Resistance of Capitalism"
+              ],
+              "coverage": "complete",
+              "criterion": "A passage must qualify a proposed stable meaning or interpretation, or state which relevant sections were inspected for an alternative term or use and what remains outside that inspection.",
+              "basis": "Three anchored passages qualify the scope of capitalist rationality, rationalization, and economic laws.",
+              "limitations": [
+                "Only the supplied rationality document was inspected; no comparison with other works is possible.",
+                "The findings concern qualifications within this text and do not establish global absence of other uses."
+              ],
+              "finding_ids": [
+                "[D6.DOC2.F1]",
+                "[D6.DOC2.F2]",
+                "[D6.DOC2.F3]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "All three findings are confirmed; the anchors explicitly limit or qualify the respective concepts, and the inspected sections were correctly identified.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "rationality": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 40372
+      },
+      {
+        "step": "verify",
+        "kind": "verify",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+        "model_used": "openrouter/deepseek/deepseek-v4-pro",
+        "input_tokens": 33569,
+        "output_tokens": 3900,
+        "duration_ms": 84588,
+        "cost_usd": 0.0431,
+        "retries": 0,
+        "wall": {
+          "rows": 1,
+          "with_anchor": 1,
+          "verified": 1,
+          "trimmed": 0,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 2,
+          "verified_anchors": 2,
+          "cross_document_rows": 1,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "not_checked"
+          },
+          "carried_forward": 0,
+          "rejected": 0,
+          "added": 0,
+          "ruling_coverage": {
+            "original_count": 1,
+            "explicitly_ruled_count": 1,
+            "missing_or_unruled_ids": [],
+            "unexpected_nonadded_ids": [],
+            "invalid_original_status_ids": [],
+            "duplicate_original_ids": [],
+            "duplicate_ruling_ids": [],
+            "coverage_complete": true
+          },
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "technique",
+                "rationality"
+              ],
+              "dimension_key": "concept_trajectories",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Technique: “The neutrality of technique” section around “In this respect, technique does appear as value-free…”",
+                "Rationality: passage around “This rationality that is confined to means…” and discussion of instrumental rationality"
+              ],
+              "coverage": "partial",
+              "criterion": "A relevant cross-document instance requires the same or explicitly aligned concept, object and argumentative role to be supported by anchored passages in at least two supplied works; development requires dates or uptake evidence.",
+              "basis": "Anchored passages in both works support an unordered comparison between efficiency-based technical neutrality and means‑oriented instrumental rationality. The comparison identifies a shared qualification while preserving differences in object and scope.",
+              "limitations": [
+                "No dates or uptake evidence were supplied, so no ordered development can be claimed.",
+                "The comparison is limited to the inspected passages and does not establish corpus‑wide absence or persistence.",
+                "The finding captures only one aligned qualification; other possible alignments remain unexplored."
+              ],
+              "finding_ids": [
+                "[X7.F1]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "Inspected the source passages surrounding the quoted anchors in both works. The technique anchor shows technique appears value‑free only when considered in and for itself, and the rationality anchor declares instrumental rationality confined to means has no value. Together they support the finding’s claim of a shared restriction to means‑oriented evaluation and denial of its adequacy for social ends.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "technique": "provided",
+                  "rationality": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            }
+          ]
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 3711
+      },
+      {
+        "step": "synthesize",
+        "kind": "synthesize",
+        "dimension": "",
+        "doc": "",
+        "model_requested": "openrouter/openai/gpt-5.6-sol",
+        "model_used": "openrouter/openai/gpt-5.6-sol",
+        "input_tokens": 50010,
+        "output_tokens": 7322,
+        "duration_ms": 175241,
+        "cost_usd": 0.1732,
+        "retries": 0,
+        "wall": {
+          "rows": 23,
+          "with_anchor": 23,
+          "verified": 23,
+          "trimmed": 0,
+          "anchor_rate": 1.0,
+          "failed_ids": [],
+          "duplicate_ids": [],
+          "missing_cited": [],
+          "anchors": 32,
+          "verified_anchors": 32,
+          "cross_document_rows": 1,
+          "incomplete_cross_document_ids": [],
+          "invalid_anchor_ids": [],
+          "citation_check": {
+            "status": "checked",
+            "scope": "retained_ledger",
+            "missing_rejected_ids": [],
+            "missing_other_ids": []
+          },
+          "synthesis_contract": {
+            "failed_ids": [],
+            "incomplete_cross_document_ids": [],
+            "duplicate_ids": [],
+            "missing_cited": [],
+            "unknown_dimensions": [],
+            "missing_ledger": false,
+            "parse_error": "",
+            "incomplete_invocation": false
+          },
+          "synthesis_repair_attempts": [],
+          "rows_without_dimension": 0,
+          "has_ledger": true,
+          "prose_chars": 25214,
+          "missing_lineage": [],
+          "check_ruling_coverage": {
+            "coverage_complete": true,
+            "original_count": 77,
+            "explicitly_ruled_count": 77,
+            "reviews": [
+              {
+                "step": "verify",
+                "document": "technique",
+                "original_count": 38,
+                "explicitly_ruled_count": 38,
+                "missing_or_unruled_ids": [],
+                "unexpected_nonadded_ids": [],
+                "invalid_original_status_ids": [],
+                "duplicate_original_ids": [],
+                "duplicate_ruling_ids": [],
+                "coverage_complete": true
+              },
+              {
+                "step": "verify",
+                "document": "rationality",
+                "original_count": 38,
+                "explicitly_ruled_count": 38,
+                "missing_or_unruled_ids": [],
+                "unexpected_nonadded_ids": [],
+                "invalid_original_status_ids": [],
+                "duplicate_original_ids": [],
+                "duplicate_ruling_ids": [],
+                "coverage_complete": true
+              },
+              {
+                "step": "verify",
+                "document": "",
+                "original_count": 1,
+                "explicitly_ruled_count": 1,
+                "missing_or_unruled_ids": [],
+                "unexpected_nonadded_ids": [],
+                "invalid_original_status_ids": [],
+                "duplicate_original_ids": [],
+                "duplicate_ruling_ids": [],
+                "coverage_complete": true
+              }
+            ]
+          },
+          "scope_outcomes": [
+            {
+              "document_keys": [
+                "technique"
+              ],
+              "dimension_key": "local_meanings",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "From the opening discussion of zoon logon echon and homo faber through “The meaning of technique,” “The western conception of technique,” “Technique, creation and the constitution of the human world,” “The neutrality of technique,” “Technique and social organisation,” and “Technique and politics”"
+              ],
+              "coverage": "complete",
+              "criterion": "A relevant instance requires an explicit definition, distinction, redefinition, or materially different local use of a concept in the supplied text, with its object and boundary preserved.",
+              "basis": "All retained findings were verified against the source; truncated anchors were repaired with verbatim spans that carry the asserted predicates.",
+              "limitations": [],
+              "finding_ids": [
+                "[D1.DOC1.F1]",
+                "[D1.DOC1.F2]",
+                "[D1.DOC1.F3]",
+                "[D1.DOC1.F4]",
+                "[D1.DOC1.F5]",
+                "[D1.DOC1.F6]",
+                "[V.DOC1.F1]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "Each finding’s anchor(s) now fully support the claimed meaning, boundary, and separation; source coverage includes the mapped sections.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "technique": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence",
+                  "Findings in this scope lost anchor evidence; this does not establish absence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "technique"
+              ],
+              "dimension_key": "argumentative_roles",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "From the opening discussion of language and tools through “Technique in post-revolutionary society”"
+              ],
+              "coverage": "complete",
+              "criterion": "A finding must identify what claim the concept supports, the premise or mechanism connecting it to that claim, and the resulting argumentative role, anchored in a verbatim passage.",
+              "basis": "After repair, each row cites the specific sentences that carry the inferential role: parallelism of technique/language, refutation of Marxist determinism, substitution of dimension for instrument/cause, and class‑struggle shaping of technical application.",
+              "limitations": [
+                "One original row (D3.DOC1.F6, a method row) was rejected; its absence does not affect argumentative‑roles coverage."
+              ],
+              "finding_ids": [
+                "[D2.DOC1.F2]",
+                "[D2.DOC1.F3]",
+                "[D2.DOC1.F4]",
+                "[D2.DOC1.F5]",
+                "[D2.DOC1.F6]",
+                "[V.DOC1.F2]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "All retained rows now have complete anchors showing the premise‑to‑claim movement.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "technique": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "Findings lost anchor evidence; this does not establish absence",
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "technique"
+              ],
+              "dimension_key": "method_and_evidence",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Opening discussion of technique, language and anthropological evidence",
+                "The Meaning of Technique",
+                "The western conception of technique",
+                "Marx",
+                "The critics of technique",
+                "Technique, creation and the constitution of the human world",
+                "Technique and social organisation",
+                "Technique and economy",
+                "Technique and politics"
+              ],
+              "coverage": "complete",
+              "criterion": "The text explicitly derives, illustrates, applies or assumes a use of the concept through an identifiable analytical procedure and supporting passage.",
+              "basis": "Confirmed derivations (D3.DOC1.F1, F2), illustration (F3 repaired), assumption (F4), historical application (F5 repaired), conceptual derivation of ensembles (F7 repaired); one row rejected because its anchor was only a heading.",
+              "limitations": [
+                "Rejected row D3.DOC1.F6 does not establish absence; the remaining rows sufficiently document the methodological moves."
+              ],
+              "finding_ids": [
+                "[D3.DOC1.F1]",
+                "[D3.DOC1.F2]",
+                "[D3.DOC1.F3]",
+                "[D3.DOC1.F4]",
+                "[D3.DOC1.F5]",
+                "[D3.DOC1.F7]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "Retained rows contain verbatim passages that perform the claimed derivations, illustrations, assumptions, and applications.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "technique": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "technique"
+              ],
+              "dimension_key": "metaphor",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Opening discussion of technique, language and technology",
+                "The meaning of technique",
+                "Technique, creation and the constitution of the human world",
+                "Technique and politics"
+              ],
+              "coverage": "complete",
+              "criterion": "Identify transferred relations carried by governing metaphors and mark where the text limits metaphorical use or makes a literal claim.",
+              "basis": "All seven metaphor rows are supported; two were repaired to include the full metaphorical mapping and the text’s own rejection/qualification.",
+              "limitations": [],
+              "finding_ids": [
+                "[D4.DOC1.F1]",
+                "[D4.DOC1.F2]",
+                "[D4.DOC1.F3]",
+                "[D4.DOC1.F4]",
+                "[D4.DOC1.F5]",
+                "[D4.DOC1.F6]",
+                "[D4.DOC1.F7]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "Every metaphor finding rests on a verbatim passage that explicitly presents the mapping or marks its limits.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "technique": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "technique"
+              ],
+              "dimension_key": "framing",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Opening discussion of contemporary concern about technique",
+                "The western conception of technique",
+                "Technique, creation and the constitution of the human world",
+                "Technique and social organisation",
+                "Technique and politics"
+              ],
+              "coverage": "complete",
+              "criterion": "A finding qualifies when the text states the problem, scope, force, continuity, novelty or revision of technique, including explicit framing operators and relation claims.",
+              "basis": "Framing rows were verified; two were repaired to include the full antithesis and the evasion claim; the added row captures the explicit project‑statement.",
+              "limitations": [],
+              "finding_ids": [
+                "[D5.DOC1.F1]",
+                "[D5.DOC1.F2]",
+                "[D5.DOC1.F3]",
+                "[D5.DOC1.F4]",
+                "[D5.DOC1.F5]",
+                "[D5.DOC1.F6]",
+                "[D5.DOC1.F7]",
+                "[V.DOC1.F3]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "The framing claims are directly anchored in the source’s own statements of problem, scope, force, and revision.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "technique": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "technique"
+              ],
+              "dimension_key": "local_limits",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Opening discussion of zoon logon echon, homo faber, anthropology, language and tools",
+                "The meaning of technique",
+                "The western conception of technique",
+                "Marx",
+                "The neutrality of technique",
+                "Technique and social organisation",
+                "The Marxist thesis",
+                "Technique and social life",
+                "Technique and economy",
+                "Technique and politics"
+              ],
+              "coverage": "complete",
+              "criterion": "A passage must qualify a proposed stable meaning or interpretation, or state which relevant sections were inspected for an alternative term or use and what remains outside that inspection.",
+              "basis": "Existing rows were verified and repaired; two additional qualifications were added to capture the limits of creation ex nihilo and the ambiguity of Greek creation.",
+              "limitations": [],
+              "finding_ids": [
+                "[D6.DOC1.F1]",
+                "[D6.DOC1.F2]",
+                "[D6.DOC1.F3]",
+                "[D6.DOC1.F4]",
+                "[D6.DOC1.F5]",
+                "[D6.DOC1.F6]",
+                "[V.DOC1.F4]",
+                "[V.DOC1.F5]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "Each qualification is backed by a verbatim passage showing the explicit limit on the concept’s meaning, scope, or determinacy.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "technique": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "rationality"
+              ],
+              "dimension_key": "local_meanings",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "The \"Rationality\" of Capitalism",
+                "Specificity and Social-Historical Relativity of the Capitalist Institution",
+                "The Theoretical Ideology of the Capitalist Economy",
+                "The Effective Reality of the Capitalist Economy",
+                "Relative Efficiency, Flexibility, and Resistance of Capitalism"
+              ],
+              "coverage": "complete",
+              "criterion": "Inventory definitions and actual uses of shared or salient terms, preserving distinct senses, negations, and local scope.",
+              "basis": "The source explicitly defines and distinguishes rationality, instrumental rationality, economic rationality, rationalization, rational mastery, homo oeconomicus, and capitalist rationality, with anchored uses across the inspected sections.",
+              "limitations": [
+                "Only one supplied work was available, so cross-work persistence or change cannot be assessed."
+              ],
+              "finding_ids": [
+                "[D1.DOC2.F1]",
+                "[D1.DOC2.F2]",
+                "[D1.DOC2.F3]",
+                "[D1.DOC2.F4]",
+                "[D1.DOC2.F5]",
+                "[D1.DOC2.F6]",
+                "[D1.DOC2.F7]",
+                "[D1.DOC2.F8]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "All eight extracted findings are confirmed against the source; each is anchored in a verbatim passage that unambiguously supports the claimed sense and boundary.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "rationality": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "rationality"
+              ],
+              "dimension_key": "argumentative_roles",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "The \"Rationality\" of Capitalism",
+                "Specificity and Social-Historical Relativity of the Capitalist Institution",
+                "The Theoretical Ideology of the Capitalist Economy",
+                "The Effective Reality of the Capitalist Economy",
+                "Relative Efficiency, Flexibility, and Resistance of Capitalism"
+              ],
+              "coverage": "complete",
+              "criterion": "A finding must identify what claim a concept supports, the premise or mechanism connecting the concept to that claim, and the text's argumentative architecture, anchored in a verbatim supporting clause.",
+              "basis": "Five anchored instances identify the premises, mechanisms, and results through which rationality, immanent critique, rational mastery, separate imputation, and efficiency function in the text's argument.",
+              "limitations": [
+                "Only one supplied document was inspected, so no cross-work development can be established."
+              ],
+              "finding_ids": [
+                "[D2.DOC2.F1]",
+                "[D2.DOC2.F2]",
+                "[D2.DOC2.F3]",
+                "[D2.DOC2.F4]",
+                "[D2.DOC2.F5]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "All five findings are confirmed; each anchor and its context show the indicated concept playing the stated argumentative role for the specified claim.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "rationality": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "rationality"
+              ],
+              "dimension_key": "method_and_evidence",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Introduction",
+                "Specificity and Social-Historical Relativity of the Capitalist Institution",
+                "The Theoretical Ideology of the Capitalist Economy",
+                "The Effective Reality of the Capitalist Economy",
+                "Relative Efficiency, Flexibility, and Resistance of Capitalism"
+              ],
+              "coverage": "complete",
+              "criterion": "The text must record an actual procedure or analytical move establishing, deriving, illustrating, applying, or assuming a concept, with a supporting passage.",
+              "basis": "The inspected sections contain explicit statements of immanent critique, conceptual derivation, illustrative examples, theory-reality comparison, and methodological assumptions concerning rationality and economic rationality.",
+              "limitations": [
+                "The assessment concerns the supplied source text and does not independently verify the external works or empirical studies it cites."
+              ],
+              "finding_ids": [
+                "[D3.DOC2.F1]",
+                "[D3.DOC2.F2]",
+                "[D3.DOC2.F3]",
+                "[D3.DOC2.F4]",
+                "[D3.DOC2.F5]",
+                "[D3.DOC2.F6]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "All six findings are confirmed; each anchor explicitly describes a derivation, application, illustration, or assumption that the text makes regarding the listed concept.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "rationality": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "rationality"
+              ],
+              "dimension_key": "metaphor",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Opening discussion of capitalism's rationality",
+                "Specificity and Social-Historical Relativity of the Capitalist Institution",
+                "The Theoretical Ideology of the Capitalist Economy",
+                "The Effective Reality of the Capitalist Economy",
+                "Relative Efficiency, Flexibility, and Resistance of Capitalism"
+              ],
+              "coverage": "complete",
+              "criterion": "Identify transferred relations and textual limits or literal uses of metaphor in the supplied work",
+              "basis": "The inspected text contains multiple explicit metaphors and figurative mappings, including \"planetary casino,\" \"circle of the institution,\" \"epiphany of reason,\" \"rational mastery,\" \"cupids and nymphs,\" \"jungle,\" and \"fossils,\" with textual evidence for their scope and limits.",
+              "limitations": [
+                "The assessment concerns metaphorical and literal use in this supplied document only.",
+                "Some terms, especially \"rational mastery,\" combine figurative language with literal claims about institutional power."
+              ],
+              "finding_ids": [
+                "[D4.DOC2.F1]",
+                "[D4.DOC2.F2]",
+                "[D4.DOC2.F3]",
+                "[D4.DOC2.F4]",
+                "[D4.DOC2.F5]",
+                "[D4.DOC2.F6]",
+                "[D4.DOC2.F7]",
+                "[D4.DOC2.F8]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "All eight findings are confirmed; each metaphor is explicitly present in the source and the mapping is supported by the surrounding textual explanation.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "rationality": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "rationality"
+              ],
+              "dimension_key": "framing",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Introduction",
+                "Specificity and Social-Historical Relativity of the Capitalist Institution",
+                "The Theoretical Ideology of the Capitalist Economy",
+                "The Effective Reality of the Capitalist Economy",
+                "Relative Efficiency, Flexibility, and Resistance of Capitalism"
+              ],
+              "coverage": "complete",
+              "criterion": "Statements that define the problem a concept is made to answer, specify its scope, or state continuity, novelty, or revision claims with their force and qualifications",
+              "basis": "The source explicitly frames rationality as capitalism’s mode of legitimation, specifies an immanent theoretical and empirical critique, qualifies the concept’s historical scope, and states claims about continuity and revision in capitalism’s later phase.",
+              "limitations": [
+                "The assessment concerns the supplied source only and does not establish a trajectory across multiple works."
+              ],
+              "finding_ids": [
+                "[D5.DOC2.F1]",
+                "[D5.DOC2.F2]",
+                "[D5.DOC2.F3]",
+                "[D5.DOC2.F4]",
+                "[D5.DOC2.F5]",
+                "[D5.DOC2.F6]",
+                "[D5.DOC2.F7]",
+                "[D5.DOC2.F8]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "All eight findings are confirmed; each identifies a framing statement, its force, and its problem or scope, with precise anchors.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "rationality": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "rationality"
+              ],
+              "dimension_key": "local_limits",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Introduction",
+                "Specificity and Social-Historical Relativity of the Capitalist Institution",
+                "The Theoretical Ideology of the Capitalist Economy",
+                "The Effective Reality of the Capitalist Economy",
+                "Relative Efficiency, Flexibility, and Resistance of Capitalism"
+              ],
+              "coverage": "complete",
+              "criterion": "A passage must qualify a proposed stable meaning or interpretation, or state which relevant sections were inspected for an alternative term or use and what remains outside that inspection.",
+              "basis": "Three anchored passages qualify the scope of capitalist rationality, rationalization, and economic laws.",
+              "limitations": [
+                "Only the supplied rationality document was inspected; no comparison with other works is possible.",
+                "The findings concern qualifications within this text and do not establish global absence of other uses."
+              ],
+              "finding_ids": [
+                "[D6.DOC2.F1]",
+                "[D6.DOC2.F2]",
+                "[D6.DOC2.F3]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "All three findings are confirmed; the anchors explicitly limit or qualify the respective concepts, and the inspected sections were correctly identified.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "rationality": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            },
+            {
+              "document_keys": [
+                "technique",
+                "rationality"
+              ],
+              "dimension_key": "concept_trajectories",
+              "outcome": "inconclusive",
+              "sections_inspected": [
+                "Technique: “The neutrality of technique” section around “In this respect, technique does appear as value-free…”",
+                "Rationality: passage around “This rationality that is confined to means…” and discussion of instrumental rationality"
+              ],
+              "coverage": "partial",
+              "criterion": "A relevant cross-document instance requires the same or explicitly aligned concept, object and argumentative role to be supported by anchored passages in at least two supplied works; development requires dates or uptake evidence.",
+              "basis": "Anchored passages in both works support an unordered comparison between efficiency-based technical neutrality and means‑oriented instrumental rationality. The comparison identifies a shared qualification while preserving differences in object and scope.",
+              "limitations": [
+                "No dates or uptake evidence were supplied, so no ordered development can be claimed.",
+                "The comparison is limited to the inspected passages and does not establish corpus‑wide absence or persistence.",
+                "The finding captures only one aligned qualification; other possible alignments remain unexplored."
+              ],
+              "finding_ids": [
+                "[X7.F1]"
+              ],
+              "review_state": "unchecked",
+              "review_basis": "Inspected the source passages surrounding the quoted anchors in both works. The technique anchor shows technique appears value‑free only when considered in and for itself, and the rationality anchor declares instrumental rationality confined to means has no value. Together they support the finding’s claim of a shared restriction to means‑oriented evaluation and denial of its adequacy for social ends.",
+              "evidence_state": {
+                "scope_identity_validated": true,
+                "invocation_partial": false,
+                "invocation_stop_reason": "stop",
+                "invocation_error": null,
+                "source_access": {
+                  "technique": "provided",
+                  "rationality": "provided"
+                },
+                "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+                "blocking_issues": [
+                  "One or more declared finding references lack retained verified evidence"
+                ]
+              }
+            }
+          ],
+          "synthesis_evidence": {
+            "partial": false,
+            "stop_reason": "stop",
+            "error": null,
+            "ledger_parse_error": null
+          }
+        },
+        "reanchored": 0,
+        "dropped_ids": [],
+        "chars": 35276
+      }
+    ]
+  },
+  "audit": {
+    "wall": {
+      "rows": 23,
+      "with_anchor": 23,
+      "verified": 23,
+      "trimmed": 0,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 32,
+      "verified_anchors": 32,
+      "cross_document_rows": 1,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "rows": 23,
+    "raw_anchors": 32,
+    "raw_exact": 29,
+    "unknown_dimensions": [],
+    "missing_table_ids": [],
+    "missing_prose_ids": []
+  }
+}
