@@ -1,0 +1,30 @@
+Rationale: Offer cohort synthesis under Trace the citations only after adapter integration and the real Brenner-cohort release gate: source/anchor/cell checks, both-order comparison with the Stacks essay desk and owner reading. Apply this patch last. It uses existing catalogue fields and introduces no fictitious applicability gate. Generated against main-tree HEAD 4d061afbc69021fc9f7d7d098781e87bc7cf2184; this file is deferred and does not authorize application before the pilot completes.
+
+diff --git a/src/dossier/catalog_purpose.json b/src/dossier/catalog_purpose.json
+--- a/src/dossier/catalog_purpose.json
++++ b/src/dossier/catalog_purpose.json
+@@ -906,6 +906,24 @@
+           ],
+           "fit": "ok",
+           "fit_note": "the plan's themes are the spine; readers' themes are labelled additions"
++        },
++        {
++          "engine_key": "citation_cohort_synthesis",
++          "plain_name": "cohort citation synthesis",
++          "use_when": "you have completed pair analyses for an approved school or cohort and want an argued comparison of how the author uses its members, including the members not engaged in the checked corpus",
++          "yields": "cross-member reliance, asymmetries, supported periods and audited fidelity, with member counts, move/stance tables and the complete not-engaged residue linked to pair ledgers and source passages",
++          "row_unit": "one member finding, cohort metadata observation or comparison supported by distinct members",
++          "deliverable_kinds": [
++            "briefing",
++            "case_file"
++          ],
++          "pairs_with": [
++            "citation_engagement_map",
++            "citation_fidelity_audit",
++            "citation_reception_map"
++          ],
++          "fit": "ok",
++          "fit_note": "requires approved membership and counts, a plan, and a completed engagement map for every engaged member; fidelity and reception are optional; fewer than two engaged members yield a limited coverage report"
+         }
+       ]
+     }

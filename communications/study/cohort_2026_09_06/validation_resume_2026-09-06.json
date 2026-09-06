@@ -1,0 +1,54 @@
+{
+  "base_commit": "4d061afbc69021fc9f7d7d098781e87bc7cf2184",
+  "patches": [
+    {
+      "name": "010_engagement_design_notes.patch",
+      "sha256": "0e3a11793c335b6bc6bd4af5fdc5f5b2ae4eaaaa18bb408a8a23c45ae241cfba"
+    },
+    {
+      "name": "011_reception_design_notes.patch",
+      "sha256": "824a33aebba81fd68a6467b3a6a5f1584664e9d7a14b49b8ed173026c226a110"
+    },
+    {
+      "name": "012_fidelity_design_notes.patch",
+      "sha256": "cbc49cc8d8ca36313d712f393b88df206335da95f5e7357f69b4a8248d7b5ca3"
+    },
+    {
+      "name": "020_source_role_cohort.patch",
+      "sha256": "b9261742860fe48e0ecd46aecbc5b6f1e4b8bb7e5c22829f65bc9b50face6d01"
+    },
+    {
+      "name": "030_cohort_harness.patch",
+      "sha256": "787130b4fe67b21fe1640eed3841a9c5ddbdc0a2a148b00322c728ff7d6c7988"
+    },
+    {
+      "name": "031_cohort_fixture_generator.patch",
+      "sha256": "c465cde25558377b40d6df7f11ba89269ebda3b798e99009e1a3fc2f2d17dcf1"
+    },
+    {
+      "name": "090_catalogue_offer_after_validation.patch",
+      "sha256": "c1fdffd467f629f51e59ae7b6e669e2e7938bafc93dbab4cdac17ed951eeab57"
+    }
+  ],
+  "checks": [
+    "All seven patches apply together to disposable main-HEAD copies.",
+    "All eight modified-file baseline and candidate SHA-256 digests match the manifest.",
+    "Six revised YAMLs accepted by isolated schemas/loaders.",
+    "Fidelity shape retains explicit verdict/how, retrieval and section fields, and both witnesses.",
+    "SourceRole preserves all five existing roles and adds cohort only.",
+    "Both new script payloads compile in memory.",
+    "Catalogue JSON parses and contains one cohort entry in trace_citations.",
+    "Main target files still match the frozen main-HEAD bytes."
+  ],
+  "pytest": {
+    "command": "PYTHONDONTWRITEBYTECODE=1 python -m pytest -p no:cacheprovider -q tests/test_cohort_synthesis_definitions_2026_09_06.py tests/test_cohort_synthesis_harness_2026_09_06.py",
+    "passed": 36,
+    "warnings": 1,
+    "duration_seconds": 0.3,
+    "warning": "Frozen engine_schemas.py:105 uses deprecated class-based Pydantic Config."
+  },
+  "runtime_integration_tested": false,
+  "semantic_release": false,
+  "study_provider_calls_this_resume": 0,
+  "provider_cost_usd": null
+}

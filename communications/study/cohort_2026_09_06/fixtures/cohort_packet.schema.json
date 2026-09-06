@@ -1,0 +1,662 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "cohort-packet/v1"
+    },
+    "packet_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "fixture_only": {
+      "type": "boolean"
+    },
+    "author": {
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "uid",
+        "name"
+      ],
+      "additionalProperties": false
+    },
+    "cohort": {
+      "type": "object",
+      "properties": {
+        "role": {
+          "const": "cohort"
+        },
+        "doc_key": {
+          "const": "context:cohort"
+        },
+        "uid": {
+          "type": "string",
+          "minLength": 1
+        },
+        "phrase": {
+          "type": "string",
+          "minLength": 1
+        },
+        "approved": {
+          "type": "boolean"
+        },
+        "members": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "uid": {
+                "type": "string",
+                "minLength": 1
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "membership_role": {
+                "type": "string",
+                "minLength": 1
+              },
+              "membership_reason": {
+                "type": "string",
+                "minLength": 1
+              },
+              "membership_source": {
+                "type": "string",
+                "minLength": 1
+              },
+              "engaged": {
+                "enum": [
+                  "yes",
+                  "no",
+                  "unknown"
+                ]
+              },
+              "counts": {
+                "type": "object",
+                "properties": {
+                  "total": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ],
+                    "minimum": 0
+                  },
+                  "mentions": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "bibliography_only": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "by_text": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "text_key": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "year": {
+                          "type": [
+                            "integer",
+                            "null"
+                          ]
+                        },
+                        "count": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "event_ids": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "minLength": 1
+                          }
+                        }
+                      },
+                      "required": [
+                        "text_key",
+                        "year",
+                        "count",
+                        "event_ids"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "total",
+                  "mentions",
+                  "bibliography_only",
+                  "by_text"
+                ],
+                "additionalProperties": false
+              },
+              "works_cited": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              },
+              "row_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "anchor": {
+                "type": "string",
+                "minLength": 1
+              },
+              "fixture_only": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "uid",
+              "name",
+              "membership_role",
+              "membership_reason",
+              "membership_source",
+              "engaged",
+              "counts",
+              "works_cited",
+              "row_id",
+              "anchor",
+              "fixture_only"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "not_engaged_residue": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "coverage": {
+          "type": "object",
+          "properties": {
+            "ledger_snapshot": {
+              "type": "string",
+              "minLength": 1
+            },
+            "count_unit": {
+              "const": "canonical_citation_event"
+            },
+            "complete": {
+              "type": "boolean"
+            },
+            "identities_resolved": {
+              "type": "boolean"
+            },
+            "held_texts": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "inspected_texts": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "missing_texts": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "date_range": {
+              "type": "array",
+              "items": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            },
+            "alias_scope": {
+              "type": "string",
+              "minLength": 1
+            },
+            "coauthorship": {
+              "type": "object"
+            }
+          },
+          "required": [
+            "ledger_snapshot",
+            "count_unit",
+            "complete",
+            "identities_resolved",
+            "held_texts",
+            "inspected_texts",
+            "missing_texts",
+            "date_range",
+            "alias_scope",
+            "coauthorship"
+          ],
+          "additionalProperties": false
+        },
+        "collective_mentions": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      },
+      "required": [
+        "role",
+        "doc_key",
+        "uid",
+        "phrase",
+        "approved",
+        "members",
+        "not_engaged_residue",
+        "coverage",
+        "collective_mentions"
+      ],
+      "additionalProperties": false
+    },
+    "plan": {
+      "type": "object",
+      "properties": {
+        "role": {
+          "const": "plan"
+        },
+        "doc_key": {
+          "const": "context:plan"
+        },
+        "sections": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1
+              },
+              "questions": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            },
+            "required": [
+              "id",
+              "title",
+              "questions"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "themes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "minLength": 1
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1
+              },
+              "origin": {
+                "enum": [
+                  "plan_spine",
+                  "reader_addition"
+                ]
+              }
+            },
+            "required": [
+              "key",
+              "label",
+              "origin"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "warnings": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "role",
+        "doc_key",
+        "sections",
+        "themes",
+        "warnings"
+      ],
+      "additionalProperties": false
+    },
+    "pairs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "pair_key": {
+            "type": "string",
+            "minLength": 1
+          },
+          "doc_key": {
+            "type": "string",
+            "minLength": 1
+          },
+          "author_uid": {
+            "type": "string",
+            "minLength": 1
+          },
+          "member_uid": {
+            "type": "string",
+            "minLength": 1
+          },
+          "fixture_only": {
+            "type": "boolean"
+          },
+          "ledgers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "engine_key": {
+                  "enum": [
+                    "citation_engagement_map",
+                    "citation_fidelity_audit",
+                    "citation_reception_map"
+                  ]
+                },
+                "artifact_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "artifact_sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "artifact_text": {
+                  "type": "string"
+                },
+                "rows": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "row_id": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "ref": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "dimension": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "claim": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "raw_row": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "status": {
+                        "enum": [
+                          "confirmed",
+                          "rejected",
+                          "unresolved",
+                          "superseded"
+                        ]
+                      },
+                      "anchor_status": {
+                        "enum": [
+                          "verified",
+                          "failed",
+                          "unverifiable"
+                        ]
+                      },
+                      "canonical_ref": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "event_ids": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      },
+                      "anchors": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "text": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "source_doc_key": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "locus": {
+                              "type": "object"
+                            },
+                            "voice": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "required": [
+                            "text",
+                            "source_doc_key",
+                            "locus",
+                            "voice"
+                          ],
+                          "additionalProperties": false
+                        }
+                      },
+                      "fields": {
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "row_id",
+                      "ref",
+                      "dimension",
+                      "claim",
+                      "raw_row",
+                      "status",
+                      "anchor_status",
+                      "canonical_ref",
+                      "event_ids",
+                      "anchors",
+                      "fields"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "reviewed_empty": {
+                  "type": "boolean"
+                },
+                "empty_reason": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "engine_key",
+                "artifact_id",
+                "artifact_sha256",
+                "artifact_text",
+                "rows",
+                "reviewed_empty"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "lens_status": {
+            "type": "object",
+            "properties": {
+              "citation_engagement_map": {
+                "enum": [
+                  "run",
+                  "not_run",
+                  "unavailable"
+                ]
+              },
+              "citation_fidelity_audit": {
+                "enum": [
+                  "run",
+                  "not_run",
+                  "unavailable"
+                ]
+              },
+              "citation_reception_map": {
+                "enum": [
+                  "run",
+                  "not_run",
+                  "unavailable"
+                ]
+              }
+            },
+            "required": [
+              "citation_engagement_map",
+              "citation_fidelity_audit",
+              "citation_reception_map"
+            ],
+            "additionalProperties": false
+          },
+          "tables": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "table_key": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "markdown": {
+                  "type": "string"
+                },
+                "row_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              },
+              "required": [
+                "table_key",
+                "markdown",
+                "row_refs"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "memo": {
+            "type": "object",
+            "properties": {
+              "markdown": {
+                "type": "string"
+              },
+              "canonical_uri": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "markdown",
+              "canonical_uri"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "pair_key",
+          "doc_key",
+          "author_uid",
+          "member_uid",
+          "fixture_only",
+          "ledgers",
+          "lens_status",
+          "tables",
+          "memo"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "source_documents": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        },
+        "required": [
+          "text",
+          "sha256"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "packet_id",
+    "revision",
+    "fixture_only",
+    "author",
+    "cohort",
+    "plan",
+    "pairs",
+    "source_documents"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:the-analyst:cohort-packet:v1",
+  "title": "Cohort packet v1; fixture_only forbids release"
+}

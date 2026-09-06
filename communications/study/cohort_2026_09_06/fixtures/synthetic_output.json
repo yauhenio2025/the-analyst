@@ -1,0 +1,334 @@
+{
+  "schema_version": "cohort-output/v1",
+  "packet_id": "fixture-cohort-only",
+  "packet_revision": 1,
+  "fixture_only": true,
+  "mode": "oneshot_checked",
+  "findings": [
+    {
+      "id": "C2.F1",
+      "dimension": "cohort_residue",
+      "claim": "member: fixture:P; engaged: yes; count: 1; membership: fixture comparator.",
+      "members": [
+        "fixture:P"
+      ],
+      "status": "confirmed",
+      "evidence": [],
+      "cohort_evidence": [
+        {
+          "row_id": "COHORT.M1",
+          "anchor": "member: fixture:P; engaged: yes; count: 1; membership: fixture comparator."
+        }
+      ]
+    },
+    {
+      "id": "C2.F2",
+      "dimension": "cohort_residue",
+      "claim": "member: fixture:Q; engaged: yes; count: 1; membership: fixture comparator.",
+      "members": [
+        "fixture:Q"
+      ],
+      "status": "confirmed",
+      "evidence": [],
+      "cohort_evidence": [
+        {
+          "row_id": "COHORT.M2",
+          "anchor": "member: fixture:Q; engaged: yes; count: 1; membership: fixture comparator."
+        }
+      ]
+    },
+    {
+      "id": "C2.F3",
+      "dimension": "cohort_residue",
+      "claim": "member: fixture:N; engaged: no; count: 0; membership: fixture comparator.",
+      "members": [
+        "fixture:N"
+      ],
+      "status": "confirmed",
+      "evidence": [],
+      "cohort_evidence": [
+        {
+          "row_id": "COHORT.M3",
+          "anchor": "member: fixture:N; engaged: no; count: 0; membership: fixture comparator."
+        }
+      ]
+    },
+    {
+      "id": "C3.F1",
+      "dimension": "cross_member_reliance",
+      "claim": "The invented P is adopted and the invented Q is disputed, with qualifications.",
+      "members": [
+        "fixture:P",
+        "fixture:Q"
+      ],
+      "status": "confirmed",
+      "evidence": [
+        {
+          "pair_row_ref": "fixture:A__fixture:P::citation_engagement_map::D3.F1",
+          "anchors": [
+            {
+              "text": "I adopt P's distinction, but only for this example.",
+              "source_doc_key": "fixture:textP",
+              "locus": {
+                "printed_page": "1",
+                "pdf_page": 2,
+                "section_uid": null,
+                "section_title": null,
+                "edition": "fixture",
+                "how": "page"
+              },
+              "voice": "A"
+            }
+          ]
+        },
+        {
+          "pair_row_ref": "fixture:A__fixture:Q::citation_engagement_map::D3.F1",
+          "anchors": [
+            {
+              "text": "We dispute Q's example, while retaining its qualification.",
+              "source_doc_key": "fixture:textQ",
+              "locus": {
+                "printed_page": "1",
+                "pdf_page": 2,
+                "section_uid": null,
+                "section_title": null,
+                "edition": "fixture",
+                "how": "page"
+              },
+              "voice": "A and coauthor"
+            }
+          ]
+        }
+      ],
+      "cohort_evidence": []
+    }
+  ],
+  "tables": [
+    {
+      "key": "member_text_year_counts",
+      "columns": [
+        "member",
+        "counts"
+      ],
+      "rows": [
+        {
+          "member_uid": "fixture:P",
+          "text_key": "fixture:textP",
+          "year": 2000,
+          "count": 1,
+          "cells": [
+            {
+              "column": "member",
+              "text": "Fixture P",
+              "kind": "supported",
+              "finding_ids": [
+                "C2.F1"
+              ]
+            },
+            {
+              "column": "counts",
+              "text": "1",
+              "kind": "supported",
+              "finding_ids": [
+                "C2.F1"
+              ]
+            }
+          ]
+        },
+        {
+          "member_uid": "fixture:Q",
+          "text_key": "fixture:textQ",
+          "year": null,
+          "count": 1,
+          "cells": [
+            {
+              "column": "member",
+              "text": "Fixture Q",
+              "kind": "supported",
+              "finding_ids": [
+                "C2.F2"
+              ]
+            },
+            {
+              "column": "counts",
+              "text": "1",
+              "kind": "supported",
+              "finding_ids": [
+                "C2.F2"
+              ]
+            }
+          ]
+        },
+        {
+          "member_uid": "fixture:N",
+          "text_key": null,
+          "year": null,
+          "count": 0,
+          "cells": [
+            {
+              "column": "member",
+              "text": "Fixture N",
+              "kind": "supported",
+              "finding_ids": [
+                "C2.F3"
+              ]
+            },
+            {
+              "column": "counts",
+              "text": "0",
+              "kind": "supported",
+              "finding_ids": [
+                "C2.F3"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "member_move_stance",
+      "columns": [
+        "reading"
+      ],
+      "rows": [
+        {
+          "member_uid": "fixture:P",
+          "cells": [
+            {
+              "column": "reading",
+              "text": "The cited fixture proposition and qualification.",
+              "kind": "supported",
+              "finding_ids": [
+                "C3.F1"
+              ]
+            }
+          ]
+        },
+        {
+          "member_uid": "fixture:Q",
+          "cells": [
+            {
+              "column": "reading",
+              "text": "The cited fixture proposition and qualification.",
+              "kind": "supported",
+              "finding_ids": [
+                "C3.F1"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "fidelity_by_member",
+      "columns": [
+        "member",
+        "verdict"
+      ],
+      "rows": [
+        {
+          "member_uid": "fixture:P",
+          "cells": [
+            {
+              "column": "member",
+              "text": "Fixture P",
+              "kind": "supported",
+              "finding_ids": [
+                "C2.F1"
+              ]
+            },
+            {
+              "column": "verdict",
+              "text": "not run",
+              "kind": "unknown",
+              "finding_ids": []
+            }
+          ]
+        },
+        {
+          "member_uid": "fixture:Q",
+          "cells": [
+            {
+              "column": "member",
+              "text": "Fixture Q",
+              "kind": "supported",
+              "finding_ids": [
+                "C2.F2"
+              ]
+            },
+            {
+              "column": "verdict",
+              "text": "not run",
+              "kind": "unknown",
+              "finding_ids": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "not_engaged_members",
+      "columns": [
+        "member",
+        "status"
+      ],
+      "rows": [
+        {
+          "member_uid": "fixture:N",
+          "cells": [
+            {
+              "column": "member",
+              "text": "Fixture N",
+              "kind": "supported",
+              "finding_ids": [
+                "C2.F3"
+              ]
+            },
+            {
+              "column": "status",
+              "text": "not engaged in the checked fixture corpus",
+              "kind": "supported",
+              "finding_ids": [
+                "C2.F3"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "cohort_periods",
+      "columns": [
+        "period"
+      ],
+      "rows": [
+        {
+          "member_uid": null,
+          "cells": [
+            {
+              "column": "period",
+              "text": "unresolved",
+              "kind": "unknown",
+              "finding_ids": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "prose": [
+    {
+      "text": "The invented P is adopted and the invented Q is disputed, with qualifications.",
+      "finding_ids": [
+        "C3.F1"
+      ]
+    },
+    {
+      "text": "Fixture N is not engaged in the checked invented corpus.",
+      "finding_ids": [
+        "C2.F3"
+      ]
+    }
+  ],
+  "markdown": "The invented P is adopted and the invented Q is disputed, with qualifications. [C3.F1]\nFixture N is not engaged in the checked invented corpus. [C2.F3]\n\n## member_text_year_counts\n| member | counts |\n| --- | --- |\n| Fixture P [C2.F1] | 1 [C2.F1] |\n| Fixture Q [C2.F2] | 1 [C2.F2] |\n| Fixture N [C2.F3] | 0 [C2.F3] |\n\n## member_move_stance\n| reading |\n| --- |\n| The cited fixture proposition and qualification. [C3.F1] |\n| The cited fixture proposition and qualification. [C3.F1] |\n\n## fidelity_by_member\n| member | verdict |\n| --- | --- |\n| Fixture P [C2.F1] | not run  |\n| Fixture Q [C2.F2] | not run  |\n\n## not_engaged_members\n| member | status |\n| --- | --- |\n| Fixture N [C2.F3] | not engaged in the checked fixture corpus [C2.F3] |\n\n## cohort_periods\n| period |\n| --- |\n| unresolved  |\n"
+}

@@ -1,0 +1,353 @@
+Rationale: Make reference-point rows visible and exclude them from secondary-reader totals; require directed citation-ledger zeros for silence claims. The role label alone is cosmetic, but these combined counting/evidence changes require original/revision source reads, anchor/cell checks and both-order Sonnet validation. Generated against main-tree HEAD 4d061afbc69021fc9f7d7d098781e87bc7cf2184; this file is deferred and does not authorize application before the pilot completes.
+
+diff --git a/src/engines/capability_definitions/citation_reception_map.yaml b/src/engines/capability_definitions/citation_reception_map.yaml
+--- a/src/engines/capability_definitions/citation_reception_map.yaml
++++ b/src/engines/capability_definitions/citation_reception_map.yaml
+@@ -4,10 +4,25 @@
+ version: 1
+ category: scholarly
+ kind: comparison
+-problematique: 'A reader × theme-origin (plan_spine or reader_addition) × theme × position table with the argument
+-  and stance of each secondary text, anchored in its own words, plus A among P''s readers: consonance, explicit
+-  opposition, or no demonstrated engagement. Preserve dates, scope and excerpts. Separate counted uncited readers
+-  from inferred affinities; if citation counts are absent, no most-cited ranking can be made.'
++problematique: >-
++  A reader × theme-origin (plan_spine or reader_addition) × theme × position table with the argument
++  and stance of each secondary text, anchored in its own words, plus A among P's readers: consonance,
++  explicit opposition, or no demonstrated engagement. Preserve dates, scope and excerpts. Separate
++  counted uncited readers from inferred affinities; if citation counts are absent, no most-cited
++  ranking can be made.
++
++  Mark A as reference_point and exclude those rows from secondary-reader totals. A-to-reader silence
++  requires a scoped explicit citation-ledger zero, with its direction and coverage; absent counts
++  remain unknown.
++
++  Do: Prefer the supplied Stacks markers=1 rendition of the same identified work and edition. Use the
++  actual supplied bytes and document key; a card cannot fetch or replace a rendition. When
++  unavailable, retain the supplied pdftotext window and label that fallback. Keep rendition identity,
++  printed page and PDF page distinct, and preserve the works-registry section UID/title and edition
++  where supplied. A section is a locus, not an inferred page mapping. Never infer edition equivalence
++  from equal page numbers, invent a section title, correct OCR inside a quotation, or supply words
++  from memory. A replacement rendition requires a new source snapshot and anchor checks; overlapping
++  renditions remain one citation event.
+ researcher_question: Where does this author's reading sit among the supplied readers of this thinker?
+ intellectual_lineage:
+   primary: source_criticism
+diff --git a/src/operationalizations/definitions/citation_reception_map.yaml b/src/operationalizations/definitions/citation_reception_map.yaml
+--- a/src/operationalizations/definitions/citation_reception_map.yaml
++++ b/src/operationalizations/definitions/citation_reception_map.yaml
+@@ -14,17 +14,32 @@
+ process:
+   key: dvs
+   description: Where does this author's reading sit among the supplied readers of this thinker?
+-  framing: 'A reader × theme-origin (plan_spine or reader_addition) × theme × position table with the argument and
+-    stance of each secondary text, anchored in its own words, plus A among P''s readers: consonance, explicit opposition,
+-    or no demonstrated engagement. Preserve dates, scope and excerpts. Separate counted uncited readers from inferred
+-    affinities; if citation counts are absent, no most-cited ranking can be made. Use the supplied author/person
+-    identities and source roles. If a document is an evidence index, treat its routing, locations and counts as
+-    metadata; its duplicated quotations do not create an independent source. Anchor substantive claims in the actual
+-    citing text, held primary window or secondary text. Keep coauthorship and nested quotations. Read the body,
+-    not just titles, bibliographies or headers. A document outside a dimension''s role gets no positive row in that
+-    dimension. Report that scope explicitly. Do not turn an incomplete check into a source''s silence. The held
+-    sample is not the author''s complete work or the thinker''s entire reception. Dates missing from metadata stay
+-    unknown unless stated in the source.'
++  framing: >-
++    A reader × theme-origin (plan_spine or reader_addition) × theme × position table with the argument
++    and stance of each secondary text, anchored in its own words, plus A among P's readers: consonance,
++    explicit opposition, or no demonstrated engagement. Preserve dates, scope and excerpts. Separate
++    counted uncited readers from inferred affinities; if citation counts are absent, no most-cited
++    ranking can be made. Use the supplied author/person identities and source roles. If a document is an
++    evidence index, treat its routing, locations and counts as metadata; its duplicated quotations do
++    not create an independent source. Anchor substantive claims in the actual citing text, held primary
++    window or secondary text. Keep coauthorship and nested quotations. Read the body, not just titles,
++    bibliographies or headers. A document outside a dimension's role gets no positive row in that
++    dimension. Report that scope explicitly. Do not turn an incomplete check into a source's silence.
++    The held sample is not the author's complete work or the thinker's entire reception. Dates missing
++    from metadata stay unknown unless stated in the source.
++
++    Mark A as reference_point and exclude those rows from secondary-reader totals. A-to-reader silence
++    requires a scoped explicit citation-ledger zero, with its direction and coverage; absent counts
++    remain unknown.
++
++    Do: Prefer the supplied Stacks markers=1 rendition of the same identified work and edition. Use the
++    actual supplied bytes and document key; a card cannot fetch or replace a rendition. When
++    unavailable, retain the supplied pdftotext window and label that fallback. Keep rendition identity,
++    printed page and PDF page distinct, and preserve the works-registry section UID/title and edition
++    where supplied. A section is a locus, not an inferred page mapping. Never infer edition equivalence
++    from equal page numbers, invent a section title, correct OCR inside a quotation, or supply words
++    from memory. A replacement rendition requires a new source snapshot and anchor checks; overlapping
++    renditions remain one citation event.
+   scoped_outcomes: true
+   routing:
+     cheap: openrouter/openai/gpt-5.6-luna
+@@ -35,12 +50,27 @@
+     name: Each reader's argument about P
+     questions:
+     - What does this secondary text argue about the thinker, and what problem is that reading meant to answer?
+-    method_card: 'Do: Read each held secondary text on its own terms. For A''s text, record a reference reading,
+-      not a second member of the reception sample. Primary windows and indexes are not secondary readers. Select
+-      literal spans that carry the actor, predicate, object and necessary qualification. A name or topic alone cannot
+-      support a reading. Use separate anchor-b/doc-b for a second span; never stitch quotations. Keep attribution,
+-      negation, modality, edition and chronology. Re-anchor, narrow or reject a claim whose quotation omits its
+-      predicate. Code checks only anchors and IDs; the model must judge the reading against the supplied text.'
++    method_card: >-
++      Do: Read each held secondary text on its own terms. For A's text, record a reference reading, not a
++      second member of the reception sample. Primary windows and indexes are not secondary readers. Select
++      literal spans that carry the actor, predicate, object and necessary qualification. A name or topic
++      alone cannot support a reading. Use separate anchor-b/doc-b for a second span; never stitch
++      quotations. Keep attribution, negation, modality, edition and chronology. Re-anchor, narrow or
++      reject a claim whose quotation omits its predicate. Code checks only anchors and IDs; the model must
++      judge the reading against the supplied text.
++
++      Do: Carry role: reader|reference_point in reader rows and the reader_theme_position table. A's
++      supplied texts are reference_point rows, retained for comparison and excluded from counts of
++      secondary readers; deduplicate secondary readers by supplied person identity and report reader and
++      text totals separately. Keep theme-origin plan_spine|reader_addition, dates and excerpt limits. An
++      A-to-reader claim of never engages requires an explicit zero in the supplied Stacks citation ledger,
++      with ledger row ID, snapshot, checked A texts/date range, citation-event unit and resolved
++      identities/aliases. Report only not engaged in that checked corpus; an absent count or bounded
++      reception excerpt is unknown, not zero. The reverse reader-to-A citation in cites_author cannot
++      establish A-to-reader engagement. A most-cited uncited list also requires a separate supplied
++      ranking/count basis and date eligibility; no local mention frequency ranking. Cite the literal
++      metadata row for a count/zero and actual source passages for interpretations; metadata is not a
++      substantive witness. Preserve count direction and authority in the final tables.
+     indicators:
+     - argue
+     - interpretation
+@@ -48,9 +78,10 @@
+     scope: document
+     load_bearing: true
+     id_prefix: D1
+-    answer_shape: '[D1.F<n>] <one scoped finding> — dim: reader_argument — reader-text-year: <identity/date> — argument:
+-      <specific thesis> — role: <secondary reader or A reference point> — anchor: "<verbatim supporting clause,
+-      <=200 chars>" — doc: <actual supplied source key> — confidence: high|medium|low'
++    answer_shape: >-
++      [D1.F<n>] <one scoped finding> — dim: reader_argument — reader-text-year: <identity/date> —
++      argument: <specific thesis> — role: reader|reference_point — anchor: "<verbatim supporting clause,
++      <=200 chars>" — doc: <actual supplied source key> — confidence: high|medium|low
+   - key: reader_stance
+     name: Each reader's stance
+     questions:
+@@ -93,10 +124,12 @@
+     scope: document
+     load_bearing: true
+     id_prefix: D3
+-    answer_shape: '[D3.F<n>] <one scoped finding> — dim: theme_position — reader: <identity> — theme-origin: plan_spine|reader_addition
+-      — theme: <plan/engagement theme, or labelled reader addition> — plan-theme-link: <spine theme or outside-spine>
+-      — position: <specific interpretation> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <actual
+-      supplied source key> — confidence: high|medium|low'
++    answer_shape: >-
++      [D3.F<n>] <one scoped finding> — dim: theme_position — reader: <identity> — theme-origin:
++      plan_spine|reader_addition — theme: <plan/engagement theme, or labelled reader addition> —
++      plan-theme-link: <spine theme or outside-spine> — position: <specific interpretation> — anchor:
++      "<verbatim supporting clause, <=200 chars>" — doc: <actual supplied source key> — confidence:
++      high|medium|low — role: reader|reference_point
+   - key: cites_author
+     name: Documented engagement with A
+     questions:
+@@ -122,13 +155,28 @@
+     name: Dates, excerpts and count authority
+     questions:
+     - What date, excerpt coverage and supplied citation counts delimit this reader's relevance to A?
+-    method_card: 'Do: Keep composition, translation and publication dates distinct. Do not make a later reader someone
+-      A failed to engage. Citation counts identify most-cited readers only when a supplied count table says so;
+-      name-overlap counts in a local sample are not scholarly citation counts. Select literal spans that carry the
+-      actor, predicate, object and necessary qualification. A name or topic alone cannot support a reading. Use
+-      separate anchor-b/doc-b for a second span; never stitch quotations. Keep attribution, negation, modality,
+-      edition and chronology. Re-anchor, narrow or reject a claim whose quotation omits its predicate. Code checks
+-      only anchors and IDs; the model must judge the reading against the supplied text.'
++    method_card: >-
++      Do: Keep composition, translation and publication dates distinct. Do not make a later reader someone
++      A failed to engage. Citation counts identify most-cited readers only when a supplied count table
++      says so; name-overlap counts in a local sample are not scholarly citation counts. Select literal
++      spans that carry the actor, predicate, object and necessary qualification. A name or topic alone
++      cannot support a reading. Use separate anchor-b/doc-b for a second span; never stitch quotations.
++      Keep attribution, negation, modality, edition and chronology. Re-anchor, narrow or reject a claim
++      whose quotation omits its predicate. Code checks only anchors and IDs; the model must judge the
++      reading against the supplied text.
++
++      Do: Carry role: reader|reference_point in reader rows and the reader_theme_position table. A's
++      supplied texts are reference_point rows, retained for comparison and excluded from counts of
++      secondary readers; deduplicate secondary readers by supplied person identity and report reader and
++      text totals separately. Keep theme-origin plan_spine|reader_addition, dates and excerpt limits. An
++      A-to-reader claim of never engages requires an explicit zero in the supplied Stacks citation ledger,
++      with ledger row ID, snapshot, checked A texts/date range, citation-event unit and resolved
++      identities/aliases. Report only not engaged in that checked corpus; an absent count or bounded
++      reception excerpt is unknown, not zero. The reverse reader-to-A citation in cites_author cannot
++      establish A-to-reader engagement. A most-cited uncited list also requires a separate supplied
++      ranking/count basis and date eligibility; no local mention frequency ranking. Cite the literal
++      metadata row for a count/zero and actual source passages for interpretations; metadata is not a
++      substantive witness. Preserve count direction and authority in the final tables.
+     indicators:
+     - published
+     - excerpt
+@@ -136,23 +184,41 @@
+     scope: document
+     load_bearing: false
+     id_prefix: D5
+-    answer_shape: '[D5.F<n>] <one scoped finding> — dim: reception_scope — reader: <identity> — year: <stated or
+-      unknown> — inspected: <full article or bounded book excerpt> — count-basis: <supplied count record or absent>
+-      — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <actual supplied source key> — confidence: high|medium|low'
++    answer_shape: >-
++      [D5.F<n>] <one scoped finding> — dim: reception_scope — reader: <identity> — year: <stated or
++      unknown> — inspected: <full article or bounded book excerpt> — count-basis: <supplied count record
++      or absent> — anchor: "<verbatim supporting clause, <=200 chars>" — doc: <actual supplied source key>
++      — confidence: high|medium|low — role: reader|reference_point — count-direction: <A-to-reader or
++      ranking basis> — ledger-row: <supplied ID or absent> — checked-scope: <texts/dates/aliases/snapshot
++      or unknown>
+   - key: among_readers
+     name: A's place among the supplied readers
+     questions:
+     - Which readings is A consonant with, explicitly opposed to, or not demonstrably engaging, on aligned themes
+       and dates?
+-    method_card: 'Do: Pair A''s reading and the secondary reader''s own words from distinct documents. Consonance
+-      is an analytical comparison, not evidence of influence. Distinguish explicit criticism from an analyst''s
+-      contrast. An earlier date permits possible engagement but proves none. Any most-cited uncited list must come
+-      exclusively from supplied counts with coverage and date eligibility; when counts are absent state unavailable.
+-      Select literal spans that carry the actor, predicate, object and necessary qualification. A name or topic
+-      alone cannot support a reading. Use separate anchor-b/doc-b for a second span; never stitch quotations. Keep
+-      attribution, negation, modality, edition and chronology. Re-anchor, narrow or reject a claim whose quotation
+-      omits its predicate. Code checks only anchors and IDs; the model must judge the reading against the supplied
+-      text.'
++    method_card: >-
++      Do: Pair A's reading and the secondary reader's own words from distinct documents. Consonance is an
++      analytical comparison, not evidence of influence. Distinguish explicit criticism from an analyst's
++      contrast. An earlier date permits possible engagement but proves none. Any most-cited uncited list
++      must come exclusively from supplied counts with coverage and date eligibility; when counts are
++      absent state unavailable. Select literal spans that carry the actor, predicate, object and necessary
++      qualification. A name or topic alone cannot support a reading. Use separate anchor-b/doc-b for a
++      second span; never stitch quotations. Keep attribution, negation, modality, edition and chronology.
++      Re-anchor, narrow or reject a claim whose quotation omits its predicate. Code checks only anchors
++      and IDs; the model must judge the reading against the supplied text.
++
++      Do: Carry role: reader|reference_point in reader rows and the reader_theme_position table. A's
++      supplied texts are reference_point rows, retained for comparison and excluded from counts of
++      secondary readers; deduplicate secondary readers by supplied person identity and report reader and
++      text totals separately. Keep theme-origin plan_spine|reader_addition, dates and excerpt limits. An
++      A-to-reader claim of never engages requires an explicit zero in the supplied Stacks citation ledger,
++      with ledger row ID, snapshot, checked A texts/date range, citation-event unit and resolved
++      identities/aliases. Report only not engaged in that checked corpus; an absent count or bounded
++      reception excerpt is unknown, not zero. The reverse reader-to-A citation in cites_author cannot
++      establish A-to-reader engagement. A most-cited uncited list also requires a separate supplied
++      ranking/count basis and date eligibility; no local mention frequency ranking. Cite the literal
++      metadata row for a count/zero and actual source passages for interpretations; metadata is not a
++      substantive witness. Preserve count direction and authority in the final tables.
+     indicators:
+     - paired theme positions
+     - cites A
+@@ -195,8 +261,32 @@
+       attribution, negation, modality, edition and chronology. Re-anchor, narrow or reject a claim whose quotation
+       omits its predicate. Code checks only anchors and IDs; the model must judge the reading against the supplied
+       text.'
+-    - Check every passage/pair against its actual source role and preserve both keys for relational claims. Verify
+-      table meanings, voice and edition uncertainty; a search hit is not a confirmed cited page.
++    - >-
++      Check every passage/pair against its actual source role and preserve both keys for relational
++      claims. Verify table meanings, voice and edition uncertainty; a search hit is not a confirmed cited
++      page.
++
++      Do: Carry role: reader|reference_point in reader rows and the reader_theme_position table. A's
++      supplied texts are reference_point rows, retained for comparison and excluded from counts of
++      secondary readers; deduplicate secondary readers by supplied person identity and report reader and
++      text totals separately. Keep theme-origin plan_spine|reader_addition, dates and excerpt limits. An
++      A-to-reader claim of never engages requires an explicit zero in the supplied Stacks citation ledger,
++      with ledger row ID, snapshot, checked A texts/date range, citation-event unit and resolved
++      identities/aliases. Report only not engaged in that checked corpus; an absent count or bounded
++      reception excerpt is unknown, not zero. The reverse reader-to-A citation in cites_author cannot
++      establish A-to-reader engagement. A most-cited uncited list also requires a separate supplied
++      ranking/count basis and date eligibility; no local mention frequency ranking. Cite the literal
++      metadata row for a count/zero and actual source passages for interpretations; metadata is not a
++      substantive witness. Preserve count direction and authority in the final tables.
++
++      Do: Prefer the supplied Stacks markers=1 rendition of the same identified work and edition. Use the
++      actual supplied bytes and document key; a card cannot fetch or replace a rendition. When
++      unavailable, retain the supplied pdftotext window and label that fallback. Keep rendition identity,
++      printed page and PDF page distinct, and preserve the works-registry section UID/title and edition
++      where supplied. A section is a locus, not an inferred page mapping. Never infer edition equivalence
++      from equal page numbers, invent a section title, correct OCR inside a quotation, or supply words
++      from memory. A replacement rendition requires a new source snapshot and anchor checks; overlapping
++      renditions remain one citation event.
+   - key: synthesize
+     kind: synthesize
+     consumes:
+@@ -208,28 +298,55 @@
+     tables:
+     - reader_theme_position
+     - author_among_readers
+-    brief: '1. A reader × theme-origin (plan_spine or reader_addition) × theme × position table with the argument
+-      and stance of each secondary text, anchored in its own words, plus A among P''s readers: consonance, explicit
+-      opposition, or no demonstrated engagement. Preserve dates, scope and excerpts. Separate counted uncited readers
+-      from inferred affinities; if citation counts are absent, no most-cited ranking can be made.
+-
+-      2. Give the source-specific reading with qualifications, then render the named Markdown tables. Every positive
+-      cell cites its final supporting finding ID; unknown cells state the actual limit.
+-
+-      3. Preserve granular evidence through reconciliation: inspect each final table cell against its cited final
+-      row and source context. Renumber citations with rows; no old ID may silently acquire a new meaning. Count
+-      passage/pair IDs, not findings, for coverage.
+-
+-      4. Give a short read-first route and the unsettled question. No claim of exhaustive coverage without a complete
+-      supplied inventory and actual inspection. Use the supplied author/person identities and source roles. If a
+-      document is an evidence index, treat its routing, locations and counts as metadata; its duplicated quotations
+-      do not create an independent source. Anchor substantive claims in the actual citing text, held primary window
+-      or secondary text. Keep coauthorship and nested quotations. Read the body, not just titles, bibliographies
+-      or headers. A document outside a dimension''s role gets no positive row in that dimension. Report that scope
+-      explicitly. Do not turn an incomplete check into a source''s silence. The held sample is not the author''s
+-      complete work or the thinker''s entire reception. Dates missing from metadata stay unknown unless stated in
+-      the source. Select literal spans that carry the actor, predicate, object and necessary qualification. A name
+-      or topic alone cannot support a reading. Use separate anchor-b/doc-b for a second span; never stitch quotations.
+-      Keep attribution, negation, modality, edition and chronology. Re-anchor, narrow or reject a claim whose quotation
+-      omits its predicate. Code checks only anchors and IDs; the model must judge the reading against the supplied
+-      text.'
++    brief: >-
++      1. A reader × theme-origin (plan_spine or reader_addition) × theme × position table with the
++      argument and stance of each secondary text, anchored in its own words, plus A among P's readers:
++      consonance, explicit opposition, or no demonstrated engagement. Preserve dates, scope and excerpts.
++      Separate counted uncited readers from inferred affinities; if citation counts are absent, no
++      most-cited ranking can be made.
++
++      2. Give the source-specific reading with qualifications, then render the named Markdown tables.
++      Every positive cell cites its final supporting finding ID; unknown cells state the actual limit.
++
++      3. Preserve granular evidence through reconciliation: inspect each final table cell against its
++      cited final row and source context. Renumber citations with rows; no old ID may silently acquire a
++      new meaning. Count passage/pair IDs, not findings, for coverage.
++
++      4. Give a short read-first route and the unsettled question. No claim of exhaustive coverage without
++      a complete supplied inventory and actual inspection. Use the supplied author/person identities and
++      source roles. If a document is an evidence index, treat its routing, locations and counts as
++      metadata; its duplicated quotations do not create an independent source. Anchor substantive claims
++      in the actual citing text, held primary window or secondary text. Keep coauthorship and nested
++      quotations. Read the body, not just titles, bibliographies or headers. A document outside a
++      dimension's role gets no positive row in that dimension. Report that scope explicitly. Do not turn
++      an incomplete check into a source's silence. The held sample is not the author's complete work or
++      the thinker's entire reception. Dates missing from metadata stay unknown unless stated in the
++      source. Select literal spans that carry the actor, predicate, object and necessary qualification. A
++      name or topic alone cannot support a reading. Use separate anchor-b/doc-b for a second span; never
++      stitch quotations. Keep attribution, negation, modality, edition and chronology. Re-anchor, narrow
++      or reject a claim whose quotation omits its predicate. Code checks only anchors and IDs; the model
++      must judge the reading against the supplied text.
++
++
++      Do: Carry role: reader|reference_point in reader rows and the reader_theme_position table. A's
++      supplied texts are reference_point rows, retained for comparison and excluded from counts of
++      secondary readers; deduplicate secondary readers by supplied person identity and report reader and
++      text totals separately. Keep theme-origin plan_spine|reader_addition, dates and excerpt limits. An
++      A-to-reader claim of never engages requires an explicit zero in the supplied Stacks citation ledger,
++      with ledger row ID, snapshot, checked A texts/date range, citation-event unit and resolved
++      identities/aliases. Report only not engaged in that checked corpus; an absent count or bounded
++      reception excerpt is unknown, not zero. The reverse reader-to-A citation in cites_author cannot
++      establish A-to-reader engagement. A most-cited uncited list also requires a separate supplied
++      ranking/count basis and date eligibility; no local mention frequency ranking. Cite the literal
++      metadata row for a count/zero and actual source passages for interpretations; metadata is not a
++      substantive witness. Preserve count direction and authority in the final tables.
++
++
++      Do: Prefer the supplied Stacks markers=1 rendition of the same identified work and edition. Use the
++      actual supplied bytes and document key; a card cannot fetch or replace a rendition. When
++      unavailable, retain the supplied pdftotext window and label that fallback. Keep rendition identity,
++      printed page and PDF page distinct, and preserve the works-registry section UID/title and edition
++      where supplied. A section is a locus, not an inferred page mapping. Never infer edition equivalence
++      from equal page numbers, invent a section title, correct OCR inside a quotation, or supply words
++      from memory. A replacement rendition requires a new source snapshot and anchor checks; overlapping
++      renditions remain one citation event.

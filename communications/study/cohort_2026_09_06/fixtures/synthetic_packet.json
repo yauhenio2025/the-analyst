@@ -1,0 +1,366 @@
+{
+  "schema_version": "cohort-packet/v1",
+  "packet_id": "fixture-cohort-only",
+  "revision": 1,
+  "fixture_only": true,
+  "author": {
+    "uid": "fixture:A",
+    "name": "Fixture author; not Riley"
+  },
+  "cohort": {
+    "role": "cohort",
+    "doc_key": "context:cohort",
+    "uid": "fixture:cohort",
+    "phrase": "Synthetic shape cohort, never a release cohort",
+    "approved": true,
+    "members": [
+      {
+        "uid": "fixture:P",
+        "name": "Fixture P",
+        "membership_role": "fixture_comparator",
+        "membership_reason": "Invented solely to test shape; no historical membership.",
+        "membership_source": "fixture_definition",
+        "engaged": "yes",
+        "counts": {
+          "total": 1,
+          "mentions": 0,
+          "bibliography_only": 0,
+          "by_text": [
+            {
+              "text_key": "fixture:textP",
+              "year": 2000,
+              "count": 1,
+              "event_ids": [
+                "fixture:eventP"
+              ]
+            }
+          ]
+        },
+        "works_cited": [],
+        "row_id": "COHORT.M1",
+        "anchor": "member: fixture:P; engaged: yes; count: 1; membership: fixture comparator.",
+        "fixture_only": true
+      },
+      {
+        "uid": "fixture:Q",
+        "name": "Fixture Q",
+        "membership_role": "fixture_comparator",
+        "membership_reason": "Invented solely to test shape; no historical membership.",
+        "membership_source": "fixture_definition",
+        "engaged": "yes",
+        "counts": {
+          "total": 1,
+          "mentions": 0,
+          "bibliography_only": 0,
+          "by_text": [
+            {
+              "text_key": "fixture:textQ",
+              "year": null,
+              "count": 1,
+              "event_ids": [
+                "fixture:eventQ"
+              ]
+            }
+          ]
+        },
+        "works_cited": [],
+        "row_id": "COHORT.M2",
+        "anchor": "member: fixture:Q; engaged: yes; count: 1; membership: fixture comparator.",
+        "fixture_only": true
+      },
+      {
+        "uid": "fixture:N",
+        "name": "Fixture N",
+        "membership_role": "fixture_comparator",
+        "membership_reason": "Invented solely to test shape; no historical membership.",
+        "membership_source": "fixture_definition",
+        "engaged": "no",
+        "counts": {
+          "total": 0,
+          "mentions": 0,
+          "bibliography_only": 0,
+          "by_text": []
+        },
+        "works_cited": [],
+        "row_id": "COHORT.M3",
+        "anchor": "member: fixture:N; engaged: no; count: 0; membership: fixture comparator.",
+        "fixture_only": true
+      }
+    ],
+    "not_engaged_residue": [
+      "fixture:N"
+    ],
+    "coverage": {
+      "ledger_snapshot": "fixture-ledger-v1",
+      "count_unit": "canonical_citation_event",
+      "complete": true,
+      "identities_resolved": true,
+      "held_texts": [
+        "fixture:textP",
+        "fixture:textQ"
+      ],
+      "inspected_texts": [
+        "fixture:textP",
+        "fixture:textQ"
+      ],
+      "missing_texts": [],
+      "date_range": [
+        2000,
+        null
+      ],
+      "alias_scope": "All fixture identities explicitly listed",
+      "coauthorship": {
+        "fixture:textQ": [
+          "fixture:A",
+          "fixture:coauthor"
+        ]
+      }
+    },
+    "collective_mentions": []
+  },
+  "plan": {
+    "role": "plan",
+    "doc_key": "context:plan",
+    "sections": [
+      {
+        "id": "reading",
+        "title": "Compare the supplied uses",
+        "questions": [
+          "Which member is a premise and which a foil?"
+        ]
+      }
+    ],
+    "themes": [
+      {
+        "key": "example",
+        "label": "Example",
+        "origin": "plan_spine"
+      }
+    ],
+    "warnings": [
+      "Synthetic fixture only",
+      "Preserve coauthorship and the unknown date",
+      "No inference of historical membership"
+    ]
+  },
+  "pairs": [
+    {
+      "pair_key": "fixture:A__fixture:P",
+      "doc_key": "pair::fixture:A__fixture:P",
+      "author_uid": "fixture:A",
+      "member_uid": "fixture:P",
+      "fixture_only": true,
+      "ledgers": [
+        {
+          "engine_key": "citation_engagement_map",
+          "artifact_id": "fixture-artifact-P",
+          "artifact_sha256": "197ef0617b9d2ff7d952f19f07099e44d9db2455a8a6f9bdb7d702d0985d0f81",
+          "artifact_text": "[D3.F1] The fixture author uses P on this proposition. — dim: citation_move — anchor: \"I adopt P's distinction, but only for this example.\" — doc: fixture:textP\n[D3.F2] The fixture author uses P on this proposition. — dim: citation_move — anchor: \"I adopt P's distinction, but only for this example.\" — doc: fixture:textP",
+          "rows": [
+            {
+              "row_id": "D3.F1",
+              "ref": "fixture:A__fixture:P::citation_engagement_map::D3.F1",
+              "dimension": "citation_move",
+              "claim": "The fixture author uses P on this proposition.",
+              "raw_row": "[D3.F1] The fixture author uses P on this proposition. — dim: citation_move — anchor: \"I adopt P's distinction, but only for this example.\" — doc: fixture:textP",
+              "status": "confirmed",
+              "anchor_status": "verified",
+              "canonical_ref": null,
+              "event_ids": [
+                "fixture:eventP"
+              ],
+              "anchors": [
+                {
+                  "text": "I adopt P's distinction, but only for this example.",
+                  "source_doc_key": "fixture:textP",
+                  "locus": {
+                    "printed_page": "1",
+                    "pdf_page": 2,
+                    "section_uid": null,
+                    "section_title": null,
+                    "edition": "fixture",
+                    "how": "page"
+                  },
+                  "voice": "A"
+                }
+              ],
+              "fields": {
+                "move": "adopted_framework",
+                "stance": "adopts",
+                "year": 2000,
+                "text_key": "fixture:textP"
+              }
+            },
+            {
+              "row_id": "D3.F2",
+              "ref": "fixture:A__fixture:P::citation_engagement_map::D3.F2",
+              "dimension": "citation_move",
+              "claim": "The fixture author uses P on this proposition.",
+              "raw_row": "[D3.F2] The fixture author uses P on this proposition. — dim: citation_move — anchor: \"I adopt P's distinction, but only for this example.\" — doc: fixture:textP",
+              "status": "superseded",
+              "anchor_status": "verified",
+              "canonical_ref": "fixture:A__fixture:P::citation_engagement_map::D3.F1",
+              "event_ids": [
+                "fixture:eventP"
+              ],
+              "anchors": [
+                {
+                  "text": "I adopt P's distinction, but only for this example.",
+                  "source_doc_key": "fixture:textP",
+                  "locus": {
+                    "printed_page": "1",
+                    "pdf_page": 2,
+                    "section_uid": null,
+                    "section_title": null,
+                    "edition": "fixture",
+                    "how": "page"
+                  },
+                  "voice": "A"
+                }
+              ],
+              "fields": {
+                "move": "adopted_framework",
+                "stance": "adopts",
+                "year": 2000,
+                "text_key": "fixture:textP"
+              }
+            }
+          ],
+          "reviewed_empty": false
+        }
+      ],
+      "lens_status": {
+        "citation_engagement_map": "run",
+        "citation_fidelity_audit": "not_run",
+        "citation_reception_map": "not_run"
+      },
+      "tables": [
+        {
+          "table_key": "passage_move_stance_locus",
+          "markdown": "Fixture table points to its canonical row.",
+          "row_refs": [
+            "fixture:A__fixture:P::citation_engagement_map::D3.F1"
+          ]
+        }
+      ],
+      "memo": {
+        "markdown": "Fixture memo: see canonical pair row; this is a restatement.",
+        "canonical_uri": "fixture://pair/P"
+      }
+    },
+    {
+      "pair_key": "fixture:A__fixture:Q",
+      "doc_key": "pair::fixture:A__fixture:Q",
+      "author_uid": "fixture:A",
+      "member_uid": "fixture:Q",
+      "fixture_only": true,
+      "ledgers": [
+        {
+          "engine_key": "citation_engagement_map",
+          "artifact_id": "fixture-artifact-Q",
+          "artifact_sha256": "5fa60f451dea02bdb5c2dfacb02031a09c8fd9b7a171334d639bd2fa2d5fd4c2",
+          "artifact_text": "[D3.F1] The fixture author uses Q on this proposition. — dim: citation_move — anchor: \"We dispute Q's example, while retaining its qualification.\" — doc: fixture:textQ\n[D3.F2] The fixture author uses Q on this proposition. — dim: citation_move — anchor: \"We dispute Q's example, while retaining its qualification.\" — doc: fixture:textQ",
+          "rows": [
+            {
+              "row_id": "D3.F1",
+              "ref": "fixture:A__fixture:Q::citation_engagement_map::D3.F1",
+              "dimension": "citation_move",
+              "claim": "The fixture author uses Q on this proposition.",
+              "raw_row": "[D3.F1] The fixture author uses Q on this proposition. — dim: citation_move — anchor: \"We dispute Q's example, while retaining its qualification.\" — doc: fixture:textQ",
+              "status": "confirmed",
+              "anchor_status": "verified",
+              "canonical_ref": null,
+              "event_ids": [
+                "fixture:eventQ"
+              ],
+              "anchors": [
+                {
+                  "text": "We dispute Q's example, while retaining its qualification.",
+                  "source_doc_key": "fixture:textQ",
+                  "locus": {
+                    "printed_page": "1",
+                    "pdf_page": 2,
+                    "section_uid": null,
+                    "section_title": null,
+                    "edition": "fixture",
+                    "how": "page"
+                  },
+                  "voice": "A and coauthor"
+                }
+              ],
+              "fields": {
+                "move": "foil",
+                "stance": "disputes",
+                "year": null,
+                "text_key": "fixture:textQ"
+              }
+            },
+            {
+              "row_id": "D3.F2",
+              "ref": "fixture:A__fixture:Q::citation_engagement_map::D3.F2",
+              "dimension": "citation_move",
+              "claim": "The fixture author uses Q on this proposition.",
+              "raw_row": "[D3.F2] The fixture author uses Q on this proposition. — dim: citation_move — anchor: \"We dispute Q's example, while retaining its qualification.\" — doc: fixture:textQ",
+              "status": "superseded",
+              "anchor_status": "verified",
+              "canonical_ref": "fixture:A__fixture:Q::citation_engagement_map::D3.F1",
+              "event_ids": [
+                "fixture:eventQ"
+              ],
+              "anchors": [
+                {
+                  "text": "We dispute Q's example, while retaining its qualification.",
+                  "source_doc_key": "fixture:textQ",
+                  "locus": {
+                    "printed_page": "1",
+                    "pdf_page": 2,
+                    "section_uid": null,
+                    "section_title": null,
+                    "edition": "fixture",
+                    "how": "page"
+                  },
+                  "voice": "A and coauthor"
+                }
+              ],
+              "fields": {
+                "move": "foil",
+                "stance": "disputes",
+                "year": null,
+                "text_key": "fixture:textQ"
+              }
+            }
+          ],
+          "reviewed_empty": false
+        }
+      ],
+      "lens_status": {
+        "citation_engagement_map": "run",
+        "citation_fidelity_audit": "not_run",
+        "citation_reception_map": "not_run"
+      },
+      "tables": [
+        {
+          "table_key": "passage_move_stance_locus",
+          "markdown": "Fixture table points to its canonical row.",
+          "row_refs": [
+            "fixture:A__fixture:Q::citation_engagement_map::D3.F1"
+          ]
+        }
+      ],
+      "memo": {
+        "markdown": "Fixture memo: see canonical pair row; this is a restatement.",
+        "canonical_uri": "fixture://pair/Q"
+      }
+    }
+  ],
+  "source_documents": {
+    "fixture:textP": {
+      "text": "I adopt P's distinction, but only for this example.\nFixture context; this is not Riley or any scholar.",
+      "sha256": "62a213b6a2f4e38af8c8ee38e96d69f58747f97525073d41b4072511ef3ee7ef"
+    },
+    "fixture:textQ": {
+      "text": "We dispute Q's example, while retaining its qualification.\nFixture context; this is not Riley or any scholar.",
+      "sha256": "cabc6583b51c45720e76565602247da9de5e1a21bcff48569e98d9156d1ee4e5"
+    }
+  }
+}
