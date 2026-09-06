@@ -1,10 +1,10 @@
 {
   "costs": {
-    "calls": 22,
-    "known_usd": 2.259124,
+    "calls": 36,
+    "known_usd": 3.311203,
     "reserved_usd": 0,
     "incomplete_calls": 0,
-    "provider_reported_usd": 2.101348
+    "provider_reported_usd": 2.557598
   },
   "calls": [
     {
@@ -974,6 +974,538 @@
       "stop_reason": "stop",
       "output_sha256": "be3c353fd1917bf1aa97f97c59007ff16c00c9aa5dbdf02cc486e7ad4d824da0",
       "duration_ms": 76153
+    },
+    {
+      "path": "calls/judge__C5__checked__chen__sol/0001.json",
+      "status": "complete",
+      "model_requested": "openrouter/openai/gpt-5.6-sol",
+      "role": "sol",
+      "label": "independent rubric score",
+      "started_at": 1788674043.5526392,
+      "reservation_usd": 0.22429880000000002,
+      "cost_usd": 0.058911,
+      "prompt_sha256": "c5ea50d887460ab3763d4b36a3a23c7f005ae17a80d66151b5da49797b51347e",
+      "max_output_tokens": 1800,
+      "provider_cost_usd": 0.058911,
+      "provider_usage": {
+        "completion_tokens": 977,
+        "prompt_tokens": 19657,
+        "total_tokens": 20634,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 516,
+          "rejected_prediction_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 19654,
+          "video_tokens": 0
+        },
+        "cost": 0.058911,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.058911,
+          "upstream_inference_prompt_cost": 0.049141,
+          "upstream_inference_completions_cost": 0.00977
+        }
+      },
+      "input_tokens": 19657,
+      "output_tokens": 977,
+      "model_used": "openai/gpt-5.6-sol",
+      "stop_reason": "stop",
+      "output_sha256": "9c3a3dfa151de28cbd30b3d622e203c497d0aebc7e06b146ccdab6da0d73ce19",
+      "duration_ms": 23678
+    },
+    {
+      "path": "calls/judge__C5__checked__chen__sonnet/0001.json",
+      "status": "complete",
+      "model_requested": "claude-sonnet-4-6",
+      "role": "sonnet",
+      "label": "independent rubric score",
+      "started_at": 1788674043.7553434,
+      "reservation_usd": 0.33644820000000003,
+      "cost_usd": 0.072969,
+      "prompt_sha256": "c5ea50d887460ab3763d4b36a3a23c7f005ae17a80d66151b5da49797b51347e",
+      "max_output_tokens": 1800,
+      "provider_usage": {
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "inference_geo": "global",
+        "input_tokens": 21473,
+        "output_tokens": 570,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": "standard"
+      },
+      "input_tokens": 21473,
+      "output_tokens": 570,
+      "model_used": "claude-sonnet-4-6",
+      "stop_reason": "end_turn",
+      "output_sha256": "68e137f11e49b42c2b334e17d481565da600ec78e185824f358fa3f083c2f00b",
+      "duration_ms": 18706
+    },
+    {
+      "path": "calls/judge__I11__checked__subsea__sol/0001.json",
+      "status": "complete",
+      "model_requested": "openrouter/openai/gpt-5.6-sol",
+      "role": "sol",
+      "label": "independent rubric score",
+      "started_at": 1788674080.286258,
+      "reservation_usd": 0.29382980000000003,
+      "cost_usd": 0.081069,
+      "prompt_sha256": "9cecac65f2d62e24ccee5e6f3a49ed38319f3833d2c893218f707a1793341793",
+      "max_output_tokens": 1800,
+      "provider_cost_usd": 0.0810685,
+      "provider_usage": {
+        "completion_tokens": 1045,
+        "prompt_tokens": 28248,
+        "total_tokens": 29293,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 493,
+          "rejected_prediction_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 28245,
+          "video_tokens": 0
+        },
+        "cost": 0.0810685,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.0810685,
+          "upstream_inference_prompt_cost": 0.0706185,
+          "upstream_inference_completions_cost": 0.01045
+        }
+      },
+      "input_tokens": 28248,
+      "output_tokens": 1045,
+      "model_used": "openai/gpt-5.6-sol",
+      "stop_reason": "stop",
+      "output_sha256": "7a169a3b16800d35faa9c4ffa825cee9804b1b0b499187b6d5f4b82dd7f88f53",
+      "duration_ms": 19281
+    },
+    {
+      "path": "calls/judge__I11__checked__subsea__sonnet/0001.json",
+      "status": "complete",
+      "model_requested": "claude-sonnet-4-6",
+      "role": "sonnet",
+      "label": "independent rubric score",
+      "started_at": 1788674073.4558127,
+      "reservation_usd": 0.4407447,
+      "cost_usd": 0.102873,
+      "prompt_sha256": "9cecac65f2d62e24ccee5e6f3a49ed38319f3833d2c893218f707a1793341793",
+      "max_output_tokens": 1800,
+      "provider_usage": {
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "inference_geo": "global",
+        "input_tokens": 31091,
+        "output_tokens": 640,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": "standard"
+      },
+      "input_tokens": 31091,
+      "output_tokens": 640,
+      "model_used": "claude-sonnet-4-6",
+      "stop_reason": "end_turn",
+      "output_sha256": "75383edf787b3c7c8c70e8ed5d5cfec2951501181dcaf87d4161b74425b11755",
+      "duration_ms": 26012
+    },
+    {
+      "path": "calls/judge__I13__old__subsea__sol/0001.json",
+      "status": "complete",
+      "model_requested": "openrouter/openai/gpt-5.6-sol",
+      "role": "sol",
+      "label": "independent rubric score",
+      "started_at": 1788674086.2740035,
+      "reservation_usd": 0.2536138,
+      "cost_usd": 0.069903,
+      "prompt_sha256": "df2245c3600787fbca3a060fb8b8113502a902e199fee877267eedce0d4f0c5c",
+      "max_output_tokens": 1800,
+      "provider_cost_usd": 0.0699035,
+      "provider_usage": {
+        "completion_tokens": 897,
+        "prompt_tokens": 24374,
+        "total_tokens": 25271,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 372,
+          "rejected_prediction_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 24371,
+          "video_tokens": 0
+        },
+        "cost": 0.0699035,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.0699035,
+          "upstream_inference_prompt_cost": 0.0609335,
+          "upstream_inference_completions_cost": 0.00897
+        }
+      },
+      "input_tokens": 24374,
+      "output_tokens": 897,
+      "model_used": "openai/gpt-5.6-sol",
+      "stop_reason": "stop",
+      "output_sha256": "8df98be4d47825e6db221e49857d020bf37c369ac3e23f7f2c852433a1af9f09",
+      "duration_ms": 16821
+    },
+    {
+      "path": "calls/judge__I13__old__subsea__sonnet/0001.json",
+      "status": "complete",
+      "model_requested": "claude-sonnet-4-6",
+      "role": "sonnet",
+      "label": "independent rubric score",
+      "started_at": 1788674082.9703605,
+      "reservation_usd": 0.3804207,
+      "cost_usd": 0.092814,
+      "prompt_sha256": "df2245c3600787fbca3a060fb8b8113502a902e199fee877267eedce0d4f0c5c",
+      "max_output_tokens": 1800,
+      "provider_usage": {
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "inference_geo": "global",
+        "input_tokens": 26868,
+        "output_tokens": 814,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": "standard"
+      },
+      "input_tokens": 26868,
+      "output_tokens": 814,
+      "model_used": "claude-sonnet-4-6",
+      "stop_reason": "end_turn",
+      "output_sha256": "7637ff101598847d6f33271d43c4e6016a8f5d487e633d647c26211335fa4a8b",
+      "duration_ms": 23139
+    },
+    {
+      "path": "calls/judge__I4__checked__rationality__sol/0001.json",
+      "status": "complete",
+      "model_requested": "openrouter/openai/gpt-5.6-sol",
+      "role": "sol",
+      "label": "independent rubric score",
+      "started_at": 1788674062.4732885,
+      "reservation_usd": 0.2381038,
+      "cost_usd": 0.053911,
+      "prompt_sha256": "d68f7d2bc16567d2028f32e345c977637ba3db628d056274cccda9bb34369664",
+      "max_output_tokens": 1800,
+      "provider_cost_usd": 0.053911,
+      "provider_usage": {
+        "completion_tokens": 543,
+        "prompt_tokens": 19393,
+        "total_tokens": 19936,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 237,
+          "rejected_prediction_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 19390,
+          "video_tokens": 0
+        },
+        "cost": 0.053911,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.053911,
+          "upstream_inference_prompt_cost": 0.048481,
+          "upstream_inference_completions_cost": 0.00543
+        }
+      },
+      "input_tokens": 19393,
+      "output_tokens": 543,
+      "model_used": "openai/gpt-5.6-sol",
+      "stop_reason": "stop",
+      "output_sha256": "b8cda78ea58a4f075ac5c92f4355415247dc300a605ba8c7a52487ea7d5ad691",
+      "duration_ms": 10972
+    },
+    {
+      "path": "calls/judge__I4__checked__rationality__sonnet/0001.json",
+      "status": "complete",
+      "model_requested": "claude-sonnet-4-6",
+      "role": "sonnet",
+      "label": "independent rubric score",
+      "started_at": 1788674057.6369078,
+      "reservation_usd": 0.3571557,
+      "cost_usd": 0.072615,
+      "prompt_sha256": "d68f7d2bc16567d2028f32e345c977637ba3db628d056274cccda9bb34369664",
+      "max_output_tokens": 1800,
+      "provider_usage": {
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "inference_geo": "global",
+        "input_tokens": 20825,
+        "output_tokens": 676,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": "standard"
+      },
+      "input_tokens": 20825,
+      "output_tokens": 676,
+      "model_used": "claude-sonnet-4-6",
+      "stop_reason": "end_turn",
+      "output_sha256": "02d6e840829e71b8404e001e0891ec6d8d4084666c4aa92c5e9226476eaa425f",
+      "duration_ms": 25323
+    },
+    {
+      "path": "calls/judge__I9__checked__rationality__sol/0001.json",
+      "status": "complete",
+      "model_requested": "openrouter/openai/gpt-5.6-sol",
+      "role": "sol",
+      "label": "independent rubric score",
+      "started_at": 1788674067.2409647,
+      "reservation_usd": 0.24426600000000004,
+      "cost_usd": 0.056946,
+      "prompt_sha256": "ca894a3f79e49afbef21189bab202109e2e81b10e6118f383b8861483b95d3aa",
+      "max_output_tokens": 1800,
+      "provider_cost_usd": 0.056946,
+      "provider_usage": {
+        "completion_tokens": 671,
+        "prompt_tokens": 20095,
+        "total_tokens": 20766,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 367,
+          "rejected_prediction_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 20092,
+          "video_tokens": 0
+        },
+        "cost": 0.056946,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.056946,
+          "upstream_inference_prompt_cost": 0.050236,
+          "upstream_inference_completions_cost": 0.00671
+        }
+      },
+      "input_tokens": 20095,
+      "output_tokens": 671,
+      "model_used": "openai/gpt-5.6-sol",
+      "stop_reason": "stop",
+      "output_sha256": "86a6933d85176cd5df02d546ed19fef3baaf813ed002df46b3e7830ec0bbfbe5",
+      "duration_ms": 13035
+    },
+    {
+      "path": "calls/judge__I9__checked__rationality__sonnet/0001.json",
+      "status": "complete",
+      "model_requested": "claude-sonnet-4-6",
+      "role": "sonnet",
+      "label": "independent rubric score",
+      "started_at": 1788674066.689592,
+      "reservation_usd": 0.3663990000000001,
+      "cost_usd": 0.07353,
+      "prompt_sha256": "ca894a3f79e49afbef21189bab202109e2e81b10e6118f383b8861483b95d3aa",
+      "max_output_tokens": 1800,
+      "provider_usage": {
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "inference_geo": "global",
+        "input_tokens": 21575,
+        "output_tokens": 587,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": "standard"
+      },
+      "input_tokens": 21575,
+      "output_tokens": 587,
+      "model_used": "claude-sonnet-4-6",
+      "stop_reason": "end_turn",
+      "output_sha256": "598722ce63dc37599a6b641d5d6a1b4bde7032808f0d2a20dc9f8cb1a03b3935",
+      "duration_ms": 19574
+    },
+    {
+      "path": "calls/judge__R2__checked__harris__sol/0001.json",
+      "status": "complete",
+      "model_requested": "openrouter/openai/gpt-5.6-sol",
+      "role": "sol",
+      "label": "independent rubric score",
+      "started_at": 1788674043.66491,
+      "reservation_usd": 0.27709880000000003,
+      "cost_usd": 0.068423,
+      "prompt_sha256": "bd3c792b07ddc8455384d8f4e0be3fde188fcffd93743f22ed9a9a20f2469bba",
+      "max_output_tokens": 1800,
+      "provider_cost_usd": 0.0684235,
+      "provider_usage": {
+        "completion_tokens": 484,
+        "prompt_tokens": 25434,
+        "total_tokens": 25918,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 172,
+          "rejected_prediction_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 25431,
+          "video_tokens": 0
+        },
+        "cost": 0.0684235,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.0684235,
+          "upstream_inference_prompt_cost": 0.0635835,
+          "upstream_inference_completions_cost": 0.00484
+        }
+      },
+      "input_tokens": 25434,
+      "output_tokens": 484,
+      "model_used": "openai/gpt-5.6-sol",
+      "stop_reason": "stop",
+      "output_sha256": "8e1d3eb782f3655b72f79b89346ad607fbdcfd8f82933e9ccf1c426ef9b56fd9",
+      "duration_ms": 13963
+    },
+    {
+      "path": "calls/judge__R2__checked__harris__sonnet/0001.json",
+      "status": "complete",
+      "model_requested": "claude-sonnet-4-6",
+      "role": "sonnet",
+      "label": "independent rubric score",
+      "started_at": 1788674043.595152,
+      "reservation_usd": 0.4156482,
+      "cost_usd": 0.094179,
+      "prompt_sha256": "bd3c792b07ddc8455384d8f4e0be3fde188fcffd93743f22ed9a9a20f2469bba",
+      "max_output_tokens": 1800,
+      "provider_usage": {
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "inference_geo": "global",
+        "input_tokens": 27858,
+        "output_tokens": 707,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": "standard"
+      },
+      "input_tokens": 27858,
+      "output_tokens": 707,
+      "model_used": "claude-sonnet-4-6",
+      "stop_reason": "end_turn",
+      "output_sha256": "05522c5a9d4ceb29adb6487eba55a62c8875a4b2e6e0ba276797fdf7f41d9d27",
+      "duration_ms": 23084
+    },
+    {
+      "path": "calls/judge__T5__checked__promise__sol/0001.json",
+      "status": "complete",
+      "model_requested": "openrouter/openai/gpt-5.6-sol",
+      "role": "sol",
+      "label": "independent rubric score",
+      "started_at": 1788674099.5786831,
+      "reservation_usd": 0.270028,
+      "cost_usd": 0.067086,
+      "prompt_sha256": "8763d5fe6e1b65d6185fc93832440c644ded080418e58c3af1c7e781b5a9e8b1",
+      "max_output_tokens": 1800,
+      "provider_cost_usd": 0.067086,
+      "provider_usage": {
+        "completion_tokens": 874,
+        "prompt_tokens": 23339,
+        "total_tokens": 24213,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 381,
+          "rejected_prediction_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_write_tokens": 23336,
+          "video_tokens": 0
+        },
+        "cost": 0.067086,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.067086,
+          "upstream_inference_prompt_cost": 0.058346,
+          "upstream_inference_completions_cost": 0.00874
+        }
+      },
+      "input_tokens": 23339,
+      "output_tokens": 874,
+      "model_used": "openai/gpt-5.6-sol",
+      "stop_reason": "stop",
+      "output_sha256": "6a1ebee02f573e8a4c4a2fb1e0cefd396bba21051c42245b26c697a06c46e735",
+      "duration_ms": 23447
+    },
+    {
+      "path": "calls/judge__T5__checked__promise__sonnet/0001.json",
+      "status": "complete",
+      "model_requested": "claude-sonnet-4-6",
+      "role": "sonnet",
+      "label": "independent rubric score",
+      "started_at": 1788674099.479587,
+      "reservation_usd": 0.40504200000000007,
+      "cost_usd": 0.08685,
+      "prompt_sha256": "8763d5fe6e1b65d6185fc93832440c644ded080418e58c3af1c7e781b5a9e8b1",
+      "max_output_tokens": 1800,
+      "provider_usage": {
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "inference_geo": "global",
+        "input_tokens": 25895,
+        "output_tokens": 611,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": "standard"
+      },
+      "input_tokens": 25895,
+      "output_tokens": 611,
+      "model_used": "claude-sonnet-4-6",
+      "stop_reason": "end_turn",
+      "output_sha256": "ee806e8be1b62b87dd4e88dfc1bebd196a756a2413c56d890213c1ea4bee3382",
+      "duration_ms": 17064
     }
   ]
 }
