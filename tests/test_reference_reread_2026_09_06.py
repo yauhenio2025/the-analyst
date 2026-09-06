@@ -107,7 +107,7 @@ def test_a_statements_source_reaches_the_engine_on_the_job_path_too():
            "statements": [{"no": 1, "section": "part 1", "statement": "Sewell's critique of Brenner turns on the Dutch case.", "sources": ["SEWELL"], "kind": "attribution"}],
            "sources": [{"label": "SEWELL", "uid": "em:KXEL24MY", "title": "On the Emergence of Capitalism", "year": "2024", "creators": "Sewell, William H.", "text": SEWELL}]}
     upstream = "CONTEXT SUPPLIED WITH THE JOB [statements]:\n" + json.dumps(obj) + "\n\n---\n\nOTHER CONTEXT"
-    sources, rest = _citation_context_envelopes("reference_reread", {}, upstream)
+    sources, rest = _citation_context_envelopes("reference_reread", {"target": ""}, upstream)   # the empty corpus of a witness-only job
     assert set(sources) == {"citation-envelope:statements"} and rest.strip().endswith("OTHER CONTEXT") and "turn-8" not in rest
     docs, context = prepare_citation_sources("reference_reread", sources)
     assert set(docs) == {"turn-8", "em:KXEL24MY"} and "st1/SEWELL" in context

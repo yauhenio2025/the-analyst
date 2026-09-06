@@ -553,6 +553,10 @@ def _citation_context_envelopes(engine_key, sources, upstream):
         removals.append((match.start(), match.end() + end))
     for lo, hi in reversed(removals):
         upstream = upstream[:lo] + upstream[hi:]
+    if removals:
+        # A witness-only job (a statements file and nothing else) stores an empty corpus as its target document;
+        # the restored witnesses are the sources, and the empty placeholder must not fail the non-empty check.
+        sources = {k: v for k, v in sources.items() if (v or "").strip() or k.startswith("citation-envelope:")}
     return sources, upstream
 
 
