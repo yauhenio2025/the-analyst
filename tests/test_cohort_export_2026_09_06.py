@@ -81,3 +81,17 @@ def test_export_envelope_assembles_into_a_packet_the_validator_admits():
     admitted = validate_packet(packet)
     assert set(admitted["pairs"]) == {"em:riley__em:weber"} and len(admitted["rows"]) == 3
     assert admitted["rows"]["em:riley__em:weber::citation_engagement_map::D3.F2"]["status"] == "unresolved"
+
+
+def test_anchors_are_checked_under_the_walls_law_and_unfound_rows_are_downgraded():
+    from src.dossier.cohort_export import anchor_refound, check_anchors, norm_for_anchor
+    src = "He wrote that the state “en-\nmeshes,  controls” civil society; and more."
+    assert anchor_refound('the state "enmeshes, controls" civil society', src)
+    assert not anchor_refound("words that are not there", src)
+    assert norm_for_anchor("a – b") == norm_for_anchor("a - b")
+    rows = [{"anchors": [{"text": 'the state "enmeshes, controls" civil society', "source_doc_key": "k"}], "status": "confirmed", "anchor_status": "verified"},
+            {"anchors": [{"text": "words that are not there", "source_doc_key": "k"}], "status": "confirmed", "anchor_status": "verified"}]
+    counts = check_anchors(rows, {"k": src})
+    assert counts == {"checked": 2, "refound": 1, "downgraded": 1}
+    assert rows[0]["anchors"][0]["text"] == 'the state "enmeshes, controls" civil society'      # the row's own text is kept
+    assert rows[1]["status"] == "unresolved" and rows[1]["anchor_status"] == "unverifiable"

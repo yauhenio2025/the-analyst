@@ -208,6 +208,30 @@ def get_profiles(job_id: str, shape: str = "shared"):
             "profiles": [to_shared(p, docs.get(p.doc_key) or {}).model_dump() for p in job.profiles.profiles]}
 
 
+@router.get("/jobs/{job_id}/ledger")
+def get_ledger(job_id: str):
+    """Every engine phase's ledger rows, parsed from the phase's final output by code (the rows the desks cite):
+    id, dimension, claim, fields, anchors (with the wall's verdict), the raw line. What a consumer needs for
+    per-row counts and verdicts without parsing prose (the Stacks, 2026-09-06)."""
+    from src.dossier.cohort_export import rows_of
+
+    job = _load(job_id)
+    analysis = job.analysis or {}
+    phases = []
+    for pn in sorted(analysis, key=lambda k: float(k)):
+        ph = analysis[pn]
+        text = ph.get("final_output") or ""
+        wall = ph.get("final_wall") or {}
+        rows = rows_of(text, pair_key=job_id, engine=ph.get("engine_key") or "", failed_ids=set(wall.get("failed_ids") or []), known_events=set()) if text else []
+        for r in rows:
+            r.pop("ref", None); r.pop("canonical_ref", None); r.pop("event_ids", None)
+        phases.append({"phase_number": ph.get("phase_number", pn), "engine_key": ph.get("engine_key"), "engine_name": ph.get("engine_name"),
+                       "depth": ph.get("depth", ""), "rows": rows, "wall": wall,
+                       "verdicts": {v: sum(1 for r in rows if (r["fields"].get("verdict") or "").split("|")[0].strip().lower() == v)
+                                    for v in ("accurate", "fair", "selective", "stretched", "misattributed", "unverifiable")} if ph.get("engine_key") == "citation_fidelity_audit" else None})
+    return {"job_id": job_id, "status": job.status, "phases": phases}
+
+
 @router.get("/jobs/{job_id}/frame")
 def get_frame(job_id: str):
     """The evidential frame of a hypothesis test (engine hypothesis_evidential_frame) as JSON, rendered from the

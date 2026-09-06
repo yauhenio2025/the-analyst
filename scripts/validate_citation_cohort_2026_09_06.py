@@ -48,6 +48,20 @@ def integer(value):
     return type(value) is int and value >= 0
 
 
+_QUOTES = "\"'\u201c\u201d\u2018\u2019\u00ab\u00bb"
+
+
+def norm_anchor(s):
+    """The walls' law for a verbatim quotation (whitespace folded, quotation marks and soft hyphens dropped, a hyphen at a
+    line break closed, dashes unified); the packet's anchor rules apply it on both sides (2026-09-06, after the first real
+    export: the engines quote under this law, so byte-exact matching refused rows the wall had verified)."""
+    s = (s or '').replace('\u00ad', '')
+    s = re.sub(r'-\s*\n\s*', '', s)
+    s = re.sub(r'[\u2010-\u2015]', '-', s)
+    s = ''.join(c for c in s if c not in _QUOTES)
+    return re.sub(r'\s+', ' ', s).strip()
+
+
 def sha(text):
     return hashlib.sha256(text.encode('utf-8')).hexdigest()
 
@@ -168,10 +182,10 @@ def validate_packet(packet, release=False):
                     required(a, ['text','source_doc_key','locus','voice'], 'anchor')
                     need(nonempty(a['text']) and nonempty(a['source_doc_key']), 'empty anchor/source')
                     if citable(row):
-                        need(a['text'] in row['raw_row'], 'fresh anchor not carried in raw row')
+                        need(norm_anchor(a['text']) in norm_anchor(row['raw_row']), 'fresh anchor not carried in raw row')
                         need(a['source_doc_key'] in packet['source_documents'], 'missing original source witness')
-                        need(a['text'] in packet['source_documents'][a['source_doc_key']]['text'], 'anchor not re-found in claimed original source')
-                if engine==FID and citable(row):
+                        need(norm_anchor(a['text']) in norm_anchor(packet['source_documents'][a['source_doc_key']]['text']), 'anchor not re-found in claimed original source')
+                if engine==FID and citable(row) and row.get('dimension')=='paired_fidelity':   # only the paired rows carry a verdict; D1–D5 describe
                     need(row['fields'].get('verdict') in VERDICTS, 'missing fidelity verdict')
                     if row['fields']['verdict']!='unverifiable':
                         need(len({a['source_doc_key'] for a in row['anchors']})>=2, 'fidelity verdict without distinct A/P witnesses')

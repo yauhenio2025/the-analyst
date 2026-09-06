@@ -33,6 +33,13 @@ def sha(text: str) -> str:
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
+def packet_uid(uid: str) -> str:
+    """The packet's uid rule (Codex, cohort-packet/v1): a prefix like em: is fine, but no whitespace, `__` or `::`. The
+    Stacks' person keys are "surname initial" ("lachmann r"): a space becomes a hyphen; the given form stays in the receipt."""
+    u = re.sub(r"\s+", "-", (uid or "").strip())
+    return u.replace("__", "-").replace("::", "-")
+
+
 def fields_of(raw: str) -> dict[str, str]:
     """Every `— name: value` field of an answer-shape row, in order; the head before the first field is the finding."""
     parts = FIELD.split(raw)
@@ -104,6 +111,60 @@ def rows_of(final_output: str, *, pair_key: str, engine: str, failed_ids: set[st
     return out
 
 
+_QUOTES = "\"'“”‘’«»"
+
+
+def norm_for_anchor(s: str) -> str:
+    """The walls' law for a verbatim quotation, as the packet applies it (stdlib, mirrored in the validator): whitespace
+    folded to one space, quotation marks and soft hyphens dropped, a hyphen at a line break closed, dashes unified."""
+    s = (s or "").replace("\u00ad", "")
+    s = re.sub(r"-\s*\n\s*", "", s)
+    s = re.sub(r"[\u2010-\u2015]", "-", s)
+    s = "".join(c for c in s if c not in _QUOTES)
+    return re.sub(r"\s+", " ", s).strip()
+
+
+def anchor_refound(text: str, source: str) -> bool:
+    return bool(text) and bool(source) and norm_for_anchor(text) in norm_for_anchor(source)
+
+
+def check_anchors(rows: list[dict], witnesses: dict[str, str]) -> dict:
+    """A citable row whose anchor cannot be re-found in its witness under the walls' law is downgraded to
+    unresolved/unverifiable (never dropped: the raw row stays; the anchor text stays as the row carried it)."""
+    counts = {"checked": 0, "refound": 0, "downgraded": 0}
+    def witness(key):
+        for k in (key, f"em:{key}", key[3:] if key.startswith("em:") else key):
+            if witnesses.get(k):
+                return witnesses[k]
+        return ""
+    for row in rows:
+        ok = True
+        for a in row["anchors"]:
+            counts["checked"] += 1
+            if anchor_refound(a["text"], witness(a["source_doc_key"])):
+                counts["refound"] += 1
+            else:
+                ok = False
+        if not ok and row["status"] == "confirmed" and row["anchor_status"] == "verified":
+            row["status"], row["anchor_status"] = "unresolved", "unverifiable"; counts["downgraded"] += 1
+    return counts
+
+
+def witnesses_for(engine: str, source_texts: dict[str, str], index: Optional[dict]) -> dict[str, str]:
+    """The documents exactly as the engine received them: the supplied texts plus the index's witnesses (page windows,
+    passage-only citing texts), through the same unpacking the runner uses."""
+    from src.sources.citation_evidence import prepare_citation_sources
+
+    documents = dict(source_texts)
+    if index:
+        documents["__index__"] = json.dumps(index, ensure_ascii=False)
+    try:
+        wit, _ = prepare_citation_sources(engine, documents)
+    except Exception:
+        wit = dict(source_texts)
+    return wit
+
+
 def table_markdown(t: dict) -> str:
     cols = t.get("columns") or []
     head = "| " + " | ".join(cols) + " |\n|" + "---|" * len(cols) + "\n" if cols else ""
@@ -117,6 +178,9 @@ def export_pair(job: dict, *, author: dict, member_uid: str, memo_markdown: str,
     """One completed pair job → {job_id, author, pair, source_documents, receipt}."""
     if job.get("status") != "done":
         raise ValueError(f"job {job.get('id')} is {job.get('status')}, not done")
+    given = {"author_uid": author.get("uid", ""), "member_uid": member_uid}
+    author = {**author, "uid": packet_uid(author.get("uid", ""))}
+    member_uid = packet_uid(member_uid)
     pair_key = f"{author['uid']}__{member_uid}"
     known_events: set[str] = set()
     for t in (index or {}).get("texts", []) or []:
@@ -126,6 +190,7 @@ def export_pair(job: dict, *, author: dict, member_uid: str, memo_markdown: str,
     path_engines = [s.get("engine_key") for s in ((job.get("options") or {}).get("path") or {}).get("steps", []) or []]
     analysis = job.get("analysis") or {}
     ledgers, phases = [], []
+    witnesses: dict[str, str] = {}
     for pn in sorted(analysis, key=lambda k: float(k)):
         ph = analysis[pn]
         engine = ph.get("engine_key")
@@ -135,6 +200,10 @@ def export_pair(job: dict, *, author: dict, member_uid: str, memo_markdown: str,
         wall = ph.get("final_wall") or {}
         failed = set(wall.get("failed_ids") or [])
         rows = rows_of(text, pair_key=pair_key, engine=engine, failed_ids=failed, known_events=known_events) if text else []
+        wit = witnesses_for(engine, source_texts, index)
+        for k, v in wit.items():
+            witnesses.setdefault(k, v)
+        relocation = check_anchors(rows, wit)
         artifact_id = f"{job['id']}:phase:{pn}:final"
         ledger = {"engine_key": engine, "artifact_id": artifact_id, "artifact_sha256": sha(text), "artifact_text": text,
                   "rows": rows, "reviewed_empty": not rows}
@@ -142,7 +211,7 @@ def export_pair(job: dict, *, author: dict, member_uid: str, memo_markdown: str,
             ledger["empty_reason"] = "no ledger rows in the phase's final output" if text else "phase has no final output"
         ledgers.append(ledger)
         phases.append({"phase_number": ph.get("phase_number", pn), "engine_key": engine, "depth": ph.get("depth", ""),
-                       "passes": ph.get("passes", []), "artifact_sha256": sha(text), "wall": wall})
+                       "passes": ph.get("passes", []), "artifact_sha256": sha(text), "wall": wall, "anchor_check": relocation})
     ran = {l["engine_key"] for l in ledgers}
     lens_status = {e: ("run" if e in ran else ("unavailable" if e in path_engines else "not_run")) for e in ENGINES}
     refs_by_id = {row["row_id"]: row["ref"] for l in ledgers for row in l["rows"]}
@@ -152,13 +221,18 @@ def export_pair(job: dict, *, author: dict, member_uid: str, memo_markdown: str,
         cited = [refs_by_id[i] for i in dict.fromkeys(FINDING_REF.findall(md + " " + json.dumps(t.get("rows") or [], ensure_ascii=False))) if i in refs_by_id]
         tables.append({"table_key": t.get("key") or "", "markdown": md, "row_refs": cited})
     docs = [d for d in job.get("documents") or [] if isinstance(d, dict) and d.get("role", "source") == "source"]
+    cited = {a["source_doc_key"] for l in ledgers for r in l["rows"] for a in r["anchors"]}
+    def witness_of(key):
+        for k in (key, f"em:{key}", key[3:] if key.startswith("em:") else key):
+            if witnesses.get(k):
+                return witnesses[k]
+        return None
     source_documents = {}
-    for d in docs:
-        key = d.get("key")
-        text = source_texts.get(key)
-        if key and text:
-            source_documents[key] = {"text": text, "sha256": sha(text)}
-    missing_sources = [d.get("key") for d in docs if d.get("key") not in source_documents]
+    for k in sorted(cited | set(source_texts)):
+        v = witness_of(k)
+        if v:
+            source_documents[k] = {"text": v, "sha256": sha(v)}      # under the key the rows cite
+    missing_sources = sorted(k for k in cited if k not in source_documents)
     pair = {"pair_key": pair_key, "doc_key": f"pair::{pair_key}", "author_uid": author["uid"], "member_uid": member_uid,
             "fixture_only": False, "ledgers": ledgers, "lens_status": lens_status, "tables": tables,
             "memo": {"markdown": memo_markdown, "canonical_uri": canonical_uri or f"/v1/dossier/jobs/{job['id']}/dossier.md"}}
@@ -167,7 +241,7 @@ def export_pair(job: dict, *, author: dict, member_uid: str, memo_markdown: str,
         gaps.append(f"source texts missing for {missing_sources}")
     if not known_events:
         gaps.append("no evidence index with ref_ids: rows carry no event_ids")
-    receipt = {"job_id": job["id"], "status": job.get("status"), "updated_at": job.get("updated_at"),
+    receipt = {"job_id": job["id"], "status": job.get("status"), "updated_at": job.get("updated_at"), "identities_given": given,
                "analysis_job_id": job.get("analysis_job_id"), "phases": phases, "documents": [d.get("key") for d in docs],
                "totals": job.get("totals"), "exported_at": datetime.now(timezone.utc).isoformat(), "gaps": gaps}
     return {"job_id": job["id"], "author": author, "pair": pair, "source_documents": source_documents, "receipt": receipt}
