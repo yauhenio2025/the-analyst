@@ -30,6 +30,8 @@ SQLITE_PATH = Path(__file__).parent / "executor.db"
 
 _initialized = False
 _pg_pool = None
+POOL_MAX = int(os.environ.get("DB_POOL_MAX", "20"))
+POOL_WAIT_SECONDS = float(os.environ.get("DB_POOL_WAIT_SECONDS", "60"))
 
 
 def _is_postgres() -> bool:
@@ -42,13 +44,33 @@ def _get_pg_pool():
     global _pg_pool
     if _pg_pool is None:
         import psycopg2.pool
+        # 2026-09-06: a deep process run (five extraction threads persisting events and outputs) plus the API's
+        # polling exhausted a 5-connection pool and failed a live dossier job; the pool is larger and waits its turn.
         _pg_pool = psycopg2.pool.ThreadedConnectionPool(
             minconn=1,
-            maxconn=5,
+            maxconn=POOL_MAX,
             dsn=DATABASE_URL,
         )
-        logger.info("PostgreSQL connection pool initialized (1-5 connections)")
+        logger.info(f"PostgreSQL connection pool initialized (1-{POOL_MAX} connections)")
     return _pg_pool
+
+
+def _getconn_waiting(pool, wait_seconds: float = None):
+    """psycopg2's pool raises PoolError the instant it is empty; under a parallel process run that is a burst, not a
+    fault. Wait for a connection to come back for up to POOL_WAIT_SECONDS, then raise the original error."""
+    import time as _time
+    from psycopg2.pool import PoolError
+    limit = POOL_WAIT_SECONDS if wait_seconds is None else wait_seconds
+    deadline = _time.monotonic() + limit
+    delay = 0.05
+    while True:
+        try:
+            return pool.getconn()
+        except PoolError:
+            if _time.monotonic() >= deadline:
+                raise
+            _time.sleep(delay)
+            delay = min(delay * 2, 0.5)
 
 
 @contextmanager
@@ -66,7 +88,7 @@ def get_connection():
     """
     if _is_postgres():
         pool = _get_pg_pool()
-        conn = pool.getconn()
+        conn = _getconn_waiting(pool)
         try:
             yield conn
         finally:

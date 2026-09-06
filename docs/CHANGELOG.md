@@ -5,6 +5,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Fixed (2026-09-06, live desk)
+- Postgres connection pool: 20 connections (`DB_POOL_MAX`) and a bounded wait (`DB_POOL_WAIT_SECONDS`, 60 s) instead of failing the instant the pool is empty; a deep process run's five extraction threads plus API polling exhausted the old 5-connection pool and failed a live dossier job at the analysis step ([db.py](src/executor/db.py); test `tests/test_db_pool_wait_2026_09_06.py`).
+
 ### Changed (2026-09-06, after the second-queue release)
 - `run_oneshot_checked` reconciles the reading's tables on the strong tier only when the check touched a row the reading cites (rejected, weakened, or unverified); when every cited row stands, the two-call code-assembled output is kept. Corpus methods always reconcile. `ledger_walls.citing_text` strips ledger rows before collecting citations, so tables after the ledger count ([process_runner.py](src/executor/process_runner.py), [ledger_walls.py](src/executor/ledger_walls.py)).
 

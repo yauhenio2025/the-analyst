@@ -176,3 +176,16 @@ Problem classes, root causes, files fixed. See global rules.
 **Files Fixed:** `src/executor/ruling_coverage.py` diagnoses exact, unique, valid-status original rulings; `src/executor/process_runner.py` persists the diagnostic for checked and deep paths and adds an incomplete-check notice to checked products. Tests cover both actual ID failure patterns and end-to-end persistence. Existing application rules and prompts are unchanged; this fix exposes incomplete review rather than inventing missing rulings.
 
 **Validation:** 188 affected offline tests passed. See [coverage fix](study/FIX_critic_RULING_COVERAGE_2026-09-05.md). Frozen study receipts retain their original counters.
+
+## Connection pool exhausted under parallel process runs (2026-09-06)
+
+**Problem Class**: A fixed-size resource pool that fails fast under a burst of legitimate parallel work.
+
+**Root Cause**: `psycopg2.pool.ThreadedConnectionPool(maxconn=5)` raises `PoolError` immediately when empty. The deep process mode runs five extraction threads, each persisting events and outputs through `get_connection()`, while the main runner thread and the API's job polling also take connections. Live dossier job `dossier-8577d8159b38` (Deutschmann pair, `revision_presentation` at deep) failed at the analysis step with `PoolError: connection pool exhausted`.
+
+**Files Fixed**:
+- `src/executor/db.py:32-33` - `POOL_MAX` (env `DB_POOL_MAX`, default 20) and `POOL_WAIT_SECONDS` (default 60)
+- `src/executor/db.py:_getconn_waiting` - waits with backoff for a connection, then raises the original error
+- `tests/test_db_pool_wait_2026_09_06.py` - regression tests
+
+**Pattern to Watch For**: any per-call `with get_connection()` inside a `ThreadPoolExecutor` worker; any pool or semaphore whose acquire fails fast rather than waiting; a job status that flips to failed with a resource error while the model calls themselves succeeded.
