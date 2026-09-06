@@ -215,3 +215,14 @@ Problem classes, root causes, files fixed. See global rules.
 - `tests/test_corpus_ledger_2026_09_05.py`, `tests/test_anchor_repairs_2026_09_05.py`
 
 **Pattern to Watch For**: any `raise` in a wall for a condition that code could resolve by renaming, dropping or tagging; walls decide shape, they do not abort paid work.
+
+## 2026-09-07 — GitHub persistence is OFF on the live API (writes vanish at the next deploy)
+
+`GET /v1/meta/definitions-version` on https://the-analyst-kcuc.onrender.com reports `persistence: {github_enabled: false}`: `GITHUB_TOKEN` /
+`GITHUB_REPO` are not set on the CAII `the-analyst` service (CLAUDE.md's Deployment section says they should be; the service was created
+2026-09-03 and the env did not follow). Consequence: every write route — engine profiles, definition edits from the Mastermind console,
+and tonight the practices registry (gs_revamp's eight records, `POST /v1/practices`, answered 201 with `persisted: null`) — lands on the
+instance's disk only and is wiped by the next deploy. Found 2026-09-07 01:30 when the eight records did not appear in the repo; they were
+pulled out of the live API and committed by hand (0967238). Fix: the owner sets `GITHUB_TOKEN` (fine-grained PAT, contents: write on
+yauhenio2025/the-analyst) and `GITHUB_REPO=yauhenio2025/the-analyst` on the service. Mitigation shipped tonight: the practices registry also
+writes to the executor database (Postgres on Render), which survives deploys, and reads it over the files on load.

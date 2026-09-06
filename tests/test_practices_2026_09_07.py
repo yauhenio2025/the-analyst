@@ -34,10 +34,10 @@ def test_practices_are_served_by_task_kind_as_records():
 def test_a_yield_writes_back_onto_the_practice(tmp_path):
     src = get_practice_registry().file_for("byline-anchor")
     (tmp_path / "byline-anchor.json").write_text(src.read_text())
-    reg = PracticeRegistry(tmp_path)
+    reg = PracticeRegistry(tmp_path, durable=False)
     p = reg.add_evidence("byline-anchor", PracticeEvidence(run="reporter-run-77", organ="the-reporter", queries=10, new_relevant=3, note="alameda.institute reached"))
     assert p.yield_totals() == {"runs": 1, "queries": 10, "new_relevant": 3} and p.evidence[0].recorded
-    again = PracticeRegistry(tmp_path).get("byline-anchor")
+    again = PracticeRegistry(tmp_path, durable=False).get("byline-anchor")
     assert again.evidence[0].run == "reporter-run-77" and packet_block([again])[0]["evidence"]["new_relevant"] == 3
     with pytest.raises(KeyError):
         reg.add_evidence("no-such-practice", PracticeEvidence(run="x"))
@@ -52,10 +52,10 @@ def test_the_routes_serve_the_registry():
 
 def test_an_organ_registers_a_practice_and_only_its_owner_may_overwrite_it(tmp_path):
     from src.practices.registry import Practice
-    reg = PracticeRegistry(tmp_path)
+    reg = PracticeRegistry(tmp_path, durable=False)
     p = reg.upsert(Practice(key="fetch-ladder", name="The fetch ladder", task_kinds=["pdf-fetch"], when="a paper has a DOI", shape="doi → unpaywall → publisher → scholar",
                             yields="the PDF", owner="the-referee"))
-    assert p.version and PracticeRegistry(tmp_path).get("fetch-ladder").owner == "the-referee" and "pdf-fetch" in PracticeRegistry(tmp_path).task_kinds()
+    assert p.version and PracticeRegistry(tmp_path, durable=False).get("fetch-ladder").owner == "the-referee" and "pdf-fetch" in PracticeRegistry(tmp_path, durable=False).task_kinds()
     reg.add_evidence("fetch-ladder", PracticeEvidence(run="referee-9", organ="the-referee", queries=4, new_relevant=2))
     p2 = reg.upsert(Practice(key="fetch-ladder", name="The fetch ladder", task_kinds=["pdf-fetch", "work-identity"], when="a paper has a DOI or a title", shape="…", yields="the PDF", owner="the-referee"))
     assert p2.evidence[0].run == "referee-9" and p2.task_kinds == ["pdf-fetch", "work-identity"]      # an update keeps the runs' evidence
@@ -65,3 +65,22 @@ def test_an_organ_registers_a_practice_and_only_its_owner_may_overwrite_it(tmp_p
         reg.upsert(Practice(key="Not A Slug", name="x", task_kinds=["pdf-fetch"], when="w", shape="s", yields="y"))
     with pytest.raises(ValueError):
         reg.upsert(Practice(key="thin", name="x", task_kinds=[], when="", shape="s", yields="y"))
+
+
+def test_a_write_survives_without_its_file_through_the_database(tmp_path):
+    """The live API's GitHub persistence was off (2026-09-07): a record written through the API must outlive a deploy, so
+    the registry also writes the executor database's blob table and reads it over the files on load."""
+    from src.practices.registry import Practice, BLOB_PREFIX
+    from src.dossier.blob_store import delete_blob, has_blob
+    key = "probe-durable-practice"
+    try:
+        reg = PracticeRegistry(tmp_path)
+        reg.upsert(Practice(key=key, name="probe", task_kinds=["paper-discovery"], when="w", shape="s", yields="y", owner="gs-revamp"))
+        assert reg.last_durable and has_blob(BLOB_PREFIX + key)
+        reg.add_evidence(key, PracticeEvidence(run="r1", organ="gs-revamp", queries=2, new_relevant=1))
+        (tmp_path / f"{key}.json").unlink()                      # the deploy wipes the instance's files
+        fresh = PracticeRegistry(tmp_path)
+        assert fresh.get(key) is not None and fresh.get(key).evidence[0].run == "r1"
+        assert PracticeRegistry(tmp_path, durable=False).get(key) is None
+    finally:
+        delete_blob(BLOB_PREFIX + key)

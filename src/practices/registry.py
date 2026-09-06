@@ -52,13 +52,48 @@ class Practice(BaseModel):
         return {"runs": len(self.evidence), "queries": sum(e.queries for e in self.evidence), "new_relevant": sum(e.new_relevant for e in self.evidence)}
 
 
+BLOB_PREFIX = "practice:"
+
+
+def _durable_put(p: Practice) -> bool:
+    """The record into the executor database's blob table, which survives a deploy on Render (GitHub persistence was
+    found OFF on the live API on 2026-09-07: gs_revamp's eight records had landed on the instance's disk only)."""
+    try:
+        from src.dossier.blob_store import put_blob_safe
+        return put_blob_safe(BLOB_PREFIX + p.key, "application/json", json.dumps(p.model_dump(), ensure_ascii=False).encode("utf-8"))
+    except Exception:
+        return False
+
+
+def _durable_all() -> dict[str, Practice]:
+    try:
+        from src.dossier.blob_store import get_blob, list_keys
+        out = {}
+        for row in list_keys(BLOB_PREFIX):
+            key = (row.get("blob_key") or row.get("key") or "") if isinstance(row, dict) else (row[0] if row else "")
+            got = get_blob(key)
+            if got:
+                p = Practice.model_validate(json.loads(got[1].decode("utf-8")))
+                out[p.key] = p
+        return out
+    except Exception:
+        return {}
+
+
 class PracticeRegistry:
-    def __init__(self, path: Path = DEFINITIONS):
+    def __init__(self, path: Path = DEFINITIONS, durable: bool = True):
         self.path = path
+        self.durable = durable
+        self.last_durable = False
         self._items: dict[str, Practice] = {}
         for f in sorted(path.glob("*.json")):
             p = Practice.model_validate(json.loads(f.read_text()))
             self._items[p.key] = p
+        if durable:   # what organs wrote through the API since the files were last committed wins over the files
+            for key, p in _durable_all().items():
+                old = self._items.get(key)
+                if old is None or len(p.evidence) >= len(old.evidence):
+                    self._items[key] = p
 
     def list(self) -> list[Practice]:
         return list(self._items.values())
@@ -81,6 +116,7 @@ class PracticeRegistry:
             ev.recorded = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
         p.evidence.append(ev)
         self.file_for(key).write_text(json.dumps(p.model_dump(), ensure_ascii=False, indent=2) + "\n")
+        self.last_durable = _durable_put(p) if self.durable else False
         return p
 
     def upsert(self, practice: Practice) -> Practice:
@@ -99,6 +135,7 @@ class PracticeRegistry:
             practice.version = datetime.now(timezone.utc).strftime("%Y-%m-%d")
         self._items[practice.key] = practice
         self.file_for(practice.key).write_text(json.dumps(practice.model_dump(), ensure_ascii=False, indent=2) + "\n")
+        self.last_durable = _durable_put(practice) if self.durable else False
         return practice
 
     def file_for(self, key: str) -> Path:

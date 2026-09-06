@@ -76,7 +76,7 @@ async def create_practice(body: PracticeIn):
     except PermissionError as e:
         raise HTTPException(status_code=403, detail=str(e))
     persisted = await _persist(reg, p.key, f"Practice {p.key}: {'updated' if existed else 'registered'} by {p.owner} [skip render]")
-    return {**p.model_dump(), "totals": p.yield_totals(), "created": not existed, "persisted": persisted}
+    return {**p.model_dump(), "totals": p.yield_totals(), "created": not existed, "persisted": persisted, "durable": reg.last_durable}
 
 
 class EvidenceIn(BaseModel):
@@ -96,4 +96,4 @@ async def post_evidence(key: str, body: EvidenceIn):
     except KeyError:
         raise HTTPException(status_code=404, detail=f"no practice {key}")
     persisted = await _persist(reg, key, f"Practice {key}: yield from {body.organ or 'a run'} {body.run} [skip render]")
-    return {"key": key, "totals": p.yield_totals(), "evidence": [e.model_dump() for e in p.evidence], "persisted": persisted}
+    return {"key": key, "totals": p.yield_totals(), "evidence": [e.model_dump() for e in p.evidence], "persisted": persisted, "durable": reg.last_durable}
