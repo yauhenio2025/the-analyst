@@ -1,0 +1,118 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "case_answers",
+  "doc": "subsea",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 42936,
+  "output_tokens": 3040,
+  "duration_ms": 30537,
+  "cost_usd": 0.0122,
+  "retries": 0,
+  "wall": {
+    "reanchor_receipts": [
+      {
+        "content": "## Findings ledger\n- [C2.DOC2.F2] The United States answers how it intervened in SeaMeWe-6: it used incentives and threats, including financing, training grants and threatened sanctions, after which the consortium awarded the contract to SubCom — dim: case_answers — case: United States / SeaMeWe-6 — criterion: What mechanism did the case actor use to reshape the cable market, and with what reported consequence? — value-kind: qualitative — evidence-role: reported result — scope: SeaMeWe-6 supplier decision, 2021 — anchor: \"Once the threat of sanctions became more concrete, other consortium members were getting second thoughts: factoring in potential sanctions, HMN Tech became an increasingly costly option.\" — doc: subsea — causal-attribution: United States named by the surrounding attributed account, but the quoted sentence identifies sanctions as the operative pressure — confidence: high — anchor-b: \"In late 2021, the consortium held a decisive vote, with a majority opting to award the contract to SubCom.\" — doc-b: subsea.\n- [C2.DOC2.F4] PEACE answers the project-status criterion positively: the cable became operational in 2022, while EMA is separately reported as a project developed following China’s exclusion from SeaMeWe-6; the text does not attribute EMA’s reactive development to PEACE itself — dim: case_answers — case: PEACE cable / EMA cable — criterion: What is the separately stated operational status and chronology of each parallel project? — value-kind: binary — evidence-role: reported result — scope: PEACE cable, 2022; EMA chronology following SeaMeWe-6 exclusion — anchor: \"One such effort is the PEACE cable, which be -\\ncame operational in 2022.\" — doc: subsea — causal-attribution: PEACE’s operational status is attributed to PEACE; EMA’s reactive chronology is attributed to China, not PEACE — confidence: high — anchor-b: \"Following its exclusion from SeaMeWe- 6, China reportedly began developing another proj -\\nect, the Europe- Middle East- Asia (EMA) cable.\" — doc-b: subsea\n- [C2.DOC2.F6] France answers how it sought to retain cable-sector capacity: the state, through APE, agreed to acquire 80% of ASN for €350 million, with the intention of buying the remaining 20% from Nokia after a transition period; the source presents this as an industrial and strategic intervention, not as the same instrument as any other proposal — dim: case_answers — case: France / ASN — criterion: What instrument and mechanism did the case actor use to preserve strategic cable-sector capacity? — value-kind: quantitative — evidence-role: mechanism — scope: ASN ownership and French industrial capacity, November 2024 — anchor: \"a deal was struck in November: the French state, via its public holding agency APE\" — doc: subsea — causal-attribution: France named by the attributing sentence — confidence: high — anchor-b: \"would acquire 80% of ASN for €350 million, with the intention to buy the remaining 20% from Nokia after a transition period\" — doc-b: subsea\n",
+        "partial": false,
+        "stop_reason": "stop",
+        "error": null
+      }
+    ],
+    "rows": 6,
+    "with_anchor": 5,
+    "verified": 3,
+    "trimmed": 1,
+    "anchor_rate": 0.5,
+    "failed_ids": [
+      "C2.DOC2.F2",
+      "C2.DOC2.F4",
+      "C2.DOC2.F6"
+    ],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 8,
+    "verified_anchors": 5,
+    "cross_document_rows": 2,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 5,
+      "with_anchor": 5,
+      "verified": 5,
+      "trimmed": 1,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 7,
+      "verified_anchors": 7,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [
+      {
+        "id": "C2.DOC2.F2",
+        "dimension": "case_answers"
+      }
+    ],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "subsea"
+        ],
+        "dimension_key": "case_answers",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Abstract",
+          "Sections 1–5",
+          "Conclusion"
+        ],
+        "coverage": "complete",
+        "criterion": "Retain anchored answers supplied by the source about case actors, instruments, mechanisms, capacities, markets, institutions, consequences and separately attributed project chronology or reactive status.",
+        "basis": "The inspected article supplies anchored case answers for China, the United States, PEACE, EMA and France/ASN, including distinct project chronologies and attributed mechanisms or consequences.",
+        "limitations": [
+          "The comparison is limited to the cases, instruments and outcomes explicitly reported in the supplied article.",
+          "PEACE operational status and EMA reported development are distinct findings; the source does not establish causal transfer between them.",
+          "No common cross-case quantitative effectiveness denominator is supplied."
+        ],
+        "finding_ids": [
+          "C2.DOC2.F1",
+          "C2.DOC2.F2",
+          "C2.DOC2.F3",
+          "C2.DOC2.F4",
+          "C2.DOC2.F5",
+          "C2.DOC2.F6"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "subsea": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Findings lost anchor evidence; this does not establish absence",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 2,
+  "dropped_ids": [
+    "C2.DOC2.F2"
+  ],
+  "chars": 7888
+}

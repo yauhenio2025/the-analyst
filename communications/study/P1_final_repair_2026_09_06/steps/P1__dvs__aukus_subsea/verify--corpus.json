@@ -1,0 +1,88 @@
+{
+  "step": "verify",
+  "kind": "verify",
+  "dimension": "",
+  "doc": "",
+  "model_requested": "openrouter/deepseek/deepseek-v4-pro",
+  "model_used": "openrouter/deepseek/deepseek-v4-pro",
+  "input_tokens": 45396,
+  "output_tokens": 10770,
+  "duration_ms": 116626,
+  "cost_usd": 0.0698,
+  "retries": 0,
+  "wall": {
+    "rows": 9,
+    "with_anchor": 9,
+    "verified": 9,
+    "trimmed": 4,
+    "anchor_rate": 1.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 11,
+    "verified_anchors": 11,
+    "cross_document_rows": 1,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "carried_forward": 0,
+    "rejected": 0,
+    "added": 9,
+    "ruling_coverage": {
+      "original_count": 0,
+      "explicitly_ruled_count": 0,
+      "missing_or_unruled_ids": [],
+      "unexpected_nonadded_ids": [],
+      "invalid_original_status_ids": [],
+      "duplicate_original_ids": [],
+      "duplicate_ruling_ids": [],
+      "coverage_complete": false
+    },
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "aukus",
+          "subsea"
+        ],
+        "dimension_key": "case_matrix",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "aukus: pp. 110-112, 114-115, 117-119, 125",
+          "subsea: pp. 94-95, 97-98, 101-103"
+        ],
+        "coverage": "partial",
+        "criterion": "A cross-document case comparison requires a justified common criterion, equivalent case identity and scope, and retained verbatim anchors from each distinct source.",
+        "basis": "The sources examine state strategies in reshaping private networks: AUKUS through regulatory control and industrial policy, subsea cable network through private network realignment. A cross-document finding was added (V.CORPUS.F1) with verbatim anchors from both documents.",
+        "limitations": [
+          "The comparison is limited to state strategy types; other dimensions such as venture capital or bipartisanship are not cross-documented.",
+          "The findings are based on conceptual claims, not quantitative outcomes.",
+          "Coverage is partial; only the sections needed for the anchor extraction were inspected in detail."
+        ],
+        "finding_ids": [
+          "V.CORPUS.F1"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "Verified verbatim anchors from both sources support the cross-document finding. The aukus anchor captures the enmeshment of regulatory, industrial and defence policy; the subsea anchor captures the concept of private network realignment.",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "aukus": "provided",
+            "subsea": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Retained finding has missing or unexpected dimension identity; its scope cannot be assigned"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 7559
+}

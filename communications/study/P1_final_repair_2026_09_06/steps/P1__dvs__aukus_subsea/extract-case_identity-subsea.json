@@ -1,0 +1,129 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "case_identity",
+  "doc": "subsea",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 42002,
+  "output_tokens": 2923,
+  "duration_ms": 38748,
+  "cost_usd": 0.0119,
+  "retries": 0,
+  "wall": {
+    "reanchor_receipts": [
+      {
+        "content": "## Findings ledger\n- [C1.DOC2.F2] The SeaMeWe-6 case concerns a transregional cable project involving US and Chinese state strategies, private consortium members, and competing suppliers HMN Tech and SubCom — dim: case_identity — case: US–Chinese conflict over SeaMeWe-6 — object-time-scope: a high-capacity undersea cable system spanning Singapore to France, with key landing points in India, Pakistan, Saudi Arabia and Egypt; developments from the project’s launch through the late-2021 supplier decision and subsequent US restrictions — criterion: Which actors and infrastructure object constitute the first comparable case? — anchor: \"The first case study examines the US–Chinese conflict over the SeaMeWe- 6 (South East Asia–Middle East–Western Europe 6) cable project\" — doc: subsea — confidence: high Additional support uses anchor-b: \"In late 2021, the consortium held a decisive vote, with a majority opting to award the contract to SubCom.\" — doc-b: subsea\n- [C1.DOC2.F3] The France case concerns France as a network hub and state actor, with ASN, Orange and the French public holding agency APE as relevant institutional and corporate actors — dim: case_identity — case: France’s nationalization of Alcatel Submarine Networks — object-time-scope: France’s subsea cable sector, especially the 2024 acquisition of 80% of ASN and the intended later acquisition of the remaining 20% from Nokia — criterion: Which actors and state–corporate intervention constitute the second comparable case? — anchor: \"The second case focuses on France's position as a key network hub, highlighting how a core network actor navigates the pressures of great power competition.\" — doc: subsea — confidence: high Additional support uses anchor-b: \"the French state, via its public holding agency APE (Agence des participations de l'État), would acquire 80% of ASN for €350 million\" — doc-b: subsea\n- [C1.DOC2.F5] PEACE and EMA are separate cable projects rather than stages of one identified instrument: PEACE is reported operational in 2022, while EMA is separately reported as developing after China’s exclusion from SeaMeWe-6 — dim: case_identity — case: Chinese alternative and parallel cable projects — object-time-scope: PEACE, a France–Singapore cable with a route similar to SeaMeWe-6, and the separately named EMA project linking Hong Kong and Hainan to Singapore, Pakistan, Saudi Arabia, Egypt and France — criterion: Are similarly routed projects the same object or distinct cases? The source supports distinction but does not establish a formal common ownership or instrument identity — anchor: \"One such effort is the PEACE cable, which be - came operational in 2022.\" — doc: subsea — confidence: high Additional support uses anchor-b: \"Following its exclusion from SeaMeWe-  6, China reportedly began developing another proj -\\nect, the Europe-  Middle East-  Asia (EMA) cable.\" — doc-b: subsea",
+        "partial": false,
+        "stop_reason": "stop",
+        "error": null
+      }
+    ],
+    "rows": 5,
+    "with_anchor": 5,
+    "verified": 2,
+    "trimmed": 1,
+    "anchor_rate": 0.4,
+    "failed_ids": [
+      "C1.DOC2.F2",
+      "C1.DOC2.F3",
+      "C1.DOC2.F5"
+    ],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 8,
+    "verified_anchors": 5,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 2,
+      "with_anchor": 2,
+      "verified": 2,
+      "trimmed": 1,
+      "anchor_rate": 1.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 2,
+      "verified_anchors": 2,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [
+      {
+        "id": "C1.DOC2.F2",
+        "dimension": "case_identity"
+      },
+      {
+        "id": "C1.DOC2.F3",
+        "dimension": "case_identity"
+      },
+      {
+        "id": "C1.DOC2.F5",
+        "dimension": "case_identity"
+      }
+    ],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "subsea"
+        ],
+        "dimension_key": "case_identity",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Abstract",
+          "1 | Reconciling Market Dynamics and State Strategy in Global Networks",
+          "3 | Case Studies and Methods",
+          "4 | Case 1: The US–Chinese Conflict Over SeaMeWe-6",
+          "5 | Case 2: France's Nationalization of Alcatel Submarine Networks",
+          "6 | Conclusion"
+        ],
+        "coverage": "complete",
+        "criterion": "The source must identify a case or approach, its actors, object, place or time boundary, or a justified comparison criterion.",
+        "basis": "The source explicitly identifies the global subsea cable network as the broader case, names two empirical case studies, specifies their actors and objects, states case-selection criteria, and distinguishes PEACE from EMA.",
+        "limitations": [
+          "The overall network case has no single uniform temporal boundary.",
+          "The source does not settle all legal or corporate identity relations among similarly routed cable projects."
+        ],
+        "finding_ids": [
+          "C1.DOC2.F1",
+          "C1.DOC2.F2",
+          "C1.DOC2.F3",
+          "C1.DOC2.F4",
+          "C1.DOC2.F5"
+        ],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "subsea": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [
+            "Findings lost anchor evidence; this does not establish absence",
+            "One or more declared finding references lack retained verified evidence"
+          ]
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [
+    "C1.DOC2.F2",
+    "C1.DOC2.F3",
+    "C1.DOC2.F5"
+  ],
+  "chars": 7123
+}

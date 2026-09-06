@@ -1,0 +1,91 @@
+{
+  "step": "extract",
+  "kind": "extract",
+  "dimension": "case_matrix",
+  "doc": "",
+  "model_requested": "openrouter/openai/gpt-5.6-luna",
+  "model_used": "openrouter/openai/gpt-5.6-luna",
+  "input_tokens": 7352,
+  "output_tokens": 575,
+  "duration_ms": 6576,
+  "cost_usd": 0.0022,
+  "retries": 0,
+  "wall": {
+    "rows": 0,
+    "with_anchor": 0,
+    "verified": 0,
+    "trimmed": 0,
+    "anchor_rate": 0.0,
+    "failed_ids": [],
+    "duplicate_ids": [],
+    "missing_cited": [],
+    "anchors": 0,
+    "verified_anchors": 0,
+    "cross_document_rows": 0,
+    "incomplete_cross_document_ids": [],
+    "invalid_anchor_ids": [],
+    "citation_check": {
+      "status": "not_checked"
+    },
+    "after_reanchor": {
+      "rows": 0,
+      "with_anchor": 0,
+      "verified": 0,
+      "trimmed": 0,
+      "anchor_rate": 0.0,
+      "failed_ids": [],
+      "duplicate_ids": [],
+      "missing_cited": [],
+      "anchors": 0,
+      "verified_anchors": 0,
+      "cross_document_rows": 0,
+      "incomplete_cross_document_ids": [],
+      "invalid_anchor_ids": [],
+      "citation_check": {
+        "status": "not_checked"
+      }
+    },
+    "scope_failed_rows": [],
+    "scope_outcomes": [
+      {
+        "document_keys": [
+          "aukus",
+          "subsea"
+        ],
+        "dimension_key": "case_matrix",
+        "outcome": "inconclusive",
+        "sections_inspected": [
+          "Per-document findings ledgers and scope reports supplied for aukus and subsea"
+        ],
+        "coverage": "partial",
+        "criterion": "A cross-document case comparison requires a justified common criterion, equivalent case identity and scope, and retained verbatim anchors from each distinct source.",
+        "basis": "The supplied reports identify potentially related questions about state strategy and intervention, but they do not retain sufficient equivalent anchored evidence from both documents to support a cross-document matrix finding.",
+        "limitations": [
+          "This assessment is based on earlier findings and scope reports rather than direct inspection of every source.",
+          "The AUKUS report explicitly places regional-conflict effects beyond scope.",
+          "The supplied reports do not establish equivalent time boundaries, outcome measures, or evidentiary coverage across the cases.",
+          "Empty or unretained cells do not establish that the underlying sources lack relevant evidence."
+        ],
+        "finding_ids": [],
+        "review_state": "unchecked",
+        "review_basis": "",
+        "evidence_state": {
+          "scope_identity_validated": true,
+          "invocation_partial": false,
+          "invocation_stop_reason": "stop",
+          "invocation_error": null,
+          "source_access": {
+            "aukus": "provided",
+            "subsea": "provided"
+          },
+          "coverage_basis": "reader/reviewer report; source bytes do not establish inspection or completeness",
+          "blocking_issues": [],
+          "basis_material": "Per-document ledgers and scope reports; no direct source inspection in this invocation"
+        }
+      }
+    ]
+  },
+  "reanchored": 0,
+  "dropped_ids": [],
+  "chars": 2225
+}
