@@ -798,6 +798,49 @@ def assemble_checked_content(prose: str, ledger: str, kept: list[LedgerRow], rej
     return "\n".join(parts).rstrip() + "\n"
 
 
+_ROW_HEAD = re.compile(r"^(\s*(?:[-*]\s+)?)\[((?:[A-Z]\d\.)?F\d+)\](.*)$")
+_FIELD_SPLIT = re.compile(r" — ([a-z][a-z0-9-]*): ")
+_FROM = re.compile(r"— from: (?:CHECK\.)?((?:[A-Z]\d\.)?F\d+)")
+
+
+def _row_fields(line: str) -> dict[str, str]:
+    parts = _FIELD_SPLIT.split(line)
+    return {parts[i]: parts[i + 1].strip() for i in range(1, len(parts) - 1, 2)}
+
+
+def _carry_answer_fields(content: str, checked_ledger: str) -> tuple[str, int]:
+    """The reconciliation renumbers rows and can drop the answer shape's own fields (kind, where, held, rank…; the
+    run-26 frame, 2026-09-06). A final row whose lineage says `from: CHECK.<id>` gets every field missing on it back from
+    the checked row `<id>`, appended before `— confidence:` (or at the end). Shape only: no field on the final row is
+    overwritten, no text is judged."""
+    checked: dict[str, dict[str, str]] = {}
+    for line in checked_ledger.splitlines():
+        m = _ROW_HEAD.match(line)
+        if m and m.group(2) not in checked:
+            checked[m.group(2)] = _row_fields(line)
+    if not checked:
+        return content, 0
+    out, carried = [], 0
+    for line in content.splitlines():
+        m = _ROW_HEAD.match(line)
+        f = _FROM.search(line) if m else None
+        origin = checked.get(f.group(1)) if f else None
+        if not origin:
+            out.append(line); continue
+        have = _row_fields(line)
+        missing = [(k, v) for k, v in origin.items() if k not in have and k not in ("anchor", "doc", "dim", "from", "confidence") and not k.startswith("anchor")]
+        if not missing:
+            out.append(line); continue
+        extra = "".join(f" — {k}: {v}" for k, v in missing)
+        if " — confidence: " in line:
+            head, tail = line.rsplit(" — confidence: ", 1)
+            line = f"{head}{extra} — confidence: {tail}"
+        else:
+            line = line + extra
+        carried += len(missing); out.append(line)
+    return "\n".join(out) + ("\n" if content.endswith("\n") else ""), carried
+
+
 def run_oneshot_checked(
     cap_def: Any,
     spec: ProcessSpec,
@@ -916,7 +959,9 @@ def run_oneshot_checked(
         if upstream_context:
             sprompt.user = f"{upstream_context}\n\n=====\n\n{sprompt.user}"
         sprompt.user += ("\n\nORIGINAL READING (input finding Fn is now CHECK.Fn; use CHECK.Fn in lineage, "
-                         "renumber final F1..Fn and revise every affected cell and citation):\n"
+                         "renumber final F1..Fn and revise every affected cell and citation; every final row keeps every "
+                         "'— name: value' field its CHECK row carried — kind, where, held, verdict, how, rank and the rest — "
+                         "only the id and the ruling change):\n"
                          + prose + "\n\nCRITIC REVIEW (rulings already applied; use cell/coverage advice):\n" + vc.content
                          + "\n\nRewrite or drop every cell resting on a rejected or unverified row. "
                          "Rewrite cells to the narrowed claim of a weakened row; an inline rejection tag "
@@ -928,6 +973,9 @@ def run_oneshot_checked(
         synthesis = _check_corpus_synthesis(synthesis, sprompt, spec, index, final_corpus_ids, call_fn, strong,
                                            depth=depth, big=big, cancellation_check=cancellation_check, record=_record)
         synthesis.wall["check_ruling_coverage"] = rep["ruling_coverage"]
+        synthesis.content, carried = _carry_answer_fields(synthesis.content, synthesis_ledger)
+        if carried:
+            synthesis.wall["fields_carried_from_checked_rows"] = carried
         if spec.scoped_outcomes:
             synthesis.wall["scope_outcomes"] = checked_scopes
         _record(synthesis)

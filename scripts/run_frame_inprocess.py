@@ -43,7 +43,7 @@ def main():
     from src.dossier.schemas import CreateDossierRequest, DossierJob, DossierOptions, OutputOptions
     from src.dossier.store import create_job, get_job
     from src.dossier import runner
-    from src.dossier.frame import render_frame
+    from src.dossier.frame import passes_of, render_frame
     from src.executor.document_store import store_document
     from src.sources.resolve import resolve_sources
     from src.sources.schemas import SourceSpec
@@ -72,7 +72,7 @@ def main():
             break
         time.sleep(15)
     record = j.model_dump(mode="json"); (out / "job.json").write_text(json.dumps(record, indent=1, ensure_ascii=False, default=str))
-    frame = render_frame(record)
+    frame = render_frame(record, passes_of(record))
     (out / "frame.json").write_text(json.dumps(frame, indent=1, ensure_ascii=False))
     for ph in (record.get("analysis") or {}).values():
         if ph.get("engine_key") == "hypothesis_evidential_frame":

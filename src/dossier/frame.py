@@ -41,14 +41,59 @@ def _form_paragraph(prose: str) -> str:
     return paras[0] if paras else ""
 
 
-def render_frame(job: dict) -> Optional[dict]:
-    """The frame JSON from a job record (a dict, the store's or the API's); None when the engine did not run."""
+FROM = re.compile(r"^(?:CHECK|READ|EXTRACT|VERIFY)?\.?((?:S\d\.)?F\d+)$")
+
+
+def carry_fields(rows: list[dict], passes: Optional[list[str]]) -> int:
+    """The checked mode's reconciliation renumbers rows and can drop the answer shape's own fields (kind, where, held,
+    rank…); a final row that says `from: CHECK.S1.F2` gets the missing fields back from the earlier pass that still
+    carries `[S1.F2]`. Shape only: a field present on the final row is never overwritten."""
+    if not passes:
+        return 0
+    earlier: dict[str, dict[str, str]] = {}
+    for text in passes:
+        for line in text.splitlines():
+            m = ROW.match(line)
+            if m and m.group(1) not in earlier:
+                earlier[m.group(1)] = fields_of(line.strip())
+    carried = 0
+    for r in rows:
+        src = r["fields"].get("from", "")
+        m = FROM.match(src.strip())
+        origin = earlier.get(m.group(1)) if m else None
+        if not origin:
+            continue
+        for k, v in origin.items():
+            if k not in r["fields"] and k not in ("anchor", "doc", "dim", "from"):
+                r["fields"][k] = v; carried += 1
+        if not r["anchor"] and origin.get("anchor"):
+            r["anchor"] = origin["anchor"].strip().strip('"“”'); r["conjecture"] = False
+    return carried
+
+
+def passes_of(job: dict) -> list[str]:
+    """The engine phase's earlier pass contents from the executor's output store (this instance)."""
+    sub = job.get("analysis_job_id")
+    if not sub:
+        return []
+    try:
+        from src.executor.output_store import load_all_job_outputs
+        rows = load_all_job_outputs(sub, include_content=True)
+    except Exception:
+        return []
+    return [r.get("content") or "" for r in rows if r.get("engine_key") == ENGINE and (r.get("stance_key") or "") in ("read", "check", "extract", "verify")]
+
+
+def render_frame(job: dict, passes: Optional[list[str]] = None) -> Optional[dict]:
+    """The frame JSON from a job record (a dict, the store's or the API's); None when the engine did not run.
+    `passes` = the phase's earlier pass contents (read, check), from which the reconciled rows' fields are carried."""
     analysis = job.get("analysis") or {}
     phase = next((ph for _, ph in sorted(analysis.items(), key=lambda kv: float(kv[0])) if ph.get("engine_key") == ENGINE), None)
     if not phase or not phase.get("final_output"):
         return None
     failed = set((phase.get("final_wall") or {}).get("failed_ids") or [])
     rows = _rows(phase["final_output"], failed)
+    carried = carry_fields(rows, passes)
     prose = phase["final_output"].split("\n- [", 1)[0]
     def ev(r):
         return {"id": r["id"], "evidence": r["text"], "kind": r["fields"].get("kind", ""), "where": r["fields"].get("where", ""),
@@ -79,4 +124,4 @@ def render_frame(job: dict) -> Optional[dict]:
                                     for r in rows if r["dim"] == "form"]},
             "decisive_tests": tests, "tests": tests,
             "residual": [f"{r['text']} (because: {r['fields'].get('because', '?')})" for r in rows if r["dim"] == "residual"],
-            "works": works, "rows": len(rows), "conjectures": sum(1 for r in rows if r["conjecture"])}
+            "works": works, "rows": len(rows), "conjectures": sum(1 for r in rows if r["conjecture"]), "fields_carried_from_passes": carried}

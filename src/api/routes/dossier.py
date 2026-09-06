@@ -236,10 +236,11 @@ def get_ledger(job_id: str):
 def get_frame(job_id: str):
     """The evidential frame of a hypothesis test (engine hypothesis_evidential_frame) as JSON, rendered from the
     job's ledger rows by code: strengthen, weaken, form, decisive_tests, residual, works."""
-    from src.dossier.frame import render_frame
+    from src.dossier.frame import passes_of, render_frame
 
     job = _load(job_id)
-    frame = render_frame(job.model_dump(mode="json"))
+    record = job.model_dump(mode="json")
+    frame = render_frame(record, passes_of(record))
     if frame is None:
         raise HTTPException(status_code=409, detail=f"no finished hypothesis_evidential_frame phase on this job (status={job.status}, step={job.step})")
     return {**frame, "status": job.status}
