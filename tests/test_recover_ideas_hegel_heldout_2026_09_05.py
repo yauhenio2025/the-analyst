@@ -60,8 +60,9 @@ def test_duplicate_unknown_ids_are_preserved_for_existing_uniqueness_failure():
     raw = line('I4') + line('I4')
     clean, removed = recovery.prune_unapplied_rows(raw, {'F1'}, lw)
     assert clean == raw and removed == []
-    with pytest.raises(RuntimeError, match='duplicate|Duplicate'):
-        apply_rulings(lw.parse_rows(line('F1')), lw.parse_rows(clean), lw.SourceIndex({'doc': QUOTE}))
+    # since 2026-09-06 a second ruling on one id is dropped and recorded rather than failing the run
+    kept, rejected, unverified, rep = apply_rulings(lw.parse_rows(line('F1')), lw.parse_rows(clean), lw.SourceIndex({'doc': QUOTE}))
+    assert rep['duplicate_rulings_dropped'] == ['I4']
 
 
 def test_ambiguous_status_is_preserved_including_any_possible_addition():
