@@ -2,6 +2,26 @@
 
 > Lightweight service serving analytical definitions without execution logic
 
+## How we work: where the reasoning lives (Evgeny, 2026-09-07)
+
+- **The upper-level reasoning lives here, in the Mastermind, as records — never as prose scattered in an organ's Python.** Methods
+  are engines (`src/engines/capability_definitions` + `src/operationalizations/definitions`: dimensions, answer shapes, method cards);
+  the sequences that compose them are workflows and recipes (`src/workflows/definitions`, `src/dossier/recipes.json`, a step may carry a
+  `scope` of the sources it reads); the words they answer in are vocabularies (`src/vocabularies`); how to search is practices
+  (`src/practices`); what an organ can do in response to a finding is actions (`src/actions`). An organ reads these records over the API
+  and keeps no copy; an LLM improves the system by editing a record, not by hunting through code.
+- **Each organ does only what it alone can do, and exposes it as routes**: the Stacks — the library, its texts, profiles, citation
+  ledgers, bundles; the Referee — thinkers, their works and readers, harvesting and fetching; the Reporter — the open web; gs_revamp —
+  paper discovery; the Mastermind — engines, workflows, vocabularies, practices, actions, and the walls that check what a model wrote
+  against what a source says (shape, never meaning).
+- **Findings map to actions in other organs**: a row of a kind an action declares (a cited work not held, a person unknown to the
+  Referee) becomes a suggested action with its inputs filled from the row (`POST /v1/actions/suggest`); the owner clicks, or the system
+  runs it under a cap; the organ posts the outcome back.
+- **Everything measured writes back** — a practice's yield, an action's outcome, an engine's receipts — where the next planner reads it.
+- **Mirrored enumerations change on their owner's word first** (the Referee's, the Stacks'); the registry carries the owner.
+- The same principles stand in the Stacks' and the Referee's CLAUDE.md in their words. Design of the first workflow built this way:
+  `communications/DESIGN_oeuvre_position_2026-09-07.md`.
+
 ## Overview
 
 Analyzer v2 extracts pure analytical definitions from the current Analyzer service:
@@ -229,8 +249,10 @@ GET  /v1/story/handoff-schema · /v1/story/demands
 GET  /v1/dossier/jobs/{id}/profiles?shape=shared|native   # reconnaissance profiles in the shared work-profile shape (2026-09-06)
 GET  /v1/dossier/jobs/{id}/ledger · /v1/dossier/jobs/{id}/frame · /v1/dossier/jobs/{id}/reread   # every phase's ledger rows parsed by code; the evidential frame as JSON; the owner's references re-read (engine reference_reread over a role=statements source: verdicts holds · holds_in_part · diverges · not_in_text · unverifiable, follow-up questions)
 GET  /v1/vocabularies · /v1/vocabularies/{key} · /v1/vocabularies/for-engine/{engine_key}   # the enumerated values the engines answer in (moves, stances, verdicts, kinds, circles), with glosses; consumers read columns from here, never from copies (src/vocabularies/)
+GET  /v1/actions[?finding=&organ=] · /v1/actions/finding-kinds · /v1/actions/{key} · POST /v1/actions · POST /v1/actions/suggest {finding, fields} · POST /v1/actions/{key}/outcome   # what an organ can DO in response to a finding (owner 2026-09-07): records with the finding kinds they answer, inputs, route, cost class, gate; suggest() fills a row's inputs (src/actions/)
+GET  /v1/dossier/jobs/{id}/oeuvre               # a paper's place in its author's oeuvre (recipe oeuvre_position over a role=oeuvre source: the Stacks' GET /api/authors/{aid}/oeuvre?focal=): verdicts, agendas and turns, citation shifts, the readings, the reading route, the actions the findings license
 GET  /v1/practices[?task=] · /v1/practices/task-kinds · /v1/practices/{key} · POST /v1/practices (an organ registers a practice its planner knows; only its owner may overwrite it) · POST /v1/practices/{key}/evidence   # how to SEARCH, beside the engines (owner 2026-09-07: 'such tricks have to start living in the Mastermind'): records a planner's packet carries (when · shape · ingredients · yields · misses · evidence), by task kind (person-harvest, paper-discovery, pdf-fetch, work-identity, institution-harvest); a run's yield writes back (src/practices/)
-# Dossier source roles: source | evidence_index | plan | profile (a Stacks WorkProfile: the desk starts from it) | statements (a memo's numbered statements against the sources they cite: the fidelity audit's second input)
+# Dossier source roles: source | evidence_index | plan | profile (a Stacks WorkProfile: the desk starts from it) | statements (a memo's numbered statements against the sources they cite: the fidelity audit's second input) | oeuvre (the Stacks' bundle around a focal text, expanded at the door into focal:/before:/after: documents and the packet)
 PUT  /v1/dossier/admin/blobs/{key} · /v1/dossier/admin/jobs/{id}   # re-hydration (X-Admin-Token)
 
 # Presenter
