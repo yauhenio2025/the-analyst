@@ -248,6 +248,20 @@ def get_frame(job_id: str):
     return {**frame, "status": job.status}
 
 
+@router.get("/jobs/{job_id}/encounter")
+def get_encounter(job_id: str, thinker: str = ""):
+    """The encounter (engines encounter_map · encounter_draft, then distinction_settle) as JSON: the thinker's positions across their
+    oeuvre, concepts, opponents, turns and silences; the axes with their relations; the takes; the questions back as `distinction`
+    challenge payloads (encounter: true); the route into the thinker (2026-09-07)."""
+    from src.dossier.encounter import render_encounter
+
+    job = _load(job_id)
+    out = render_encounter(job.model_dump(), thinker=thinker)
+    if out is None:
+        raise HTTPException(status_code=409, detail=f"no finished encounter phase on this job (status={job.status}, step={job.step})")
+    return {**out, "status": job.status}
+
+
 @router.get("/jobs/{job_id}/distinctions")
 def get_distinctions(job_id: str):
     """The distinction round (engines interlocutor_position · distinction_draft · distinction_settle) as JSON: the questions the owner

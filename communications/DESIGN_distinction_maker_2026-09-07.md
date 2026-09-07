@@ -127,3 +127,24 @@ is named); and the latest phase of an engine as the upstream of the next.
 The Referee's shape for a relation posted as candidate evidence (the-referee-48, 15:05): POST /api/schools/{id}/candidates with
 evidence {relation, axis, clause, finding, run, text} and source_ref "distinction:<run>"; the operator judges in the queue.
 
+## 7. The encounter (Evgeny, 17:40: "encounter, then impact scan")
+
+His July distinction (2026-07-15, l. 742): a foil is tactical, "very useful towards the end when it comes to narrating things"; an
+encounter is "a much deeper operation around single thinkers". The distinction round is the foil: one turn, several interlocutors,
+one question each. The encounter is one thinker, several of their texts, the owner's whole model.
+
+**Engine `encounter_map`** (family distinction; reads the thinker's texts as witnesses, the owner's turn as the text under audit,
+the parts as `argument`, his hunches as `hunches`): E1 `position` — the thinker's position on an owner's question per text or
+period, with locus; E2 `concept` — the load-bearing concept, what it does in their system, and the choice it puts to the owner
+(absorb · translate · refuse); E3 `opponent` — whom the thinker argues against, and whether the owner shares the opponent; E4
+`turn` — where the thinker moved between texts; E5 `silence`. **Engine `encounter_draft`** (over the map and his model): X1 `axis`
+— the two to four axes that organise the whole meeting; X2 `relation` per axis (distinction_relations) with ours, theirs, bridge,
+bears_on; X3 `take` (vocabulary `encounter_takes`: absorb · translate · refuse · defer) per concept or position, with the concept of
+ours it translates into; X4 `question_back`; X5 `read_next` — the thinker's texts to read next, ranked, held or not. Recipe
+`encounter_round`; the settle is `distinction_settle` (its context now includes the encounter's rows). `GET /v1/dossier/jobs/{id}/
+encounter?thinker=` renders it per axis with the challenges (`encounter: true`) and the route in. The Stacks file the questions as
+distinction challenges as before; the route goes to the references lane (a text not held is a fetch the actions registry licenses).
+
+The impact scan follows (his order): after a distinction or an encounter settles, re-read the whole argument for the parts it
+changes (OAAS review_pilot's dependency-impact scan as an engine).
+

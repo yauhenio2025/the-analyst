@@ -1,0 +1,153 @@
+# The distinction family (2026-09-07): the encounter. Walls: every row anchors in one supplied document (the thinker's text, the owner's turn, a part, the hunches): document-scope; cross-references travel as row ids in fields.
+engine_key: encounter_draft
+engine_name: 'The encounter drafted: axes, relations, takes, the route in'
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: On which axes does the owner meet this thinker, what does he take and refuse, what must he settle, and what
+    should he read next in them?
+  framing: 'The documents: the owner''s TURN (his stated hypothesis about the thinker, with the references) and the THINKER''S
+    TEXTS as a statements evidence index (the turn is the text under audit; each reference a statement; each held text a
+    witness whose windows are the passages the references point at — a place outside them is unverifiable, never absent);
+    a document keyed `argument` with the argument''s PARTS (''[part N] (his | desk draft) text''); a document keyed `hunches`
+    with the hunches he has voiced, when supplied. The packet names the THINKER (one name; place only them) and the interlocutors''
+    roles. The encounter is the deep operation around one thinker: read their texts across the oeuvre, never their reputation;
+    the owner''s questions come from his argument, parts and hunches, not from the thinker''s agenda. The upstream rows
+    (E1 positions, E2 concepts, E3 opponents, E4 turns, E5 silences) are supplied with their ids. Infer the owner''s side
+    from the turn, the parts and the hunches; propose, never rewrite his parts.'
+  scoped_outcomes: false
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: axis
+    name: An axis that organises the encounter
+    questions:
+    - Which two to four axes organise the whole meeting of the two systems?
+    method_card: 'Do: Two to four rows: the axis in a phrase, what it decides in one clause, the E1 positions and the parts
+      it gathers, anchored in the owner''s turn or a part. Select literal spans that carry the actor, predicate, object
+      and necessary qualification. A name or topic alone cannot support a reading. Keep attribution, negation, modality
+      and chronology. Code checks only anchors and IDs; the model must judge.'
+    indicators:
+    - axis
+    - whether
+    - versus
+    scope: document
+    load_bearing: true
+    id_prefix: X1
+    answer_shape: '[X1.F<n>] <the axis in a phrase>: <what it decides> — dim: axis — gathers: <E1 ids> — parts: <part numbers
+      separated by ;, or none> — anchor: "<verbatim from the turn or a part, <=200 chars>" — doc: <the turn''s or the argument''s
+      key> — confidence: high|medium|low'
+  - key: relation
+    name: The relation on an axis
+    questions:
+    - On this axis, is the owner's position parallel, colliding, overlapping then diverging, absorbing, or is the axis irrelevant?
+    method_card: 'Do: One row per axis: the relation from the vocabulary, ours and theirs in a clause each, the bridge,
+      the parts it bears on, anchored in the owner''s words that carry his side. Select literal spans that carry the actor,
+      predicate, object and necessary qualification. A name or topic alone cannot support a reading. Keep attribution, negation,
+      modality and chronology. Code checks only anchors and IDs; the model must judge.'
+    indicators:
+    - against
+    - same
+    - unlike
+    scope: document
+    load_bearing: true
+    id_prefix: X2
+    answer_shape: '[X2.F<n>] On <axis>: <relation> — dim: relation — axis: <X1 id> — relation: parallel|collides|overlaps_then_diverges|absorbs|irrelevant
+      — ours: <one clause> — theirs: <one clause> — bridge: <one clause> — bears_on: <part numbers separated by semicolons,
+      or none> — anchor: "<verbatim from the turn or a part, <=200 chars>" — doc: <the turn''s or the argument''s key> —
+      confidence: high|medium|low'
+  - key: take
+    name: What the owner does with an element of the thinker's
+    questions:
+    - Absorb, translate, refuse or defer — which concept or position, and why?
+    method_card: 'Do: One row per E2 concept or E1 position worth a decision: the take from the vocabulary, the element
+      (E1 or E2 id), the concept of ours it translates into where it does, why in one clause, anchored in the owner''s turn,
+      a part or a hunch. Select literal spans that carry the actor, predicate, object and necessary qualification. A name
+      or topic alone cannot support a reading. Keep attribution, negation, modality and chronology. Code checks only anchors
+      and IDs; the model must judge.'
+    indicators:
+    - take
+    - adopt
+    - reject
+    scope: document
+    load_bearing: true
+    id_prefix: X3
+    answer_shape: '[X3.F<n>] <take> <the element>: <why> — dim: take — element: <E1 or E2 id> — take: absorb|translate|refuse|defer
+      — into: <our concept, or none> — anchor: "<verbatim from the turn, a part or a hunch, <=200 chars>" — doc: <the turn''s,
+      the argument''s or the hunches'' key> — confidence: high|medium|low'
+  - key: question_back
+    name: The question to the owner
+    questions:
+    - What must he confirm, restate, elaborate or choose for the encounter to settle?
+    method_card: 'Do: At most one row per X2 relation or X3 take that is undecided: the concrete question to him, the kind,
+      the options where a choice is real, anchored in his words it bears on. Select literal spans that carry the actor,
+      predicate, object and necessary qualification. A name or topic alone cannot support a reading. Keep attribution, negation,
+      modality and chronology. Code checks only anchors and IDs; the model must judge.'
+    indicators:
+    - is this
+    - would you
+    - which
+    scope: document
+    load_bearing: true
+    id_prefix: X4
+    answer_shape: '[X4.F<n>] <the question to the owner> — dim: question_back — from: <X2 or X3 id> — kind: confirm|restate|elaborate|choose
+      — options: <a | b | c, or none> — anchor: "<verbatim from the turn or a part, <=200 chars>" — doc: <the turn''s or
+      the argument''s key> — confidence: high|medium|low'
+  - key: read_next
+    name: The thinker's text to read next
+    questions:
+    - Which of the thinker's texts, held or not, would move the encounter furthest, and why?
+    method_card: 'Do: Three to five rows, ranked: the thinker''s text (held or not), why it moves the encounter, which axis
+      it serves, anchored in a held text that points at it or in the turn. Select literal spans that carry the actor, predicate,
+      object and necessary qualification. A name or topic alone cannot support a reading. Keep attribution, negation, modality
+      and chronology. Code checks only anchors and IDs; the model must judge.'
+    indicators:
+    - read
+    - next
+    scope: document
+    load_bearing: false
+    id_prefix: X5
+    answer_shape: '[X5.F<n>] <the text and why> — dim: read_next — text: <uid or year and title, or a work not held> — held:
+      yes|no|unknown — rank: <1 first> — axis: <X1 id> — why: <one clause> — anchor: "<verbatim, <=200 chars>" — doc: <actual
+      supplied source key> — confidence: high|medium|low'
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension
+    model_tier: cheap
+    output: ledger
+    max_rows: 10
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - merge_duplicates
+    - name_must_keep
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    max_rows: 10
+    reader: the owner, meeting the thinker
+    tables: []
+    brief: '1. One short paragraph per axis, addressed to the owner: here is where you and the thinker meet, the relation,
+      what you take and refuse; then the questions; then the reading route as a ranked list. 2. Then the ledger. Never rewrite
+      his parts.'

@@ -1,0 +1,156 @@
+# The distinction family (2026-09-07): the encounter. Walls: every row anchors in one supplied document (the thinker's text, the owner's turn, a part, the hunches): document-scope; cross-references travel as row ids in fields.
+engine_key: encounter_map
+engine_name: One thinker's system, mapped for the owner
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: Across the thinker's oeuvre, where do they stand on the owner's questions, with what concepts, against whom,
+    and where did they move?
+  framing: 'The documents: the owner''s TURN (his stated hypothesis about the thinker, with the references) and the THINKER''S
+    TEXTS as a statements evidence index (the turn is the text under audit; each reference a statement; each held text a
+    witness whose windows are the passages the references point at — a place outside them is unverifiable, never absent);
+    a document keyed `argument` with the argument''s PARTS (''[part N] (his | desk draft) text''); a document keyed `hunches`
+    with the hunches he has voiced, when supplied. The packet names the THINKER (one name; place only them) and the interlocutors''
+    roles. The encounter is the deep operation around one thinker: read their texts across the oeuvre, never their reputation;
+    the owner''s questions come from his argument, parts and hunches, not from the thinker''s agenda. A position row names
+    the text and locus; a turn row names two texts; a concept row says what the owner would have to do with the concept
+    (his choice comes in the draft).'
+  scoped_outcomes: false
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: position
+    name: The thinker's position on an owner's question, per text or period
+    questions:
+    - What does the thinker hold on this question, in which text, and does a later text hold it still?
+    method_card: 'Do: One row per (owner''s question × text or period) where the held text speaks: the question in the owner''s
+      words, the position in one sentence, anchored in THAT text at its locus; when several texts agree, one row naming
+      the span and anchored in the earliest. Select literal spans that carry the actor, predicate, object and necessary
+      qualification. A name or topic alone cannot support a reading. Keep attribution, negation, modality and chronology.
+      Code checks only anchors and IDs; the model must judge.'
+    indicators:
+    - holds
+    - argues
+    - the state
+    - class
+    scope: document
+    load_bearing: true
+    id_prefix: E1
+    answer_shape: '[E1.F<n>] <the thinker>: <the position in one sentence> — dim: position — question: <the owner''s question,
+      one clause> — text: <uid or year and title> — period: <early|middle|late or years> — locus: <page or section> — anchor:
+      "<verbatim from the thinker''s text, <=200 chars>" — doc: <the text''s document key> — confidence: high|medium|low'
+  - key: concept
+    name: A load-bearing concept of the thinker's
+    questions:
+    - Which of the thinker's concepts carries the position, and what would the owner have to do with it?
+    method_card: 'Do: At most eight rows: the concept as the thinker names it, what it does in their system in one clause,
+      the E1 positions it carries, and the choice it puts to the owner (adopt as is · translate into a concept of ours ·
+      refuse), anchored where the thinker defines or uses it. Select literal spans that carry the actor, predicate, object
+      and necessary qualification. A name or topic alone cannot support a reading. Keep attribution, negation, modality
+      and chronology. Code checks only anchors and IDs; the model must judge.'
+    indicators:
+    - concept
+    - notion
+    - category
+    scope: document
+    load_bearing: true
+    id_prefix: E2
+    answer_shape: '[E2.F<n>] <the concept>: <what it does in the thinker''s system> — dim: concept — concept: <the thinker''s
+      term> — carries: <E1 ids> — puts_to_owner: absorb|translate|refuse — anchor: "<verbatim, <=200 chars>" — doc: <the
+      text''s document key> — confidence: high|medium|low'
+  - key: opponent
+    name: Whom the thinker argues against
+    questions:
+    - Against whom is the position built, and is that an opponent of the owner's too?
+    method_card: 'Do: One row per opponent the thinker argues against on an owner''s question: the opponent, what the thinker
+      holds against them, whether the owner''s argument or hunches share the opponent (shared: yes|no|unknown), anchored
+      in the thinker''s text. Select literal spans that carry the actor, predicate, object and necessary qualification.
+      A name or topic alone cannot support a reading. Keep attribution, negation, modality and chronology. Code checks only
+      anchors and IDs; the model must judge.'
+    indicators:
+    - against
+    - contra
+    - critique
+    scope: document
+    load_bearing: true
+    id_prefix: E3
+    answer_shape: '[E3.F<n>] <the thinker> against <opponent>: <what they hold against them> — dim: opponent — opponent:
+      <name> — question: <the owner''s question, one clause> — shared: yes|no|unknown — anchor: "<verbatim, <=200 chars>"
+      — doc: <the text''s document key> — confidence: high|medium|low'
+  - key: turn
+    name: Where the thinker's position moved
+    questions:
+    - Between which texts did the thinker's position on an owner's question change, and to what?
+    method_card: 'Do: At most four rows: the question, the earlier position (E1 id) and the later (E1 id), what changed
+      in one clause, anchored in the later text. Select literal spans that carry the actor, predicate, object and necessary
+      qualification. A name or topic alone cannot support a reading. Keep attribution, negation, modality and chronology.
+      Code checks only anchors and IDs; the model must judge.'
+    indicators:
+    - later
+    - earlier
+    - abandons
+    - revises
+    scope: document
+    load_bearing: false
+    id_prefix: E4
+    answer_shape: '[E4.F<n>] <the thinker> moves on <the question>: <from what to what> — dim: turn — question: <one clause>
+      — from: <E1 id> — to: <E1 id> — changed: <one clause> — anchor: "<verbatim from the later text, <=200 chars>" — doc:
+      <the later text''s document key> — confidence: high|medium|low'
+  - key: silence
+    name: An owner's question the thinker never addresses
+    questions:
+    - Which of the owner's questions do the held texts not address?
+    method_card: 'Do: At most three rows: the owner''s question the held windows do not answer, anchored in the owner''s
+      turn or part that asks it; say ''in the held windows''. Select literal spans that carry the actor, predicate, object
+      and necessary qualification. A name or topic alone cannot support a reading. Keep attribution, negation, modality
+      and chronology. Code checks only anchors and IDs; the model must judge.'
+    indicators:
+    - does not
+    - silent
+    - never
+    scope: document
+    load_bearing: false
+    id_prefix: E5
+    answer_shape: '[E5.F<n>] <the thinker> does not address <the question> in the held windows — dim: silence — question:
+      <one clause> — anchor: "<verbatim from the turn or a part, <=200 chars>" — doc: <the turn''s or the argument''s key>
+      — confidence: high|medium|low'
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension
+    model_tier: cheap
+    output: ledger
+    max_rows: 10
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - merge_duplicates
+    - name_must_keep
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    max_rows: 10
+    reader: the owner, before he meets the thinker
+    tables: []
+    brief: '1. One paragraph per owner''s question: where the thinker stands across the texts, with the loci and the turns;
+      then the concepts and the opponents in a short paragraph each. 2. Then the ledger. Nothing else.'

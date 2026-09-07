@@ -9,7 +9,7 @@ import json
 import re
 
 FAMILY = {"citation_engagement_map", "citation_fidelity_audit", "citation_reception_map", "reference_reread",
-          "interlocutor_position", "distinction_draft", "distinction_settle"}   # the distinction family reads the owner's turn against the texts the same way (2026-09-07)
+          "interlocutor_position", "distinction_draft", "distinction_settle", "encounter_map", "encounter_draft"}   # the distinction family reads the owner's turn against the texts the same way (2026-09-07)
 
 
 def evidence_indexes(documents: dict[str, str]) -> list[tuple[str, dict]]:
@@ -157,7 +157,9 @@ def prepare_citation_sources(engine_key: str, documents: dict[str, str]) -> tupl
                # the distinction family: the owner's turn is the citing author, the interlocutors' texts the windows, the argument's parts ride beside; the settle round reads his answer too (2026-09-07)
                "interlocutor_position": {"citing_author", "primary_window", "argument"},
                "distinction_draft": {"citing_author", "primary_window", "argument"},
-               "distinction_settle": {"citing_author", "primary_window", "argument", "answer"}}[engine_key]
+               "distinction_settle": {"citing_author", "primary_window", "argument", "answer"},
+               "encounter_map": {"citing_author", "primary_window", "argument", "hunches"},
+               "encounter_draft": {"citing_author", "primary_window", "argument", "hunches"}}[engine_key]
     def in_scope(body):
         role = re.match(r"SOURCE ROLE: (\w+)", body)
         return not role or role[1] in allowed

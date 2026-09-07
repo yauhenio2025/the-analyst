@@ -200,8 +200,27 @@
         }
       ],
       "context": [
-        "interlocutor_position",
-        "distinction_draft"
+        "distinction_draft",
+        "encounter_draft",
+        "encounter_map",
+        "interlocutor_position"
+      ]
+    },
+    {
+      "key": "encounter_round",
+      "title": "The encounter: one thinker read through the owner's model",
+      "use_when": "the owner has chosen a thinker to encounter in depth (several of their texts held; his hypothesis about them stated; the argument's parts and his hunches supplied)",
+      "yields": "the thinker's positions on the owner's questions across their oeuvre with the turns · their load-bearing concepts and opponents · the axes of the encounter · the relations with ours, theirs and the bridge · what the owner absorbs, translates, refuses or defers · the questions back · the thinker's texts to read next",
+      "depth": "medium",
+      "steps": [
+        {
+          "engine_key": "encounter_map",
+          "depth": "surface"
+        },
+        {
+          "engine_key": "encounter_draft",
+          "depth": "surface"
+        }
       ]
     }
   ]
