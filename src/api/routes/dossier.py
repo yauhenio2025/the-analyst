@@ -262,6 +262,27 @@ def get_encounter(job_id: str, thinker: str = ""):
     return {**out, "status": job.status}
 
 
+@router.get("/jobs/{job_id}/encounter/page", response_class=HTMLResponse)
+def get_encounter_page(job_id: str, thinker: str = ""):
+    """The encounter as a page the owner reads whole: composed by code from the rows, the text first, ids on hover (2026-09-07)."""
+    from src.dossier.encounter import render_encounter
+    from src.dossier.encounter_page import compose_encounter_page, texts_of_job
+    from src.executor.context_broker import split_ledger
+    from src.executor.document_store import get_document_text
+
+    job = _load(job_id); rec = job.model_dump()
+    enc = render_encounter(rec, thinker=thinker)
+    if enc is None:
+        raise HTTPException(status_code=409, detail="no finished encounter phase on this job")
+    prose, cost = {}, 0.0
+    for ph in (rec.get("analysis") or {}).values():
+        if ph.get("engine_key") in ("encounter_map", "encounter_draft") and ph.get("final_output"):
+            prose[ph["engine_key"]] = split_ledger(ph["final_output"])[0]; cost += float(ph.get("cost_usd") or 0)
+    texts = texts_of_job(rec, lambda i: get_document_text(i) or "")
+    turn = ((rec.get("options") or {}).get("intent") or "")[:160]
+    return HTMLResponse(compose_encounter_page(enc, texts, turn=turn, prose=prose, cost_usd=cost or None))
+
+
 @router.get("/jobs/{job_id}/distinctions")
 def get_distinctions(job_id: str):
     """The distinction round (engines interlocutor_position · distinction_draft · distinction_settle) as JSON: the questions the owner

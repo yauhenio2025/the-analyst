@@ -36,8 +36,11 @@ def _rows(job: dict, engine: str) -> list[dict]:
 
 def _row(r: dict, *fields: str) -> dict:
     f = r["fields"]
-    return {"id": f"{r['engine']}/{r['id']}", "text": r["text"], **{k: f.get(k, "") for k in fields}, "anchor": r.get("anchor", ""), "doc": r.get("doc", ""),
-            "confidence": r.get("confidence", ""), "conjecture": r["conjecture"]}
+    out = {"id": f"{r['engine']}/{r['id']}", "text": r["text"], **{k: f.get(k, "") for k in fields if k != "text"}, "anchor": r.get("anchor", ""), "doc": r.get("doc", ""),
+           "confidence": r.get("confidence", ""), "conjecture": r["conjecture"]}
+    if "text" in fields:
+        out["ref"] = f.get("text", "")      # a shape field named `text` (the uid or title of a text) never overwrites the row's sentence
+    return out
 
 
 def _ids(s: str) -> list[str]:
