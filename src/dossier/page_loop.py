@@ -207,7 +207,7 @@ def compose_page(title: str, subtitle: str, plan: dict, prose: dict[str, str], e
 # ── the loop ──────────────────────────────────────────────────────────────────────────────────────────────────────
 
 def run_page_loop(job_id: str, o: dict, packet: dict, *, audience: str = "researcher", rounds: int = 2, model: str = "anthropic/claude-sonnet-5",
-                  call_fn: Optional[Callable] = None, on_round: Optional[Callable[[dict], None]] = None, exhibit_registry=None) -> dict:
+                  call_fn: Optional[Callable] = None, on_round: Optional[Callable[[dict], None]] = None, exhibit_registry=None, prior: Optional[dict] = None) -> dict:
     """Plan → make → write → review, `rounds` times; the second round plans with the verdicts. Returns the record of every round."""
     from src.dossier.engine_call import call_engine
     from src.exhibits.makers import make
@@ -222,10 +222,13 @@ def run_page_loop(job_id: str, o: dict, packet: dict, *, audience: str = "resear
     src = [SourceSpec(kind="paste", key="memo", title=f"The memo: {title}", text=memo)]
     record = {"job_id": job_id, "title": title, "audience": audience, "rounds": [], "cost_usd": 0.0}
     review = None
-    for n in range(1, rounds + 1):
+    if prior and prior.get("rounds"):   # a loop interrupted by a restart continues from its last finished round (2026-09-07)
+        record = {**record, **{k: prior[k] for k in ("rounds", "cost_usd") if k in prior}}
+        review = record["rounds"][-1].get("review")
+    for n in range(len(record["rounds"]) + 1, rounds + 1):
         t0 = time.time()
         packet_plan = {"audience": audience, "exhibits": planner_block(reg.list()), "previous_review": review, "round": n,
-                       "note": "Use only the exhibit keys listed; cite row ids exactly as they appear in the memo document (engine/F<n>). A drawn or tabular exhibit (timeline, two-halves, shift-table, idea-map) takes the full width: place it before or after its section, never beside. In a second round, act on every verdict that is not keep."}
+                       "note": "Use only the exhibit keys listed; cite row ids exactly as they appear in the memo document (engine/F<n>). The text is the main dish: only verdict chips stand before the first section's text; a wide exhibit (timeline, two-halves, shift-table, idea-map) is folded (a titled line the reader opens) or after its section, never beside and never the lead. In a second round, act on every verdict that is not keep."}
         planned = call_engine("page_planner", src, packet=packet_plan, depth="surface", model=model, spend_cap_usd=3.0, call_fn=call_fn)
         plan = parse_plan(planned["final_output"], {e.key for e in reg.list()}, row_ids, set(planned["wall"]["failed_ids"]))
         made = {e["id"]: (make(e["kind"], o, rows=e["rows"], packet=packet) or {"html": "", "description": "no maker"}) for e in plan["exhibits"]}
@@ -266,43 +269,96 @@ def _blob_key(job_id: str, what: str) -> str:
     return f"page:{job_id}:{what}"
 
 
-def save_page(job_id: str, record: dict) -> None:
+def _put(key: str, content_type: str, data: bytes) -> None:
     from src.dossier.blob_store import put_blob_safe
-    slim = {**record, "rounds": [{k: v for k, v in r.items() if k != "html"} for r in record["rounds"]]}
-    put_blob_safe(_blob_key(job_id, "record"), "application/json", json.dumps(slim, ensure_ascii=False).encode("utf-8"))
-    put_blob_safe(_blob_key(job_id, "html"), "text/html", (record.get("final_html") or "").encode("utf-8"))
-    for r in record["rounds"]:
-        put_blob_safe(_blob_key(job_id, f"round{r['round']}.html"), "text/html", r["html"].encode("utf-8"))
+    put_blob_safe(key, content_type, data)
+
+
+def _get(key: str) -> Optional[bytes]:
+    from src.dossier.blob_store import get_blob
+    got = get_blob(key)
+    return got[1] if isinstance(got, tuple) else got
+
+
+def save_page(job_id: str, record: dict, status: Optional[dict] = None) -> None:
+    """The record (slim: no html per round), the final html, each round's html — and the loop's status, so a restart cannot erase
+    a running loop (2026-09-07: the Reporter's deploy gate restarted the API mid-loop and the loop vanished)."""
+    slim = {**record, "rounds": [{k: v for k, v in r.items() if k != "html"} for r in record.get("rounds", [])]}
+    _put(_blob_key(job_id, "record"), "application/json", json.dumps(slim, ensure_ascii=False).encode("utf-8"))
+    if record.get("final_html"):
+        _put(_blob_key(job_id, "html"), "text/html", record["final_html"].encode("utf-8"))
+    for r in record.get("rounds", []):
+        if r.get("html"):
+            _put(_blob_key(job_id, f"round{r['round']}.html"), "text/html", r["html"].encode("utf-8"))
+    if status is not None:
+        save_status(job_id, status)
+
+
+def save_status(job_id: str, status: dict) -> None:
+    _put(_blob_key(job_id, "status"), "application/json", json.dumps(status).encode("utf-8"))
 
 
 def load_page(job_id: str, what: str = "html") -> Optional[bytes]:
-    from src.dossier.blob_store import get_blob
-    got = get_blob(_blob_key(job_id, what))
-    return got[1] if got else None
+    return _get(_blob_key(job_id, what))
 
 
 _running: dict[str, dict] = {}
 
 
-def start_page_loop(job_id: str, o: dict, packet: dict, **kw) -> dict:
+def start_page_loop(job_id: str, o: dict, packet: dict, *, resume: bool = False, **kw) -> dict:
     if job_id in _running and _running[job_id].get("status") == "running":
         return _running[job_id]
-    state = {"job_id": job_id, "status": "running", "started": time.time(), "rounds_done": 0, "error": None}
+    prior = None
+    if resume:
+        raw = load_page(job_id, "record")
+        try:
+            prior = json.loads(raw.decode("utf-8")) if raw else None
+        except ValueError:
+            prior = None
+        for r in (prior or {}).get("rounds") or []:      # the rounds' html is kept apart
+            h = load_page(job_id, f"round{r['round']}.html")
+            r["html"] = h.decode("utf-8") if h else ""
+    state = {"job_id": job_id, "status": "running", "started": time.time(), "rounds_done": len((prior or {}).get("rounds") or []), "error": None, "resumed": bool(prior)}
     _running[job_id] = state
+    save_status(job_id, state)
 
     def _go():
         try:
+            partial = {"job_id": job_id, "rounds": list((prior or {}).get("rounds") or []), "cost_usd": (prior or {}).get("cost_usd", 0.0)}
             def on_round(r):
                 state["rounds_done"] = r["round"]
-            rec = run_page_loop(job_id, o, packet, on_round=on_round, **kw)
-            save_page(job_id, rec)
+                partial["rounds"].append(r); partial["cost_usd"] = round(partial["cost_usd"] + r.get("cost_usd", 0), 4)
+                save_page(job_id, partial, status=state)      # every finished round survives a restart
+            rec = run_page_loop(job_id, o, packet, on_round=on_round, prior=prior, **kw)
             state.update(status="done", cost_usd=rec["cost_usd"], rounds_done=len(rec["rounds"]))
+            save_page(job_id, rec, status=state)
         except Exception as exc:
             logger.exception(f"page loop {job_id} failed")
             state.update(status="failed", error=f"{type(exc).__name__}: {exc}")
+            save_status(job_id, state)
     threading.Thread(target=_go, name=f"page-loop-{job_id}", daemon=True).start()
     return state
 
 
 def page_status(job_id: str) -> Optional[dict]:
-    return _running.get(job_id)
+    """This process's loop, else the stored status: a stored 'running' with no thread here is a loop a restart killed — `interrupted`,
+    resumable with POST /page {resume: true}."""
+    st = _running.get(job_id)
+    if st is not None:
+        return st
+    raw = load_page(job_id, "status")
+    if not raw:
+        return None
+    try:
+        stored = json.loads(raw.decode("utf-8"))
+    except ValueError:
+        return None
+    if stored.get("status") == "running":
+        stored = {**stored, "status": "interrupted", "note": "the API restarted while the loop ran; POST /page {resume: true} continues from the last finished round"}
+    return stored
+
+
+def active_page_loops() -> list[dict]:
+    """The loops running in this process, as job-like rows for the jobs listing (a deploy gate that reads statuses sees them: `composing`)."""
+    return [{"id": f"page:{jid}", "kind": "page_loop", "job_id": jid, "status": "composing", "step": "page", "rounds_done": st.get("rounds_done"), "started": st.get("started")}
+            for jid, st in _running.items() if st.get("status") == "running"]

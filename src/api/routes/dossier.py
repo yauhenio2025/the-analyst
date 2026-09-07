@@ -184,7 +184,8 @@ def create(req: CreateDossierRequest):
 
 @router.get("/jobs")
 def list_all(limit: int = 50):
-    return {"jobs": [j.model_dump() for j in list_jobs(limit=limit)]}
+    from src.dossier.page_loop import active_page_loops
+    return {"jobs": [j.model_dump() for j in list_jobs(limit=limit)] + active_page_loops()}   # a running page loop counts as active work (status composing)
 
 
 @router.get("/jobs/{job_id}")
@@ -360,6 +361,7 @@ class PageRequest(BaseModel):
     audience: str = "researcher"
     rounds: int = Field(2, ge=1, le=4)
     model: str = "anthropic/claude-sonnet-5"
+    resume: bool = False              # continue an interrupted loop from its last finished round
 
 
 @router.post("/jobs/{job_id}/page", status_code=202)
@@ -375,7 +377,7 @@ def start_page(job_id: str, req: Optional[PageRequest] = None):
     if o is None:
         raise HTTPException(status_code=409, detail=f"no finished oeuvre phase on this job (status={job.status}, step={job.step})")
     packet = _oeuvre_packet(job)
-    return start_page_loop(job_id, o, packet, audience=req.audience, rounds=req.rounds, model=req.model)
+    return start_page_loop(job_id, o, packet, resume=req.resume, audience=req.audience, rounds=req.rounds, model=req.model)
 
 
 @router.get("/jobs/{job_id}/page/status")

@@ -127,3 +127,54 @@ def test_the_text_is_the_main_dish_wide_exhibits_fold_and_nothing_but_chips_stan
     assert "<summary>Brenner’s texts 1972–2025 on one line<span class='hint'>open</span></summary>" in html
     assert html.index("Second.") < html.index("<blockquote class='pull'>")
     assert "shown as a titled line the reader opens" in desc
+
+
+def test_a_page_loop_survives_a_restart_and_resumes_from_its_last_round(tmp_path, monkeypatch):
+    """The Reporter's deploy gate restarted the API mid-loop and the loop vanished (2026-09-07 13:03): the status and every finished
+    round now live in the blob store; a stored 'running' with no thread here reads as interrupted; resume continues from the next round."""
+    import time as _t
+    from src.exhibits.registry import ExhibitRegistry, DEFINITIONS
+    import shutil
+    import src.dossier.page_loop as pl
+    for f in DEFINITIONS.glob("*.json"):
+        shutil.copy(f, tmp_path / f.name)
+    reg = ExhibitRegistry(tmp_path, durable=False)
+    store: dict[str, bytes] = {}
+    monkeypatch.setattr(pl, "_put", lambda key, ct, data: store.__setitem__(key, data))
+    monkeypatch.setattr(pl, "_get", lambda key: store.get(key))
+    calls = []
+    def fake(system, user, *, model_hint, label, **kw):
+        calls.append(label)
+        if "page_planner" in label:
+            return {"content": PLAN, "model_used": model_hint, "input_tokens": 3000, "output_tokens": 500}
+        if "page_prose" in label:
+            return {"content": PROSE, "model_used": model_hint, "input_tokens": 3000, "output_tokens": 300}
+        return {"content": REVIEW, "model_used": model_hint, "input_tokens": 2000, "output_tokens": 200}
+    # round one runs and is saved; then "the API restarts": the thread is gone, the stored status still says running
+    pl._running.clear()
+    st = pl.start_page_loop("d-durable", OEUVRE, PACKET, audience="researcher", rounds=1, call_fn=fake, exhibit_registry=reg)
+    for _ in range(200):
+        if st["status"] != "running":
+            break
+        _t.sleep(0.05)
+    assert st["status"] == "done" and st["rounds_done"] == 1 and len(calls) == 3
+    assert json.loads(store["page:d-durable:status"])["status"] == "done" and "page:d-durable:round1.html" in store and "page:d-durable:record" in store
+    store["page:d-durable:status"] = json.dumps({**st, "status": "running"}).encode()      # what a killed loop leaves behind
+    pl._running.clear()
+    assert pl.page_status("d-durable")["status"] == "interrupted" and pl.active_page_loops() == []
+    # resume: the prior round is kept, only round two runs
+    calls.clear()
+    st2 = pl.start_page_loop("d-durable", OEUVRE, PACKET, resume=True, audience="researcher", rounds=2, call_fn=fake, exhibit_registry=reg)
+    assert st2["resumed"] is True and st2["rounds_done"] == 1
+    for _ in range(200):
+        if st2["status"] != "running":
+            break
+        _t.sleep(0.05)
+    assert st2["status"] == "done" and st2["rounds_done"] == 2 and len(calls) == 3
+    rec = json.loads(store["page:d-durable:record"])
+    assert [r["round"] for r in rec["rounds"]] == [1, 2] and rec["final_html"] if "final_html" in rec else True
+    assert store["page:d-durable:html"].startswith(b"<!doctype html>")
+    # while a loop runs it is active work for the jobs listing
+    pl._running["d-x"] = {"status": "running", "rounds_done": 0, "started": 1.0}
+    assert pl.active_page_loops() == [{"id": "page:d-x", "kind": "page_loop", "job_id": "d-x", "status": "composing", "step": "page", "rounds_done": 0, "started": 1.0}]
+    pl._running.clear()
