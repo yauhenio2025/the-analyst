@@ -201,6 +201,13 @@ def _run(job_id: str) -> None:
                                 payload_json={"kind": "awaiting_brief"})
                     return
         update_job(job_id, status="done", step="receipts")
+        try:   # every heavy reading leaves its rows behind, indexed by person and text (the owner, 2026-09-07 18:30)
+            from src.readings.registry import index_job
+            done = get_job(job_id)
+            if done is not None:
+                index_job(done.model_dump())
+        except Exception as exc:
+            logger.warning(f"readings ledger not written for {job_id}: {exc}")
         job = get_job(job_id) or job
         events.emit(job_id, "job_finished", detail=f"dossier done: ${job.totals.cost_usd:.2f}, {job.totals.llm_calls} calls, "
                     f"{round(job.totals.duration_ms/60000, 1)} min", cost_usd=job.totals.cost_usd,

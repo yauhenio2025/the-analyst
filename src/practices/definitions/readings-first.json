@@ -1,0 +1,21 @@
+{
+  "key": "readings-first",
+  "name": "Read the ledger before you spend",
+  "task_kinds": [
+    "reading-plan"
+  ],
+  "when": "a run, an added step or a light call is about to read primary sources about persons or texts the system has read before (the owner, 2026-09-07 18:30: 'later sessions should be able to skim through that and have a map about what is where and thus reduce costs')",
+  "shape": "before the call: GET /v1/readings?person=<each person the packet names> and ?text=<each uid> — the entries say which job, engine and rows exist and where they render; attach the entries as the packet's `prior_readings` (an added step does this itself); tell the engine to cite prior rows by job and id and to read only what is new; skip a text whose windows were read for the same question unless the question changed",
+  "ingredients": [
+    "the persons and texts the packet names",
+    "the readings ledger (index by person, surname, text, job)",
+    "the renders (/oeuvre, /distinctions, /encounter, /reread) for a reader who wants the rows in words"
+  ],
+  "yields": "fewer re-readings of the same texts for the same questions; a run that starts from what is known (the Hintze encounter can start from the distinction round's I2 rows on Hintze rather than re-reading the essay)",
+  "misses": "rows made before the ledger existed unless a session backfills them (POST /v1/readings/index/{job_id}); a person named differently across runs (the surname index catches most)",
+  "origin": "the owner's rule after the Hintze encounter, 2026-09-07; the ledger is written by code when a phase or an added step finishes",
+  "owner": "the-mastermind",
+  "version": "2026-09-07",
+  "evidence": [],
+  "note": "The Stacks attach the same readings to the author's and the text's records; the Referee to the thinker."
+}

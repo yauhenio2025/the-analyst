@@ -355,6 +355,11 @@ def add_job_step(job_id: str, req: StepRequest):
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
     update_job(job_id, analysis=record["analysis"], totals=record["totals"])
+    try:
+        from src.readings.registry import index_job
+        index_job(record, only_phases=[str(phase.get("phase_number"))])   # the added step's rows join the ledger too
+    except Exception as exc:
+        logger.warning(f"readings ledger not written for {job_id} step: {exc}")
     return {"job_id": job_id, "phase": {k: v for k, v in phase.items() if k != "final_output"}, "rows": len((phase.get("final_output") or "").split("\n[")), "cost_usd": phase.get("cost_usd")}
 
 

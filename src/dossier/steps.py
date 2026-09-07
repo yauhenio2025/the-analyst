@@ -7,6 +7,9 @@ the focal text and the texts that cite the persons to place. The packet: the job
 """
 from __future__ import annotations
 
+import logging
+logger = logging.getLogger(__name__)
+
 import json
 from typing import Any, Callable, Optional
 
@@ -85,6 +88,15 @@ def add_step(job: dict, engine_key: str, *, get_text: Callable[[str], str], call
     upstream = upstream_findings(job, engine_key)
     if upstream:
         small = {**(small or {}), "upstream_findings": upstream}   # the rows of the recipe's earlier steps, with their ids (the engines' framings expect them)
+    try:   # what has been read already about these persons: the planner reads before it spends (the readings ledger, 2026-09-07)
+        from src.readings.registry import prior_block
+        names = [x.get("name") if isinstance(x, dict) else x for x in ((small or {}).get("interlocutors") or [])] + ([(small or {}).get("thinker")] if (small or {}).get("thinker") else []) \
+                + [e.get("person") for e in ((small or {}).get("persons_unknown") or [])[:12]]
+        prior = prior_block([n for n in names if n], [])
+        if prior:
+            small = {**(small or {}), "prior_readings": prior}
+    except Exception as exc:
+        logger.warning(f"prior readings not attached: {exc}")
     room = max_chars - len(json.dumps(small, ensure_ascii=False)) - 8_000 if small else max_chars   # the packet counts against the light call's cap
     extras = [SourceSpec(kind="paste", role=x.get("role") or "source", key=x.get("key"), title=x.get("title") or x.get("key"), text=x["text"]) for x in extra_sources or [] if x.get("text")]
     room -= sum(len(x.text) for x in extras)

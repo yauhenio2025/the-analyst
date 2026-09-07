@@ -290,6 +290,8 @@ app.add_middleware(
 
 # Include routers with /v1 prefix
 app.include_router(engines.router, prefix="/v1")
+from src.api.routes import readings as _readings_routes
+app.include_router(_readings_routes.router, prefix="/v1")
 app.include_router(paradigms.router, prefix="/v1")
 app.include_router(chains.router, prefix="/v1")
 app.include_router(styles.router, prefix="/v1")
