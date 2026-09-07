@@ -102,3 +102,17 @@ The reviewer's verdict vocabulary and the exhibits' kinds are registry records, 
 3. The layout desk as an engine over the oeuvre memo; its plan rendered by the Stacks' page; the timeline and the two-halves panel first
    (SVG, no image call), the idea-map as the first image through the fleet.
 4. The principle into CLAUDE.md: presentation is records too — exhibits, layouts, styles, providers — and a desk chooses among them.
+
+## 4. Placement: the text is the main dish (Evgeny, 11:45)
+
+The first pages put the exhibits at the top and the essay under them; the owner: "this giant tape… cannot be the main dish… placing those items at the top hides the rest of the essay… strategize about placement on the page." The rule now stands in three records and one piece of code, so the planner does not have to rediscover it:
+
+- **The vocabulary** `exhibit_placements`: before (verdict chips only) · beside (a narrow element read with the text) · after (the evidence after the claim) · folded (a titled line after its section that the reader opens; a reference the reader consults, never the page's lead).
+- **The exhibit record** carries a default `placement`; the timeline, the shift table, the idea map and the glossary fold; the sidebar and the pull quote sit beside; the two halves and the route cards follow their section; the chips lead.
+- **The planner and the reviewer** say it in words: the reader meets the first paragraph at once; never two exhibits between two paragraphs; an exhibit between the reader and the first paragraph gets `move`.
+- **The composer** enforces it by code whatever the plan says: a wide exhibit never floats and never leads; a folded exhibit is a `<details>` element titled by its maker in words (never an id); in the Stacks' page the same exhibits are thumbnails that open modals under the memo.
+
+The essay itself: the memo's four parts (read backwards · read forwards · read whole · the route) were the engines' order, not an argument's; the owner found it mechanical. The memo brief now asks for one short essay with one line of argument, the readings as evidence inside it, at most three headings of the argument's own, the route as a ranked list and the open question in a sentence. The page planner then follows the argument, not the engines.
+
+Drawing: the two-halves panel was a Sankey idea (lines crossing or stopping at a seam) applied to a list; the lines ran through the text. Its data's job is identity (persists / changes) between two named texts, which is a two-column comparison with a marker per row. When a form fights its text, change the form.
+

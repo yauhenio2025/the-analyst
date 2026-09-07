@@ -242,3 +242,19 @@ they looked automatic; that stopped at 00:12Z. gs_revamp deployed 090e2d9 by API
 Deployment section now says so.
 
 RESOLVED 2026-09-07 00:45Z: Evgeny said yes in the gs_revamp session; autoDeploy is ON for the service (branch master). Pushes deploy on their own; `[skip render]` is honoured for pushes.
+
+## 2026-09-07 — the oeuvre packet called held works unheld (the Manifesto, Pre-Capitalist Economic Formations)
+
+Raised by the owner through the Stacks (12:05). Cause in `src/sources/oeuvre_bundle.py`: the cited-works table merged the Stacks' ledger
+rows and the profile's works-cited by key/title, so a registry title (German) and the profile's English title made two rows; the ledger row
+was cited before the focal text too and fell out of "cited first in the focal", leaving the profile's unheld twin. The focal document also
+carried no LEDGER line. Fixed in 0851320: the ledger is the authority on works and holdings; the packet's rows carry held_uid / held_how /
+held_edition; the focal document carries its ledger; the wording "held means held in the library, whether or not supplied to this run" in
+the packet notes and the citation_shift engine. Test in tests/test_oeuvre_position_2026_09_07.py. Run 3 verifies on the live desk.
+
+## 2026-09-07 — an exhibit record's blob replaced its file whole
+
+`ExhibitRegistry` overlaid the durable blob over the file record whenever the blob had at least as much evidence, so an edit to the file
+(a redrawn shape, the new `placement` field) vanished at load. Now the file is the record and the blob adds only the uses it has seen
+(deduped by page, recorded, verdict). Same commit.
+
