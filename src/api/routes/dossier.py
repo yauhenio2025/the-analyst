@@ -269,7 +269,57 @@ def get_oeuvre(job_id: str):
     out = render_oeuvre(job.model_dump(mode="json"))
     if out is None:
         raise HTTPException(status_code=409, detail=f"no finished oeuvre phase on this job (status={job.status}, step={job.step})")
-    return {**out, "status": job.status}
+    exhibits = [{"key": k, "medium": "svg", "url": f"/v1/dossier/jobs/{job_id}/exhibits/{k}.svg"} for k, needs in (("oeuvre-timeline", "oeuvre_trajectory"), ("two-halves", "epistemic_rupture")) if needs in out["phases"]]
+    return {**out, "exhibits": exhibits, "status": job.status}
+
+
+def _oeuvre_packet(job: DossierJob) -> dict:
+    """The oeuvre packet (the plan document the bundle expanded into) from the executor's document store."""
+    import json as _json
+    from src.executor.document_store import get_document_text
+
+    for d in job.documents or []:
+        if d.get("role") == "plan" and d.get("executor_doc_id"):
+            try:
+                obj = _json.loads(get_document_text(d["executor_doc_id"]) or "{}")
+            except ValueError:
+                continue
+            if obj.get("kind") == "oeuvre":
+                return obj
+    return {}
+
+
+@router.get("/jobs/{job_id}/exhibits")
+def list_job_exhibits(job_id: str):
+    """The exhibits this job can draw by code from its rows, with their URLs (the Stacks' page embeds them)."""
+    from src.exhibits.svg import MAKERS
+
+    job = _load(job_id)
+    engines = {ph.get("engine_key") for ph in (job.analysis or {}).values() if ph.get("final_output")}
+    out = []
+    if "oeuvre_trajectory" in engines:
+        out.append({"key": "oeuvre-timeline", "medium": "svg", "url": f"/v1/dossier/jobs/{job_id}/exhibits/oeuvre-timeline.svg"})
+    if "epistemic_rupture" in engines:
+        out.append({"key": "two-halves", "medium": "svg", "url": f"/v1/dossier/jobs/{job_id}/exhibits/two-halves.svg"})
+    return {"job_id": job_id, "exhibits": out, "makers": sorted(MAKERS)}
+
+
+@router.get("/jobs/{job_id}/exhibits/{key}.svg")
+def get_job_exhibit_svg(job_id: str, key: str):
+    """One exhibit drawn by code from the job's rows: oeuvre-timeline, two-halves."""
+    from fastapi.responses import Response
+    from src.dossier.oeuvre import render_oeuvre
+    from src.exhibits.svg import exhibit_svg
+
+    job = _load(job_id)
+    o = render_oeuvre(job.model_dump(mode="json"))
+    if o is None:
+        raise HTTPException(status_code=409, detail=f"no finished oeuvre phase on this job (status={job.status}, step={job.step})")
+    packet = _oeuvre_packet(job)
+    svg = exhibit_svg(key, o, packet)
+    if svg is None:
+        raise HTTPException(status_code=404, detail=f"no exhibit maker for {key}")
+    return Response(content=svg, media_type="image/svg+xml", headers={"Cache-Control": "public, max-age=300"})
 
 
 @router.get("/jobs/{job_id}/brief")
