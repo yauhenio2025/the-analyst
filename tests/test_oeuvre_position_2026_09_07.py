@@ -306,3 +306,25 @@ def test_enumerated_fields_are_pinned_to_their_vocabulary_and_drift_is_reported(
     assert rows[1]["fields"]["verdict"] == "continuation" and "drift" not in rows[1]
     assert rows[2]["fields"]["verdict"] == "a fresh start" and rows[2]["drift"][0]["fixed"] is None
     assert "drift" not in rows_with_fields(out)[0]                     # without an engine nothing is pinned
+
+
+def test_an_action_names_its_thing_in_words_never_a_uid_or_an_engine_key():
+    """The owner (2026-09-07 22:30, on the macro cards' opened rows): 'some of it is still a bit technical' — the rows read
+    'oeuvre position memo.read next em:HZHLWZ2R/1977 · held yes'."""
+    from src.dossier.oeuvre import actions_for
+    texts = {"em:H": {"title": "The Origins of Capitalist Development: A Critique of Neo-Smithian Marxism", "year": "1977"},
+             "em:X": {"title": "The social basis of economic development", "year": "1986"}}
+    row = lambda i, engine, dim, **f: {"engine": engine, "id": i, "dim": dim, "text": f.get("cited", ""), "conjecture": False, "fields": f}
+    rows = [row("M2.F1", "oeuvre_position_memo", "read_next", text="em:H/1977", held="yes", why="it denies that trade can transform class relations"),
+            row("E4.F1", "epistemic_rupture", "test", source="em:H/1977 and em:X/1986", held="yes"),
+            row("F2", "citation_shift", "first_cited", cited="Meek, Ronald", kind="person", held="unknown", in_referee="no"),
+            row("F3", "citation_shift", "unexamined", cited="The Wealth of Nations", kind="work", held="no", in_referee="unknown")]
+    by = {a["finding"]: a for a in actions_for(rows, texts=texts)}
+    r = by["oeuvre_position_memo/M2.F1"]
+    assert r["kind_words"] == "on the reading route" and r["label"] == "The Origins of Capitalist Development: A Critique of Neo-Smithian Marxism (1977)" and r["held_words"] == "in the library"
+    assert by["epistemic_rupture/E4.F1"]["label"] == "The Origins of Capitalist Development: A Critique of Neo-Smithian Marxism (1977) and The social basis of economic development (1986)"
+    meek = by["citation_shift/F2"]
+    assert meek["label"] == "Ronald Meek" and meek["kind_words"] == "cited here for the first time" and meek["held_words"] == "" and meek["in_referee_words"] == "not in the Referee"
+    smith = by["citation_shift/F3"]
+    assert smith["label"] == "The Wealth of Nations" and smith["held_words"] == "not in the library" and smith["in_referee_words"] == ""
+    assert all("em:" not in a["label"] and "." not in a["kind_words"] for a in by.values())

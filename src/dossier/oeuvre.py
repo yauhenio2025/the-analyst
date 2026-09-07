@@ -16,6 +16,17 @@ from src.dossier.explainer import CITED_ID, rows_with_fields
 ENGINES = ("oeuvre_trajectory", "citation_shift", "retrospective_reading", "prospective_reading", "epistemic_rupture", "oeuvre_position_memo", "thinker_placement")
 PERSON_INPUTS = {"thinker_name", "referee_thinker_id", "referee_thinker_ids", "person_name", "folder_id", "school_name", "candidate_names"}   # an action with one of these acts on a person
 ANSWERED_BY_LEDGER = {"referee.thinker-exists"}                                            # the Stacks' ledger already resolved the Referee id (the owner, 2026-09-07 12:17)
+KIND_WORDS = {   # a finding kind in the reader's words, never engine.dimension (the owner, 2026-09-07 22:30: "some of it is still a bit technical")
+    "citation_shift.first_cited": "cited here for the first time",
+    "citation_shift.unexamined": "cited here, not examined by us",
+    "citation_shift.anomaly": "a cluster unique to this paper",
+    "epistemic_rupture.test": "a test that would settle the break verdict",
+    "oeuvre_position_memo.read_next": "on the reading route",
+}
+HELD_WORDS = {"yes": "in the library", "no": "not in the library", "unknown": "holding unknown"}
+REFEREE_WORDS = {"yes": "known to the Referee", "no": "not in the Referee", "unknown": ""}
+
+
 ACTION_ROWS = {   # dimension → (finding kind, the row fields → action inputs)
     ("citation_shift", "unexamined"): "citation_shift.unexamined",
     ("citation_shift", "first_cited"): "citation_shift.first_cited",
@@ -89,7 +100,33 @@ def canonical_name(cited: str) -> str:
     return f"{m.group(2)} {m.group(1)}".strip() if m else (cited or "").strip()
 
 
-def actions_for(rows: list[dict], registry=None, placements: Optional[dict[str, dict]] = None, run_id: str = "") -> list[dict]:
+UID_REF = re.compile(r"(em:[A-Za-z0-9]+)(?:/(\d{4}))?")
+
+
+def _one_text(ref: str, texts: dict[str, dict]) -> str:
+    m = UID_REF.fullmatch(ref.strip())
+    if not m:
+        return ref.strip()
+    t = texts.get(m.group(1)) or {}
+    title = (t.get("title") or "").strip(); year = str(t.get("year") or m.group(2) or "").strip()
+    if title:
+        return f"{title} ({year})" if year and year not in title else title
+    return f"a text of {year}" if year else ref.strip()
+
+
+def _label(cited: str, is_person: bool, texts: dict[str, dict]) -> str:
+    """The thing named as a reader names it: a person by their name, a text by its title and year, a pair of texts by both titles,
+    never a uid (the owner, 2026-09-07 22:30)."""
+    c = (cited or "").strip()
+    if UID_REF.search(c):   # one uid, or a pair ("em:A/1977 and em:B/1986"), or a uid inside a phrase
+        out = UID_REF.sub(lambda m: _one_text(m.group(0), texts), c)
+        return out
+    if is_person:
+        return canonical_name(c)
+    return c
+
+
+def actions_for(rows: list[dict], registry=None, placements: Optional[dict[str, dict]] = None, run_id: str = "", texts: Optional[dict[str, dict]] = None) -> list[dict]:
     """The suggested actions, one entry per cited work or person that something can be done about (the owner, 2026-09-07 12:17:
     a held work and a known person need nothing; the Referee id is already resolved by the Stacks' ledger, so the only action on an
     unknown person is to add them, placed in a school or with a new school proposed around them). Inputs filled from the row;
@@ -159,10 +196,36 @@ def actions_for(rows: list[dict], registry=None, placements: Optional[dict[str, 
         waiting = [s_ for s_ in suggested if s_["missing"]]
         if not ready and not waiting and not pl:
             continue                                   # nothing anyone can do from this row: not a suggestion
-        entry = {"finding": f"{r['engine']}/{r['id']}", "also": [], "kind": kind, "cited": cited, "row": r["text"], "held": f.get("held", ""), "in_referee": f.get("in_referee", ""),
+        entry = {"finding": f"{r['engine']}/{r['id']}", "also": [], "kind": kind, "kind_words": KIND_WORDS.get(kind, kind.split(".")[-1].replace("_", " ")),
+                 "cited": cited, "label": _label(cited, is_person, texts or {}), "is_person": is_person,
+                 "held_words": "" if is_person else HELD_WORDS.get(held, ""), "in_referee_words": REFEREE_WORDS.get(known, "") if is_person else "",
+                 "row": r["text"], "held": f.get("held", ""), "in_referee": f.get("in_referee", ""),
                  "used_for": f.get("used_for") or f.get("for") or f.get("why") or "", "conjecture": r["conjecture"], "placement": pl,
                  "actions": ready, "waiting": [{"action": s_["action"], "organ": s_["organ"], "missing": s_["missing"], "inputs": s_["inputs"]} for s_ in waiting]}
         seen[key] = entry; out.append(entry)
+    return out
+
+
+def _texts_of(job: dict) -> dict[str, dict]:
+    """uid → {title, year} from the job's documents and its oeuvre packet, so an action can name a text rather than a uid."""
+    import json as _json
+    out: dict[str, dict] = {}
+    for d in job.get("documents") or []:
+        m = re.search(r"(em:[A-Za-z0-9]+)", str(d.get("key") or ""))
+        if m:
+            raw = str(d.get("title") or "")
+            year = d.get("year") or (re.search(r"\((\d{4})\)", raw).group(1) if re.search(r"\((\d{4})\)", raw) else "")
+            title = re.sub(r"^.*?\)\s+—\s+", "", raw).replace(" [profile]", "").strip()
+            out[m.group(1)] = {"title": title or raw, "year": year}
+        if d.get("role") == "plan" and d.get("executor_doc_id"):
+            try:
+                from src.executor.document_store import get_document_text
+                pk = _json.loads(get_document_text(d["executor_doc_id"]) or "{}")
+            except Exception:
+                continue
+            for t in (pk.get("texts") or []) + ([pk["focal"]] if isinstance(pk.get("focal"), dict) else []):
+                if t.get("uid"):
+                    out[t["uid"]] = {"title": t.get("title") or "", "year": t.get("year") or ""}
     return out
 
 
@@ -197,4 +260,5 @@ def render_oeuvre(job: dict, registry=None) -> Optional[dict]:
             "retrospective": table("retrospective_reading", {"inheritance", "resolution", "interlocutor", "verdict"}),
             "prospective": table("prospective_reading", {"seed", "developed_into", "abandoned", "verdict"}),
             "rupture": table("epistemic_rupture", {"continuity", "break", "verdict", "test"}),
-            "read_next": read_next, "open": table("oeuvre_position_memo", {"open"}), "placements": list(placements.values()), "vocabulary_drift": drift, "actions": actions_for(all_rows, registry, placements, run_id=str(job.get("id") or ""))}
+            "read_next": read_next, "open": table("oeuvre_position_memo", {"open"}), "placements": list(placements.values()), "vocabulary_drift": drift,
+            "actions": actions_for(all_rows, registry, placements, run_id=str(job.get("id") or ""), texts=_texts_of(job))}
