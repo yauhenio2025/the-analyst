@@ -88,18 +88,49 @@ def reading_from_phase(job: dict, phase_key: str, phase: dict) -> Optional[dict]
             texts[t] = texts.get(t, 0) + 1
         slim.append({"id": r["id"], "dim": r["dim"], "text": r["text"][:400], "anchor": (r.get("anchor") or "")[:240], "doc": r.get("doc", ""), "locus": f.get("locus", ""),
                      "conjecture": r["conjecture"], "fields": {k: v for k, v in f.items() if k not in ("anchor", "doc", "dim") and len(str(v)) < 300}})
-    packet_author = ((job.get("packet") or {}).get("author") or {}).get("name") if isinstance(job.get("packet"), dict) else None
-    if packet_author:
-        persons[packet_author] = persons.get(packet_author, 0) + 1
-    when = phase.get("finished") or job.get("updated_at") or time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    for a in job_authors(job):   # the run's author (the oeuvre packet's author) is indexed under the person too (the Stacks, 2026-09-07 19:30)
+        persons[a] = persons.get(a, 0) + 100
+    when = _stamp(phase.get("finished") or job.get("updated_at") or time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()))
     return {"job_id": job.get("id"), "phase": str(phase_key), "engine": engine, "when": when, "cost_usd": phase.get("cost_usd"), "depth": phase.get("depth"),
             "intent": (job.get("options") or {}).get("intent", "")[:300], "rows": slim, "n_rows": len(slim), "n_conjectural": sum(1 for r in slim if r["conjecture"]),
             "persons": sorted(persons, key=lambda p: -persons[p]), "texts": sorted(texts, key=lambda t: -texts[t]),
             "sources": [s.key if hasattr(s, "key") else s for s in (phase.get("sources") or [])], "renders": _renders(engine, job.get("id"))}
 
 
+def _stamp(when: str) -> str:
+    """A naive stamp is the desk's UTC clock: say so with a Z (the Stacks read a naive one as local and put a job in the future)."""
+    w = str(when or "")
+    return w if (w.endswith("Z") or re.search(r"[+-]\d\d:\d\d$", w) or not w) else w + "Z"
+
+
+def job_authors(job: dict) -> list[str]:
+    """The author(s) a run is about: the oeuvre packet's author.name (the plan document), else the packet a caller kept on the job."""
+    import json as _json, os
+    names: list[str] = []
+    pk = job.get("packet") if isinstance(job.get("packet"), dict) else None
+    if pk and isinstance(pk.get("author"), dict) and pk["author"].get("name"):
+        names.append(pk["author"]["name"])
+    if not names:
+        try:
+            from src.executor.document_store import get_document_text
+            for d in job.get("documents") or []:
+                if d.get("role") == "plan" and d.get("executor_doc_id"):
+                    obj = _json.loads(get_document_text(d["executor_doc_id"]) or "{}")
+                    a = obj.get("author")
+                    if isinstance(a, dict) and a.get("name"):
+                        names.append(a["name"])
+                    elif isinstance(a, str) and a:
+                        names.append(a)
+        except Exception:
+            pass
+    return names
+
+
+PUBLIC_BASE = __import__("os").environ.get("PUBLIC_BASE_URL", "https://the-analyst-kcuc.onrender.com").rstrip("/")
+
+
 def _renders(engine: str, job_id: Optional[str]) -> list[str]:
-    base = f"/v1/dossier/jobs/{job_id}"
+    base = f"{PUBLIC_BASE}/v1/dossier/jobs/{job_id}"   # absolute: a render may live on another host one day (the Stacks, 19:30)
     if engine in ("oeuvre_trajectory", "citation_shift", "retrospective_reading", "prospective_reading", "epistemic_rupture", "oeuvre_position_memo", "thinker_placement"):
         return [f"{base}/oeuvre", f"{base}/page"]
     if engine in ("interlocutor_position", "distinction_draft", "distinction_settle", "impact_scan"):

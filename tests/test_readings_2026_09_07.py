@@ -22,7 +22,8 @@ def test_a_finished_job_is_indexed_by_person_and_text_and_read_back(monkeypatch)
     entries = rl.index_job(job)
     assert [(e["engine"], e["n_rows"]) for e in entries] == [("interlocutor_position", 2), ("thinker_placement", 1)]
     got = rl.readings_for(person="Brenner")
-    assert got["count"] == 1 and got["readings"][0]["job_id"] == "d-r" and got["readings"][0]["renders"] == ["/v1/dossier/jobs/d-r/distinctions"]
+    assert got["count"] == 1 and got["readings"][0]["job_id"] == "d-r" and got["readings"][0]["renders"] == ["https://the-analyst-kcuc.onrender.com/v1/dossier/jobs/d-r/distinctions"]
+    assert got["readings"][0]["when"].endswith("Z")                                # a naive stamp is the desk's UTC clock, said with a Z
     assert rl.readings_for(person="Meek")["count"] == 1                      # 'Meek' finds 'Meek, Ronald' through the surname index
     assert rl.readings_for(person="Meek, Ronald")["readings"][0]["engine"] == "thinker_placement"
     assert rl.readings_for(text="em:BJ4R4EPJ")["count"] == 1 and rl.readings_for(text="em:CBT7B8CL")["count"] == 1 and rl.readings_for(text="em:NONE")["count"] == 0
@@ -36,3 +37,13 @@ def test_a_finished_job_is_indexed_by_person_and_text_and_read_back(monkeypatch)
     block = rl.prior_block(["Brenner", "Nobody"], ["em:ARR2005"])
     assert len(block["readings"]) == 1 and block["readings"][0]["about"] == "Brenner" and "read only what is new" in block["note"]
     assert rl.prior_block(["Nobody"], []) is None
+
+
+def test_the_runs_author_is_indexed_under_the_person(monkeypatch):
+    _store(monkeypatch)
+    tp = "[T1.F1] The transition agenda — dim: agenda — concepts: class relations — anchor: \"x\" — doc: focal:em:CBT7B8CL — confidence: high"
+    job = {"id": "d-a", "updated_at": "2026-09-07T12:00:00", "packet": {"author": {"id": "brenner-robert", "name": "Brenner, Robert"}},
+           "analysis": {"4.1": {"engine_key": "oeuvre_trajectory", "final_output": tp, "final_wall": {"failed_ids": []}}}}
+    rl.index_job(job)
+    assert rl.readings_for(person="Brenner")["count"] == 1 and rl.readings_for(person="Brenner, Robert")["count"] == 1
+    assert rl.reading("d-a", "4.1")["persons"][0] == "Brenner, Robert" and rl.reading("d-a", "4.1")["when"] == "2026-09-07T12:00:00Z"
