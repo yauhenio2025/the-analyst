@@ -1,0 +1,118 @@
+# The distinction family (2026-09-07). Walls: every row anchors in one supplied document (the owner's turn, a part, or an interlocutor's text): document-scope; cross-references travel as row ids in fields.
+engine_key: distinction_draft
+engine_name: The owner's position against theirs, and the question back
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: Where does the owner's emerging position stand to each interlocutor's, and what must he be asked?
+  framing: 'The documents: the owner''s TURN with its references and the interlocutors'' texts as a statements evidence
+    index (the turn is the text under audit; each reference is a statement with who and clue; each held text is a witness
+    whose windows are the passages the references point at; a place outside them is unverifiable, never absent), and a document
+    keyed `argument` carrying the argument''s PARTS (''[part N] (his | desk draft) text''). A packet may name the interlocutors
+    and their roles. The owner thinks in distinction to others; his distinctiveness is a function of understanding the inner
+    workings of their discourse: read their text, never their reputation. The upstream phase''s rows (I1 questions, I2 claims,
+    I3 silences) are supplied with their ids. Infer his position from the turn and the parts, never invent it; propose the
+    relation on a named axis; ask him what settles it. Making the distinction is kept apart from sharpening his formulation:
+    propose, do not rewrite his parts.'
+  scoped_outcomes: false
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: your_position
+    name: The owner's position on a question, inferred
+    questions:
+    - What is his position on this question, from his turn and his argument's parts?
+    method_card: 'Do: One row per I1 question: his position in one sentence as best inferred, anchored in the turn or a
+      part, with the part number where a part carries it and the confidence of the inference. Select literal spans that
+      carry the actor, predicate, object and necessary qualification. A name or topic alone cannot support a reading. Keep
+      attribution, negation, modality and chronology. Code checks only anchors and IDs; the model must judge.'
+    indicators:
+    - holds
+    - argues
+    - position
+    scope: document
+    load_bearing: true
+    id_prefix: D1
+    answer_shape: '[D1.F<n>] <his position in one sentence> — dim: your_position — question: <I1 id> — part: <N or none>
+      — anchor: "<verbatim from the turn or a part, <=200 chars>" — doc: <the turn''s or the argument''s key> — confidence:
+      high|medium|low'
+  - key: relation
+    name: The relation of his position to an interlocutor's
+    questions:
+    - Parallel, collides, overlaps then diverges, absorbs, or irrelevant — on which axis, ours and theirs, and what bridges
+      or forbids?
+    method_card: 'Do: One row per interlocutor × question with a D1 position and an I2 claim: the relation from the vocabulary,
+      the axis in a phrase, ours and theirs in a clause each, the bridge (what would reconcile them, or what forbids it),
+      anchored in the turn''s words that carry his side. Select literal spans that carry the actor, predicate, object and
+      necessary qualification. A name or topic alone cannot support a reading. Keep attribution, negation, modality and
+      chronology. Code checks only anchors and IDs; the model must judge.'
+    indicators:
+    - against
+    - unlike
+    - same
+    scope: document
+    load_bearing: true
+    id_prefix: D2
+    answer_shape: '[D2.F<n>] <his position> vs <their claim>: <relation> on <axis> — dim: relation — interlocutor: <name>
+      — question: <I1 id> — position: <D1 id> — claim: <I2 id> — relation: parallel|collides|overlaps_then_diverges|absorbs|irrelevant
+      — axis: <phrase> — ours: <one clause> — theirs: <one clause> — bridge: <one clause> — anchor: "<verbatim from the
+      turn, <=200 chars>" — doc: <the turn''s document key> — confidence: high|medium|low'
+  - key: question_back
+    name: The question to the owner
+    questions:
+    - What must he confirm, restate, elaborate or choose for the distinction to stand?
+    method_card: 'Do: At most one row per D2 relation that is not irrelevant: the concrete question to him (confirm: is
+      this your position; restate; elaborate: how would you develop it; choose: between named options), the options where
+      a choice is real, anchored in the turn''s sentence it bears on. Select literal spans that carry the actor, predicate,
+      object and necessary qualification. A name or topic alone cannot support a reading. Keep attribution, negation, modality
+      and chronology. Code checks only anchors and IDs; the model must judge.'
+    indicators:
+    - is this
+    - would you
+    scope: document
+    load_bearing: true
+    id_prefix: D3
+    answer_shape: '[D3.F<n>] <the question to the owner, addressed to him> — dim: question_back — relation: <D2 id> — interlocutor:
+      <name> — kind: confirm|restate|elaborate|choose — options: <a | b | c, or none> — anchor: "<verbatim from the turn,
+      <=200 chars>" — doc: <the turn''s document key> — confidence: high|medium|low'
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension
+    model_tier: cheap
+    output: ledger
+    max_rows: 8
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - merge_duplicates
+    - name_must_keep
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    max_rows: 8
+    reader: the owner, asked to confirm, restate, elaborate or choose
+    tables: []
+    brief: '1. For each interlocutor, one short paragraph addressed to the owner: on the questions you are arguing, they
+      argue this; your position seems to be this; the relation and its axis; then the question. 2. Then the ledger. Nothing
+      else; never rewrite his parts.'

@@ -1,0 +1,110 @@
+# The distinction family (2026-09-07). Walls: every row anchors in one supplied document (the owner's turn, a part, or an interlocutor's text): document-scope; cross-references travel as row ids in fields.
+engine_key: distinction_settle
+engine_name: The settled distinction and its effects
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: What distinction did the owner settle in his answer, what does it do to the argument, and what remains to
+    test?
+  framing: 'The documents: the owner''s ANSWER to the questions back, as the statements text under audit; the argument''s
+    PARTS (a document keyed `argument`); the upstream rows (I2 claims, D2 relations, D3 questions) supplied with their ids.
+    The distinction is his, in his words: the settled proposition, its effects on the parts, what remains open. The desk
+    proposes a part''s change only as an effect row; the Stacks write versions.'
+  scoped_outcomes: false
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: distinction
+    name: The settled distinction
+    questions:
+    - Distinct from whom, on which axis, holding what, because — and what becomes sayable?
+    method_card: 'Do: One row per settled distinction: the proposition in one sentence (distinct from <interlocutor> on
+      <axis>: we hold <what> because <why>), the relation from the vocabulary, what becomes sayable in a clause, anchored
+      in his answer. Select literal spans that carry the actor, predicate, object and necessary qualification. A name or
+      topic alone cannot support a reading. Keep attribution, negation, modality and chronology. Code checks only anchors
+      and IDs; the model must judge.'
+    indicators:
+    - distinct
+    - unlike
+    - we hold
+    scope: document
+    load_bearing: true
+    id_prefix: S1
+    answer_shape: '[S1.F<n>] Distinct from <interlocutor> on <axis>: <what we hold> — dim: distinction — interlocutor: <name>
+      — relation: <D2 id> — relation_kind: parallel|collides|overlaps_then_diverges|absorbs|irrelevant — axis: <phrase>
+      — because: <one clause> — sayable: <what becomes sayable, one clause> — anchor: "<verbatim from his answer, <=200
+      chars>" — doc: <the answer''s document key> — confidence: high|medium|low'
+  - key: effect
+    name: Its effect on a part of the argument
+    questions:
+    - Which part moves, gains support, must qualify, or cannot stand?
+    method_card: 'Do: One row per part the settled distinction touches: the part number, the effect from the vocabulary,
+      the change in one clause, anchored in his answer or in the part. Select literal spans that carry the actor, predicate,
+      object and necessary qualification. A name or topic alone cannot support a reading. Keep attribution, negation, modality
+      and chronology. Code checks only anchors and IDs; the model must judge.'
+    indicators:
+    - part
+    - moves
+    - supports
+    scope: document
+    load_bearing: true
+    id_prefix: S2
+    answer_shape: '[S2.F<n>] Part <N> <effect>: <the change in one clause> — dim: effect — distinction: <S1 id> — part:
+      <N> — relation: moves|supports|complicates|contradicts — anchor: "<verbatim from his answer or the part, <=200 chars>"
+      — doc: <the answer''s or the argument''s key> — confidence: high|medium|low'
+  - key: open
+    name: What remains to test
+    questions:
+    - What is still undecided, and which text or comparison would decide it?
+    method_card: 'Do: At most three rows: what his answer leaves open, and the text, passage or comparison that would decide
+      it (a re-read or a fetch the actions registry can license), anchored in his answer. Select literal spans that carry
+      the actor, predicate, object and necessary qualification. A name or topic alone cannot support a reading. Keep attribution,
+      negation, modality and chronology. Code checks only anchors and IDs; the model must judge.'
+    indicators:
+    - still
+    - would decide
+    scope: document
+    load_bearing: false
+    id_prefix: S3
+    answer_shape: '[S3.F<n>] <what remains open> — dim: open — decided_by: <a text, a passage, a comparison> — held: yes|no|unknown
+      — anchor: "<verbatim from his answer, <=200 chars>" — doc: <the answer''s document key> — confidence: high|medium|low'
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension
+    model_tier: cheap
+    output: ledger
+    max_rows: 8
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - merge_duplicates
+    - name_must_keep
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    max_rows: 8
+    reader: the owner and the desk that writes the part's next version
+    tables: []
+    brief: 1. The settled distinctions, one short paragraph each in the owner's terms, naming the interlocutor and the axis
+      and what becomes sayable; then the effects on the parts as a list; then what remains open. 2. Then the ledger.

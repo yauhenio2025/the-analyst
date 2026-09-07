@@ -1,0 +1,113 @@
+# The distinction family (2026-09-07). Walls: every row anchors in one supplied document (the owner's turn, a part, or an interlocutor's text): document-scope; cross-references travel as row ids in fields.
+engine_key: interlocutor_position
+engine_name: What the interlocutors argue on the owner's questions
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: On the questions the owner's turn argues, what does each interlocutor's text argue, and where is it silent?
+  framing: 'The documents: the owner''s TURN with its references and the interlocutors'' texts as a statements evidence
+    index (the turn is the text under audit; each reference is a statement with who and clue; each held text is a witness
+    whose windows are the passages the references point at; a place outside them is unverifiable, never absent), and a document
+    keyed `argument` carrying the argument''s PARTS (''[part N] (his | desk draft) text''). A packet may name the interlocutors
+    and their roles. The owner thinks in distinction to others; his distinctiveness is a function of understanding the inner
+    workings of their discourse: read their text, never their reputation. Questions are the turn''s own, in his words. A
+    claim is anchored in the interlocutor''s text with its locus; a silence names a question the held windows do not address.'
+  scoped_outcomes: false
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: question
+    name: A question the owner's turn argues
+    questions:
+    - Which questions is the turn arguing, in the owner's words?
+    method_card: 'Do: At most six rows: each question the turn argues, in a sentence of the owner''s own words, anchored
+      in the turn; name the interlocutors the turn puts it to. Select literal spans that carry the actor, predicate, object
+      and necessary qualification. A name or topic alone cannot support a reading. Keep attribution, negation, modality
+      and chronology. Code checks only anchors and IDs; the model must judge.'
+    indicators:
+    - question
+    - whether
+    - how
+    scope: document
+    load_bearing: true
+    id_prefix: I1
+    answer_shape: '[I1.F<n>] <the question in the owner''s words> — dim: question — interlocutors: <names, separated by
+      ;> — anchor: "<verbatim from the turn, <=200 chars>" — doc: <the turn''s document key> — confidence: high|medium|low'
+  - key: their_claim
+    name: What an interlocutor argues on that question
+    questions:
+    - Per interlocutor and question, what does their text argue, where, and in what role does the turn cast them?
+    method_card: 'Do: One row per interlocutor × question the text answers: their claim in one sentence, anchored in THEIR
+      text at its locus (page or section), the I1 id of the question, the role the turn gives them (foil · encounter · ally
+      · source), and the turn''s own characterisation of them where it gives one. Select literal spans that carry the actor,
+      predicate, object and necessary qualification. A name or topic alone cannot support a reading. Keep attribution, negation,
+      modality and chronology. Code checks only anchors and IDs; the model must judge.'
+    indicators:
+    - argues
+    - claims
+    - holds
+    scope: document
+    load_bearing: true
+    id_prefix: I2
+    answer_shape: '[I2.F<n>] <interlocutor>: <their claim in one sentence> — dim: their_claim — interlocutor: <name> — question:
+      <I1 id> — role: foil|encounter|ally|source — locus: <page or section> — turn_says: <the turn''s characterisation of
+      them, or none> — anchor: "<verbatim from their text, <=200 chars>" — doc: <the text''s document key> — confidence:
+      high|medium|low'
+  - key: their_silence
+    name: A question the text does not address
+    questions:
+    - Which of the turn's questions does an interlocutor's held text not address?
+    method_card: 'Do: At most one row per interlocutor: the I1 questions their held windows do not answer, anchored in the
+      turn''s sentence that puts the question to them; say ''in the held windows'' — a place outside them is unverifiable,
+      never absent. Select literal spans that carry the actor, predicate, object and necessary qualification. A name or
+      topic alone cannot support a reading. Keep attribution, negation, modality and chronology. Code checks only anchors
+      and IDs; the model must judge.'
+    indicators:
+    - silent
+    - does not address
+    scope: document
+    load_bearing: false
+    id_prefix: I3
+    answer_shape: '[I3.F<n>] <interlocutor> does not address <the question> in the held windows — dim: their_silence — interlocutor:
+      <name> — question: <I1 id> — anchor: "<verbatim from the turn, <=200 chars>" — doc: <the turn''s document key> — confidence:
+      high|medium|low'
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension
+    model_tier: cheap
+    output: ledger
+    max_rows: 8
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - merge_duplicates
+    - name_must_keep
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    max_rows: 8
+    reader: the owner, deciding where he stands
+    tables: []
+    brief: '1. One paragraph per interlocutor: what they argue on the owner''s questions, in the reader''s words, with the
+      loci; then what they do not address. 2. Then the ledger. Nothing else.'
