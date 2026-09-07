@@ -165,3 +165,15 @@ def test_an_engines_only_job_on_a_fixed_path_takes_the_fast_lane(monkeypatch):
     runner._run_step(job, "plan", docs)
     assert job.plan.plan_id == "plan-fast" and [p.engine_key for p in job.plan.phases] == ["oeuvre_trajectory", "citation_shift", "retrospective_reading", "prospective_reading", "epistemic_rupture", "oeuvre_position_memo"]
     assert [p.scope for p in job.plan.phases][2:4] == [["focal:", "before:"], ["focal:", "after:"]] and job.plan.estimated_llm_calls == 6
+
+
+def test_a_figure_spec_repair_does_not_assign_an_undeclared_field():
+    """The figures step crashed on the oeuvre desks run: a rejected spec was given `section_key`, a field FigureSpec does not
+    declare, which pydantic refuses (2026-09-07). The repair keeps the section on the spec's __dict__ only."""
+    import inspect
+    from src.dossier import figures
+    from src.dossier.schemas import FigureSpec
+    src = inspect.getsource(figures.spec_figures)
+    assert "sp.section_key =" not in src
+    with pytest.raises(ValueError):
+        FigureSpec(key="f", primitive="lineage", visual_format="x").section_key = "s"

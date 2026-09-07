@@ -469,8 +469,8 @@ def spec_figures(job: DossierJob) -> list[FigureSpec]:
     admit((raw or {}).get("figures", [])[: len(sections) + 1])
     if rejected:
         need = [(sp, errs) for sp, errs in rejected if sp.__dict__.get("_section_key") not in done_sections]
-        for sp, _e in need:
-            sp.section_key = sp.__dict__.get("_section_key", "")
+        # (until 2026-09-07 a line here assigned `sp.section_key`, an undeclared field: pydantic ≥ 2.10 raises on it, so a
+        # rejected spec crashed the whole figures step on the oeuvre desks run; the repair reads `_section_key` from __dict__)
         if need:
             head2, tail2 = _spec_user(job, [by_key[sp.__dict__["_section_key"]] for sp, _ in need], material, replace=need, keep=accepted)
             raw2, _ = call_json(job.id, STEP, label=f"figure spec repair ({len(need)})", system=SPINE_SYSTEM, user=head, user_tail=tail2,
