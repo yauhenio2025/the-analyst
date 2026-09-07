@@ -361,7 +361,8 @@ def _check_corpus_synthesis(sc, prompt, spec, index, corpus_ids, call_fn, model,
                                       if any(rid.startswith(p + ".") for p in prefixes)}
         wall = verify_rows(rows, index, corpus_dimensions=corpus_dimensions, corpus_ids=inherited)
         wall.check_prose_citations(prose, {r.id for r in rows if r.anchor_verified})
-        issues = {"failed_ids": wall.failed_ids, "incomplete_cross_document_ids": wall.incomplete_cross_document_ids,
+        from src.vocabularies.pins import vocabulary_drift
+        issues = {"failed_ids": wall.failed_ids, "incomplete_cross_document_ids": wall.incomplete_cross_document_ids, "vocabulary_drift": vocabulary_drift(rows, cap_def.engine_key)[:40],
                   "duplicate_ids": wall.duplicate_ids, "missing_cited": wall.missing_cited,
                   "unknown_dimensions": sorted({r.dim for r in rows if r.dim and r.dim not in dimensions}),
                   "missing_ledger": not bool(ledger), "parse_error": sc.scope_parse_error,
@@ -936,7 +937,8 @@ def run_oneshot_checked(
     final_rows = kept
     rep_final = verify_rows(final_rows, index, corpus_dimensions=corpus_dimensions, corpus_ids=corpus_ids)
     rep_final.check_prose_citations(prose, {r.id for r in kept}, rejected_ids={r.id for r in rejected})
-    vc.wall = {**rep_final.as_dict(), **{f"check_{k}": v for k, v in rep.items()}}
+    from src.vocabularies.pins import vocabulary_drift
+    vc.wall = {**rep_final.as_dict(), "vocabulary_drift": vocabulary_drift(final_rows, cap_def.engine_key)[:40], **{f"check_{k}": v for k, v in rep.items()}}   # an enumerated value outside its vocabulary is shape (2026-09-07)
     if spec.scoped_outcomes:
         checked_scopes = _assess_call(vc, expected_scopes(spec, documents), kept, documents,
                                       reviewing=True, previous=reader_scopes,

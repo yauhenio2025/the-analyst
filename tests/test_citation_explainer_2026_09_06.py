@@ -92,7 +92,7 @@ def test_the_light_call_runs_the_engine_through_the_walls_in_the_request():
     assert out3["shaped"]["explanation"]["missing_fields"] == ["move", "stance"] and out3["shaped"]["explanation"]["intent"] == ""
     assert out["engine_key"] == "citation_explainer" and out["depth"] == "surface" and out["model"] == "claude-sonnet-5"
     assert [r["id"] for r in out["rows"]] == ["E1.F1", "E1.F2", "E2.F1", "E3.F1"]
-    assert out["wall"] == {"anchors": 4, "verified": 4, "failed_ids": []} and out["rows"][0]["fields"]["move"] == "authority"
+    assert out["wall"] == {"anchors": 4, "verified": 4, "failed_ids": [], "vocabulary_drift": []} and out["rows"][0]["fields"]["move"] == "authority"
     assert out["shaped"]["explanation"]["quote_verified"] is True and out["shaped"]["explanation"]["intent"] == "authority"
     assert out["cost_usd"] > 0 and out["estimated_usd"] > 0 and len(out["calls"]) == 1 and out["calls"][0]["step"] == "read"
     # the wall catches a quote that is not in the section

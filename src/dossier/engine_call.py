@@ -17,6 +17,7 @@ from typing import Any, Callable, Optional
 
 from src.events.pricing import estimate_cost
 from src.sources.resolve import resolve_sources
+from src.vocabularies.pins import vocabulary_drift
 from src.sources.schemas import SourceSpec
 
 logger = logging.getLogger(__name__)
@@ -133,7 +134,7 @@ def call_engine(engine_key: str, sources: list[SourceSpec], *, packet: Optional[
     shaped = renderer(result.final_content or "", failed, refs=refs) if renderer else None
     out = {"engine_key": engine_key, "depth": depth, "model": result.final_model or strong, "model_requested": model or "", "seconds": round(time.time() - t0, 1),
            "cost_usd": result.cost_usd, "estimated_usd": est, "chars": chars, "calls": [c.as_receipt() for c in result.calls],
-           "wall": {"anchors": len(rows), "verified": sum(1 for r in rows if r.anchor_verified), "failed_ids": sorted(failed)},
+           "wall": {"anchors": len(rows), "verified": sum(1 for r in rows if r.anchor_verified), "failed_ids": sorted(failed), "vocabulary_drift": vocabulary_drift(rows, engine_key)[:40]},
            "prose": prose, "final_output": result.final_content, "rows": row_dicts, "shaped": shaped}
     logger.info("engine call %s · %s · %s · %d chars · %d rows (%d verified) · $%.4f · %.1fs", engine_key, depth, out["model"], chars,
                 len(rows), out["wall"]["verified"], result.cost_usd, out["seconds"])

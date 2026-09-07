@@ -23,34 +23,25 @@ PARTS = {"how": ("how",), "why": ("why here", "why_here"), "fit": ("in the argum
 
 
 def _pinned(engine_key: Optional[str]) -> dict[str, list[str]]:
-    """The fields a vocabulary pins for this engine → its values (shape: an enumerated value outside its vocabulary is drift)."""
-    if not engine_key:
-        return {}
-    from src.vocabularies.registry import get_vocabulary_registry
-    out: dict[str, list[str]] = {}
-    for v in get_vocabulary_registry().for_engine(engine_key):
-        for u in v.used_by:
-            if u.engine_key == engine_key and u.field:
-                out[u.field] = v.value_list()
-    return out
+    from src.vocabularies.pins import pinned_fields
+    return pinned_fields(engine_key)
 
 
 def pin_fields(fields: dict, pinned: dict[str, list[str]]) -> list[dict]:
-    """Normalise enumerated fields in place: a value outside its vocabulary that contains exactly one vocabulary word ("qualified
-    culmination" → culmination) is replaced, the raw value kept under `<field>_raw`; anything else is left and reported. Returns the
-    drift rows (2026-09-07: run 3's retrospective verdict came back qualified; no wall had read the vocabularies)."""
+    """Normalise enumerated fields in place: an exact value in its canonical form; a value outside its vocabulary that contains exactly
+    one vocabulary word ("qualified culmination" → culmination) replaced, the raw kept under `<field>_raw`; anything else left and
+    reported. Returns the drift rows (the wall reports the same drift where the row is produced: src/vocabularies/pins.py)."""
+    from src.vocabularies.pins import match_value
     drift = []
     for field, allowed in pinned.items():
         raw = (fields.get(field) or "").strip()
         if not raw:
             continue
-        val = raw.lower().replace(" ", "_")
-        if val in allowed:
-            if val != raw:
-                fields[field] = val
+        exact, fixed = match_value(raw, allowed)
+        if exact is not None:
+            if exact != raw:
+                fields[field] = exact
             continue
-        hits = [a for a in allowed if re.search(r"(?<![a-z])" + re.escape(a).replace("_", "[ _]") + r"(?![a-z])", raw.lower())]
-        fixed = hits[0] if len(hits) == 1 else None
         if fixed:
             fields[field + "_raw"] = raw; fields[field] = fixed
         drift.append({"field": field, "value": raw, "fixed": fixed})
