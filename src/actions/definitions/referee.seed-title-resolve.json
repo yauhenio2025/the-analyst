@@ -11,8 +11,8 @@
   ],
   "inputs": [
     "work_title",
-    "work_author",
-    "work_year",
+    "work_author?",
+    "work_year?",
     "query_id"
   ],
   "route": "POST /api/seeds/resolve-title {title, author?, year?, query_id?} → POST /api/cross-citations/queries/{query_id}/seeds/add",
