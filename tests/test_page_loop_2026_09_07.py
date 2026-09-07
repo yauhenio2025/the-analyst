@@ -223,3 +223,28 @@ def test_the_reading_alone_can_be_dropped_into_a_host_column():
     assert "<h2 title='L1.F1'>The verdict</h2>" in b and "a way station</p>" in b and "The essay" in b
     assert "<details class='exhibit folded'" in b and "The citation shifts" in b        # the folded exhibits travel
     assert "[oeuvre_trajectory/F1]" not in b and b.startswith("<style>") and "<div class='reading'>" in b
+
+
+def test_the_reading_as_records_for_a_host_page(monkeypatch):
+    """The Stacks (2026-09-07 23:00): 'JSON, please — with JSON the page owns the type, the spacing and the folds'."""
+    import src.dossier.page_loop as pl
+    plan = {"sections": [{"id": "L1.F1", "heading": "The verdict", "grasp": "a way station.", "words": 120},
+                          {"id": "L1.F2", "heading": "What it inherits", "grasp": "an old conclusion by a new route", "words": 250}],
+            "exhibits": [{"id": "L2.F1", "kind": "verdict-chips", "section": "L1.F1", "placement": "after", "aim": "the five words"},
+                          {"id": "L2.F2", "kind": "two-halves", "section": "L1.F2", "placement": "after", "aim": "what persists"},
+                          {"id": "L2.F3", "kind": "shift-table", "section": "L1.F2", "placement": "folded", "aim": "the shifts"}],
+            "cuts": [{"what": "the idea map", "why": "no figure exists"}]}
+    rec = {"job_id": "d-j", "title": "T", "audience": "researcher", "rounds": [{"round": 2, "plan": plan,
+            "prose": {"L1.F1": "It is a way station [oeuvre_trajectory/F12].\n\nThe verdict holds [epistemic_rupture/F1].", "L1.F2": "It rereads 1977."},
+            "exhibits": {"L2.F1": {"description": "five chips"}, "L2.F2": {"title": "Before and after the paper", "description": "two columns"}, "L2.F3": {"title": "The citation shifts", "description": "30 rows"}},
+            "review": {"verdicts": [{"element": "L2.F3", "verdict": "drop", "reason": "repeats the prose"}], "clarity": []}}]}
+    monkeypatch.setattr(pl, "_get", lambda key: json.dumps(rec).encode() if key.endswith("record") else None)
+    d = pl.page_sections("d-j")
+    assert d["round"] == 2 and [s["heading"] for s in d["sections"]] == ["The verdict", "What it inherits"]
+    first = d["sections"][0]
+    assert first["grasp"] == "a way station" and first["paragraphs"] == ["It is a way station.", "The verdict holds."] and first["cites"] == ["epistemic_rupture/F1", "oeuvre_trajectory/F12"]
+    assert first["exhibits"][0]["kind"] == "verdict-chips" and first["exhibits"][0]["svg_url"] is None
+    second = d["sections"][1]
+    assert [e["kind"] for e in second["exhibits"]] == ["two-halves"]                 # the dropped exhibit is gone
+    assert second["exhibits"][0]["title"] == "Before and after the paper" and second["exhibits"][0]["svg_url"].endswith("/exhibits/two-halves.svg")
+    assert d["cuts"][0]["what"] == "the idea map" and pl.page_sections("nothing") is None

@@ -412,3 +412,38 @@ def page_body(html: str) -> str:
               ".reading section{margin-bottom:6px}.reading p{margin:0 0 12px}.reading .rid{display:none}"
               "@media (prefers-color-scheme: dark){.reading{color:#e8e7e2}}")
     return f"<style>{style}</style>\n<div class='reading'>{body.strip()}</div>"
+
+
+def page_sections(job_id: str) -> Optional[dict]:
+    """The composed reading as records, so a host page owns the type, the spacing and the folds (the Stacks, 2026-09-07 23:00:
+    "JSON, please — HTML we must strip and re-scope is how the assembled page ended up in a sandboxed iframe"): the last round's
+    sections in order, each with its heading, its one-line grasp, its prose as paragraphs, and the exhibits placed in it."""
+    raw = load_page(job_id, "record")
+    if not raw:
+        return None
+    rec = json.loads(raw.decode("utf-8"))
+    rounds = rec.get("rounds") or []
+    if not rounds:
+        return None
+    r = rounds[-1]
+    plan = r.get("plan") or {}
+    verdicts = {v["element"]: v["verdict"] for v in ((r.get("review") or {}).get("verdicts") or [])}
+    made = r.get("exhibits") or {}
+    by_sec: dict[str, list[dict]] = {}
+    for e in plan.get("exhibits") or []:
+        if verdicts.get(e["id"]) == "drop":
+            continue
+        m = made.get(e["id"]) or {}
+        by_sec.setdefault(e.get("section", ""), []).append({"id": e["id"], "kind": e["kind"], "placement": e.get("placement", "after"),
+                                                            "title": m.get("title") or e.get("aim") or e["kind"].replace("-", " "),
+                                                            "aim": e.get("aim", ""), "shows": m.get("description", ""),
+                                                            "svg_url": f"/v1/dossier/jobs/{job_id}/exhibits/{e['kind']}.svg" if e["kind"] in WIDE_KINDS and m.get("description") else None})
+    out = []
+    for s_ in plan.get("sections") or []:
+        text = (r.get("prose") or {}).get(s_["id"], "")
+        paras = [re.sub(r"\s*\[[a-z_]+/[A-Z0-9.F]+(?:[,;\s]+[a-z_]+/[A-Z0-9.F]+)*\]", "", p_.strip()) for p_ in re.split(r"\n\s*\n", text) if p_.strip()]
+        cites = sorted({c for c in re.findall(r"\[([a-z_]+/[A-Z0-9.F]+)\]", text)})
+        out.append({"id": s_["id"], "heading": s_.get("heading", ""), "grasp": (s_.get("grasp") or "").strip().rstrip("."),
+                    "words": s_.get("words"), "paragraphs": paras, "cites": cites, "exhibits": by_sec.get(s_["id"], [])})
+    return {"job_id": job_id, "title": rec.get("title", ""), "audience": rec.get("audience", ""), "round": r.get("round"),
+            "sections": out, "cuts": plan.get("cuts") or [], "note": "the first section reads open; the rest may be collapsed to their heading and grasp"}
