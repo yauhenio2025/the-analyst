@@ -1,0 +1,28 @@
+{
+  "key": "referee.school-create",
+  "organ": "the-referee",
+  "name": "Create a provisional school of thought around a person, with candidate members",
+  "when": [
+    "thinker_placement.new_school",
+    "citation_shift.unexamined",
+    "cohort.no_school"
+  ],
+  "inputs": [
+    "school_name",
+    "school_description?",
+    "referee_thinker_ids",
+    "candidate_names?",
+    "aliases?",
+    "evidence?"
+  ],
+  "route": "POST /api/schools/create-from-selection {name, description?, color?, thinker_ids[], kind: \"provisional\", project_note?, aliases?} → {ok, folder_id, slug, name, kind, added}; then per candidate not yet a thinker POST /api/thinker-folders/{folder_id}/recruit-author or POST /api/thinkers, and POST /api/schools/{folder_id}/candidates for those to review; the operator reconciles later with POST /api/schools/{folder_id}/reconcile {absorb|nest|keep}",
+  "cost": "none",
+  "cost_note": "folder + memberships are DB writes; recruit-author queues a harvest (metered) only when asked",
+  "side_effects": "a kind=provisional folder with the given thinkers as members (hidden from nothing; badged Provisional; reconcile affordance on its page); candidates in its review queue",
+  "gated_by": "thinker_ids must exist in the Referee (resolve or create them first); name must be unique",
+  "yields": "folder_id + slug (the school page), later merged_into_folder_id / parent_folder_ids after reconcile",
+  "owner": "the-referee",
+  "version": "2026-09-07",
+  "evidence": [],
+  "note": ""
+}
