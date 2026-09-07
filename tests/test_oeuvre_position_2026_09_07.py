@@ -247,7 +247,7 @@ def test_suggested_actions_in_the_owners_terms():
     from src.actions.registry import ActionRegistry, DEFINITIONS
     reg = ActionRegistry(DEFINITIONS, durable=False)
     sp = reg.get("referee.school-propose"); sp.when = sorted(set(sp.when) | {"thinker_placement.fit"}); reg._items[sp.key] = sp   # the Referee adds this on its side
-    out = actions_for(rows, reg, placements=pl)
+    out = actions_for(rows, reg, placements=pl, run_id="run-x")
     by = {e["cited"]: e for e in out}
     assert "The Poverty of Philosophy" not in by and "Marx, Karl" not in by and "Cohen, G. A." not in by
     meek = by["Meek, Ronald"]
@@ -255,7 +255,8 @@ def test_suggested_actions_in_the_owners_terms():
     names = [a["action"] for a in meek["actions"] + meek["waiting"]]
     assert "referee.thinker-exists" not in names and "referee.thinker-create" in [a["action"] for a in meek["actions"]]
     propose = [a for a in meek["actions"] + meek["waiting"] if a["action"] == "referee.school-propose"]
-    assert propose and propose[0]["inputs"]["folder_id"] == "7" and propose[0]["inputs"]["evidence"] == "cited for the four-stages genealogy"
+    assert propose and propose[0]["inputs"]["folder_id"] == "7" and propose[0]["inputs"]["evidence"]["clause"] == "cited for the four-stages genealogy"
+    assert propose[0]["inputs"]["author_name"] == "Ronald Meek" and propose[0]["inputs"]["source_ref"] == "oeuvre:run-x" and propose[0]["inputs"]["evidence"]["finding"] == "thinker_placement.fit"
     assert all(not (PERSON := {"thinker_name", "referee_thinker_id"} & set(a["inputs"]) | set(a["missing"])) or True for a in by["Social Science and the Ignoble Savage"]["actions"])
     assert not any(a["organ"] == "the-referee" and "thinker_name" in a["inputs"] for a in by["Social Science and the Ignoble Savage"]["actions"] + by["Social Science and the Ignoble Savage"]["waiting"])
     s = next(a for a in suggest("citation_shift.unexamined", {"thinker_name": "Meek, Ronald"}, reg) if a["action"] == "referee.thinker-create")

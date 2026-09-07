@@ -76,13 +76,20 @@ def placements_of(rows: list[dict]) -> dict[str, dict]:
         if r["dim"] == "verdict":
             e["verdict"] = f.get("verdict", ""); e["reason"] = f.get("reason", "") or r["text"]
         elif r["dim"] == "fit":
-            e["fits"].append({"school": f.get("school", ""), "school_name": f.get("school_name", ""), "evidence": f.get("evidence", "") or r["text"], "finding": f"{r['engine']}/{r['id']}", "confidence": f.get("confidence", "")})
+            e["fits"].append({"school": f.get("school", ""), "school_name": f.get("school_name", ""), "evidence": f.get("evidence", "") or r["text"], "finding": f"{r['engine']}/{r['id']}", "confidence": f.get("confidence", ""),
+                              "anchor": r.get("anchor", ""), "doc": r.get("doc", "")})
         elif r["dim"] == "new_school":
             e["new_school"] = {"name": f.get("name", ""), "candidates": [c.strip() for c in re.split(r"[;|]", f.get("candidates", "")) if c.strip()], "why": f.get("why", "") or r["text"], "finding": f"{r['engine']}/{r['id']}"}
     return out
 
 
-def actions_for(rows: list[dict], registry=None, placements: Optional[dict[str, dict]] = None) -> list[dict]:
+def canonical_name(cited: str) -> str:
+    """'North, Douglass C.' → 'Douglass C. North' (the Referee's dedup key per school is the canonical form)."""
+    m = re.match(r"^\s*([^,]+),\s*(.+?)\s*$", cited or "")
+    return f"{m.group(2)} {m.group(1)}".strip() if m else (cited or "").strip()
+
+
+def actions_for(rows: list[dict], registry=None, placements: Optional[dict[str, dict]] = None, run_id: str = "") -> list[dict]:
     """The suggested actions, one entry per cited work or person that something can be done about (the owner, 2026-09-07 12:17:
     a held work and a known person need nothing; the Referee id is already resolved by the Stacks' ledger, so the only action on an
     unknown person is to add them, placed in a school or with a new school proposed around them). Inputs filled from the row;
@@ -137,8 +144,11 @@ def actions_for(rows: list[dict], registry=None, placements: Optional[dict[str, 
             expanded = []
             for s_ in suggested:
                 if s_["action"] == "referee.school-propose":
-                    for fit in pl["fits"]:
-                        e = dict(s_); e["inputs"] = dict(s_["inputs"], folder_id=fit["school"], evidence=fit["evidence"]); e["missing"] = [k for k in s_["missing"] if k not in ("folder_id", "evidence")]
+                    for fit in pl["fits"]:   # the Referee's candidates route (12:55): evidence is an object; source_ref merges repeats per run; author_name canonical
+                        e = dict(s_)
+                        e["inputs"] = dict(s_["inputs"], folder_id=fit["school"], author_name=canonical_name(cited), source_kind="oeuvre", source_ref=f"oeuvre:{run_id}" if run_id else "oeuvre",
+                                           evidence={"clause": fit["evidence"], "finding": "thinker_placement.fit", "run": run_id, "text": fit.get("doc", ""), "anchor": fit.get("anchor", "")})
+                        e["missing"] = [k for k in s_["missing"] if k not in ("folder_id", "evidence")]
                         e["school_name"] = fit["school_name"]; expanded.append(e)
                 else:
                     expanded.append(s_)
@@ -187,4 +197,4 @@ def render_oeuvre(job: dict, registry=None) -> Optional[dict]:
             "retrospective": table("retrospective_reading", {"inheritance", "resolution", "interlocutor", "verdict"}),
             "prospective": table("prospective_reading", {"seed", "developed_into", "abandoned", "verdict"}),
             "rupture": table("epistemic_rupture", {"continuity", "break", "verdict", "test"}),
-            "read_next": read_next, "open": table("oeuvre_position_memo", {"open"}), "placements": list(placements.values()), "vocabulary_drift": drift, "actions": actions_for(all_rows, registry, placements)}
+            "read_next": read_next, "open": table("oeuvre_position_memo", {"open"}), "placements": list(placements.values()), "vocabulary_drift": drift, "actions": actions_for(all_rows, registry, placements, run_id=str(job.get("id") or ""))}
