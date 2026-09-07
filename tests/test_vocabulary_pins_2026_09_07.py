@@ -16,3 +16,11 @@ def test_the_wall_reports_drift_and_the_reader_normalises():
     from src.dossier.explainer import rows_with_fields
     read = rows_with_fields(out, engine_key="retrospective_reading")
     assert read[0]["fields"]["verdict"] == "culmination" and read[0]["fields"]["verdict_raw"] == "qualified culmination" and read[0]["drift"][0]["fixed"] == "culmination"
+
+
+def test_a_vocabulary_value_may_carry_the_routes_that_run_it():
+    from src.vocabularies.registry import VocabularyRegistry
+    v = VocabularyRegistry().get("retest_runs")
+    by = {x.value: x for x in v.values}
+    assert by["reread"].routes["the-stacks"].startswith("POST /api/references/") and "steps" in by["reread"].routes["the-mastermind"]
+    assert set(by["distinction_round"].routes) == {"the-mastermind", "the-stacks"} and VocabularyRegistry().get("rupture_verdicts").values[0].routes == {}

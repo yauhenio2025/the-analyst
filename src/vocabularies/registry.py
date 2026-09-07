@@ -17,6 +17,7 @@ DEFINITIONS = Path(__file__).parent / "definitions"
 class VocabularyValue(BaseModel):
     value: str
     gloss: str = ""
+    routes: dict[str, str] = Field(default_factory=dict)   # organ → the route that runs this value, where a value is an action (retest_runs, 2026-09-07); the routes are the organs' to name
 
 
 class VocabularyUse(BaseModel):

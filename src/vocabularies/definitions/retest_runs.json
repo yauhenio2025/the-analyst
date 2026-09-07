@@ -3,23 +3,38 @@
   "name": "What an impact scan asks to run again",
   "family": "distinction",
   "owner": "the-mastermind",
-  "version": "2026-09-07",
+  "version": "2026-09-07b",
   "values": [
     {
       "value": "hunch_test",
-      "gloss": "a hunch checked against texts again"
+      "gloss": "a hunch checked against texts again",
+      "routes": {
+        "the-stacks": "POST /api/hunches/{hid}/commission — a new pass over the hunch's bundle ({worker} optional; the frame re-runs after)"
+      }
     },
     {
       "value": "reread",
-      "gloss": "his references re-read against the texts"
+      "gloss": "his references re-read against the texts",
+      "routes": {
+        "the-stacks": "POST /api/references/{rid}/reread — the set's statements file",
+        "the-mastermind": "POST /v1/dossier/jobs/{id}/steps {engine_key: reference_reread} on a job that already holds the texts (preferred when the retest names a dossier id)"
+      }
     },
     {
       "value": "frame",
-      "gloss": "the evidential frame re-asked (what would change this verdict)"
+      "gloss": "the evidential frame re-asked (what would change this verdict)",
+      "routes": {
+        "the-stacks": "the hunch-frame job after every pass (hunches.frame_job); POST /api/hunches/{hid}/frame when the first retest asks for it",
+        "the-mastermind": "recipe hypothesis_evidential_frame; GET /v1/dossier/jobs/{id}/frame"
+      }
     },
     {
       "value": "distinction_round",
-      "gloss": "the interlocutors read again on the new formulation"
+      "gloss": "the interlocutors read again on the new formulation",
+      "routes": {
+        "the-mastermind": "POST /v1/dossier/jobs/{id}/steps interlocutor_position then distinction_draft, with the new formulation as the turn and the parts beside",
+        "the-stacks": "POST /api/briefs/{bid}/distinctions/file {job_id, part}"
+      }
     }
   ],
   "used_by": [
@@ -30,5 +45,5 @@
       "kind": "engine"
     }
   ],
-  "note": "The Stacks' reaction-follow-up practice names what each run means on the Brief."
+  "note": "The Stacks' reaction-follow-up practice names what each run means on the Brief; each value carries the routes that run it, per organ (the Stacks named theirs, 2026-09-07 18:20)."
 }
