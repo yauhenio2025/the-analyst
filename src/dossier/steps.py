@@ -39,8 +39,9 @@ def packet_for(engine_key: str, packet: dict) -> Optional[dict]:
     the citation tables."""
     if not packet:
         return None
-    if engine_key == "thinker_placement":
-        return {k: packet[k] for k in ("focal", "author", "persons_unknown", "schools", "notes") if k in packet} | {"persons": (packet.get("persons") or [])[:60]}
+    if engine_key == "thinker_placement":   # the schools trimmed to what a fit needs: 401 at 300 chars each had outrun the light call's cap
+        schools = [{"id": x.get("id"), "name": x.get("name"), "description": (x.get("description") or "")[:100], "sample": (x.get("sample") or [])[:3]} for x in packet.get("schools") or []]
+        return {k: packet[k] for k in ("focal", "author", "persons_unknown", "notes") if k in packet} | {"persons": (packet.get("persons") or [])[:60], "schools": schools}
     return packet
 
 
@@ -59,10 +60,12 @@ def add_step(job: dict, engine_key: str, *, get_text: Callable[[str], str], call
             break
     if packet_override:   # a caller's blocks over the stored packet (run 3's plan document predates persons_unknown and schools)
         packet = {**packet, **packet_override}
-    sources = sources_for(engine_key, documents, packet, get_text, max_chars)
+    small = packet_for(engine_key, packet)
+    room = max_chars - len(json.dumps(small, ensure_ascii=False)) - 2_000 if small else max_chars   # the packet counts against the light call's cap
+    sources = sources_for(engine_key, documents, packet, get_text, room)
     if not sources:
         raise ValueError("the job has no source documents this step can read")
-    out = call(engine_key, sources, packet=packet_for(engine_key, packet), depth=depth, model=model, spend_cap_usd=spend_cap_usd)
+    out = call(engine_key, sources, packet=small, depth=depth, model=model, spend_cap_usd=spend_cap_usd)
     analysis = job.setdefault("analysis", {}) or {}
     numbers = [float(k) for k in analysis.keys() if str(k).replace(".", "", 1).isdigit()]
     base = int(max(numbers)) if numbers else 4
