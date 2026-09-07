@@ -50,6 +50,7 @@ class Action(BaseModel):
     version: str = ""
     evidence: list[ActionOutcome] = Field(default_factory=list)
     note: str = ""
+    intents: list[str] = Field(default_factory=list)    # what it serves, from the `intents` vocabulary (expand_network, expand_library, …; 2026-09-07 18:30)
 
     def licenses(self, finding_kind: str) -> bool:
         eng = finding_kind.split(".", 1)[0]
@@ -120,6 +121,10 @@ class ActionRegistry:
             raise ValueError("an action needs organ, name and at least one finding kind in `when`")
         if action.cost not in COST_CLASSES:
             raise ValueError(f"cost must be one of {COST_CLASSES}")
+        allowed = allowed_intents()
+        bad = [i for i in action.intents if i not in allowed]
+        if bad:
+            raise ValueError(f"intents {bad} are not in the intents vocabulary; allowed: {allowed}")
         old = self._items.get(action.key)
         if old is not None and old.owner != action.owner:
             raise PermissionError(f"action {action.key} is {old.owner}'s; {action.owner} may not overwrite it")
@@ -159,8 +164,19 @@ def suggest(finding_kind: str, fields: dict[str, Any], registry: Optional["Actio
         optional = {k.rstrip("?") for k in a.inputs if k.endswith("?") or f"{k}?" in (a.route or "")}   # `scholar_profile_url?`: optional (2026-09-07)
         filled = {k: fields[k] for k in names if k in fields and fields[k] not in (None, "")}
         out.append({"action": a.key, "organ": a.organ, "name": a.name, "route": a.route, "cost": a.cost, "gated_by": a.gated_by,
-                    "inputs": filled, "missing": [k for k in names if k not in filled and k not in optional], "optional": sorted(optional - set(filled)), "finding": finding_kind})
+                    "inputs": filled, "missing": [k for k in names if k not in filled and k not in optional], "optional": sorted(optional - set(filled)), "finding": finding_kind,
+                    "intents": list(a.intents)})
     return out
+
+
+def allowed_intents() -> list[str]:
+    """The intents vocabulary's values (the registry validates an action's intents against it; an empty vocabulary allows nothing)."""
+    try:
+        from src.vocabularies.registry import get_vocabulary_registry
+        v = get_vocabulary_registry().get("intents")
+        return v.value_list() if v else []
+    except Exception:
+        return []
 
 
 _registry: Optional[ActionRegistry] = None
