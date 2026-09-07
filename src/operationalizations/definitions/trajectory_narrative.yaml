@@ -1,0 +1,105 @@
+# The governance family (2026-09-07). Walls: every row anchors in the supplied document (the register, or the page's rendered actions): document-scope.
+engine_key: trajectory_narrative
+engine_name: 'What we are doing: the trajectory, narrated from the register'
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: What are we doing, for which intents, and what does our trajectory make possible next?
+  framing: 'The document keyed `register` is the action register: one line per event, oldest first — outcomes of actions
+    (action, organ, status, finding, cost), jobs created and done (engine keys, intent, cost), steps added, the owner''s
+    answers. The packet carries the INTENTS (the vocabulary with glosses) and, when present, the previous narrative. Write
+    in the owner''s voice (''we are…''), in his terms, never as a log: a project is what we are doing with which thinkers;
+    an intent is served by what we did; a next is a direction, never a micro task. Anchor every row in a line of the register.'
+  scoped_outcomes: false
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: project
+    name: A project in flight
+    questions:
+    - What are we doing here, with which thinkers, under which intent, and what moved this session?
+    method_card: 'Do: At most five rows, one per project in flight: what we are doing in one sentence, the thinkers in play,
+      the intent it serves, what moved in the latest events, anchored in a register line. Select literal spans that carry
+      the claim. Code checks only anchors and IDs; the model must judge.'
+    indicators:
+    - run
+    - job
+    - the Brief
+    scope: document
+    load_bearing: true
+    id_prefix: N1
+    answer_shape: '[N1.F<n>] <what we are doing, one sentence> — dim: project — thinkers: <names separated by ;> — intent:
+      expand_network|expand_library|expand_horizons|sharpen_position|verify_holdings|keep_current — moved: <what moved lately,
+      one clause> — anchor: "<verbatim from the register, <=200 chars>" — doc: register — confidence: high|medium|low'
+  - key: intent_served
+    name: An intent and what was done for it
+    questions:
+    - For this intent, what did we do, and what stalled?
+    method_card: 'Do: One row per intent that the register shows served or stalled: what we did for it in one clause, what
+      stalled in one clause (or none), anchored in a register line. Select literal spans that carry the claim. Code checks
+      only anchors and IDs; the model must judge.'
+    indicators:
+    - done
+    - failed
+    - waiting
+    scope: document
+    load_bearing: true
+    id_prefix: N2
+    answer_shape: '[N2.F<n>] <the intent in words: what we did for it> — dim: intent_served — intent: expand_network|expand_library|expand_horizons|sharpen_position|verify_holdings|keep_current
+      — did: <one clause> — stalled: <one clause or none> — anchor: "<verbatim from the register, <=200 chars>" — doc: register
+      — confidence: high|medium|low'
+  - key: next
+    name: A macro direction the trajectory opens
+    questions:
+    - Given where we are, what becomes possible next — as a direction, never a micro task?
+    method_card: 'Do: At most four rows: a direction in the owner''s terms, the intent it serves, why the trajectory opens
+      it now, anchored in a register line. Select literal spans that carry the claim. Code checks only anchors and IDs;
+      the model must judge.'
+    indicators:
+    - next
+    - now possible
+    scope: document
+    load_bearing: false
+    id_prefix: N3
+    answer_shape: '[N3.F<n>] <the direction, one sentence> — dim: next — intent: expand_network|expand_library|expand_horizons|sharpen_position|verify_holdings|keep_current
+      — because: <one clause> — anchor: "<verbatim from the register, <=200 chars>" — doc: register — confidence: high|medium|low'
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension
+    model_tier: cheap
+    output: ledger
+    max_rows: 10
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - merge_duplicates
+    - name_must_keep
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    max_rows: 10
+    reader: every organ's planner, contextualising what it searches for; and the owner, reading what we are doing
+    tables: []
+    brief: '1. One short narrative, at most 250 words, in the owner''s voice (''we are…''): the projects in flight, what
+      each intent had done for it, what is now possible. 2. Then the ledger. Never a log, never micro tasks.'

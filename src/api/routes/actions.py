@@ -8,6 +8,7 @@ from typing import Any, Optional
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
+from src.actions.register import record_event
 from src.actions.registry import Action, ActionOutcome, get_action_registry, suggest
 
 router = APIRouter(prefix="/actions", tags=["actions"])
@@ -98,6 +99,8 @@ class OutcomeIn(BaseModel):
     status: str = "done"
     cost_usd: Optional[float] = None
     result: str = ""
+    batch: Optional[str] = None       # the macro action's id when the outcome came from an approved batch (2026-09-07)
+    intent: Optional[str] = None
 
 
 @router.post("/{key}/outcome")
@@ -109,5 +112,42 @@ async def post_outcome(key: str, body: OutcomeIn):
         raise HTTPException(status_code=404, detail=f"no action {key}")
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
+    record_event("outcome", action=key, organ=body.organ or a.organ, status=body.status, run=body.run, finding=body.finding, source=body.source, batch=body.batch,
+                 intent=body.intent or (a.intents[0] if a.intents else None), cost_usd=body.cost_usd, summary=(body.result or "")[:200])   # the register (2026-09-07 18:30)
     persisted = await _persist(reg, key, f"Action {key}: outcome from {body.organ or 'a run'} {body.run} [skip render]")
     return {"key": key, "totals": a.totals(), "evidence": [e.model_dump() for e in a.evidence], "persisted": persisted, "durable": reg.last_durable}
+
+
+class MacroIn(BaseModel):
+    actions: list[dict[str, Any]] = Field(..., description="the page's suggested actions (the entries of GET /v1/dossier/jobs/{id}/oeuvre → actions)")
+    context: dict[str, Any] = Field(default_factory=dict, description="the page's context: author, focal text, run")
+    trajectory: Optional[str] = Field(default=None, description="the trajectory block; the stored narrative is used when absent")
+    depth: str = "surface"
+    model: Optional[str] = None
+    spend_cap_usd: float = Field(2.0, ge=0.0, le=20.0)
+
+
+@router.post("/macro")
+def macro_actions(body: MacroIn):
+    """A page's micro actions read against the trajectory and the intents → three to five macro actions the owner approves once
+    (Evgeny, 2026-09-07 18:30). The engine macro_actions runs as a light call; the parser turns its rows into macros with what each enables."""
+    from src.actions.macro import parse_macros, render_actions_document
+    from src.actions.registry import allowed_intents
+    from src.api.routes.trajectory import load_trajectory, trajectory_block
+    from src.dossier.engine_call import call_engine
+    from src.sources.schemas import SourceSpec
+    from src.vocabularies.registry import get_vocabulary_registry
+
+    if not body.actions:
+        raise HTTPException(status_code=400, detail="no actions supplied")
+    doc = render_actions_document(body.actions, body.context)
+    intents = get_vocabulary_registry().get("intents")
+    packet = {"role": "plan", "kind": "macro_actions", "intents": [{"value": v.value, "gloss": v.gloss} for v in (intents.values if intents else [])],
+              "trajectory": body.trajectory or trajectory_block(load_trajectory()), "context": body.context}
+    try:
+        out = call_engine("macro_actions", [SourceSpec(kind="paste", role="source", key="actions", title="The page's suggested actions", text=doc)],
+                          packet=packet, depth=body.depth, model=body.model, spend_cap_usd=body.spend_cap_usd)
+    except (KeyError, ValueError) as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    parsed = parse_macros(out.get("rows") or [], allowed_intents())
+    return {**parsed, "prose": out.get("prose") or "", "rows": len(out.get("rows") or []), "wall": out.get("wall"), "cost_usd": out.get("cost_usd"), "model": out.get("model")}

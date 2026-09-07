@@ -1,0 +1,94 @@
+# The governance family (2026-09-07). Walls: every row anchors in the supplied document (the register, or the page's rendered actions): document-scope.
+engine_key: macro_actions
+engine_name: The macro actions a page's possibilities amount to
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: What do this page's possible actions amount to, under which intents, and which of them does one approval
+    enable?
+  framing: 'The document keyed `actions` is a page''s suggested actions rendered as lines: for each finding, the cited work
+    or person, held / in the Referee, and the micro actions available — key, organ, cost class, the inputs filled and missing.
+    The packet carries the INTENTS (the vocabulary with glosses), the TRAJECTORY block (what we are doing) when present,
+    and the page''s context (the author, the focal text). Group the micro actions into three to five macro actions the owner
+    can approve once, each under one intent, titled in his terms (''Expand Brenner''s network: add the four unknown thinkers
+    to the Referee, placed, and harvest their citations''), with what it lets us see, the cost class and an estimate; every
+    micro action appears under exactly one macro, or under a macro titled ''Leave for now'' with the reason. Anchor every
+    row in a line of the actions document.'
+  scoped_outcomes: false
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: macro
+    name: A macro action
+    questions:
+    - What is the macro action, under which intent, what does it let us see, and what will it cost?
+    method_card: 'Do: Three to five rows (plus ''Leave for now'' when needed): the title in the owner''s terms, the intent,
+      what it lets us see in one clause, the cost class (none · cents · dollars · metered) and an estimate in words, anchored
+      in an actions line. Select literal spans that carry the claim. Code checks only anchors and IDs; the model must judge.'
+    indicators:
+    - expand
+    - hold
+    - add
+    scope: document
+    load_bearing: true
+    id_prefix: M1
+    answer_shape: '[M1.F<n>] <the macro action''s title, in the owner''s terms> — dim: macro — intent: expand_network|expand_library|expand_horizons|sharpen_position|verify_holdings|keep_current|leave_for_now
+      — says: <what it lets us see, one clause> — cost_class: none|cents|dollars|metered — estimate: <in words, e.g. eight
+      calls, about three dollars> — anchor: "<verbatim from the actions document, <=200 chars>" — doc: actions — confidence:
+      high|medium|low'
+  - key: enables
+    name: A micro action a macro enables
+    questions:
+    - Which action, on which organ, with which inputs, from which finding, does this macro enable?
+    method_card: 'Do: One row per micro action on the page, under exactly one M1: the action key, the organ, the inputs
+      it fills as key=value pairs separated by semicolons, the finding id it came from, anchored in its actions line. Select
+      literal spans that carry the claim. Code checks only anchors and IDs; the model must judge.'
+    indicators:
+    - action
+    - organ
+    scope: document
+    load_bearing: true
+    id_prefix: M2
+    answer_shape: '[M2.F<n>] <the micro action in words> — dim: enables — macro: <M1 id> — action: <action key> — organ:
+      <organ> — inputs: <key=value; key=value, or none> — finding: <finding id> — anchor: "<verbatim from the actions document,
+      <=200 chars>" — doc: actions — confidence: high|medium|low'
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension
+    model_tier: cheap
+    output: ledger
+    max_rows: 24
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - merge_duplicates
+    - name_must_keep
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    max_rows: 24
+    reader: the owner, approving once
+    tables: []
+    brief: '1. One paragraph: what this page''s possibilities amount to, in the owner''s terms, naming the macro actions
+      and their intents. 2. Then the ledger: the macros, then what each enables. Nothing else.'
