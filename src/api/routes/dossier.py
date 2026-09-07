@@ -177,6 +177,11 @@ def create(req: CreateDossierRequest):
         documents.append({**d.meta(), "executor_doc_id": doc_id})
     job.documents = documents
     create_job(job)
+    try:   # the register hears every job the moment it is created (the owner, 2026-09-07 18:30)
+        from src.actions.register import record_event
+        record_event("job_created", job_id=job.id, intent=(req.intent or "")[:200], engine_keys=[st.engine_key for st in ((req.path.steps if req.path else None) or [])])
+    except Exception as exc:
+        logger.warning(f"register not written at creation: {exc}")
     runner.start(job.id)
     return {"job_id": job.id, "status": "queued", "console_url": f"/console/{job.id}",
             "documents": [{"key": d["key"], "title": d["title"], "char_count": d["char_count"]} for d in documents]}
