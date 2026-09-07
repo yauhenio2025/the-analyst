@@ -80,7 +80,7 @@ def test_prose_review_and_the_composed_page():
     from src.exhibits.makers import make
     made = {e["id"]: make(e["kind"], OEUVRE, rows=e["rows"], packet=PACKET) for e in plan["exhibits"]}
     html, desc = compose_page("T", "S", plan, prose, made, review, 1)
-    assert "<h2>The answer in five words</h2>" in html and "class=\"chips\"" in html and "<svg" in html and "[oeuvre_position_memo/F9]" in html
+    assert "<h2 title='L1.F1'>The answer in five words</h2>" in html and "class=\"chips\"" in html and "<svg" in html and "[oeuvre_position_memo/F9]" in html
     assert html.index("chips") < html.index("<p>Read whole") and "The reviewer's verdicts" in html and "Left out of the page" in html
     assert "[L1.F1] SECTION" in desc and "[L2.F2] EXHIBIT oeuvre-timeline (folded, shown as a titled line the reader opens)" in desc and "PROSE (15 words)" in desc
 
