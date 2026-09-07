@@ -1,0 +1,25 @@
+{
+  "key": "oeuvre-timeline",
+  "name": "The oeuvre on one line",
+  "when": [
+    "oeuvre_trajectory.agenda",
+    "oeuvre_trajectory.turn",
+    "memo.texts"
+  ],
+  "inputs": [
+    "the packet's texts (uid, year, title, side)",
+    "agenda rows (span)",
+    "turn rows (at)",
+    "the focal uid"
+  ],
+  "medium": "svg",
+  "renderer": "timeline_strip",
+  "shape": "The author's texts as ticks on one horizontal line by year, each coloured by the agenda whose span holds it, the focal text as a larger marked tick, the turns as labelled vertical cuts between the two texts that show them; hover or a legend names the agendas; the out-of-scope and unprofiled texts as hollow ticks.",
+  "didactic": "In one glance: how long each agenda runs, where the focal text sits among them, and where the oeuvre turns.",
+  "cost": "none",
+  "example": "Brenner 1985: six agendas 1972–2025, five turns, the focal text in the transition agenda's middle.",
+  "owner": "the-mastermind",
+  "version": "2026-09-07",
+  "evidence": [],
+  "note": ""
+}
