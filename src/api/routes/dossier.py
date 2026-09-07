@@ -279,6 +279,7 @@ class StepRequest(BaseModel):
     depth: str = "surface"
     model: Optional[str] = None
     spend_cap_usd: float = Field(default=2.0, ge=0.0, le=20.0)
+    packet: Optional[dict] = None     # blocks laid over the job's stored packet (persons_unknown, schools, …)
 
 
 @router.post("/jobs/{job_id}/steps")
@@ -297,7 +298,7 @@ def add_job_step(job_id: str, req: StepRequest):
         raise HTTPException(status_code=409, detail=f"the job is {job.status}; add a step to a finished job")
     record = job.model_dump()
     try:
-        phase = add_step(record, req.engine_key, get_text=lambda i: get_document_text(i) or "", call=call_engine, depth=req.depth, model=req.model, spend_cap_usd=req.spend_cap_usd)
+        phase = add_step(record, req.engine_key, get_text=lambda i: get_document_text(i) or "", call=call_engine, depth=req.depth, model=req.model, spend_cap_usd=req.spend_cap_usd, packet_override=req.packet)
     except KeyError as e:
         raise HTTPException(status_code=404, detail=str(e))
     except ValueError as e:

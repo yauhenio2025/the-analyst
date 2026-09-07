@@ -45,7 +45,7 @@ def packet_for(engine_key: str, packet: dict) -> Optional[dict]:
 
 
 def add_step(job: dict, engine_key: str, *, get_text: Callable[[str], str], call: Callable[..., dict], depth: str = "surface",
-             model: Optional[str] = None, spend_cap_usd: float = 2.0, max_chars: int = 400_000) -> dict:
+             model: Optional[str] = None, spend_cap_usd: float = 2.0, max_chars: int = 400_000, packet_override: Optional[dict] = None) -> dict:
     """Run `engine_key` over the job's documents and append its phase to `job['analysis']` (mutated and returned as the new
     phase). `call` is call_engine or a stand-in with its signature."""
     documents = job.get("documents") or []
@@ -57,6 +57,8 @@ def add_step(job: dict, engine_key: str, *, get_text: Callable[[str], str], call
             except ValueError:
                 packet = {}
             break
+    if packet_override:   # a caller's blocks over the stored packet (run 3's plan document predates persons_unknown and schools)
+        packet = {**packet, **packet_override}
     sources = sources_for(engine_key, documents, packet, get_text, max_chars)
     if not sources:
         raise ValueError("the job has no source documents this step can read")
