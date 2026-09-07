@@ -49,6 +49,68 @@ def _text_of(source: dict) -> str:
     return t or ""
 
 
+WINDOW_CAP = 80_000          # a source longer than this is windowed (2026-09-07: turn 11's re-read carried three Hintze volumes, 4.6M chars, and the executor refused the prompt)
+WINDOW_HALF = 2_500          # chars either side of a hit
+WINDOW_MAX_PER_SOURCE = 14
+STOP = {"the", "and", "that", "this", "with", "from", "for", "his", "her", "its", "their", "which", "what", "into", "are", "was", "were", "not", "but", "has", "have",
+        "had", "also", "than", "then", "there", "here", "about", "over", "such", "more", "most", "some", "any", "all", "one", "two", "how", "why", "when", "where", "who",
+        "whom", "will", "would", "could", "should", "may", "might", "can", "does", "did", "been", "being", "they", "them", "these", "those", "very", "only", "just",
+        "argues", "argued", "says", "said", "claims", "claim", "text", "essay", "book", "chapter", "reply", "response", "work", "works", "state", "states"}
+
+
+def _terms(*texts: str, n: int = 12) -> list[str]:
+    """The distinctive words of a statement (and its clue): capitalised names first, then long words, stop words out."""
+    words = re.findall(r"[A-Za-zÀ-ÿ][A-Za-zÀ-ÿ'’-]{3,}", " ".join(t for t in texts if t))
+    names = [w for w in words if w[0].isupper() and w.lower() not in STOP]
+    rest = [w for w in words if not w[0].isupper() and w.lower() not in STOP and len(w) >= 6]
+    out: list[str] = []
+    for w in names + rest:
+        if w.lower() not in {x.lower() for x in out}:
+            out.append(w)
+    return out[:n]
+
+
+def lexical_windows(text: str, statements: list[dict], *, half: int = WINDOW_HALF, cap: int = WINDOW_MAX_PER_SOURCE) -> list[dict]:
+    """The passages of a long text that the statements point at: for each statement, the spans around the densest hits of
+    its terms; overlapping spans merged; at most `cap` windows. Code only — the model reads the windows, never the volume."""
+    low = text.lower()
+    scored: list[tuple[int, int, str]] = []
+    for st in statements:
+        terms = _terms(str(st.get("statement") or st.get("hit") or ""), str(st.get("clue") or ""))
+        if not terms:
+            continue
+        hits: list[int] = []
+        for t in terms:
+            start = 0; tl = t.lower()
+            while True:
+                i = low.find(tl, start)
+                if i < 0 or len(hits) > 400:
+                    break
+                hits.append(i); start = i + len(tl)
+        if not hits:
+            continue
+        hits.sort()
+        # the densest neighbourhoods: count hits within ±half of each hit, keep the best few per statement
+        best = sorted(((sum(1 for h in hits if abs(h - c) <= half), c) for c in hits), reverse=True)
+        taken: list[int] = []
+        for score, c in best:
+            if all(abs(c - t) > half for t in taken):
+                taken.append(c); scored.append((score, c, f"statement {st.get('no')}"))
+            if len(taken) >= 3:
+                break
+    if not scored:
+        return []
+    scored.sort(reverse=True)
+    spans = sorted((max(0, c - half), min(len(text), c + half), why) for _, c, why in scored[:cap])
+    merged: list[list] = []
+    for a, b, why in spans:
+        if merged and a <= merged[-1][1]:
+            merged[-1][1] = max(merged[-1][1], b); merged[-1][2] = merged[-1][2] + "; " + why if why not in merged[-1][2] else merged[-1][2]
+        else:
+            merged.append([a, b, why])
+    return [{"how": "lexical window", "section": f"chars {a}–{b} (for {why})", "text": text[a:b], "locus": {"start": a, "end": b}} for a, b, why in merged]
+
+
 def _label_map(sources: list[dict]) -> dict[str, str]:
     out = {}
     for s in sources:
@@ -56,6 +118,19 @@ def _label_map(sources: list[dict]) -> dict[str, str]:
         for lab in {s.get("label") or "", re.sub(r"[^\w]", "", str(s.get("label") or "")).upper()} - {""}:
             out[lab] = uid
     return out
+
+
+def _windows_for(text: str, source: dict, statements: list[dict], passages: list[dict]) -> list[dict]:
+    """A short text travels whole; a long one as the lexical windows of the statements that cite it (every statement when none
+    cites it by label), else clipped to its head with a note the audit reports as unverifiable, never as absent."""
+    if len(text) <= WINDOW_CAP:
+        return [{"how": "section", "section": "whole held text", "text": text}]
+    citing_nos = {p["no"] for p in passages if source.get("uid") in p["cites"]}
+    sts = [st for st in statements if st.get("no") in citing_nos] or statements
+    wins = lexical_windows(text, sts)
+    if wins:
+        return wins + [{"how": "note", "section": "clipped", "text": f"(the held text is {len(text):,} chars; only the {len(wins)} windows above were read — a place outside them is unverifiable, not absent)"}]
+    return [{"how": "section", "section": "head of the held text (clipped; no statement term found)", "text": text[:WINDOW_CAP // 4]}]
 
 
 def statements_to_evidence_index(obj: dict) -> dict:
@@ -101,7 +176,7 @@ def statements_to_evidence_index(obj: dict) -> dict:
                                 "kind": s.get("kind"), "text_source": s.get("text_source")},
                        "title": s.get("title") or s.get("uid"),
                        "cited_by": [p["no"] for p in passages if s.get("uid") in p["cites"]],
-                       "windows": [{"how": "section", "section": "whole held text", "text": text}]})
+                       "windows": _windows_for(text, s, obj["statements"], passages)})
     if not checks:
         raise ValueError("a statements file needs at least one source with text")
     held = {c["copy"]["uid"] for c in checks}
