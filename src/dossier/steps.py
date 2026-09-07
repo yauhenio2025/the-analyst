@@ -58,10 +58,10 @@ def upstream_findings(job: dict, engine_key: str, cap: int = 60_000) -> dict[str
         if engine_key in keys:
             before += keys[:keys.index(engine_key)] + list(r.get("context") or [])   # `context`: the engines whose rows a sole step reads (distinction_settle reads the round)
     out = {}
-    for ph in (job.get("analysis") or {}).values():
+    for key, ph in sorted((job.get("analysis") or {}).items(), key=lambda kv: float(kv[0]) if str(kv[0]).replace(".", "", 1).isdigit() else 0.0):
         k = ph.get("engine_key")
-        if k in before and ph.get("final_output") and k not in out:
-            out[k] = ph["final_output"][:cap]
+        if k in before and ph.get("final_output"):
+            out[k] = ph["final_output"][:cap]      # the latest phase of an engine wins (a re-run step supersedes an earlier one)
     return out
 
 

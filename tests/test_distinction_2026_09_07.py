@@ -68,6 +68,8 @@ def test_an_added_step_carries_the_recipes_earlier_rows():
     job = {"analysis": {"4.1": {"engine_key": "interlocutor_position", "final_output": "[I1.F1] q — dim: question"}, "4.2": {"engine_key": "oeuvre_trajectory", "final_output": "x"}}}
     assert upstream_findings(job, "distinction_draft") == {"interlocutor_position": "[I1.F1] q — dim: question"}
     assert upstream_findings(job, "interlocutor_position") == {}
+    job["analysis"]["4.4"] = {"engine_key": "interlocutor_position", "final_output": "[I1.F1] q2 — dim: question"}     # a re-run supersedes the first
+    assert upstream_findings(job, "distinction_draft") == {"interlocutor_position": "[I1.F1] q2 — dim: question"}
     job["analysis"]["4.3"] = {"engine_key": "distinction_draft", "final_output": "[D2.F1] r — dim: relation"}
     assert set(upstream_findings(job, "distinction_settle")) == {"interlocutor_position", "distinction_draft"}   # the recipe's `context`
 
