@@ -13,6 +13,8 @@ from typing import Any, Callable, Optional
 from src.sources.schemas import SourceSpec
 
 READ_ROLES = {"source", "statements", "evidence_index", "profile"}   # what an added step reads; the light call unpacks the index roles itself
+import os
+STEP_MAX_CHARS = int(os.environ.get("STEP_MAX_CHARS", "1500000"))   # a step over a job's own documents reads what the job read (the light route's 400K cap is for pasted sources; a 680K statements file was silently skipped, 2026-09-07 15:15)
 
 
 def sources_for(engine_key: str, documents: list[dict], packet: dict, get_text: Callable[[str], str], max_chars: int) -> list[SourceSpec]:
@@ -54,7 +56,7 @@ def upstream_findings(job: dict, engine_key: str, cap: int = 60_000) -> dict[str
     for r in load_recipes():
         keys = [st["engine_key"] for st in r.get("steps") or []]
         if engine_key in keys:
-            before += keys[:keys.index(engine_key)]
+            before += keys[:keys.index(engine_key)] + list(r.get("context") or [])   # `context`: the engines whose rows a sole step reads (distinction_settle reads the round)
     out = {}
     for ph in (job.get("analysis") or {}).values():
         k = ph.get("engine_key")
@@ -64,7 +66,7 @@ def upstream_findings(job: dict, engine_key: str, cap: int = 60_000) -> dict[str
 
 
 def add_step(job: dict, engine_key: str, *, get_text: Callable[[str], str], call: Callable[..., dict], depth: str = "surface",
-             model: Optional[str] = None, spend_cap_usd: float = 2.0, max_chars: int = 400_000, packet_override: Optional[dict] = None,
+             model: Optional[str] = None, spend_cap_usd: float = 2.0, max_chars: int = STEP_MAX_CHARS, packet_override: Optional[dict] = None,
              extra_sources: Optional[list[dict]] = None) -> dict:
     """Run `engine_key` over the job's documents and append its phase to `job['analysis']` (mutated and returned as the new
     phase). `call` is call_engine or a stand-in with its signature."""
@@ -89,7 +91,8 @@ def add_step(job: dict, engine_key: str, *, get_text: Callable[[str], str], call
     sources = sources_for(engine_key, documents, packet, get_text, room) + extras   # a caller's own documents (the argument's parts) ride beside the job's
     if not sources:
         raise ValueError("the job has no source documents this step can read")
-    out = call(engine_key, sources, packet=small, depth=depth, model=model, spend_cap_usd=spend_cap_usd)
+    skipped = [d.get("key") for d in documents if (d.get("role") or "source") in READ_ROLES and d.get("executor_doc_id") and d.get("key") not in {x.key for x in sources}]
+    out = call(engine_key, sources, packet=small, depth=depth, model=model, spend_cap_usd=spend_cap_usd, max_chars=max_chars)
     analysis = job.setdefault("analysis", {}) or {}
     numbers = [float(k) for k in analysis.keys() if str(k).replace(".", "", 1).isdigit()]
     base = int(max(numbers)) if numbers else 4
@@ -99,7 +102,7 @@ def add_step(job: dict, engine_key: str, *, get_text: Callable[[str], str], call
              "final_output": out.get("final_output") or "", "final_wall": {"failed_ids": (out.get("wall") or {}).get("failed_ids") or [], "verified": (out.get("wall") or {}).get("verified"),
                                                                             "anchors": (out.get("wall") or {}).get("anchors")},
              "added": True, "cost_usd": out.get("cost_usd"), "model": out.get("model"), "seconds": out.get("seconds"), "sources": [s.key for s in sources],
-             "extra_sources": [x.key for x in extras]}
+             "extra_sources": [x.key for x in extras], "skipped": skipped}   # a document the cap left out is named, never silent
     analysis[key] = phase
     job["analysis"] = analysis
     totals = job.get("totals") or {}

@@ -81,7 +81,7 @@ def _context_block(packet: Optional[dict], docs: list) -> str:
 
 def call_engine(engine_key: str, sources: list[SourceSpec], *, packet: Optional[dict] = None, depth: str = "surface",
                 model: Optional[str] = None, spend_cap_usd: float = 0.5, call_fn: Optional[Callable] = None,
-                refs: Optional[dict[str, Any]] = None) -> dict:
+                refs: Optional[dict[str, Any]] = None, max_chars: Optional[int] = None) -> dict:
     """Run one engine over the supplied sources in this request. Raises KeyError for an unknown engine, ValueError
     for a bad request (depth, model, size, the cap)."""
     from src.engines.registry import get_engine_registry
@@ -107,8 +107,9 @@ def call_engine(engine_key: str, sources: list[SourceSpec], *, packet: Optional[
         raise ValueError("no source with text was supplied (a source needs kind=paste and text)")
     upstream = _context_block(packet, [d for d in docs if (getattr(d, "role", "source") or "source") not in unpacked_roles])
     chars = sum(len(v) for v in documents.values()) + len(upstream)
-    if chars > MAX_CHARS:
-        raise ValueError(f"{chars:,} chars supplied; this route takes at most {MAX_CHARS:,} (a dossier job takes more)")
+    cap = max_chars or MAX_CHARS
+    if chars > cap:
+        raise ValueError(f"{chars:,} chars supplied; this route takes at most {cap:,} (a dossier job takes more)")
     strong = normalize_model(model) or resolve_step_model(ProcessStep(key="read", kind="synthesize", model_tier="strong"), spec)
     mid = resolve_step_model(spec.get_step("verify") or ProcessStep(key="verify", kind="verify", model_tier="mid"), spec)
     est = estimate_usd(strong, chars, depth=depth, mid_model=mid)

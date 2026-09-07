@@ -274,7 +274,7 @@ def test_a_step_added_to_a_finished_job_reads_its_documents_and_joins_its_analys
                          {"key": "after:em:A06", "role": "source", "executor_doc_id": "d3"}, {"key": "oeuvre", "role": "plan", "executor_doc_id": "dp"}],
            "analysis": {"4.1": {"engine_key": "oeuvre_trajectory", "final_output": "x"}, "4.6": {"engine_key": "oeuvre_position_memo", "final_output": "y"}}, "totals": {"cost_usd": 10.0, "llm_calls": 25}}
     seen = {}
-    def fake_call(engine_key, sources, *, packet=None, depth="surface", model=None, spend_cap_usd=2.0):
+    def fake_call(engine_key, sources, *, packet=None, depth="surface", model=None, spend_cap_usd=2.0, max_chars=None):
         seen.update(engine_key=engine_key, keys=[s.key for s in sources], packet=packet, depth=depth)
         return {"engine_key": engine_key, "final_output": "[P3.F1] Meek: not a candidate — dim: verdict — person: Meek, Ronald — verdict: not_a_candidate — reason: bibliographic — anchor: \"Meek is cited\" — doc: focal:em:F — confidence: high",
                 "wall": {"failed_ids": [], "verified": 1, "anchors": 1}, "cost_usd": 0.15, "calls": [1, 2], "model": "m", "seconds": 3}

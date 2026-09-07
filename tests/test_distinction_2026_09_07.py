@@ -68,6 +68,8 @@ def test_an_added_step_carries_the_recipes_earlier_rows():
     job = {"analysis": {"4.1": {"engine_key": "interlocutor_position", "final_output": "[I1.F1] q — dim: question"}, "4.2": {"engine_key": "oeuvre_trajectory", "final_output": "x"}}}
     assert upstream_findings(job, "distinction_draft") == {"interlocutor_position": "[I1.F1] q — dim: question"}
     assert upstream_findings(job, "interlocutor_position") == {}
+    job["analysis"]["4.3"] = {"engine_key": "distinction_draft", "final_output": "[D2.F1] r — dim: relation"}
+    assert set(upstream_findings(job, "distinction_settle")) == {"interlocutor_position", "distinction_draft"}   # the recipe's `context`
 
 
 def test_an_added_step_reads_a_statements_job_and_takes_the_callers_argument_document():
@@ -76,13 +78,14 @@ def test_an_added_step_reads_a_statements_job_and_takes_the_callers_argument_doc
     texts = {"s1": "{\"statements\": [], \"sources\": []}"}
     job = {"documents": [{"key": "statements", "role": "statements", "executor_doc_id": "s1"}], "analysis": {}, "totals": {}}
     seen = {}
-    def fake_call(engine_key, sources, *, packet=None, depth="surface", model=None, spend_cap_usd=2.0):
-        seen.update(keys=[(s.key, s.role) for s in sources], packet=packet)
+    def fake_call(engine_key, sources, *, packet=None, depth="surface", model=None, spend_cap_usd=2.0, max_chars=None):
+        seen.update(keys=[(s.key, s.role) for s in sources], packet=packet, max_chars=max_chars)
         return {"final_output": "[I1.F1] q — dim: question — interlocutors: Brenner — anchor: \"x\" — doc: statements — confidence: high", "wall": {"failed_ids": []}, "cost_usd": 0.1, "calls": [1]}
     add_step(job, "interlocutor_position", get_text=texts.get, call=fake_call, packet_override={"interlocutors": [{"name": "Brenner", "role": "foil"}]},
              extra_sources=[{"key": "argument", "title": "Brief 1, the parts", "text": "[part 1] (his) Market dependence alone does not explain why capitalism grows."}])
     assert seen["keys"] == [("statements", "statements"), ("argument", "source")] and seen["packet"]["interlocutors"][0]["name"] == "Brenner"
     assert job["analysis"]["4.1"]["extra_sources"] == ["argument"] and job["analysis"]["4.1"]["engine_key"] == "interlocutor_position"
+    assert seen["max_chars"] == 1_500_000 and job["analysis"]["4.1"]["skipped"] == []
     # the second step carries the first's rows
     add_step(job, "distinction_draft", get_text=texts.get, call=fake_call, extra_sources=[{"key": "argument", "text": "[part 1] (his) …"}])
     assert "interlocutor_position" in seen["packet"]["upstream_findings"] and "4.2" in job["analysis"]
