@@ -1,6 +1,7 @@
 """A paper's place in its author's oeuvre (Evgeny, 2026-09-07): the six engines load with the registry's vocabularies, the
 recipe carries scopes, the Stacks' bundle expands at the door into focal / before / after documents and the packet."""
 import json
+import pytest
 
 from src.sources.oeuvre_bundle import expand_oeuvre_bundle, packet_of, render_profile
 from src.sources.resolve import resolve_sources
