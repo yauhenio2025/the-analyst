@@ -1,9 +1,11 @@
 {
   "key": "referee.school-propose",
   "organ": "the-referee",
-  "name": "Propose a person to a school's review queue",
+  "name": "Propose a member to a school of thought",
   "when": [
     "citation_cohort_synthesis.*",
+    "cohort.member_added",
+    "cohort.*",
     "cohort.member-candidate",
     "citation_shift.anomaly"
   ],
@@ -13,13 +15,13 @@
     "referee_thinker_id",
     "evidence"
   ],
-  "route": "POST /api/schools/{folder_id}/candidates {source_kind, author_name, thinker_id?, evidence} · GET /api/schools/{id}/cohort-context",
+  "route": "POST /api/schools/{folder_id}/candidates {source_kind, author_name, thinker_id?, evidence} · GET /api/schools/{folder_id}/cohort-context",
   "cost": "none",
-  "side_effects": "a candidate in the review queue",
-  "yields": "the candidate row",
+  "cost_note": "queue write; the operator's review judge is a later, separate cheap call",
+  "side_effects": "a pending candidate in the school's review queue",
+  "gated_by": "none",
+  "yields": "candidate id + status; the school's cohort-context",
   "owner": "the-referee",
-  "cost_note": "",
-  "gated_by": "",
   "version": "2026-09-07",
   "evidence": [],
   "note": ""
