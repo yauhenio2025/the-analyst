@@ -91,3 +91,19 @@ def test_an_added_step_reads_a_statements_job_and_takes_the_callers_argument_doc
     # the second step carries the first's rows
     add_step(job, "distinction_draft", get_text=texts.get, call=fake_call, extra_sources=[{"key": "argument", "text": "[part 1] (his) …"}])
     assert "interlocutor_position" in seen["packet"]["upstream_findings"] and "4.2" in job["analysis"]
+
+
+def test_the_distinction_engines_unpack_a_statements_source_and_keep_the_argument_document():
+    """The pilot's third run 404ed: the family's per-engine scope table had no entry for the new engines; and the argument document
+    carries its own SOURCE ROLE, which the scope filter must let through."""
+    import json
+    from src.sources.citation_evidence import prepare_citation_sources, FAMILY
+    assert {"interlocutor_position", "distinction_draft", "distinction_settle"} <= FAMILY
+    statements = json.dumps({"memo": {"uid": "turn-11", "title": "his answer", "markdown": "This is a very good challenge."},
+                             "statements": [{"no": 1, "section": "state", "statement": "Brenner argues the state just responds to capital", "sources": ["B1"]}],
+                             "sources": [{"label": "B1", "uid": "em:B1", "title": "What Is, and What Is Not, Imperialism?", "text": "The state responds to the interests of capital, domestically and internationally."}]})
+    docs = {"statements-exchange-11": statements, "argument": "SOURCE ROLE: argument\n\n[part 6] (his) states have a logic of their own."}
+    for engine in ("interlocutor_position", "distinction_draft", "distinction_settle"):
+        witnesses, context = prepare_citation_sources(engine, docs)
+        assert "argument" in witnesses and any("responds to the interests of capital" in v for v in witnesses.values()), engine
+        assert any("This is a very good challenge" in v for v in witnesses.values()) and "statements-exchange-11" not in witnesses

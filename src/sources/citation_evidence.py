@@ -153,7 +153,11 @@ def prepare_citation_sources(engine_key: str, documents: dict[str, str]) -> tupl
     allowed = {"citation_engagement_map": {"citing_author"},
                "citation_fidelity_audit": {"citing_author", "primary_window"},
                "citation_reception_map": {"citing_author", "secondary_reader"},
-               "reference_reread": {"citing_author", "primary_window"}}[engine_key]
+               "reference_reread": {"citing_author", "primary_window"},
+               # the distinction family: the owner's turn is the citing author, the interlocutors' texts the windows, the argument's parts ride beside; the settle round reads his answer too (2026-09-07)
+               "interlocutor_position": {"citing_author", "primary_window", "argument"},
+               "distinction_draft": {"citing_author", "primary_window", "argument"},
+               "distinction_settle": {"citing_author", "primary_window", "argument", "answer"}}[engine_key]
     def in_scope(body):
         role = re.match(r"SOURCE ROLE: (\w+)", body)
         return not role or role[1] in allowed
