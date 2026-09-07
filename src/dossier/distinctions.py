@@ -4,6 +4,7 @@ joined per interlocutor and question, and the questions back as the payloads the
 Shape only; a row the wall could not anchor is carried with `conjecture`."""
 from __future__ import annotations
 
+import re
 from typing import Any, Optional
 
 from src.dossier.explainer import CITED_ID, rows_with_fields
@@ -51,7 +52,7 @@ def render_distinctions(job: dict) -> Optional[dict]:
     claims = [_row(r, "interlocutor", "question", "role", "locus", "turn_says") for r in by["interlocutor_position"] if r["dim"] == "their_claim"]
     silences = [_row(r, "interlocutor", "question") for r in by["interlocutor_position"] if r["dim"] == "their_silence"]
     positions = [_row(r, "question", "part") for r in by["distinction_draft"] if r["dim"] == "your_position"]
-    relations = [_row(r, "interlocutor", "question", "position", "claim", "relation", "relation_raw", "axis", "ours", "theirs", "bridge") for r in by["distinction_draft"] if r["dim"] == "relation"]
+    relations = [_row(r, "interlocutor", "question", "position", "claim", "relation", "relation_raw", "axis", "ours", "theirs", "bridge", "bears_on") for r in by["distinction_draft"] if r["dim"] == "relation"]
     asks = [_row(r, "from", "interlocutor", "kind", "options") for r in by["distinction_draft"] if r["dim"] == "question_back"]
     settled = [_row(r, "interlocutor", "from", "relation_kind", "axis", "because", "sayable") for r in by["distinction_settle"] if r["dim"] == "distinction"]
     effects = [_row(r, "distinction", "part", "relation") for r in by["distinction_settle"] if r["dim"] == "effect"]
@@ -70,6 +71,7 @@ def render_distinctions(job: dict) -> Optional[dict]:
                            "your_position": {"id": pos.get("id"), "text": pos.get("text", ""), "part": pos.get("part", ""), "anchor": pos.get("anchor", "")},
                            "relation": {"id": rel.get("id"), "relation": rel.get("relation", ""), "axis": rel.get("axis", ""), "ours": rel.get("ours", ""), "theirs": rel.get("theirs", ""), "bridge": rel.get("bridge", "")},
                            "ask": {"id": a["id"], "kind": a.get("kind", ""), "text": a["text"], "options": [o.strip() for o in (a.get("options") or "").split("|") if o.strip() and o.strip().lower() != "none"]},
+                           "bears_on": sorted({int(x) for x in re.findall(r"\d+", rel.get("bears_on") or "")} | ({int(pos["part"])} if str(pos.get("part") or "").isdigit() else set())),   # the parts the claim touches: the reach of the distinction is the reading's to say (the Stacks' ledger, 15:55)
                            "conjecture": any(x.get("conjecture") for x in (a, rel, claim, pos) if x)})
     # per interlocutor: the view a reader scans
     names = sorted({c["interlocutor"] for c in claims} | {r["interlocutor"] for r in relations} | {s["interlocutor"] for s in silences})

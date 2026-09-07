@@ -1,0 +1,22 @@
+{
+  "key": "reaction-follow-up",
+  "name": "What follows from a reaction, so nothing he said waits unanswered",
+  "task_kinds": [
+    "reaction-follow-up"
+  ],
+  "when": "a reaction has landed on the Brief (a distinction found, a text arrived, a memo found, a verdict changed, a question answered) and the desk must decide the next step without being asked (the owner, 2026-09-07 13:55: automate the follow-up so he thinks rather than checks and remembers)",
+  "shape": "distinction_found → file the questions back on the part; when he answers, run distinction_settle with the answer and the parts, file S1 as a proposed edit with the interlocutor cited, S2 as effects, S3 as open · text_arrived for a hunch or a reference → re-run the pass that waited on it (a hunch test, a re-read) and say on the row which hunch it feeds · memo_found → the next re-read or distinction round carries it as an analysis source under a recollection statement · verdict_changed (a hunch, a frame) → re-ask the frame (what would change this verdict) and mark the parts that rested on the old verdict downstream · question_back answered → the reading that asked it runs again with the answer; an unanswered question older than a day is reminded once, never nagged · reread_done → the references that hold become citations on the part, those that diverge become challenges · blocked → name what it waits on (a text, a slot, his approval of a desk-draft part) and who acts",
+  "ingredients": [
+    "the trigger with his sentence quoted",
+    "the reach from structure (local · downstream · premise)",
+    "the part's state (his · desk draft)",
+    "the day's ceiling of unsolicited interventions"
+  ],
+  "yields": "the chain trigger → reaction → changed → could change → next on every row, and a reminder strip for the ideas he voiced when material for them lands",
+  "misses": "a follow-up that needs a text nobody holds (it stays blocked, named); a change whose reach the structure cannot see (a distinction's reach comes from the reading: challenges[].bears_on)",
+  "origin": "the Stacks' code does each of these already (2026-09-07); the record makes them one rule an LLM can revise",
+  "owner": "the-mastermind",
+  "version": "2026-09-07",
+  "evidence": [],
+  "note": "Read by the Stacks and the Mastermind alike; cite it on the row's `next`."
+}
