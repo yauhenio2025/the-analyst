@@ -110,3 +110,20 @@ rows to the Stacks for the challenge kind. 3. The Stacks: the `distinction` chal
 `distinction_settle`, the search-analyses capacity. 4. The foils record when he names them; the Referee's thinkers as a
 name-check source. 5. The impact scan (OAAS review_pilot) as a later engine over the parts: what a settled distinction changes
 elsewhere in the argument.
+
+## 6. The first round, and what it took (2026-09-07 15:35)
+
+The round ran on the owner's turn 11 over the Stacks' re-read job (ten held texts windowed, 584k chars) with the parts beside: 32
+rows, every one anchored, $0.31; Brenner collides (independent state rationality under structural dependence), Hintze parallel,
+Arrighi overlaps then diverges, Anderson absorbed; six questions back, filed on part 6 of Brief 1 by the Stacks (three in the day's
+review slots, three waiting). Rows: `communications/study/distinction_turn11_2026_09_07/README.md`.
+
+Seams a new engine family must cross to read a statements source: membership in the citation FAMILY (`src/sources/
+citation_evidence.py`), so the source unpacks into the turn and the witnesses instead of riding as raw context; an entry in the
+family's per-engine scope table naming the roles it may read (the turn as citing_author, the texts as primary_window, the parts as
+argument, the answer as answer); an added step's cap above the light route's (a step reads what the job read; what a cap leaves out
+is named); and the latest phase of an engine as the upstream of the next.
+
+The Referee's shape for a relation posted as candidate evidence (the-referee-48, 15:05): POST /api/schools/{id}/candidates with
+evidence {relation, axis, clause, finding, run, text} and source_ref "distinction:<run>"; the operator judges in the queue.
+
