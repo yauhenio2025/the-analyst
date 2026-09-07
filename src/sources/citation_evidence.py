@@ -8,7 +8,8 @@ from __future__ import annotations
 import json
 import re
 
-FAMILY = {"citation_engagement_map", "citation_fidelity_audit", "citation_reception_map", "reference_reread"}
+FAMILY = {"citation_engagement_map", "citation_fidelity_audit", "citation_reception_map", "reference_reread",
+          "interlocutor_position", "distinction_draft", "distinction_settle"}   # the distinction family reads the owner's turn against the texts the same way (2026-09-07)
 
 
 def evidence_indexes(documents: dict[str, str]) -> list[tuple[str, dict]]:
