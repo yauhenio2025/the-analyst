@@ -1,0 +1,21 @@
+{
+  "key": "circle-recall",
+  "name": "Circle recall",
+  "task_kinds": [
+    "person-harvest"
+  ],
+  "when": "a person brief whose venues are shared with people already harvested (the circle: hosts publishing the people who share the person's small hosts)",
+  "shape": "site:<circle host> \"first * last\" — one probe, a second only if the first shows the name",
+  "ingredients": [
+    "source_people by hostname",
+    "the brief's sites as seed venues",
+    "CIRCLE_MIN_SHARED=1, RECALL_MAX_HOSTS=6"
+  ],
+  "yields": "a small host learned on one person (Alameda, Damage, Stir to Action, the Matrix) tried on the next before the open web is asked",
+  "misses": "a person with no venue in common with anyone harvested; hosts with too many people (excluded above 40)",
+  "origin": "the-reporter PR #4 (communications/PROPOSAL_sources_learned_from_person_harvests_2026-09-07.md §4), 2026-09-07",
+  "owner": "the-reporter",
+  "version": "2026-09-07",
+  "evidence": [],
+  "note": "a planned query on a [recalled] lane names it in `practice`; the retrospective posts evidence rows (queries, new_relevant) per brief"
+}
