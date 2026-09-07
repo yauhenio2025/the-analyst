@@ -185,7 +185,7 @@ def compose_page(title: str, subtitle: str, plan: dict, prose: dict[str, str], e
     for s in plan["sections"]:
         exs = by_sec.get(s["id"], [])
         before = [e for e in exs if e["placement"] == "before"]; beside = [e for e in exs if e["placement"] == "beside"]; after = [e for e in exs if e["placement"] not in ("before", "beside")]
-        body.append(f"<section id='{_e(s['id'])}'><h2>{_e(s['heading'])}</h2><p class='grasp'>{_e(s.get('grasp'))} <span class='rid'>[{_e(s['id'])}]</span></p>")
+        body.append(f"<section id='{_e(s['id'])}'><h2 title='{_e(s['id'])}'>{_e(s['heading'])}</h2><p class='grasp'>{_e(s.get('grasp'))}</p>")   # the plan id on hover, never on the face
         desc.append(f"\n[{s['id']}] SECTION: {s['heading']} — grasp: {s.get('grasp')} — budget {s.get('words')} words")
         def place(e):
             m = exhibits.get(e["id"]) or {}
