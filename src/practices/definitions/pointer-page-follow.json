@@ -1,0 +1,20 @@
+{
+  "key": "pointer-page-follow",
+  "name": "Pointer page follow",
+  "task_kinds": [
+    "person-harvest"
+  ],
+  "when": "a host whose pages under a pattern carry only a pointer to the text on another host (The Dig's transcript pages → Jacobin); the organ's learn call sends teaser_of (step 3: built — PUT /v1/fetch_jobs/rules/{host} kind pointer)",
+  "shape": "host_fetch_rules kind pointer {min_chars, follow: first outbound link to a non-platform host}",
+  "ingredients": [
+    "host_fetch_rules",
+    "the learn call's teaser_of (kept in the audit row sources.learn)"
+  ],
+  "yields": "the body filed under the target URL with the pointer as provenance",
+  "misses": "pointers to paywalled targets",
+  "origin": "the-reporter PR #4 (communications/PROPOSAL_sources_learned_from_person_harvests_2026-09-07.md §4), 2026-09-07",
+  "owner": "the-reporter",
+  "version": "2026-09-07",
+  "evidence": [],
+  "note": "a planned query on a [recalled] lane names it in `practice`; the retrospective posts evidence rows (queries, new_relevant) per brief"
+}
