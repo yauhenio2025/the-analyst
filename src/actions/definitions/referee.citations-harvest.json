@@ -1,21 +1,24 @@
 {
   "key": "referee.citations-harvest",
   "organ": "the-referee",
-  "name": "Harvest the thinker's citations",
+  "name": "Harvest the citations of the thinker's works",
   "when": [
     "citation_shift.unexamined",
+    "citation_shift.first_cited",
+    "oeuvre_position_memo.read_next",
+    "thinker.citations_missing",
     "citation_shift.anomaly",
     "thinker.works-known"
   ],
   "inputs": [
     "referee_thinker_id"
   ],
-  "route": "POST /api/thinkers/{id}/start-harvest",
+  "route": "POST /api/thinkers/{thinker_id}/start-harvest",
   "cost": "metered",
-  "cost_note": "≈ one Scholar page per 10 citations (26k citations ≈ $3) + a cheap LLM per page; long-running",
-  "side_effects": "papers, editions, citations rows; status harvesting → complete | incomplete",
-  "gated_by": "the harvest pause and the Apify / Oxylabs budget governors",
-  "yields": "the citing works and readers",
+  "cost_note": "Scholar pages ≈ one per 10 citations (26k citations ≈ 2.6k pages ≈ $3 on Apify) + cheap LLM per page; long-running",
+  "side_effects": "papers, editions, citations rows; status → harvesting → complete|incomplete",
+  "gated_by": "global harvest pause ({\"interactive\": true} overrides); Apify/Oxylabs budget governors",
+  "yields": "total_citations, per-work citation counts, the citing works",
   "owner": "the-referee",
   "version": "2026-09-07",
   "evidence": [],
