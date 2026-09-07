@@ -18,6 +18,7 @@
   Referee) becomes a suggested action with its inputs filled from the row (`POST /v1/actions/suggest`); the owner clicks, or the system
   runs it under a cap; the organ posts the outcome back.
 - **Everything measured writes back** — a practice's yield, an action's outcome, an engine's receipts — where the next planner reads it.
+- **Presentation is records too** (Evgeny, 2026-09-07 09:31: a memo must not be a wall of text): the exhibits a page can show — timelines, idea maps, split panels, chips, sidebars, tables, images — are records with when · inputs · medium · renderer · didactic aim, seeds an LLM extrapolates for a new workflow; a layout desk commissions them from a memo's rows; the figure pipeline (primitives, styles, the image fleet in `src/images/providers.py`) and the renderer catalogue (`src/renderers`, `src/sub_renderers`, `src/views/patterns`) are the means. Design: `communications/DESIGN_presentation_exhibits_2026-09-07.md`.
 - **Mirrored enumerations change on their owner's word first** (the Referee's, the Stacks'); the registry carries the owner.
 - The same principles stand in the Stacks' and the Referee's CLAUDE.md in their words. Design of the first workflow built this way:
   `communications/DESIGN_oeuvre_position_2026-09-07.md`.
