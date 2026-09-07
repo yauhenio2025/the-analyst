@@ -11,10 +11,10 @@
   ],
   "inputs": [
     "query_id",
-    "corpus_result_id",
-    "work_title",
-    "work_author",
-    "work_year"
+    "corpus_result_id?",
+    "work_title?",
+    "work_author?",
+    "work_year?"
   ],
   "route": "POST /api/cross-citations/queries/{query_id}/fetch-pdfs {enabled, auto_extract_references?} (seed pool → collector batch) · POST /api/fetch-pool/{corpus_result_id}/claim | prepare | upload · GET /api/fetch-pool/{corpus_result_id}/pdf-url · POST /api/thinker-studies/{study_id}/phase3/acquire",
   "cost": "cents",
