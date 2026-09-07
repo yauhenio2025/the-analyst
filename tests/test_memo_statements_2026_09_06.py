@@ -91,8 +91,8 @@ def test_a_long_source_is_windowed_around_the_passages_its_statements_name():
     idx = statements_to_evidence_index(obj)
     by = {c["copy"]["uid"]: c for c in idx["checks"]}
     wins = by["em:H1"]["windows"]
-    assert wins[-1]["how"] == "note" and "unverifiable, not absent" in wins[-1]["text"]
-    body = " ".join(w["text"] for w in wins if w["how"] == "lexical window")
+    assert all(w["how"] in ("page", "section", "search") for w in wins) and "unverifiable, not absent" in wins[-1]["text"]   # the index's law on `how`
+    body = " ".join(w["text"] for w in wins if w["how"] == "search")
     assert "Staatsräson beside the Wirtschaftsräson" in body and "Protection rent joins the two competitions" in body
     assert sum(len(w["text"]) for w in wins) < len(long) // 4
     assert by["em:A1"]["windows"] == [{"how": "section", "section": "whole held text", "text": "Arrighi on the territorial logic of the system."}]

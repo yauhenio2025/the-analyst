@@ -108,7 +108,7 @@ def lexical_windows(text: str, statements: list[dict], *, half: int = WINDOW_HAL
             merged[-1][1] = max(merged[-1][1], b); merged[-1][2] = merged[-1][2] + "; " + why if why not in merged[-1][2] else merged[-1][2]
         else:
             merged.append([a, b, why])
-    return [{"how": "lexical window", "section": f"chars {a}–{b} (for {why})", "text": text[a:b], "locus": {"start": a, "end": b}} for a, b, why in merged]
+    return [{"how": "search", "section": f"chars {a}–{b} (for {why})", "text": text[a:b], "locus": {"start": a, "end": b}} for a, b, why in merged]   # `how` must be page, section or search (the index's law)
 
 
 def _label_map(sources: list[dict]) -> dict[str, str]:
@@ -129,7 +129,8 @@ def _windows_for(text: str, source: dict, statements: list[dict], passages: list
     sts = [st for st in statements if st.get("no") in citing_nos] or statements
     wins = lexical_windows(text, sts)
     if wins:
-        return wins + [{"how": "note", "section": "clipped", "text": f"(the held text is {len(text):,} chars; only the {len(wins)} windows above were read — a place outside them is unverifiable, not absent)"}]
+        wins[-1] = {**wins[-1], "text": wins[-1]["text"] + f"\n\n[the held text is {len(text):,} chars; only {len(wins)} windows of it were read — a place outside them is unverifiable, not absent]"}
+        return wins
     return [{"how": "section", "section": "head of the held text (clipped; no statement term found)", "text": text[:WINDOW_CAP // 4]}]
 
 
