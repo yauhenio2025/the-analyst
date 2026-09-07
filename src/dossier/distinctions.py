@@ -12,8 +12,24 @@ from src.dossier.explainer import CITED_ID, rows_with_fields
 ENGINES = ("interlocutor_position", "distinction_draft", "distinction_settle", "impact_scan")
 
 
+THIRD_PERSON = re.compile(r"^(?:The owner|He)\s+(holds?|argues?|provisionally holds?|claims?|takes?|rejects?|treats?|reads?|maintains?)\b", re.I)
+
+
 def _clean(text: str) -> str:
     return CITED_ID.sub("", text or "").strip()
+
+
+def _to_you(text: str) -> str:
+    """'The owner holds that…' → 'You hold that…': a row shown to him speaks to him (the Stacks, 2026-09-07 19:45). Rows made before
+    the engines were told to write in the second person are turned here; a row already in it passes through."""
+    t = (text or "").strip()
+    m = THIRD_PERSON.match(t)
+    if not m:
+        return t
+    verb = m.group(1).lower()
+    you = {"holds": "hold", "argues": "argue", "claims": "claim", "takes": "take", "rejects": "reject", "treats": "treat", "reads": "read", "maintains": "maintain",
+           "provisionally holds": "provisionally hold"}.get(verb, verb.rstrip("s"))
+    return ("You " + you + t[m.end():]).strip()
 
 
 def _phases(job: dict) -> dict[str, tuple[str, set[str]]]:
@@ -51,8 +67,13 @@ def render_distinctions(job: dict) -> Optional[dict]:
     questions = [_row(r, "interlocutors") for r in by["interlocutor_position"] if r["dim"] == "question"]
     claims = [_row(r, "interlocutor", "question", "role", "locus", "turn_says") for r in by["interlocutor_position"] if r["dim"] == "their_claim"]
     silences = [_row(r, "interlocutor", "question") for r in by["interlocutor_position"] if r["dim"] == "their_silence"]
-    positions = [_row(r, "question", "part") for r in by["distinction_draft"] if r["dim"] == "your_position"]
-    relations = [_row(r, "interlocutor", "question", "position", "claim", "relation", "relation_raw", "axis", "ours", "theirs", "bridge", "bears_on") for r in by["distinction_draft"] if r["dim"] == "relation"]
+    positions = [{**_row(r, "question", "part"), "text": _to_you(_row(r, "question", "part")["text"])} for r in by["distinction_draft"] if r["dim"] == "your_position"]
+    relations = []
+    for r in by["distinction_draft"]:
+        if r["dim"] != "relation":
+            continue
+        x = _row(r, "interlocutor", "question", "position", "claim", "relation", "relation_raw", "axis", "ours", "theirs", "bridge", "bears_on")
+        relations.append({**x, "ours": _to_you(x.get("ours", ""))})
     asks = [_row(r, "from", "interlocutor", "kind", "options") for r in by["distinction_draft"] if r["dim"] == "question_back"]
     settled = [_row(r, "interlocutor", "from", "relation_kind", "axis", "because", "sayable") for r in by["distinction_settle"] if r["dim"] == "distinction"]
     effects = [_row(r, "distinction", "part", "relation") for r in by["distinction_settle"] if r["dim"] == "effect"]

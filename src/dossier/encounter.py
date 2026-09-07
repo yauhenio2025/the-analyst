@@ -59,7 +59,8 @@ def render_encounter(job: dict, thinker: str = "") -> Optional[dict]:
     turns = [_row(r, "question", "from", "to", "changed") for r in m if r["dim"] == "turn"]
     silences = [_row(r, "question") for r in m if r["dim"] == "silence"]
     axes = [_row(r, "gathers", "parts") for r in d if r["dim"] == "axis"]
-    relations = [_row(r, "axis", "relation", "relation_raw", "ours", "theirs", "bridge", "bears_on") for r in d if r["dim"] == "relation"]
+    from src.dossier.distinctions import _to_you
+    relations = [{**_row(r, "axis", "relation", "relation_raw", "ours", "theirs", "bridge", "bears_on"), "ours": _to_you(_row(r, "ours").get("ours", ""))} for r in d if r["dim"] == "relation"]
     takes = [_row(r, "element", "take", "take_raw", "into") for r in d if r["dim"] == "take"]
     asks = [_row(r, "from", "kind", "options") for r in d if r["dim"] == "question_back"]
     route = sorted([_row(r, "text", "held", "rank", "axis", "why") for r in d if r["dim"] == "read_next"], key=lambda x: int(x["rank"]) if str(x.get("rank") or "").isdigit() else 99)

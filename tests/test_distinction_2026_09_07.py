@@ -125,3 +125,17 @@ def test_the_impact_scan_loads_and_renders_into_the_distinctions_output():
     d = render_distinctions(job)
     assert d["impact"]["touched"][0]["part"] == "6" and d["impact"]["touched"][0]["relation"] == "complicates"
     assert d["impact"]["dependencies"][0]["how"] == "premise" and d["impact"]["retests"][0]["run"] == "hunch_test" and d["vocabulary_drift"] == []
+
+
+def test_the_rows_shown_to_him_speak_to_him():
+    """The Stacks (2026-09-07 19:45): `your_position.text` arrived as 'The owner holds that…', which reads as a third party talking
+    about him; the engines now write the second person and the renderer turns the rows made before."""
+    from src.dossier.distinctions import _to_you, render_distinctions
+    assert _to_you("The owner holds that capitalist constraint does not eliminate states' logic") == "You hold that capitalist constraint does not eliminate states' logic"
+    assert _to_you("The owner provisionally holds that territorial logic is systemic") == "You provisionally hold that territorial logic is systemic"
+    assert _to_you("You hold that states have imperatives") == "You hold that states have imperatives"      # already in the second person
+    assert _to_you("Brenner argues the state responds to capital") == "Brenner argues the state responds to capital"   # not about him
+    dd = ("[D1.F1] The owner holds that states have a logic — dim: your_position — question: I1.F1 — part: 6 — anchor: \"x\" — doc: turn — confidence: medium\n"
+          "[D2.F1] a vs b — dim: relation — interlocutor: Brenner — question: I1.F1 — position: D1.F1 — claim: I2.F1 — relation: collides — axis: the state's logic — ours: The owner holds imperatives of its own — theirs: a response to capital — bridge: none — anchor: \"y\" — doc: turn — confidence: high")
+    out = render_distinctions({"id": "d", "analysis": {"4.1": {"engine_key": "distinction_draft", "final_output": dd, "final_wall": {"failed_ids": []}}}})
+    assert out["positions"][0]["text"].startswith("You hold that") and out["interlocutors"][0]["relations"][0]["ours"].startswith("You hold")
