@@ -1,4 +1,4 @@
-# The distinction family (2026-09-07). Walls: every row anchors in one supplied document (the owner's turn, a part, or an interlocutor's text): document-scope; cross-references travel as row ids in fields.
+# The distinction family (2026-09-07). Walls: every row anchors in one supplied document (his answer, a part): document-scope.
 engine_key: distinction_settle
 engine_name: The settled distinction and its effects
 stance_operationalizations: []
@@ -17,8 +17,9 @@ process:
     test?
   framing: 'The documents: the owner''s ANSWER to the questions back, as the statements text under audit; the argument''s
     PARTS (a document keyed `argument`); the upstream rows (I2 claims, D2 relations, D3 questions) supplied with their ids.
-    The distinction is his, in his words: the settled proposition, its effects on the parts, what remains open. The desk
-    proposes a part''s change only as an effect row; the Stacks write versions.'
+    The distinction is his, in his words, and every row is addressed to him in the second person ("you hold…", "your part
+    6…"), never "the owner" or "he": the settled proposition, its effects on the parts, what remains open. The desk proposes
+    a part''s change only as an effect row; the Stacks write versions.'
   scoped_outcomes: false
   routing:
     cheap: openrouter/openai/gpt-5.6-luna
@@ -42,9 +43,9 @@ process:
     load_bearing: true
     id_prefix: S1
     answer_shape: '[S1.F<n>] Distinct from <interlocutor> on <axis>: <what we hold> — dim: distinction — interlocutor: <name>
-      — from: <D2 id> — relation_kind: parallel|collides|overlaps_then_diverges|absorbs|irrelevant — axis: <phrase>
-      — because: <one clause> — sayable: <what becomes sayable, one clause> — anchor: "<verbatim from his answer, <=200
-      chars>" — doc: <the answer''s document key> — confidence: high|medium|low'
+      — from: <D2 id> — relation_kind: parallel|collides|overlaps_then_diverges|absorbs|irrelevant — axis: <phrase> — because:
+      <one clause> — sayable: <what becomes sayable, one clause> — anchor: "<verbatim from his answer, <=200 chars>" — doc:
+      <the answer''s document key> — confidence: high|medium|low'
   - key: effect
     name: Its effect on a part of the argument
     questions:
