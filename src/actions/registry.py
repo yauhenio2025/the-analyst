@@ -155,9 +155,11 @@ def suggest(finding_kind: str, fields: dict[str, Any], registry: Optional["Actio
     reg = registry or get_action_registry()
     out = []
     for a in reg.for_finding(finding_kind):
-        filled = {k: fields[k] for k in a.inputs if k in fields and fields[k] not in (None, "")}
+        names = [k.rstrip("?") for k in a.inputs]
+        optional = {k.rstrip("?") for k in a.inputs if k.endswith("?") or f"{k}?" in (a.route or "")}   # `scholar_profile_url?`: optional (2026-09-07)
+        filled = {k: fields[k] for k in names if k in fields and fields[k] not in (None, "")}
         out.append({"action": a.key, "organ": a.organ, "name": a.name, "route": a.route, "cost": a.cost, "gated_by": a.gated_by,
-                    "inputs": filled, "missing": [k for k in a.inputs if k not in filled], "finding": finding_kind})
+                    "inputs": filled, "missing": [k for k in names if k not in filled and k not in optional], "optional": sorted(optional - set(filled)), "finding": finding_kind})
     return out
 
 

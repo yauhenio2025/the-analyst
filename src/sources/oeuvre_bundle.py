@@ -80,6 +80,35 @@ def render_profile(t: dict, side: str) -> str:
     return "\n".join(L)
 
 
+def _schools(obj: dict) -> list[dict]:
+    """The Referee's schools of thought for the placement engine: from the bundle's `referee.schools` when the caller supplies
+    them, else from the Referee itself when REFEREE_URL (and REFEREE_API_KEY) are set; else empty, and the engine proposes
+    new schools only. Shape: id · name · description · members (count) · sample (a few member names)."""
+    import os
+    given = (obj.get("referee") or {}).get("schools") if isinstance(obj.get("referee"), dict) else None
+    rows = given if isinstance(given, list) else None
+    if rows is None and os.environ.get("REFEREE_URL", "https://referee-api.onrender.com"):
+        try:   # the Referee's keyless namespace (the Referee session, 2026-09-07 12:40): id · slug · name · description · kind · thinker_count, ?members=N → sample_members
+            import urllib.request
+            headers = {"X-API-Key": os.environ["REFEREE_API_KEY"]} if os.environ.get("REFEREE_API_KEY") else {}
+            req = urllib.request.Request(os.environ.get("REFEREE_URL", "https://referee-api.onrender.com").rstrip("/") + os.environ.get("REFEREE_SCHOOLS_PATH", "/api/public/schools?members=5"), headers=headers)
+            with urllib.request.urlopen(req, timeout=15) as r:
+                got = json.loads(r.read().decode())
+            rows = got if isinstance(got, list) else (got.get("schools") or got.get("folders") or got.get("items") or [])
+        except Exception:
+            rows = []
+    out = []
+    for r in rows or []:
+        if not isinstance(r, dict):
+            continue
+        if r.get("merged_into_folder_id"):
+            continue
+        n = r.get("thinker_count") if isinstance(r.get("thinker_count"), int) else r.get("member_count") if isinstance(r.get("member_count"), int) else r.get("members") if isinstance(r.get("members"), int) else len(r.get("members") or []) if isinstance(r.get("members"), list) else None
+        out.append({"id": r.get("id") or r.get("folder_id"), "slug": r.get("slug"), "name": _s(r.get("name") or r.get("title"), 120), "kind": r.get("kind"), "description": _s(r.get("description") or r.get("summary"), 300), "members": n,
+                    "sample": [_s(m.get("name") if isinstance(m, dict) else m, 60) for m in (r.get("sample_members") or r.get("sample") or (r.get("members") if isinstance(r.get("members"), list) else []) or [])[:5] if m]})
+    return out[:120]
+
+
 def packet_of(obj: dict) -> dict:
     """The plan packet: the texts in order with years, held and profiled flags; the cited-works table with held / in_referee."""
     focal = obj["focal"]; before = obj["before"]; after = obj["after"]
@@ -106,6 +135,27 @@ def packet_of(obj: dict) -> dict:
                 c["in_referee"] = c["in_referee"] or bool(x.get("referee_thinker_id"))
                 if t.get("uid") not in c["cited_in"][side]:
                     c["cited_in"][side].append(t.get("uid"))
+    # the persons the Referee does not know, with how the oeuvre cites them (the placement engine's input, 2026-09-07 12:17)
+    persons: dict[str, dict] = {}
+    for side, ts in (("before", before), ("focal", [focal]), ("after", after)):
+        for t in ts:
+            roles = {_s(x.get("name"), 60).lower(): x for x in ((t.get("profile") or {}).get("people") or []) if isinstance(x, dict)}
+            for x in (t.get("ledger") or {}).get("persons") or []:
+                name = _s(x.get("name"), 60)
+                if not name:
+                    continue
+                e = persons.setdefault(name.lower(), {"person": name, "referee_thinker_id": None, "cited_in": {"before": [], "focal": [], "after": []}, "modes": {}, "roles": []})
+                e["referee_thinker_id"] = e["referee_thinker_id"] or x.get("referee_thinker_id")
+                if t.get("uid") not in e["cited_in"][side]:
+                    e["cited_in"][side].append(t.get("uid"))
+                for m, n in (x.get("modes") or {}).items():
+                    e["modes"][m] = e["modes"].get(m, 0) + (n if isinstance(n, int) else 1)
+                r = roles.get(name.lower())
+                if r and len(e["roles"]) < 6:
+                    e["roles"].append({"uid": t.get("uid"), "year": _year(t), "role": _s(r.get("role"), 30), "stance": _s(r.get("stance"), 200)})
+    persons_all = sorted(persons.values(), key=lambda e: -sum(len(v) for v in e["cited_in"].values()))
+    persons_unknown = [e for e in persons_all if not e["referee_thinker_id"]][:40]
+    schools = _schools(obj)
     def _dedupe(rows):
         seen, out = set(), []
         for v in rows:
@@ -120,11 +170,14 @@ def packet_of(obj: dict) -> dict:
             "texts": texts, "counts": {"before": len(before), "after": len(after), "profiled": sum(1 for t in texts if t["profiled"])},
             "settings": obj.get("settings") or {}, "undated": [row(t, "undated") for t in obj.get("undated") or []],
             "cited_first_in_focal": first[:60], "cited_before_not_in_focal": dropped[:60], "cited_table_size": len(cited),
+            "persons": [{"person": e["person"], "in_referee": bool(e["referee_thinker_id"]), "referee_thinker_id": e["referee_thinker_id"], "n_texts": sum(len(v) for v in e["cited_in"].values())} for e in persons_all[:80]],
+            "persons_unknown": persons_unknown, "schools": schools,
             "concepts": [{"term": _s(c.get("term"), 60), "gloss": _s(c.get("gloss"), 300)} for c in ((focal.get("profile") or {}).get("concepts") or [])[:16] if isinstance(c, dict) and c.get("term")],
             "notes": ["Keys focal:<uid>, before:<uid>, after:<uid> are the documents; a step's scope names the prefixes it reads.",
                       "held and in_referee come from the Stacks' ledger and the Referee ids they carry; a row must copy them, never guess them.",
                       "held means held in the library (held_uid, held_how library|registry, held_edition), whether or not that work's text is supplied to this run; 'not held' only where held is false.",
-                      "Same-year texts are unordered; input order proves no sequence."]}
+                      "Same-year texts are unordered; input order proves no sequence.",
+                      "persons_unknown are the cited persons the Referee does not know; schools are the Referee's schools of thought (empty when the Referee was not reachable): a placement names a school by its id or proposes a new one with candidates from persons."]}
 
 
 def expand_oeuvre_bundle(text: str, key_hint: str = "oeuvre") -> list[Document]:

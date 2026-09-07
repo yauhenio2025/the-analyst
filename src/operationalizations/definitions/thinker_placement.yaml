@@ -1,0 +1,114 @@
+# The oeuvre family (2026-09-07). Where a cited person the Referee does not know belongs: a listed school, a new school, or nowhere.
+# Walls: every row anchors in one supplied document (the focal text or a profile) where the person is cited: document-scope.
+engine_key: thinker_placement
+engine_name: Where an unknown thinker belongs
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: Where does a cited person the Referee does not know belong?
+  framing: 'The corpus is one author''s oeuvre around one FOCAL text (key focal:<uid>, whole) and one document per other text
+    carrying its PROFILE (keys before:<uid>, after:<uid>): people with roles and stances, works cited, claims, positions,
+    verified passages, and the text''s citation LEDGER (persons with Referee ids where the Referee knows them). A packet
+    supplied as context carries PERSONS_UNKNOWN — the cited persons the Referee does not know, each with the texts that cite
+    them, the citation modes and the roles the profiles give them — PERSONS, every person cited in the oeuvre with whether
+    the Referee knows them, and SCHOOLS, the Referee''s schools of thought (id, name, description, members). Place ONLY the
+    persons in PERSONS_UNKNOWN. A fit names a school from SCHOOLS by its id; when SCHOOLS is empty there are no fit rows. A
+    new school''s candidates are names from PERSONS (cited in the oeuvre), never invented. A person cited once in passing,
+    an editor or a translator is not a candidate: say so. The evidence is how the oeuvre uses the person: as a source, an
+    opponent, a foil, a witness, in which debate, beside whom.'
+  scoped_outcomes: false
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: fit
+    name: An existing school the person fits
+    questions:
+    - Which school in the packet does the person's use in the oeuvre place them in, on what evidence?
+    method_card: 'Do: One row per (person, school) pair that fits, at most two schools per person, the school by its packet
+      id and name, the evidence as one clause on how the oeuvre cites the person. Anchor in the passage that cites the
+      person. Select literal spans that carry the actor, predicate, object and necessary qualification. A name alone cannot
+      support a placement. Keep attribution, negation, modality and chronology. Code checks only anchors and IDs; the model
+      must judge the fit against the school''s description and members.'
+    indicators:
+    - school
+    - tradition
+    scope: document
+    load_bearing: true
+    id_prefix: P1
+    answer_shape: '[P1.F<n>] <person> fits <school> because <clause> — dim: fit — person: <name as the packet gives it> —
+      school: <school id from the packet> — school_name: <its name> — evidence: <how the oeuvre cites the person, one clause>
+      — anchor: "<verbatim, <=200 chars>" — doc: <actual supplied source key> — confidence: high|medium|low'
+  - key: new_school
+    name: A new school proposed around the person
+    questions:
+    - If no listed school fits, what school would this person anchor, and which persons cited alongside them belong to it?
+    method_card: 'Do: At most one row per person: the proposed school''s name (a tradition or a debate, in the reader''s
+      words), the candidates as names from the packet''s PERSONS list separated by semicolons (three to eight, the person
+      first), and why the oeuvre groups them. Anchor in the passage that cites them together or names the debate. Select
+      literal spans that carry the claim. Code checks only anchors and IDs; the model must judge the grouping against the
+      texts.'
+    indicators:
+    - alongside
+    - debate
+    scope: document
+    load_bearing: true
+    id_prefix: P2
+    answer_shape: '[P2.F<n>] <the proposed school in one line> — dim: new_school — person: <name as the packet gives it> —
+      name: <the school''s name> — candidates: <name; name; name> — why: <one clause> — anchor: "<verbatim, <=200 chars>"
+      — doc: <actual supplied source key> — confidence: high|medium|low'
+  - key: verdict
+    name: The placement verdict
+    questions:
+    - Fits a listed school, anchors a new one, or not a candidate for the Referee at all?
+    method_card: 'Do: Exactly one row per person in PERSONS_UNKNOWN: the verdict from the vocabulary and the reason in one
+      clause. Anchor in the passage that cites the person. Code checks only anchors and IDs; the model must judge.'
+    indicators:
+    - cited
+    scope: document
+    load_bearing: true
+    id_prefix: P3
+    answer_shape: '[P3.F<n>] <person>: <the verdict in one sentence> — dim: verdict — person: <name as the packet gives it>
+      — verdict: fits|new_school|not_a_candidate — reason: <one clause> — anchor: "<verbatim, <=200 chars>" — doc: <actual
+      supplied source key> — confidence: high|medium|low'
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension
+    model_tier: cheap
+    output: ledger
+    max_rows: 8
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - merge_duplicates
+    - name_must_keep
+    - Strike a fit whose school id is not in the packet; strike a candidate name not in the packet's PERSONS; a person
+      not in PERSONS_UNKNOWN is struck.
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    max_rows: 8
+    reader: the owner deciding whether to add the person to the Referee, and where
+    tables: []
+    brief: '1. One short paragraph per person: where they belong and why, in the reader''s words, naming the texts by
+      year and title. 2. Then the ledger. Nothing else.'

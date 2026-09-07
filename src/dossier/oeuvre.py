@@ -13,7 +13,9 @@ from typing import Any, Iterable, Optional
 
 from src.dossier.explainer import CITED_ID, rows_with_fields
 
-ENGINES = ("oeuvre_trajectory", "citation_shift", "retrospective_reading", "prospective_reading", "epistemic_rupture", "oeuvre_position_memo")
+ENGINES = ("oeuvre_trajectory", "citation_shift", "retrospective_reading", "prospective_reading", "epistemic_rupture", "oeuvre_position_memo", "thinker_placement")
+PERSON_INPUTS = {"thinker_name", "referee_thinker_id", "person_name", "folder_id"}        # an action with one of these acts on a person
+ANSWERED_BY_LEDGER = {"referee.thinker-exists"}                                            # the Stacks' ledger already resolved the Referee id (the owner, 2026-09-07 12:17)
 ACTION_ROWS = {   # dimension → (finding kind, the row fields → action inputs)
     ("citation_shift", "unexamined"): "citation_shift.unexamined",
     ("citation_shift", "first_cited"): "citation_shift.first_cited",
@@ -62,32 +64,93 @@ def _split_person_or_work(cited: str, kind: str) -> dict:
     return {"work_title": cited}
 
 
-def actions_for(rows: list[dict], registry=None) -> list[dict]:
-    """The suggested actions: one entry per licensed row, the actions the registry lists for its kind, inputs filled."""
+def placements_of(rows: list[dict]) -> dict[str, dict]:
+    """The thinker_placement rows by person: the verdict, the schools they fit, the new school proposed around them."""
+    out: dict[str, dict] = {}
+    for r in rows:
+        f = r["fields"]; who = (f.get("person") or "").strip()
+        if not who:
+            continue
+        e = out.setdefault(who.lower(), {"person": who, "verdict": "", "reason": "", "fits": [], "new_school": None, "findings": [], "conjecture": False})
+        e["findings"].append(f"{r['engine']}/{r['id']}"); e["conjecture"] = e["conjecture"] or r["conjecture"]
+        if r["dim"] == "verdict":
+            e["verdict"] = f.get("verdict", ""); e["reason"] = f.get("reason", "") or r["text"]
+        elif r["dim"] == "fit":
+            e["fits"].append({"school": f.get("school", ""), "school_name": f.get("school_name", ""), "evidence": f.get("evidence", "") or r["text"], "finding": f"{r['engine']}/{r['id']}", "confidence": f.get("confidence", "")})
+        elif r["dim"] == "new_school":
+            e["new_school"] = {"name": f.get("name", ""), "candidates": [c.strip() for c in re.split(r"[;|]", f.get("candidates", "")) if c.strip()], "why": f.get("why", "") or r["text"], "finding": f"{r['engine']}/{r['id']}"}
+    return out
+
+
+def actions_for(rows: list[dict], registry=None, placements: Optional[dict[str, dict]] = None) -> list[dict]:
+    """The suggested actions, one entry per cited work or person that something can be done about (the owner, 2026-09-07 12:17:
+    a held work and a known person need nothing; the Referee id is already resolved by the Stacks' ledger, so the only action on an
+    unknown person is to add them, placed in a school or with a new school proposed around them). Inputs filled from the row;
+    a person's placement rides along. Shape only."""
     from src.actions.registry import suggest
 
-    out = []
+    placements = placements or {}
+    out: list[dict] = []; seen: dict[str, dict] = {}
     for r in rows:
         kind = ACTION_ROWS.get((r["engine"], r["dim"]))
         if not kind:
             continue
         f = r["fields"]
-        if kind == "citation_shift.first_cited" and f.get("held", "").lower() == "yes" and f.get("in_referee", "").lower() == "yes":
-            continue   # held and known: nothing to do
+        held = (f.get("held") or "").lower(); known = (f.get("in_referee") or "").lower()
+        cited = (f.get("cited") or f.get("source") or f.get("text") or "").strip()
+        kind_field = (f.get("kind") or "").lower()
+        is_person = kind_field == "person" if kind_field in ("person", "work") else (known in ("yes", "no") and held not in ("yes", "no"))
+        if is_person and known == "yes":
+            continue                                   # known to the Referee: nothing to do from here
+        if not is_person and held == "yes" and kind in ("citation_shift.first_cited", "citation_shift.unexamined"):
+            continue                                   # held: nothing to fetch; the citation can be explained from the Stacks' page itself
+        key = ("person:" if is_person else "work:") + _clean(cited).lower()
+        if key in seen:                                # the same name from two dimensions (first cited and unexamined): one entry
+            seen[key]["also"].append(f"{r['engine']}/{r['id']}")
+            continue
         raw_uid = (f.get("text") or f.get("source") or "").strip()
         uid = raw_uid.split("/", 1)[0].strip() if raw_uid.startswith("em:") else ""          # "em:HZHLWZ2R/1977" → the bare uid (the Stacks' ask)
         fields: dict[str, Any] = {"finding_id": r["id"], "uid": uid, "text_ref": raw_uid, "held": f.get("held", ""), "in_referee": f.get("in_referee", "")}
-        fields.update(_split_person_or_work(f.get("cited") or f.get("source") or f.get("text") or "", f.get("kind") or ("person" if f.get("in_referee") else "work")))
-        if f.get("in_referee", "").lower() == "yes":
-            fields["referee_known"] = True
-        suggested = suggest(kind, fields, registry)
-        if kind in ("epistemic_rupture.test", "oeuvre_position_memo.read_next") and f.get("held", "").lower() == "yes":
-            suggested = [s for s in suggested if s["organ"] == "the-stacks"]   # held: a bundle or a profile, not a fetch
-        ready = [s for s in suggested if not s["missing"]]          # the actions this row can feed as it stands
-        waiting = [s for s in suggested if s["missing"]]
-        out.append({"finding": f"{r['engine']}/{r['id']}", "kind": kind, "cited": f.get("cited") or f.get("source") or f.get("text") or "", "row": r["text"], "held": f.get("held", ""),
-                    "in_referee": f.get("in_referee", ""), "used_for": f.get("used_for") or f.get("for") or f.get("why") or "", "conjecture": r["conjecture"],
-                    "actions": ready, "waiting": [{"action": s["action"], "organ": s["organ"], "missing": s["missing"], "inputs": s["inputs"]} for s in waiting]})   # inputs kept: the Stacks fill the rest by rule
+        fields.update(_split_person_or_work(cited, "person" if is_person else "work"))
+        pl = placements.get(_clean(cited).lower()) if is_person else None
+        if pl and pl.get("verdict") == "not_a_candidate":
+            continue                                   # an editor, a translator, a name in passing: not a thinker to add
+        suggested = []
+        licensed = suggest(kind, fields, registry)
+        if pl:                                         # the placement's own finding kinds license the Referee's school actions
+            if pl.get("fits"):
+                licensed += [x for x in suggest("thinker_placement.fit", fields, registry) if x["action"] not in {y["action"] for y in licensed}]
+            if pl.get("new_school"):
+                ns = pl["new_school"]
+                licensed += [x for x in suggest("thinker_placement.new_school", dict(fields, school_name=ns.get("name", ""), school_description=ns.get("why", ""), candidate_names="; ".join(ns.get("candidates") or []), evidence=ns.get("why", "")), registry)
+                             if x["action"] not in {y["action"] for y in licensed}]
+        for s_ in licensed:
+            needs_person = bool(PERSON_INPUTS & {k.rstrip("?") for k in (s_["inputs"].keys() | set(s_["missing"]) | set(s_.get("optional") or []))})
+            if s_["action"] in ANSWERED_BY_LEDGER and known in ("yes", "no"):
+                continue
+            if is_person != needs_person and s_["organ"] == "the-referee":
+                continue                               # a person action on a work row, or the reverse
+            suggested.append(s_)
+        if pl and pl.get("fits"):                      # one school-propose per fitting school, its evidence filled from the placement row
+            expanded = []
+            for s_ in suggested:
+                if s_["action"] == "referee.school-propose":
+                    for fit in pl["fits"]:
+                        e = dict(s_); e["inputs"] = dict(s_["inputs"], folder_id=fit["school"], evidence=fit["evidence"]); e["missing"] = [k for k in s_["missing"] if k not in ("folder_id", "evidence")]
+                        e["school_name"] = fit["school_name"]; expanded.append(e)
+                else:
+                    expanded.append(s_)
+            suggested = expanded
+        if kind in ("epistemic_rupture.test", "oeuvre_position_memo.read_next") and held == "yes":
+            suggested = [s_ for s_ in suggested if s_["organ"] == "the-stacks"]   # held: a bundle or a profile, not a fetch
+        ready = [s_ for s_ in suggested if not s_["missing"]]
+        waiting = [s_ for s_ in suggested if s_["missing"]]
+        if not ready and not waiting and not pl:
+            continue                                   # nothing anyone can do from this row: not a suggestion
+        entry = {"finding": f"{r['engine']}/{r['id']}", "also": [], "kind": kind, "cited": cited, "row": r["text"], "held": f.get("held", ""), "in_referee": f.get("in_referee", ""),
+                 "used_for": f.get("used_for") or f.get("for") or f.get("why") or "", "conjecture": r["conjecture"], "placement": pl,
+                 "actions": ready, "waiting": [{"action": s_["action"], "organ": s_["organ"], "missing": s_["missing"], "inputs": s_["inputs"]} for s_ in waiting]}
+        seen[key] = entry; out.append(entry)
     return out
 
 
@@ -112,6 +175,7 @@ def render_oeuvre(job: dict, registry=None) -> Optional[dict]:
         return [{"id": r["id"], "dim": r["dim"], "text": r["text"], **{k: v for k, v in r["fields"].items() if k not in ("anchor", "anchor-b", "doc", "doc-b", "dim")},
                  "anchor": r["anchor"], "doc": r["doc"], "conjecture": r["conjecture"]} for r in by[engine] if r["dim"] in dims]
     all_rows = [r for e in ENGINES for r in by[e]]
+    placements = placements_of(by['thinker_placement'])
     read_next = sorted(table("oeuvre_position_memo", {"read_next"}), key=lambda x: int(re.search(r"\d+", x.get("rank", "") or "9").group(0)) if re.search(r"\d+", x.get("rank", "") or "") else 9)
     return {"engine": "oeuvre_position", "job_id": job.get("id"), "phases": sorted(phases), "rows": len(all_rows), "conjectures": sum(int(r["conjecture"]) for r in all_rows),
             "verdicts": verdicts, "memo": _clean(memo_prose),
@@ -120,4 +184,4 @@ def render_oeuvre(job: dict, registry=None) -> Optional[dict]:
             "retrospective": table("retrospective_reading", {"inheritance", "resolution", "interlocutor", "verdict"}),
             "prospective": table("prospective_reading", {"seed", "developed_into", "abandoned", "verdict"}),
             "rupture": table("epistemic_rupture", {"continuity", "break", "verdict", "test"}),
-            "read_next": read_next, "open": table("oeuvre_position_memo", {"open"}), "actions": actions_for(all_rows, registry)}
+            "read_next": read_next, "open": table("oeuvre_position_memo", {"open"}), "placements": list(placements.values()), "actions": actions_for(all_rows, registry, placements)}

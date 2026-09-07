@@ -43,9 +43,9 @@ def test_the_engines_load_with_the_registry_vocabularies_and_the_recipe_carries_
     assert voc.values_for("oeuvre_trajectory", "position") == ["opening", "culmination", "middle", "end", "reorientation", "outlier"]
     assert voc.values_for("retrospective_reading", "verdict") == ["culmination", "continuation", "departure"] and voc.values_for("prospective_reading", "verdict") == ["origin", "way_station", "dead_end"]
     recipe = next(r for r in load_recipes() if r["key"] == "oeuvre_position")
-    assert [s["engine_key"] for s in recipe["steps"]] == ["oeuvre_trajectory", "citation_shift", "retrospective_reading", "prospective_reading", "epistemic_rupture", "oeuvre_position_memo"]
+    assert [s["engine_key"] for s in recipe["steps"]] == ["oeuvre_trajectory", "citation_shift", "retrospective_reading", "prospective_reading", "epistemic_rupture", "oeuvre_position_memo", "thinker_placement"]
     path = resolve_path_request(PathRequest(chain_key="oeuvre_position"), "researcher")
-    assert [s.scope for s in path.steps] == [[], [], ["focal:", "before:"], ["focal:", "after:"], [], []]
+    assert [s.scope for s in path.steps] == [[], [], ["focal:", "before:"], ["focal:", "after:"], [], [], []]
     assert get_workflow_registry().get("oeuvre_position") is not None
 
 
@@ -125,15 +125,16 @@ def test_the_oeuvre_renders_by_code_with_the_verdicts_and_the_actions_the_findin
     assert set(acts) == {"citation_shift/C5.F1", "citation_shift/C5.F2", "epistemic_rupture/E4.F1", "oeuvre_position_memo/M2.F1", "oeuvre_position_memo/M2.F2"}   # C1.F1 is held and known: nothing to do
     guizot_work = acts["citation_shift/C5.F1"]
     assert guizot_work["kind"] == "citation_shift.unexamined" and guizot_work["held"] == "no"
-    assert all(not a["missing"] for a in guizot_work["actions"]) and any(w["action"] == "referee.citations-harvest" and "referee_thinker_id" in w["missing"] for w in guizot_work["waiting"])   # ready ones as buttons, the rest named with what they lack
+    assert all(not a["missing"] for a in guizot_work["actions"]) and not any(a["organ"] == "the-referee" and ("thinker_name" in a["inputs"] or "referee_thinker_id" in a["missing"]) for a in guizot_work["actions"] + guizot_work["waiting"])   # a work row carries no person action (the owner, 12:17)
     fetch = next(w for w in guizot_work["waiting"] if w["action"] == "referee.pdf-fetch")     # a fetch needs a query or a corpus row the finding cannot supply
     assert "query_id" in fetch["missing"] or "corpus_result_id" in fetch["missing"]
     from src.actions.registry import suggest
     filled = next(s for s in suggest("citation_shift.unexamined", {"work_title": "Histoire de la civilisation en Europe", "work_author": "Guizot, François", "work_year": "1830"}, ActionRegistry(DEFINITIONS, durable=False)) if s["action"] == "referee.pdf-fetch")
     assert filled["inputs"]["work_title"] == "Histoire de la civilisation en Europe" and filled["inputs"]["work_author"] == "Guizot, François" and filled["inputs"]["work_year"] == "1830"
     guizot_person = acts["citation_shift/C5.F2"]
-    exists = next(a for a in guizot_person["actions"] if a["action"] == "referee.thinker-exists")
-    assert exists["inputs"] == {"thinker_name": "Guizot, François"} and exists["cost"] == "none"
+    assert not any(a["action"] == "referee.thinker-exists" for a in guizot_person["actions"] + guizot_person["waiting"])   # the ledger answered it (the owner, 12:17)
+    create = next(a for a in guizot_person["actions"] if a["action"] == "referee.thinker-create")
+    assert create["inputs"]["thinker_name"] == "Guizot, François" and not create["missing"]
     assert all(a["organ"] == "the-stacks" for a in acts["oeuvre_position_memo/M2.F1"]["actions"] + acts["oeuvre_position_memo/M2.F1"]["waiting"])       # held: bundle or profile, never a fetch
     profile = next(a for a in acts["oeuvre_position_memo/M2.F1"]["actions"] + acts["oeuvre_position_memo/M2.F1"]["waiting"] if a["action"] == "stacks.profile-text")
     assert profile["inputs"]["uid"] == "em:B77"                                          # the bare uid, not em:B77/1977; waiting entries keep their filled inputs
@@ -166,8 +167,8 @@ def test_an_engines_only_job_on_a_fixed_path_takes_the_fast_lane(monkeypatch):
     monkeypatch.setattr(P, "build_executor_plan", lambda job, docs, plan, option: type("X", (), {"plan_id": "plan-fast"})())
     monkeypatch.setattr(P.events, "emit", lambda *a, **k: None)
     runner._run_step(job, "plan", docs)
-    assert job.plan.plan_id == "plan-fast" and [p.engine_key for p in job.plan.phases] == ["oeuvre_trajectory", "citation_shift", "retrospective_reading", "prospective_reading", "epistemic_rupture", "oeuvre_position_memo"]
-    assert [p.scope for p in job.plan.phases][2:4] == [["focal:", "before:"], ["focal:", "after:"]] and job.plan.estimated_llm_calls == 6
+    assert job.plan.plan_id == "plan-fast" and [p.engine_key for p in job.plan.phases] == ["oeuvre_trajectory", "citation_shift", "retrospective_reading", "prospective_reading", "epistemic_rupture", "oeuvre_position_memo", "thinker_placement"]
+    assert [p.scope for p in job.plan.phases][2:4] == [["focal:", "before:"], ["focal:", "after:"]] and job.plan.estimated_llm_calls == 7
 
 
 def test_a_figure_spec_repair_does_not_assign_an_undeclared_field():
@@ -202,3 +203,60 @@ def test_the_ledger_is_the_authority_on_holdings_and_the_focal_document_carries_
     b["focal"]["ledger"] = {}
     pk2 = packet_of(b)
     assert any("communist manifesto" in (c.get("title") or "").lower() and c["held"] is False for c in pk2["cited_first_in_focal"])
+
+
+def test_the_placement_engine_the_packets_persons_and_the_recipes_seventh_step():
+    """The owner (2026-09-07 12:17): the thinker-exists check is already answered; the action on an unknown person is to add them
+    with a placement — a school they fit or a new school around them with candidates."""
+    from src.operationalizations.registry import get_operationalization_registry
+    from src.dossier.catalog import load_recipes
+    from src.vocabularies.registry import get_vocabulary_registry
+    op = get_operationalization_registry().get("thinker_placement")
+    assert [d.key for d in op.process.dimensions] == ["fit", "new_school", "verdict"] and all(d.scope == "document" for d in op.process.dimensions)
+    assert {v.value for v in get_vocabulary_registry().get("thinker_placement_verdicts").values} == {"fits", "new_school", "not_a_candidate"}
+    steps = next(r for r in load_recipes() if r["key"] == "oeuvre_position")["steps"]
+    assert [s["engine_key"] for s in steps][-2:] == ["oeuvre_position_memo", "thinker_placement"]
+    pk = packet_of(BUNDLE)
+    import os; os.environ["REFEREE_URL"] = ""                            # no Referee in tests: the engine proposes new schools only
+    pk = packet_of(BUNDLE)
+    assert pk["schools"] == []
+    unknown = {e["person"]: e for e in pk["persons_unknown"]}
+    assert "Guizot, François" in unknown and all(not e["referee_thinker_id"] for e in unknown.values())
+    assert any(e["in_referee"] for e in pk["persons"])                    # Wallerstein carries a Referee id in the fixture
+    given = json.loads(json.dumps(BUNDLE)); given["referee"] = {"schools": [{"id": 7, "name": "Political Marxism", "description": "social-property relations", "member_count": 12, "members": [{"name": "Wood, Ellen"}]}]}
+    assert packet_of(given)["schools"] == [{"id": 7, "slug": None, "name": "Political Marxism", "kind": None, "description": "social-property relations", "members": 12, "sample": ["Wood, Ellen"]}]
+
+
+def test_suggested_actions_in_the_owners_terms():
+    """A held work and a known person need nothing; the exists-check is suppressed when the ledger answered it; an unknown person's
+    entry carries the placement and one school-propose per fitting school; an optional input never blocks."""
+    from src.dossier.oeuvre import actions_for, placements_of
+    from src.actions.registry import suggest
+    row = lambda i, dim, **f: {"engine": "citation_shift", "id": i, "dim": dim, "text": f.get("cited", ""), "conjecture": False, "fields": f}
+    rows = [row("F1", "first_cited", cited="The Poverty of Philosophy", kind="work", held="yes", in_referee="unknown"),
+            row("F2", "first_cited", cited="Meek, Ronald", kind="person", held="unknown", in_referee="no"),
+            row("F3", "unexamined", cited="Meek, Ronald", kind="person", held="unknown", in_referee="no", used_for="the four-stages genealogy"),
+            row("F4", "unexamined", cited="Cohen, G. A.", kind="person", held="unknown", in_referee="no"),
+            row("F5", "first_cited", cited="Marx, Karl", kind="person", held="unknown", in_referee="yes"),
+            row("F6", "unexamined", cited="Social Science and the Ignoble Savage", kind="work", held="no", in_referee="unknown")]
+    prow = lambda i, dim, **f: {"engine": "thinker_placement", "id": i, "dim": dim, "text": f.get("person", ""), "conjecture": False, "fields": f}
+    pl = placements_of([prow("F1", "verdict", person="Meek, Ronald", verdict="fits", reason="a historian of the four-stages theory"),
+                        prow("F2", "fit", person="Meek, Ronald", school="7", school_name="History of economic thought", evidence="cited for the four-stages genealogy"),
+                        prow("F3", "verdict", person="Cohen, G. A.", verdict="not_a_candidate", reason="cited once in passing")])
+    assert pl["meek, ronald"]["fits"][0]["school_name"] == "History of economic thought"
+    from src.actions.registry import ActionRegistry, DEFINITIONS
+    reg = ActionRegistry(DEFINITIONS, durable=False)
+    sp = reg.get("referee.school-propose"); sp.when = sorted(set(sp.when) | {"thinker_placement.fit"}); reg._items[sp.key] = sp   # the Referee adds this on its side
+    out = actions_for(rows, reg, placements=pl)
+    by = {e["cited"]: e for e in out}
+    assert "The Poverty of Philosophy" not in by and "Marx, Karl" not in by and "Cohen, G. A." not in by
+    meek = by["Meek, Ronald"]
+    assert meek["also"] == ["citation_shift/F3"] and meek["placement"]["verdict"] == "fits"
+    names = [a["action"] for a in meek["actions"] + meek["waiting"]]
+    assert "referee.thinker-exists" not in names and "referee.thinker-create" in [a["action"] for a in meek["actions"]]
+    propose = [a for a in meek["actions"] + meek["waiting"] if a["action"] == "referee.school-propose"]
+    assert propose and propose[0]["inputs"]["folder_id"] == "7" and propose[0]["inputs"]["evidence"] == "cited for the four-stages genealogy"
+    assert all(not (PERSON := {"thinker_name", "referee_thinker_id"} & set(a["inputs"]) | set(a["missing"])) or True for a in by["Social Science and the Ignoble Savage"]["actions"])
+    assert not any(a["organ"] == "the-referee" and "thinker_name" in a["inputs"] for a in by["Social Science and the Ignoble Savage"]["actions"] + by["Social Science and the Ignoble Savage"]["waiting"])
+    s = next(a for a in suggest("citation_shift.unexamined", {"thinker_name": "Meek, Ronald"}, reg) if a["action"] == "referee.thinker-create")
+    assert s["missing"] == [] and "scholar_profile_url" in s["optional"]
