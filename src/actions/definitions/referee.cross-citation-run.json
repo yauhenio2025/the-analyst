@@ -1,9 +1,13 @@
 {
   "key": "referee.cross-citation-run",
   "organ": "the-referee",
-  "name": "Run a cross-citation search around seeds",
+  "name": "Draft and run Scholar searches on a cross-citation query",
   "when": [
+    "citation_shift.unexamined",
     "citation_shift.anomaly",
+    "epistemic_rupture.test",
+    "query.coverage_gap",
+    "*",
     "oeuvre_trajectory.turn",
     "seeds.chosen"
   ],
@@ -11,13 +15,13 @@
     "query_id",
     "seeds"
   ],
-  "route": "POST /api/cross-citations/queries/{id}/search-plan → POST …/runs {searches[{key, url, q, practice}]} → GET /api/scholar/url-works",
+  "route": "POST /api/cross-citations/queries/{query_id}/search-plan → POST …/runs {searches[{key, url, q, practice}]} → GET /api/scholar/url-works?url=&query_id=&run_id=&item_key= per search",
   "cost": "metered",
-  "cost_note": "≈ 2 Scholar pages + 1 cheap LLM per search; one advanced call for the plan",
-  "side_effects": "run rows, search history, practice evidence",
-  "yields": "works citing or cited by the seeds together",
+  "cost_note": "one advanced LLM call to draft; per search 2 Scholar probes + 1 cheap relevance judge; evidence posted to /v1/practices",
+  "side_effects": "run + item rows, search history, practice evidence",
+  "gated_by": "an accepted focus statement on the query",
+  "yields": "works with relevance verdicts, ticks, the next batch's review",
   "owner": "the-referee",
-  "gated_by": "",
   "version": "2026-09-07",
   "evidence": [],
   "note": ""
