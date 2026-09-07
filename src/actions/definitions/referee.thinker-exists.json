@@ -1,23 +1,27 @@
 {
   "key": "referee.thinker-exists",
   "organ": "the-referee",
-  "name": "Does this person exist as a thinker in the Referee?",
+  "name": "Check whether a thinker exists in the Referee",
   "when": [
     "citation_shift.unexamined",
     "citation_shift.first_cited",
     "citation_shift.anomaly",
+    "oeuvre_position_memo.read_next",
+    "cited_author.unknown",
+    "cohort.member",
+    "*",
     "person.named"
   ],
   "inputs": [
     "thinker_name"
   ],
-  "route": "GET /api/thinkers/search?q=<name> · POST /api/thinkers/resolve {names[≤200]}",
+  "route": "POST /api/thinkers/resolve {names[≤200]} (batch) · GET /api/thinkers/search?q= (one name)",
   "cost": "none",
+  "cost_note": "DB read; no model, no Scholar",
   "side_effects": "none",
-  "yields": "thinker_id, confidence exact|strong|ambiguous|none, candidates",
+  "gated_by": "none",
+  "yields": "thinker_id + confidence exact|strong|ambiguous|none + candidates with status, works_harvested, total_citations",
   "owner": "the-referee",
-  "cost_note": "",
-  "gated_by": "",
   "version": "2026-09-07",
   "evidence": [],
   "note": ""
