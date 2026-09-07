@@ -47,3 +47,16 @@ def test_the_runs_author_is_indexed_under_the_person(monkeypatch):
     rl.index_job(job)
     assert rl.readings_for(person="Brenner")["count"] == 1 and rl.readings_for(person="Brenner, Robert")["count"] == 1
     assert rl.reading("d-a", "4.1")["persons"][0] == "Brenner, Robert" and rl.reading("d-a", "4.1")["when"] == "2026-09-07T12:00:00Z"
+
+
+def test_the_oeuvre_door_carries_the_prior_readings_the_stacks_name(monkeypatch):
+    _store(monkeypatch)
+    from src.sources.oeuvre_bundle import packet_of
+    tp = "[T1.F1] The transition agenda — dim: agenda — concepts: class relations — anchor: \"x\" — doc: focal:em:CBT7B8CL — confidence: high"
+    rl.index_job({"id": "d-prev", "updated_at": "2026-09-07T12:00:00", "packet": {"author": {"name": "Brenner, Robert"}}, "analysis": {"4.1": {"engine_key": "oeuvre_trajectory", "final_output": tp, "final_wall": {"failed_ids": []}}}})
+    from tests.test_oeuvre_position_2026_09_07 import BUNDLE
+    b = json.loads(json.dumps(BUNDLE)); b["prior_readings"] = ["d-prev", "d-unknown"]
+    pk = packet_of(b)
+    assert pk["prior_readings"] and pk["prior_readings"]["readings"][0]["job_id"] == "d-prev" and "read only what is new" in pk["prior_readings"]["note"]
+    b2 = json.loads(json.dumps(BUNDLE)); b2["author"] = {"id": "x", "name": "Nobody, N."}
+    assert packet_of(b2)["prior_readings"] is None

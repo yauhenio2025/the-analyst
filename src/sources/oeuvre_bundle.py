@@ -80,6 +80,31 @@ def render_profile(t: dict, side: str) -> str:
     return "\n".join(L)
 
 
+def _prior_readings(obj: dict) -> Optional[dict]:
+    """What has been read already (the Stacks send `prior_readings`: job ids, at the top of the bundle): the ledger's entries for those
+    jobs and for the author, with the instruction to cite prior rows and read only what is new (the owner, 2026-09-07 18:30)."""
+    ids = [x for x in (obj.get("prior_readings") or []) if isinstance(x, str)]
+    author = obj.get("author") if isinstance(obj.get("author"), dict) else {}
+    try:
+        from src.readings.registry import prior_block, readings_for
+    except Exception:
+        return None
+    try:
+        block = prior_block([author.get("name")] if author.get("name") else [], []) or {"note": "", "readings": []}
+        seen = {(e["job_id"], e["phase"]) for e in block["readings"]}
+        for jid in ids[:12]:
+            for e in readings_for(job=jid).get("readings") or []:
+                if (e["job_id"], e["phase"]) not in seen:
+                    block["readings"].append({**e, "about": jid}); seen.add((e["job_id"], e["phase"]))
+        if not block["readings"]:
+            return None
+        block["note"] = "readings already made about this author and by the runs named: read them (GET /v1/readings?job=<job_id>) before reading the texts again; cite their rows by job and id; read only what is new"
+        block["readings"] = sorted(block["readings"], key=lambda e: e.get("when", ""), reverse=True)[:16]
+        return block
+    except Exception:
+        return None
+
+
 def _schools(obj: dict) -> list[dict]:
     """The Referee's schools of thought for the placement engine: from the bundle's `referee.schools` when the caller supplies
     them, else from the Referee itself when REFEREE_URL (and REFEREE_API_KEY) are set; else empty, and the engine proposes
@@ -174,6 +199,7 @@ def packet_of(obj: dict) -> dict:
             "cited_first_in_focal": first[:60], "cited_before_not_in_focal": dropped[:60], "cited_table_size": len(cited),
             "persons": [{"person": e["person"], "in_referee": bool(e["referee_thinker_id"]), "referee_thinker_id": e["referee_thinker_id"], "n_texts": sum(len(v) for v in e["cited_in"].values())} for e in persons_all[:80]],
             "persons_unknown": persons_unknown, "schools": schools,
+            "prior_readings": _prior_readings(obj),
             "concepts": [{"term": _s(c.get("term"), 60), "gloss": _s(c.get("gloss"), 300)} for c in ((focal.get("profile") or {}).get("concepts") or [])[:16] if isinstance(c, dict) and c.get("term")],
             "notes": ["Keys focal:<uid>, before:<uid>, after:<uid> are the documents; a step's scope names the prefixes it reads.",
                       "held and in_referee come from the Stacks' ledger and the Referee ids they carry; a row must copy them, never guess them.",
