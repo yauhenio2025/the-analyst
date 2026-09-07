@@ -395,6 +395,22 @@ def start_page(job_id: str, req: Optional[PageRequest] = None):
     return start_page_loop(job_id, o, packet, resume=req.resume, audience=req.audience, rounds=req.rounds, model=req.model)
 
 
+@router.post("/jobs/{job_id}/page/recompose")
+def recompose(job_id: str):
+    """Rebuild the stored page with the current makers and composer, no model call (a design change never needs a paid rerun)."""
+    from src.dossier.oeuvre import render_oeuvre
+    from src.dossier.page_loop import recompose_page
+
+    job = _load(job_id)
+    o = render_oeuvre(job.model_dump())
+    if o is None:
+        raise HTTPException(status_code=409, detail="no finished oeuvre phases on this job")
+    out = recompose_page(job_id, o, _oeuvre_packet(job))
+    if out is None:
+        raise HTTPException(status_code=404, detail="no stored page record for this job")
+    return out
+
+
 @router.get("/jobs/{job_id}/page/status")
 def page_status_route(job_id: str):
     from src.dossier.page_loop import load_page, page_status

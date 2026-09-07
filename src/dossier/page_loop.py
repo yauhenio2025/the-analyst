@@ -130,8 +130,9 @@ blockquote.pull{border-left:3px solid #2a78d6;margin:14px 0;padding:6px 16px;fon
 .rid{font-size:11px;color:#8a8985}.beside{float:right;width:38%;margin:0 0 12px 18px}.exhibit{margin:14px 0}.exhibit svg{max-width:100%;height:auto}
 details.folded{border:1px solid #dad9d4;border-radius:8px;background:#f4f3f0;padding:0 14px;margin:14px 0}details.folded summary{cursor:pointer;padding:10px 0;font-weight:600;font-size:14px;list-style:none}details.folded summary::-webkit-details-marker{display:none}details.folded summary .hint{float:right;font-weight:400;color:#52514e;font-size:12px}details.folded[open] summary .hint{display:none}details.folded>*:not(summary){margin-bottom:12px}
 figure.pending{border:1px dashed #dad9d4;padding:10px;color:#52514e;font-size:13px}
-.cut{font-size:13px;color:#52514e;margin-top:30px}.review{border-top:1px solid #dad9d4;margin-top:36px;padding-top:12px;font-size:13px;color:#52514e}
-@media (prefers-color-scheme: dark){body{color:#fff;background:#1a1a19}.sub,.grasp,.halves,.box h4,.glossary dd,.card .rank,.card .why,.card .meta,table.shift th,blockquote.pull footer,.cut,.review{color:#c3c2b7}.chip,.box,.card,details.folded{background:#242422;border-color:#3a3a37}details.folded summary .hint{color:#c3c2b7}table.shift th,table.shift td{border-color:#3a3a37}figure.pending{border-color:#3a3a37}}
+.cap{font-size:12px;color:#52514e;margin:6px 0 0}figure.exhibit{margin:14px 0}
+details.about{border-top:1px solid #dad9d4;margin-top:40px;padding-top:10px;font-size:13px;color:#52514e}details.about summary{cursor:pointer;color:#8a8985}details.about p{margin:8px 0}
+@media (prefers-color-scheme: dark){body{color:#fff;background:#1a1a19}.sub,.grasp,.halves,.box h4,.glossary dd,.card .rank,.card .why,.card .meta,table.shift th,blockquote.pull footer,.cap,details.about{color:#c3c2b7}.chip,.box,.card,details.folded{background:#242422;border-color:#3a3a37}details.folded summary .hint{color:#c3c2b7}table.shift th,table.shift td{border-color:#3a3a37}figure.pending{border-color:#3a3a37}}
 </style>"""
 
 
@@ -163,7 +164,12 @@ def compose_page(title: str, subtitle: str, plan: dict, prose: dict[str, str], e
     """The page HTML and its description (what the reviewer reads): sections in the plan's order, each exhibit placed as planned."""
     by_sec: dict[str, list[dict]] = {}
     first_section = plan["sections"][0]["id"] if plan.get("sections") else None
+    verdicts = {v["element"]: v["verdict"] for v in (review or {}).get("verdicts", [])}
+    dropped = {k for k, v in verdicts.items() if v == "drop"}
+    plan["exhibits"] = [e for e in plan["exhibits"] if e["id"] not in dropped]        # a drop verdict on the round shown is applied, not merely printed (the owner, 16:39)
     for e in plan["exhibits"]:
+        if verdicts.get(e["id"]) == "move" and e["placement"] != "before":
+            e["placement"] = "folded"
         # the text is the main dish (the owner, 2026-09-07 11:45): a wide exhibit is never floated and never the lead; it folds
         if e["placement"] == "beside" and e["kind"] in WIDE_KINDS:
             e["placement"] = "folded"; e["note"] = (e.get("note") or "") + " folded (a wide exhibit is never floated)"
@@ -185,10 +191,10 @@ def compose_page(title: str, subtitle: str, plan: dict, prose: dict[str, str], e
             m = exhibits.get(e["id"]) or {}
             title = (m.get("title") or e.get("aim") or e["kind"].replace("-", " ")).strip()
             if e["placement"] == "folded":   # a reference exhibit: a titled line the reader opens; the text is never hidden behind it
-                body.append(f"<details class='exhibit folded' id='{_e(e['id'])}'><summary>{_e(title)}<span class='hint'>open</span></summary>{m.get('html', '')}<div class='rid'>[{_e(e['id'])}] {_e(e['kind'])}</div></details>")
-            else:
+                body.append(f"<details class='exhibit folded' id='{_e(e['id'])}' title='{_e(e['id'])} · {_e(e['kind'])}'><summary>{_e(title)}<span class='hint'>open</span></summary>{m.get('html', '')}</details>")
+            else:   # the caption is the aim in words; the plan id and the kind ride on hover, never on the face (the owner, 16:39)
                 cls = "exhibit beside" if e["placement"] == "beside" else "exhibit"
-                body.append(f"<div class='{cls}' id='{_e(e['id'])}'>{m.get('html', '')}<div class='rid'>[{_e(e['id'])}] {_e(e['kind'])} · {_e(e.get('aim'))}</div></div>")
+                body.append(f"<figure class='{cls}' id='{_e(e['id'])}' title='{_e(e['id'])} · {_e(e['kind'])}'>{m.get('html', '')}<figcaption class='cap'>{_e(e.get('aim'))}</figcaption></figure>")
             desc.append(f"[{e['id']}] EXHIBIT {e['kind']} ({e['placement']}{', shown as a titled line the reader opens' if e['placement'] == 'folded' else ''}) — aim: {e.get('aim')} — shows: {m.get('description', '(not made)')}")
         for e in before: place(e)
         for e in beside: place(e)
@@ -197,10 +203,13 @@ def compose_page(title: str, subtitle: str, plan: dict, prose: dict[str, str], e
         desc.append(f"PROSE ({len(text.split())} words): {text}")
         for e in after: place(e)
         body.append("</section>")
+    notes = []   # the loop's working notes fold at the foot: the reader's page is the essay, not the desk's ledger (the owner, 16:39)
     if plan.get("cuts"):
-        body.append("<div class='cut'><b>Left out of the page:</b> " + "; ".join(f"{_e(c['what'])} ({_e(c['why'])})" for c in plan["cuts"]) + "</div>")
+        notes.append("<p><b>Left out of the page:</b> " + "; ".join(f"{_e(c['what'])} ({_e(c['why'])})" for c in plan["cuts"]) + "</p>")
     if review:
-        body.append("<div class='review'><b>The reviewer's verdicts on this round:</b> " + "; ".join(f"{_e(v['element'])} {_e(v['verdict'])} — {_e(v['reason'])}" for v in review.get("verdicts", [])) + "</div>")
+        notes.append("<p><b>The reviewer's verdicts on this round:</b> " + "; ".join(f"{_e(v['element'])} {_e(v['verdict'])} — {_e(v['reason'])}" for v in review.get("verdicts", [])) + "</p>")
+    if notes:
+        body.append("<details class='about'><summary>How this page was made</summary>" + "".join(notes) + "</details>")
     return "<!doctype html><html><head><meta charset='utf-8'><title>" + _e(title) + "</title>" + CSS + "</head><body><div class='page'>" + "\n".join(body) + "</div></body></html>", "\n".join(desc)
 
 
@@ -362,3 +371,23 @@ def active_page_loops() -> list[dict]:
     """The loops running in this process, as job-like rows for the jobs listing (a deploy gate that reads statuses sees them: `composing`)."""
     return [{"id": f"page:{jid}", "kind": "page_loop", "job_id": jid, "status": "composing", "step": "page", "rounds_done": st.get("rounds_done"), "started": st.get("started")}
             for jid, st in _running.items() if st.get("status") == "running"]
+
+
+def recompose_page(job_id: str, o: dict, packet: dict, exhibit_registry=None) -> Optional[dict]:
+    """Rebuild the stored page from its record with the current makers and composer (a design change never needs a paid rerun,
+    2026-09-07 16:39): the last round's plan, prose and review; the exhibits re-made from the job's rows; the html saved in place."""
+    raw = load_page(job_id, "record")
+    if not raw:
+        return None
+    rec = json.loads(raw.decode("utf-8"))
+    rounds = rec.get("rounds") or []
+    if not rounds:
+        return None
+    r = rounds[-1]
+    plan = json.loads(json.dumps(r["plan"]))   # compose mutates placements
+    made = {e["id"]: (make(e["kind"], o, rows=e.get("rows"), packet=packet) or {"html": "", "description": "no maker"}) for e in plan["exhibits"]}
+    html, desc = compose_page(rec.get("title") or "", f"{rec.get('audience', '')} · page round {r['round']}", plan, r.get("prose") or {}, made, r.get("review"), r["round"])
+    r["html"] = html; r["description"] = desc; rec["final_html"] = html; rec["recomposed"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    save_page(job_id, rec)
+    return {"job_id": job_id, "round": r["round"], "exhibits": [(e["kind"], e["placement"]) for e in plan["exhibits"]], "chars": len(html)}
+

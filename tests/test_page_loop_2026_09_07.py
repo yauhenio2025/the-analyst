@@ -123,7 +123,7 @@ def test_the_text_is_the_main_dish_wide_exhibits_fold_and_nothing_but_chips_stan
     html, desc = compose_page("T", "S", plan, {"L1.F1": "First paragraph.", "L1.F2": "Second."}, made, None, 1)
     by_id = {e["id"]: e["placement"] for e in plan["exhibits"]}
     assert by_id == {"L2.F1": "folded", "L2.F2": "before", "L2.F3": "after", "L2.F4": "folded"}
-    assert html.index("<div class='chips'>") < html.index("First paragraph.") < html.index("<details class='exhibit folded' id='L2.F1'>")
+    assert html.index("<div class='chips'>") < html.index("First paragraph.") < html.index("<details class='exhibit folded' id='L2.F1'")
     assert "<summary>Brenner’s texts 1972–2025 on one line<span class='hint'>open</span></summary>" in html
     assert html.index("Second.") < html.index("<blockquote class='pull'>")
     assert "shown as a titled line the reader opens" in desc
@@ -178,3 +178,21 @@ def test_a_page_loop_survives_a_restart_and_resumes_from_its_last_round(tmp_path
     pl._running["d-x"] = {"status": "running", "rounds_done": 0, "started": 1.0}
     assert pl.active_page_loops() == [{"id": "page:d-x", "kind": "page_loop", "job_id": "d-x", "status": "composing", "step": "page", "rounds_done": 0, "started": 1.0}]
     pl._running.clear()
+
+
+def test_the_readers_page_carries_no_ids_and_the_last_rounds_drop_is_applied():
+    """The owner (2026-09-07 16:39) on run 3's page: route cards showed bare uids, the loop's notes sat on the page, captions carried ids,
+    and a 'drop' verdict from the last round was printed rather than applied."""
+    from src.exhibits.makers import make
+    plan = {"line": "", "sections": [{"id": "L1.F1", "heading": "What to read next", "grasp": "g", "words": 100}],
+            "exhibits": [{"id": "L2.F5", "kind": "reading-route-cards", "section": "L1.F1", "rows": [], "placement": "after", "aim": "the four next texts, ranked"},
+                         {"id": "L2.F6", "kind": "shift-table", "section": "L1.F1", "rows": [], "placement": "after", "aim": "the shifts"},
+                         {"id": "L2.F7", "kind": "verdict-chips", "section": "L1.F1", "rows": [], "placement": "before", "aim": "the verdicts"}], "cuts": [{"what": "the idea map", "why": "no figure"}]}
+    made = {e["id"]: make(e["kind"], OEUVRE, rows=e["rows"], packet=PACKET) for e in plan["exhibits"]}
+    cards = made["L2.F5"]["html"]
+    assert "em:" not in cards and "in the library" in cards and "title=\"[oeuvre_position_memo/" in cards     # named by year and title; the id on hover only
+    review = {"verdicts": [{"element": "L2.F6", "verdict": "drop", "reason": "repeats the prose"}, {"element": "L2.F5", "verdict": "move", "reason": "hides the text"}], "clarity": []}
+    html, desc = compose_page("T", "S", plan, {"L1.F1": "Read these."}, made, review, 2)
+    assert [e["id"] for e in plan["exhibits"]] == ["L2.F5", "L2.F7"] and plan["exhibits"][0]["placement"] == "folded"      # drop applied, move folds
+    assert "<figcaption class='cap'>" not in html.split("<details class='about'>")[0] or "[L2." not in html.split("<details class='about'>")[0]   # no plan id on the face
+    assert "<details class='about'><summary>How this page was made</summary>" in html and "Left out of the page" in html.split("<details class='about'>")[1]

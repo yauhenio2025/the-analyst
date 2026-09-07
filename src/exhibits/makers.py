@@ -69,11 +69,20 @@ def persists_breaks_sidebar(o: dict, rows: Optional[list[str]] = None, **_) -> d
     return {"html": h, "description": "Sidebar, two boxes. Persists: " + "; ".join(f"{r.get('what')} — {r.get('text')}" for r in cont) + ". Breaks: " + "; ".join(f"{r.get('what')} — {r.get('text')}" for r in brk)}
 
 
-def reading_route_cards(o: dict, **_) -> dict:
+def reading_route_cards(o: dict, *, rows=None, packet=None) -> dict:
+    """The next texts to read, ranked, each named by year and title (never a uid: the owner, 2026-09-07 11:26 and 16:39), with its
+    one-clause reason and whether the library holds it; the finding id only on hover."""
+    from src.exhibits.svg import _texts_by_uid, _cite
+    texts = _texts_by_uid(packet)
     cards = []
     for r in o.get("read_next") or []:
-        cards.append(f'<div class="card"><div class="rank">{_e(r.get("rank") or "")}</div><div class="body"><div class="t">{_e(r.get("text"))}</div><div class="why">{_e(r.get("why"))}</div><div class="meta">held {_e(r.get("held"))} · <span class="rid">[oeuvre_position_memo/{_e(r["id"])}]</span></div></div></div>')
-    return {"html": f'<div class="cards">{"".join(cards)}</div>', "description": "Reading route cards, ranked: " + "; ".join(f"{r.get('rank')}. {r.get('text')} — {r.get('why', '')} (held {r.get('held')})" for r in o.get("read_next") or [])}
+        ref = (r.get("text") or "").strip()
+        name = _cite(ref, texts, 90) if ref.startswith("em:") else ref
+        held = (r.get("held") or "").lower()
+        held_words = {"yes": "in the library", "no": "not in the library", "unknown": "holding unknown"}.get(held, held)
+        cards.append(f'<div class="card" title="[oeuvre_position_memo/{_e(r["id"])}]"><div class="rank">{_e(r.get("rank") or "")}</div><div class="body"><div class="t">{_e(name)}</div><div class="why">{_e(r.get("why"))}</div><div class="meta">{_e(held_words)}</div></div></div>')
+    return {"title": f"What to read next: {len(cards)} texts, ranked", "html": f'<div class="cards">{"".join(cards)}</div>',
+            "description": "Reading route cards, ranked, each named by year and title: " + "; ".join(f"{r.get('rank')}. {(_cite((r.get('text') or ''), texts, 90) if (r.get('text') or '').startswith('em:') else r.get('text'))} — {r.get('why', '')} ({ {'yes': 'in the library', 'no': 'not in the library'}.get((r.get('held') or '').lower(), 'holding unknown')})" for r in o.get("read_next") or [])}
 
 
 def shift_table(o: dict, **_) -> dict:
