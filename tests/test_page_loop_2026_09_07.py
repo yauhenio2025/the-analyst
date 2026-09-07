@@ -196,3 +196,14 @@ def test_the_readers_page_carries_no_ids_and_the_last_rounds_drop_is_applied():
     assert [e["id"] for e in plan["exhibits"]] == ["L2.F5", "L2.F7"] and plan["exhibits"][0]["placement"] == "folded"      # drop applied, move folds
     assert "<figcaption class='cap'>" not in html.split("<details class='about'>")[0] or "[L2." not in html.split("<details class='about'>")[0]   # no plan id on the face
     assert "<details class='about'><summary>How this page was made</summary>" in html and "Left out of the page" in html.split("<details class='about'>")[1]
+
+
+def test_recompose_rebuilds_the_stored_page_without_a_model(monkeypatch):
+    import src.dossier.page_loop as pl
+    store = {}
+    monkeypatch.setattr(pl, "_put", lambda key, ct, data: store.__setitem__(key, data)); monkeypatch.setattr(pl, "_get", lambda key: store.get(key))
+    plan = {"line": "", "sections": [{"id": "L1.F1", "heading": "Next", "grasp": "g", "words": 100}], "exhibits": [{"id": "L2.F5", "kind": "reading-route-cards", "section": "L1.F1", "rows": [], "placement": "after", "aim": "the next texts"}], "cuts": []}
+    store["page:d-rc:record"] = json.dumps({"job_id": "d-rc", "title": "T", "audience": "researcher", "rounds": [{"round": 1, "plan": plan, "prose": {"L1.F1": "Read these."}, "review": None}]}).encode()
+    out = pl.recompose_page("d-rc", OEUVRE, PACKET)
+    assert out["round"] == 1 and out["exhibits"] == [("reading-route-cards", "after")] and store["page:d-rc:html"].startswith(b"<!doctype html>") and b"em:" not in store["page:d-rc:html"].split(b"<details class='about'>")[0]
+    assert pl.recompose_page("d-none", OEUVRE, PACKET) is None

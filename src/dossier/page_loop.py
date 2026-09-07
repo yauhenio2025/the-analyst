@@ -383,6 +383,7 @@ def recompose_page(job_id: str, o: dict, packet: dict, exhibit_registry=None) ->
     rounds = rec.get("rounds") or []
     if not rounds:
         return None
+    from src.exhibits.makers import make
     r = rounds[-1]
     plan = json.loads(json.dumps(r["plan"]))   # compose mutates placements
     made = {e["id"]: (make(e["kind"], o, rows=e.get("rows"), packet=packet) or {"html": "", "description": "no maker"}) for e in plan["exhibits"]}
