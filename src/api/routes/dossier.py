@@ -274,6 +274,38 @@ def get_oeuvre(job_id: str):
     return {**out, "exhibits": exhibits, "status": job.status}
 
 
+class StepRequest(BaseModel):
+    engine_key: str
+    depth: str = "surface"
+    model: Optional[str] = None
+    spend_cap_usd: float = Field(default=2.0, ge=0.0, le=20.0)
+
+
+@router.post("/jobs/{job_id}/steps")
+def add_job_step(job_id: str, req: StepRequest):
+    """Add one engine step to a finished job (2026-09-07): the engine runs as a light call over the job's own documents and its
+    phase joins the job's analysis, where GET /oeuvre and the other renderers read it. Built so run 3 of Brenner 1985 gets its
+    thinker_placement without a fourth full run."""
+    from src.dossier.engine_call import call_engine
+    from src.dossier.steps import add_step
+    from src.executor.document_store import get_document_text
+
+    job = get_job(job_id)
+    if job is None:
+        raise HTTPException(status_code=404, detail="no such job")
+    if job.status not in ("done", "failed"):
+        raise HTTPException(status_code=409, detail=f"the job is {job.status}; add a step to a finished job")
+    record = job.model_dump()
+    try:
+        phase = add_step(record, req.engine_key, get_text=lambda i: get_document_text(i) or "", call=call_engine, depth=req.depth, model=req.model, spend_cap_usd=req.spend_cap_usd)
+    except KeyError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    update_job(job_id, analysis=record["analysis"], totals=record["totals"])
+    return {"job_id": job_id, "phase": {k: v for k, v in phase.items() if k != "final_output"}, "rows": len((phase.get("final_output") or "").split("\n[")), "cost_usd": phase.get("cost_usd")}
+
+
 def _oeuvre_packet(job: DossierJob) -> dict:
     """The oeuvre packet (the plan document the bundle expanded into) from the executor's document store."""
     import json as _json

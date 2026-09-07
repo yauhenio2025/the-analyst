@@ -260,3 +260,26 @@ def test_suggested_actions_in_the_owners_terms():
     assert not any(a["organ"] == "the-referee" and "thinker_name" in a["inputs"] for a in by["Social Science and the Ignoble Savage"]["actions"] + by["Social Science and the Ignoble Savage"]["waiting"])
     s = next(a for a in suggest("citation_shift.unexamined", {"thinker_name": "Meek, Ronald"}, reg) if a["action"] == "referee.thinker-create")
     assert s["missing"] == [] and "scholar_profile_url" in s["optional"]
+
+
+def test_a_step_added_to_a_finished_job_reads_its_documents_and_joins_its_analysis():
+    """A run made before the recipe had a step gets it as a light call over its own documents (2026-09-07 13:20)."""
+    from src.dossier.steps import add_step
+    texts = {"d1": "SOURCE ROLE: focal_text\nMeek is cited for the four-stages theory.", "d2": "profile of 1989: Meek again.", "d3": "profile of 2006: nothing here.",
+             "dp": json.dumps({"kind": "oeuvre", "focal": {"uid": "em:F"}, "persons": [{"person": "Meek, Ronald", "in_referee": False}], "persons_unknown": [{"person": "Meek, Ronald", "cited_in": {"before": [], "focal": ["em:F"], "after": ["em:A89"]}}],
+                              "schools": [{"id": 1, "name": "History of economic thought"}], "cited_first_in_focal": [{"title": "x"}] * 50, "notes": ["n"]})}
+    job = {"documents": [{"key": "focal:em:F", "role": "source", "executor_doc_id": "d1"}, {"key": "after:em:A89", "role": "source", "executor_doc_id": "d2"},
+                         {"key": "after:em:A06", "role": "source", "executor_doc_id": "d3"}, {"key": "oeuvre", "role": "plan", "executor_doc_id": "dp"}],
+           "analysis": {"4.1": {"engine_key": "oeuvre_trajectory", "final_output": "x"}, "4.6": {"engine_key": "oeuvre_position_memo", "final_output": "y"}}, "totals": {"cost_usd": 10.0, "llm_calls": 25}}
+    seen = {}
+    def fake_call(engine_key, sources, *, packet=None, depth="surface", model=None, spend_cap_usd=2.0):
+        seen.update(engine_key=engine_key, keys=[s.key for s in sources], packet=packet, depth=depth)
+        return {"engine_key": engine_key, "final_output": "[P3.F1] Meek: not a candidate — dim: verdict — person: Meek, Ronald — verdict: not_a_candidate — reason: bibliographic — anchor: \"Meek is cited\" — doc: focal:em:F — confidence: high",
+                "wall": {"failed_ids": [], "verified": 1, "anchors": 1}, "cost_usd": 0.15, "calls": [1, 2], "model": "m", "seconds": 3}
+    phase = add_step(job, "thinker_placement", get_text=texts.get, call=fake_call)
+    assert seen["keys"] == ["focal:em:F", "after:em:A89"] and "cited_first_in_focal" not in seen["packet"] and seen["packet"]["schools"][0]["id"] == 1
+    assert "4.7" in job["analysis"] and job["analysis"]["4.7"]["engine_key"] == "thinker_placement" and job["analysis"]["4.7"]["added"] is True
+    assert job["totals"] == {"cost_usd": 10.15, "llm_calls": 27}
+    from src.dossier.oeuvre import _rows
+    rows = _rows({"analysis": job["analysis"]}, "thinker_placement")
+    assert rows and rows[0]["fields"]["verdict"] == "not_a_candidate"
