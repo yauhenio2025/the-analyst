@@ -297,6 +297,9 @@ class CapabilityEngineDefinition(BaseModel):
     kind: EngineKind = Field(
         default=EngineKind.PRIMITIVE, description="Type of analysis"
     )
+    operation: Optional[str] = Field(
+        default=None, description="The move the engine performs on its input, a word from the `operations` vocabulary: ascent · descent · reading · placement · distinction · narration · verification · composition (Evgeny, 2026-09-07 19:05: 'does this move up the ladder of abstraction have a name?')"
+    )
 
     # THE WHAT — richly specified
     problematique: str = Field(
@@ -383,6 +386,7 @@ class CapabilityEngineSummary(BaseModel):
     engine_name: str
     category: EngineCategory
     kind: EngineKind
+    operation: Optional[str] = None
     problematique: str
     capability_count: int = 0
     dimension_count: int = 0
