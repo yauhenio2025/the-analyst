@@ -11,6 +11,8 @@ from typing import Any, Optional
 
 from src.exhibits.svg import timeline_svg, two_halves_svg
 
+SENTENCE_END = re.compile("[.!?\u2026][\"'\u201d\u2019)]*$")
+
 
 def _e(s: Any) -> str:
     return html.escape(str(s or ""), quote=True)
@@ -34,28 +36,44 @@ def _pick(o: dict, ids: list[str], group: Optional[str] = None) -> list[dict]:
     return got
 
 
+_VOCAB = {"position": "oeuvre_positions", "place": "oeuvre_positions", "retrospective": "retrospective_verdicts", "prospective": "prospective_verdicts", "rupture": "rupture_verdicts"}
+
+
+def _gloss(key: str, value: Optional[str]) -> str:
+    """The vocabulary's gloss for a verdict value (the reviewer flagged an unglossed label)."""
+    try:
+        from src.vocabularies.registry import get_vocabulary_registry
+        voc = get_vocabulary_registry().get(_VOCAB.get(key, ""))
+        for x in (voc.values if voc else []):
+            if x.value == value:
+                return x.gloss
+    except Exception:
+        pass
+    return "not given" if not value else ""
+
+
 def verdict_chips(o: dict, **_) -> dict:
     v = o.get("verdicts") or {}
     order = [("position", "read whole"), ("retrospective", "looking back"), ("prospective", "looking forward"), ("rupture", "rupture?"), ("place", "place")]
-    chips = "".join(f'<span class="chip"><span class="k">{_e(lab)}</span> {_e(v.get(key) or "not given")}</span>' for key, lab in order)
+    chips = "".join(f'<span class="chip" title="{_e(_gloss(key, v.get(key)))}"><span class="k">{_e(lab)}</span> {_e(v.get(key) or "not given")}</span>' for key, lab in order)
     halves = f'<div class="halves"><span class="k">the two halves</span> {_e(v.get("halves"))}</div>' if v.get("halves") else ""
-    return {"html": f'<div class="chips">{chips}</div>{halves}', "description": "Five verdict chips: " + "; ".join(f"{lab} = {v.get(key) or 'not given'}" for key, lab in order) + (f". The two halves: {v.get('halves')}" if v.get("halves") else "")}
+    return {"html": f'<div class="chips">{chips}</div>{halves}', "description": "Five verdict chips, each with its gloss on hover: " + "; ".join(f"{lab} = {v.get(key) or 'not given'} ({_gloss(key, v.get(key))})" for key, lab in order) + (f". The two halves: {v.get('halves')}" if v.get("halves") else "")}
 
 
 def persists_breaks_sidebar(o: dict, rows: Optional[list[str]] = None, **_) -> dict:
     rup = o.get("rupture") or []
     cont = [r for r in rup if r.get("dim") == "continuity"][:3]; brk = [r for r in rup if r.get("dim") == "break"][:3]
     def li(r, kind):
-        return f'<li><b>{_e(r.get("what"))}</b> {_e(r.get("text"))[:140]} <span class="rid">[epistemic_rupture/{_e(r["id"])}]</span></li>'
+        return f'<li><b>{_e(r.get("what"))}</b> {_e(r.get("text"))} <span class="rid">[epistemic_rupture/{_e(r["id"])}]</span></li>'
     h = f'<aside class="box two"><div><h4>What persists</h4><ul>{"".join(li(r, "p") for r in cont)}</ul></div><div><h4>What breaks</h4><ul>{"".join(li(r, "b") for r in brk)}</ul></div></aside>'
-    return {"html": h, "description": "Sidebar, two boxes: persists — " + "; ".join(f"{r.get('what')}: {r.get('text')[:80]}" for r in cont) + ". breaks — " + "; ".join(f"{r.get('what')}: {r.get('text')[:80]}" for r in brk)}
+    return {"html": h, "description": "Sidebar, two boxes. Persists: " + "; ".join(f"{r.get('what')} — {r.get('text')}" for r in cont) + ". Breaks: " + "; ".join(f"{r.get('what')} — {r.get('text')}" for r in brk)}
 
 
 def reading_route_cards(o: dict, **_) -> dict:
     cards = []
     for r in o.get("read_next") or []:
         cards.append(f'<div class="card"><div class="rank">{_e(r.get("rank") or "")}</div><div class="body"><div class="t">{_e(r.get("text"))}</div><div class="why">{_e(r.get("why"))}</div><div class="meta">held {_e(r.get("held"))} · <span class="rid">[oeuvre_position_memo/{_e(r["id"])}]</span></div></div></div>')
-    return {"html": f'<div class="cards">{"".join(cards)}</div>', "description": "Reading route cards, ranked: " + "; ".join(f"{r.get('rank')}. {r.get('text')[:60]} ({r.get('why', '')[:60]})" for r in o.get("read_next") or [])}
+    return {"html": f'<div class="cards">{"".join(cards)}</div>', "description": "Reading route cards, ranked: " + "; ".join(f"{r.get('rank')}. {r.get('text')} — {r.get('why', '')} (held {r.get('held')})" for r in o.get("read_next") or [])}
 
 
 def shift_table(o: dict, **_) -> dict:
@@ -63,7 +81,7 @@ def shift_table(o: dict, **_) -> dict:
     rows = [s for s in o.get("shifts") or [] if s.get("dim") in kinds]
     trs = "".join(f'<tr class="{_e(s["dim"])}"><td>{_e(s["dim"].replace("_", " "))}</td><td>{_e(s.get("cited") or s.get("text")[:60])}</td><td>{_e(s.get("kind") or "")}</td><td>{_e(s.get("for") or s.get("used_for") or s.get("silence") or s.get("use_here") or "")[:120]}</td><td>{_e(s.get("held") or "")}</td><td>{_e(s.get("in_referee") or "")}</td><td class="rid">citation_shift/{_e(s["id"])}{" · not verified" if s.get("conjecture") else ""}</td></tr>' for s in rows)
     h = f'<table class="shift"><thead><tr><th>kind</th><th>cited</th><th>work / person</th><th>for</th><th>held</th><th>in the Referee</th><th>row</th></tr></thead><tbody>{trs}</tbody></table>'
-    return {"html": h, "description": f"Table of {len(rows)} citation shifts (kind · cited · for · held · in the Referee): " + "; ".join(f"{s['dim']}: {s.get('cited') or s.get('text')[:40]}" for s in rows[:12])}
+    return {"html": h, "description": f"Table of {len(rows)} citation shifts (kind · cited · for · held · in the Referee): " + "; ".join(f"{s['dim']}: {s.get('cited') or s.get('text')} — {s.get('for') or s.get('used_for') or s.get('silence') or ''} (held {s.get('held')}, Referee {s.get('in_referee')})" for s in rows)}
 
 
 def glossary_box(o: dict, **_) -> dict:
@@ -81,15 +99,17 @@ def glossary_box(o: dict, **_) -> dict:
 def pull_quote(o: dict, rows: Optional[list[str]] = None, **_) -> dict:
     cands = _pick(o, rows or []) or [r for r in _rows_by_id(o).values() if r.get("anchor") and not r.get("conjecture")]
     cands = [r for r in cands if r.get("anchor") and not r.get("conjecture")]
+    whole = [r for r in cands if SENTENCE_END.search(r["anchor"].strip())]   # a quote that ends a sentence; a fragment cut at the wall's 200 characters states no claim
+    cands = whole or cands
     if not cands:
         return {"html": "", "description": "no verified anchor to quote"}
     r = cands[0]
     h = f'<blockquote class="pull">“{_e(r["anchor"])}”<footer>{_e(r.get("doc"))} · <span class="rid">[{_e(r["engine"])}/{_e(r["id"])}]</span></footer></blockquote>'
-    return {"html": h, "description": f"Pull quote from {r.get('doc')}: “{r['anchor'][:120]}”"}
+    return {"html": h, "description": f"Pull quote from {r.get('doc')}: “{r['anchor']}”"}
 
 
 def oeuvre_timeline(o: dict, packet: Optional[dict] = None, **_) -> dict:
-    return {"html": timeline_svg(o, packet or {}, width=1040), "description": "Timeline: the author's texts on a year axis, the agendas as lanes " + "; ".join(f"{a['id']} {a.get('text', '')[:50]} ({a.get('span', '')[:40]})" for a in o.get("agendas") or []) + "; the focal text marked; the turns as cuts " + ", ".join(f"{t['id']} {t.get('at', '')}" for t in o.get("turns") or [])}
+    return {"html": timeline_svg(o, packet or {}, width=1040), "description": "Timeline (SVG): the author's texts as ticks on a year axis; the agendas as lanes from their first to their last text, each lane labelled with the agenda's first words and its full row on hover: " + "; ".join(f"{a['id']} — {a.get('text', '')} ({a.get('span', '')})" for a in o.get("agendas") or []) + ". The focal text marked with its year and title. The turns as cuts between their two texts, one row each: " + "; ".join(f"{t['id']} at {t.get('at', '')} — changed {t.get('changed', '')}" for t in o.get("turns") or [])}
 
 
 def two_halves(o: dict, **_) -> dict:
@@ -99,7 +119,7 @@ def two_halves(o: dict, **_) -> dict:
 
 def idea_map(o: dict, **_) -> dict:
     seeds = [r for r in o.get("prospective") or [] if r.get("dim") == "seed"][:5]; inh = [r for r in o.get("retrospective") or [] if r.get("dim") == "inheritance"][:5]
-    desc = "Idea map (image commission, not yet drawn): in — " + "; ".join(r.get("what") or r.get("text")[:50] for r in inh) + "; out — " + "; ".join(r.get("what") or r.get("text")[:50] for r in seeds)
+    desc = "Idea map (an image commission through the figure pipeline; not yet drawn on this page, shown as its caption): in — " + "; ".join(r.get("what") or r.get("text") for r in inh) + "; out — " + "; ".join(r.get("what") or r.get("text") for r in seeds)
     return {"html": f'<figure class="pending"><figcaption>{_e(desc)}</figcaption></figure>', "description": desc}
 
 

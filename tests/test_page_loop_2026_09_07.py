@@ -101,9 +101,11 @@ def test_the_loop_runs_with_a_fake_model_and_writes_verdicts_back(tmp_path):
             return {"content": PROSE, "model_used": model_hint, "input_tokens": 3000, "output_tokens": 300}
         return {"content": REVIEW, "model_used": model_hint, "input_tokens": 2000, "output_tokens": 200}
 
+    before = {k: len(reg.get(k).evidence) for k in ("oeuvre-timeline", "verdict-chips")}     # the seeds may carry real runs' verdicts already
     rec = run_page_loop("d-page", OEUVRE, PACKET, audience="researcher", rounds=2, call_fn=fake, exhibit_registry=reg)
     assert len(rec["rounds"]) == 2 and len(calls) == 6 and rec["cost_usd"] > 0
     r1 = rec["rounds"][0]
     assert [e["kind"] for e in r1["plan"]["exhibits"]] == ["verdict-chips", "oeuvre-timeline"] and r1["review"]["verdicts"][1]["verdict"] == "simplify"
     assert rec["final_html"].startswith("<!doctype html>") and "The oeuvre on one line" in rec["final_html"]
-    assert [u.verdict for u in reg.get("oeuvre-timeline").evidence] == ["simplify", "simplify"] and reg.get("verdict-chips").evidence[0].page == "d-page/round1"
+    assert [x.verdict for x in reg.get("oeuvre-timeline").evidence][before["oeuvre-timeline"]:] == ["simplify", "simplify"] and reg.get("verdict-chips").evidence[before["verdict-chips"]].page == "d-page/round1"
+    assert rec["rounds"][0]["plan"]["exhibits"][1]["placement"] == "before"        # the timeline was planned 'before' and stays; a wide exhibit is never floated

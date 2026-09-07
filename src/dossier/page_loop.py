@@ -20,6 +20,9 @@ from src.dossier.explainer import CITED_ID, rows_with_fields
 
 logger = logging.getLogger(__name__)
 ROW_ID = re.compile(r"\b([a-z_]+/(?:[A-Z]\d\.)?F\d+)\b")
+WIDE_KINDS = {"oeuvre-timeline", "two-halves", "shift-table", "idea-map"}
+ORGANS = {"the Referee": "the citation-analysis engine that holds thinkers, their works and who cites them", "the Stacks": "the library: the texts, their profiles and citation ledgers",
+          "the Mastermind": "the registry of methods, vocabularies and actions the organs read", "the Reporter": "the open-web harvester"}
 
 
 # ── the memo as a document ────────────────────────────────────────────────────────────────────────────────────────
@@ -159,6 +162,9 @@ def compose_page(title: str, subtitle: str, plan: dict, prose: dict[str, str], e
     """The page HTML and its description (what the reviewer reads): sections in the plan's order, each exhibit placed as planned."""
     by_sec: dict[str, list[dict]] = {}
     for e in plan["exhibits"]:
+        if e["placement"] == "beside" and e["kind"] in WIDE_KINDS:   # a drawn or tabular exhibit is never floated: it needs the width
+            e["placement"] = "before"
+            e["note"] = (e.get("note") or "") + " placed before its section at full width (a wide exhibit is never floated)"
         by_sec.setdefault(e["section"], []).append(e)
     body = [f"<h1>{_e(title)}</h1><p class='sub'>{_e(subtitle)} · page round {round_no}</p>"]
     desc = [f"PAGE: {title} — {subtitle}"]
@@ -208,11 +214,12 @@ def run_page_loop(job_id: str, o: dict, packet: dict, *, audience: str = "resear
     for n in range(1, rounds + 1):
         t0 = time.time()
         packet_plan = {"audience": audience, "exhibits": planner_block(reg.list()), "previous_review": review, "round": n,
-                       "note": "Use only the exhibit keys listed; cite row ids exactly as they appear in the memo document (engine/F<n>)."}
+                       "note": "Use only the exhibit keys listed; cite row ids exactly as they appear in the memo document (engine/F<n>). A drawn or tabular exhibit (timeline, two-halves, shift-table, idea-map) takes the full width: place it before or after its section, never beside. In a second round, act on every verdict that is not keep."}
         planned = call_engine("page_planner", src, packet=packet_plan, depth="surface", model=model, spend_cap_usd=3.0, call_fn=call_fn)
         plan = parse_plan(planned["final_output"], {e.key for e in reg.list()}, row_ids, set(planned["wall"]["failed_ids"]))
         made = {e["id"]: (make(e["kind"], o, rows=e["rows"], packet=packet) or {"html": "", "description": "no maker"}) for e in plan["exhibits"]}
-        packet_prose = {"audience": audience, "plan": {"sections": plan["sections"], "exhibits": [{"id": e["id"], "kind": e["kind"], "section": e["section"], "shows": made[e["id"]]["description"][:300]} for e in plan["exhibits"]]}}
+        packet_prose = {"audience": audience, "plan": {"sections": plan["sections"], "exhibits": [{"id": e["id"], "kind": e["kind"], "section": e["section"], "shows": made[e["id"]]["description"][:600]} for e in plan["exhibits"]]},
+                        "glossary": ORGANS, "note": "Gloss a system's name (the Referee, the Stacks) in one clause on its first use; use each verdict word the plan names at least once, with its gloss."}
         written = call_engine("page_prose", src, packet=packet_prose, depth="surface", model=model, spend_cap_usd=3.0, call_fn=call_fn)
         prose = parse_prose(written["final_output"], plan["sections"])
         page_html, page_desc = compose_page(title, subtitle, plan, prose, made, None, n)
