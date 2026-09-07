@@ -12,8 +12,8 @@
   ],
   "inputs": [
     "query_id",
-    "referee_thinker_id",
-    "budget_usd"
+    "referee_thinker_id?",
+    "budget_usd?"
   ],
   "route": "POST /api/cross-citations/queries/{query_id}/cited-works/extract → POST …/cited-works/consolidate → GET …/cited-works (+ …/recommend, …/resolve-scholar) · whole thinker: POST /api/thinkers/{thinker_id}/study {budget_usd, phase_limit} · the Stacks' own reading: POST /internal/stacks/thinker-cites, GET /thinkers/{thinker_id}/outward-cites",
   "cost": "cents",
