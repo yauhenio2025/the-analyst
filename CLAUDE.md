@@ -1,6 +1,11 @@
-# The Analyst (formerly Analyzer v2) — multi-phase meaning-making service
+# The Analyst — the Mastermind's API
 
-> Lightweight service serving analytical definitions without execution logic
+The Analyst is the API behind the Mastermind: the records that hold the house's reasoning (engines, workflows and recipes, vocabularies,
+practices, actions, exhibits), the walls that check what a model wrote against what a source says (shape, never meaning), the dossier
+runner that executes a recipe over sources and keeps its rows, and the ledgers that remember what was read and what we did. The organs
+(the Stacks, the Referee, the Reporter, gs_revamp) read the records over the API and post their outcomes back. Python 3.11+, FastAPI,
+Pydantic v2; records as JSON/YAML files persisted through GitHub; jobs, blobs and ledgers in the executor database (Postgres on Render,
+SQLite locally). The Mastermind console (a separate Next.js repo, below) reads all of it.
 
 ## How we work: where the reasoning lives (Evgeny, 2026-09-07)
 
@@ -27,288 +32,114 @@
 - The same principles stand in the Stacks' and the Referee's CLAUDE.md in their words. Design of the first workflow built this way:
   `communications/DESIGN_oeuvre_position_2026-09-07.md`.
 
-## Overview
+## The organs and their seams
 
-Analyzer v2 extracts pure analytical definitions from the current Analyzer service:
-- **Engine definitions**: Prompts, schemas, and metadata for 160+ analysis engines
-- **Paradigm definitions**: 4-layer ontology structures (IE schema)
-- **Engine chains**: Multi-engine composition specifications
-- **Audience definitions**: Rich multi-section profiles for 5 audience types
+- **The Stacks** (`~/projects/zotero-stacks`, local at http://127.0.0.1:8765): the library, texts, profiles, citation ledgers, bundles, memos,
+  the Brief (dictation, exchange, references, distinction challenges), the oeuvre page. Sends `role: oeuvre` bundles and `role: statements`
+  files (a turn or memo against the texts it cites, windowed); reads `/oeuvre`, `/distinctions`, `/encounter`, `/page`, `/readings`,
+  `/actions`; posts action outcomes. Several Stacks sessions run at once; each owns lanes — ask before assuming.
+- **The Referee** (https://referee-api.onrender.com; keyless `GET /api/public/schools?members=N`, 401 schools): thinkers, works, readers,
+  harvesting, fetching, schools and their candidates queues (`POST /api/schools/{id}/candidates` with `evidence` as an object). Owns ten
+  action records here (`referee.*`), re-posted on its word; optional inputs end in `?`.
+- **The Reporter**: the open web; its practices' yields write back here; its deploy gate (`deploy_when_idle.py`, another machine) deploys
+  any head when this API looks idle by `GET /v1/dossier/jobs` statuses — a running page loop shows there as `composing` so idle means idle.
+- **gs_revamp**: paper discovery; holds Render API access for this workspace and reads the service events when a deploy needs explaining.
+- **The Mastermind console**: https://github.com/yauhenio2025/analyzer-mgmt (Next.js), deployed as https://the-mastermind.onrender.com; its
+  legacy FastAPI + Postgres (`analyzer-mgmt-api`, `theorist-db`, Render project `the-theorist`) still serve its Paradigms, Consumers,
+  Changes, Grids, Rhetoric, Pipelines pages and the engine editor's update/versions/schema calls — retirement parked (memory note).
+- Sessions coordinate over `SendMessage` (ListAgents names them); an organ edits its own CLAUDE.md only on the owner's word in that session.
 
-This is the "reversed approach" - instead of moving process code TO Visualizer, we extract definitions OUT of Analyzer into this clean service.
+## What lives here (counts on 2026-09-07)
 
-## Tech Stack
-- Python 3.11+ with FastAPI
-- Pydantic v2 for schemas
-- JSON files for definitions (no database)
-- Anthropic SDK for LLM features (optional, requires ANTHROPIC_API_KEY)
+**Records.** Engines: 273 legacy JSON (`src/engines/definitions`, prompts and schemas of the August catalogue; `home_organ` explicit on 70)
+and 86 capability YAMLs (`src/engines/capability_definitions`: problematique, dimensions; `kind` says how an engine is built, `operation`
+what it does — the `operations` vocabulary; 24 tagged) with 83 operationalizations (`src/operationalizations/definitions`: the process
+with dimensions, answer shapes, method cards, routing by tier) — the families built as records this week: **oeuvre** (7 engines),
+**distinction** (interlocutor_position · distinction_draft · distinction_settle · encounter_map · encounter_draft · impact_scan),
+**governance** (trajectory_narrative · macro_actions), the **citation** family, the **page** engines (page_planner · page_prose ·
+page_reviewer), reference_reread, citation_explainer, hypothesis_evidential_frame. Recipes: 12 in `src/dossier/recipes.json` (a step
+may carry `scope`; a sole step may carry `context`); workflows: 20 (`src/workflows/definitions`). Vocabularies: 80 (`src/vocabularies`;
+owners the-mastermind 52, the-stacks 17, the-referee 11; a value may carry `routes` per organ; enumerated fields pin to them in the wall
+as `vocabulary_drift`, `src/vocabularies/pins.py`). Practices: 34 (`src/practices`; search craft by task kind; yields write back).
+Actions: 18 (`src/actions`; referee 10, stacks 5, mastermind 2, reporter 1; `intents` on each; `suggest()` fills a row's inputs; the
+register `src/actions/register.py`; macro grouping `src/actions/macro.py`). Exhibits: 9 (`src/exhibits`; placement rules; makers and SVG
+by code). Doctrines: `src/engines/doctrines` (hash-pinned prompt files of mirrored organs and this desk's).
 
-## Quick Reference
-- Start: `./start` or `uvicorn src.api.main:app --reload --port 8001`
-- Test: `pytest tests/`
-- API Docs: http://localhost:8001/docs
+**The runner** (`src/dossier`, 35 modules): `POST /v1/dossier/jobs` with sources by role — `source · evidence_index · plan · profile ·
+statements · oeuvre` (`src/sources`; the oeuvre door expands a Stacks bundle into focal:/before:/after: documents and the packet with
+persons, schools, prior readings; the statements door windows a long source around its statements' terms, `how: search`); the fast lane
+runs an engines-only fixed path without reconnaissance or a planner call; the walls (`src/executor/ledger_walls.py`, `process_runner.py`)
+verify anchors and report drift; `POST /jobs/{id}/steps` adds one engine to a finished job over its own documents (the caller's documents
+and packet blocks ride beside; the recipe's earlier rows travel as `upstream_findings`; a 1.5M-char cap); the blob store keeps pages,
+readings, the register; the print desks (spine, tables, figures, plates, compose) and the image fleet (`src/images/providers.py`) are
+optional outputs. Renderers by code: `oeuvre.py`, `distinctions.py`, `encounter.py`, `reread.py`, `explainer.py`.
 
-## Architecture Notes
+**Presentation** (`src/dossier/page_loop.py`, `src/exhibits`): plan → make → write → review → revise, durable in the blob store and
+resumable after a restart; the composer enforces the placement rules by code (text first; chips only before the first paragraph; wide
+exhibits folded; ids on hover; the loop's notes folded); `POST /page/recompose` rebuilds a page without a model call; the encounter page
+(`encounter_page.py`) is composed by code from rows.
 
-```
-analyzer-v2/
-├── src/
-│   ├── engines/           # Engine definitions
-│   │   ├── schemas.py     # EngineDefinition Pydantic model
-│   │   ├── registry.py    # EngineRegistry - loads from JSON
-│   │   └── definitions/   # 160+ JSON files (one per engine)
-│   │
-│   ├── paradigms/         # Paradigm definitions (IE 4-layer)
-│   │   ├── schemas.py     # ParadigmDefinition model
-│   │   ├── registry.py    # ParadigmRegistry
-│   │   └── instances/     # JSON files (marxist.json, etc.)
-│   │
-│   ├── chains/            # Engine chain specifications
-│   │   ├── schemas.py     # EngineChainSpec model
-│   │   ├── registry.py    # ChainRegistry
-│   │   └── definitions/   # JSON files
-│   │
-│   ├── audiences/         # Audience definitions (first-class entity)
-│   │   ├── schemas.py     # AudienceDefinition model (8 sub-models)
-│   │   ├── registry.py    # AudienceRegistry (CRUD + guidance/vocab/weight)
-│   │   └── definitions/   # 5 JSON files (analyst, executive, researcher, activist, social_movements)
-│   │
-│   ├── views/             # View definitions (rendering layer)
-│   │   ├── schemas.py     # ViewDefinition, DataSourceRef, TransformationSpec
-│   │   ├── registry.py    # ViewRegistry (CRUD + compose_tree)
-│   │   ├── pattern_schemas.py  # ViewPattern reusable templates
-│   │   ├── pattern_registry.py # PatternRegistry
-│   │   ├── definitions/   # 21 JSON files (genealogy views)
-│   │   └── patterns/      # 6 JSON files (reusable view patterns)
-│   │
-│   ├── renderers/         # Renderer definitions (first-class catalog)
-│   │   ├── schemas.py     # RendererDefinition, RendererSummary, SectionRendererHint
-│   │   ├── registry.py    # RendererRegistry (CRUD + for_stance/for_data_shape/for_app via ConsumerRegistry)
-│   │   └── definitions/   # 9 JSON files (accordion, card_grid, prose, table, etc.)
-│   │
-│   ├── sub_renderers/     # Sub-renderer definitions (atomic UI components)
-│   │   ├── schemas.py     # SubRendererDefinition model
-│   │   ├── registry.py    # SubRendererRegistry (for_parent/for_data_shape)
-│   │   └── definitions/   # 11 JSON files (chip_grid, mini_card_list, etc.)
-│   │
-│   ├── consumers/         # Consumer app capability declarations
-│   │   ├── schemas.py     # ConsumerDefinition model
-│   │   ├── registry.py    # ConsumerRegistry (renderers_for_consumer)
-│   │   └── definitions/   # 3 JSON files (the-critic, visualizer, analyzer-mgmt)
-│   │
-│   ├── orchestrator/      # LLM-powered plan generation (Milestone 1)
-│   │   ├── schemas.py     # WorkflowExecutionPlan, PhaseExecutionSpec
-│   │   ├── catalog.py     # Parameterized capability catalog assembly
-│   │   ├── planner.py     # Templated system prompt + Claude plan generation
-│   │   └── plans/         # File-based plan storage (JSON)
-│   │
-│   ├── executor/          # Plan-driven workflow execution (Milestone 2)
-│   │   ├── schemas.py     # ExecutorJob, PhaseResult, EngineCallResult
-│   │   ├── db.py          # Dual-backend DB (Postgres + SQLite)
-│   │   ├── engine_runner.py  # Atomic LLM calls with streaming/retry
-│   │   ├── context_broker.py # Cross-phase context assembly
-│   │   ├── chain_runner.py   # Sequential chain execution
-│   │   ├── phase_runner.py   # Phase resolution + per-work iteration
-│   │   ├── workflow_runner.py # DAG execution with parallel phases
-│   │   ├── job_manager.py    # Job lifecycle + cancellation
-│   │   ├── output_store.py   # Prose output persistence
-│   │   └── document_store.py # Document text storage
-│   │
-│   └── api/               # FastAPI application
-│       ├── main.py        # App entry point
-│       └── routes/        # Endpoint handlers
-│
-└── scripts/
-    └── extract_engines.py # Script to extract from current Analyzer
-```
+**Memory of the house.** The readings ledger (`src/readings`: every finished phase's rows by person, surname, text and job; an added step
+carries `prior_readings`); the action register and the trajectory (`GET /v1/register`, `GET /v1/trajectory?block=1`: what we are doing,
+narrated for any organ's planner). Studies: `communications/study/*` (each run's memos, rows in words, pages); designs:
+`communications/DESIGN_*.md`; the vision: `communications/vision_2026-07/INDEX.md`.
 
-## API Endpoints
+## Routes that matter (the rest: 390 routes across 39 routers, read `src/api/main.py`)
 
 ```
-GET  /v1/engines                     # List all engines (has_profile flag)
-GET  /v1/engines/{key}               # Full engine definition
-GET  /v1/engines/{key}/extraction-prompt
-GET  /v1/engines/{key}/curation-prompt
-GET  /v1/engines/{key}/schema
-GET  /v1/engines/{key}/profile       # Get engine profile/about
-PUT  /v1/engines/{key}/profile       # Save engine profile
-DELETE /v1/engines/{key}/profile     # Delete engine profile
-GET  /v1/engines/category/{category}
-
-GET  /v1/paradigms                   # List all paradigms
-GET  /v1/paradigms/{key}             # Full paradigm (4-layer)
-GET  /v1/paradigms/{key}/primer      # LLM-ready text
-GET  /v1/paradigms/{key}/engines
-GET  /v1/paradigms/{key}/critique-patterns
-
-GET  /v1/chains                      # List chains
-GET  /v1/chains/{key}                # Chain specification
-
-GET  /v1/audiences                   # List all audiences
-GET  /v1/audiences/{key}             # Full audience definition
-GET  /v1/audiences/{key}/identity    # Identity/profile section
-GET  /v1/audiences/{key}/engine-affinities
-GET  /v1/audiences/{key}/visual-style
-GET  /v1/audiences/{key}/textual-style
-GET  /v1/audiences/{key}/curation
-GET  /v1/audiences/{key}/vocabulary
-GET  /v1/audiences/{key}/guidance    # Composed guidance block
-GET  /v1/audiences/{key}/translate/{term}
-GET  /v1/audiences/{key}/engine-weight/{engine_key}
-PUT  /v1/audiences/{key}             # Update audience
-POST /v1/audiences                   # Create audience
-DELETE /v1/audiences/{key}           # Delete audience
-
-GET  /v1/views                         # List all views (with ?app=X&page=Y)
-GET  /v1/views/{key}                   # Single view definition
-GET  /v1/views/compose/{app}/{page}    # Tree of views for a page (primary consumer endpoint)
-GET  /v1/views/for-workflow/{wf_key}   # Views referencing a workflow
-POST /v1/views                         # Create view
-PUT  /v1/views/{key}                   # Update view
-DELETE /v1/views/{key}                 # Delete view
-POST /v1/views/generate                # LLM-powered view generation from pattern + engine
-
-GET  /v1/views/patterns                  # List view pattern summaries
-GET  /v1/views/patterns/{key}            # Full view pattern
-GET  /v1/views/patterns/for-renderer/{type}  # Patterns by renderer
-GET  /v1/views/patterns/for-data-shape/{shape}  # Patterns by data shape
-
-# Transformations
-GET  /v1/transformations                    # List templates (?type=&tag=)
-GET  /v1/transformations/{key}              # Full template
-GET  /v1/transformations/for-engine/{key}   # Templates for engine
-GET  /v1/transformations/for-renderer/{type}  # Templates for renderer
-GET  /v1/transformations/for-primitive/{key}  # Templates for primitive
-GET  /v1/transformations/for-pattern        # Cross-domain query (?domain=&data_shape=&renderer_type=)
-POST /v1/transformations                    # Create template
-PUT  /v1/transformations/{key}              # Update template
-DELETE /v1/transformations/{key}            # Delete template
-POST /v1/transformations/generate           # LLM-powered template generation (v2: rich metadata)
-POST /v1/transformations/execute            # Execute transformation on data
-
-GET  /v1/renderers                       # List all renderers (summary)
-GET  /v1/renderers/{key}                 # Full renderer definition
-GET  /v1/renderers/for-stance/{stance}   # Renderers by stance affinity
-GET  /v1/renderers/for-app/{app}         # Renderers supported by app (via ConsumerRegistry)
-POST /v1/renderers                       # Create renderer
-PUT  /v1/renderers/{key}                 # Update renderer
-DELETE /v1/renderers/{key}               # Delete renderer
-
-GET  /v1/sub-renderers                   # List sub-renderer summaries
-GET  /v1/sub-renderers/{key}             # Full sub-renderer definition
-GET  /v1/sub-renderers/for-parent/{type} # Sub-renderers for a parent renderer
-GET  /v1/sub-renderers/for-data-shape/{shape}  # Sub-renderers by data shape
-
-GET  /v1/consumers                       # List consumer summaries
-GET  /v1/consumers/{key}                 # Full consumer definition
-GET  /v1/consumers/{key}/renderers       # Supported renderer definitions
-
-GET  /v1/operations/stances            # List stances (with ?type=analytical|presentation)
-GET  /v1/operations/stances/{key}      # Get stance
-GET  /v1/operations/stances/{key}/renderers  # Preferred renderers for a stance
-
-GET  /v1/llm/status                  # Check LLM availability
-POST /v1/llm/profile-generate        # Generate profile with AI
-POST /v1/llm/profile-suggestions     # Get AI suggestions for profile
-POST /v1/chains/recommend            # LLM recommends chain
-
-# Orchestrator
-GET  /v1/orchestrator/capability-catalog  # Full capability catalog
-POST /v1/orchestrator/plan                # Generate new plan (Claude Opus)
-GET  /v1/orchestrator/plans               # List plans
-GET  /v1/orchestrator/plans/{plan_id}     # Get plan
-PUT  /v1/orchestrator/plans/{plan_id}     # Update plan
-POST /v1/orchestrator/plans/{plan_id}/refine  # LLM-assisted refinement
-
-# Executor
-POST /v1/executor/jobs                    # Start execution from plan_id
-GET  /v1/executor/jobs                    # List jobs
-GET  /v1/executor/jobs/{job_id}           # Poll status + progress
-POST /v1/executor/jobs/{job_id}/cancel    # Cancel running job
-GET  /v1/executor/jobs/{job_id}/results   # Phase output summaries
-GET  /v1/executor/jobs/{job_id}/phases/{n}  # Full phase prose
-DELETE /v1/executor/jobs/{job_id}         # Delete completed job
-POST /v1/executor/documents               # Upload document text
-GET  /v1/executor/documents               # List documents
-GET  /v1/executor/documents/{doc_id}      # Retrieve document
-DELETE /v1/executor/documents/{doc_id}    # Delete document
-
-# Runs (Stage 4 unified run contract)
-GET  /v1/runs/by-job/{job_id}                        # Joined run detail: executor + preparation + result state (?consumer_key=)
-GET  /v1/runs/discovery                              # Batch run discovery (?project_id=&workflow_key=&consumer_key=&scope=active|recent|all&selected_source_thinker_id=&limit=)
-
-# Results (Stage 3 restore/discovery authority)
-GET  /v1/results/by-job/{job_id}                    # Consumer-facing result manifest
-GET  /v1/results/by-job/{job_id}/presentation       # Manifest + assembled presentation (read-only)
-POST /v1/results/by-job/{job_id}/refresh-presentation  # Refresh presentation without re-executing
-GET  /v1/results/discovery                           # Discover completed results (?project_id=&workflow_key=&consumer_key=&selected_source_thinker_id=&limit=)
-POST /v1/results/by-job/{job_id}/attach-project      # Attach project_id to external/imported job
-
-# Organs, doctrine, story desk (The Mastermind, 2026-09-04)
-GET  /v1/organs · /v1/organs/by-layer · /v1/organs/{key} · /v1/organs/{key}/engines
-GET  /v1/engines?family=&organ=          # families: analytical, storytelling, editing, restructuring, search, rendering, composition, quality, imagination, governance
-GET  /v1/engines/{key}/doctrine          # hash-pinned prompt/doctrine files (mirrored organs + the Analyst's desks)
-POST /v1/engines/{key}/call              # a light engine call in the request, no dossier job (2026-09-06): sources[] + packet + depth surface|standard + model + spend_cap_usd → rows with the wall's verdicts, receipts, and the engine's shaped JSON (citation_explainer → the Stacks' How / Why here / In the argument)
-POST /v1/story/jobs · GET /v1/story/jobs/{id} · GET|POST /v1/story/jobs/{id}/brief · GET /v1/story/jobs/{id}/handoff
-GET  /v1/story/handoff-schema · /v1/story/demands
-GET  /v1/dossier/jobs/{id}/profiles?shape=shared|native   # reconnaissance profiles in the shared work-profile shape (2026-09-06)
-GET  /v1/dossier/jobs/{id}/ledger · /v1/dossier/jobs/{id}/frame · /v1/dossier/jobs/{id}/reread   # every phase's ledger rows parsed by code; the evidential frame as JSON; the owner's references re-read (engine reference_reread over a role=statements source: verdicts holds · holds_in_part · diverges · not_in_text · unverifiable, follow-up questions)
-GET  /v1/vocabularies · /v1/vocabularies/{key} · /v1/vocabularies/for-engine/{engine_key}   # the enumerated values the engines answer in (moves, stances, verdicts, kinds, circles), with glosses; consumers read columns from here, never from copies (src/vocabularies/)
-GET  /v1/actions[?finding=&organ=] · /v1/actions/finding-kinds · /v1/actions/{key} · POST /v1/actions · POST /v1/actions/suggest {finding, fields} · POST /v1/actions/{key}/outcome   # what an organ can DO in response to a finding (owner 2026-09-07): records with the finding kinds they answer, inputs, route, cost class, gate; suggest() fills a row's inputs (src/actions/)
-GET  /v1/dossier/jobs/{id}/oeuvre               # a paper's place in its author's oeuvre (recipe oeuvre_position over a role=oeuvre source: the Stacks' GET /api/authors/{aid}/oeuvre?focal=): verdicts, agendas and turns, citation shifts, the readings, the reading route, the actions the findings license; since 12:45 also `placements`: where the cited persons the Referee does not know belong (engine thinker_placement, the recipe's seventh step: a Referee school by id with evidence, a new school with candidates, or not a candidate), and the suggested actions in the owner's terms (a held work or a known person: nothing; an unknown person: add, placed)
-GET  /v1/practices[?task=] · /v1/practices/task-kinds · /v1/practices/{key} · POST /v1/practices (an organ registers a practice its planner knows; only its owner may overwrite it) · POST /v1/practices/{key}/evidence   # how to SEARCH, beside the engines (owner 2026-09-07: 'such tricks have to start living in the Mastermind'): records a planner's packet carries (when · shape · ingredients · yields · misses · evidence), by task kind (person-harvest, paper-discovery, pdf-fetch, work-identity, institution-harvest); a run's yield writes back (src/practices/)
-# Dossier source roles: source | evidence_index | plan | profile (a Stacks WorkProfile: the desk starts from it) | statements (a memo's numbered statements against the sources they cite: the fidelity audit's second input) | oeuvre (the Stacks' bundle around a focal text, expanded at the door into focal:/before:/after: documents and the packet)
-GET  /v1/readings?person=|text=|job= · GET /v1/readings/{job}/{phase} · POST /v1/readings/index/{job}   # the readings ledger (2026-09-07 18:30): every phase's rows indexed by person (with a surname index) and by text the moment it finishes; an added step attaches `prior_readings` to its packet; practice readings-first
-GET  /v1/dossier/jobs/{id}/encounter?thinker=      # the encounter (recipe encounter_round: encounter_map · encounter_draft; the deep operation around one thinker, 2026-09-07): their positions across their oeuvre, concepts, opponents, turns, silences; the axes with relations and takes (encounter_takes); the questions back; the route into them
-GET  /v1/dossier/jobs/{id}/distinctions            # the distinction round (recipes distinction_round · distinction_settle; engines interlocutor_position · distinction_draft · distinction_settle; family distinction, 2026-09-07): the questions the owner argues, each interlocutor's claims (anchored in their text) and silences, his inferred positions, the relations (distinction_relations), the questions back as `distinction` challenge payloads for the Stacks' Brief, the settled distinctions and their effects on the parts
-POST /v1/dossier/jobs/{id}/page/recompose   # rebuild a stored page with the current makers and composer, no model call (a design change never needs a paid rerun; 2026-09-07)
-POST /v1/dossier/jobs/{id}/steps {engine_key, depth?, model?, spend_cap_usd?, packet?}   # add one engine step to a finished job: a light call over the job's own documents, its phase appended to the analysis (2026-09-07; thinker_placement over run 3)
-PUT  /v1/dossier/admin/blobs/{key} · /v1/dossier/admin/jobs/{id}   # re-hydration (X-Admin-Token)
-
-# Presenter
-POST /v1/presenter/refine-views          # Refine view recommendations
-POST /v1/presenter/prepare               # Run transformations
-GET  /v1/presenter/page/{job_id}         # Complete page presentation
-GET  /v1/presenter/view/{job_id}/{view_key}  # Single view data
-GET  /v1/presenter/status/{job_id}       # Presentation readiness
-POST /v1/presenter/compose               # All-in-one pipeline
-POST /v1/presenter/polish                # View-level visual polish
-POST /v1/presenter/polish-section        # Per-section polish with user feedback
+# runs
+POST /v1/dossier/jobs {sources[{kind, role, key, title, text}], intent, audience, depth, entry: chosen, path{steps[{engine_key, depth, scope}]}, spend_cap_usd}
+GET  /v1/dossier/jobs · /jobs/{id} · /jobs/{id}/ledger · /receipts · /events · /resume · /cancel
+POST /v1/dossier/jobs/{id}/steps {engine_key, depth?, packet?, sources?[{key, title, text}], spend_cap_usd?}   # add one engine to a finished job
+POST /v1/engines/{key}/call {sources, packet?, depth, model?, spend_cap_usd}                                   # a light call, no job (400K chars)
+# renders (JSON by code; the Stacks' pages consume them)
+GET  /v1/dossier/jobs/{id}/oeuvre · /distinctions · /encounter?thinker= · /encounter/page · /reread · /frame · /profiles?shape=
+GET  /v1/dossier/jobs/{id}/exhibits · /exhibits/{key}.svg · POST|GET /page {audience, rounds, resume?} · /page.json · /page/status · POST /page/recompose
+# records
+GET  /v1/engines?family=&organ= · /v1/engines/{key}/capability-definition · /doctrine · /v1/operationalizations/{key}
+GET  /v1/vocabularies · /{key} · /for-engine/{engine} · GET|POST /v1/practices · /{key}/evidence · GET|POST /v1/exhibits · /{key}/use
+GET  /v1/actions?finding=&organ= · POST /v1/actions/suggest {finding, fields} · POST /v1/actions/{key}/outcome {status, inputs, batch?, intent?} · POST /v1/actions/macro {actions, context?}
+# memory
+GET  /v1/readings?person=|text=|job= · /v1/readings/{job}/{phase} · POST /v1/readings/index/{job}
+GET  /v1/register?since=&kind= · POST /v1/register/backfill?refresh= · GET /v1/trajectory · ?block=1 · POST /v1/trajectory/narrate
+# health
+GET  /health (commit, counts) · GET /v1/meta/definitions-version (github_enabled) · PUT /v1/dossier/admin/blobs/{key} (X-Admin-Token)
 ```
 
-## Documentation
-- **CURRENT TASKS**: `docs/CURRENT-TASKS.md` - **READ THIS FIRST** for implementation roadmap
-- Feature inventory: `docs/FEATURES.md` (read on demand)
-- Change history: `docs/CHANGELOG.md` (read on demand)
+## Legacy holdings — served, not exercised (say so before building on them)
 
-## Deployment
-- **Render, CAII workspace, project `the-analyst`** (created 2026-09-03): `the-analyst` (this API, Python; https://the-analyst-kcuc.onrender.com; `/health` reports the deployed commit), `the-analyst-desk` (static site built from `web/`; https://the-analyst-desk.onrender.com), `the-analyst-db` (PostgreSQL 16). Repo: https://github.com/yauhenio2025/the-analyst (forked from analyzer-v2 @4d7bb5b). The blueprint `render.yaml` documents the API service; the services were created in the dashboard.
-- **The Mastermind** (governance console: the registry of methods, organs, engine editing) is a separate repo, https://github.com/yauhenio2025/analyzer-mgmt (Next.js), deployed as `the-mastermind` (https://the-mastermind.onrender.com). It reads engines, organs, processes and the rest from this API. Its legacy FastAPI + Postgres (`analyzer-mgmt-api` + `theorist-db`, Render project `the-theorist`) still serve its Paradigms pages (incl. branching and lineage), Consumers, Changes, Grids, Rhetoric, Pipelines, the engine editor's update/versions/schema/stage-context calls and its LLM helper buttons (`frontend/src/lib/api.ts`: every `this.get/post` method). Retire only after those are repointed at this API or dropped; data snapshot in `communications/legacy_mgmt_api_snapshot_2026-09-06/`.
-- **DO NOT TOUCH** the gsi workspace (client production): analyzer-43fk, visualizer-alu5, analyzer-v2-3blo (pinned to branch `client-frozen-2026-09-03`).
-- **Deploys**: `autoDeploy` is ON for `the-analyst` since 2026-09-07 00:45Z (the owner's decision; before that every deploy had been API-triggered by an earlier session, and pushes between 00:12Z and 00:38Z did not deploy). A push to `master` now restarts the API (SIGTERM; in-flight dossier jobs pause at a checkpoint and resume on the new instance), so batch pushes while a job is mid-engine; registry write-back commits carry `[skip render]` and do not deploy. Check `/health`'s commit before assuming a change is live.
-- **Definition edits persist through GitHub**: `GITHUB_TOKEN` + `GITHUB_REPO` on the API service (`src/persistence/github_client.py`); `GITHUB_REPO` must be `yauhenio2025/the-analyst`. Set on the CAII service on 2026-09-07 (they were missing since its creation: writes had died at each deploy); `GET /v1/meta/definitions-version` shows `github_enabled`; an env change there needs a manual deploy. The practices registry also writes the executor database, so its records survive a deploy either way.
-- **Implementation plan**: `communications/IMPLEMENTATION_TRACKER.md` — READ FIRST. Bugs: `communications/BUG_TRACKING.md`.
+Built in August 2026 for the Critic and the Visualizer and still mounted: paradigms (5, preloaded, no runner reads them), chains (27, read
+by `chain_runner`), audiences (5, read by the catalog and the stage composer), views (33) and patterns (6), renderers (9), sub_renderers
+(20), consumers (6), transformations (26), styles, primitives, display, functions (24), objectives (3), projects, variants, feedback, the
+presenter (39 modules, 18 routes), the orchestrator (22 modules, 16 routes), results and runs, the story desk (13 routes). None has been
+exercised by a page since the Stacks became operational; the page loop uses its own makers. `src/organs` (15 records) and `src/primitives`
+are read only by their routes; `src/evaluations` (19 modules) has a router that is **not mounted** — unreachable over HTTP, its tests import
+the handlers directly. The `?family=` filter on `/v1/engines` reads the legacy JSON's family (203 of 273 default to analytical), not the
+YAMLs'. `docs/CURRENT-TASKS.md` (2026-01) and its "phases" are history; `docs/FEATURES.md` and `docs/CHANGELOG.md` are August inventories.
+Retire or re-purpose any of this on the owner's word; until then it is not a place to add.
 
-## Implementation Roadmap (See docs/CURRENT-TASKS.md for details)
+## Working rules
 
-| Phase | Status | Description |
-|-------|--------|-------------|
-| 1. Create Analyzer v2 | ✓ DONE | FastAPI service, 123 engines, deployed |
-| 2. Complete Paradigms | ✓ DONE | 4 paradigms (marxist, brandomian, hegelian_critical, pragmatist_praxis), 12 engines linked |
-| 3. Engine Chains | DEFERRED | More chains, LLM recommendation |
-| 4. Wire Current Analyzer | ✓ DONE | v2 client added, caching, prompt loading modified |
-| 5. Consumer Integration | ✓ DONE | Visualizer MCP paradigm support, IE API client |
+- Commit per phase, in the house style (a sentence saying what and why; the owner's words and time where a rule came from them). Tests:
+  `pytest tests/` (136 files; baseline on this machine ~12 failures and 8 ImportError collections in old modules, none from this week).
+- **Deploys**: Render, CAII workspace, project `the-analyst`: `the-analyst` (this API, https://the-analyst-kcuc.onrender.com; `/health`
+  reports the commit), `the-analyst-desk` (static, from `web/`), `the-analyst-db` (Postgres 16). `autoDeploy` is ON (since 2026-09-07
+  00:45Z): a push to `master` restarts the API; dossier jobs pause at a checkpoint and resume, but a light call or an added step in flight
+  dies — batch pushes while anything runs; `[skip render]` on a docs or registry commit is honoured by Render but the Reporter's deploy
+  gate also deploys skipped heads when the API looks idle (its fix, the-reporter PR #3, must be pulled on that machine); one mechanism
+  or the other is the owner's decision, deferred. Check `/health`'s commit before assuming a change is live.
+- **Definition edits persist through GitHub** (`GITHUB_TOKEN` + `GITHUB_REPO=yauhenio2025/the-analyst` on the service; `/v1/meta/
+  definitions-version` shows `github_enabled`); the organs' registry write-backs arrive as commits on master — pull before you push.
+- **DO NOT TOUCH** the gsi workspace (client production): analyzer-43fk, visualizer-alu5, analyzer-v2-3blo (branch `client-frozen-2026-09-03`).
+- Secrets live in this repo's ignored `.env` (the image fleet's keys copied from the Referee's and veo2's `.env` on the owner's word); never
+  print them. Never `pkill` with a literal that matches your own command line.
+- The walls check shape, never meaning; an LLM improves the system by editing a record; a value outside its vocabulary is drift, reported.
+- Spend: the owner said not to worry about cost for proofs of concept; a full oeuvre run is ~$11, a light call cents to a dollar; say what
+  a run cost.
 
-**All core phases complete!** The disaggregation is operational.
+## Read next
 
-## Related Projects
-- **Current Analyzer**: `/home/evgeny/projects/analyzer` - Will call this v2 API
-- **Visualizer**: `/home/evgeny/projects/visualizer` - MCP server, will use paradigms
-- **IE**: `/home/evgeny/projects/ie` - Source of paradigm data (mockParadigmData.js)
-- **Critic**: Consumer of engine definitions
-
-## Code Conventions
-- Use Pydantic v2 models for all data structures
-- JSON files for definitions (easy to edit, version control)
-- No database - all state from files
-- No execution logic - just definitions
+`communications/IMPLEMENTATION_TRACKER.md` (every arc, dated; read first) · `communications/BUG_TRACKING.md` · the designs
+(`DESIGN_oeuvre_position`, `DESIGN_presentation_exhibits`, `DESIGN_distinction_maker`, `DESIGN_readings_and_macro_actions`, all
+2026-09-07) · the studies under `communications/study/` (oeuvre_brenner_1985, distinction_turn11, encounter_hintze, trajectory) · the July
+vision (`communications/vision_2026-07/INDEX.md`) · the auto-memory (`~/.claude/projects/-home-evgeny-projects-the-analyst/memory/`).
