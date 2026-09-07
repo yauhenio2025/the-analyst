@@ -1,4 +1,5 @@
 # The oeuvre family (2026-09-07). Corpus readings over one focal text and the profiles of the author's other texts.
+# Walls: a row that anchors in one text is document-scope; a row that pairs two texts (anchor-b) is corpus-scope.
 engine_key: epistemic_rupture
 engine_name: Epistemic rupture detector
 stance_operationalizations: []
@@ -85,7 +86,7 @@ process:
     indicators:
     - break
     - turn
-    scope: corpus
+    scope: document
     load_bearing: true
     id_prefix: E3
     answer_shape: '[E3.F<n>] <the verdict in one sentence> — dim: verdict — verdict: rupture|reorientation|deepening|continuity|outlier
@@ -102,7 +103,7 @@ process:
       reading against the supplied profiles and the focal text.'
     indicators:
     - would show
-    scope: corpus
+    scope: document
     load_bearing: false
     id_prefix: E4
     answer_shape: '[E4.F<n>] <the test in one sentence> — dim: test — source: <uid/year or a work not held> — held:
@@ -141,3 +142,4 @@ process:
     brief: 1. One paragraph with the verdict and the two halves, then the continuity table (what · before · after
       · finding), the break table (what · before · after · at focal · finding), and the tests ranked. 2. Continuity
       is a valid verdict; every cell cites its finding.
+    max_rows: 6

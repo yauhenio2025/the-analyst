@@ -1,4 +1,5 @@
 # The oeuvre family (2026-09-07). Corpus readings over one focal text and the profiles of the author's other texts.
+# Walls: a row that anchors in one text is document-scope; a row that pairs two texts (anchor-b) is corpus-scope.
 engine_key: retrospective_reading
 engine_name: The focal text as the culmination of what came before
 stance_operationalizations: []
@@ -80,7 +81,7 @@ process:
     indicators:
     - against
     - critique
-    scope: corpus
+    scope: document
     load_bearing: false
     id_prefix: R3
     answer_shape: '[R3.F<n>] <the interlocutor in one sentence> — dim: interlocutor — who: <name> — inherited: yes|no
@@ -98,7 +99,7 @@ process:
       must judge the reading against the supplied profiles and the focal text.'
     indicators:
     - therefore
-    scope: corpus
+    scope: document
     load_bearing: true
     id_prefix: R4
     answer_shape: '[R4.F<n>] <the verdict in one sentence> — dim: verdict — verdict: culmination|continuation|departure
@@ -135,3 +136,4 @@ process:
     brief: 1. One paragraph reading the text as the end of a road, then the inheritance table (what · from · done
       with it · finding), the resolution table, and the verdict with its label. 2. Nothing from later texts; every
       cell cites its finding.
+    max_rows: 6

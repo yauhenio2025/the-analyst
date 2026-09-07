@@ -1,4 +1,5 @@
 # The oeuvre family (2026-09-07). Corpus readings over one focal text and the profiles of the author's other texts.
+# Walls: a row that anchors in one text is document-scope; a row that pairs two texts (anchor-b) is corpus-scope.
 engine_key: oeuvre_position_memo
 engine_name: 'The paper''s place in the oeuvre: the memo'
 stance_operationalizations: []
@@ -42,7 +43,7 @@ process:
       the reading against the supplied profiles and the focal text.'
     indicators:
     - in the whole
-    scope: corpus
+    scope: document
     load_bearing: true
     id_prefix: M1
     answer_shape: '[M1.F<n>] <the position in one sentence> — dim: position — position: opening|culmination|middle|end|reorientation|outlier
@@ -60,7 +61,7 @@ process:
       and the focal text.'
     indicators:
     - read
-    scope: corpus
+    scope: document
     load_bearing: true
     id_prefix: M2
     answer_shape: '[M2.F<n>] <the text and why> — dim: read_next — text: <uid/year or a work not held> — held: yes|no|unknown
@@ -77,7 +78,7 @@ process:
       reading against the supplied profiles and the focal text.'
     indicators:
     - unclear
-    scope: corpus
+    scope: document
     load_bearing: false
     id_prefix: M3
     answer_shape: '[M3.F<n>] <the open question> — dim: open — decided_by: <one clause> — held: yes|no|unknown —
@@ -114,3 +115,4 @@ process:
       it seeds), read whole (the joined verdict, with what breaks and what persists), and the reading route (three
       to five texts, ranked, with why). Then the open question. Name texts as uid/year with their titles. 2. Every
       claim cites an upstream finding ID or one of this memo''s own rows; do not restate the upstream tables.'
+    max_rows: 6

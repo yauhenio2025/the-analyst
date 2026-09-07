@@ -81,7 +81,7 @@ def actions_for(rows: list[dict], registry=None) -> list[dict]:
         suggested = suggest(kind, fields, registry)
         if kind in ("epistemic_rupture.test", "oeuvre_position_memo.read_next") and f.get("held", "").lower() == "yes":
             suggested = [s for s in suggested if s["organ"] == "the-stacks"]   # held: a bundle or a profile, not a fetch
-        out.append({"finding": r["id"], "kind": kind, "cited": f.get("cited") or f.get("source") or f.get("text") or "", "row": r["text"], "held": f.get("held", ""),
+        out.append({"finding": f"{r['engine']}/{r['id']}", "kind": kind, "cited": f.get("cited") or f.get("source") or f.get("text") or "", "row": r["text"], "held": f.get("held", ""),
                     "in_referee": f.get("in_referee", ""), "used_for": f.get("used_for") or f.get("for") or f.get("why") or "", "conjecture": r["conjecture"], "actions": suggested})
     return out
 

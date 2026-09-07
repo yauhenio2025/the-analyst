@@ -1,4 +1,5 @@
 # The oeuvre family (2026-09-07). Corpus readings over one focal text and the profiles of the author's other texts.
+# Walls: a row that anchors in one text is document-scope; a row that pairs two texts (anchor-b) is corpus-scope.
 engine_key: prospective_reading
 engine_name: The focal text as step one of a journey
 stance_operationalizations: []
@@ -76,7 +77,7 @@ process:
       anchors and IDs; the model must judge the reading against the supplied profiles and the focal text.'
     indicators:
     - never again
-    scope: corpus
+    scope: document
     load_bearing: false
     id_prefix: P3
     answer_shape: '[P3.F<n>] <the abandoned element in one sentence> — dim: abandoned — what: <concept, claim or
@@ -94,7 +95,7 @@ process:
       reading against the supplied profiles and the focal text.'
     indicators:
     - therefore
-    scope: corpus
+    scope: document
     load_bearing: true
     id_prefix: P4
     answer_shape: '[P4.F<n>] <the verdict in one sentence> — dim: verdict — verdict: origin|way_station|dead_end
@@ -131,3 +132,4 @@ process:
     brief: 1. One paragraph reading the text as a first step, then the seeds table (what · developed in · how ·
       finding), the uptake table (in · role · warrant · finding), the abandoned list, and the verdict with its label.
       2. Nothing from earlier texts; every cell cites its finding.
+    max_rows: 6

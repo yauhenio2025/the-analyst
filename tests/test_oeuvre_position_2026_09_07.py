@@ -121,16 +121,16 @@ def test_the_oeuvre_renders_by_code_with_the_verdicts_and_the_actions_the_findin
     assert [r["id"] for r in out["read_next"]] == ["M2.F1", "M2.F2"] and out["open"][0]["decided_by"] == "reading it"
     assert [s["dim"] for s in out["shifts"]] == ["first_cited", "dropped", "unexamined", "unexamined"] and out["shifts"][1]["conjecture"] is True
     acts = {a["finding"]: a for a in out["actions"]}
-    assert set(acts) == {"C5.F1", "C5.F2", "E4.F1", "M2.F1", "M2.F2"}          # C1.F1 is held and known: nothing to do
-    guizot_work = acts["C5.F1"]
+    assert set(acts) == {"citation_shift/C5.F1", "citation_shift/C5.F2", "epistemic_rupture/E4.F1", "oeuvre_position_memo/M2.F1", "oeuvre_position_memo/M2.F2"}   # C1.F1 is held and known: nothing to do
+    guizot_work = acts["citation_shift/C5.F1"]
     assert guizot_work["kind"] == "citation_shift.unexamined" and guizot_work["held"] == "no"
     fetch = next(a for a in guizot_work["actions"] if a["action"] == "referee.pdf-fetch")
     assert fetch["inputs"]["work_title"] == "Histoire de la civilisation en Europe" and fetch["inputs"]["work_author"] == "Guizot, François" and fetch["inputs"]["work_year"] == "1830"
-    guizot_person = acts["C5.F2"]
+    guizot_person = acts["citation_shift/C5.F2"]
     exists = next(a for a in guizot_person["actions"] if a["action"] == "referee.thinker-exists")
     assert exists["inputs"] == {"thinker_name": "Guizot, François"} and exists["cost"] == "none"
-    assert all(a["organ"] == "the-stacks" for a in acts["M2.F1"]["actions"])       # held: bundle or profile, never a fetch
-    assert any(a["action"] == "referee.pdf-fetch" for a in acts["E4.F1"]["actions"])   # a test on an unheld text: fetch it
+    assert all(a["organ"] == "the-stacks" for a in acts["oeuvre_position_memo/M2.F1"]["actions"])       # held: bundle or profile, never a fetch
+    assert any(a["action"] == "referee.pdf-fetch" for a in acts["epistemic_rupture/E4.F1"]["actions"])   # a test on an unheld text: fetch it
     assert render_oeuvre({"id": "x", "analysis": {}}) is None
 
 

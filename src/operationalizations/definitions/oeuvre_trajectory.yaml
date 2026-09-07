@@ -1,4 +1,5 @@
 # The oeuvre family (2026-09-07). Corpus readings over one focal text and the profiles of the author's other texts.
+# Walls: a row that anchors in one text is document-scope; a row that pairs two texts (anchor-b) is corpus-scope.
 engine_key: oeuvre_trajectory
 engine_name: The author's agendas and turns
 stance_operationalizations: []
@@ -44,7 +45,7 @@ process:
     - argues
     - question
     - against
-    scope: corpus
+    scope: document
     load_bearing: true
     id_prefix: T1
     answer_shape: '[T1.F<n>] <the agenda in one sentence> — dim: agenda — question: <its question> — span: <first
@@ -124,3 +125,4 @@ process:
       as a table (from · to · at · what changed · finding), then one paragraph on the focal text's place with its
       position label. 2. Every cell cites its finding; same-year texts are unordered; say which texts the sample
       lacks.
+    max_rows: 6

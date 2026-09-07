@@ -1,4 +1,5 @@
 # The oeuvre family (2026-09-07). Corpus readings over one focal text and the profiles of the author's other texts.
+# Walls: a row that anchors in one text is document-scope; a row that pairs two texts (anchor-b) is corpus-scope.
 engine_key: citation_shift
 engine_name: What the focal text cites, against the rest
 stance_operationalizations: []
@@ -46,7 +47,7 @@ process:
     - cites
     - following
     - see
-    scope: corpus
+    scope: document
     load_bearing: true
     id_prefix: C1
     answer_shape: '[C1.F<n>] <the first citation in one sentence> — dim: first_cited — cited: <work or person> —
@@ -66,7 +67,7 @@ process:
     indicators:
     - earlier
     - no longer
-    scope: corpus
+    scope: document
     load_bearing: true
     id_prefix: C2
     answer_shape: '[C2.F<n>] <the drop in one sentence> — dim: dropped — cited: <work or person> — kind: work|person
@@ -105,7 +106,7 @@ process:
     indicators:
     - literature
     - debate
-    scope: corpus
+    scope: document
     load_bearing: true
     id_prefix: C4
     answer_shape: '[C4.F<n>] <the cluster in one sentence> — dim: anomaly — members: <works or persons> — used_for:
@@ -124,7 +125,7 @@ process:
     indicators:
     - cf.
     - see
-    scope: corpus
+    scope: document
     load_bearing: true
     id_prefix: C5
     answer_shape: '[C5.F<n>] <the unexamined citation in one sentence> — dim: unexamined — cited: <work or person>
@@ -163,3 +164,4 @@ process:
     brief: '1. One table (cited · kind · first_cited/dropped/carried/anomaly/unexamined · for · held · in_referee
       · finding), then a paragraph on what the pattern says about the text. 2. The unexamined rows are what the
       desk turns into actions: keep held and in_referee exactly as the packet gives them.'
+    max_rows: 6
