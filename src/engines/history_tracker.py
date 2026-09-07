@@ -120,9 +120,9 @@ def diff_definitions(
     changes: list[FieldChange] = []
 
     # ── Top-level scalars ──
-    for field_name in ["problematique", "researcher_question", "version"]:
-        old_val = getattr(old_def, field_name)
-        new_val = getattr(new_def, field_name)
+    for field_name in ["problematique", "researcher_question", "version", "kind", "operation", "category", "function"]:
+        old_val = getattr(old_def, field_name, None)
+        new_val = getattr(new_def, field_name, None)
         if old_val != new_val:
             changes.append(
                 FieldChange(
@@ -450,6 +450,12 @@ def check_and_record_changes(
         )
     else:
         changes = diff_definitions(prev_def, cap_def)
+        if not changes:
+            # The hash moved but the record did not: a schema change (a new field on every definition) or a formatting
+            # difference. History records changes to records, not to the schema — refresh the snapshot so the hash settles
+            # and write nothing (2026-09-07: adding `operation` had written "No changes detected" into 166 files).
+            _save_snapshot(cap_def)
+            return None
         summary = generate_summary(changes, cap_def.engine_key)
         entry = HistoryEntry(
             timestamp=datetime.now(timezone.utc).isoformat(),
