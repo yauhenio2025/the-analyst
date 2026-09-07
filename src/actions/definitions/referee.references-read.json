@@ -1,10 +1,13 @@
 {
   "key": "referee.references-read",
   "organ": "the-referee",
-  "name": "Read whom a fetched work cites",
+  "name": "Read whom a work cites (its bibliography)",
   "when": [
     "citation_shift.unexamined",
     "citation_shift.anomaly",
+    "epistemic_rupture.test",
+    "oeuvre_position_memo.read_next",
+    "work.references_unknown",
     "work.fetched"
   ],
   "inputs": [
@@ -12,13 +15,13 @@
     "referee_thinker_id",
     "budget_usd"
   ],
-  "route": "POST /api/cross-citations/queries/{id}/cited-works/extract → …/consolidate → GET …/cited-works · POST /api/thinkers/{id}/study {budget_usd, phase_limit}",
+  "route": "POST /api/cross-citations/queries/{query_id}/cited-works/extract → POST …/cited-works/consolidate → GET …/cited-works (+ …/recommend, …/resolve-scholar) · whole thinker: POST /api/thinkers/{thinker_id}/study {budget_usd, phase_limit} · the Stacks' own reading: POST /internal/stacks/thinker-cites, GET /thinkers/{thinker_id}/outward-cites",
   "cost": "cents",
-  "cost_note": "Gemini flash-lite per bibliography, flash per 40-group chunk; a thinker study is budgeted in dollars",
-  "side_effects": "cited-works rows shared across queries; study phases",
-  "yields": "the work's references, matched to the pool",
+  "cost_note": "extraction Gemini flash-lite per PDF; consolidation ≈ cents per 40-group chunk; a thinker study is dollars (budgeted)",
+  "side_effects": "cited-work rows per query (canonical clusters, matches to seeds and the citing pool); study artifacts",
+  "gated_by": "a PDF must exist; a study needs an explicit budget",
+  "yields": "cited works with cited_by_seeds, in_external_pool, mutual marks; AI picks",
   "owner": "the-referee",
-  "gated_by": "",
   "version": "2026-09-07",
   "evidence": [],
   "note": ""
