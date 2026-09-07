@@ -124,12 +124,13 @@ def test_the_oeuvre_renders_by_code_with_the_verdicts_and_the_actions_the_findin
     assert set(acts) == {"citation_shift/C5.F1", "citation_shift/C5.F2", "epistemic_rupture/E4.F1", "oeuvre_position_memo/M2.F1", "oeuvre_position_memo/M2.F2"}   # C1.F1 is held and known: nothing to do
     guizot_work = acts["citation_shift/C5.F1"]
     assert guizot_work["kind"] == "citation_shift.unexamined" and guizot_work["held"] == "no"
+    assert all(not a["missing"] for a in guizot_work["actions"]) and any(w["action"] == "referee.citations-harvest" and "referee_thinker_id" in w["missing"] for w in guizot_work["waiting"])   # ready ones as buttons, the rest named with what they lack
     fetch = next(a for a in guizot_work["actions"] if a["action"] == "referee.pdf-fetch")
     assert fetch["inputs"]["work_title"] == "Histoire de la civilisation en Europe" and fetch["inputs"]["work_author"] == "Guizot, François" and fetch["inputs"]["work_year"] == "1830"
     guizot_person = acts["citation_shift/C5.F2"]
     exists = next(a for a in guizot_person["actions"] if a["action"] == "referee.thinker-exists")
     assert exists["inputs"] == {"thinker_name": "Guizot, François"} and exists["cost"] == "none"
-    assert all(a["organ"] == "the-stacks" for a in acts["oeuvre_position_memo/M2.F1"]["actions"])       # held: bundle or profile, never a fetch
+    assert all(a["organ"] == "the-stacks" for a in acts["oeuvre_position_memo/M2.F1"]["actions"] + acts["oeuvre_position_memo/M2.F1"]["waiting"])       # held: bundle or profile, never a fetch
     assert any(a["action"] == "referee.pdf-fetch" for a in acts["epistemic_rupture/E4.F1"]["actions"])   # a test on an unheld text: fetch it
     assert render_oeuvre({"id": "x", "analysis": {}}) is None
 
