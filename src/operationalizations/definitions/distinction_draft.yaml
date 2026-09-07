@@ -64,10 +64,11 @@ process:
     scope: document
     load_bearing: true
     id_prefix: D2
-    answer_shape: '[D2.F<n>] <his position> vs <their claim>: <relation> on <axis> — dim: relation — interlocutor: <name>
-      — question: <I1 id> — position: <D1 id> — claim: <I2 id> — relation: parallel|collides|overlaps_then_diverges|absorbs|irrelevant
-      — axis: <phrase> — ours: <one clause> — theirs: <one clause> — bridge: <one clause> — bears_on: <the numbers of the argument's parts the interlocutor's claim touches, separated by ;, or none> — anchor: "<verbatim from the
-      turn, <=200 chars>" — doc: <the turn''s document key> — confidence: high|medium|low'
+    answer_shape: '[D2.F<n>] <his position> vs <their claim>: <relation> on <axis> — dim: relation — interlocutor: <name> — question: <I1
+        id> — position: <D1 id> — claim: <I2 id> — relation: parallel|collides|overlaps_then_diverges|absorbs|irrelevant — axis:
+        <phrase> — ours: <one clause> — theirs: <one clause> — bridge: <one clause> — bears_on: <the numbers of the argument parts
+        the claim touches, separated by semicolons, or none> — anchor: "<verbatim from the turn, <=200 chars>" — doc: <the turn''s
+        document key> — confidence: high|medium|low'
   - key: question_back
     name: The question to the owner
     questions:

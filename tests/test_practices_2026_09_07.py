@@ -28,7 +28,7 @@ def test_practices_are_served_by_task_kind_as_records():
     block = packet_block(person)
     assert all(set(b) == {"practice", "name", "task_kinds", "owner", "when", "shape", "ingredients", "yields", "misses", "evidence"} for b in block)
     assert all(len(b["shape"]) <= 400 for b in block)     # gs_revamp clips a field past 400 chars before it touches a prompt
-    assert reg.task_kinds() == ["institution-harvest", "paper-discovery", "pdf-fetch", "person-harvest", "work-identity"]
+    assert set(["institution-harvest", "paper-discovery", "pdf-fetch", "person-harvest", "work-identity"]) <= set(reg.task_kinds())   # the registry grows (analysis-search, reaction-follow-up, 2026-09-07)
 
 
 def test_a_yield_writes_back_onto_the_practice(tmp_path):
