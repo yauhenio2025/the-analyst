@@ -132,3 +132,32 @@ def test_the_oeuvre_renders_by_code_with_the_verdicts_and_the_actions_the_findin
     assert all(a["organ"] == "the-stacks" for a in acts["M2.F1"]["actions"])       # held: bundle or profile, never a fetch
     assert any(a["action"] == "referee.pdf-fetch" for a in acts["E4.F1"]["actions"])   # a test on an unheld text: fetch it
     assert render_oeuvre({"id": "x", "analysis": {}}) is None
+
+
+def test_an_engines_only_job_on_a_fixed_path_takes_the_fast_lane(monkeypatch):
+    """No reconnaissance profiling, no brief desk call, no planner call: the documents are what the engines read and the recipe is
+    the plan (the oeuvre pilot's first minutes went to profiling 59 profiles)."""
+    from src.dossier import runner, plan as P
+    from src.dossier.schemas import DossierJob, DossierOptions, OutputOptions, PathRequest
+    from src.sources.schemas import Document
+    job = DossierJob(id="d-fast", status="queued", options=DossierOptions(intent="x", entry="chosen", path=PathRequest(chain_key="oeuvre_position"), output=OutputOptions(text=False, tables=False, figures=0, plates=0)))
+    assert runner._fast_lane(job) and not runner._fast_lane(DossierJob(id="d-slow", options=DossierOptions(intent="x", output=OutputOptions(text=False, tables=False, figures=0, plates=0))))
+    docs = [Document(key="focal:em:F", title="F", text="the focal text"), Document(key="before:em:B", title="B", text="a profile")]
+    calls = []
+    monkeypatch.setattr(runner, "update_job", lambda job_id, **f: calls.append(("update", f)))
+    monkeypatch.setattr(runner, "_persist_factory", lambda job_id: (lambda **f: calls.append(("persist", f))))
+    monkeypatch.setattr(runner.events, "emit", lambda *a, **k: None)
+    monkeypatch.setattr(runner, "is_cancelled", lambda job_id: False)
+    import src.dossier.reconnaissance as R, src.dossier.brief as B
+    monkeypatch.setattr(R, "run_reconnaissance", lambda *a, **k: (_ for _ in ()).throw(AssertionError("reconnaissance must not run on the fast lane")))
+    monkeypatch.setattr(B, "run_brief", lambda *a, **k: (_ for _ in ()).throw(AssertionError("the brief desk must not run on the fast lane")))
+    runner._run_step(job, "reconnaissance", docs)
+    assert [p.doc_key for p in job.profiles.profiles] == ["focal:em:F", "before:em:B"] and not job.profiles.profiles[0].key_claims
+    runner._run_step(job, "brief", docs)
+    assert job.chosen_option == runner.OWN_PATH_KEY and job.brief.option(runner.OWN_PATH_KEY) is not None
+    monkeypatch.setattr(P, "call_json", lambda *a, **k: (_ for _ in ()).throw(AssertionError("the planner must not be called on the fast lane")))
+    monkeypatch.setattr(P, "build_executor_plan", lambda job, docs, plan, option: type("X", (), {"plan_id": "plan-fast"})())
+    monkeypatch.setattr(P.events, "emit", lambda *a, **k: None)
+    runner._run_step(job, "plan", docs)
+    assert job.plan.plan_id == "plan-fast" and [p.engine_key for p in job.plan.phases] == ["oeuvre_trajectory", "citation_shift", "retrospective_reading", "prospective_reading", "epistemic_rupture", "oeuvre_position_memo"]
+    assert [p.scope for p in job.plan.phases][2:4] == [["focal:", "before:"], ["focal:", "after:"]] and job.plan.estimated_llm_calls == 6

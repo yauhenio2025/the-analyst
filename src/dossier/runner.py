@@ -225,6 +225,14 @@ def _run(job_id: str) -> None:
 DESK_STEPS = ("spine", "tables", "figures", "plates", "compose", "crosscheck")
 
 
+def _fast_lane(job: DossierJob) -> bool:
+    """An engines-only job that fixed its path on the request (a recipe or steps) needs no reconnaissance, no brief and no
+    planner call: its documents are what the engines read, its path is the plan (2026-09-07; the oeuvre pilot spent its
+    first minutes profiling 59 documents that were profiles already)."""
+    o = job.options
+    return _engines_only(job) and o.entry == "chosen" and o.path is not None and bool(o.path.steps or o.path.chain_key)
+
+
 def _engines_only(job: DossierJob) -> bool:
     """A job that asked for no text, tables, figures or plates wants its engines' ledgers and nothing else (the Stacks'
     one-engine calls: the fidelity audit over an index, the evidential frame over a memo; 2026-09-06)."""
@@ -285,13 +293,35 @@ def _run_step(job: DossierJob, step: str, docs) -> None:
     started = time.time()
     persist = _persist_factory(job_id)
     summary = ""
-    if step == "reconnaissance":
+    if step == "reconnaissance" and _fast_lane(job):
+        from src.dossier.schemas import DocumentProfile, Reconnaissance
+
+        recon = Reconnaissance(profiles=[DocumentProfile(doc_key=d.key, title=d.title, one_line=f"{d.creators} ({d.year})" if d.creators else "", genre=getattr(d, "role", "source")) for d in docs])
+        job.profiles = recon
+        persist(profiles=recon)
+        events.emit(job_id, "note", phase=step, detail=f"fast lane: engines only on a fixed path; {len(docs)} documents listed, none profiled (the engines read them whole)")
+        summary = f"{len(docs)} documents listed (fast lane, no profiling)"
+    elif step == "reconnaissance":
         from src.dossier.reconnaissance import run_reconnaissance
 
         recon = run_reconnaissance(job, docs, persist=persist, cancel_check=lambda: is_cancelled(job_id), context_documents=context_docs)
         job.profiles = recon
         persist(profiles=recon)
         summary = f"{len(recon.profiles)} profiles, {sum(len(p.key_claims) for p in recon.profiles)} anchored claims"
+    elif step == "brief" and _fast_lane(job):
+        from src.dossier.schemas import Brief, BriefOption, Path as BriefPath, Shape
+
+        brief = Brief(entry="chosen", options=[BriefOption(
+            key=OWN_PATH_KEY, title="Your own path", deliverable_kind="case_file", use_kind="learn",
+            deliverable="The engines along the path chosen on the request; no desk writes a deliverable.",
+            shape=Shape(), path=BriefPath(), best_when="Pick this when you know the analysis you want.",
+            notes=["own path: chosen on the request (fast lane: no brief desk call)"])], notes=["fast lane"])
+        job.brief = brief
+        job.chosen_option = OWN_PATH_KEY
+        persist(brief=brief, chosen_option=OWN_PATH_KEY)
+        events.emit(job_id, "note", phase=step, detail="fast lane: the path was chosen on the request; no brief desk call",
+                    payload_json={"kind": "material_decided", "option_key": OWN_PATH_KEY})
+        summary = "own path (fast lane)"
     elif step == "brief":
         from src.dossier.brief import run_brief
 
@@ -321,9 +351,9 @@ def _run_step(job: DossierJob, step: str, docs) -> None:
         persist(**fields)
         summary = " / ".join(o.title for o in brief.options)
     elif step == "plan":
-        from src.dossier.plan import run_plan
+        from src.dossier.plan import run_fixed_plan, run_plan
 
-        plan = run_plan(job, docs)
+        plan = run_fixed_plan(job, docs) if _fast_lane(job) else run_plan(job, docs)
         job.plan = plan
         job.plan_id = plan.plan_id
         persist(plan=plan, plan_id=plan.plan_id)

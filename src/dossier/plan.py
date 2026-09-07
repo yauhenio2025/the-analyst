@@ -181,6 +181,30 @@ def build_executor_plan(job: DossierJob, docs: list[Document], plan: DossierPlan
     return exec_plan
 
 
+def run_fixed_plan(job: DossierJob, docs: list[Document]) -> DossierPlan:
+    """The plan of a chosen path without a model call (the fast lane, 2026-09-07): exactly the path's steps at their depths and
+    scopes; the context emphasis is the recipe's own line. For an engines-only job that named its recipe (the Stacks' pair
+    jobs, the oeuvre workflow) the planner's call bought nothing but a rationale."""
+    catalog = engine_catalog()
+    by_key = {e["engine_key"]: e for e in catalog}
+    option = chosen_option(job)
+    fixed = fixed_path(job, option, by_key)
+    if fixed is None:
+        return run_plan(job, docs)
+    phases = fixed_phases(fixed, [], by_key)
+    corpus_chars = sum(d.char_count for d in docs)
+    total_passes = sum(p.passes for p in phases)
+    cost, minutes = estimate_engine_run(corpus_chars, total_passes)
+    plan = DossierPlan(phases=phases, strategy_rationale="the path was fixed on the request; no planner call (fast lane)",
+                       alternatives_considered=[], estimated_llm_calls=total_passes, estimated_cost_usd=cost)
+    exec_plan = build_executor_plan(job, docs, plan, option)
+    plan.plan_id = exec_plan.plan_id
+    events.emit(job.id, "artifact", phase=STEP,
+                detail="plan (fixed, no planner call): " + " → ".join(f"{p.engine_key}@{p.depth}" + (f" [{', '.join(p.scope)}]" if p.scope else "") for p in phases) + f" ({total_passes} passes, est ${cost:.2f}, ~{minutes} min)",
+                payload_json={"kind": "plan", "plan_id": exec_plan.plan_id, "phases": [p.model_dump() for p in phases], "strategy_rationale": plan.strategy_rationale, "alternatives_considered": []})
+    return plan
+
+
 def run_plan(job: DossierJob, docs: list[Document]) -> DossierPlan:
     catalog = engine_catalog()
     by_key = {e["engine_key"]: e for e in catalog}
