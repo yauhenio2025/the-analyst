@@ -1,0 +1,77 @@
+{
+ "workflow_key": "oeuvre_position",
+ "workflow_name": "A paper's place in its author's oeuvre",
+ "category": "analysis",
+ "version": 1,
+ "description": "Evgeny, 2026-09-07: what role does one paper play in the author's oeuvre? Six engines over the focal text and the profiles of the author's other texts: the agendas and turns, the citation shifts, the text read as a culmination (before only), as an origin (after only), the rupture test, and the memo that joins them with a reading route and the actions the findings license. Runs as the dossier recipe oeuvre_position (engines only); read back as GET /v1/dossier/jobs/{id}/oeuvre.",
+ "phases": [
+  {
+   "phase_number": 1.0,
+   "phase_name": "Agendas and turns",
+   "phase_description": "The oeuvre's research agendas, the turns between them, the focal text's place.",
+   "engine_key": "oeuvre_trajectory",
+   "depends_on_phases": []
+  },
+  {
+   "phase_number": 2.0,
+   "phase_name": "Citation shifts",
+   "phase_description": "First citations, drops, carried citations, anomalies, unexamined literature (the action rows).",
+   "engine_key": "citation_shift",
+   "depends_on_phases": []
+  },
+  {
+   "phase_number": 3.0,
+   "phase_name": "Retrospective reading",
+   "phase_description": "The focal text with only what came before: inheritance, resolution, interlocutors, culmination verdict. Scope: focal + before.",
+   "engine_key": "retrospective_reading",
+   "depends_on_phases": [],
+   "context_parameters": {
+    "source_scope": [
+     "focal:",
+     "before:"
+    ]
+   }
+  },
+  {
+   "phase_number": 4.0,
+   "phase_name": "Prospective reading",
+   "phase_description": "The focal text with only what came after: seeds, uptake, abandoned, origin verdict. Scope: focal + after.",
+   "engine_key": "prospective_reading",
+   "depends_on_phases": [],
+   "context_parameters": {
+    "source_scope": [
+     "focal:",
+     "after:"
+    ]
+   }
+  },
+  {
+   "phase_number": 5.0,
+   "phase_name": "Epistemic rupture",
+   "phase_description": "Continuity and break across the focal text; the verdict and the two halves; the tests.",
+   "engine_key": "epistemic_rupture",
+   "depends_on_phases": []
+  },
+  {
+   "phase_number": 6.0,
+   "phase_name": "The memo",
+   "phase_description": "The holistic reading: the joined verdict, what to read next, the open question; the actions the findings license.",
+   "engine_key": "oeuvre_position_memo",
+   "depends_on_phases": [
+    1.0,
+    2.0,
+    3.0,
+    4.0,
+    5.0
+   ]
+  }
+ ],
+ "required_inputs": [
+  "oeuvre"
+ ],
+ "optional_inputs": [],
+ "output_description": "The memo on the paper's place, its verdicts, a reading route and suggested actions.",
+ "linked_transformation_keys": [],
+ "source_project": "the-analyst",
+ "target_page": "dossier"
+}

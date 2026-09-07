@@ -1,0 +1,133 @@
+# The oeuvre family (2026-09-07). Corpus readings over one focal text and the profiles of the author's other texts.
+engine_key: prospective_reading
+engine_name: The focal text as step one of a journey
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: 'Read as if nothing preceded: what in the focal text is developed later, what is abandoned, and is
+    it an origin?'
+  framing: 'The corpus is one author''s oeuvre around one FOCAL text: the focal text whole (key focal:<uid>), and
+    one document per other text by the author carrying that text''s PROFILE (keys before:<uid> and after:<uid>,
+    by date): thesis, question, object, tradition, concepts with glosses, people with roles and stances, works cited
+    with loci, claims, positions, verified passages. A packet supplied as context lists the texts in order with
+    years and what is held. A profile is a summary made by a model and checked against its text: quote it as what
+    the profile records, never as the author''s words unless the passage is marked verified. Dates come from the
+    packet; same-year texts are unordered. The held sample is not the whole oeuvre: say what it does not cover.
+    Only the focal text and the LATER profiles are supplied; do not speculate about earlier texts.'
+  scoped_outcomes: false
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: seed
+    name: A seed developed later
+    questions:
+    - Which concept, claim or move of the focal text do later texts develop?
+    method_card: 'Do: One row per seed: what it is here, and where and how a later text develops it. Anchor in the
+      focal text, anchor-b in the later profile. Select literal spans that carry the actor, predicate, object and
+      necessary qualification. A name or topic alone cannot support a reading. Use separate anchor-b/doc-b for a
+      second span; never stitch quotations. Keep attribution, negation, modality and chronology. Code checks only
+      anchors and IDs; the model must judge the reading against the supplied profiles and the focal text.'
+    indicators:
+    - later
+    - develops
+    scope: corpus
+    load_bearing: true
+    id_prefix: P1
+    answer_shape: '[P1.F<n>] <the seed in one sentence> — dim: seed — what: <concept, claim or move> — developed_in:
+      <uid/year> — how: <one clause> — anchor: "<verbatim, <=200 chars>" — doc: <actual supplied source key> — anchor-b:
+      "<verbatim from the other text, <=200 chars>" — doc-b: <different source key> — confidence: high|medium|low'
+  - key: developed_into
+    name: What the later texts make of it
+    questions:
+    - 'Which later works take the focal text up as a whole, and in what role: source, foil, framework, courtesy?'
+    method_card: 'Do: One row per later text that takes it up: the role and the warrant. Anchor in the later profile,
+      anchor-b in the focal text. Select literal spans that carry the actor, predicate, object and necessary qualification.
+      A name or topic alone cannot support a reading. Use separate anchor-b/doc-b for a second span; never stitch
+      quotations. Keep attribution, negation, modality and chronology. Code checks only anchors and IDs; the model
+      must judge the reading against the supplied profiles and the focal text.'
+    indicators:
+    - as argued in
+    - builds on
+    scope: corpus
+    load_bearing: true
+    id_prefix: P2
+    answer_shape: '[P2.F<n>] <the uptake in one sentence> — dim: developed_into — in: <uid/year> — role: evidence|adopted_framework|opponent|courtesy|qualified_role
+      — warrant: <one clause> — anchor: "<verbatim, <=200 chars>" — doc: <actual supplied source key> — anchor-b:
+      "<verbatim from the other text, <=200 chars>" — doc-b: <different source key> — confidence: high|medium|low'
+  - key: abandoned
+    name: What is not taken up
+    questions:
+    - What in the focal text does no later text return to?
+    method_card: 'Do: One row per abandoned element: what it is, and the nearest later text that could have used
+      it and did not. Anchor in the focal text. Select literal spans that carry the actor, predicate, object and
+      necessary qualification. A name or topic alone cannot support a reading. Use separate anchor-b/doc-b for a
+      second span; never stitch quotations. Keep attribution, negation, modality and chronology. Code checks only
+      anchors and IDs; the model must judge the reading against the supplied profiles and the focal text.'
+    indicators:
+    - never again
+    scope: corpus
+    load_bearing: false
+    id_prefix: P3
+    answer_shape: '[P3.F<n>] <the abandoned element in one sentence> — dim: abandoned — what: <concept, claim or
+      move> — nearest: <uid/year, or none> — anchor: "<verbatim, <=200 chars>" — doc: <actual supplied source key>
+      — confidence: high|medium|low'
+  - key: verdict
+    name: Origin or not
+    questions:
+    - 'Read only with what came after: is the focal text the origin of the later agenda, a way-station, or a dead
+      end?'
+    method_card: 'Do: One row: the verdict with the warrant from the seed and uptake rows. Anchor in the focal text.
+      Select literal spans that carry the actor, predicate, object and necessary qualification. A name or topic
+      alone cannot support a reading. Use separate anchor-b/doc-b for a second span; never stitch quotations. Keep
+      attribution, negation, modality and chronology. Code checks only anchors and IDs; the model must judge the
+      reading against the supplied profiles and the focal text.'
+    indicators:
+    - therefore
+    scope: corpus
+    load_bearing: true
+    id_prefix: P4
+    answer_shape: '[P4.F<n>] <the verdict in one sentence> — dim: verdict — verdict: origin|way_station|dead_end
+      — warrant: <one clause> — of_agenda: <which> — anchor: "<verbatim, <=200 chars>" — doc: <actual supplied source
+      key> — confidence: high|medium|low'
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension
+    model_tier: cheap
+    output: ledger
+    max_rows: 6
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - merge_duplicates
+    - hunt_misses
+    - name_must_keep
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: a scholar who reads the author from this text onward and knows nothing earlier
+    tables:
+    - seeds_and_uptake
+    brief: 1. One paragraph reading the text as a first step, then the seeds table (what · developed in · how ·
+      finding), the uptake table (in · role · warrant · finding), the abandoned list, and the verdict with its label.
+      2. Nothing from earlier texts; every cell cites its finding.

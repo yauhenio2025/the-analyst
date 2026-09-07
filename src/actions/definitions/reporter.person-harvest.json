@@ -1,0 +1,24 @@
+{
+  "key": "reporter.person-harvest",
+  "organ": "the-reporter",
+  "name": "Harvest a person's press: interviews, essays, talks",
+  "when": [
+    "citation_shift.unexamined",
+    "person.public"
+  ],
+  "inputs": [
+    "person_name",
+    "name_forms",
+    "byline_anchors"
+  ],
+  "route": "POST /api/briefs {person: {name, forms[], byline_anchors[], open_queries}}",
+  "cost": "dollars",
+  "cost_note": "≈ $3 per person brief (30 venue + 10 open queries)",
+  "side_effects": "a brief with its ledger",
+  "gated_by": "the owner's yes",
+  "yields": "the pieces found, judged",
+  "owner": "the-reporter",
+  "version": "2026-09-07",
+  "evidence": [],
+  "note": ""
+}

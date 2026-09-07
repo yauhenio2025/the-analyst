@@ -1,0 +1,22 @@
+{
+  "key": "stacks.profile-text",
+  "organ": "the-stacks",
+  "name": "Profile a held text (what it argues)",
+  "when": [
+    "oeuvre_position_memo.read_next",
+    "text.unprofiled"
+  ],
+  "inputs": [
+    "uid"
+  ],
+  "route": "POST /api/items/{uid}/profile",
+  "cost": "cents",
+  "side_effects": "a work profile on the item",
+  "yields": "thesis, question, concepts, people, works cited, claims, positions, passages",
+  "owner": "the-stacks",
+  "cost_note": "",
+  "gated_by": "",
+  "version": "2026-09-07",
+  "evidence": [],
+  "note": ""
+}

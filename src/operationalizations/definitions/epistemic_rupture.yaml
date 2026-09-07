@@ -1,0 +1,143 @@
+# The oeuvre family (2026-09-07). Corpus readings over one focal text and the profiles of the author's other texts.
+engine_key: epistemic_rupture
+engine_name: Epistemic rupture detector
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: Does the focal text mark a rupture, and between which two halves?
+  framing: 'The corpus is one author''s oeuvre around one FOCAL text: the focal text whole (key focal:<uid>), and
+    one document per other text by the author carrying that text''s PROFILE (keys before:<uid> and after:<uid>,
+    by date): thesis, question, object, tradition, concepts with glosses, people with roles and stances, works cited
+    with loci, claims, positions, verified passages. A packet supplied as context lists the texts in order with
+    years and what is held. A profile is a summary made by a model and checked against its text: quote it as what
+    the profile records, never as the author''s words unless the passage is marked verified. Dates come from the
+    packet; same-year texts are unordered. The held sample is not the whole oeuvre: say what it does not cover.
+    A rupture is a change in what the author takes to be the object, the question, the method or the interlocutors,
+    shown by dated texts on both sides; a change of topic within the same problematic is a deepening; a reorientation
+    keeps the object and changes the question or the method; an outlier is a text neither side takes up. Continuity
+    is a valid verdict.'
+  scoped_outcomes: false
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: continuity
+    name: What persists across it
+    questions:
+    - Which object, question, concepts or interlocutors persist from before the focal text to after it?
+    method_card: 'Do: One row per persisting element, anchored in a text before and a text after. Select literal
+      spans that carry the actor, predicate, object and necessary qualification. A name or topic alone cannot support
+      a reading. Use separate anchor-b/doc-b for a second span; never stitch quotations. Keep attribution, negation,
+      modality and chronology. Code checks only anchors and IDs; the model must judge the reading against the supplied
+      profiles and the focal text.'
+    indicators:
+    - still
+    - again
+    scope: corpus
+    load_bearing: true
+    id_prefix: E1
+    answer_shape: '[E1.F<n>] <the persisting element in one sentence> — dim: continuity — what: object|question|method|interlocutors|concepts
+      — before: <uid/year> — after: <uid/year> — anchor: "<verbatim, <=200 chars>" — doc: <actual supplied source
+      key> — anchor-b: "<verbatim from the other text, <=200 chars>" — doc-b: <different source key> — confidence:
+      high|medium|low'
+  - key: break
+    name: What changes at it
+    questions:
+    - Which object, question, method, interlocutors or concepts differ between the texts before and the texts after,
+      and does the focal text carry the change?
+    method_card: 'Do: One row per change: the before state, the after state, whether the focal text is where it
+      happens. Anchor in a text before, anchor-b in a text after (or the focal text). Select literal spans that
+      carry the actor, predicate, object and necessary qualification. A name or topic alone cannot support a reading.
+      Use separate anchor-b/doc-b for a second span; never stitch quotations. Keep attribution, negation, modality
+      and chronology. Code checks only anchors and IDs; the model must judge the reading against the supplied profiles
+      and the focal text.'
+    indicators:
+    - no longer
+    - instead
+    - abandons
+    scope: corpus
+    load_bearing: true
+    id_prefix: E2
+    answer_shape: '[E2.F<n>] <the change in one sentence> — dim: break — what: object|question|method|interlocutors|concepts
+      — before: <one clause; uid/year> — after: <one clause; uid/year> — at_focal: yes|partly|no — anchor: "<verbatim,
+      <=200 chars>" — doc: <actual supplied source key> — anchor-b: "<verbatim from the other text, <=200 chars>"
+      — doc-b: <different source key> — confidence: high|medium|low'
+  - key: verdict
+    name: The verdict and the halves
+    questions:
+    - Is the focal text a rupture, a reorientation, a deepening, a continuity, or an outlier, and what are the two
+      halves?
+    method_card: 'Do: One row: the verdict, the two halves named by their agendas and spans, the warrant from the
+      continuity and break rows. Anchor in the focal text. Select literal spans that carry the actor, predicate,
+      object and necessary qualification. A name or topic alone cannot support a reading. Use separate anchor-b/doc-b
+      for a second span; never stitch quotations. Keep attribution, negation, modality and chronology. Code checks
+      only anchors and IDs; the model must judge the reading against the supplied profiles and the focal text.'
+    indicators:
+    - break
+    - turn
+    scope: corpus
+    load_bearing: true
+    id_prefix: E3
+    answer_shape: '[E3.F<n>] <the verdict in one sentence> — dim: verdict — verdict: rupture|reorientation|deepening|continuity|outlier
+      — halves: <before-half agenda and span> vs <after-half agenda and span> — warrant: <one clause> — anchor:
+      "<verbatim, <=200 chars>" — doc: <actual supplied source key> — confidence: high|medium|low'
+  - key: test
+    name: What would settle it
+    questions:
+    - Which text to read, which citation to check, or which passage to compare would settle the verdict?
+    method_card: 'Do: At most three rows, ranked: the test, the source that would answer it, whether it is held.
+      Select literal spans that carry the actor, predicate, object and necessary qualification. A name or topic
+      alone cannot support a reading. Use separate anchor-b/doc-b for a second span; never stitch quotations. Keep
+      attribution, negation, modality and chronology. Code checks only anchors and IDs; the model must judge the
+      reading against the supplied profiles and the focal text.'
+    indicators:
+    - would show
+    scope: corpus
+    load_bearing: false
+    id_prefix: E4
+    answer_shape: '[E4.F<n>] <the test in one sentence> — dim: test — source: <uid/year or a work not held> — held:
+      yes|no|unknown — rank: <1 = settles it most> — anchor: "<verbatim, <=200 chars>" — doc: <actual supplied source
+      key> — confidence: high|medium|low'
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension
+    model_tier: cheap
+    output: ledger
+    max_rows: 6
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - merge_duplicates
+    - hunt_misses
+    - name_must_keep
+    - A verdict of rupture needs at least two break rows with texts dated apart on both sides; strike a break row
+      whose before and after come from the same year.
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: a scholar deciding whether to periodise the oeuvre at this text
+    tables:
+    - continuity_and_break
+    brief: 1. One paragraph with the verdict and the two halves, then the continuity table (what · before · after
+      · finding), the break table (what · before · after · at focal · finding), and the tests ranked. 2. Continuity
+      is a valid verdict; every cell cites its finding.

@@ -1,0 +1,23 @@
+{
+  "key": "referee.citations-harvest",
+  "organ": "the-referee",
+  "name": "Harvest the thinker's citations",
+  "when": [
+    "citation_shift.unexamined",
+    "citation_shift.anomaly",
+    "thinker.works-known"
+  ],
+  "inputs": [
+    "referee_thinker_id"
+  ],
+  "route": "POST /api/thinkers/{id}/start-harvest",
+  "cost": "metered",
+  "cost_note": "≈ one Scholar page per 10 citations (26k citations ≈ $3) + a cheap LLM per page; long-running",
+  "side_effects": "papers, editions, citations rows; status harvesting → complete | incomplete",
+  "gated_by": "the harvest pause and the Apify / Oxylabs budget governors",
+  "yields": "the citing works and readers",
+  "owner": "the-referee",
+  "version": "2026-09-07",
+  "evidence": [],
+  "note": ""
+}

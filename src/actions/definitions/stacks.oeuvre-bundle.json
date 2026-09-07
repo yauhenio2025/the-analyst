@@ -1,0 +1,22 @@
+{
+  "key": "stacks.oeuvre-bundle",
+  "organ": "the-stacks",
+  "name": "The oeuvre bundle around a focal text",
+  "when": [
+    "text.chosen-as-focal"
+  ],
+  "inputs": [
+    "author_id",
+    "uid"
+  ],
+  "route": "GET /api/authors/{aid}/oeuvre?focal=<uid>",
+  "cost": "none",
+  "yields": "the focal text, the profiles before and after, the ledgers",
+  "owner": "the-stacks",
+  "cost_note": "",
+  "side_effects": "",
+  "gated_by": "",
+  "version": "2026-09-07",
+  "evidence": [],
+  "note": ""
+}

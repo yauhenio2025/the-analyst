@@ -1,0 +1,23 @@
+{
+  "key": "stacks.citation-ledger",
+  "organ": "the-stacks",
+  "name": "The author's citation ledger for a person or work",
+  "when": [
+    "citation_shift.*",
+    "citation_engagement_map.*"
+  ],
+  "inputs": [
+    "author_id",
+    "norm"
+  ],
+  "route": "GET /api/cites/person/{norm}?author= · GET /api/authors/{aid}/cites · GET /api/cites/evidence",
+  "cost": "none",
+  "yields": "the citing passages with places and modes",
+  "owner": "the-stacks",
+  "cost_note": "",
+  "side_effects": "",
+  "gated_by": "",
+  "version": "2026-09-07",
+  "evidence": [],
+  "note": ""
+}

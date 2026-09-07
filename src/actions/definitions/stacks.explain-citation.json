@@ -1,0 +1,22 @@
+{
+  "key": "stacks.explain-citation",
+  "organ": "the-stacks",
+  "name": "Explain one citation in its place",
+  "when": [
+    "citation_shift.first_cited",
+    "citation_shift.anomaly"
+  ],
+  "inputs": [
+    "ref_id"
+  ],
+  "route": "POST /api/cites/explain {ref} → the Mastermind's citation_explainer",
+  "cost": "cents",
+  "yields": "how, why here, in the argument; move and stance",
+  "owner": "the-stacks",
+  "cost_note": "",
+  "side_effects": "",
+  "gated_by": "",
+  "version": "2026-09-07",
+  "evidence": [],
+  "note": ""
+}

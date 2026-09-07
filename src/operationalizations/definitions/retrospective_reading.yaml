@@ -1,0 +1,137 @@
+# The oeuvre family (2026-09-07). Corpus readings over one focal text and the profiles of the author's other texts.
+engine_key: retrospective_reading
+engine_name: The focal text as the culmination of what came before
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: 'Read as if nothing followed: what does the focal text inherit, what does it resolve, and is it a
+    culmination of what came before?'
+  framing: 'The corpus is one author''s oeuvre around one FOCAL text: the focal text whole (key focal:<uid>), and
+    one document per other text by the author carrying that text''s PROFILE (keys before:<uid> and after:<uid>,
+    by date): thesis, question, object, tradition, concepts with glosses, people with roles and stances, works cited
+    with loci, claims, positions, verified passages. A packet supplied as context lists the texts in order with
+    years and what is held. A profile is a summary made by a model and checked against its text: quote it as what
+    the profile records, never as the author''s words unless the passage is marked verified. Dates come from the
+    packet; same-year texts are unordered. The held sample is not the whole oeuvre: say what it does not cover.
+    Only the focal text and the EARLIER profiles are supplied; do not speculate about later texts.'
+  scoped_outcomes: false
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: inheritance
+    name: What it inherits
+    questions:
+    - Which concepts, claims or problems of the earlier texts does the focal text take up?
+    method_card: 'Do: One row per inheritance: the concept, claim or problem, the earlier text it comes from, and
+      what the focal text does with it. Anchor in the focal text, anchor-b in the earlier profile. Select literal
+      spans that carry the actor, predicate, object and necessary qualification. A name or topic alone cannot support
+      a reading. Use separate anchor-b/doc-b for a second span; never stitch quotations. Keep attribution, negation,
+      modality and chronology. Code checks only anchors and IDs; the model must judge the reading against the supplied
+      profiles and the focal text.'
+    indicators:
+    - as I argued
+    - earlier
+    scope: corpus
+    load_bearing: true
+    id_prefix: R1
+    answer_shape: '[R1.F<n>] <the inheritance in one sentence> — dim: inheritance — what: <concept, claim or problem>
+      — from: <uid/year> — done_with_it: <one clause> — anchor: "<verbatim, <=200 chars>" — doc: <actual supplied
+      source key> — anchor-b: "<verbatim from the other text, <=200 chars>" — doc-b: <different source key> — confidence:
+      high|medium|low'
+  - key: resolution
+    name: What it resolves
+    questions:
+    - Which tension, gap or objection left open by the earlier texts does the focal text answer?
+    method_card: 'Do: One row per resolution: the earlier tension and the answer here. Anchor in the focal text,
+      anchor-b in the earlier profile that carries the tension. Select literal spans that carry the actor, predicate,
+      object and necessary qualification. A name or topic alone cannot support a reading. Use separate anchor-b/doc-b
+      for a second span; never stitch quotations. Keep attribution, negation, modality and chronology. Code checks
+      only anchors and IDs; the model must judge the reading against the supplied profiles and the focal text.'
+    indicators:
+    - problem
+    - unresolved
+    scope: corpus
+    load_bearing: true
+    id_prefix: R2
+    answer_shape: '[R2.F<n>] <the resolution in one sentence> — dim: resolution — tension: <one clause> — answer:
+      <one clause> — left_open: <what remains> — anchor: "<verbatim, <=200 chars>" — doc: <actual supplied source
+      key> — anchor-b: "<verbatim from the other text, <=200 chars>" — doc-b: <different source key> — confidence:
+      high|medium|low'
+  - key: interlocutor
+    name: Whom it argues with
+    questions:
+    - Whom does the focal text argue with, and are those interlocutors inherited from the earlier texts or new?
+    method_card: 'Do: One row per interlocutor: inherited or new, and the stance. Anchor in the focal text. Select
+      literal spans that carry the actor, predicate, object and necessary qualification. A name or topic alone cannot
+      support a reading. Use separate anchor-b/doc-b for a second span; never stitch quotations. Keep attribution,
+      negation, modality and chronology. Code checks only anchors and IDs; the model must judge the reading against
+      the supplied profiles and the focal text.'
+    indicators:
+    - against
+    - critique
+    scope: corpus
+    load_bearing: false
+    id_prefix: R3
+    answer_shape: '[R3.F<n>] <the interlocutor in one sentence> — dim: interlocutor — who: <name> — inherited: yes|no
+      — stance: adopts|builds_on|qualifies|disputes|mentions — anchor: "<verbatim, <=200 chars>" — doc: <actual
+      supplied source key> — confidence: high|medium|low'
+  - key: verdict
+    name: Culmination or not
+    questions:
+    - 'Read only with what came before: is the focal text the culmination of the earlier agenda, a continuation
+      of it, or a departure from it?'
+    method_card: 'Do: One row: the verdict with the warrant from the inheritance and resolution rows. Anchor in
+      the focal text. Select literal spans that carry the actor, predicate, object and necessary qualification.
+      A name or topic alone cannot support a reading. Use separate anchor-b/doc-b for a second span; never stitch
+      quotations. Keep attribution, negation, modality and chronology. Code checks only anchors and IDs; the model
+      must judge the reading against the supplied profiles and the focal text.'
+    indicators:
+    - therefore
+    scope: corpus
+    load_bearing: true
+    id_prefix: R4
+    answer_shape: '[R4.F<n>] <the verdict in one sentence> — dim: verdict — verdict: culmination|continuation|departure
+      — warrant: <one clause> — of_agenda: <which> — anchor: "<verbatim, <=200 chars>" — doc: <actual supplied source
+      key> — confidence: high|medium|low'
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension
+    model_tier: cheap
+    output: ledger
+    max_rows: 6
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - merge_duplicates
+    - hunt_misses
+    - name_must_keep
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: a scholar who has read the author up to this text and no further
+    tables:
+    - inheritance_and_resolution
+    brief: 1. One paragraph reading the text as the end of a road, then the inheritance table (what · from · done
+      with it · finding), the resolution table, and the verdict with its label. 2. Nothing from later texts; every
+      cell cites its finding.

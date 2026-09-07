@@ -157,6 +157,10 @@ class PhaseExecutionSpec(BaseModel):
         default=False,
         description="Whether this phase needs full document texts (triggers 1M context).",
     )
+    source_scope: Optional[list[str]] = Field(
+        default=None,
+        description="Key prefixes of the corpus documents this phase reads (a workflow step's scope: 'focal:', 'before:'); None = every source (2026-09-07)",
+    )
     per_work_overrides: Optional[dict[str, dict]] = Field(
         default=None,
         description="Per-prior-work depth/focus overrides. "

@@ -1,0 +1,23 @@
+{
+  "key": "mastermind.run-workflow",
+  "organ": "the-mastermind",
+  "name": "Run a workflow recipe over a bundle",
+  "when": [
+    "text.chosen-as-focal",
+    "citation_shift.anomaly"
+  ],
+  "inputs": [
+    "chain_key",
+    "sources"
+  ],
+  "route": "POST /v1/dossier/jobs {entry: chosen, path: {chain_key}} → GET /v1/dossier/jobs/{id}/<renderer>",
+  "cost": "dollars",
+  "yields": "the workflow's memo and its suggested actions",
+  "owner": "the-mastermind",
+  "cost_note": "",
+  "side_effects": "",
+  "gated_by": "",
+  "version": "2026-09-07",
+  "evidence": [],
+  "note": ""
+}

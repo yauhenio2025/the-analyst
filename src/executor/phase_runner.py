@@ -247,7 +247,7 @@ def _run_standard_phase(
         job_id=job_id,
         phase_number=phase_number,
     )
-    source_input = _get_standard_phase_sources(document_ids, job_id, phase_number)
+    source_input = _get_standard_phase_sources(document_ids, job_id, phase_number, source_scope=getattr(plan_phase, "source_scope", None))
 
     # Resolve engine overrides from the plan
     engine_overrides = None
@@ -954,12 +954,18 @@ def _with_context_documents(upstream_context: str, document_ids: dict[str, str])
 
 def _get_process_sources(
     document_ids: dict[str, str], plan_data: dict, *, include_target: bool = False,
-    works: Optional[list[str]] = None,
+    works: Optional[list[str]] = None, key_prefixes: Optional[list[str]] = None,
 ) -> ProcessDocumentInput:
     sources = ProcessDocumentInput()
     if include_target:
         corpus_ids = {k[len(CORPUS_DOCUMENT_PREFIX):]: v for k, v in document_ids.items()
                       if k.startswith(CORPUS_DOCUMENT_PREFIX)}
+        if key_prefixes:   # a workflow step's scope: only the corpus documents whose key carries one of the prefixes (2026-09-07)
+            scoped = {k: v for k, v in corpus_ids.items() if any(k.startswith(pfx) for pfx in key_prefixes)}
+            if not scoped:
+                raise ValueError(f"the phase's scope {key_prefixes} selects none of the corpus documents {sorted(corpus_ids)[:12]}")
+            corpus_ids = scoped
+            sources.labels.append(f"- scope: {', '.join(key_prefixes)} ({len(corpus_ids)} of {len(document_ids)} documents)")
         if corpus_ids:
             for key, doc_id in corpus_ids.items():
                 sources.add(key, doc_id, "Target corpus document")
@@ -972,7 +978,7 @@ def _get_process_sources(
 
 
 def _get_standard_phase_sources(
-    document_ids: dict[str, str], job_id: str, phase_number: float,
+    document_ids: dict[str, str], job_id: str, phase_number: float, source_scope: Optional[list[str]] = None,
 ) -> ProcessDocumentInput:
     """Mirror the existing phase scope without parsing its flattened text.
 
@@ -988,7 +994,7 @@ def _get_standard_phase_sources(
         sources = _get_process_sources(document_ids, plan_data, include_target=phase_number == 3.0, works=titles)
         sources.labels.insert(0, f"Selected source thinker: {plan_data.get('selected_source_thinker_name') or thinker}")
         return sources
-    return _get_process_sources(document_ids, plan_data, include_target=True)
+    return _get_process_sources(document_ids, plan_data, include_target=True, key_prefixes=source_scope or None)
 
 
 def _get_target_work_title(job_id: str) -> str:

@@ -1,0 +1,23 @@
+{
+  "key": "mastermind.run-engine",
+  "organ": "the-mastermind",
+  "name": "Run an engine over supplied sources",
+  "when": [
+    "*"
+  ],
+  "inputs": [
+    "engine_key",
+    "sources",
+    "packet"
+  ],
+  "route": "POST /v1/engines/{key}/call · POST /v1/dossier/jobs (engines only)",
+  "cost": "cents",
+  "cost_note": "cents for a one-call engine; dollars for a corpus",
+  "yields": "rows with the wall's verdicts, the shaped answer",
+  "owner": "the-mastermind",
+  "side_effects": "",
+  "gated_by": "",
+  "version": "2026-09-07",
+  "evidence": [],
+  "note": ""
+}

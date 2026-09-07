@@ -1,0 +1,25 @@
+{
+  "key": "referee.references-read",
+  "organ": "the-referee",
+  "name": "Read whom a fetched work cites",
+  "when": [
+    "citation_shift.unexamined",
+    "citation_shift.anomaly",
+    "work.fetched"
+  ],
+  "inputs": [
+    "query_id",
+    "referee_thinker_id",
+    "budget_usd"
+  ],
+  "route": "POST /api/cross-citations/queries/{id}/cited-works/extract → …/consolidate → GET …/cited-works · POST /api/thinkers/{id}/study {budget_usd, phase_limit}",
+  "cost": "cents",
+  "cost_note": "Gemini flash-lite per bibliography, flash per 40-group chunk; a thinker study is budgeted in dollars",
+  "side_effects": "cited-works rows shared across queries; study phases",
+  "yields": "the work's references, matched to the pool",
+  "owner": "the-referee",
+  "gated_by": "",
+  "version": "2026-09-07",
+  "evidence": [],
+  "note": ""
+}

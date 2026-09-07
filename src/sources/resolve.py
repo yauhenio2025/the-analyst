@@ -97,6 +97,13 @@ def resolve_sources(specs: list[SourceSpec]) -> list[Document]:
             if not text:
                 logger.warning(f"source {idx} ({spec.kind}) has no text; skipped")
                 continue
+            if role == "oeuvre":   # the Stacks' oeuvre bundle expands at the door (2026-09-07): the focal text, the profiles, the packet
+                from src.sources.oeuvre_bundle import expand_oeuvre_bundle
+                for d in expand_oeuvre_bundle(text, key_hint=spec.key or "oeuvre"):
+                    role = d.role
+                    add(d)
+                role = "oeuvre"
+                continue
             if looks_like_stacks_export(text):
                 for d in split_stacks_export(text):
                     add(d)

@@ -1,0 +1,165 @@
+# The oeuvre family (2026-09-07). Corpus readings over one focal text and the profiles of the author's other texts.
+engine_key: citation_shift
+engine_name: What the focal text cites, against the rest
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: What does the focal text cite that the author had not cited before, what does it drop, and what of
+    it is unexamined?
+  framing: 'The corpus is one author''s oeuvre around one FOCAL text: the focal text whole (key focal:<uid>), and
+    one document per other text by the author carrying that text''s PROFILE (keys before:<uid> and after:<uid>,
+    by date): thesis, question, object, tradition, concepts with glosses, people with roles and stances, works cited
+    with loci, claims, positions, verified passages. A packet supplied as context lists the texts in order with
+    years and what is held. A profile is a summary made by a model and checked against its text: quote it as what
+    the profile records, never as the author''s words unless the passage is marked verified. Dates come from the
+    packet; same-year texts are unordered. The held sample is not the whole oeuvre: say what it does not cover.
+    Use the packet''s ledger and the profiles'' works_cited and people lists for the sets; a first citation is one
+    absent from every EARLIER profile; a drop is one present in an earlier profile and absent here; carried is present
+    before and here. The packet says what is held and which persons are Referee thinkers: copy those fields, never
+    guess them.'
+  scoped_outcomes: false
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: first_cited
+    name: Cited here for the first time
+    questions:
+    - Which works and persons does the focal text cite that no earlier text cited?
+    method_card: 'Do: One row per first citation (a work or a person): what it is cited for here, and that it is
+      absent earlier (name the earliest later mention if any). Anchor in the focal text. Select literal spans that
+      carry the actor, predicate, object and necessary qualification. A name or topic alone cannot support a reading.
+      Use separate anchor-b/doc-b for a second span; never stitch quotations. Keep attribution, negation, modality
+      and chronology. Code checks only anchors and IDs; the model must judge the reading against the supplied profiles
+      and the focal text.'
+    indicators:
+    - cites
+    - following
+    - see
+    scope: corpus
+    load_bearing: true
+    id_prefix: C1
+    answer_shape: '[C1.F<n>] <the first citation in one sentence> — dim: first_cited — cited: <work or person> —
+      kind: work|person — for: <what it is cited for here> — later: <uid/year of the next text citing it, or none>
+      — held: yes|no|unknown — in_referee: yes|no|unknown — anchor: "<verbatim, <=200 chars>" — doc: <actual supplied
+      source key> — confidence: high|medium|low'
+  - key: dropped
+    name: Cited before, absent here
+    questions:
+    - Which works and persons cited in earlier texts does the focal text not cite?
+    method_card: 'Do: One row per consequential drop (a work or person central to an earlier agenda): where it was
+      cited, and that the focal text is silent. Anchor in an earlier profile (doc before:<uid>). Select literal
+      spans that carry the actor, predicate, object and necessary qualification. A name or topic alone cannot support
+      a reading. Use separate anchor-b/doc-b for a second span; never stitch quotations. Keep attribution, negation,
+      modality and chronology. Code checks only anchors and IDs; the model must judge the reading against the supplied
+      profiles and the focal text.'
+    indicators:
+    - earlier
+    - no longer
+    scope: corpus
+    load_bearing: true
+    id_prefix: C2
+    answer_shape: '[C2.F<n>] <the drop in one sentence> — dim: dropped — cited: <work or person> — kind: work|person
+      — cited_in: <uids/years> — silence: <what the focal text says instead, or nothing> — anchor: "<verbatim, <=200
+      chars>" — doc: <actual supplied source key> — confidence: high|medium|low'
+  - key: carried
+    name: Carried through
+    questions:
+    - Which citations does the focal text share with the texts before it, and with which use?
+    method_card: 'Do: At most five rows: the carried citations that matter to the argument, with the use here versus
+      before. Anchor in the focal text and anchor-b in an earlier profile. Select literal spans that carry the actor,
+      predicate, object and necessary qualification. A name or topic alone cannot support a reading. Use separate
+      anchor-b/doc-b for a second span; never stitch quotations. Keep attribution, negation, modality and chronology.
+      Code checks only anchors and IDs; the model must judge the reading against the supplied profiles and the focal
+      text.'
+    indicators:
+    - again
+    - as before
+    scope: corpus
+    load_bearing: false
+    id_prefix: C3
+    answer_shape: '[C3.F<n>] <the carried citation in one sentence> — dim: carried — cited: <work or person> — use_here:
+      <one clause> — use_before: <one clause> — anchor: "<verbatim, <=200 chars>" — doc: <actual supplied source
+      key> — anchor-b: "<verbatim from the other text, <=200 chars>" — doc-b: <different source key> — confidence:
+      high|medium|low'
+  - key: anomaly
+    name: A cluster unique to this text
+    questions:
+    - Does the focal text cite a cluster (a field, a debate, a set of authors) that appears nowhere else in the
+      oeuvre?
+    method_card: 'Do: One row per cluster: its members, what it is used for, and whether any later text returns
+      to it. Anchor in the focal text. Select literal spans that carry the actor, predicate, object and necessary
+      qualification. A name or topic alone cannot support a reading. Use separate anchor-b/doc-b for a second span;
+      never stitch quotations. Keep attribution, negation, modality and chronology. Code checks only anchors and
+      IDs; the model must judge the reading against the supplied profiles and the focal text.'
+    indicators:
+    - literature
+    - debate
+    scope: corpus
+    load_bearing: true
+    id_prefix: C4
+    answer_shape: '[C4.F<n>] <the cluster in one sentence> — dim: anomaly — members: <works or persons> — used_for:
+      <one clause> — returns: <uid/year or never> — anchor: "<verbatim, <=200 chars>" — doc: <actual supplied source
+      key> — confidence: high|medium|low'
+  - key: unexamined
+    name: Cited here, not examined by us
+    questions:
+    - Which cited works are not held, and which cited persons are not thinkers in the Referee?
+    method_card: 'Do: One row per cited work not held or person not in the Referee, from the packet''s held / in_referee
+      fields only; say what the focal text does with it. Anchor in the focal text. Select literal spans that carry
+      the actor, predicate, object and necessary qualification. A name or topic alone cannot support a reading.
+      Use separate anchor-b/doc-b for a second span; never stitch quotations. Keep attribution, negation, modality
+      and chronology. Code checks only anchors and IDs; the model must judge the reading against the supplied profiles
+      and the focal text.'
+    indicators:
+    - cf.
+    - see
+    scope: corpus
+    load_bearing: true
+    id_prefix: C5
+    answer_shape: '[C5.F<n>] <the unexamined citation in one sentence> — dim: unexamined — cited: <work or person>
+      — kind: work|person — held: no|unknown — in_referee: no|unknown — used_for: <one clause> — anchor: "<verbatim,
+      <=200 chars>" — doc: <actual supplied source key> — confidence: high|medium|low'
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension
+    model_tier: cheap
+    output: ledger
+    max_rows: 6
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - merge_duplicates
+    - hunt_misses
+    - name_must_keep
+    - A first citation is struck if any EARLIER profile lists the same work or person; held and in_referee come
+      from the packet, never from memory.
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: a scholar deciding which cited literature to go and read
+    tables:
+    - citation_shift
+    brief: '1. One table (cited · kind · first_cited/dropped/carried/anomaly/unexamined · for · held · in_referee
+      · finding), then a paragraph on what the pattern says about the text. 2. The unexamined rows are what the
+      desk turns into actions: keep held and in_referee exactly as the packet gives them.'

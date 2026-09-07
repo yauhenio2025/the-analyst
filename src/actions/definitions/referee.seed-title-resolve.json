@@ -1,0 +1,26 @@
+{
+  "key": "referee.seed-title-resolve",
+  "organ": "the-referee",
+  "name": "Resolve a cited title to a Scholar record and make it a seed",
+  "when": [
+    "citation_shift.unexamined",
+    "citation_shift.first_cited",
+    "work.named"
+  ],
+  "inputs": [
+    "work_title",
+    "work_author",
+    "work_year",
+    "query_id"
+  ],
+  "route": "POST /api/seeds/resolve-title {title, author?, year?, query_id?} → POST /api/cross-citations/queries/{id}/seeds/add",
+  "cost": "cents",
+  "cost_note": "2 Scholar pages + 1 advanced reasoning call",
+  "side_effects": "a seed on the query",
+  "yields": "best_scholar_id and ranked candidates",
+  "owner": "the-referee",
+  "gated_by": "",
+  "version": "2026-09-07",
+  "evidence": [],
+  "note": ""
+}

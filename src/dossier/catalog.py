@@ -332,7 +332,7 @@ def estimate_path(path: Path, corpus_chars: int, by_key: dict) -> tuple[float, f
 
 
 def validate_steps(steps: list[PathStep], by_key: dict) -> list[PathStep]:
-    """Executable keys only, unique (a trailing synthesis engine may repeat), 1-4 steps, known depths."""
+    """Executable keys only, unique (a trailing synthesis engine may repeat), 1-8 steps, known depths."""
     out: list[PathStep] = []
     seen: set[str] = set()
     for s in steps:
@@ -346,7 +346,7 @@ def validate_steps(steps: list[PathStep], by_key: dict) -> list[PathStep]:
             s.depth = "surface"
         out.append(s)
         seen.add(s.engine_key)
-    return out[:4]
+    return out[:8]   # 4 until 2026-09-07; a workflow recipe (oeuvre_position) has six steps
 
 
 def resolve_path_request(req: PathRequest, audience: str = "executive", by_key: Optional[dict] = None) -> Path:
@@ -359,16 +359,16 @@ def resolve_path_request(req: PathRequest, audience: str = "executive", by_key: 
         if recipe is None:
             raise ValueError(f"unknown recipe: {chain_key}; choose one of {[r['key'] for r in load_recipes()]}")
         for s in recipe["steps"]:
-            steps.append(PathStep(engine_key=s["engine_key"], depth=s.get("depth", "surface")))
+            steps.append(PathStep(engine_key=s["engine_key"], depth=s.get("depth", "surface"), scope=list(s.get("scope") or [])))
     for s in req.steps or []:
-        steps.append(PathStep(engine_key=s.engine_key, depth=s.depth or "surface"))
+        steps.append(PathStep(engine_key=s.engine_key, depth=s.depth or "surface", scope=list(getattr(s, "scope", None) or [])))
     if not steps:
         raise ValueError("path.steps is empty and no recipe was named")
     unknown = [s.engine_key for s in steps if s.engine_key not in by_key]
     if unknown:
         raise ValueError(f"path names non-executable engines: {unknown}")
-    if len(steps) > 4:
-        raise ValueError("a path has at most 4 steps")
+    if len(steps) > 8:
+        raise ValueError("a path has at most 8 steps")   # 4 until 2026-09-07; a workflow recipe (oeuvre_position) has six
     steps = validate_steps(steps, by_key)
     for s in steps:
         s.plain_name = plain_name_for(s.engine_key, audience, by_key)

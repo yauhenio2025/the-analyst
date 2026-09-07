@@ -131,6 +131,7 @@ def fixed_phases(path: Path, proposed: list[DossierPlanPhase], by_key: dict) -> 
             depth=s.depth if s.depth in ("surface", "standard", "deep") else "surface",
             why=(match.why if match and match.why else (s.contributes or "from the chosen deliverable's path")),
             context_emphasis=(match.context_emphasis if match else ""),
+            scope=list(s.scope or []),
         )
         ph.passes = passes_for(by_key[s.engine_key], ph.depth)
         out.append(ph)
@@ -155,6 +156,7 @@ def build_executor_plan(job: DossierJob, docs: list[Document], plan: DossierPlan
             depth=p.depth, engine_key=p.engine_key, iteration_mode="single",
             depends_on=[prev] if prev is not None else [],
             context_emphasis=p.context_emphasis or None, rationale=p.why,
+            source_scope=(list(p.scope) or None),
             model_hint="sonnet", requires_full_documents=sum(d.char_count for d in docs) > 600_000,
             estimated_cost_usd=estimate_engine_run(sum(d.char_count for d in docs), p.passes)[0],
         ))

@@ -156,6 +156,7 @@ class PathStep(BaseModel):
     plain_name: str = ""              # audience-register name, e.g. "hidden-obligations map"
     contributes: str = ""             # one line, reader terms, <= 120
     depth: str = "surface"            # one of STEP_DEPTHS
+    scope: list[str] = Field(default_factory=list)   # key prefixes this step reads ("focal:", "before:"); empty = every source (2026-09-07)
 
 
 class Path(BaseModel):
@@ -301,6 +302,7 @@ class UseFrame(BaseModel):
 class PathStepRequest(BaseModel):
     engine_key: str
     depth: str = "surface"            # one of STEP_DEPTHS
+    scope: list[str] = Field(default_factory=list)   # key prefixes the step reads; empty = every source
 
 
 class PathRequest(BaseModel):
@@ -320,6 +322,7 @@ class DossierPlanPhase(BaseModel):
     passes: int = 1
     why: str = ""
     context_emphasis: str = ""
+    scope: list[str] = Field(default_factory=list)   # key prefixes the phase reads (from the path step)
 
 
 class DossierPlan(BaseModel):

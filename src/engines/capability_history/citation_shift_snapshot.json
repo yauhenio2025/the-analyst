@@ -1,0 +1,74 @@
+{
+  "analytical_dimensions": [
+    {
+      "depth_guidance": {},
+      "description": "Cited here for the first time",
+      "key": "first_cited",
+      "probing_questions": [
+        "Which works and persons does the focal text cite that no earlier text cited?"
+      ]
+    },
+    {
+      "depth_guidance": {},
+      "description": "Cited before, absent here",
+      "key": "dropped",
+      "probing_questions": [
+        "Which works and persons cited in earlier texts does the focal text not cite?"
+      ]
+    },
+    {
+      "depth_guidance": {},
+      "description": "Carried through",
+      "key": "carried",
+      "probing_questions": [
+        "Which citations does the focal text share with the texts before it, and with which use?"
+      ]
+    },
+    {
+      "depth_guidance": {},
+      "description": "A cluster unique to this text",
+      "key": "anomaly",
+      "probing_questions": [
+        "Does the focal text cite a cluster (a field, a debate, a set of authors) that appears nowhere else in the oeuvre?"
+      ]
+    },
+    {
+      "depth_guidance": {},
+      "description": "Cited here, not examined by us",
+      "key": "unexamined",
+      "probing_questions": [
+        "Which cited works are not held, and which cited persons are not thinkers in the Referee?"
+      ]
+    }
+  ],
+  "apps": [
+    "critic"
+  ],
+  "capabilities": [],
+  "category": "scholarly",
+  "composability": {
+    "consumes_from": {},
+    "shares_with": {},
+    "synergy_engines": []
+  },
+  "composition_role": null,
+  "depth_levels": [],
+  "engine_key": "citation_shift",
+  "engine_name": "What the focal text cites, against the rest",
+  "function": "genealogy",
+  "intellectual_lineage": {
+    "key_concepts": [],
+    "primary": "source_criticism",
+    "secondary": [],
+    "traditions": []
+  },
+  "kind": "comparison",
+  "legacy_engine_key": null,
+  "output_contract": null,
+  "output_mode": "prose",
+  "paradigm_keys": [],
+  "problematique": "The focal text's citations against the author's other texts: the works and persons it cites for the first time, those it drops, those it carries, the clusters unique to it, and the cited literature the library does not hold or the Referee does not know \u2014 the rows that license action. Sets are computed against the profiles' works-cited and people lists and the packet's ledger; a first citation needs the absence in every earlier profile.",
+  "prompt_context_keys": [],
+  "researcher_question": "What does the focal text cite that the author had not cited before, what does it drop, and what of it is unexamined?",
+  "version": 1
+}

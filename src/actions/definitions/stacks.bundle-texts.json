@@ -1,0 +1,23 @@
+{
+  "key": "stacks.bundle-texts",
+  "organ": "the-stacks",
+  "name": "Bundle texts for a reading",
+  "when": [
+    "oeuvre_position_memo.read_next",
+    "epistemic_rupture.test"
+  ],
+  "inputs": [
+    "uids",
+    "title"
+  ],
+  "route": "POST /api/bundles",
+  "cost": "none",
+  "side_effects": "a bundle with the readable copies",
+  "yields": "a bundle id and its export",
+  "owner": "the-stacks",
+  "cost_note": "",
+  "gated_by": "",
+  "version": "2026-09-07",
+  "evidence": [],
+  "note": ""
+}

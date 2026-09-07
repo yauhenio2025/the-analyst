@@ -1,0 +1,23 @@
+{
+  "key": "referee.thinker-create",
+  "organ": "the-referee",
+  "name": "Create the thinker in the Referee",
+  "when": [
+    "citation_shift.unexamined",
+    "person.unknown"
+  ],
+  "inputs": [
+    "thinker_name",
+    "scholar_profile_url"
+  ],
+  "route": "POST /api/thinkers {name, scholar_profile_url?} · POST /api/thinker-folders/bulk-add · POST /api/thinker-folders/{id}/recruit-author",
+  "cost": "cents",
+  "cost_note": "1–2 cheap LLM calls; Scholar pages if a profile URL is given",
+  "side_effects": "a thinker row (pending / disambiguated); works seeded when a profile is given",
+  "gated_by": "the owner's click",
+  "yields": "thinker_id",
+  "owner": "the-referee",
+  "version": "2026-09-07",
+  "evidence": [],
+  "note": ""
+}

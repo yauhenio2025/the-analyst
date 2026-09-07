@@ -1,0 +1,126 @@
+# The oeuvre family (2026-09-07). Corpus readings over one focal text and the profiles of the author's other texts.
+engine_key: oeuvre_trajectory
+engine_name: The author's agendas and turns
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: What research agendas does this oeuvre pursue, where do they turn, and where does the focal text
+    sit?
+  framing: 'The corpus is one author''s oeuvre around one FOCAL text: the focal text whole (key focal:<uid>), and
+    one document per other text by the author carrying that text''s PROFILE (keys before:<uid> and after:<uid>,
+    by date): thesis, question, object, tradition, concepts with glosses, people with roles and stances, works cited
+    with loci, claims, positions, verified passages. A packet supplied as context lists the texts in order with
+    years and what is held. A profile is a summary made by a model and checked against its text: quote it as what
+    the profile records, never as the author''s words unless the passage is marked verified. Dates come from the
+    packet; same-year texts are unordered. The held sample is not the whole oeuvre: say what it does not cover.
+    Name agendas by their question, not by a period label; a turn needs two texts that differ on object, question,
+    method or interlocutors, dated apart.'
+  scoped_outcomes: false
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: agenda
+    name: A research agenda
+    questions:
+    - What questions does the oeuvre pursue, over which texts, with which key concepts and interlocutors?
+    method_card: 'Do: One row per agenda: its question, the span of texts (uids and years), its key concepts from
+      the profiles, its interlocutors. Anchor in a profile''s thesis or question. Select literal spans that carry
+      the actor, predicate, object and necessary qualification. A name or topic alone cannot support a reading.
+      Use separate anchor-b/doc-b for a second span; never stitch quotations. Keep attribution, negation, modality
+      and chronology. Code checks only anchors and IDs; the model must judge the reading against the supplied profiles
+      and the focal text.'
+    indicators:
+    - argues
+    - question
+    - against
+    scope: corpus
+    load_bearing: true
+    id_prefix: T1
+    answer_shape: '[T1.F<n>] <the agenda in one sentence> — dim: agenda — question: <its question> — span: <first
+      uid/year … last uid/year; count> — concepts: <three to five> — interlocutors: <whom it argues with> — anchor:
+      "<verbatim, <=200 chars>" — doc: <actual supplied source key> — confidence: high|medium|low'
+  - key: turn
+    name: A turn between agendas
+    questions:
+    - Where does the oeuvre change object, question, method or interlocutors, and which two dated texts show it?
+    method_card: 'Do: One row per turn: the two agendas, the two texts that show it (dated apart), what changed.
+      Anchor in one profile and anchor-b in the other. Select literal spans that carry the actor, predicate, object
+      and necessary qualification. A name or topic alone cannot support a reading. Use separate anchor-b/doc-b for
+      a second span; never stitch quotations. Keep attribution, negation, modality and chronology. Code checks only
+      anchors and IDs; the model must judge the reading against the supplied profiles and the focal text.'
+    indicators:
+    - no longer
+    - shifts
+    - turns to
+    scope: corpus
+    load_bearing: true
+    id_prefix: T2
+    answer_shape: '[T2.F<n>] <the turn in one sentence> — dim: turn — from: <agenda> — to: <agenda> — at: <uid/year
+      → uid/year> — changed: object|question|method|interlocutors|concepts (one or more) — anchor: "<verbatim, <=200
+      chars>" — doc: <actual supplied source key> — anchor-b: "<verbatim from the other text, <=200 chars>" — doc-b:
+      <different source key> — confidence: high|medium|low'
+  - key: place
+    name: The focal text's place
+    questions:
+    - 'Where does the focal text sit among the agendas: does it open one, complete one, sit within one, end one,
+      or reorient the oeuvre, or stand apart?'
+    method_card: 'Do: One row: the focal text''s agenda, its position in it with the warrant from the profiles before
+      and after. Anchor in the focal text and anchor-b in a profile. Select literal spans that carry the actor,
+      predicate, object and necessary qualification. A name or topic alone cannot support a reading. Use separate
+      anchor-b/doc-b for a second span; never stitch quotations. Keep attribution, negation, modality and chronology.
+      Code checks only anchors and IDs; the model must judge the reading against the supplied profiles and the focal
+      text.'
+    indicators:
+    - first
+    - last
+    - returns
+    scope: corpus
+    load_bearing: true
+    id_prefix: T3
+    answer_shape: '[T3.F<n>] <the place in one sentence> — dim: place — agenda: <which> — position: opening|culmination|middle|end|reorientation|outlier
+      — warrant: <the texts before and after that show it> — anchor: "<verbatim, <=200 chars>" — doc: <actual supplied
+      source key> — anchor-b: "<verbatim from the other text, <=200 chars>" — doc-b: <different source key> — confidence:
+      high|medium|low'
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension
+    model_tier: cheap
+    output: ledger
+    max_rows: 6
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - merge_duplicates
+    - hunt_misses
+    - name_must_keep
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: a scholar of the author deciding what the focal text is in the whole
+    tables:
+    - agendas_and_turns
+    brief: 1. The agendas as a table (agenda · question · span · concepts · interlocutors · finding), the turns
+      as a table (from · to · at · what changed · finding), then one paragraph on the focal text's place with its
+      position label. 2. Every cell cites its finding; same-year texts are unordered; say which texts the sample
+      lacks.

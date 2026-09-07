@@ -1,0 +1,22 @@
+{
+  "key": "referee.works-discover",
+  "organ": "the-referee",
+  "name": "Discover the thinker's works on Scholar",
+  "when": [
+    "citation_shift.unexamined",
+    "thinker.created"
+  ],
+  "inputs": [
+    "referee_thinker_id"
+  ],
+  "route": "POST /api/thinkers/{id}/start-discovery · POST /api/thinkers/{id}/rediscover?interactive=true",
+  "cost": "metered",
+  "cost_note": "tens of Scholar pages (≈ $1.07 per 1,000 on Apify) + a cheap LLM filter per page",
+  "side_effects": "thinker_works rows; a worker job",
+  "gated_by": "the global harvest pause unless interactive",
+  "yields": "the accepted works",
+  "owner": "the-referee",
+  "version": "2026-09-07",
+  "evidence": [],
+  "note": ""
+}
