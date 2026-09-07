@@ -6,22 +6,23 @@
     "citation_shift.unexamined",
     "epistemic_rupture.test",
     "oeuvre_position_memo.read_next",
+    "work.pdf_missing",
     "work.not-held"
   ],
   "inputs": [
+    "query_id",
+    "corpus_result_id",
     "work_title",
     "work_author",
-    "work_year",
-    "corpus_result_id",
-    "query_id"
+    "work_year"
   ],
-  "route": "POST /api/cross-citations/queries/{id}/fetch-pdfs {enabled, auto_extract_references?} · POST /api/fetch-pool/{corpus_result_id}/claim|prepare|upload · POST /api/thinker-studies/{study_id}/phase3/acquire",
+  "route": "POST /api/cross-citations/queries/{query_id}/fetch-pdfs {enabled, auto_extract_references?} (seed pool → collector batch) · POST /api/fetch-pool/{corpus_result_id}/claim | prepare | upload · GET /api/fetch-pool/{corpus_result_id}/pdf-url · POST /api/thinker-studies/{study_id}/phase3/acquire",
   "cost": "cents",
-  "cost_note": "the collector's nominal tariff; the local fetch agent free",
-  "side_effects": "a PDF on the corpus row, identity-audited",
-  "yields": "pdf-url",
+  "cost_note": "the mini-PC collector's nominal tariff; the local fetch agent and Sci-Hub / Anna's Archive routes are free",
+  "side_effects": "a PDF on the corpus row (identity-audited); auto-read chains bibliography extraction",
+  "gated_by": "query automation must be enabled for auto-read",
+  "yields": "pdf_url, fetch state, affiliations",
   "owner": "the-referee",
-  "gated_by": "",
   "version": "2026-09-07",
   "evidence": [],
   "note": ""
