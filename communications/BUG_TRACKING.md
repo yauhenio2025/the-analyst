@@ -231,3 +231,12 @@ RESOLVED 2026-09-07 02:20: at Evgeny's ask the gs_revamp session set `GITHUB_TOK
 `GITHUB_REPO=yauhenio2025/the-analyst` on Render service srv-dacfq315efls73e9hohg and redeployed; `/v1/meta/definitions-version`
 reports github_enabled true, and a no-change re-register answered persisted.success with commit a2c648d on master. Env changes on
 that service need a manual deploy. A fine-grained PAT can replace the login token later (PUT on the service's GITHUB_TOKEN + redeploy).
+
+## 2026-09-07 — pushes do not deploy the-analyst: autoDeploy was never on
+
+Found when the actions routes did not appear twenty minutes after their push (the Referee session noticed): `/health` stayed at d0d635d
+while master was five commits ahead. The gs_revamp session read the Render service: `autoDeploy: no`, and every deploy in its history is
+`trigger=api` — an earlier analyst session with Render API access (its Render MCP) was triggering a deploy after each push, which is why
+they looked automatic; that stopped at 00:12Z. gs_revamp deployed 090e2d9 by API at 00:38Z. Decision for the owner: turn autoDeploy on
+(every push restarts the API; `[skip render]` on registry commits then matters) or keep API-triggered deploys on request. CLAUDE.md's
+Deployment section now says so.
