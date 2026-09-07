@@ -154,7 +154,9 @@ def packet_of(obj: dict) -> dict:
                 if r and len(e["roles"]) < 6:
                     e["roles"].append({"uid": t.get("uid"), "year": _year(t), "role": _s(r.get("role"), 30), "stance": _s(r.get("stance"), 200)})
     persons_all = sorted(persons.values(), key=lambda e: -sum(len(v) for v in e["cited_in"].values()))
-    persons_unknown = [e for e in persons_all if not e["referee_thinker_id"]][:40]
+    # the persons to place: those the focal text cites first, then the oeuvre's recurrent interlocutors (four texts or more); twelve at most
+    unknown_all = [e for e in persons_all if not e["referee_thinker_id"]]
+    persons_unknown = ([e for e in unknown_all if e["cited_in"]["focal"]] + [e for e in unknown_all if not e["cited_in"]["focal"] and sum(len(v) for v in e["cited_in"].values()) >= 4])[:12]
     schools = _schools(obj)
     def _dedupe(rows):
         seen, out = set(), []
