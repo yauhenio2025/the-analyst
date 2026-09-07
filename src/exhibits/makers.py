@@ -99,6 +99,8 @@ def glossary_box(o: dict, **_) -> dict:
 def pull_quote(o: dict, rows: Optional[list[str]] = None, **_) -> dict:
     cands = _pick(o, rows or []) or [r for r in _rows_by_id(o).values() if r.get("anchor") and not r.get("conjecture")]
     cands = [r for r in cands if r.get("anchor") and not r.get("conjecture")]
+    if not cands:   # the planner's rows carried no verified anchor: any verified anchor of the memo's rows will do
+        cands = [r for r in _rows_by_id(o).values() if r.get("anchor") and not r.get("conjecture")]
     whole = [r for r in cands if SENTENCE_END.search(r["anchor"].strip())]   # a quote that ends a sentence; a fragment cut at the wall's 200 characters states no claim
     cands = whole or cands
     if not cands:

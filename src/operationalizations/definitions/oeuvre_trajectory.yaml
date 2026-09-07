@@ -1,5 +1,4 @@
 # The oeuvre family (2026-09-07). Corpus readings over one focal text and the profiles of the author's other texts.
-# Walls: a row that anchors in one text is document-scope; a row that pairs two texts (anchor-b) is corpus-scope.
 engine_key: oeuvre_trajectory
 engine_name: The author's agendas and turns
 stance_operationalizations: []
@@ -35,12 +34,12 @@ process:
     name: A research agenda
     questions:
     - What questions does the oeuvre pursue, over which texts, with which key concepts and interlocutors?
-    method_card: 'Do: One row per agenda: its question, the span of texts (uids and years), its key concepts from
-      the profiles, its interlocutors. Anchor in a profile''s thesis or question. Select literal spans that carry
-      the actor, predicate, object and necessary qualification. A name or topic alone cannot support a reading.
-      Use separate anchor-b/doc-b for a second span; never stitch quotations. Keep attribution, negation, modality
-      and chronology. Code checks only anchors and IDs; the model must judge the reading against the supplied profiles
-      and the focal text.'
+    method_card: 'Do: One row per agenda: a NAME of two to five words a reader can say (the transition agenda; the
+      long-downturn agenda), its question, the span of texts (uids and years), its key concepts from the profiles,
+      its interlocutors. Anchor in a profile''s thesis or question. Select literal spans that carry the actor, predicate,
+      object and necessary qualification. A name or topic alone cannot support a reading. Use separate anchor-b/doc-b
+      for a second span; never stitch quotations. Keep attribution, negation, modality and chronology. Code checks
+      only anchors and IDs; the model must judge the reading against the supplied profiles and the focal text.'
     indicators:
     - argues
     - question
@@ -48,9 +47,10 @@ process:
     scope: document
     load_bearing: true
     id_prefix: T1
-    answer_shape: '[T1.F<n>] <the agenda in one sentence> — dim: agenda — question: <its question> — span: <first
-      uid/year … last uid/year; count> — concepts: <three to five> — interlocutors: <whom it argues with> — anchor:
-      "<verbatim, <=200 chars>" — doc: <actual supplied source key> — confidence: high|medium|low'
+    answer_shape: '[T1.F<n>] <the agenda in one sentence> — dim: agenda — name: <the agenda in two to five words,
+      a noun phrase, e.g. the transition agenda> — question: <its question> — span: <first uid/year … last uid/year;
+      count> — concepts: <three to five> — interlocutors: <whom it argues with> — anchor: "<verbatim, <=200 chars>"
+      — doc: <actual supplied source key> — confidence: high|medium|low'
   - key: turn
     name: A turn between agendas
     questions:
@@ -67,10 +67,11 @@ process:
     scope: corpus
     load_bearing: true
     id_prefix: T2
-    answer_shape: '[T2.F<n>] <the turn in one sentence> — dim: turn — from: <agenda> — to: <agenda> — at: <uid/year
-      → uid/year> — changed: object|question|method|interlocutors|concepts (one or more) — anchor: "<verbatim, <=200
-      chars>" — doc: <actual supplied source key> — anchor-b: "<verbatim from the other text, <=200 chars>" — doc-b:
-      <different source key> — confidence: high|medium|low'
+    answer_shape: '[T2.F<n>] <the turn in one sentence> — dim: turn — name: <the turn in three to six words, e.g.
+      from controversy to reconstruction> — from: <agenda> — to: <agenda> — at: <uid/year → uid/year> — changed:
+      object|question|method|interlocutors|concepts (one or more) — anchor: "<verbatim, <=200 chars>" — doc: <actual
+      supplied source key> — anchor-b: "<verbatim from the other text, <=200 chars>" — doc-b: <different source
+      key> — confidence: high|medium|low'
   - key: place
     name: The focal text's place
     questions:
