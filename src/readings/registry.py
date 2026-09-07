@@ -116,8 +116,11 @@ def job_authors(job: dict) -> list[str]:
     import json as _json, os
     names: list[str] = []
     pk = job.get("packet") if isinstance(job.get("packet"), dict) else None
-    if pk and isinstance(pk.get("author"), dict) and pk["author"].get("name"):
-        names.append(pk["author"]["name"])
+    if pk and isinstance(pk.get("author"), dict):
+        if pk["author"].get("name"):
+            names.append(pk["author"]["name"])
+        elif pk["author"].get("id"):
+            names.append(name_from_author_id(str(pk["author"]["id"])))
     if not names:
         try:
             from src.executor.document_store import get_document_text
