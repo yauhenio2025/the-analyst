@@ -12,11 +12,13 @@ from typing import Any, Callable, Optional
 
 from src.sources.schemas import SourceSpec
 
+READ_ROLES = {"source", "statements", "evidence_index", "profile"}   # what an added step reads; the light call unpacks the index roles itself
+
 
 def sources_for(engine_key: str, documents: list[dict], packet: dict, get_text: Callable[[str], str], max_chars: int) -> list[SourceSpec]:
     """The documents an added step reads, as sources: narrowed for engines that know what they need, else the sources in order
     until the cap."""
-    docs = [d for d in documents if d.get("role") == "source" and d.get("executor_doc_id")]
+    docs = [d for d in documents if (d.get("role") or "source") in READ_ROLES and d.get("executor_doc_id")]
     keep = docs
     if engine_key == "thinker_placement":
         uids = {u for e in packet.get("persons_unknown") or [] for side in (e.get("cited_in") or {}).values() for u in side}
@@ -29,7 +31,7 @@ def sources_for(engine_key: str, documents: list[dict], packet: dict, get_text: 
         if total + len(text) > max_chars:
             if any(s.key.startswith("focal:") for s in out) or not str(d.get("key", "")).startswith("focal:"):
                 continue
-        out.append(SourceSpec(kind="paste", role="source", key=d.get("key"), title=d.get("title") or d.get("key"), text=text))
+        out.append(SourceSpec(kind="paste", role=d.get("role") or "source", key=d.get("key"), title=d.get("title") or d.get("key"), text=text))
         total += len(text)
     return out
 
@@ -62,7 +64,8 @@ def upstream_findings(job: dict, engine_key: str, cap: int = 60_000) -> dict[str
 
 
 def add_step(job: dict, engine_key: str, *, get_text: Callable[[str], str], call: Callable[..., dict], depth: str = "surface",
-             model: Optional[str] = None, spend_cap_usd: float = 2.0, max_chars: int = 400_000, packet_override: Optional[dict] = None) -> dict:
+             model: Optional[str] = None, spend_cap_usd: float = 2.0, max_chars: int = 400_000, packet_override: Optional[dict] = None,
+             extra_sources: Optional[list[dict]] = None) -> dict:
     """Run `engine_key` over the job's documents and append its phase to `job['analysis']` (mutated and returned as the new
     phase). `call` is call_engine or a stand-in with its signature."""
     documents = job.get("documents") or []
@@ -81,7 +84,9 @@ def add_step(job: dict, engine_key: str, *, get_text: Callable[[str], str], call
     if upstream:
         small = {**(small or {}), "upstream_findings": upstream}   # the rows of the recipe's earlier steps, with their ids (the engines' framings expect them)
     room = max_chars - len(json.dumps(small, ensure_ascii=False)) - 8_000 if small else max_chars   # the packet counts against the light call's cap
-    sources = sources_for(engine_key, documents, packet, get_text, room)
+    extras = [SourceSpec(kind="paste", role=x.get("role") or "source", key=x.get("key"), title=x.get("title") or x.get("key"), text=x["text"]) for x in extra_sources or [] if x.get("text")]
+    room -= sum(len(x.text) for x in extras)
+    sources = sources_for(engine_key, documents, packet, get_text, room) + extras   # a caller's own documents (the argument's parts) ride beside the job's
     if not sources:
         raise ValueError("the job has no source documents this step can read")
     out = call(engine_key, sources, packet=small, depth=depth, model=model, spend_cap_usd=spend_cap_usd)
@@ -93,7 +98,8 @@ def add_step(job: dict, engine_key: str, *, get_text: Callable[[str], str], call
     phase = {"phase_number": float(key), "engine_key": engine_key, "engine_name": out.get("engine_name") or engine_key, "depth": depth, "passes": [],
              "final_output": out.get("final_output") or "", "final_wall": {"failed_ids": (out.get("wall") or {}).get("failed_ids") or [], "verified": (out.get("wall") or {}).get("verified"),
                                                                             "anchors": (out.get("wall") or {}).get("anchors")},
-             "added": True, "cost_usd": out.get("cost_usd"), "model": out.get("model"), "seconds": out.get("seconds"), "sources": [s.key for s in sources]}
+             "added": True, "cost_usd": out.get("cost_usd"), "model": out.get("model"), "seconds": out.get("seconds"), "sources": [s.key for s in sources],
+             "extra_sources": [x.key for x in extras]}
     analysis[key] = phase
     job["analysis"] = analysis
     totals = job.get("totals") or {}
