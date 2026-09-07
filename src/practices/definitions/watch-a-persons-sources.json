@@ -1,0 +1,21 @@
+{
+  "key": "watch-a-persons-sources",
+  "name": "Watch a persons sources",
+  "task_kinds": [
+    "person-harvest"
+  ],
+  "when": "after a harvest, for every remembered host with a feed (step 2 of PR #4: built — POST /v1/watches)",
+  "shape": "read the host's feed for the person's name forms daily; a new item → fetch → person.new_item webhook to the organ",
+  "ingredients": [
+    "niche_sources.feed_url",
+    "source_people",
+    "the outbox"
+  ],
+  "yields": "a new piece by the person filed the morning after it appears, unasked",
+  "misses": "hosts without a feed; pieces whose feed entry names no author",
+  "origin": "the-reporter PR #4 (communications/PROPOSAL_sources_learned_from_person_harvests_2026-09-07.md §4), 2026-09-07",
+  "owner": "the-reporter",
+  "version": "2026-09-07",
+  "evidence": [],
+  "note": "a planned query on a [recalled] lane names it in `practice`; the retrospective posts evidence rows (queries, new_relevant) per brief"
+}
