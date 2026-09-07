@@ -1,0 +1,21 @@
+{
+  "key": "analysis-search",
+  "name": "Search the prior analyses when the owner points at them",
+  "task_kinds": [
+    "analysis-search"
+  ],
+  "when": "the owner's turn says 'we have it somewhere in the memos' or names thinkers he has already analysed together ('search for Brenner, Arrighi, Hintze, Harvey') — a pointer the reader must file, never a line to skip (the owner, 2026-09-07 13:42: 'we have to build up this capacity')",
+  "shape": "search by the names he lists, together and pairwise, over (1) the Stacks' memo lookup (meta and conversation items; live since the Stacks' b8eaa9a), (2) the projects' communications folders under ~/projects — arrighi-nlr/communications (BRENNER_OUTLINE, TALKING_POINTS_MASTER, chat_digests), oaas/communications (the July 2026 dictations: the vision), brenner-arrighi (the 50-work corpus), the-analyst/communications — and (3) the Stacks' converted conversations (data/converted/*/conversation-*.md); rank by the number of his names a file carries; return the passages that say the relation, not the files",
+  "ingredients": [
+    "the names as he says them (with the name-check's corrections)",
+    "the question the turn argues, to pick the passage",
+    "the projects list and the Stacks' memo index"
+  ],
+  "yields": "the prior formulation he half-remembers, verbatim, with its path (2026-09-07: 'Brenner's Weberian islets mark a state theory with no place for state agency', em:SDZIENC2; the Hintze–Lane coupling in arrighi-nlr's BRENNER_OUTLINE_2026-08-25.md; the state's logic in the 2026-08-29 conversation on Brenner's political Marxism)",
+  "misses": "analyses that never named the thinkers he lists (a memo on 'the state's logic' that says Skocpol, not Hintze); anything only in audio; the Stacks' cite_memos table when the analysis lives in a project folder",
+  "origin": "the owner's turn 11 on Brief 1 (2026-09-07) and the Explore study that found the corpus in arrighi-nlr and oaas, not the Stacks' memos",
+  "owner": "the-mastermind",
+  "version": "2026-09-07",
+  "evidence": [],
+  "note": "The action that runs it is the Stacks' (stacks.search-analyses, licensed by a finding kind reference.pointer_to_prior_analysis); the practice says where to look and how."
+}
