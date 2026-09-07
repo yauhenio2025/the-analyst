@@ -259,6 +259,19 @@ def get_reread(job_id: str):
     return {**render_reread(found[0], found[1]), "status": job.status, "job_id": job.id}
 
 
+@router.get("/jobs/{job_id}/oeuvre")
+def get_oeuvre(job_id: str):
+    """A paper's place in its author's oeuvre (recipe oeuvre_position) as JSON, rendered from the job's ledgers by code: the
+    verdicts, agendas and turns, citation shifts, the readings, the reading route, and the actions the findings license."""
+    from src.dossier.oeuvre import render_oeuvre
+
+    job = _load(job_id)
+    out = render_oeuvre(job.model_dump(mode="json"))
+    if out is None:
+        raise HTTPException(status_code=409, detail=f"no finished oeuvre phase on this job (status={job.status}, step={job.step})")
+    return {**out, "status": job.status}
+
+
 @router.get("/jobs/{job_id}/brief")
 def get_brief(job_id: str):
     job = _load(job_id)

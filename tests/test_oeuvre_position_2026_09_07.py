@@ -71,3 +71,64 @@ def test_the_resolver_takes_the_bundle_as_one_source_with_the_oeuvre_role():
     docs = resolve_sources([SourceSpec(kind="paste", role="oeuvre", key="oeuvre", title="Brenner around 1985", text=json.dumps(BUNDLE))])
     assert [(d.key, d.role) for d in docs] == [("focal:em:F", "source"), ("before:em:B77", "source"), ("after:em:A06", "source"), ("oeuvre", "plan")]
     assert all(d.char_count == len(d.text) for d in docs)
+
+
+FINAL_SHIFT = """## The pattern
+
+The text cites Marx's early works for the first time and drops the agrarian historians (C1.F1, C2.F1).
+
+## Findings ledger
+- [C1.F1] Marx's German Ideology is cited here for the first time — dim: first_cited — cited: Marx, Karl, The German Ideology (1845) — kind: work — for: the first model's source — later: em:A06/2006 — held: yes — in_referee: yes — anchor: "There are two Marxian models of the transition." — doc: focal:em:F — confidence: high
+- [C2.F1] Pirenne, cited in every earlier text, is absent — dim: dropped — cited: Pirenne, Henri — kind: person — cited_in: em:B77/1977 — silence: nothing — anchor: "the neo-Smithian model assumes what it must explain" — doc: before:em:B77 — confidence: medium
+- [C5.F1] Guizot's Histoire is cited and not held — dim: unexamined — cited: Guizot, François, Histoire de la civilisation en Europe (1830) — kind: work — held: no — in_referee: unknown — used_for: the bourgeois revolution first seen by Guizot — anchor: "Guizot saw the bourgeois revolution first." — doc: focal:em:F — confidence: high
+- [C5.F2] Guizot is not a thinker in the Referee — dim: unexamined — cited: Guizot, François — kind: person — held: unknown — in_referee: no — used_for: the source of the bourgeois-revolution thesis — anchor: "Guizot saw the bourgeois revolution first." — doc: focal:em:F — confidence: high
+"""
+FINAL_RUPTURE = """## Verdict
+
+A reorientation: the object stays, the question moves from agrarian class structure to Marx's models (E3.F1).
+
+## Findings ledger
+- [E1.F1] Class relations persist as the object — dim: continuity — what: object — before: em:B77/1977 — after: em:A06/2006 — anchor: "class relations" — doc: before:em:B77 — anchor-b: "profitability" — doc-b: after:em:A06 — confidence: medium
+- [E3.F1] The text reorients the oeuvre — dim: verdict — verdict: reorientation — halves: agrarian class structure (1976–1982) vs Marx's models and the long downturn (1985–2006) — warrant: the question changes, the object does not — anchor: "They are incompatible." — doc: focal:em:F — confidence: medium
+- [E4.F1] Read the 1986 essay on the social basis of economic development — dim: test — source: Brenner, The Social Basis of Economic Development (1986) — held: no — rank: 1 — anchor: "They are incompatible." — doc: focal:em:F — confidence: medium
+"""
+FINAL_MEMO = """## Read backwards
+
+It completes the critique of neo-Smithian Marxism (R4.F1).
+
+## Findings ledger
+- [M1.F1] A reorientation that ends the agrarian agenda — dim: position — position: reorientation — retrospective: culmination — prospective: origin — rupture: reorientation — warrant: the question changes at it — anchor: "They are incompatible." — doc: focal:em:F — confidence: medium
+- [M2.F2] The 2006 book, where the long downturn takes over — dim: read_next — text: em:A06/2006 — held: yes — rank: 2 — why: the later agenda — anchor: "profitability" — doc: after:em:A06 — confidence: medium
+- [M2.F1] The 1977 critique, the road that leads here — dim: read_next — text: em:B77/1977 — held: yes — rank: 1 — why: the inheritance — anchor: "class relations" — doc: before:em:B77 — confidence: high
+- [M3.F1] Whether the 1986 essay already carries the turn — dim: open — decided_by: reading it — held: no — anchor: "They are incompatible." — doc: focal:em:F — confidence: low
+"""
+
+
+def _job():
+    def ph(engine, final, failed=()):
+        return {"engine_key": engine, "final_output": final, "final_wall": {"failed_ids": list(failed)}}
+    return {"id": "d-oeuvre", "status": "done", "analysis": {"4.2": ph("citation_shift", FINAL_SHIFT, ["C2.F1"]), "4.5": ph("epistemic_rupture", FINAL_RUPTURE), "4.6": ph("oeuvre_position_memo", FINAL_MEMO)}}
+
+
+def test_the_oeuvre_renders_by_code_with_the_verdicts_and_the_actions_the_findings_license():
+    from src.dossier.oeuvre import render_oeuvre
+    from src.actions.registry import ActionRegistry, DEFINITIONS
+    out = render_oeuvre(_job(), ActionRegistry(DEFINITIONS, durable=False))
+    assert out["phases"] == ["citation_shift", "epistemic_rupture", "oeuvre_position_memo"] and out["rows"] == 11 and out["conjectures"] == 1
+    v = out["verdicts"]
+    assert v["position"] == "reorientation" and v["rupture"] == "reorientation" and v["halves"].startswith("agrarian class structure") and v["retrospective"] == "" and v["place"] == ""
+    assert out["memo"].startswith("## Read backwards") and "(R4.F1)" not in out["memo"]
+    assert [r["id"] for r in out["read_next"]] == ["M2.F1", "M2.F2"] and out["open"][0]["decided_by"] == "reading it"
+    assert [s["dim"] for s in out["shifts"]] == ["first_cited", "dropped", "unexamined", "unexamined"] and out["shifts"][1]["conjecture"] is True
+    acts = {a["finding"]: a for a in out["actions"]}
+    assert set(acts) == {"C5.F1", "C5.F2", "E4.F1", "M2.F1", "M2.F2"}          # C1.F1 is held and known: nothing to do
+    guizot_work = acts["C5.F1"]
+    assert guizot_work["kind"] == "citation_shift.unexamined" and guizot_work["held"] == "no"
+    fetch = next(a for a in guizot_work["actions"] if a["action"] == "referee.pdf-fetch")
+    assert fetch["inputs"]["work_title"] == "Histoire de la civilisation en Europe" and fetch["inputs"]["work_author"] == "Guizot, François" and fetch["inputs"]["work_year"] == "1830"
+    guizot_person = acts["C5.F2"]
+    exists = next(a for a in guizot_person["actions"] if a["action"] == "referee.thinker-exists")
+    assert exists["inputs"] == {"thinker_name": "Guizot, François"} and exists["cost"] == "none"
+    assert all(a["organ"] == "the-stacks" for a in acts["M2.F1"]["actions"])       # held: bundle or profile, never a fetch
+    assert any(a["action"] == "referee.pdf-fetch" for a in acts["E4.F1"]["actions"])   # a test on an unheld text: fetch it
+    assert render_oeuvre({"id": "x", "analysis": {}}) is None

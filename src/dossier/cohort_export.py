@@ -24,7 +24,7 @@ from typing import Any, Optional
 ENGINES = ("citation_engagement_map", "citation_fidelity_audit", "citation_reception_map")
 FID = "citation_fidelity_audit"
 REC = "citation_reception_map"
-FIELD = re.compile(r" — ([a-z][a-z0-9-]*): ")
+FIELD = re.compile(r" — ([a-z][a-z0-9_-]*): ")   # underscores as the walls allow (the oeuvre family's in_referee, decided_by …, 2026-09-07)
 EVENT_FIELDS = ("ref", "pair-ref", "refs", "passage", "passages", "index-id", "event", "events")
 FINDING_REF = re.compile(r"\[((?:[A-Z]\d\.)?F\d+)(?:,[^\]]*)?\]")
 
