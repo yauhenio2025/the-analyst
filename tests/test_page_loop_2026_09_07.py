@@ -238,7 +238,7 @@ def test_the_reading_as_records_for_a_host_page(monkeypatch):
             "prose": {"L1.F1": "It is a way station [oeuvre_trajectory/F12].\n\nThe verdict holds [epistemic_rupture/F1].", "L1.F2": "It rereads 1977."},
             "exhibits": {"L2.F1": {"description": "five chips"}, "L2.F2": {"title": "Before and after the paper", "description": "two columns"}, "L2.F3": {"title": "The citation shifts", "description": "30 rows"}},
             "review": {"verdicts": [{"element": "L2.F3", "verdict": "drop", "reason": "repeats the prose"}], "clarity": []}}]}
-    monkeypatch.setattr(pl, "_get", lambda key: json.dumps(rec).encode() if key.endswith("record") else None)
+    monkeypatch.setattr(pl, "_get", lambda key: json.dumps(rec).encode() if key == "page:d-j:record" else None)
     d = pl.page_sections("d-j")
     assert d["round"] == 2 and [s["heading"] for s in d["sections"]] == ["The verdict", "What it inherits"]
     first = d["sections"][0]
