@@ -1,0 +1,21 @@
+{
+  "key": "person-source-recall",
+  "name": "Person source recall",
+  "task_kinds": [
+    "person-harvest"
+  ],
+  "when": "a person brief, before any open-web round, when the registry holds source_people rows for the person",
+  "shape": "site:<remembered host> \"first * last\" — the wildcard name alone first, name + one byline anchor second; two queries a host",
+  "ingredients": [
+    "source_people (GET /v1/sources/people?person=)",
+    "name forms",
+    "byline anchors"
+  ],
+  "yields": "the pieces a venue the library does not hold published by or with the person since the last harvest; author pages",
+  "misses": "a host that changed its URL scheme; pieces under a pseudonym; a host whose index Google does not carry",
+  "origin": "the-reporter PR #4 (communications/PROPOSAL_sources_learned_from_person_harvests_2026-09-07.md §4), 2026-09-07",
+  "owner": "the-reporter",
+  "version": "2026-09-07",
+  "evidence": [],
+  "note": "a planned query on a [recalled] lane names it in `practice`; the retrospective posts evidence rows (queries, new_relevant) per brief"
+}
