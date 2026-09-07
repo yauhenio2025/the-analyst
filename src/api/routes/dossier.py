@@ -25,7 +25,7 @@ from typing import Optional
 from pydantic import BaseModel
 from pydantic import BaseModel, Field
 from fastapi import APIRouter, File, Form, HTTPException, UploadFile
-from fastapi.responses import FileResponse, HTMLResponse, PlainTextResponse
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, PlainTextResponse
 
 from src.dossier import events as dossier_events
 from src.dossier.schemas import (AUDIENCES, BriefChoiceRequest, CreateDossierRequest, DEPTHS, DossierJob,

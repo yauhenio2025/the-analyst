@@ -248,3 +248,18 @@ def test_the_reading_as_records_for_a_host_page(monkeypatch):
     assert [e["kind"] for e in second["exhibits"]] == ["two-halves"]                 # the dropped exhibit is gone
     assert second["exhibits"][0]["title"] == "Before and after the paper" and second["exhibits"][0]["svg_url"].endswith("/exhibits/two-halves.svg")
     assert d["cuts"][0]["what"] == "the idea map" and pl.page_sections("nothing") is None
+
+
+def test_the_json_reading_route_is_wired(monkeypatch):
+    """It served 500 on the live desk: JSONResponse was used in the route module without being imported (the Stacks, 2026-09-08)."""
+    import src.api.routes.dossier as d
+    assert d.JSONResponse is not None
+    import src.dossier.page_loop as pl
+    rec = {"job_id": "d-w", "title": "T", "audience": "researcher", "rounds": [{"round": 1, "plan": {"sections": [{"id": "L1.F1", "heading": "H", "grasp": "g", "words": 10}], "exhibits": [], "cuts": []}, "prose": {"L1.F1": "P."}, "exhibits": {}, "review": None}]}
+    monkeypatch.setattr(pl, "_get", lambda key: json.dumps(rec).encode() if key == "page:d-w:record" else None)
+    from fastapi.testclient import TestClient
+    import src.api.main as m
+    c = TestClient(m.app)
+    r = c.get("/v1/dossier/jobs/d-w/page?body=json")
+    assert r.status_code == 200 and r.json()["sections"][0]["heading"] == "H"
+    assert c.get("/v1/dossier/jobs/d-none/page?body=json").status_code == 404
