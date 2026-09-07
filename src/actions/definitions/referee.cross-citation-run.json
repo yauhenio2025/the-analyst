@@ -7,13 +7,12 @@
     "citation_shift.anomaly",
     "epistemic_rupture.test",
     "query.coverage_gap",
-    "*",
     "oeuvre_trajectory.turn",
     "seeds.chosen"
   ],
   "inputs": [
     "query_id",
-    "seeds"
+    "seeds?"
   ],
   "route": "POST /api/cross-citations/queries/{query_id}/search-plan → POST …/runs {searches[{key, url, q, practice}]} → GET /api/scholar/url-works?url=&query_id=&run_id=&item_key= per search",
   "cost": "metered",
