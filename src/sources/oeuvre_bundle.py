@@ -34,6 +34,26 @@ def _creators(t: dict) -> str:
     return _s(t.get("creators") or t.get("author") or t.get("creators_short") or "", 120)
 
 
+def _held_label(w: dict) -> str:
+    """'held em:… (library, MECW 6)' from the Stacks' held / held_how / held_edition; 'not held' only when held is null."""
+    if not w.get("held"):
+        return "not held"
+    how = ", ".join(x for x in (_s(w.get("held_how"), 20), _s(w.get("held_edition"), 60)) if x)
+    return f"held {w.get('held')}" + (f" ({how})" if how else "")
+
+
+def render_ledger(t: dict) -> list[str]:
+    """The Stacks' citation ledger of one text as lines: works cited with counts and holdings, persons with Referee ids.
+    Held means held in the library, whether or not the work's text is supplied to the run (the owner, 2026-09-07 12:05)."""
+    led = t.get("ledger") or {}
+    L = []
+    if led.get("works"):
+        L.append("LEDGER, WORKS CITED (held = in the library, whether or not supplied here): " + "; ".join(f"{_s(w.get('authors') or w.get('author'), 50)}, {_s(w.get('title'), 90)} ({_s(w.get('year'), 12)}) ×{w.get('n_events', w.get('n', ''))} [{_held_label(w)}]" for w in led["works"][:30]))
+    if led.get("persons"):
+        L.append("LEDGER, PERSONS CITED: " + "; ".join(f"{_s(x.get('name'), 60)} ×{x.get('n_events', x.get('n', ''))}" + (f" modes {json.dumps(x.get('modes'))}" if x.get('modes') else "") + (f" [referee {x.get('referee_thinker_id')}]" if x.get('referee_thinker_id') else " [not in referee]") for x in led["persons"][:30]))
+    return L
+
+
 def render_profile(t: dict, side: str) -> str:
     """One text's profile and ledger as the document the engines read; every list bounded so an oeuvre of sixty stays readable."""
     p = t.get("profile") or {}
@@ -56,11 +76,7 @@ def render_profile(t: dict, side: str) -> str:
         L.append("POSITIONS:\n" + "\n".join(f"- {_s(x.get('debate'), 160)}: {_s(x.get('side'), 300)}" + (f" — against: {_s(x.get('against'), 160)}" if x.get('against') else "") if isinstance(x, dict) else f"- {_s(x, 300)}" for x in p["positions"][:10]))
     if p.get("passages"):
         L.append("VERIFIED PASSAGES:\n" + "\n".join(f"- \"{_s(x.get('quote'), 400)}\" ({_s(x.get('locus'), 40)}; {_s(x.get('why'), 120)})" if isinstance(x, dict) else f"- \"{_s(x, 400)}\"" for x in p["passages"][:6] if not isinstance(x, dict) or x.get("verified", True)))
-    led = t.get("ledger") or {}
-    if led.get("works"):
-        L.append("LEDGER, WORKS CITED: " + "; ".join(f"{_s(w.get('authors') or w.get('author'), 50)}, {_s(w.get('title'), 90)} ({_s(w.get('year'), 12)}) ×{w.get('n_events', w.get('n', ''))} [{'held ' + str(w.get('held')) if w.get('held') else 'not held'}]" for w in led["works"][:30]))
-    if led.get("persons"):
-        L.append("LEDGER, PERSONS CITED: " + "; ".join(f"{_s(x.get('name'), 60)} ×{x.get('n_events', x.get('n', ''))}" + (f" modes {json.dumps(x.get('modes'))}" if x.get('modes') else "") + (f" [referee {x.get('referee_thinker_id')}]" if x.get('referee_thinker_id') else " [not in referee]") for x in led["persons"][:30]))
+    L.extend(render_ledger(t))
     return "\n".join(L)
 
 
@@ -75,10 +91,13 @@ def packet_of(obj: dict) -> dict:
     for side, ts in (("before", before), ("focal", [focal]), ("after", after)):
         for t in ts:
             led = t.get("ledger") or {}
-            for w in (led.get("works") or []) + [{"title": w.get("title"), "authors": w.get("author"), "year": w.get("year"), "held": w.get("uid")} for w in ((t.get("profile") or {}).get("works_cited") or []) if isinstance(w, dict)]:
+            works = led.get("works") or [{"title": w.get("title"), "authors": w.get("author"), "year": w.get("year"), "held": w.get("uid")} for w in ((t.get("profile") or {}).get("works_cited") or []) if isinstance(w, dict)]
+            for w in works:   # the Stacks' ledger is the authority on works and holdings; the profile's works-cited only stands in when a text has no ledger (2026-09-07: the two had been merged by title, so the profile's English title made a second, unheld row)
                 key = (w.get("key") or f"{_s(w.get('authors') or w.get('author'), 40)}|{_s(w.get('title'), 80)}").lower()
-                c = cited.setdefault(key, {"title": _s(w.get("title"), 120), "authors": _s(w.get("authors") or w.get("author"), 60), "year": _s(w.get("year"), 12), "held": bool(w.get("held")), "cited_in": {"before": [], "focal": [], "after": []}})
-                c["held"] = c["held"] or bool(w.get("held"))
+                c = cited.setdefault(key, {"title": _s(w.get("title"), 120), "authors": _s(w.get("authors") or w.get("author"), 60), "year": _s(w.get("year"), 12), "held": bool(w.get("held")),
+                                           "held_uid": w.get("held") or None, "held_how": _s(w.get("held_how"), 20) or None, "held_edition": _s(w.get("held_edition"), 80) or None, "cited_in": {"before": [], "focal": [], "after": []}})
+                if w.get("held") and not c["held"]:
+                    c.update({"held": True, "held_uid": w.get("held"), "held_how": _s(w.get("held_how"), 20) or None, "held_edition": _s(w.get("held_edition"), 80) or None})
                 if t.get("uid") not in c["cited_in"][side]:
                     c["cited_in"][side].append(t.get("uid"))
             for x in led.get("persons") or []:
@@ -101,8 +120,10 @@ def packet_of(obj: dict) -> dict:
             "texts": texts, "counts": {"before": len(before), "after": len(after), "profiled": sum(1 for t in texts if t["profiled"])},
             "settings": obj.get("settings") or {}, "undated": [row(t, "undated") for t in obj.get("undated") or []],
             "cited_first_in_focal": first[:60], "cited_before_not_in_focal": dropped[:60], "cited_table_size": len(cited),
+            "concepts": [{"term": _s(c.get("term"), 60), "gloss": _s(c.get("gloss"), 300)} for c in ((focal.get("profile") or {}).get("concepts") or [])[:16] if isinstance(c, dict) and c.get("term")],
             "notes": ["Keys focal:<uid>, before:<uid>, after:<uid> are the documents; a step's scope names the prefixes it reads.",
                       "held and in_referee come from the Stacks' ledger and the Referee ids they carry; a row must copy them, never guess them.",
+                      "held means held in the library (held_uid, held_how library|registry, held_edition), whether or not that work's text is supplied to this run; 'not held' only where held is false.",
                       "Same-year texts are unordered; input order proves no sequence."]}
 
 
@@ -119,7 +140,7 @@ def expand_oeuvre_bundle(text: str, key_hint: str = "oeuvre") -> list[Document]:
     if not body.strip():
         raise ValueError("the focal text needs its body under focal.text")
     docs = [Document(key=f"focal:{focal.get('uid')}", title=f"{_creators(focal)} ({_year(focal)}) — {_s(focal.get('title'), 160)}", creators=_creators(focal), year=_year(focal),
-                     stacks_key=str(focal.get("uid") or ""), text=f"SOURCE ROLE: focal_text\nUID: {focal.get('uid')}\nTITLE: {_s(focal.get('title'), 200)}\nYEAR: {_year(focal)}\n\n{body}", char_count=len(body), role="source")]
+                     stacks_key=str(focal.get("uid") or ""), text="\n".join([f"SOURCE ROLE: focal_text", f"UID: {focal.get('uid')}", f"TITLE: {_s(focal.get('title'), 200)}", f"YEAR: {_year(focal)}"] + render_ledger(focal) + ["", body]), char_count=len(body), role="source")]
     for side in ("before", "after"):
         for t in obj[side]:
             if not t.get("profile"):

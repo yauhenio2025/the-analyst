@@ -81,19 +81,40 @@ def shift_table(o: dict, **_) -> dict:
     rows = [s for s in o.get("shifts") or [] if s.get("dim") in kinds]
     trs = "".join(f'<tr class="{_e(s["dim"])}"><td>{_e(s["dim"].replace("_", " "))}</td><td>{_e(s.get("cited") or s.get("text")[:60])}</td><td>{_e(s.get("kind") or "")}</td><td>{_e(s.get("for") or s.get("used_for") or s.get("silence") or s.get("use_here") or "")[:120]}</td><td>{_e(s.get("held") or "")}</td><td>{_e(s.get("in_referee") or "")}</td><td class="rid">citation_shift/{_e(s["id"])}{" · not verified" if s.get("conjecture") else ""}</td></tr>' for s in rows)
     h = f'<table class="shift"><thead><tr><th>kind</th><th>cited</th><th>work / person</th><th>for</th><th>held</th><th>in the Referee</th><th>row</th></tr></thead><tbody>{trs}</tbody></table>'
-    return {"html": h, "description": f"Table of {len(rows)} citation shifts (kind · cited · for · held · in the Referee): " + "; ".join(f"{s['dim']}: {s.get('cited') or s.get('text')} — {s.get('for') or s.get('used_for') or s.get('silence') or ''} (held {s.get('held')}, Referee {s.get('in_referee')})" for s in rows)}
+    return {"title": f"The citation shifts, {len(rows)} rows: what the paper cites first, drops, carries", "html": h, "description": f"Table of {len(rows)} citation shifts (kind · cited · for · held · in the Referee): " + "; ".join(f"{s['dim']}: {s.get('cited') or s.get('text')} — {s.get('for') or s.get('used_for') or s.get('silence') or ''} (held {s.get('held')}, Referee {s.get('in_referee')})" for s in rows)}
 
 
-def glossary_box(o: dict, **_) -> dict:
+def glossary_box(o: dict, *, rows=None, packet=None) -> dict:
+    """The terms the argument turns on, each with a real gloss: the focal profile's own gloss where it has one (the packet's
+    concepts), else the full sentence of a finding that names the term. Never a truncated agenda sentence (2026-09-07: every
+    term had shown the same cut-off line)."""
+    glosses = {(c.get("term") or "").lower(): c.get("gloss") or "" for c in (packet or {}).get("concepts") or []}
+    sentences: list[str] = []
+    for part in ("agendas", "turns", "place", "shifts", "retrospective", "prospective", "rupture", "read_next", "open"):
+        for r in o.get(part) or []:
+            if isinstance(r, dict):
+                sentences.extend(x.strip() for x in re.split(r"(?<=[.!?])\s+", r.get("text") or "") if len(x.strip()) > 30)
+    def gloss(term: str) -> str:
+        t = term.lower()
+        for k, g in glosses.items():
+            if k == t or (len(t) > 5 and (t in k or k in t)):
+                return g
+        for sent in sentences:
+            if t in sent.lower():
+                return sent
+        return ""
     terms: list[tuple[str, str]] = []
     for a in o.get("agendas") or []:
         for t in re.split(r"[;,]\s*", a.get("concepts") or ""):
             t = t.strip()
             if t and t.lower() not in {x.lower() for x, _ in terms}:
-                terms.append((t, a.get("text", "")[:90]))
+                g = gloss(t)
+                if g:
+                    terms.append((t, g))
     terms = terms[:5]
-    h = '<aside class="box glossary"><h4>The five terms</h4><dl>' + "".join(f'<dt>{_e(t)}</dt><dd>{_e(g)}</dd>' for t, g in terms) + '</dl></aside>'
-    return {"html": h, "description": "Glossary box: " + "; ".join(t for t, _ in terms)}
+    h = '<aside class="box glossary"><h4>The terms</h4><dl>' + "".join(f'<dt>{_e(t)}</dt><dd>{_e(g)}</dd>' for t, g in terms) + '</dl></aside>'
+    return {"title": f"The terms, {len(terms)}: " + ", ".join(t for t, _ in terms[:4]) + ("…" if len(terms) > 4 else ""), "html": h,
+            "description": "Glossary box: " + "; ".join(f"{t} — {g}" for t, g in terms)}
 
 
 def pull_quote(o: dict, rows: Optional[list[str]] = None, **_) -> dict:
@@ -111,12 +132,18 @@ def pull_quote(o: dict, rows: Optional[list[str]] = None, **_) -> dict:
 
 
 def oeuvre_timeline(o: dict, packet: Optional[dict] = None, **_) -> dict:
-    return {"html": timeline_svg(o, packet or {}, width=1040), "description": "Timeline (SVG): the author's texts as ticks on a year axis; the agendas as lanes from their first to their last text, each lane labelled with the agenda's first words and its full row on hover: " + "; ".join(f"{a['id']} — {a.get('text', '')} ({a.get('span', '')})" for a in o.get("agendas") or []) + ". The focal text marked with its year and title. The turns as cuts between their two texts, one row each: " + "; ".join(f"{t['id']} at {t.get('at', '')} — changed {t.get('changed', '')}" for t in o.get("turns") or [])}
+    yrs = [t.get("year") for t in (packet or {}).get("texts") or [] if t.get("year")]
+    span = f"{min(yrs)}–{max(yrs)}" if yrs else ""
+    who = ((packet or {}).get("author") or {}).get("name") or "the author"
+    title = f"{who}'s texts {span} on one line: {len(o.get('agendas') or [])} agendas, {len(o.get('turns') or [])} turns".replace("'s", "’s")
+    return {"title": title, "html": timeline_svg(o, packet or {}, width=1040), "description": "Timeline (SVG): the author's texts as ticks on a year axis; the agendas as lanes from their first to their last text, each lane labelled with the agenda's first words and its full row on hover: " + "; ".join(f"{a['id']} — {a.get('text', '')} ({a.get('span', '')})" for a in o.get("agendas") or []) + ". The focal text marked with its year and title. The turns as cuts between their two texts, one row each: " + "; ".join(f"{t['id']} at {t.get('at', '')} — changed {t.get('changed', '')}" for t in o.get("turns") or [])}
 
 
-def two_halves(o: dict, **_) -> dict:
+def two_halves(o: dict, *, rows=None, packet=None) -> dict:
     v = o.get("verdicts") or {}
-    return {"html": two_halves_svg(o, width=1040), "description": f"Split panel: verdict {v.get('rupture')}, halves {v.get('halves')}; persisting lines cross the seam (" + ", ".join(r.get("what", "") for r in o.get("rupture") or [] if r.get("dim") == "continuity") + "); breaking lines stop at it (" + ", ".join(r.get("what", "") for r in o.get("rupture") or [] if r.get("dim") == "break") + ")"}
+    cont = [r for r in o.get("rupture") or [] if r.get("dim") == "continuity"]; brk = [r for r in o.get("rupture") or [] if r.get("dim") == "break"]
+    title = f"Before and after the paper: {len(cont)} things persist, {len(brk)} change (verdict: {v.get('rupture') or 'not given'})"
+    return {"title": title, "html": two_halves_svg(o, width=1040, packet=packet), "description": f"Two columns, before and after: verdict {v.get('rupture')}, halves {v.get('halves')}; what persists (" + ", ".join(r.get("what", "") for r in o.get("rupture") or [] if r.get("dim") == "continuity") + "); what changes (" + ", ".join(r.get("what", "") for r in o.get("rupture") or [] if r.get("dim") == "break") + "), each row with the two texts it rests on"}
 
 
 def idea_map(o: dict, **_) -> dict:

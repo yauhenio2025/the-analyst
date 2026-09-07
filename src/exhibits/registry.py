@@ -42,6 +42,7 @@ class Exhibit(BaseModel):
     renderer: str = ""                                 # a renderer / sub-renderer key, or a figure primitive
     shape: str = ""                                    # what it shows and how, one paragraph
     didactic: str = ""                                 # what the reader should grasp at a glance
+    placement: str = "after"                           # where it sits by default (exhibit_placements): before (chips only) | beside | after | folded
     cost: str = "none"                                 # none | cents (an image, a model call)
     owner: str = "the-mastermind"
     version: str = ""
@@ -89,8 +90,13 @@ class ExhibitRegistry:
         if durable:
             for key, e in _durable_all().items():
                 old = self._items.get(key)
-                if old is None or len(e.evidence) >= len(old.evidence):
+                if old is None:
                     self._items[key] = e
+                    continue
+                # the file is the record (edited here, persisted through GitHub); the blob only adds the uses it has seen since
+                # (2026-09-07: a blob with more evidence had replaced the file whole, losing a redrawn shape and the placement field)
+                seen = {(u.page, u.recorded, u.verdict) for u in old.evidence}
+                old.evidence.extend(u for u in e.evidence if (u.page, u.recorded, u.verdict) not in seen)
 
     def list(self) -> list[Exhibit]:
         return list(self._items.values())
@@ -144,7 +150,7 @@ class ExhibitRegistry:
 def planner_block(exhibits: list[Exhibit]) -> list[dict]:
     """What a page planner's packet carries: records, not prose."""
     return [{"exhibit": e.key, "name": e.name, "when": e.when, "inputs": e.inputs, "medium": e.medium, "renderer": e.renderer, "shape": e.shape,
-             "didactic": e.didactic, "cost": e.cost, "uses": len(e.evidence)} for e in exhibits]
+             "didactic": e.didactic, "placement": e.placement, "cost": e.cost, "uses": len(e.evidence)} for e in exhibits]
 
 
 _registry: Optional[ExhibitRegistry] = None

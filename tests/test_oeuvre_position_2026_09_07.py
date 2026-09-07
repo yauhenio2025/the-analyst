@@ -180,3 +180,25 @@ def test_a_figure_spec_repair_does_not_assign_an_undeclared_field():
     assert "sp.section_key =" not in src
     with pytest.raises(ValueError):
         FigureSpec(key="f", primitive="lineage", visual_format="x").section_key = "s"
+
+
+def test_the_ledger_is_the_authority_on_holdings_and_the_focal_document_carries_it():
+    """The Stacks (2026-09-07 12:05): a work held in the library came out 'unheld' — the packet had merged the ledger's row and the profile's
+    works-cited by title, so the profile's English title made a second, unheld row that the set difference then chose."""
+    b = json.loads(json.dumps(BUNDLE))
+    b["focal"]["profile"]["works_cited"] = [{"title": "The Communist Manifesto", "author": "Marx, Karl; Engels, Friedrich", "year": "1848", "role": "source", "uid": None}]
+    b["focal"]["ledger"]["works"] = [{"key": "marx:1848:manifest kommunistischen partei", "title": "Manifest der Kommunistischen Partei", "authors": "Marx, Karl; Engels, Friedrich",
+                                      "year": "1848", "n_events": 3, "held": "em:9U6GQ84T", "held_how": "library", "held_edition": "MECW 6"}]
+    pk = packet_of(b)
+    manifestos = [c for c in pk["cited_first_in_focal"] if "manifest" in (c.get("title") or "").lower()]
+    assert len(manifestos) == 1 and manifestos[0]["held"] is True and manifestos[0]["held_uid"] == "em:9U6GQ84T" and manifestos[0]["held_how"] == "library"
+    assert not any("communist manifesto" in (c.get("title") or "").lower() for c in pk["cited_first_in_focal"])
+    assert any("whether or not that work's text is supplied" in n for n in pk["notes"])
+    docs = expand_oeuvre_bundle(json.dumps(b))
+    focal = next(d for d in docs if d.key.startswith("focal:"))
+    assert "LEDGER, WORKS CITED" in focal.text and "held em:9U6GQ84T (library, MECW 6)" in focal.text
+    assert focal.text.index("LEDGER, WORKS CITED") < focal.text.index("There are two Marxian models")
+    # a text without a ledger still contributes its profile's works-cited
+    b["focal"]["ledger"] = {}
+    pk2 = packet_of(b)
+    assert any("communist manifesto" in (c.get("title") or "").lower() and c["held"] is False for c in pk2["cited_first_in_focal"])

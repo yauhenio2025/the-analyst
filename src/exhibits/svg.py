@@ -191,6 +191,9 @@ def timeline_svg(oeuvre: dict, packet: dict, *, width: int = 1100) -> str:
 # ── the two halves ────────────────────────────────────────────────────────────────────────────────────────────────
 
 def two_halves_svg(oeuvre: dict, *, width: int = 1100, packet: Optional[dict] = None) -> str:
+    """Before and after as two columns with the paper as a thin gutter between them (redrawn 2026-09-07 after the owner's audit:
+    the earlier seam-with-lines form ran its lines through the text). One row per finding: what persists (a filled marker) and
+    what changes (a hollow marker, tagged where the change happens); each row names its two texts by year and title."""
     rup = oeuvre.get("rupture") or []
     verdict = next((r for r in rup if r.get("dim") == "verdict"), {})
     cont = [r for r in rup if r.get("dim") == "continuity"]
@@ -201,50 +204,52 @@ def two_halves_svg(oeuvre: dict, *, width: int = 1100, packet: Optional[dict] = 
     before_h = halves[0].strip() if halves else "before"
     after_h = halves[1].strip() if len(halves) > 1 else "after"
     v = (oeuvre.get("verdicts") or {}).get("rupture") or verdict.get("verdict") or ""
-    gloss = {"rupture": "the object, question, method or interlocutors change at it", "reorientation": "the object stays; the question or the method changes", "deepening": "a change of topic within the same problematic", "continuity": "nothing consequential changes at it", "outlier": "a text neither side takes up"}.get(v, "")
-    mid = width // 2
-    col_w = (mid - 70)
-    chars = int(col_w / 6.3)
-    bl, al = _wrap(before_h, chars, 3), _wrap(after_h, chars, 3)
-    head_h = 16 * max(len(bl), len(al), 1) + 18
-    top = 62 + head_h + 20
-    row_h = 58
-    rows_n = max(len(cont) + len(brk), 1)
-    height = top + rows_n * row_h + 56
+    gloss = {"rupture": "the object, question, method or interlocutors change at it", "reorientation": "the object stays; the question or the method changes",
+             "deepening": "a change of topic within the same problematic", "continuity": "nothing consequential changes at it", "outlier": "a text neither side takes up"}.get(v, "")
     yr = focal.get("year") or ""
-    out = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" class="viz" role="img" aria-label="The two halves and the seam">',
+    gutter = 96
+    margin = 40                      # the row marker sits in the left margin, never over the text
+    col_w = (width - margin - 24 - gutter) // 2
+    lx, rx = margin, margin + col_w + gutter
+    chars = int((col_w - 24) / 6.9)
+    bl, al = _wrap(before_h, chars, 3), _wrap(after_h, chars, 3)
+    head_h = 16 * max(len(bl), len(al), 1) + 16
+    y = 60 + head_h + 26
+    rows = [(r, True) for r in cont] + [(r, False) for r in brk]
+    # measure each row: the sentence wraps across the full width in the label line; the two texts sit in their columns
+    blocks = []
+    for r, persists in rows:
+        what = (r.get("what") or "").strip()
+        tag = "persists" if persists else {"yes": "changes at the paper", "partly": "changes partly at the paper"}.get((r.get("at_focal") or "").lower(), "changes later")
+        sent = _wrap(r.get("text", ""), int((width - margin - 24) / 7.2), 2)
+        b_ref, a_ref = r.get("before") or "", r.get("after") or ""
+        b_txt = _cite(b_ref, texts, 2 * chars) if UID_YEAR.search(b_ref) else b_ref
+        a_txt = _cite(a_ref, texts, 2 * chars) if UID_YEAR.search(a_ref) else a_ref
+        bw, aw = _wrap(b_txt, chars, 2), _wrap(a_txt, chars, 2)
+        h = 16 * len(sent) + 14 * max(len(bw), len(aw), 1) + 22
+        blocks.append((r, persists, what, tag, sent, bw, aw, h))
+    height = y + sum(b[-1] for b in blocks) + 40
+    out = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" class="viz" role="img" aria-label="Before and after the paper">',
            _style(), f'<rect class="surface" x="0" y="0" width="{width}" height="{height}"/>',
            f'<text x="24" y="26" class="t1" font-size="16" font-weight="600">Does the {_esc(yr)} paper mark a break? Verdict: {_esc(v or "not given")}{" — " + _esc(gloss) if gloss else ""}</text>',
-           f'<text x="24" y="46" class="t2">green lines cross the seam: what persists · orange lines stop at it: what changes (dotted: the change comes later) · hover a line for its finding</text>',
-           f'<rect class="box" x="24" y="58" width="{mid - 48}" height="{head_h}" rx="6"/>' + _tspans(bl, 36, 78, 16, "t1", 12),
-           f'<rect class="box" x="{mid + 24}" y="58" width="{mid - 48}" height="{head_h}" rx="6"/>' + _tspans(al, mid + 36, 78, 16, "t1", 12),
-           f'<line class="seam" x1="{mid}" y1="58" x2="{mid}" y2="{height - 36}"/>',
-           f'<text x="{mid}" y="{height - 18}" class="t1" text-anchor="middle" font-weight="600">the {_esc(yr)} paper · {_esc(v)}</text>']
-    y = top
-    for r in cont:
-        what = r.get("what") or ""; b = r.get("before") or ""; a = r.get("after") or ""
-        sent = _wrap(r.get("text", ""), int((width - 140) / 7.4), 2)
-        out.append(f'<g class="s2"><title>{_esc(r["id"])} — {_esc(r.get("text"))} — before {_esc(b)} — after {_esc(a)}</title>'
-                   f'<line x1="60" y1="{y + 30}" x2="{width - 60}" y2="{y + 30}" stroke-width="2"/><circle cx="60" cy="{y + 30}" r="4"/><circle cx="{width - 60}" cy="{y + 30}" r="4"/></g>')
-        out.append(f'<text x="70" y="{y + 8}" class="t1" font-size="12"><tspan font-weight="600">persists · {_esc(what)}.</tspan> {_esc(sent[0] if sent else "")}</text>')
-        if len(sent) > 1:
-            out.append(f'<text x="70" y="{y + 22}" class="t2" font-size="12">{_esc(sent[1])}</text>')
-        out.append(f'<text x="70" y="{y + 44}" class="t3" font-size="11">{_esc(_cite(b, texts))}</text><text x="{width - 70}" y="{y + 44}" class="t3" font-size="11" text-anchor="end">{_esc(_cite(a, texts))}</text>')
-        y += row_h
-    for r in brk:
-        what = r.get("what") or ""; b = r.get("before") or ""; a = r.get("after") or ""; at = (r.get("at_focal") or "").lower()
-        here = at in ("yes", "partly")
-        where = "at the paper" if at == "yes" else ("partly at the paper" if at == "partly" else "later, not at the paper")
-        sent = _wrap(r.get("text", ""), int((width - 140) / 7.4), 2)
-        out.append(f'<g class="s1"><title>{_esc(r["id"])} — {_esc(r.get("text"))} — before: {_esc(b)} — after: {_esc(a)} — at the focal text: {_esc(at)}</title>'
-                   f'<line x1="60" y1="{y + 30}" x2="{mid - 8 if here else mid + 60}" y2="{y + 30}" stroke-width="2"/><circle cx="60" cy="{y + 30}" r="4"/>'
-                   f'<line x1="{mid + 8 if here else mid + 60}" y1="{y + 30}" x2="{width - 60}" y2="{y + 30}" stroke-width="2" stroke-dasharray="4 4" opacity="0.7"/><circle cx="{width - 60}" cy="{y + 30}" r="4" fill="none" stroke-width="2"/></g>')
-        out.append(f'<text x="70" y="{y + 8}" class="t1" font-size="12"><tspan font-weight="600">changes · {_esc(what)} · {_esc(where)}.</tspan> {_esc(sent[0] if sent else "")}</text>')
-        if len(sent) > 1:
-            out.append(f'<text x="70" y="{y + 22}" class="t2" font-size="12">{_esc(sent[1])}</text>')
-        bw, aw = _wrap(_cite(b, texts, 60) if UID_YEAR.search(b) else b, int(col_w / 6.0), 1), _wrap(_cite(a, texts, 60) if UID_YEAR.search(a) else a, int(col_w / 6.0), 1)
-        out.append(f'<text x="70" y="{y + 44}" class="t3" font-size="11">{_esc(bw[0] if bw else "")}</text><text x="{width - 70}" y="{y + 44}" class="t3" font-size="11" text-anchor="end">{_esc(aw[0] if aw else "")}</text>')
-        y += row_h
+           f'<text x="24" y="46" class="t2">left: the texts before the paper · right: the texts after · a filled mark: this persists across the paper · a hollow mark: this changes · hover a row for its finding</text>',
+           f'<rect class="box" x="{lx}" y="58" width="{col_w}" height="{head_h}" rx="6"/>' + _tspans(bl, lx + 12, 78, 16, "t1", 12),
+           f'<rect class="box" x="{rx}" y="58" width="{col_w}" height="{head_h}" rx="6"/>' + _tspans(al, rx + 12, 78, 16, "t1", 12),
+           f'<text x="{width // 2}" y="{58 + head_h // 2 + 5}" class="t1" text-anchor="middle" font-weight="600" font-size="12">{_esc(yr)}</text>']
+    for r, persists, what, tag, sent, bw, aw, h in blocks:
+        cls = "s2" if persists else "s1"
+        out.append(f'<g><title>{_esc(r["id"])} — {_esc(r.get("text"))} — before: {_esc(r.get("before"))} — after: {_esc(r.get("after"))}</title>')
+        out.append(f'<line class="grid" x1="{lx}" y1="{y - 6}" x2="{width - 24}" y2="{y - 6}"/>')
+        out.append(f'<circle cx="{margin // 2}" cy="{y + 10}" r="5" class="{cls}"' + ("" if persists else ' fill="none" stroke-width="2"') + "/>")
+        out.append(f'<text x="{lx}" y="{y + 14}" class="t1" font-size="12"><tspan font-weight="600">{_esc(tag)} · {_esc(what)}.</tspan> {_esc(sent[0] if sent else "")}</text>')
+        yy = y + 14
+        for line in sent[1:]:
+            yy += 16; out.append(f'<text x="{lx}" y="{yy}" class="t2" font-size="12">{_esc(line)}</text>')
+        yy += 18
+        out.append(_tspans(bw, lx, yy, 14, "t3", 11) + _tspans(aw, rx, yy, 14, "t3", 11))
+        out.append("</g>")
+        y += h
+    out.append(f'<text x="{margin}" y="{height - 14}" class="t2" font-size="11">{len(cont)} things persist across the paper · {len(brk)} change, {sum(1 for r in brk if (r.get("at_focal") or "").lower() in ("yes", "partly"))} of them at the paper itself</text>')
     out.append("</svg>")
     return "\n".join(out)
 

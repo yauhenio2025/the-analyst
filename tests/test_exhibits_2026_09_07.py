@@ -13,7 +13,7 @@ def test_the_seeds_load_and_serve_by_kind_and_medium():
     assert {e.key for e in reg.for_kind("citation_shift.dropped")} >= {"shift-table"}      # citation_shift.* serves every shift dimension
     assert [e.key for e in reg.for_medium("image")] == ["idea-map"] and reg.get("idea-map").cost == "cents" and reg.get("two-halves").renderer == "dialectical_pair"
     block = planner_block(reg.for_kind("oeuvre_position_memo.read_next"))
-    assert block and set(block[0]) == {"exhibit", "name", "when", "inputs", "medium", "renderer", "shape", "didactic", "cost", "uses"}
+    assert block and set(block[0]) == {"exhibit", "name", "when", "inputs", "medium", "renderer", "shape", "didactic", "placement", "cost", "uses"}
     assert all(e.shape and e.didactic for e in reg.list())
 
 
@@ -58,6 +58,18 @@ def test_the_timeline_and_the_two_halves_draw_from_the_rows_by_code():
     assert svg.count("<title>") >= 6 and "prefers-color-scheme: dark" in svg          # hover rows; light and dark selected
     halves = two_halves_svg(oeuvre, packet=packet)
     assert "Verdict: deepening" in halves and "1972–1984 formation" in halves and "1985–2025 codification" in halves
-    assert "persists · object." in halves and "changes · method · partly at the paper." in halves and 'class="seam"' in halves
+    assert "persists · object." in halves and "changes partly at the paper · method." in halves and 'class="seam"' not in halves   # two columns, no lines through the text (the owner's audit, 2026-09-07 11:45)
     assert "1977 · Agrarian" in halves and "2001 · Property and Progress" in halves       # the two texts named by the row's year and the packet's title, not uid
     assert exhibit_svg("no-such", oeuvre, packet) is None and exhibit_svg("two-halves", oeuvre, None).startswith("<svg")
+
+
+def test_every_seed_names_where_it_sits_in_the_placement_vocabulary():
+    from src.exhibits.registry import ExhibitRegistry, planner_block
+    from src.vocabularies.registry import get_vocabulary_registry
+    values = {v.value for v in get_vocabulary_registry().get("exhibit_placements").values}
+    assert "folded" in values
+    reg = ExhibitRegistry()
+    seeds = {e.key: e.placement for e in reg.list()}
+    assert set(seeds.values()) <= values
+    assert seeds["oeuvre-timeline"] == "folded" and seeds["verdict-chips"] == "before" and seeds["two-halves"] == "after"
+    assert all("placement" in row for row in planner_block(reg.list()))

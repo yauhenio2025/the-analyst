@@ -128,9 +128,10 @@ h2{font-size:19px;margin:34px 0 8px}.grasp{color:#52514e;font-size:14px;margin:0
 table.shift{border-collapse:collapse;width:100%;font-size:13px;margin:12px 0}table.shift th,table.shift td{border-bottom:1px solid #dad9d4;padding:6px 8px;text-align:left;vertical-align:top}table.shift th{color:#52514e;font-weight:600}
 blockquote.pull{border-left:3px solid #2a78d6;margin:14px 0;padding:6px 16px;font-size:18px;line-height:1.35;color:#0b0b0b}blockquote.pull footer{font-size:12px;color:#52514e;margin-top:6px}
 .rid{font-size:11px;color:#8a8985}.beside{float:right;width:38%;margin:0 0 12px 18px}.exhibit{margin:14px 0}.exhibit svg{max-width:100%;height:auto}
+details.folded{border:1px solid #dad9d4;border-radius:8px;background:#f4f3f0;padding:0 14px;margin:14px 0}details.folded summary{cursor:pointer;padding:10px 0;font-weight:600;font-size:14px;list-style:none}details.folded summary::-webkit-details-marker{display:none}details.folded summary .hint{float:right;font-weight:400;color:#52514e;font-size:12px}details.folded[open] summary .hint{display:none}details.folded>*:not(summary){margin-bottom:12px}
 figure.pending{border:1px dashed #dad9d4;padding:10px;color:#52514e;font-size:13px}
 .cut{font-size:13px;color:#52514e;margin-top:30px}.review{border-top:1px solid #dad9d4;margin-top:36px;padding-top:12px;font-size:13px;color:#52514e}
-@media (prefers-color-scheme: dark){body{color:#fff;background:#1a1a19}.sub,.grasp,.halves,.box h4,.glossary dd,.card .rank,.card .why,.card .meta,table.shift th,blockquote.pull footer,.cut,.review{color:#c3c2b7}.chip,.box,.card{background:#242422;border-color:#3a3a37}table.shift th,table.shift td{border-color:#3a3a37}figure.pending{border-color:#3a3a37}}
+@media (prefers-color-scheme: dark){body{color:#fff;background:#1a1a19}.sub,.grasp,.halves,.box h4,.glossary dd,.card .rank,.card .why,.card .meta,table.shift th,blockquote.pull footer,.cut,.review{color:#c3c2b7}.chip,.box,.card,details.folded{background:#242422;border-color:#3a3a37}details.folded summary .hint{color:#c3c2b7}table.shift th,table.shift td{border-color:#3a3a37}figure.pending{border-color:#3a3a37}}
 </style>"""
 
 
@@ -161,10 +162,16 @@ def _paras(text: str) -> str:
 def compose_page(title: str, subtitle: str, plan: dict, prose: dict[str, str], exhibits: dict[str, dict], review: Optional[dict], round_no: int) -> tuple[str, str]:
     """The page HTML and its description (what the reviewer reads): sections in the plan's order, each exhibit placed as planned."""
     by_sec: dict[str, list[dict]] = {}
+    first_section = plan["sections"][0]["id"] if plan.get("sections") else None
     for e in plan["exhibits"]:
-        if e["placement"] == "beside" and e["kind"] in WIDE_KINDS:   # a drawn or tabular exhibit is never floated: it needs the width
-            e["placement"] = "before"
-            e["note"] = (e.get("note") or "") + " placed before its section at full width (a wide exhibit is never floated)"
+        # the text is the main dish (the owner, 2026-09-07 11:45): a wide exhibit is never floated and never the lead; it folds
+        if e["placement"] == "beside" and e["kind"] in WIDE_KINDS:
+            e["placement"] = "folded"; e["note"] = (e.get("note") or "") + " folded (a wide exhibit is never floated)"
+        if e["placement"] == "before" and e["kind"] != "verdict-chips":
+            e["placement"] = "folded" if e["kind"] in WIDE_KINDS else "after"
+            e["note"] = (e.get("note") or "") + f" moved {e['placement']} (only verdict chips stand before a section's text)"
+        if e["section"] == first_section and e["placement"] != "before" and e["kind"] in WIDE_KINDS:
+            e["placement"] = "folded"
         by_sec.setdefault(e["section"], []).append(e)
     body = [f"<h1>{_e(title)}</h1><p class='sub'>{_e(subtitle)} · page round {round_no}</p>"]
     desc = [f"PAGE: {title} — {subtitle}"]
@@ -176,9 +183,13 @@ def compose_page(title: str, subtitle: str, plan: dict, prose: dict[str, str], e
         desc.append(f"\n[{s['id']}] SECTION: {s['heading']} — grasp: {s.get('grasp')} — budget {s.get('words')} words")
         def place(e):
             m = exhibits.get(e["id"]) or {}
-            cls = "exhibit beside" if e["placement"] == "beside" else "exhibit"
-            body.append(f"<div class='{cls}' id='{_e(e['id'])}'>{m.get('html', '')}<div class='rid'>[{_e(e['id'])}] {_e(e['kind'])} · {_e(e.get('aim'))}</div></div>")
-            desc.append(f"[{e['id']}] EXHIBIT {e['kind']} ({e['placement']}) — aim: {e.get('aim')} — shows: {m.get('description', '(not made)')}")
+            title = (m.get("title") or e.get("aim") or e["kind"].replace("-", " ")).strip()
+            if e["placement"] == "folded":   # a reference exhibit: a titled line the reader opens; the text is never hidden behind it
+                body.append(f"<details class='exhibit folded' id='{_e(e['id'])}'><summary>{_e(title)}<span class='hint'>open</span></summary>{m.get('html', '')}<div class='rid'>[{_e(e['id'])}] {_e(e['kind'])}</div></details>")
+            else:
+                cls = "exhibit beside" if e["placement"] == "beside" else "exhibit"
+                body.append(f"<div class='{cls}' id='{_e(e['id'])}'>{m.get('html', '')}<div class='rid'>[{_e(e['id'])}] {_e(e['kind'])} · {_e(e.get('aim'))}</div></div>")
+            desc.append(f"[{e['id']}] EXHIBIT {e['kind']} ({e['placement']}{', shown as a titled line the reader opens' if e['placement'] == 'folded' else ''}) — aim: {e.get('aim')} — shows: {m.get('description', '(not made)')}")
         for e in before: place(e)
         for e in beside: place(e)
         text = prose.get(s["id"], "")

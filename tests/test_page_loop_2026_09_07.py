@@ -82,7 +82,7 @@ def test_prose_review_and_the_composed_page():
     html, desc = compose_page("T", "S", plan, prose, made, review, 1)
     assert "<h2>The answer in five words</h2>" in html and "class=\"chips\"" in html and "<svg" in html and "[oeuvre_position_memo/F9]" in html
     assert html.index("chips") < html.index("<p>Read whole") and "The reviewer's verdicts" in html and "Left out of the page" in html
-    assert "[L1.F1] SECTION" in desc and "[L2.F2] EXHIBIT oeuvre-timeline (before)" in desc and "PROSE (15 words)" in desc
+    assert "[L1.F1] SECTION" in desc and "[L2.F2] EXHIBIT oeuvre-timeline (folded, shown as a titled line the reader opens)" in desc and "PROSE (15 words)" in desc
 
 
 def test_the_loop_runs_with_a_fake_model_and_writes_verdicts_back(tmp_path):
@@ -108,4 +108,22 @@ def test_the_loop_runs_with_a_fake_model_and_writes_verdicts_back(tmp_path):
     assert [e["kind"] for e in r1["plan"]["exhibits"]] == ["verdict-chips", "oeuvre-timeline"] and r1["review"]["verdicts"][1]["verdict"] == "simplify"
     assert rec["final_html"].startswith("<!doctype html>") and "The oeuvre on one line" in rec["final_html"]
     assert [x.verdict for x in reg.get("oeuvre-timeline").evidence][before["oeuvre-timeline"]:] == ["simplify", "simplify"] and reg.get("verdict-chips").evidence[before["verdict-chips"]].page == "d-page/round1"
-    assert rec["rounds"][0]["plan"]["exhibits"][1]["placement"] == "before"        # the timeline was planned 'before' and stays; a wide exhibit is never floated
+    assert rec["rounds"][0]["plan"]["exhibits"][1]["placement"] == "folded"        # the timeline was planned 'before'; a wide exhibit never leads: it folds
+
+
+def test_the_text_is_the_main_dish_wide_exhibits_fold_and_nothing_but_chips_stands_before_the_first_section():
+    """The owner (2026-09-07 11:45): the timeline 'cannot be the main dish'; exhibits at the top 'hide the rest of the essay'."""
+    plan = {"line": "", "sections": [{"id": "L1.F1", "heading": "The place", "grasp": "g", "words": 200}, {"id": "L1.F2", "heading": "What changes", "grasp": "g", "words": 200}],
+            "exhibits": [{"id": "L2.F1", "kind": "oeuvre-timeline", "section": "L1.F1", "rows": [], "placement": "before", "aim": "the span"},
+                         {"id": "L2.F2", "kind": "verdict-chips", "section": "L1.F1", "rows": [], "placement": "before", "aim": "the verdicts"},
+                         {"id": "L2.F3", "kind": "pull-quote", "section": "L1.F2", "rows": [], "placement": "before", "aim": "the sentence"},
+                         {"id": "L2.F4", "kind": "shift-table", "section": "L1.F2", "rows": [], "placement": "beside", "aim": "the shifts"}], "cuts": []}
+    made = {"L2.F1": {"title": "Brenner’s texts 1972–2025 on one line", "html": "<svg/>", "description": "timeline"}, "L2.F2": {"html": "<div class='chips'>c</div>", "description": "chips"},
+            "L2.F3": {"html": "<blockquote class='pull'>q</blockquote>", "description": "quote"}, "L2.F4": {"html": "<table class='shift'></table>", "description": "table"}}
+    html, desc = compose_page("T", "S", plan, {"L1.F1": "First paragraph.", "L1.F2": "Second."}, made, None, 1)
+    by_id = {e["id"]: e["placement"] for e in plan["exhibits"]}
+    assert by_id == {"L2.F1": "folded", "L2.F2": "before", "L2.F3": "after", "L2.F4": "folded"}
+    assert html.index("<div class='chips'>") < html.index("First paragraph.") < html.index("<details class='exhibit folded' id='L2.F1'>")
+    assert "<summary>Brenner’s texts 1972–2025 on one line<span class='hint'>open</span></summary>" in html
+    assert html.index("Second.") < html.index("<blockquote class='pull'>")
+    assert "shown as a titled line the reader opens" in desc
