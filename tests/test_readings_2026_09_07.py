@@ -70,3 +70,14 @@ def test_an_author_id_without_a_name_still_indexes_under_the_person(monkeypatch)
     job = {"id": "d-id", "updated_at": "2026-09-07T12:00:00Z", "packet": {"author": {"id": "brenner-robert"}}, "analysis": {"4.1": {"engine_key": "oeuvre_trajectory", "final_output": tp, "final_wall": {"failed_ids": []}}}}
     rl.index_job(job)
     assert rl.readings_for(person="Brenner")["count"] == 1
+
+
+def test_a_bare_surname_gathers_every_name_form_and_phrases_are_not_persons(monkeypatch):
+    _store(monkeypatch)
+    a = "[I2.F1] Brenner: x — dim: their_claim — interlocutor: Brenner — anchor: \"a\" — doc: em:B — confidence: high"
+    b = "[T1.F1] The transition agenda — dim: agenda — name: capitalist transition — anchor: \"x\" — doc: focal:em:F — confidence: high\n[E3.F1] against — dim: opponent — opponent: the reduction of the state to an economic enterprise — anchor: \"y\" — doc: em:H — confidence: low\n[E3.F2] against — dim: opponent — opponent: Hegel — anchor: \"z\" — doc: em:H — confidence: low"
+    rl.index_job({"id": "j-a", "updated_at": "2026-09-07T10:00:00Z", "analysis": {"4.1": {"engine_key": "interlocutor_position", "final_output": a, "final_wall": {"failed_ids": []}}}})
+    rl.index_job({"id": "j-b", "updated_at": "2026-09-07T11:00:00Z", "packet": {"author": {"id": "brenner-robert"}}, "analysis": {"4.1": {"engine_key": "oeuvre_trajectory", "final_output": b, "final_wall": {"failed_ids": []}}}})
+    assert rl.readings_for(person="Brenner")["count"] == 2 and rl.readings_for(person="Brenner, Robert")["count"] == 1
+    persons = rl.reading("j-b", "4.1")["persons"]
+    assert "Brenner, Robert" in persons and "Hegel" in persons and "capitalist transition" not in persons and not any("reduction of the state" in p for p in persons)

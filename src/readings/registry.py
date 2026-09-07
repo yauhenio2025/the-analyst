@@ -15,7 +15,7 @@ import re
 import time
 from typing import Any, Iterable, Optional
 
-PERSON_FIELDS = ("interlocutor", "person", "thinker", "opponent", "author", "name")
+PERSON_FIELDS = ("interlocutor", "person", "thinker", "opponent", "author", "thinker_name", "person_name")   # never `name`: an agenda's or a school's name is not a person
 TEXT_FIELDS = ("text", "ref", "source", "cited_text", "before", "after")
 UID = re.compile(r"(em:[A-Za-z0-9]{6,})")
 
@@ -42,19 +42,29 @@ def surname(name: str) -> str:
     return (n.split(",", 1)[0] if "," in n else n.split()[-1] if n.split() else n).strip().lower()
 
 
+def _is_name(v: str) -> bool:
+    """A person's name, not a list, a phrase or an id: at most five words and one comma, no 'and', not a uid or a row id."""
+    v = (v or "").strip()
+    if not v or len(v) > 60 or v.startswith("em:") or re.match(r"^[A-Z]\d\.F\d+$", v):
+        return False
+    if v.count(",") > 1 or len(v.split()) > 5 or re.search(r"\b(and|or|of the|the)\b", v.lower()):
+        return False
+    return v.lower() not in ("none", "unknown", "")
+
+
 def persons_of(fields: dict, row_text: str = "") -> set[str]:
     out = set()
     for k in PERSON_FIELDS:
         v = (fields.get(k) or "").strip()
-        if v and len(v) < 80 and not v.startswith("em:") and not re.match(r"^[A-Z]\d\.F\d+$", v):
+        if _is_name(v):
             out.add(v)
-    if (fields.get("kind") or "").lower() == "person" and fields.get("cited"):
+    if (fields.get("kind") or "").lower() == "person" and _is_name(fields.get("cited") or ""):
         out.add(fields["cited"].strip())
     for k in ("candidates", "interlocutors"):
         for part in re.split(r"[;|]", fields.get(k) or ""):
-            if part.strip() and len(part.strip()) < 80:
+            if _is_name(part):
                 out.add(part.strip())
-    return {p for p in out if p.lower() not in ("none", "unknown", "")}
+    return out
 
 
 def texts_of(fields: dict, doc: str = "") -> set[str]:
@@ -209,8 +219,9 @@ def readings_for(person: Optional[str] = None, text: Optional[str] = None, job: 
     entries: list[dict] = []
     if person:
         entries = _load_list(_index_key("person", person))
-        if not entries:   # 'Hintze' finds 'Hintze, Otto'
-            entries = _load_list(f"readings:surname:{surname(person)}")
+        if len(person.split()) == 1 and "," not in person:   # a bare surname gathers every form: 'Brenner' and 'Brenner, Robert' alike
+            seen = {(e["job_id"], e["phase"]) for e in entries}
+            entries = entries + [e for e in _load_list(f"readings:surname:{surname(person)}") if (e["job_id"], e["phase"]) not in seen]
     elif text:
         m = UID.search(text or "")
         entries = _load_list(_index_key("text", m.group(1) if m else text))
