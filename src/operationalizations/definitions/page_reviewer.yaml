@@ -1,0 +1,90 @@
+# The page desks (2026-09-07). One call at surface depth; the call and the critic at standard.
+engine_key: page_reviewer
+engine_name: The page reviewer
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: Does this page read on the first pass, and what fails?
+  framing: 'The document is the assembled page as text: the sections'' prose, each exhibit described (its kind,
+    its aim, what it shows from which rows), the sidebars'' lines, in page order, each element with its plan id
+    (L1 for sections, L2 for exhibits). The packet carries the audience and the plan''s aims. Give one verdict row
+    per element (keep · simplify · replace · drop · move) with the reason and the fix, and one clarity row per section
+    (first_pass yes · partly · no) with why. Judge for this reader: an expert wants density, a first reader wants
+    the shape first. Anchor in the page document.'
+  scoped_outcomes: false
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: claude-sonnet-5
+  dimensions:
+  - key: verdict
+    name: A verdict on an element
+    questions:
+    - Does this element earn its place for this reader, and if not, what would?
+    method_card: 'Do: One row per element on the page (sections and exhibits alike), the verdict from the vocabulary,
+      the reason in one clause, the fix in one clause. Select literal spans that carry the claim. Code checks only
+      anchors and IDs; the model must judge the page against the reader.'
+    indicators:
+    - dense
+    - repeats
+    - unclear
+    scope: document
+    load_bearing: true
+    id_prefix: V1
+    answer_shape: '[V1.F<n>] <the element in one line> — dim: verdict — element: <L1 or L2 id> — verdict: keep|simplify|replace|drop|move
+      — reason: <one clause> — fix: <one clause> — anchor: "<verbatim from the page document, <=200 chars>" — doc:
+      <the page document key> — confidence: high|medium|low'
+  - key: clarity
+    name: First-pass clarity of a section
+    questions:
+    - Does the reader grasp the section's one thing on the first pass?
+    method_card: 'Do: One row per section: yes, partly or no, and why in one clause. Select literal spans that carry
+      the claim. Code checks only anchors and IDs; the model must judge the page against the reader.'
+    indicators:
+    - grasp
+    - reread
+    scope: document
+    load_bearing: true
+    id_prefix: V2
+    answer_shape: '[V2.F<n>] <the section heading> — dim: clarity — section: <L1 id> — first_pass: yes|partly|no
+      — why: <one clause> — anchor: "<verbatim from the page document, <=200 chars>" — doc: <the page document key>
+      — confidence: high|medium|low'
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension
+    model_tier: cheap
+    output: ledger
+    max_rows: 8
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - merge_duplicates
+    - name_must_keep
+    - A verdict on an element the page does not carry is struck; a verdict without a fix is struck.
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    max_rows: 10
+    reader: the page planner, deciding the next round
+    tables: []
+    brief: '1. Three sentences: does the page read on the first pass for this reader, what fails most, what one
+      change would help most. 2. Then the ledger: a verdict per element and a clarity row per section.'

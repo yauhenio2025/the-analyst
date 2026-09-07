@@ -23,6 +23,7 @@ from pathlib import Path
 from typing import Optional
 
 from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 from fastapi.responses import FileResponse, HTMLResponse, PlainTextResponse
 
@@ -320,6 +321,59 @@ def get_job_exhibit_svg(job_id: str, key: str):
     if svg is None:
         raise HTTPException(status_code=404, detail=f"no exhibit maker for {key}")
     return Response(content=svg, media_type="image/svg+xml", headers={"Cache-Control": "public, max-age=300"})
+
+
+class PageRequest(BaseModel):
+    audience: str = "researcher"
+    rounds: int = Field(2, ge=1, le=4)
+    model: str = "anthropic/claude-sonnet-5"
+
+
+@router.post("/jobs/{job_id}/page", status_code=202)
+def start_page(job_id: str, req: Optional[PageRequest] = None):
+    """Run the page loop over a finished oeuvre job (plan → make → write → review, then revise): the page a reader grasps on the
+    first pass. Background; poll /page/status; read /page (HTML) and /page.json."""
+    from src.dossier.oeuvre import render_oeuvre
+    from src.dossier.page_loop import start_page_loop
+
+    req = req or PageRequest()
+    job = _load(job_id)
+    o = render_oeuvre(job.model_dump(mode="json"))
+    if o is None:
+        raise HTTPException(status_code=409, detail=f"no finished oeuvre phase on this job (status={job.status}, step={job.step})")
+    packet = _oeuvre_packet(job)
+    return start_page_loop(job_id, o, packet, audience=req.audience, rounds=req.rounds, model=req.model)
+
+
+@router.get("/jobs/{job_id}/page/status")
+def page_status_route(job_id: str):
+    from src.dossier.page_loop import load_page, page_status
+
+    st = page_status(job_id)
+    if st is None:
+        return {"job_id": job_id, "status": "done" if load_page(job_id, "html") else "none"}
+    return st
+
+
+@router.get("/jobs/{job_id}/page", response_class=HTMLResponse)
+def get_page(job_id: str, round: Optional[int] = None):
+    from src.dossier.page_loop import load_page
+
+    got = load_page(job_id, f"round{round}.html" if round else "html")
+    if not got:
+        raise HTTPException(status_code=404, detail="no page for this job yet (POST /page to make one)")
+    return HTMLResponse(content=got.decode("utf-8"))
+
+
+@router.get("/jobs/{job_id}/page.json")
+def get_page_json(job_id: str):
+    import json as _json
+    from src.dossier.page_loop import load_page
+
+    got = load_page(job_id, "record")
+    if not got:
+        raise HTTPException(status_code=404, detail="no page record for this job yet")
+    return _json.loads(got.decode("utf-8"))
 
 
 @router.get("/jobs/{job_id}/brief")

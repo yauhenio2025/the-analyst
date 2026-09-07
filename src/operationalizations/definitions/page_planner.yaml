@@ -1,0 +1,113 @@
+# The page desks (2026-09-07). One call at surface depth; the call and the critic at standard.
+engine_key: page_planner
+engine_name: The page planner
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: What page, in which sections and with which exhibits, lets this reader grasp the memo on the first
+    pass?
+  framing: 'The document is the memo of a finished analysis, rendered as text: its verdicts, its prose, and its
+    findings as rows (each with an id like citation_shift/F7, a dimension and its fields). A packet supplied as
+    context carries the EXHIBITS the page may use — records from the registry with a key, when they apply, the inputs
+    they draw on, their medium, shape and didactic aim — the audience, and, in a second round, the reviewer''s verdicts
+    on the previous page. Use only the registry''s exhibit kinds; tie every exhibit to one section and to the row
+    ids it draws on; give every section a word budget (a page of this kind reads in ten minutes: about 1,200 to
+    1,800 words in all); name what the page will not carry. Anchor each row in the memo document''s own words.'
+  scoped_outcomes: false
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: claude-sonnet-5
+  dimensions:
+  - key: section
+    name: A section of the page
+    questions:
+    - Which sections, in what order, with what budget, and what must each make the reader grasp?
+    method_card: 'Do: At most seven rows, one per section in reading order: heading in the reader''s terms, a word
+      budget, the one thing the reader must grasp, the memo rows or parts it draws on. Anchor in the memo document.
+      Select literal spans that carry the claim. Code checks only anchors and IDs; the model must judge the page
+      against the reader.'
+    indicators:
+    - first
+    - then
+    scope: document
+    load_bearing: true
+    id_prefix: L1
+    answer_shape: '[L1.F<n>] <the section heading> — dim: section — order: <1..n> — words: <budget> — grasp: <the
+      one thing the reader takes from it> — from: <row ids or memo parts it draws on> — anchor: "<verbatim from
+      the memo document, <=200 chars>" — doc: <the memo document key> — confidence: high|medium|low'
+  - key: exhibit
+    name: An exhibit on the page
+    questions:
+    - Which exhibit, of which registry kind, in which section, drawn from which rows, to make the reader grasp what?
+    method_card: 'Do: At most eight rows: the registry kind (its key exactly), the section (an L1 id), the row ids
+      it draws on, the didactic aim, and where it sits (before the section, beside it, after it). Prefer a drawn
+      or tabular exhibit where the text would otherwise list; never an exhibit that repeats the paragraph beside
+      it. Select literal spans that carry the claim. Code checks only anchors and IDs; the model must judge the
+      page against the reader.'
+    indicators:
+    - timeline
+    - table
+    - diagram
+    scope: document
+    load_bearing: true
+    id_prefix: L2
+    answer_shape: '[L2.F<n>] <the exhibit in one line> — dim: exhibit — kind: <registry exhibit key> — section:
+      <L1 id> — rows: <row ids> — placement: before|beside|after — aim: <what the reader grasps at a glance> — anchor:
+      "<verbatim from the memo document, <=200 chars>" — doc: <the memo document key> — confidence: high|medium|low'
+  - key: cut
+    name: What the page leaves out
+    questions:
+    - What in the memo does the page not carry, and why?
+    method_card: 'Do: At most five rows: a part of the memo the page drops or folds, and the reason (repeats a table,
+      detail below the reader''s need, kept for the ledger view). Anchor in the memo document. Select literal spans
+      that carry the claim. Code checks only anchors and IDs; the model must judge the page against the reader.'
+    indicators:
+    - detail
+    - repeats
+    scope: document
+    load_bearing: false
+    id_prefix: L3
+    answer_shape: '[L3.F<n>] <what is left out> — dim: cut — why: <one clause> — kept_in: ledger|appendix|nowhere
+      — anchor: "<verbatim from the memo document, <=200 chars>" — doc: <the memo document key> — confidence: high|medium|low'
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension
+    model_tier: cheap
+    output: ledger
+    max_rows: 8
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - merge_duplicates
+    - name_must_keep
+    - Strike an exhibit whose kind is not in the packet's registry; strike a second exhibit on the same rows in
+      the same section; a section over 500 words is split.
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    max_rows: 6
+    reader: a page composer who will build exactly what the plan says
+    tables: []
+    brief: '1. One paragraph on the page''s line: what the reader will grasp in which order, and the balance of
+      text and exhibits chosen. 2. Then the ledger: the sections in order, the exhibits with their kinds, sections,
+      rows and aims, and the cuts. Nothing else.'
