@@ -20,7 +20,7 @@ DEFINITIONS = Path(__file__).parent / "definitions"
 KEY = re.compile(r"^[a-z0-9]+(?:[-.][a-z0-9]+)*$")
 BLOB_PREFIX = "action:"
 COST_CLASSES = ("none", "cents", "dollars", "metered")
-OUTCOME_STATUSES = ("handed", "done", "partial", "failed", "refused")   # the action_outcome_status vocabulary
+OUTCOME_STATUSES = ("handed", "missing", "done", "partial", "failed", "refused")   # the action_outcome_status vocabulary
 
 
 class ActionOutcome(BaseModel):

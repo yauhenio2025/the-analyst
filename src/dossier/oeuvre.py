@@ -74,7 +74,9 @@ def actions_for(rows: list[dict], registry=None) -> list[dict]:
         f = r["fields"]
         if kind == "citation_shift.first_cited" and f.get("held", "").lower() == "yes" and f.get("in_referee", "").lower() == "yes":
             continue   # held and known: nothing to do
-        fields: dict[str, Any] = {"finding_id": r["id"], "uid": f.get("text") or f.get("source") or "", "held": f.get("held", ""), "in_referee": f.get("in_referee", "")}
+        raw_uid = (f.get("text") or f.get("source") or "").strip()
+        uid = raw_uid.split("/", 1)[0].strip() if raw_uid.startswith("em:") else ""          # "em:HZHLWZ2R/1977" → the bare uid (the Stacks' ask)
+        fields: dict[str, Any] = {"finding_id": r["id"], "uid": uid, "text_ref": raw_uid, "held": f.get("held", ""), "in_referee": f.get("in_referee", "")}
         fields.update(_split_person_or_work(f.get("cited") or f.get("source") or f.get("text") or "", f.get("kind") or ("person" if f.get("in_referee") else "work")))
         if f.get("in_referee", "").lower() == "yes":
             fields["referee_known"] = True
@@ -85,7 +87,7 @@ def actions_for(rows: list[dict], registry=None) -> list[dict]:
         waiting = [s for s in suggested if s["missing"]]
         out.append({"finding": f"{r['engine']}/{r['id']}", "kind": kind, "cited": f.get("cited") or f.get("source") or f.get("text") or "", "row": r["text"], "held": f.get("held", ""),
                     "in_referee": f.get("in_referee", ""), "used_for": f.get("used_for") or f.get("for") or f.get("why") or "", "conjecture": r["conjecture"],
-                    "actions": ready, "waiting": [{"action": s["action"], "organ": s["organ"], "missing": s["missing"]} for s in waiting]})
+                    "actions": ready, "waiting": [{"action": s["action"], "organ": s["organ"], "missing": s["missing"], "inputs": s["inputs"]} for s in waiting]})   # inputs kept: the Stacks fill the rest by rule
     return out
 
 

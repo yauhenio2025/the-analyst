@@ -135,6 +135,8 @@ def test_the_oeuvre_renders_by_code_with_the_verdicts_and_the_actions_the_findin
     exists = next(a for a in guizot_person["actions"] if a["action"] == "referee.thinker-exists")
     assert exists["inputs"] == {"thinker_name": "Guizot, François"} and exists["cost"] == "none"
     assert all(a["organ"] == "the-stacks" for a in acts["oeuvre_position_memo/M2.F1"]["actions"] + acts["oeuvre_position_memo/M2.F1"]["waiting"])       # held: bundle or profile, never a fetch
+    profile = next(a for a in acts["oeuvre_position_memo/M2.F1"]["actions"] + acts["oeuvre_position_memo/M2.F1"]["waiting"] if a["action"] == "stacks.profile-text")
+    assert profile["inputs"]["uid"] == "em:B77"                                          # the bare uid, not em:B77/1977; waiting entries keep their filled inputs
     assert any(w["action"] == "referee.pdf-fetch" for w in acts["epistemic_rupture/E4.F1"]["waiting"])   # a test on an unheld text: a fetch, once a query exists
     assert render_oeuvre({"id": "x", "analysis": {}}) is None
 
