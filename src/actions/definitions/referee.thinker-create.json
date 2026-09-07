@@ -4,18 +4,21 @@
   "name": "Create the thinker in the Referee",
   "when": [
     "citation_shift.unexamined",
+    "citation_shift.first_cited",
+    "oeuvre_position_memo.read_next",
+    "cited_author.unknown",
     "person.unknown"
   ],
   "inputs": [
     "thinker_name",
     "scholar_profile_url"
   ],
-  "route": "POST /api/thinkers {name, scholar_profile_url?} · POST /api/thinker-folders/bulk-add · POST /api/thinker-folders/{id}/recruit-author",
+  "route": "POST /api/thinkers {name, scholar_profile_url?} · POST /api/thinker-folders/{folder_id}/recruit-author (citing author → thinker + harvest) · POST /api/thinker-folders/bulk-add (many names with context)",
   "cost": "cents",
-  "cost_note": "1–2 cheap LLM calls; Scholar pages if a profile URL is given",
-  "side_effects": "a thinker row (pending / disambiguated); works seeded when a profile is given",
-  "gated_by": "the owner's click",
-  "yields": "thinker_id",
+  "cost_note": "1–2 cheap LLM calls (disambiguation + bio); Scholar pages only when a profile URL is given",
+  "side_effects": "a thinker row (status pending → disambiguated); the profile route seeds works",
+  "gated_by": "none (the row); discovery/harvest that follow are gated",
+  "yields": "referee_thinker_id, canonical_name, disambiguation to confirm",
   "owner": "the-referee",
   "version": "2026-09-07",
   "evidence": [],
