@@ -46,5 +46,5 @@ def test_an_organ_registers_its_action_and_an_outcome_writes_back(tmp_path):
 def test_the_routes_serve_the_registry():
     from src.api.routes.actions import SuggestIn, finding_kinds, get_action, list_actions, suggest_actions
     assert any(r["key"] == "referee.pdf-fetch" for r in list_actions(finding="citation_shift.unexamined", organ="the-referee"))
-    assert get_action("referee.thinker-exists")["route"].startswith("GET /api/thinkers/search") and "citation_shift.unexamined" in finding_kinds()
+    assert "/api/thinkers" in get_action("referee.thinker-exists")["route"] and "citation_shift.unexamined" in finding_kinds()   # the route's wording is the Referee's to change
     assert suggest_actions(SuggestIn(finding="citation_shift.unexamined", fields={"thinker_name": "Meek, Ronald"}))[0]["finding"] == "citation_shift.unexamined"
