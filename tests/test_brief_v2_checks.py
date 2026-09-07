@@ -281,8 +281,10 @@ def test_resolve_path_request_fills_recipes_and_rejects_bad_paths():
     assert p.steps[0].plain_name == "claim scorecard"
     with pytest.raises(ValueError):
         resolve_path_request(PathRequest(steps=[PathStepRequest(engine_key="aoi_thematic_synthesis")]), "executive", FAKE)
+    five = resolve_path_request(PathRequest(steps=[PathStepRequest(engine_key=k) for k in ("argument_architecture", "dialectical_structure", "deep_summarization", "concept_evolution", "counterfactual_analyzer")]), "executive", FAKE)
+    assert len(five.steps) == 5                                   # five steps are a path since 2026-09-07 (a workflow recipe has six); nine are not
     with pytest.raises(ValueError):
-        resolve_path_request(PathRequest(steps=[PathStepRequest(engine_key=k) for k in ("argument_architecture", "dialectical_structure", "deep_summarization", "concept_evolution", "counterfactual_analyzer")]), "executive", FAKE)
+        resolve_path_request(PathRequest(steps=[PathStepRequest(engine_key="argument_architecture") for _ in range(9)]), "executive", FAKE)
     with pytest.raises(ValueError):
         resolve_path_request(PathRequest(chain_key="no_such_recipe"), "executive", FAKE)
     full = resolve_path_request(PathRequest(chain_key="full_read"), "executive", FAKE)

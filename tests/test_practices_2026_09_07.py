@@ -35,10 +35,11 @@ def test_a_yield_writes_back_onto_the_practice(tmp_path):
     src = get_practice_registry().file_for("byline-anchor")
     (tmp_path / "byline-anchor.json").write_text(src.read_text())
     reg = PracticeRegistry(tmp_path, durable=False)
+    before = reg.get("byline-anchor").yield_totals()          # the seeded file may already carry the Reporter's live yields
     p = reg.add_evidence("byline-anchor", PracticeEvidence(run="reporter-run-77", organ="the-reporter", queries=10, new_relevant=3, note="alameda.institute reached"))
-    assert p.yield_totals() == {"runs": 1, "queries": 10, "new_relevant": 3} and p.evidence[0].recorded
+    assert p.yield_totals() == {"runs": before["runs"] + 1, "queries": before["queries"] + 10, "new_relevant": before["new_relevant"] + 3} and p.evidence[-1].recorded
     again = PracticeRegistry(tmp_path, durable=False).get("byline-anchor")
-    assert again.evidence[0].run == "reporter-run-77" and packet_block([again])[0]["evidence"]["new_relevant"] == 3
+    assert again.evidence[-1].run == "reporter-run-77" and packet_block([again])[0]["evidence"]["new_relevant"] == before["new_relevant"] + 3
     with pytest.raises(KeyError):
         reg.add_evidence("no-such-practice", PracticeEvidence(run="x"))
 

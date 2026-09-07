@@ -957,6 +957,112 @@
      "fit_note": "a section (or the passages of a few texts) with a citation packet as context; one call at surface depth, served by POST /v1/engines/citation_explainer/call for the Stacks' cites page"
     }
    ]
+  },
+  {
+   "key": "trace_trajectory",
+   "title": "Trace the trajectory",
+   "purpose": "one text's place in its author's oeuvre: the agendas and turns, what it inherits and seeds, whether it breaks with what came before, what to read next",
+   "engines": [
+    {
+     "engine_key": "oeuvre_trajectory",
+     "plain_name": "agendas and turns",
+     "use_when": "you hold an author's texts as profiles around one focal text and want the research agendas, the turns between them, and where the focal text sits",
+     "yields": "agendas (question · span · concepts · interlocutors), turns (from · to · at · what changed), the focal text's place",
+     "row_unit": "one row per agenda, turn or place",
+     "deliverable_kinds": [
+      "briefing"
+     ],
+     "pairs_with": [
+      "citation_shift",
+      "epistemic_rupture"
+     ],
+     "fit": "ok",
+     "fit_note": "a role=oeuvre source (the Stacks' bundle); the first step of the oeuvre_position recipe"
+    },
+    {
+     "engine_key": "citation_shift",
+     "plain_name": "citation shifts",
+     "use_when": "what the focal text cites for the first time, drops, carries, clusters uniquely, and cites without our holding it",
+     "yields": "first_cited · dropped · carried · anomaly · unexamined rows with held and in_referee — the rows that become actions",
+     "row_unit": "one row per cited work or person",
+     "deliverable_kinds": [
+      "briefing"
+     ],
+     "pairs_with": [
+      "oeuvre_trajectory",
+      "citation_engagement_map"
+     ],
+     "fit": "ok",
+     "fit_note": "reads the packet's ledger and the profiles' works cited"
+    },
+    {
+     "engine_key": "retrospective_reading",
+     "plain_name": "read as a culmination",
+     "use_when": "read the focal text with only what came before: what it inherits, what it resolves, whom it argues with, whether it is the culmination of the earlier agenda",
+     "yields": "inheritance · resolution · interlocutor rows and a verdict (culmination · continuation · departure)",
+     "row_unit": "one row per inheritance, resolution or interlocutor",
+     "deliverable_kinds": [
+      "briefing"
+     ],
+     "pairs_with": [
+      "prospective_reading"
+     ],
+     "fit": "ok",
+     "fit_note": "scope focal + before; never sees a later text"
+    },
+    {
+     "engine_key": "prospective_reading",
+     "plain_name": "read as an origin",
+     "use_when": "read the focal text with only what came after: what it seeds, which later works take it up, what is abandoned, whether it is an origin",
+     "yields": "seed · developed_into · abandoned rows and a verdict (origin · way_station · dead_end)",
+     "row_unit": "one row per seed, uptake or abandoned element",
+     "deliverable_kinds": [
+      "briefing"
+     ],
+     "pairs_with": [
+      "retrospective_reading"
+     ],
+     "fit": "ok",
+     "fit_note": "scope focal + after; never sees an earlier text"
+    },
+    {
+     "engine_key": "epistemic_rupture",
+     "plain_name": "break detector",
+     "use_when": "does the focal text mark a rupture, a reorientation, a deepening or a continuity in the oeuvre, and between which two halves",
+     "yields": "continuity and break rows, the verdict with the two halves, the tests that would settle it",
+     "row_unit": "one row per persisting or changing element",
+     "deliverable_kinds": [
+      "briefing",
+      "stress_test"
+     ],
+     "pairs_with": [
+      "oeuvre_trajectory",
+      "periodization_critic"
+     ],
+     "fit": "ok",
+     "fit_note": "continuity is a valid verdict"
+    },
+    {
+     "engine_key": "oeuvre_position_memo",
+     "plain_name": "the paper's place: the memo",
+     "use_when": "join the readings into one memo on the paper's importance in the unfolding of the argument, with a reading route and the actions the findings license",
+     "yields": "the joined verdict, three to five texts to read next, the open question; the memo prose",
+     "row_unit": "one row per verdict, text to read or open question",
+     "deliverable_kinds": [
+      "briefing",
+      "case_file"
+     ],
+     "pairs_with": [
+      "oeuvre_trajectory",
+      "citation_shift",
+      "retrospective_reading",
+      "prospective_reading",
+      "epistemic_rupture"
+     ],
+     "fit": "ok",
+     "fit_note": "the last step of the oeuvre_position recipe; reads the upstream phases"
+    }
+   ]
   }
  ],
  "excluded": [
