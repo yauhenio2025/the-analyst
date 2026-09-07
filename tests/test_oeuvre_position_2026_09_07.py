@@ -269,6 +269,7 @@ def test_a_step_added_to_a_finished_job_reads_its_documents_and_joins_its_analys
     texts = {"d1": "SOURCE ROLE: focal_text\nMeek is cited for the four-stages theory.", "d2": "profile of 1989: Meek again.", "d3": "profile of 2006: nothing here.",
              "dp": json.dumps({"kind": "oeuvre", "focal": {"uid": "em:F"}, "persons": [{"person": "Meek, Ronald", "in_referee": False}], "persons_unknown": [{"person": "Meek, Ronald", "cited_in": {"before": [], "focal": ["em:F"], "after": ["em:A89"]}}],
                               "schools": [{"id": 1, "name": "History of economic thought"}], "cited_first_in_focal": [{"title": "x"}] * 50, "notes": ["n"]})}
+    job_packet_unknown = [{"person": "Meek, Ronald", "cited_in": {"before": [], "focal": ["em:F"], "after": ["em:A89"]}}]
     job = {"documents": [{"key": "focal:em:F", "role": "source", "executor_doc_id": "d1"}, {"key": "after:em:A89", "role": "source", "executor_doc_id": "d2"},
                          {"key": "after:em:A06", "role": "source", "executor_doc_id": "d3"}, {"key": "oeuvre", "role": "plan", "executor_doc_id": "dp"}],
            "analysis": {"4.1": {"engine_key": "oeuvre_trajectory", "final_output": "x"}, "4.6": {"engine_key": "oeuvre_position_memo", "final_output": "y"}}, "totals": {"cost_usd": 10.0, "llm_calls": 25}}
@@ -287,7 +288,9 @@ def test_a_step_added_to_a_finished_job_reads_its_documents_and_joins_its_analys
     add_step(job, "thinker_placement", get_text=texts.get, call=fake_call, packet_override={"schools": [{"id": 9, "name": "Political Marxism", "description": "x" * 300, "sample": ["a", "b", "c", "d"]}]})
     assert seen["packet"]["schools"] == [{"id": 9, "name": "Political Marxism", "description": "x" * 100, "sample": ["a", "b", "c"]}] and seen["packet"]["persons_unknown"][0]["person"] == "Meek, Ronald" and "4.8" in job["analysis"]
     texts["d1"] = "SOURCE ROLE: focal_text\n" + "Meek. " * 400        # the packet counts against the cap: with room for one document only the focal text goes
-    add_step(job, "thinker_placement", get_text=texts.get, call=fake_call, max_chars=len(json.dumps(seen["packet"])) + 8_000 + 2_450)
+    override = {"schools": [{"id": 9, "name": "Political Marxism"}]}
+    small = json.dumps({"focal": {"uid": "em:F"}, "persons_unknown": job_packet_unknown, "notes": ["n"], "persons": [{"person": "Meek, Ronald", "in_referee": False}], "schools": [{"id": 9, "name": "Political Marxism", "description": "", "sample": []}]}, ensure_ascii=False)
+    add_step(job, "thinker_placement", get_text=texts.get, call=fake_call, packet_override=override, max_chars=len(small) + 8_000 + len(texts["d1"]) + 10)
     assert seen["keys"] == ["focal:em:F"]
 
 
