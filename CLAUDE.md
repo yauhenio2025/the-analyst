@@ -120,6 +120,7 @@ Retire or re-purpose any of this on the owner's word; until then it is not a pla
 
 ## Working rules
 
+- **Heavy work goes to Codex Astra in ultra mode** (Evgeny, 2026-09-07 19:45, on the move from Fable to Opus: "utilize codex astra ultra more"): a written brief under `communications/CODEX_PROMPT_*.md`, its own git worktree when a run is live, the review and the records here. In-session: design, records, wiring, coordination.
 - Commit per phase, in the house style (a sentence saying what and why; the owner's words and time where a rule came from them). Tests:
   `pytest tests/` (136 files; baseline on this machine ~12 failures and 8 ImportError collections in old modules, none from this week).
 - **Deploys**: Render, CAII workspace, project `the-analyst`: `the-analyst` (this API, https://the-analyst-kcuc.onrender.com; `/health`
