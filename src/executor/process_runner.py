@@ -367,7 +367,7 @@ def _check_corpus_synthesis(sc, prompt, spec, index, corpus_ids, call_fn, model,
                   "unknown_dimensions": sorted({r.dim for r in rows if r.dim and r.dim not in dimensions}),
                   "missing_ledger": not bool(ledger), "parse_error": sc.scope_parse_error,
                   "incomplete_invocation": bool(sc.partial or sc.invocation_error or sc.stop_reason in ("length", "max_tokens", "error"))}
-        sc.wall = {**wall.as_dict(), "vocabulary_drift": vocabulary_drift(rows, cap_def.engine_key)[:40], "synthesis_contract": issues, "synthesis_repair_attempts": attempts.copy(),   # drift is reported, never a reason to re-ask
+        sc.wall = {**wall.as_dict(), "vocabulary_drift": vocabulary_drift(rows, prompt.engine_key)[:40], "synthesis_contract": issues, "synthesis_repair_attempts": attempts.copy(),   # drift is reported, never a reason to re-ask
                    # a row without a `dim:` tag is a shape note for the desks, never a reason to fail the phase
                    "rows_without_dimension": sum(1 for r in rows if not r.dim)}
         if not any(issues.values()):
