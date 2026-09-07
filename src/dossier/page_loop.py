@@ -392,3 +392,23 @@ def recompose_page(job_id: str, o: dict, packet: dict, exhibit_registry=None) ->
     save_page(job_id, rec)
     return {"job_id": job_id, "round": r["round"], "exhibits": [(e["kind"], e["placement"]) for e in plan["exhibits"]], "chars": len(html)}
 
+
+def page_body(html: str) -> str:
+    """The composed page's reading alone, for a host page that already has the title, the verdict chips and its own furniture
+    (the Stacks' oeuvre page, 2026-09-07 22:36: the centre column was the raw memo, "too much text, not properly thought through").
+    Drops the html/head/body wrapper, the h1 and its subtitle, a verdict-chips exhibit, and the "How this page was made" fold;
+    keeps the sections with their headings, their grasp lines, the prose and the exhibits, and carries the page's own CSS scoped
+    to the returned block so a host can drop it into a column."""
+    body = html.split("<div class='page'>", 1)[-1].rsplit("</div></body>", 1)[0]
+    body = re.sub(r"<h1>.*?</h1>", "", body, flags=re.S)
+    body = re.sub(r"<p class='sub'>.*?</p>", "", body, flags=re.S)
+    body = re.sub(r"<figure class='exhibit'[^>]*>\s*<div class=\"chips\">.*?</figure>", "", body, flags=re.S)
+    body = re.sub(r"<details class='about'>.*?</details>", "", body, flags=re.S)
+    body = re.sub(r"\s*<span class=[\"']rid[\"']>\[[^\]]+\]</span>", "", body)   # the row ids ride on hover, never in the sentence (the owner, 11:26 and 22:36)
+    body = re.sub(r"<p class='grasp'>(.*?)</p>", lambda m: f"<p class='grasp'>{m.group(1).strip().rstrip('.')}</p>", body, flags=re.S)
+    style = CSS.replace("<style>", "").replace("</style>", "")
+    style = style.replace("body{", ".reading{").replace(".page{", ".reading{")
+    style += ("\n.reading h2{font-size:17px;margin:30px 0 4px}.reading .grasp{font-size:13px;font-style:italic;margin:0 0 12px}"
+              ".reading section{margin-bottom:6px}.reading p{margin:0 0 12px}.reading .rid{display:none}"
+              "@media (prefers-color-scheme: dark){.reading{color:#e8e7e2}}")
+    return f"<style>{style}</style>\n<div class='reading'>{body.strip()}</div>"

@@ -207,3 +207,19 @@ def test_recompose_rebuilds_the_stored_page_without_a_model(monkeypatch):
     out = pl.recompose_page("d-rc", OEUVRE, PACKET)
     assert out["round"] == 1 and out["exhibits"] == [("reading-route-cards", "after")] and store["page:d-rc:html"].startswith(b"<!doctype html>") and b"em:" not in store["page:d-rc:html"].split(b"<details class='about'>")[0]
     assert pl.recompose_page("d-none", OEUVRE, PACKET) is None
+
+
+def test_the_reading_alone_can_be_dropped_into_a_host_column():
+    """The owner (2026-09-07 22:36) on the oeuvre page's centre: 'too much text, not properly thought through… format better'.
+    The composed page's reading — headings, grasp lines, prose, folded exhibits — without the page's own furniture."""
+    from src.dossier.page_loop import page_body
+    plan = {"line": "", "sections": [{"id": "L1.F1", "heading": "The verdict", "grasp": "a way station.", "words": 100}], "exhibits": [
+        {"id": "L2.F1", "kind": "verdict-chips", "section": "L1.F1", "rows": [], "placement": "before", "aim": "the verdicts"},
+        {"id": "L2.F2", "kind": "shift-table", "section": "L1.F1", "rows": [], "placement": "folded", "aim": "the shifts"}], "cuts": [{"what": "x", "why": "y"}]}
+    made = {"L2.F1": {"html": "<div class=\"chips\">c</div>", "description": "chips"}, "L2.F2": {"title": "The citation shifts", "html": "<table class='shift'></table>", "description": "table"}}
+    html, _ = compose_page("T", "S", plan, {"L1.F1": "The essay [oeuvre_trajectory/F1]."}, made, {"verdicts": [], "clarity": []}, 2)
+    b = page_body(html)
+    assert "<h1>" not in b and "class='sub'" not in b and "How this page was made" not in b and 'class="chips"' not in b
+    assert "<h2 title='L1.F1'>The verdict</h2>" in b and "a way station</p>" in b and "The essay" in b
+    assert "<details class='exhibit folded'" in b and "The citation shifts" in b        # the folded exhibits travel
+    assert "[oeuvre_trajectory/F1]" not in b and b.startswith("<style>") and "<div class='reading'>" in b

@@ -474,13 +474,14 @@ def page_status_route(job_id: str):
 
 
 @router.get("/jobs/{job_id}/page", response_class=HTMLResponse)
-def get_page(job_id: str, round: Optional[int] = None):
-    from src.dossier.page_loop import load_page
+def get_page(job_id: str, round: Optional[int] = None, body: int = 0):
+    from src.dossier.page_loop import load_page, page_body
 
     got = load_page(job_id, f"round{round}.html" if round else "html")
     if not got:
         raise HTTPException(status_code=404, detail="no page for this job yet (POST /page to make one)")
-    return HTMLResponse(content=got.decode("utf-8"))
+    html = got.decode("utf-8")
+    return HTMLResponse(content=page_body(html) if body else html)   # ?body=1: the reading alone, for a host page's column
 
 
 @router.get("/jobs/{job_id}/page.json")
