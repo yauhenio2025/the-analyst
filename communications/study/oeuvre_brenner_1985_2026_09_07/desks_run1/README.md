@@ -17,3 +17,20 @@ with text, tables and two figures asked for. Cost of the desks: $2.55 (spine $1.
 The measure: the print lane gives structure (a spine, a summary, lifted tables) but no timeline, no idea map, no split panel, no sidebar; the
 tables are the only non-prose element and the figures are fragile. That is the gap the exhibits registry and the page planner / reviewer
 desks address (`communications/DESIGN_presentation_exhibits_2026-09-07.md`).
+
+## The rerun with the figures (run1d, 10:05–10:11, $1.14 for figures + compose + crosscheck)
+
+With the figures crash fixed and the image-fleet keys reused locally, the spine's two commissions rendered through Nano Banana Pro (four image
+calls: one revision on the second):
+
+- `figures/inherited_commitments_cascade.jpg` — primitive temporal_evolution, format alluvial diagram, style explanatory_narrative: four
+  origin texts (1972, 1976, 1977, 1978) → four commitments (anti-automatic market principle; class/property mediate pressures; market
+  dependence ≠ exchange; primitive accumulation unspecified) → the focal text, with "Marxological genealogy (new)" as its one new element.
+  Clean, legible, the kind of diagram the owner asked for; its caption lost its date range to the no-digits rule ("established in – ;").
+- `figures/seeds_fates_matrix.jpg` — primitive comparative_positioning, format matrix: five seeds × fate · first uptake · domain
+  transferred to. Correct and readable, but it is a table drawn as an image; the tables desk would have done it as a table.
+
+`dossier_run1d_with_figures.md/.html/.pdf` is the composed dossier with both placed. The measure stands: the print lane can produce a good
+diagram when the spine commissions one, but it commissions two at most, chooses neither a timeline nor a two-halves panel, and puts a table
+into an image; nothing on the page shows time, direction or the seam at a glance. Hence the exhibits registry (nine seeds) and the page
+planner / reviewer desks.
