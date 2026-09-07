@@ -36,6 +36,11 @@ def test_an_organ_registers_its_action_and_an_outcome_writes_back(tmp_path):
         reg.upsert(Action(key="stacks.x", organ="the-stacks", name="x", when=["a.b"], cost="free"))
     with pytest.raises(KeyError):
         reg.add_outcome("no.such", ActionOutcome(run="r"))
+    with pytest.raises(ValueError):
+        reg.add_outcome("stacks.digest-texts", ActionOutcome(run="r", status="maybe"))
+    from src.vocabularies.registry import values
+    from src.actions.registry import OUTCOME_STATUSES
+    assert list(OUTCOME_STATUSES) == values("action_outcome_status") and "handed" in OUTCOME_STATUSES
 
 
 def test_the_routes_serve_the_registry():

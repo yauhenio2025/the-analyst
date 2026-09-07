@@ -107,5 +107,7 @@ async def post_outcome(key: str, body: OutcomeIn):
         a = reg.add_outcome(key, ActionOutcome(**body.model_dump()))
     except KeyError:
         raise HTTPException(status_code=404, detail=f"no action {key}")
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
     persisted = await _persist(reg, key, f"Action {key}: outcome from {body.organ or 'a run'} {body.run} [skip render]")
     return {"key": key, "totals": a.totals(), "evidence": [e.model_dump() for e in a.evidence], "persisted": persisted, "durable": reg.last_durable}

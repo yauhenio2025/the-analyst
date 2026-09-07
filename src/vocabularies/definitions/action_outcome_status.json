@@ -1,0 +1,38 @@
+{
+  "key": "action_outcome_status",
+  "name": "What became of a suggested action",
+  "family": "actions",
+  "owner": "the-mastermind",
+  "version": "2026-09-07",
+  "values": [
+    {
+      "value": "handed",
+      "gloss": "handed to a person or an organ with its inputs; not run (the Stacks' default today)"
+    },
+    {
+      "value": "done",
+      "gloss": "run to completion"
+    },
+    {
+      "value": "partial",
+      "gloss": "run, part of the result obtained"
+    },
+    {
+      "value": "failed",
+      "gloss": "run and failed"
+    },
+    {
+      "value": "refused",
+      "gloss": "declined: the gate, the cap or the owner said no"
+    }
+  ],
+  "used_by": [
+    {
+      "engine_key": "actions",
+      "dimension": "outcome",
+      "field": "status",
+      "kind": "schema"
+    }
+  ],
+  "note": "POST /v1/actions/{key}/outcome accepts these only."
+}

@@ -20,6 +20,7 @@ DEFINITIONS = Path(__file__).parent / "definitions"
 KEY = re.compile(r"^[a-z0-9]+(?:[-.][a-z0-9]+)*$")
 BLOB_PREFIX = "action:"
 COST_CLASSES = ("none", "cents", "dollars", "metered")
+OUTCOME_STATUSES = ("handed", "done", "partial", "failed", "refused")   # the action_outcome_status vocabulary
 
 
 class ActionOutcome(BaseModel):
@@ -27,7 +28,7 @@ class ActionOutcome(BaseModel):
     organ: str = ""
     finding: str = ""                          # the finding kind that licensed it
     source: str = ""                           # the dossier job / row that suggested it
-    status: str = "done"                       # done | failed | partial | refused
+    status: str = "done"                       # handed | done | partial | failed | refused (action_outcome_status)
     cost_usd: Optional[float] = None
     result: str = ""                           # one line: what came of it
     recorded: str = ""
@@ -135,6 +136,8 @@ class ActionRegistry:
         a = self._items.get(key)
         if a is None:
             raise KeyError(f"no action {key}")
+        if out.status not in OUTCOME_STATUSES:
+            raise ValueError(f"status must be one of {OUTCOME_STATUSES}")
         if not out.recorded:
             out.recorded = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
         a.evidence.append(out)
