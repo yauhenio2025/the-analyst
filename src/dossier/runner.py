@@ -209,10 +209,12 @@ def _run(job_id: str) -> None:
         except Exception as exc:
             logger.warning(f"readings ledger not written for {job_id}: {exc}")
         try:   # the register hears it, and the narrative follows in the background (the owner, 18:30: the system narrates what we do)
-            from src.actions.register import record_event, narrate_later
+            from src.actions.register import record_event, narrate_later, job_substance
             done = get_job(job_id)
             rec = done.model_dump() if done is not None else {}
-            record_event("job_done", job_id=job_id, engine_keys=[ph.get("engine_key") for ph in (rec.get("analysis") or {}).values() if ph.get("engine_key")],
+            sub = job_substance(job_id)
+            record_event("job_done", job_id=job_id, engine_keys=sub.get("engine_keys") or [ph.get("engine_key") for ph in (rec.get("analysis") or {}).values() if ph.get("engine_key")],
+                         persons=sub.get("persons"), rows=sub.get("rows"), renders=sub.get("renders"),
                          intent=((rec.get("options") or {}).get("intent") or "")[:200], cost_usd=(rec.get("totals") or {}).get("cost_usd"))
             narrate_later()
         except Exception as exc:

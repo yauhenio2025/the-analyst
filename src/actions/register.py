@@ -131,14 +131,45 @@ def narrate_later(min_new_events: int = 3) -> bool:
     return True
 
 
-def backfill_jobs(jobs: list[dict]) -> int:
-    """Record job_done events for finished jobs made before the register existed (idempotent by job id)."""
+def job_substance(job_id: str) -> dict:
+    """What a job read and found, from the readings ledger: the engines, the persons most named, the rows, where it renders."""
+    try:
+        from src.readings.registry import readings_for, reading
+    except Exception:
+        return {}
+    entries = readings_for(job=job_id, limit=40).get("readings") or []
+    if not entries:
+        return {}
+    persons: dict[str, int] = {}; texts: set[str] = set(); rows = 0; renders: list[str] = []
+    for e in entries:
+        r = reading(job_id, e["phase"]) or {}
+        for i, p in enumerate(r.get("persons") or []):
+            persons[p] = persons.get(p, 0) + max(1, 6 - i)
+        texts.update(r.get("texts") or []); rows += r.get("n_rows") or 0
+        for x in r.get("renders") or []:
+            if x not in renders:
+                renders.append(x)
+    return {"engine_keys": sorted({e["engine"] for e in entries}), "persons": sorted(persons, key=lambda p: -persons[p])[:8], "texts": len(texts), "rows": rows, "renders": renders[:3]}
+
+
+def backfill_jobs(jobs: list[dict], refresh: bool = False) -> int:
+    """Record job_done events for finished jobs (idempotent by job id; `refresh` re-records every finished job with its substance from
+    the readings ledger — the first narrative saw job ids and nothing else)."""
+    global _events
+    if refresh:
+        with _lock:
+            _load()
+            _events = [e for e in _events if not (e.get("kind") == "job_done" and e.get("backfilled"))]
+            _save()
     have = {e.get("job_id") for e in events(kind="job_done", limit=5000)}
     n = 0
     for j in jobs:
         if j.get("status") != "done" or j.get("id") in have:
             continue
-        record_event("job_done", job_id=j.get("id"), when=j.get("updated_at") or j.get("created_at"), engine_keys=[ph.get("engine_key") for ph in (j.get("analysis") or {}).values() if isinstance(ph, dict) and ph.get("engine_key")],
+        sub = job_substance(j.get("id"))
+        record_event("job_done", job_id=j.get("id"), when=j.get("updated_at") or j.get("created_at"),
+                     engine_keys=sub.get("engine_keys") or [ph.get("engine_key") for ph in (j.get("analysis") or {}).values() if isinstance(ph, dict) and ph.get("engine_key")],
+                     persons=sub.get("persons"), rows=sub.get("rows"), renders=sub.get("renders"),
                      intent=((j.get("options") or {}).get("intent") or "")[:200], cost_usd=(j.get("totals") or {}).get("cost_usd"), backfilled=True)
         n += 1
     return n

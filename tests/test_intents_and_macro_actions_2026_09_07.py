@@ -111,7 +111,7 @@ def test_backfill_records_finished_jobs_once(monkeypatch):
     reg.reset_for_tests()
     jobs = [{"id": "j1", "status": "done", "updated_at": "2026-09-07T12:59:00Z", "analysis": {"4.1": {"engine_key": "oeuvre_trajectory"}}, "options": {"intent": "Brenner 1985"}, "totals": {"cost_usd": 11.3}},
             {"id": "j2", "status": "failed"}, {"id": "j3", "status": "done", "analysis": {}, "options": {}, "totals": {}}]
-    assert reg.backfill_jobs(jobs) == 2 and reg.backfill_jobs(jobs) == 0
+    assert reg.backfill_jobs(jobs) == 2 and reg.backfill_jobs(jobs) == 0 and reg.backfill_jobs(jobs, refresh=True) == 2   # a refresh re-records with the ledger's substance
     done = reg.events(kind="job_done")
     assert {e["job_id"] for e in done} == {"j1", "j3"} and any(e.get("backfilled") for e in done)
     assert reg.narrate_later(min_new_events=10) is False        # too few events since the last narrative: nothing runs

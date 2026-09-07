@@ -100,9 +100,10 @@ def narrate(body: Optional[NarrateIn] = None):
 
 
 @router.post("/register/backfill")
-def backfill():
-    """Record job_done events for the finished jobs made before the register existed (idempotent)."""
+def backfill(refresh: bool = False):
+    """Record job_done events for the finished jobs made before the register existed (idempotent); `refresh=true` re-records them with
+    their substance from the readings ledger (engines, persons, rows, renders)."""
     from src.actions.register import backfill_jobs
     from src.dossier.store import list_jobs
     jobs = [j.model_dump() for j in list_jobs(limit=200)]
-    return {"recorded": backfill_jobs(jobs), "jobs_seen": len(jobs)}
+    return {"recorded": backfill_jobs(jobs, refresh=refresh), "jobs_seen": len(jobs)}
