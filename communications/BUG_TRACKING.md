@@ -240,3 +240,5 @@ while master was five commits ahead. The gs_revamp session read the Render servi
 they looked automatic; that stopped at 00:12Z. gs_revamp deployed 090e2d9 by API at 00:38Z. Decision for the owner: turn autoDeploy on
 (every push restarts the API; `[skip render]` on registry commits then matters) or keep API-triggered deploys on request. CLAUDE.md's
 Deployment section now says so.
+
+RESOLVED 2026-09-07 00:45Z: Evgeny said yes in the gs_revamp session; autoDeploy is ON for the service (branch master). Pushes deploy on their own; `[skip render]` is honoured for pushes.
