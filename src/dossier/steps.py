@@ -61,7 +61,7 @@ def add_step(job: dict, engine_key: str, *, get_text: Callable[[str], str], call
     if packet_override:   # a caller's blocks over the stored packet (run 3's plan document predates persons_unknown and schools)
         packet = {**packet, **packet_override}
     small = packet_for(engine_key, packet)
-    room = max_chars - len(json.dumps(small, ensure_ascii=False)) - 2_000 if small else max_chars   # the packet counts against the light call's cap
+    room = max_chars - len(json.dumps(small, ensure_ascii=False)) - 8_000 if small else max_chars   # the packet counts against the light call's cap
     sources = sources_for(engine_key, documents, packet, get_text, room)
     if not sources:
         raise ValueError("the job has no source documents this step can read")

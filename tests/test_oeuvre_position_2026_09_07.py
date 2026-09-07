@@ -287,7 +287,7 @@ def test_a_step_added_to_a_finished_job_reads_its_documents_and_joins_its_analys
     add_step(job, "thinker_placement", get_text=texts.get, call=fake_call, packet_override={"schools": [{"id": 9, "name": "Political Marxism", "description": "x" * 300, "sample": ["a", "b", "c", "d"]}]})
     assert seen["packet"]["schools"] == [{"id": 9, "name": "Political Marxism", "description": "x" * 100, "sample": ["a", "b", "c"]}] and seen["packet"]["persons_unknown"][0]["person"] == "Meek, Ronald" and "4.8" in job["analysis"]
     texts["d1"] = "SOURCE ROLE: focal_text\n" + "Meek. " * 400        # the packet counts against the cap: with room for one document only the focal text goes
-    add_step(job, "thinker_placement", get_text=texts.get, call=fake_call, max_chars=len(json.dumps(seen["packet"])) + 2_000 + 2_600)
+    add_step(job, "thinker_placement", get_text=texts.get, call=fake_call, max_chars=len(json.dumps(seen["packet"])) + 8_000 + 2_450)
     assert seen["keys"] == ["focal:em:F"]
 
 
