@@ -60,3 +60,13 @@ def test_the_oeuvre_door_carries_the_prior_readings_the_stacks_name(monkeypatch)
     assert pk["prior_readings"] and pk["prior_readings"]["readings"][0]["job_id"] == "d-prev" and "read only what is new" in pk["prior_readings"]["note"]
     b2 = json.loads(json.dumps(BUNDLE)); b2["author"] = {"id": "x", "name": "Nobody, N."}
     assert packet_of(b2)["prior_readings"] is None
+
+
+def test_an_author_id_without_a_name_still_indexes_under_the_person(monkeypatch):
+    _store(monkeypatch)
+    from src.readings.registry import name_from_author_id
+    assert name_from_author_id("brenner-robert") == "Brenner, Robert" and name_from_author_id("hintze") == "hintze"
+    tp = "[T1.F1] agenda — dim: agenda — anchor: \"x\" — doc: focal:em:F — confidence: high"
+    job = {"id": "d-id", "updated_at": "2026-09-07T12:00:00Z", "packet": {"author": {"id": "brenner-robert"}}, "analysis": {"4.1": {"engine_key": "oeuvre_trajectory", "final_output": tp, "final_wall": {"failed_ids": []}}}}
+    rl.index_job(job)
+    assert rl.readings_for(person="Brenner")["count"] == 1

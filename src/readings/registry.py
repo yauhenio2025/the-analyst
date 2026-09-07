@@ -103,6 +103,14 @@ def _stamp(when: str) -> str:
     return w if (w.endswith("Z") or re.search(r"[+-]\d\d:\d\d$", w) or not w) else w + "Z"
 
 
+def name_from_author_id(aid: str) -> str:
+    """'brenner-robert' → 'Brenner, Robert' (the Stacks' author id is surname-given, hyphenated)."""
+    parts = [x for x in aid.split("-") if x]
+    if len(parts) < 2:
+        return aid
+    return f"{parts[0].capitalize()}, {' '.join(x.capitalize() for x in parts[1:])}"
+
+
 def job_authors(job: dict) -> list[str]:
     """The author(s) a run is about: the oeuvre packet's author.name (the plan document), else the packet a caller kept on the job."""
     import json as _json, os
@@ -119,8 +127,10 @@ def job_authors(job: dict) -> list[str]:
                     a = obj.get("author")
                     if isinstance(a, dict) and a.get("name"):
                         names.append(a["name"])
+                    elif isinstance(a, dict) and a.get("id"):
+                        names.append(name_from_author_id(str(a["id"])))     # the Stacks' author ids are surname-given ("brenner-robert")
                     elif isinstance(a, str) and a:
-                        names.append(a)
+                        names.append(name_from_author_id(a) if re.match(r"^[a-z]+(-[a-z]+)+$", a) else a)
         except Exception:
             pass
     return names
