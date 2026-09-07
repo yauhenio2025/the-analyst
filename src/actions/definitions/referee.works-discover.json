@@ -4,17 +4,19 @@
   "name": "Discover the thinker's works on Scholar",
   "when": [
     "citation_shift.unexamined",
+    "oeuvre_position_memo.read_next",
+    "thinker.works_missing",
     "thinker.created"
   ],
   "inputs": [
     "referee_thinker_id"
   ],
-  "route": "POST /api/thinkers/{id}/start-discovery · POST /api/thinkers/{id}/rediscover?interactive=true",
+  "route": "POST /api/thinkers/{thinker_id}/start-discovery · POST /api/thinkers/{thinker_id}/rediscover?interactive=true (merge new works, passes the harvest pause)",
   "cost": "metered",
-  "cost_note": "tens of Scholar pages (≈ $1.07 per 1,000 on Apify) + a cheap LLM filter per page",
-  "side_effects": "thinker_works rows; a worker job",
-  "gated_by": "the global harvest pause unless interactive",
-  "yields": "the accepted works",
+  "cost_note": "Scholar pages per name variant (tens; ≈ $1.07 per 1,000 successful pages on Apify) + one cheap LLM filter per page",
+  "side_effects": "thinker_works rows; a worker job; status → harvesting",
+  "gated_by": "global harvest pause unless interactive; Apify/Oxylabs budget governors",
+  "yields": "works_discovered, accepted works with scholar ids",
   "owner": "the-referee",
   "version": "2026-09-07",
   "evidence": [],
