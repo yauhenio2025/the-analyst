@@ -8,6 +8,23 @@ for taking text and producing images (six, seven stages, concretization…); man
 agents thinking about the layout. And make it explicit, transparent, manipulable — present in the Mastermind as visible categories: inspirational
 seeds an LLM can extrapolate for this particular use case."*
 
+## 0. What the page is for (Evgeny, 09:45)
+
+*"What really counts is for us to look at this and grasp the ideas immediately, in their best possible version, in the minimum time; to arrive at
+clarity as fast as possible and absorb what is presented in the deepest rather than the shallowest way, using as many cognitive structuring
+supports as help us penetrate the substance without feeling alienated, and build a mental model of it as soon as possible."* By reading text
+alone we fail the first time and reread; every exhibit, sidebar, table and image is there to cut that. So the desks that plan and revise a page
+optimise one thing: **time to clarity, at depth** — the reader grasps the argument on the first pass and keeps a model of it.
+
+That is a loop, not a step: a planner decides the balance of text, images, tables, HTML elements and sidebars for this memo and this reader,
+and commissions them; a reviewer reads the assembled page as the reader would and sends back what fails — a table too intimidating, an image
+too detailed, a sidebar that repeats the text, a section that needs a timeline before it can be read — and the desks revise; several rounds if
+needed, under a cap, until the page reads at the first pass. Proof of concept first; the cost of the rounds is not the constraint. The
+planner, the strategist and the reviser are engines deposited in the Mastermind like the rest, with this goal as their brief.
+
+A caution from the owner: the renderer catalogue for screens (§1) was built for the Critic and the Visualizer but never fully operationalised;
+treat each renderer as untested until a page has used it, and prefer the few that a real page exercises.
+
 ## 1. What the Analyst already holds (and the oeuvre run did not use)
 
 The dossier lane has five desks after the engines — spine, tables, figures, plates, compose (then crosscheck) — and the oeuvre pilot ran
@@ -65,6 +82,17 @@ figures than the genealogy pipeline's: one primitive, one style, a vision check,
 
 **D. Write-back**: which exhibits a page used, and whether a reader opened them, goes back on the exhibit record as evidence, like a
 practice's yield.
+
+## 2b. The loop, as desks
+
+| desk | reads | writes | walled by |
+|---|---|---|---|
+| `page_planner` | the memo, its ledgers, the audience, the exhibits registry | the page plan: sections in order, each with its text budget, its exhibits (kind, rows, didactic aim), the sidebars | every input a real row id; no exhibit twice; a cap on exhibits per page; the registry's kinds only |
+| the makers | one plan item each: a table desk, a figure desk (primitive · style · fleet · vision check), an SVG desk for timelines and panels, a sidebar desk, a prose desk that rewrites a section to its budget | the exhibit, with its provenance | the existing walls: tables cite rows; figures pass the vision check; SVG carries only what its rows carry |
+| `page_reviewer` | the assembled page, as the stated reader | verdicts per element (keep · simplify · replace · drop · move) with the reason, and a time-to-clarity judgment per section | verdicts only on elements that exist; a reason names the element; a round limit |
+| the composer | the plan and the revised exhibits | HTML for the screen, PDF/Markdown for print, the same tokens | every exhibit placed once, in the plan's order |
+
+The reviewer's verdict vocabulary and the exhibits' kinds are registry records, so the owner can read and edit what the loop optimises for.
 
 ## 3. First steps
 
