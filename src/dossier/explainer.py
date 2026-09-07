@@ -22,10 +22,47 @@ PARTS = {"how": ("how",), "why": ("why here", "why_here"), "fit": ("in the argum
          "across": ("across the texts", "across_texts")}
 
 
-def rows_with_fields(final_output: str, failed: Iterable[str] = ()) -> list[dict]:
-    """Every ledger row with its answer-shape fields, the wall's verdict folded in as `conjecture`."""
+def _pinned(engine_key: Optional[str]) -> dict[str, list[str]]:
+    """The fields a vocabulary pins for this engine → its values (shape: an enumerated value outside its vocabulary is drift)."""
+    if not engine_key:
+        return {}
+    from src.vocabularies.registry import get_vocabulary_registry
+    out: dict[str, list[str]] = {}
+    for v in get_vocabulary_registry().for_engine(engine_key):
+        for u in v.used_by:
+            if u.engine_key == engine_key and u.field:
+                out[u.field] = v.value_list()
+    return out
+
+
+def pin_fields(fields: dict, pinned: dict[str, list[str]]) -> list[dict]:
+    """Normalise enumerated fields in place: a value outside its vocabulary that contains exactly one vocabulary word ("qualified
+    culmination" → culmination) is replaced, the raw value kept under `<field>_raw`; anything else is left and reported. Returns the
+    drift rows (2026-09-07: run 3's retrospective verdict came back qualified; no wall had read the vocabularies)."""
+    drift = []
+    for field, allowed in pinned.items():
+        raw = (fields.get(field) or "").strip()
+        if not raw:
+            continue
+        val = raw.lower().replace(" ", "_")
+        if val in allowed:
+            if val != raw:
+                fields[field] = val
+            continue
+        hits = [a for a in allowed if re.search(r"(?<![a-z])" + re.escape(a).replace("_", "[ _]") + r"(?![a-z])", raw.lower())]
+        fixed = hits[0] if len(hits) == 1 else None
+        if fixed:
+            fields[field + "_raw"] = raw; fields[field] = fixed
+        drift.append({"field": field, "value": raw, "fixed": fixed})
+    return drift
+
+
+def rows_with_fields(final_output: str, failed: Iterable[str] = (), engine_key: Optional[str] = None) -> list[dict]:
+    """Every ledger row with its answer-shape fields, the wall's verdict folded in as `conjecture`; with `engine_key`, the fields a
+    vocabulary pins are checked against it (`drift` on the row when a value was outside it)."""
     from src.executor.ledger_walls import parse_rows
 
+    pinned = _pinned(engine_key)
     failed = set(failed)
     lines = {m.group(1): line.strip() for line in final_output.splitlines() for m in [ROW.match(line)] if m}
     out = []
@@ -37,9 +74,14 @@ def rows_with_fields(final_output: str, failed: Iterable[str] = ()) -> list[dict
         head = re.sub(r"^\s*(?:[-*]\s+)?\[[^\]]+\]\s*", "", raw.split(" — ", 1)[0]).strip()
         anchor = (f.get("anchor") or "").strip().strip('"“”')
         anchored = bool(anchor) or bool((f.get("anchor-b") or "").strip().strip('"“”'))
-        out.append({"id": r.id, "dim": r.dim or f.get("dim", ""), "text": head, "fields": f, "anchor": anchor,
-                    "doc": r.doc or f.get("doc", ""), "conjecture": (not anchored) or (r.id in failed),
-                    "confidence": f.get("confidence", "")})
+        row = {"id": r.id, "dim": r.dim or f.get("dim", ""), "text": head, "fields": f, "anchor": anchor,
+               "doc": r.doc or f.get("doc", ""), "conjecture": (not anchored) or (r.id in failed),
+               "confidence": f.get("confidence", "")}
+        if pinned:
+            drift = pin_fields(f, pinned)
+            if drift:
+                row["drift"] = drift
+        out.append(row)
     return out
 
 

@@ -14,7 +14,7 @@ from typing import Any, Iterable, Optional
 from src.dossier.explainer import CITED_ID, rows_with_fields
 
 ENGINES = ("oeuvre_trajectory", "citation_shift", "retrospective_reading", "prospective_reading", "epistemic_rupture", "oeuvre_position_memo", "thinker_placement")
-PERSON_INPUTS = {"thinker_name", "referee_thinker_id", "person_name", "folder_id"}        # an action with one of these acts on a person
+PERSON_INPUTS = {"thinker_name", "referee_thinker_id", "referee_thinker_ids", "person_name", "folder_id", "school_name", "candidate_names"}   # an action with one of these acts on a person
 ANSWERED_BY_LEDGER = {"referee.thinker-exists"}                                            # the Stacks' ledger already resolved the Referee id (the owner, 2026-09-07 12:17)
 ACTION_ROWS = {   # dimension → (finding kind, the row fields → action inputs)
     ("citation_shift", "unexamined"): "citation_shift.unexamined",
@@ -42,7 +42,7 @@ def _rows(job: dict, engine: str) -> list[dict]:
     got = _phases(job).get(engine)
     if not got:
         return []
-    rows = rows_with_fields(got[0], got[1])
+    rows = rows_with_fields(got[0], got[1], engine_key=engine)   # enumerated fields pinned to their vocabularies
     for r in rows:
         r["engine"] = engine
         r["text"] = _clean(r["text"])
@@ -98,6 +98,8 @@ def actions_for(rows: list[dict], registry=None, placements: Optional[dict[str, 
         f = r["fields"]
         held = (f.get("held") or "").lower(); known = (f.get("in_referee") or "").lower()
         cited = (f.get("cited") or f.get("source") or f.get("text") or "").strip()
+        if not _clean(cited):
+            continue                                   # a row that names nothing licenses nothing
         kind_field = (f.get("kind") or "").lower()
         is_person = kind_field == "person" if kind_field in ("person", "work") else (known in ("yes", "no") and held not in ("yes", "no"))
         if is_person and known == "yes":
@@ -128,8 +130,8 @@ def actions_for(rows: list[dict], registry=None, placements: Optional[dict[str, 
             needs_person = bool(PERSON_INPUTS & {k.rstrip("?") for k in (s_["inputs"].keys() | set(s_["missing"]) | set(s_.get("optional") or []))})
             if s_["action"] in ANSWERED_BY_LEDGER and known in ("yes", "no"):
                 continue
-            if is_person != needs_person and s_["organ"] == "the-referee":
-                continue                               # a person action on a work row, or the reverse
+            if is_person != needs_person:
+                continue                               # a person action on a work row, or the reverse (any organ)
             suggested.append(s_)
         if pl and pl.get("fits"):                      # one school-propose per fitting school, its evidence filled from the placement row
             expanded = []
@@ -176,6 +178,7 @@ def render_oeuvre(job: dict, registry=None) -> Optional[dict]:
                  "anchor": r["anchor"], "doc": r["doc"], "conjecture": r["conjecture"]} for r in by[engine] if r["dim"] in dims]
     all_rows = [r for e in ENGINES for r in by[e]]
     placements = placements_of(by['thinker_placement'])
+    drift = [{"finding": f"{r['engine']}/{r['id']}", **d} for r in all_rows for d in r.get("drift") or []]
     read_next = sorted(table("oeuvre_position_memo", {"read_next"}), key=lambda x: int(re.search(r"\d+", x.get("rank", "") or "9").group(0)) if re.search(r"\d+", x.get("rank", "") or "") else 9)
     return {"engine": "oeuvre_position", "job_id": job.get("id"), "phases": sorted(phases), "rows": len(all_rows), "conjectures": sum(int(r["conjecture"]) for r in all_rows),
             "verdicts": verdicts, "memo": _clean(memo_prose),
@@ -184,4 +187,4 @@ def render_oeuvre(job: dict, registry=None) -> Optional[dict]:
             "retrospective": table("retrospective_reading", {"inheritance", "resolution", "interlocutor", "verdict"}),
             "prospective": table("prospective_reading", {"seed", "developed_into", "abandoned", "verdict"}),
             "rupture": table("epistemic_rupture", {"continuity", "break", "verdict", "test"}),
-            "read_next": read_next, "open": table("oeuvre_position_memo", {"open"}), "placements": list(placements.values()), "actions": actions_for(all_rows, registry, placements)}
+            "read_next": read_next, "open": table("oeuvre_position_memo", {"open"}), "placements": list(placements.values()), "vocabulary_drift": drift, "actions": actions_for(all_rows, registry, placements)}

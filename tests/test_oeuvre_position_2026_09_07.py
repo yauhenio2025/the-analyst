@@ -283,3 +283,17 @@ def test_a_step_added_to_a_finished_job_reads_its_documents_and_joins_its_analys
     from src.dossier.oeuvre import _rows
     rows = _rows({"analysis": job["analysis"]}, "thinker_placement")
     assert rows and rows[0]["fields"]["verdict"] == "not_a_candidate"
+
+
+def test_enumerated_fields_are_pinned_to_their_vocabulary_and_drift_is_reported():
+    """Run 3's retrospective verdict came back 'qualified culmination' (2026-09-07 13:00): a value outside its vocabulary is shape,
+    so the parser normalises it when one vocabulary word is inside it and reports the drift; nothing else is judged."""
+    from src.dossier.explainer import rows_with_fields
+    out = ("[R4.F1] The paper culminates the critique — dim: verdict — verdict: qualified culmination — warrant: w — anchor: \"x\" — doc: focal:em:F — confidence: high\n"
+           "[R4.F2] Another — dim: verdict — verdict: Continuation — anchor: \"y\" — doc: focal:em:F — confidence: low\n"
+           "[R4.F3] A third — dim: verdict — verdict: a fresh start — anchor: \"z\" — doc: focal:em:F — confidence: low")
+    rows = rows_with_fields(out, engine_key="retrospective_reading")
+    assert rows[0]["fields"]["verdict"] == "culmination" and rows[0]["fields"]["verdict_raw"] == "qualified culmination" and rows[0]["drift"] == [{"field": "verdict", "value": "qualified culmination", "fixed": "culmination"}]
+    assert rows[1]["fields"]["verdict"] == "continuation" and "drift" not in rows[1]
+    assert rows[2]["fields"]["verdict"] == "a fresh start" and rows[2]["drift"][0]["fixed"] is None
+    assert "drift" not in rows_with_fields(out)[0]                     # without an engine nothing is pinned
