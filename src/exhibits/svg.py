@@ -241,7 +241,8 @@ def two_halves_svg(oeuvre: dict, *, width: int = 1100, packet: Optional[dict] = 
         out.append(f'<g><title>{_esc(r["id"])} — {_esc(r.get("text"))} — before: {_esc(r.get("before"))} — after: {_esc(r.get("after"))}</title>')
         out.append(f'<line class="grid" x1="{lx}" y1="{y - 6}" x2="{width - 24}" y2="{y - 6}"/>')
         out.append(f'<circle cx="{margin // 2}" cy="{y + 10}" r="5" class="{cls}"' + ("" if persists else ' fill="none" stroke-width="2"') + "/>")
-        out.append(f'<text x="{lx}" y="{y + 14}" class="t1" font-size="12"><tspan font-weight="600">{_esc(tag)} · {_esc(what)}.</tspan> {_esc(sent[0] if sent else "")}</text>')
+        label = f"{tag} · {what}." if what else f"{tag}."          # a row without a named dimension shows the tag alone, never "· ."
+        out.append(f'<text x="{lx}" y="{y + 14}" class="t1" font-size="12"><tspan font-weight="600">{_esc(label)}</tspan> {_esc(sent[0] if sent else "")}</text>')
         yy = y + 14
         for line in sent[1:]:
             yy += 16; out.append(f'<text x="{lx}" y="{yy}" class="t2" font-size="12">{_esc(line)}</text>')

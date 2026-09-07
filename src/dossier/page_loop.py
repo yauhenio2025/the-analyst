@@ -387,7 +387,7 @@ def recompose_page(job_id: str, o: dict, packet: dict, exhibit_registry=None) ->
     r = rounds[-1]
     plan = json.loads(json.dumps(r["plan"]))   # compose mutates placements
     made = {e["id"]: (make(e["kind"], o, rows=e.get("rows"), packet=packet) or {"html": "", "description": "no maker"}) for e in plan["exhibits"]}
-    html, desc = compose_page(rec.get("title") or "", f"{rec.get('audience', '')} · page round {r['round']}", plan, r.get("prose") or {}, made, r.get("review"), r["round"])
+    html, desc = compose_page(rec.get("title") or "", f"what role the paper plays in the oeuvre · for a {rec.get('audience', 'reader')}", plan, r.get("prose") or {}, made, r.get("review"), r["round"])
     r["html"] = html; r["description"] = desc; rec["final_html"] = html; rec["recomposed"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
     save_page(job_id, rec)
     return {"job_id": job_id, "round": r["round"], "exhibits": [(e["kind"], e["placement"]) for e in plan["exhibits"]], "chars": len(html)}
