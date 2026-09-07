@@ -125,13 +125,16 @@ def test_the_oeuvre_renders_by_code_with_the_verdicts_and_the_actions_the_findin
     guizot_work = acts["citation_shift/C5.F1"]
     assert guizot_work["kind"] == "citation_shift.unexamined" and guizot_work["held"] == "no"
     assert all(not a["missing"] for a in guizot_work["actions"]) and any(w["action"] == "referee.citations-harvest" and "referee_thinker_id" in w["missing"] for w in guizot_work["waiting"])   # ready ones as buttons, the rest named with what they lack
-    fetch = next(a for a in guizot_work["actions"] if a["action"] == "referee.pdf-fetch")
-    assert fetch["inputs"]["work_title"] == "Histoire de la civilisation en Europe" and fetch["inputs"]["work_author"] == "Guizot, François" and fetch["inputs"]["work_year"] == "1830"
+    fetch = next(w for w in guizot_work["waiting"] if w["action"] == "referee.pdf-fetch")     # a fetch needs a query or a corpus row the finding cannot supply
+    assert "query_id" in fetch["missing"] or "corpus_result_id" in fetch["missing"]
+    from src.actions.registry import suggest
+    filled = next(s for s in suggest("citation_shift.unexamined", {"work_title": "Histoire de la civilisation en Europe", "work_author": "Guizot, François", "work_year": "1830"}, ActionRegistry(DEFINITIONS, durable=False)) if s["action"] == "referee.pdf-fetch")
+    assert filled["inputs"]["work_title"] == "Histoire de la civilisation en Europe" and filled["inputs"]["work_author"] == "Guizot, François" and filled["inputs"]["work_year"] == "1830"
     guizot_person = acts["citation_shift/C5.F2"]
     exists = next(a for a in guizot_person["actions"] if a["action"] == "referee.thinker-exists")
     assert exists["inputs"] == {"thinker_name": "Guizot, François"} and exists["cost"] == "none"
     assert all(a["organ"] == "the-stacks" for a in acts["oeuvre_position_memo/M2.F1"]["actions"] + acts["oeuvre_position_memo/M2.F1"]["waiting"])       # held: bundle or profile, never a fetch
-    assert any(a["action"] == "referee.pdf-fetch" for a in acts["epistemic_rupture/E4.F1"]["actions"])   # a test on an unheld text: fetch it
+    assert any(w["action"] == "referee.pdf-fetch" for w in acts["epistemic_rupture/E4.F1"]["waiting"])   # a test on an unheld text: a fetch, once a query exists
     assert render_oeuvre({"id": "x", "analysis": {}}) is None
 
 
