@@ -9,7 +9,7 @@ from typing import Any, Optional
 
 from src.dossier.explainer import CITED_ID, rows_with_fields
 
-ENGINES = ("interlocutor_position", "distinction_draft", "distinction_settle")
+ENGINES = ("interlocutor_position", "distinction_draft", "distinction_settle", "impact_scan")
 
 
 def _clean(text: str) -> str:
@@ -77,7 +77,10 @@ def render_distinctions(job: dict) -> Optional[dict]:
     names = sorted({c["interlocutor"] for c in claims} | {r["interlocutor"] for r in relations} | {s["interlocutor"] for s in silences})
     interlocutors = [{"name": n, "claims": [c for c in claims if c["interlocutor"] == n], "silences": [s for s in silences if s["interlocutor"] == n],
                       "relations": [r for r in relations if r["interlocutor"] == n], "settled": [s for s in settled if s["interlocutor"] == n]} for n in names]
+    impact = {"touched": [_row(r, "part", "relation", "from") for r in by["impact_scan"] if r["dim"] == "impact"],
+              "dependencies": [_row(r, "part", "on", "how", "relation") for r in by["impact_scan"] if r["dim"] == "dependency"],
+              "retests": [_row(r, "test", "run", "because") for r in by["impact_scan"] if r["dim"] == "retest"]}   # what the settled distinction changes elsewhere (the impact scan, 2026-09-07)
     drift = [{"finding": f"{r['engine']}/{r['id']}", **d} for e in ENGINES for r in by[e] for d in r.get("drift") or []]
-    return {"engine": "distinction", "job_id": job.get("id"), "phases": list(phases), "rows": sum(len(v) for v in by.values()),
+    return {"engine": "distinction", "impact": impact, "job_id": job.get("id"), "phases": list(phases), "rows": sum(len(v) for v in by.values()),
             "conjectures": sum(1 for v in by.values() for r in v if r["conjecture"]), "questions": questions, "interlocutors": interlocutors,
             "positions": positions, "challenges": challenges, "settled": settled, "effects": effects, "open": open_, "vocabulary_drift": drift}

@@ -148,3 +148,13 @@ distinction challenges as before; the route goes to the references lane (a text 
 The impact scan follows (his order): after a distinction or an encounter settles, re-read the whole argument for the parts it
 changes (OAAS review_pilot's dependency-impact scan as an engine).
 
+## 8. The impact scan (his order: after the encounter)
+
+OAAS review_pilot's dependency-impact scan as an engine. **`impact_scan`** reads the argument's parts (and his hunches when supplied)
+against the settled distinctions (S1 rows, via the recipe's context, or an encounter's draft): P1 `impact` — a part touched directly,
+with the effect (argument_effects: moves · supports · complicates · contradicts) and the change in one clause; P2 `dependency` — a
+part that rests on a touched part (as premise · term · ground) and so changes at one remove; P3 `retest` — what must run again
+(vocabulary `retest_runs`: hunch_test · reread · frame · distinction_round). Every row anchored in the part or the hunch it names;
+never a rewrite — the desk proposes versions, the owner clicks. `GET /distinctions` carries it as `impact`; the Stacks' ledger takes
+P1/P2 as effects with reach from the reading (bears_on) and P3 as `next` under the reaction-follow-up practice.
+

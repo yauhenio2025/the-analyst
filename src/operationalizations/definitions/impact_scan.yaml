@@ -1,0 +1,114 @@
+# The distinction family (2026-09-07): the impact scan. Walls: every row anchors in a part (the argument document) or a hunch: document-scope.
+engine_key: impact_scan
+engine_name: What a settled distinction changes elsewhere in the argument
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: Given what the owner has just settled, which parts of his argument change, which change at one remove, and
+    what must be re-tested?
+  framing: 'The documents: the argument''s PARTS as a document keyed `argument` (''[part N] (his | desk draft) text'');
+    the owner''s ANSWER that settled the distinction, when supplied; his HUNCHES as a document keyed `hunches`, when supplied.
+    The upstream rows — the settled distinctions (S1: distinct from whom, on which axis, holding what, because) and their
+    first effects (S2) — are supplied with their ids. Re-read EVERY part against the settled distinction: a part is touched
+    when its claim, its ground or its terms change under it; a part changes at one remove when it rests on a touched part
+    (say which). Anchor each row in the part it names (or the hunch). Never rewrite a part: name the change in one clause;
+    the desk proposes versions, the owner clicks.'
+  scoped_outcomes: false
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: impact
+    name: A part the settled distinction touches directly
+    questions:
+    - Which part moves, gains support, must qualify, or cannot stand as written, and how?
+    method_card: 'Do: One row per part touched: the part number, the effect from the vocabulary (moves · supports · complicates
+      · contradicts), the change in one clause, the S1 distinction it follows from, anchored in the part''s own words. Select
+      literal spans that carry the actor, predicate, object and necessary qualification. Keep attribution, negation, modality
+      and chronology. Code checks only anchors and IDs; the model must judge.'
+    indicators:
+    - part
+    - changes
+    - rests
+    scope: document
+    load_bearing: true
+    id_prefix: P1
+    answer_shape: '[P1.F<n>] Part <N> <effect>: <the change in one clause> — dim: impact — part: <N> — relation: moves|supports|complicates|contradicts
+      — from: <S1 id> — anchor: "<verbatim from the part, <=200 chars>" — doc: <the argument''s document key> — confidence:
+      high|medium|low'
+  - key: dependency
+    name: A part that changes at one remove
+    questions:
+    - Which part rests on a touched part and so changes too, and how?
+    method_card: 'Do: One row per part that rests on a P1 part: the part number, the P1 row it rests on, how it rests (a
+      premise · a term · a ground), the change in one clause, anchored in the dependent part. Select literal spans that
+      carry the actor, predicate, object and necessary qualification. Keep attribution, negation, modality and chronology.
+      Code checks only anchors and IDs; the model must judge.'
+    indicators:
+    - because
+    - therefore
+    - rests on
+    scope: document
+    load_bearing: true
+    id_prefix: P2
+    answer_shape: '[P2.F<n>] Part <N> rests on part <M>: <the change in one clause> — dim: dependency — part: <N> — on:
+      <P1 id> — how: premise|term|ground — relation: moves|supports|complicates|contradicts — anchor: "<verbatim from the
+      dependent part, <=200 chars>" — doc: <the argument''s document key> — confidence: high|medium|low'
+  - key: retest
+    name: What must run again
+    questions:
+    - Which hunch, reference re-read or frame rested on the old formulation and must be re-run?
+    method_card: 'Do: At most five rows: the test (a hunch by its words, a reference set, a frame), why it rested on the
+      old formulation, what to run (hunch_test · reread · frame · distinction_round), anchored in the hunch or the part.
+      Select literal spans that carry the actor, predicate, object and necessary qualification. Keep attribution, negation,
+      modality and chronology. Code checks only anchors and IDs; the model must judge.'
+    indicators:
+    - hunch
+    - re-read
+    - frame
+    scope: document
+    load_bearing: false
+    id_prefix: P3
+    answer_shape: '[P3.F<n>] <the test and why> — dim: retest — test: <the hunch, reference set or frame in a phrase> —
+      run: hunch_test|reread|frame|distinction_round — because: <one clause> — anchor: "<verbatim from the hunch or the
+      part, <=200 chars>" — doc: <the hunches'' or the argument''s key> — confidence: high|medium|low'
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension
+    model_tier: cheap
+    output: ledger
+    max_rows: 10
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - merge_duplicates
+    - name_must_keep
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    max_rows: 10
+    reader: the desk that proposes the parts' next versions, and the owner who clicks
+    tables: []
+    brief: '1. One short paragraph: what the settled distinction changes across the argument, in the owner''s terms, naming
+      the parts by number. 2. Then the ledger: touched parts first, then the parts at one remove, then what to run again.
+      Never rewrite a part.'
