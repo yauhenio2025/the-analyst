@@ -360,6 +360,13 @@ def add_job_step(job_id: str, req: StepRequest):
         index_job(record, only_phases=[str(phase.get("phase_number"))])   # the added step's rows join the ledger too
     except Exception as exc:
         logger.warning(f"readings ledger not written for {job_id} step: {exc}")
+    try:
+        from src.actions.register import record_event
+        record_event("step_added", job_id=job_id, engine_key=req.engine_key, cost_usd=phase.get("cost_usd"), rows=len((phase.get("final_output") or "").split("\n[")))
+        if req.engine_key == "distinction_settle":
+            record_event("answer", job_id=job_id, engine_key=req.engine_key, summary="the owner answered a distinction; the settle ran")
+    except Exception as exc:
+        logger.warning(f"register not written for {job_id} step: {exc}")
     return {"job_id": job_id, "phase": {k: v for k, v in phase.items() if k != "final_output"}, "rows": len((phase.get("final_output") or "").split("\n[")), "cost_usd": phase.get("cost_usd")}
 
 

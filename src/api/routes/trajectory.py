@@ -97,3 +97,12 @@ def narrate(body: Optional[NarrateIn] = None):
     _put(BLOB, "application/json", json.dumps(t, ensure_ascii=False).encode("utf-8"))
     record_event("narrative", events_read=len(rows), cost_usd=out.get("cost_usd"), summary=(out.get("prose") or "")[:200])
     return {**t, "block": trajectory_block(t)}
+
+
+@router.post("/register/backfill")
+def backfill():
+    """Record job_done events for the finished jobs made before the register existed (idempotent)."""
+    from src.actions.register import backfill_jobs
+    from src.dossier.store import list_jobs
+    jobs = [j.model_dump() for j in list_jobs(limit=200)]
+    return {"recorded": backfill_jobs(jobs), "jobs_seen": len(jobs)}

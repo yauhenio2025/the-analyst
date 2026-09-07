@@ -208,6 +208,15 @@ def _run(job_id: str) -> None:
                 index_job(done.model_dump())
         except Exception as exc:
             logger.warning(f"readings ledger not written for {job_id}: {exc}")
+        try:   # the register hears it, and the narrative follows in the background (the owner, 18:30: the system narrates what we do)
+            from src.actions.register import record_event, narrate_later
+            done = get_job(job_id)
+            rec = done.model_dump() if done is not None else {}
+            record_event("job_done", job_id=job_id, engine_keys=[ph.get("engine_key") for ph in (rec.get("analysis") or {}).values() if ph.get("engine_key")],
+                         intent=((rec.get("options") or {}).get("intent") or "")[:200], cost_usd=(rec.get("totals") or {}).get("cost_usd"))
+            narrate_later()
+        except Exception as exc:
+            logger.warning(f"register not written for {job_id}: {exc}")
         job = get_job(job_id) or job
         events.emit(job_id, "job_finished", detail=f"dossier done: ${job.totals.cost_usd:.2f}, {job.totals.llm_calls} calls, "
                     f"{round(job.totals.duration_ms/60000, 1)} min", cost_usd=job.totals.cost_usd,
@@ -221,6 +230,11 @@ def _run(job_id: str) -> None:
         logger.error(f"dossier {job_id} failed: {exc}\n{traceback.format_exc()}")
         try:
             update_job(job_id, status="failed", error=f"{exc.__class__.__name__}: {exc}")
+            try:
+                from src.actions.register import record_event
+                record_event("job_failed", job_id=job_id, summary=f"{exc.__class__.__name__}: {exc}"[:200])
+            except Exception:
+                pass
         except Exception:
             pass
         events.emit(job_id, "job_failed", detail=f"{exc.__class__.__name__}: {exc}")

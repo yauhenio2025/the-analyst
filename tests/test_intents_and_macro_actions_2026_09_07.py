@@ -102,3 +102,16 @@ def test_the_trajectory_block_is_compact_and_reads_the_next_directions():
     block = trajectory_block(t)
     assert block.startswith("TRAJECTORY (what we are doing, narrated 2026-09-07T18:40:00Z)") and "NEXT: Add the four unknown thinkers" in block and len(block) <= 2000
     assert len(trajectory_block({**t, "prose": "w" * 5000}, limit=500)) == 500
+
+
+def test_backfill_records_finished_jobs_once(monkeypatch):
+    import src.actions.register as reg
+    store = {}
+    monkeypatch.setattr(reg, "_put", lambda key, mime, data: store.__setitem__(key, data)); monkeypatch.setattr(reg, "_get", lambda key: store.get(key))
+    reg.reset_for_tests()
+    jobs = [{"id": "j1", "status": "done", "updated_at": "2026-09-07T12:59:00Z", "analysis": {"4.1": {"engine_key": "oeuvre_trajectory"}}, "options": {"intent": "Brenner 1985"}, "totals": {"cost_usd": 11.3}},
+            {"id": "j2", "status": "failed"}, {"id": "j3", "status": "done", "analysis": {}, "options": {}, "totals": {}}]
+    assert reg.backfill_jobs(jobs) == 2 and reg.backfill_jobs(jobs) == 0
+    done = reg.events(kind="job_done")
+    assert {e["job_id"] for e in done} == {"j1", "j3"} and any(e.get("backfilled") for e in done)
+    assert reg.narrate_later(min_new_events=10) is False        # too few events since the last narrative: nothing runs

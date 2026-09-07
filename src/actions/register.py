@@ -102,3 +102,43 @@ def reset_for_tests() -> None:
     with _lock:
         _events.clear()
         _loaded = False
+
+
+def narrate_later(min_new_events: int = 3) -> bool:
+    """Run the trajectory narrative in a daemon thread when the register has grown since the last narrative (a light call, cents).
+    Never blocks the caller; failures are logged, not raised."""
+    import logging, threading
+    log = logging.getLogger(__name__)
+    try:
+        rows = events(limit=400)
+        since_last = 0
+        for e in rows:
+            if e.get("kind") == "narrative":
+                break
+            since_last += 1
+        if since_last < min_new_events:
+            return False
+    except Exception as exc:
+        log.warning(f"narrate_later could not read the register: {exc}"); return False
+
+    def _go():
+        try:
+            from src.api.routes.trajectory import narrate, NarrateIn
+            narrate(NarrateIn())
+        except Exception as exc:
+            log.warning(f"the narrative did not run: {exc}")
+    threading.Thread(target=_go, name="trajectory-narrative", daemon=True).start()
+    return True
+
+
+def backfill_jobs(jobs: list[dict]) -> int:
+    """Record job_done events for finished jobs made before the register existed (idempotent by job id)."""
+    have = {e.get("job_id") for e in events(kind="job_done", limit=5000)}
+    n = 0
+    for j in jobs:
+        if j.get("status") != "done" or j.get("id") in have:
+            continue
+        record_event("job_done", job_id=j.get("id"), when=j.get("updated_at") or j.get("created_at"), engine_keys=[ph.get("engine_key") for ph in (j.get("analysis") or {}).values() if isinstance(ph, dict) and ph.get("engine_key")],
+                     intent=((j.get("options") or {}).get("intent") or "")[:200], cost_usd=(j.get("totals") or {}).get("cost_usd"), backfilled=True)
+        n += 1
+    return n
