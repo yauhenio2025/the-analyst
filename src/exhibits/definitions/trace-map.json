@@ -1,0 +1,36 @@
+{
+  "key": "trace-map",
+  "name": "How your words moved the model",
+  "when": [
+    "exchange.turn",
+    "brief.turn",
+    "memo.effects",
+    "*"
+  ],
+  "inputs": [
+    "one turn of the owner's (his words, its time)",
+    "the desk's reading of it",
+    "the effects: parts moved · supported · complicated · contradicted",
+    "the questions, challenges, hunches, references, works and memos it produced",
+    "the state of each (open · parked · held · accepted)"
+  ],
+  "medium": "svg",
+  "renderer": "consequence_map",
+  "shape": "One turn's consequence as a left-to-right map: the owner's words at the left as the source node, the desk's reading beside it, then one column per kind (edits · questions · challenges · hunches · references · works · memos), the edges coloured by what they did (moves · supports · complicates · contradicts) and labelled with that word where the label fits. Every node is a door: it opens its row. The map is drawn to be READ, not scanned: at least 13px on a node's title and 12px on its body, a node at least 180px wide and never clipped, 24px between columns and 16px between rows, the surface a step lighter than the page so the drawing sits on its own ground, one accent per effect from the reference palette (never two hues at the same lightness), and a legend naming the effects. It is never a strip with a scrollbar: it opens as a layer over the page at the width of the window (Esc closes), and what stands in the column is a thumbnail with its counts in words ('six turns · 1 edit · 3 questions') that opens it.",
+  "didactic": "In one glance: what one thing he said set off, what came back, and which parts of the argument moved because of it.",
+  "placement": "folded",
+  "cost": "none",
+  "owner": "the-stacks",
+  "version": "2026-09-08",
+  "example": "Brief 1, turn 11: his answer of 13:07 → the desk's reading → 8 questions, 1 challenge, 2 hunches, 11 works, 1 memo; parts 6 moved, 8, 2 and 1 supported.",
+  "evidence": [
+    {
+      "page": "brief/1",
+      "organ": "the-stacks",
+      "verdict": "replace",
+      "note": "the owner, 2026-09-08 00:53: 'this part with arrows has to look gorgeous and legible — we are not there yet: it's too dark, too small, doesn't seem to expand or pop up, and it's aesthetically not very nice'",
+      "recorded": "2026-09-08T00:55:00Z"
+    }
+  ],
+  "note": "The Stacks own the drawing (app/static/trace.js); this record is the Mastermind's statement of what the exhibit must be, and their verdicts write back here."
+}
