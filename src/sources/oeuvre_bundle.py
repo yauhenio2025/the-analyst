@@ -104,9 +104,9 @@ def _schools(obj: dict) -> list[dict]:
         if r.get("merged_into_folder_id"):
             continue
         n = r.get("thinker_count") if isinstance(r.get("thinker_count"), int) else r.get("member_count") if isinstance(r.get("member_count"), int) else r.get("members") if isinstance(r.get("members"), int) else len(r.get("members") or []) if isinstance(r.get("members"), list) else None
-        out.append({"id": r.get("id") or r.get("folder_id"), "slug": r.get("slug"), "name": _s(r.get("name") or r.get("title"), 120), "kind": r.get("kind"), "description": _s(r.get("description") or r.get("summary"), 300), "members": n,
+        out.append({"id": r.get("id") or r.get("folder_id"), "slug": r.get("slug"), "name": _s(r.get("name") or r.get("title"), 120), "kind": r.get("kind"), "description": _s(r.get("description") or r.get("summary"), 160), "members": n,
                     "sample": [_s(m.get("name") if isinstance(m, dict) else m, 60) for m in (r.get("sample_members") or r.get("sample") or (r.get("members") if isinstance(r.get("members"), list) else []) or [])[:5] if m]})
-    return out[:120]
+    return out[:600]   # every school (the Referee has 401 on 2026-09-07; a cap of 120 had hidden the Great Divergence and Political Marxism schools from the first run)
 
 
 def packet_of(obj: dict) -> dict:
