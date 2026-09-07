@@ -248,6 +248,20 @@ def get_frame(job_id: str):
     return {**frame, "status": job.status}
 
 
+@router.get("/jobs/{job_id}/distinctions")
+def get_distinctions(job_id: str):
+    """The distinction round (engines interlocutor_position · distinction_draft · distinction_settle) as JSON: the questions the owner
+    argues, each interlocutor's claims and silences, his inferred positions, the relations, the questions back as `distinction`
+    challenge payloads, and the settled distinctions with their effects (2026-09-07)."""
+    from src.dossier.distinctions import render_distinctions
+
+    job = _load(job_id)
+    out = render_distinctions(job.model_dump())
+    if out is None:
+        raise HTTPException(status_code=409, detail=f"no finished distinction phase on this job (status={job.status}, step={job.step})")
+    return {**out, "status": job.status}
+
+
 @router.get("/jobs/{job_id}/reread")
 def get_reread(job_id: str):
     """The owner's references re-read against the texts (engine reference_reread) as JSON, rendered from the job's

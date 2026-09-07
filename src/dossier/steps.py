@@ -45,6 +45,22 @@ def packet_for(engine_key: str, packet: dict) -> Optional[dict]:
     return packet
 
 
+def upstream_findings(job: dict, engine_key: str, cap: int = 60_000) -> dict[str, str]:
+    """The final outputs of the phases a recipe lists before `engine_key`, keyed by engine (the light call has no context broker)."""
+    from src.dossier.catalog import load_recipes
+    before: list[str] = []
+    for r in load_recipes():
+        keys = [st["engine_key"] for st in r.get("steps") or []]
+        if engine_key in keys:
+            before += keys[:keys.index(engine_key)]
+    out = {}
+    for ph in (job.get("analysis") or {}).values():
+        k = ph.get("engine_key")
+        if k in before and ph.get("final_output") and k not in out:
+            out[k] = ph["final_output"][:cap]
+    return out
+
+
 def add_step(job: dict, engine_key: str, *, get_text: Callable[[str], str], call: Callable[..., dict], depth: str = "surface",
              model: Optional[str] = None, spend_cap_usd: float = 2.0, max_chars: int = 400_000, packet_override: Optional[dict] = None) -> dict:
     """Run `engine_key` over the job's documents and append its phase to `job['analysis']` (mutated and returned as the new
@@ -61,6 +77,9 @@ def add_step(job: dict, engine_key: str, *, get_text: Callable[[str], str], call
     if packet_override:   # a caller's blocks over the stored packet (run 3's plan document predates persons_unknown and schools)
         packet = {**packet, **packet_override}
     small = packet_for(engine_key, packet)
+    upstream = upstream_findings(job, engine_key)
+    if upstream:
+        small = {**(small or {}), "upstream_findings": upstream}   # the rows of the recipe's earlier steps, with their ids (the engines' framings expect them)
     room = max_chars - len(json.dumps(small, ensure_ascii=False)) - 8_000 if small else max_chars   # the packet counts against the light call's cap
     sources = sources_for(engine_key, documents, packet, get_text, room)
     if not sources:
