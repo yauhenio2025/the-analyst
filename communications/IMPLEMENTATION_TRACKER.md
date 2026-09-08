@@ -1,5 +1,7 @@
 # The Analyst — Implementation Tracker
 
+- QUESTION DEVELOPMENT COMPANION (2026-09-09, feature branch only): central `question_preparation` and `question_development` capability/process records support `/v1/questions/prepare`, `/complete`, receipt retrieval and immutable feedback. An unresolved problem can produce a proposed question without a settled commitment or invented evidence; optional gathering selects actual supplied sources under a budget. Exact frozen input/method/source identities, approval/reference checks, visible quote failures and reading-ledger recovery reuse the inquiry seam. The owning app retains accepted questions and beliefs and executes any chosen next activity; central results never dispatch work or autoaccept assumptions. Design: `communications/DESIGN_question_development_2026-09-09.md`. All 55 new isolated contract tests and 131 focused tests including existing inquiry/readings/oeuvre regressions pass. No live model run, scholarly evaluation, deployment or merge performed.
+
 > Written 2026-09-03 (geekom-mini session). Demo to Kering executives is 2026-09-04.
 > This file moves to `the-analyst/communications/IMPLEMENTATION_TRACKER.md` once the repo exists.
 > Study reports backing every claim here: `scratchpad/study/{oaas-vision,analyzer-v2,analyzer-mgmt,client-production,veo2,image-models,ganrl-dossiefier-critic,oaas-code}.md`.

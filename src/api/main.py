@@ -313,6 +313,8 @@ app.include_router(practices_routes.router, prefix="/v1")
 app.include_router(actions_routes.router, prefix="/v1")
 app.include_router(trajectory_routes.router, prefix="/v1")   # the register and the narrative (2026-09-07)
 app.include_router(inquiries_routes.router, prefix="/v1")
+from src.api.routes import questions as questions_routes
+app.include_router(questions_routes.router, prefix="/v1")
 app.include_router(exhibits_routes.router, prefix="/v1")
 app.include_router(transformations.router, prefix="/v1")
 app.include_router(operations.router)

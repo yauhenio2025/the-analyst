@@ -287,6 +287,9 @@ def reading(job_id: str, phase: str) -> Optional[dict]:
         # can retain an older snapshot, but readers must always see every event.
         from src.inquiries.service import feedback_for
         result["author_feedback"] = feedback_for(result["receipt_id"])
+    elif result and str(result.get("receipt_id", "")).startswith("question-"):
+        from src.questions.service import feedback_for
+        result["author_feedback"] = feedback_for(result["receipt_id"])
     return result
 
 
