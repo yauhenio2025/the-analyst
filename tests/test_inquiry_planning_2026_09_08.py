@@ -234,3 +234,15 @@ def test_missing_central_method_has_no_local_reasoning_fallback(client, discover
             return None
     monkeypatch.setattr(registry, "get_operationalization_registry", lambda: EmptyRegistry())
     assert client.post("/v1/inquiries/planning/prepare", json=discovery).status_code == 503
+
+
+def test_wanted_work_and_failed_text_readiness_are_visible_and_frozen(client, selection, packet):
+    selection["availability"] = {"wants": [{"title": "The full case", "acq_status": "queued"}],
+                                 "omitted_uids": ["em:OMITTED"], "text_preparation_error": "OCR failed for one appendix"}
+    p = prepared(client, selection)
+    supplied = json.loads(p["user_prompt"])["input"]["availability"]
+    assert supplied == selection["availability"]
+    assert "pending acquisition" in p["system_prompt"]
+    selection["availability"]["wants"][0]["acq_status"] = "arrived"
+    assert finish(client, p, selection, packet).status_code == 409
+    assert prepared(client, selection)["prepared_id"] != p["prepared_id"]

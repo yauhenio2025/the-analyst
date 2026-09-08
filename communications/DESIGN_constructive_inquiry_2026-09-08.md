@@ -126,6 +126,9 @@ be read now lives in the central `inquiry_preparation` capability/process record
   counts, coverage descriptions and short previews; optionally named text windows.
 - `prior_readings`: supplied IDs and their portable job/phase references, summaries,
   source keys and available rows. These are context, never independent evidence.
+- `availability`: the organ's wanted works and acquisition statuses, omitted candidate
+  IDs, text-preparation failures and other supplied readiness metadata. The planner
+  distinguishes a consequential pending source from evidence already readable now.
 - `budget`: source count, selected text characters and prior-reading count, default
   20 / 400,000 / 8. The owning organ can set a tighter budget.
 - `discovery_plan`: required in selection, containing the ready discovery result.

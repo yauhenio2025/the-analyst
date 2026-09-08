@@ -126,6 +126,7 @@ class PlanningPrepareRequest(StrictModel):
     context: PlanningContext
     sources: list[SourceCandidate] = Field(default_factory=list, max_length=200)
     prior_readings: list[PriorReadingCandidate] = Field(default_factory=list, max_length=100)
+    availability: dict[str, Any] = Field(default_factory=dict)
     budget: PlanningBudget = Field(default_factory=PlanningBudget)
     discovery_plan: PlanningResult | None = None
 
