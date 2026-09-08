@@ -83,7 +83,14 @@ def render_profile(t: dict, side: str) -> str:
 def _prior_readings(obj: dict) -> Optional[dict]:
     """What has been read already (the Stacks send `prior_readings`: job ids, at the top of the bundle): the ledger's entries for those
     jobs and for the author, with the instruction to cite prior rows and read only what is new (the owner, 2026-09-07 18:30)."""
-    ids = [x for x in (obj.get("prior_readings") or []) if isinstance(x, str)]
+    hints = []
+    for item in (obj.get("prior_readings") or []):
+        if isinstance(item, str) and item.strip():
+            hints.append((item, None))
+        elif isinstance(item, dict) and isinstance(item.get("job_id"), str) and item["job_id"].strip():
+            phase = item.get("phase")
+            if phase is None or isinstance(phase, (str, int, float)):
+                hints.append((item["job_id"], str(phase) if phase is not None else None))
     author = obj.get("author") if isinstance(obj.get("author"), dict) else {}
     try:
         from src.readings.registry import prior_block, readings_for
@@ -92,12 +99,21 @@ def _prior_readings(obj: dict) -> Optional[dict]:
     try:
         block = prior_block([author.get("name")] if author.get("name") else [], []) or {"note": "", "readings": []}
         seen = {(e["job_id"], e["phase"]) for e in block["readings"]}
-        for jid in ids[:12]:
+        unavailable = []
+        for jid, phase in dict.fromkeys(hints[:12]):
+            found = False
             for e in readings_for(job=jid).get("readings") or []:
+                if phase is not None and str(e["phase"]) != phase:
+                    continue
+                found = True
                 if (e["job_id"], e["phase"]) not in seen:
                     block["readings"].append({**e, "about": jid}); seen.add((e["job_id"], e["phase"]))
-        if not block["readings"]:
+            if not found:
+                unavailable.append({"job_id": jid, "phase": phase})
+        if not block["readings"] and not unavailable:
             return None
+        if unavailable:
+            block["unavailable"] = unavailable
         block["note"] = "readings already made about this author and by the runs named: read them (GET /v1/readings?job=<job_id>) before reading the texts again; cite their rows by job and id; read only what is new"
         block["readings"] = sorted(block["readings"], key=lambda e: e.get("when", ""), reverse=True)[:16]
         return block
