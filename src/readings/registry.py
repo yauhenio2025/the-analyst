@@ -193,7 +193,7 @@ def save_reading(reading: dict, *, strict: bool = False) -> None:
         return
     # External imports acknowledge durable reading/index writes together. Serialise
     # their read/modify/write operations so concurrent receipts do not lose entries.
-    from src.dossier.blob_store import _bin, ensure_table
+    from src.dossier.blob_store import _bin, decode_blob_data, encode_blob_data, ensure_table
     from src.executor.db import _is_postgres, get_connection
     ensure_table()
     postgres = _is_postgres()
@@ -209,11 +209,12 @@ def save_reading(reading: dict, *, strict: bool = False) -> None:
                 cursor.execute(sql if postgres else sql.replace("%s", "?"), values)
 
             def get(key):
-                run("SELECT data FROM dossier_blobs WHERE blob_key=%s", (key,))
+                run("SELECT mime,data FROM dossier_blobs WHERE blob_key=%s", (key,))
                 row = cursor.fetchone()
-                return bytes(row[0]) if row else None
+                return decode_blob_data(row[0], row[1]) if row else None
 
             def put(key, mime, data):
+                data = encode_blob_data(mime, data)
                 run("INSERT INTO dossier_blobs (blob_key,mime,size,data,created_at) VALUES (%s,%s,%s,%s,%s) "
                     "ON CONFLICT (blob_key) DO UPDATE SET mime=EXCLUDED.mime,size=EXCLUDED.size,"
                     "data=EXCLUDED.data,created_at=EXCLUDED.created_at",

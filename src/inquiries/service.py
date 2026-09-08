@@ -37,10 +37,10 @@ def _get(key: str) -> dict | None:
 
 def _put_once(key: str, value: dict) -> dict:
     """Database uniqueness arbitrates retries, including concurrent imports."""
-    from src.dossier.blob_store import _bin, ensure_table
+    from src.dossier.blob_store import _bin, encode_blob_data, ensure_table
     from src.executor.db import execute
     ensure_table()
-    raw = encoded(value)
+    raw = encode_blob_data("application/json", encoded(value))
     execute("INSERT INTO dossier_blobs (blob_key,mime,size,data,created_at) VALUES (%s,%s,%s,%s,%s) "
             "ON CONFLICT (blob_key) DO NOTHING", (key, "application/json", len(raw), _bin(raw), now()))
     saved = _get(key)

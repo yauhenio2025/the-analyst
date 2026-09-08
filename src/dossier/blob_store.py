@@ -44,8 +44,8 @@ def _bin(data: bytes):
     return data
 
 
-def put_blob(key: str, mime: str, data: bytes) -> None:
-    ensure_table()
+def encode_blob_data(mime: Optional[str], data: bytes) -> bytes:
+    """Encode stored bytes consistently, including writes inside callers' transactions."""
     # Large JSON checkpoints become hex bytea literals under psycopg2. A 9.5 MB
     # investigation write was running when the production database backend was
     # killed. Compress before SQL adaptation; callers still
@@ -54,6 +54,24 @@ def put_blob(key: str, mime: str, data: bytes) -> None:
         compressed = _JSON_GZIP_PREFIX + gzip.compress(data, compresslevel=3, mtime=0)
         if len(compressed) < len(data):
             data = compressed
+    return data
+
+
+def decode_blob_data(mime: Optional[str], data: bytes | memoryview | str) -> bytes:
+    """Restore original bytes; damaged compressed records fail instead of becoming empty data."""
+    if isinstance(data, memoryview):
+        data = data.tobytes()
+    elif isinstance(data, str):
+        data = data.encode("latin-1")
+    data = bytes(data)
+    if (mime or "").split(";", 1)[0].strip() == "application/json" and data.startswith(_JSON_GZIP_PREFIX):
+        data = gzip.decompress(data[len(_JSON_GZIP_PREFIX):])
+    return data
+
+
+def put_blob(key: str, mime: str, data: bytes) -> None:
+    ensure_table()
+    data = encode_blob_data(mime, data)
     execute(
         "INSERT INTO dossier_blobs (blob_key, mime, size, data, created_at) VALUES (%s, %s, %s, %s, %s)"
         " ON CONFLICT (blob_key) DO UPDATE SET mime = EXCLUDED.mime, size = EXCLUDED.size,"
@@ -77,16 +95,8 @@ def get_blob(key: str) -> Optional[tuple[str, bytes]]:
     row = execute("SELECT mime, data FROM dossier_blobs WHERE blob_key = %s", (key,), fetch="one")
     if not row:
         return None
-    data = row["data"]
-    if isinstance(data, memoryview):
-        data = data.tobytes()
-    elif isinstance(data, str):
-        data = data.encode("latin-1")
-    data = bytes(data)
     mime = row.get("mime") or "application/octet-stream"
-    if mime.split(";", 1)[0].strip() == "application/json" and data.startswith(_JSON_GZIP_PREFIX):
-        data = gzip.decompress(data[len(_JSON_GZIP_PREFIX):])
-    return (mime, data)
+    return (mime, decode_blob_data(mime, row["data"]))
 
 
 def has_blob(key: str) -> bool:
