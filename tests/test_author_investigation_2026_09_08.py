@@ -346,3 +346,47 @@ def test_explicit_zero_cap_refuses_all_paid_work():
         run_investigation(packet, bodies, call=lambda *a, **kw: pytest.fail('zero cap cannot call a model'),
                           save=lambda s: snapshots.append(copy.deepcopy(s)), spend_cap_usd=0)
     assert snapshots[-1]['cost_usd'] == 0 and not snapshots[-1]['calls']
+
+
+@pytest.mark.parametrize('finding_id', ['F1', 'E1.F1'])
+def test_real_engine_finding_ids_validate_and_saved_memo_resumes_without_another_call(finding_id):
+    """The real first run returned F1..Fn, the generic runner's canonical IDs."""
+    _, packet, _, bodies = fixture()
+    original = fake_engine([])
+    def call(key, sources, **kw):
+        result = original(key, sources, **kw)
+        if key.endswith('_read'):
+            for row in result['rows']:
+                if row['dim'] == 'evidence':
+                    row['id'] = finding_id
+        if key.endswith('_memo'):
+            result['prose'] = f'Riley gives organization a political role [em:AAAAAAA1/{finding_id}].'
+        return result
+    state = run_investigation(packet, bodies, call=call, save=lambda s: None)
+    expected = f'em:AAAAAAA1/{finding_id}'
+    assert state['evidence'][0]['citation_id'] == expected
+    assert state['memo_validation']['references'] == [expected]
+    assert state['memo_validation']['supported'] and state['complete']
+    # Emulate the already-paid draft left behind by the former over-narrow validator.
+    state.update(complete=False, paused_reason='memo_citation_validation', current_stage='memo_validation')
+    state['stages'].remove('done')
+    cost = state['cost_usd']
+    resumed = run_investigation(packet, bodies, state=state,
+                               call=lambda *a, **kw: pytest.fail('saved source readings and memo must not be billed again'),
+                               save=lambda s: None)
+    assert resumed['complete'] and resumed['paused_reason'] is None and resumed['cost_usd'] == cost
+
+
+def test_unknown_bare_finding_ids_remain_unverified():
+    _, packet, _, bodies = fixture()
+    original = fake_engine([])
+    snapshots = []
+    def call(key, sources, **kw):
+        result = original(key, sources, **kw)
+        if key.endswith('_memo'):
+            result['prose'] = 'An unsupported claim [em:AAAAAAA1/F99].'
+        return result
+    with pytest.raises(ValueError, match='memo references'):
+        run_investigation(packet, bodies, call=call, save=lambda s: snapshots.append(copy.deepcopy(s)))
+    assert snapshots[-1]['memo_validation']['unsupported_memo_citations'] == ['em:AAAAAAA1/F99']
+    assert not snapshots[-1]['complete']

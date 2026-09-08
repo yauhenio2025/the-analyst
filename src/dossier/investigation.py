@@ -444,7 +444,7 @@ def run_investigation(packet: dict, bodies: dict, *, call: Callable, save: Calla
                    "citation_paths": state["citation_paths"][:150],
                    "citation_paths_supplied": min(150, len(state["citation_paths"])), "citation_paths_total": len(state["citation_paths"])})
     prose = memo.get("prose") or memo.get("final_output", "")
-    references = re.findall(r"\[([^\[\]\s]+/[A-Z]\d+\.F\d+)\]", prose)
+    references = re.findall(r"\[([^\[\]\s]+/(?:[A-Z]\d+\.)?F\d+)\]", prose)
     verified_ids = {e["citation_id"] for e in evidence if e["quote_verified"]}
     unsupported = sorted(set(references) - verified_ids)
     missing_refs = bool(verified_ids) and not references
@@ -455,7 +455,7 @@ def run_investigation(packet: dict, bodies: dict, *, call: Callable, save: Calla
                    complete=False, paused_reason="memo_citation_validation")
         raise ValueError("memo references unknown or unverified evidence, or omits evidence citations; its draft and research were retained")
     checkpoint("done", memo=prose, memo_rows=memo.get("rows", []), memo_validation=validation,
-               complete=True, running_stage=None)
+               complete=True, running_stage=None, paused_reason=None)
     return state
 
 
