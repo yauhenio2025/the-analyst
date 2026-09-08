@@ -65,4 +65,29 @@ Validation is deterministic with isolated SQLite and mocked execution. It covers
 initial construction, returned retest, malformed/unknown references, wrong-source
 and invented quotations, stale input, missing methods, frozen method revisions,
 concurrent conflicting completions, index-repair retries and immutable feedback.
-No external model spend, live data writes, push or deployment is part of this build.
+These deterministic checks make no model calls and use isolated test state.
+
+The subsequent local subscription smoke completed both the initial inquiry and a returned
+retest through the real central validation and receipt paths. Whitespace counts over the
+returned JSON were 3,471 words initially and 7,528 in the retest, despite the synthetic
+case material consisting of two one-sentence sources. The readings repeatedly restated
+provenance and caveats across fields. These counts include JSON field names and other
+structural text; they are not a measurement of original narrative alone. Both completions
+returned 200; the source wall matched three and five quotations respectively, with no
+failed anchors. Those checks establish transport and quote-presence behavior, not the
+intellectual quality of the accounts.
+
+This evidence prompted presentation tuning in the two central operationalizations'
+framing and synthesis briefs. They now guide the writer toward 60-90-word summaries,
+compact account/derivation/mechanism/scope fields, an outcome explanation around 150
+words, and about 1,200-1,800 words of original narrative overall, with much less for
+short material. These are contextual writing guides, not quotas, hard truncation or
+semantic validation. Distinct evidence, contrary readings and inferential limits remain
+required; general caveats belong once where they help the reader. The change is owned
+by the method records and applies to new preparations through their changed method
+fingerprints. The completed smoke retains its frozen earlier method.
+
+The tuned records have not yet been evaluated in a model run. A real-case evaluation
+must test whether they improve clarity while preserving source coverage, meaningful
+alternatives and the inferential detail needed to assess a construction. The synthetic
+smoke motivates this tuning; it does not establish that the new guidance achieves it.
