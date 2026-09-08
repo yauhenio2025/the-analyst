@@ -32,10 +32,11 @@ from src.dossier.schemas import (AUDIENCES, BriefChoiceRequest, CreateDossierReq
                                  DossierOptions, ENTRIES, OutputOptions, Shape, USE_KINDS)
 from src.dossier import runner
 from src.dossier.store import create_job, get_job, list_jobs, update_job
+from src.api.gzip_request import GzipRequestRoute
 
 logger = logging.getLogger(__name__)
 
-router = APIRouter(prefix="/v1/dossier", tags=["dossier"])
+router = APIRouter(prefix="/v1/dossier", tags=["dossier"], route_class=GzipRequestRoute)
 
 
 @router.get("/health")
