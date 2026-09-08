@@ -26,6 +26,7 @@ from src.api.routes import events as events_routes
 from src.api.routes import organs as organs_routes
 from src.api.routes import story as story_routes
 from src.api.routes import trajectory as trajectory_routes
+from src.api.routes import inquiries as inquiries_routes
 from src.audiences.registry import get_audience_registry
 from src.chains.registry import get_chain_registry
 from src.engines.registry import get_engine_registry
@@ -311,6 +312,7 @@ app.include_router(vocabularies.router, prefix="/v1")
 app.include_router(practices_routes.router, prefix="/v1")
 app.include_router(actions_routes.router, prefix="/v1")
 app.include_router(trajectory_routes.router, prefix="/v1")   # the register and the narrative (2026-09-07)
+app.include_router(inquiries_routes.router, prefix="/v1")
 app.include_router(exhibits_routes.router, prefix="/v1")
 app.include_router(transformations.router, prefix="/v1")
 app.include_router(operations.router)

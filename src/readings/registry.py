@@ -184,22 +184,26 @@ def _entry(reading: dict) -> dict:
             "cost_usd": reading.get("cost_usd"), "renders": reading["renders"], "intent": reading.get("intent", "")}
 
 
-def save_reading(reading: dict) -> None:
+def save_reading(reading: dict, *, strict: bool = False) -> None:
     """The reading itself, and its entry on every person's and text's index (replacing an earlier entry for the same job and phase)."""
-    _put(f"reading:{reading['job_id']}:{reading['phase']}", "application/json", json.dumps(reading, ensure_ascii=False).encode("utf-8"))
+    put = _put
+    if strict:
+        from src.dossier.blob_store import put_blob
+        put = put_blob
+    put(f"reading:{reading['job_id']}:{reading['phase']}", "application/json", json.dumps(reading, ensure_ascii=False).encode("utf-8"))
     entry = _entry(reading)
     for kind, values in (("person", reading["persons"]), ("text", reading["texts"])):
         for v in values:
             key = _index_key(kind, v)
             lst = [e for e in _load_list(key) if not (e["job_id"] == entry["job_id"] and e["phase"] == entry["phase"])]
             lst.append({**entry, "name": v} if kind == "person" else entry)
-            _put(key, "application/json", json.dumps(lst[-400:], ensure_ascii=False).encode("utf-8"))
+            put(key, "application/json", json.dumps(lst[-400:], ensure_ascii=False).encode("utf-8"))
     for v in reading["persons"]:
         sk = f"readings:surname:{surname(v)}"
         lst = [e for e in _load_list(sk) if not (e["job_id"] == entry["job_id"] and e["phase"] == entry["phase"] and e.get("name") == v)]
-        lst.append({**entry, "name": v}); _put(sk, "application/json", json.dumps(lst[-400:], ensure_ascii=False).encode("utf-8"))
+        lst.append({**entry, "name": v}); put(sk, "application/json", json.dumps(lst[-400:], ensure_ascii=False).encode("utf-8"))
     jobs = [e for e in _load_list(f"readings:job:{reading['job_id']}") if e["phase"] != entry["phase"]] + [entry]
-    _put(f"readings:job:{reading['job_id']}", "application/json", json.dumps(jobs, ensure_ascii=False).encode("utf-8"))
+    put(f"readings:job:{reading['job_id']}", "application/json", json.dumps(jobs, ensure_ascii=False).encode("utf-8"))
 
 
 def index_job(job: dict, only_phases: Optional[Iterable[str]] = None) -> list[dict]:
