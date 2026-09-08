@@ -291,7 +291,7 @@ def test_parent_investigation_keeps_reviewed_baseline_and_existing_lineage():
     assert state['mode']=='follow_up'
 
 
-def test_many_field_evidence_rows_fit_downstream_without_discarding_support_ids():
+def test_many_field_evidence_rows_stop_before_final_call_without_discarding_quotes():
     _,packet,_,bodies=fixture(field_count=46,primary_count=115)
     base=fake([])
     def engine(key,sources,**kwargs):
@@ -301,12 +301,18 @@ def test_many_field_evidence_rows_fit_downstream_without_discarding_support_ids(
             result['rows']=[{**copy.deepcopy(original),'id':f'E1.F{i+1}',
                             'finding':('Evidence-led account of worker action, organization and political alliances in its historical and institutional setting. '+'Specific source-qualified implications. '*4)} for i in range(24)]
         return result
-    state=run_field_investigation(packet,bodies,call=engine,save=lambda s:None,spend_cap_usd=100)
-    assert state['complete'] and len([e for e in state['evidence'] if e['source_role']=='field'])==1104
+    saves=[]
+    with pytest.raises(ValueError,match='adjudication input is'):
+        run_field_investigation(packet,bodies,call=engine,save=lambda s:saves.append(copy.deepcopy(s)),spend_cap_usd=100)
+    state=saves[-1]
+    assert not state['complete'] and state['paused_reason']=='input_limit' and state['running_stage'] is None
+    field=[e for e in state['evidence'] if e['source_role']=='field']
+    assert len(field)==1104 and all(e['source_quote'] and e['finding'] for e in field)
     manifests=state['call_input_manifests']
     assert any(m['evidence_representation']=='field_reference_index_and_primary_quotations' for m in manifests.values())
-    assert len(manifests['memo']['evidence_ids'])==1106
-    assert all(m['chars']<640000 for m in manifests.values())
+    assert len(manifests['adjudication']['evidence_ids'])==1106
+    assert manifests['adjudication']['evidence_representation']=='verified_quotations'
+    assert manifests['adjudication']['chars']>640000 and 'adjudication' not in state['calls']
 
 
 def test_final_reconciliation_decisions_control_reads_and_caps_are_disclosed():

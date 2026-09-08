@@ -174,9 +174,12 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
         if remaining <= 0:
             checkpoint(stage, paused_reason="spend_cap")
             raise ValueError("investigation spend cap reached; completed artifacts were saved")
+        from src.dossier.context_packing import input_hash, pack_final_context
+        sources, upstream, packing = pack_final_context(stage, sources, upstream, packet_sha256=fingerprint)
         chars = sum(len(s.text) for s in sources) + len(_json(upstream))
         representation = "verified_quotations"
-        if chars > 520000 and isinstance(upstream.get("evidence"), list):
+        final_stage = stage.split(":", 1)[0] in ("adjudication", "memo")
+        if not final_stage and chars > 520000 and isinstance(upstream.get("evidence"), list):
             # The argument maps already state the field claims with original
             # support IDs. At the context limit, retain every such ID and its
             # verified role instead of repeating the same field quotations.
@@ -191,10 +194,17 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
         state.setdefault("call_input_manifests", {})[stage] = {
             "chars": chars, "evidence_representation": representation,
             "evidence_ids": [e["citation_id"] for e in upstream.get("evidence", [])]}
+        if packing:
+            # Full omitted metadata and exact input/text hashes remain durable.
+            # Final-stage cited quotes stay protected even if the guard stops.
+            packing.update(final_chars=chars, final_input_sha256=input_hash(sources, upstream),
+                           field_reference_fallback_applied=representation != "verified_quotations",
+                           all_evidence_quotes_and_findings_retained=representation == "verified_quotations")
+            state["call_input_manifests"][stage]["packing"] = packing
         if chars > 640000:
             checkpoint(stage, paused_reason="input_limit", complete=False)
             raise ValueError(f"{stage} input is {chars:,} characters after evidence packing; "
-                             "all completed research retained; narrower primary context is required")
+                             "all completed research retained; additional source-preserving compaction is required")
         checkpoint(stage, running_stage=stage)
         result = call(key, sources, packet=upstream, depth="surface", spend_cap_usd=remaining, max_chars=650000)
         recover_answer_rows(result)
