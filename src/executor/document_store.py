@@ -18,6 +18,8 @@ logger = logging.getLogger(__name__)
 
 VALID_BINDING_ROLES = {"target", "prior_work", "context", "chapter"}
 _TEXT_ENCODING = "json-gzip-base64-v1"
+_TEXT_BLOB_ENCODING = "blob-json-v1"
+_INLINE_TEXT_BYTES = 512 * 1024
 
 
 def _encode_document_text(text: str) -> tuple[str, str]:
@@ -31,10 +33,22 @@ def _encode_document_text(text: str) -> tuple[str, str]:
     return (encoded, _TEXT_ENCODING) if len(encoded) < len(text.encode("utf-8")) else (text, "")
 
 
-def decode_document_text(text: str, encoding: Optional[str] = "") -> str:
+def decode_document_text(text: str, encoding: Optional[str] = "", *, cursor=None) -> str:
     """Decode only explicitly marked rows; existing literal source text stays literal."""
     if not encoding:
         return text
+    if encoding == _TEXT_BLOB_ENCODING:
+        from src.dossier.blob_store import get_blob, get_blob_in_cursor
+        # Migration already owns a transaction (including schema locks). Its
+        # blob reference proves storage exists; never initialize it or acquire
+        # another connection while backfilling the document's source hash.
+        found = get_blob_in_cursor(cursor, text) if cursor is not None else get_blob(text)
+        if found is None:
+            raise ValueError("compressed executor document blob is missing")
+        capsule = json.loads(found[1])
+        if not isinstance(capsule, dict) or not isinstance(capsule.get("text"), str):
+            raise ValueError("executor document blob does not contain source text")
+        return capsule["text"]
     if encoding != _TEXT_ENCODING:
         raise ValueError(f"unsupported executor document encoding: {encoding}")
     from src.dossier.blob_store import decode_blob_data
@@ -90,6 +104,12 @@ def _store_document_with_cursor(
     char_count = len(text)
     content_hash = compute_content_hash(text)
     stored_text, text_encoding = _encode_document_text(text)
+    if len(stored_text.encode("utf-8")) > _INLINE_TEXT_BYTES:
+        from src.dossier.blob_store import put_blob_in_cursor
+        stored_text = f"executor-document:{content_hash}"
+        text_encoding = _TEXT_BLOB_ENCODING
+        capsule = json.dumps({"text": text}, ensure_ascii=False, separators=(",", ":")).encode()
+        put_blob_in_cursor(cursor, stored_text, "application/json", capsule, overwrite=False)
     cursor.execute(
         _adapt_sql(
             """INSERT INTO executor_documents
@@ -111,6 +131,8 @@ def store_document(
 ) -> str:
     """Store a document text. Returns the doc_id."""
     init_db()
+    from src.dossier.blob_store import ensure_table
+    ensure_table()
     with get_connection() as conn:
         cursor = conn.cursor()
         doc_id = _store_document_with_cursor(
@@ -212,6 +234,8 @@ def sync_external_documents(
 ) -> list[dict[str, str]]:
     """Atomically sync a consumer-owned document inventory into analyzer-v2."""
     init_db()
+    from src.dossier.blob_store import ensure_table
+    ensure_table()
     if not consumer_key:
         raise ValueError("consumer_key is required")
     if not external_project_id:

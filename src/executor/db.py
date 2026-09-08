@@ -383,7 +383,7 @@ def _migrate_postgres():
             rows = cursor.fetchall()
             for row in rows:
                 from src.executor.document_store import decode_document_text
-                doc_id, text = row[0], decode_document_text(row[1] or "", row[2])
+                doc_id, text = row[0], decode_document_text(row[1] or "", row[2], cursor=cursor)
                 cursor.execute(
                     "UPDATE executor_documents SET content_hash = %s WHERE doc_id = %s",
                     (hashlib.sha256(text.encode("utf-8")).hexdigest(), doc_id),
@@ -530,7 +530,7 @@ def _migrate_sqlite():
             rows = cursor.fetchall()
             for doc_id, text, encoding in rows:
                 from src.executor.document_store import decode_document_text
-                text = decode_document_text(text or "", encoding)
+                text = decode_document_text(text or "", encoding, cursor=cursor)
                 cursor.execute(
                     "UPDATE executor_documents SET content_hash = ? WHERE doc_id = ?",
                     (hashlib.sha256((text or "").encode("utf-8")).hexdigest(), doc_id),
