@@ -6,23 +6,23 @@ import json
 import pytest
 
 from src.dossier import blob_store
+from src.executor import db
 
 
 @pytest.fixture
-def blobs(monkeypatch):
-    rows = {}
-    monkeypatch.setattr(blob_store, 'ensure_table', lambda: None)
-    monkeypatch.setattr(blob_store, '_bin', lambda data: data)
-    def execute(sql, params=(), fetch='none'):
-        if sql.startswith('INSERT'):
-            key, mime, size, data, created = params
-            rows[key] = {'mime': mime, 'size': size, 'data': data}
-        elif sql.startswith('SELECT'):
-            return rows.get(params[0])
-        else:
-            pytest.fail('unexpected storage query')
-    monkeypatch.setattr(blob_store, 'execute', execute)
-    return rows
+def blobs(monkeypatch, tmp_path):
+    monkeypatch.setattr(db, 'DATABASE_URL', '')
+    monkeypatch.setattr(db, 'SQLITE_PATH', tmp_path / 'blobs.sqlite')
+    monkeypatch.setattr(blob_store, '_ready', False)
+    blob_store.ensure_table()
+    class Rows:
+        def __getitem__(self, key):
+            return db.execute('SELECT mime,size,data FROM dossier_blobs WHERE blob_key=%s', (key,), fetch='one')
+
+        def __setitem__(self, key, row):
+            db.execute('INSERT INTO dossier_blobs(blob_key,mime,size,data) VALUES(%s,%s,%s,%s)',
+                       (key, row['mime'], len(row['data']), row['data']))
+    return Rows()
 
 
 def test_large_json_is_compressed_before_database_adaptation_and_restored_exactly(blobs):
@@ -41,7 +41,8 @@ def test_legacy_json_and_binary_blobs_still_round_trip(blobs):
     for key, mime, data in [('legacy', 'application/json', b'{"saved":"before compression"}'),
                              ('image', 'image/png', b'\x89PNG' + b'x' * 600000),
                              ('existing-gzip', 'application/octet-stream', gzip.compress(b'raw gzip asset'))]:
-        blob_store.put_blob(key, mime, data)
+        # Insert the pre-chunking physical format directly to test old records.
+        blobs[key] = {'mime': mime, 'data': data}
         assert blobs[key]['data'] == data
         assert blob_store.get_blob(key) == (mime, data)
     assert blob_store.get_blob('missing') is None
@@ -51,6 +52,7 @@ def test_existing_compressed_memoryview_and_file_restore_keep_original_bytes(blo
     raw = b'{"quote":"preserved whitespace\\n"}'
     blobs['legacy-compressed'] = {'mime': 'application/json',
                                   'data': memoryview(blob_store._JSON_GZIP_PREFIX + gzip.compress(raw))}
+    assert blob_store.decode_blob_data('application/json', memoryview(blobs['legacy-compressed']['data'])) == raw
     assert blob_store.get_blob('legacy-compressed') == ('application/json', raw)
     target = tmp_path / 'restored.json'
     assert blob_store.ensure_file(target, 'legacy-compressed')
