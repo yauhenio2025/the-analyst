@@ -16,6 +16,16 @@ def expand_field_investigation(text: str) -> list[Document]:
         raise ValueError("field_investigation requires author.id")
     packet = deepcopy(packet)
     packet["kind"] = "field_investigation"
+    parent = packet.get("parent_investigation")
+    if parent is not None:
+        if not isinstance(parent, dict):
+            raise ValueError("parent_investigation must be a sourced prior investigation object")
+        priors = packet.get("prior_investigations") or []
+        if isinstance(priors, dict):
+            priors = [priors]
+        if not isinstance(priors, list):
+            raise ValueError("prior_investigations must be a list or object")
+        packet["prior_investigations"] = [parent] + [p for p in priors if p != parent]
     docs, seen = [], set()
     for role in ("primary", "field", "secondary"):
         rows = packet.setdefault(role, [])

@@ -24,7 +24,12 @@ problematique: 'Investigate a bilateral question between a named thinker and a t
   every conclusion. Method interpretation is not mechanically verified by a citation
   match. If validation_errors and a previous_draft are supplied, reconsider the identified
   unsupported claims against the same evidence and return a complete corrected output;
-  preserve uncertainty and never manufacture support identities or quotations.'
+  preserve uncertainty and never manufacture support identities or quotations. When
+  field_evidence_representation is reference_index_to_supplied_argument_maps, the
+  complete original field support identities are retained while quotations live in
+  the durable source readings. Use only claims and meanings present in the supplied
+  argument maps; do not infer new details from an evidence identity. Evidence selection
+  or compression never licenses an absence claim.'
 researcher_question: Map disagreements across field arguments
 intellectual_lineage:
   primary: source_criticism

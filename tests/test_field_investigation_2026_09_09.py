@@ -278,3 +278,66 @@ def test_support_repair_keeps_paid_draft_and_resumes_without_repeating_it():
     assert state['calls']['memo']['rows'][0]['fields']['claim_kind']=='thinker_position'
     assert state['memo_rows'][0]['fields']['claim_kind']=='comparison'
     run_field_investigation(packet,bodies,call=lambda *a,**k:pytest.fail('no repeated repair'),save=lambda s:None,state=state)
+
+
+def test_parent_investigation_keeps_reviewed_baseline_and_existing_lineage():
+    raw,_,_,_=fixture(prior=False)
+    raw['parent_investigation']={'job_id':'parent','memo':'Reviewed memo','reviews':[{'quote':'A separately verified contrary passage.'}]}
+    raw['prior_investigations']=[{'job_id':'older','memo':'Earlier lineage'}]
+    _,packet,_,bodies=freeze(raw)
+    assert packet['parent_investigation']==raw['parent_investigation']
+    assert packet['prior_investigations'][0]['job_id']=='parent' and len(packet['prior_investigations'])==2
+    state=run_field_investigation(packet,bodies,call=fake([]),save=lambda s:None)
+    assert state['mode']=='follow_up'
+
+
+def test_many_field_evidence_rows_fit_downstream_without_discarding_support_ids():
+    _,packet,_,bodies=fixture(field_count=46,primary_count=115)
+    base=fake([])
+    def engine(key,sources,**kwargs):
+        result=base(key,sources,**kwargs)
+        if key.endswith('_field_read'):
+            original=result['rows'][0]
+            result['rows']=[{**copy.deepcopy(original),'id':f'E1.F{i+1}',
+                            'finding':('Evidence-led account of worker action, organization and political alliances in its historical and institutional setting. '+'Specific source-qualified implications. '*4)} for i in range(24)]
+        return result
+    state=run_field_investigation(packet,bodies,call=engine,save=lambda s:None,spend_cap_usd=100)
+    assert state['complete'] and len([e for e in state['evidence'] if e['source_role']=='field'])==1104
+    manifests=state['call_input_manifests']
+    assert any(m['evidence_representation']=='field_reference_index_and_primary_quotations' for m in manifests.values())
+    assert len(manifests['memo']['evidence_ids'])==1106
+    assert all(m['chars']<640000 for m in manifests.values())
+
+
+def test_final_reconciliation_decisions_control_reads_and_caps_are_disclosed():
+    _,packet,_,bodies=fixture(primary_count=3)
+    base=fake([])
+    def engine(key,sources,**kwargs):
+        result=base(key,sources,**kwargs)
+        if key.endswith('_author_select') and kwargs['packet']['selection_mode']=='reconcile':
+            result['rows'].append({**row('candidate',uid='em:AUTHOR00',decision='defer',reason='Final reconciliation excludes this text'),'id':'E1.F99'})
+        return result
+    state=run_field_investigation(packet,bodies,call=engine,save=lambda s:None)
+    assert 'em:AUTHOR00' not in state['selected_primary_uids']
+    assert next(r for r in state['triage'] if r['uid']=='em:AUTHOR00')['decision']=='defer'
+    def overselect(key,sources,**kwargs):
+        result=base(key,sources,**kwargs)
+        if key.endswith('_author_select') and kwargs['packet']['selection_mode']=='reconcile':
+            result['rows'].append({**row('candidate',uid='em:AUTHOR02',decision='read',reason='Third candidate'),'id':'E1.F99'})
+        return result
+    state=run_field_investigation(packet,bodies,call=overselect,save=lambda s:None)
+    assert next(r for r in state['triage'] if r['uid']=='em:AUTHOR02')['deferred_by_cap']
+
+
+def test_field_allocation_finishes_short_articles_and_reserves_long_work_reading():
+    raw,_,_,_=fixture(field_count=3)
+    for r,size in zip(raw['field'],[90000,20000,200000]):
+        r['body']='a'*size
+        r['page_spans']=[]
+    raw['limits']['max_field_chars']=160000
+    _,packet,_,bodies=freeze(raw)
+    state=run_field_investigation(packet,bodies,call=fake([]),save=lambda s:None)
+    reads=[r for r in state['readings'] if r['source_role']=='field']
+    assert [r['reading_mode'] for r in reads]==['full','full','windows']
+    assert state['reading_allocations']['field']=={'referee:0':90000,'referee:1':20000,'referee:2':50000}
+    assert state['coverage']['field']['inspected_chars']<=160000

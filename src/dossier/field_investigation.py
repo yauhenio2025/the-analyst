@@ -83,6 +83,32 @@ def _limits(packet, inventories, bodies):
     return limits
 
 
+def _reading_allocations(rows, bodies, cap):
+    """Read short works whole when affordable, reserving room for every long work."""
+    lengths = {r["uid"]: len(bodies[r["source_key"]]) for r in rows}
+    short = {uid: n for uid, n in lengths.items() if n <= 100000}
+    long = [uid for uid in lengths if uid not in short]
+    if sum(short.values()) + 5000 * len(long) <= cap:
+        allocations = dict(short)
+        remaining = cap - sum(short.values())
+        for index, uid in enumerate(long):
+            allocations[uid] = min(100000, remaining // (len(long) - index))
+            remaining -= allocations[uid]
+        return allocations
+    allocations = {uid: min(n, 5000) for uid, n in lengths.items()}
+    remaining = cap - sum(allocations.values())
+    while remaining > 0:
+        active = [uid for uid, n in lengths.items() if allocations[uid] < min(n, 100000)]
+        if not active:
+            break
+        share = max(1, remaining // len(active))
+        for uid in active:
+            grant = min(share, remaining, min(lengths[uid], 100000) - allocations[uid])
+            allocations[uid] += grant
+            remaining -= grant
+    return allocations
+
+
 def run_field_investigation(packet, bodies, *, call, save, state=None, check=lambda: None, spend_cap_usd=8.0):
     inventories = {role: packet[role] for role in ("field", "primary")}
     # Metadata and body content must agree even on a resumed run; the hash in a
@@ -122,6 +148,27 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
         if remaining <= 0:
             checkpoint(stage, paused_reason="spend_cap")
             raise ValueError("investigation spend cap reached; completed artifacts were saved")
+        chars = sum(len(s.text) for s in sources) + len(_json(upstream))
+        representation = "verified_quotations"
+        if chars > 520000 and isinstance(upstream.get("evidence"), list):
+            # The argument maps already state the field claims with original
+            # support IDs. At the context limit, retain every such ID and its
+            # verified role instead of repeating the same field quotations.
+            # Author quotations remain present for direct thinker attribution.
+            upstream = {**upstream, "evidence": [
+                {k: e[k] for k in ("citation_id", "source_role", "quote_verified")}
+                if e["source_role"] == "field" else e for e in upstream["evidence"]],
+                "field_evidence_representation": "reference_index_to_supplied_argument_maps",
+                "full_field_evidence_retained": True}
+            representation = "field_reference_index_and_primary_quotations"
+            chars = sum(len(s.text) for s in sources) + len(_json(upstream))
+        state.setdefault("call_input_manifests", {})[stage] = {
+            "chars": chars, "evidence_representation": representation,
+            "evidence_ids": [e["citation_id"] for e in upstream.get("evidence", [])]}
+        if chars > 640000:
+            checkpoint(stage, paused_reason="input_limit", complete=False)
+            raise ValueError(f"{stage} input is {chars:,} characters after evidence packing; "
+                             "all completed research retained; narrower primary context is required")
         checkpoint(stage, running_stage=stage)
         result = call(key, sources, packet=upstream, depth="surface", spend_cap_usd=remaining, max_chars=650000)
         recover_answer_rows(result)
@@ -192,6 +239,10 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
             eligible = [by_uid[uid] for uid in selected_uids if uid in by_uid]
         if sum(min(len(bodies[r["source_key"]]), 5000) for r in eligible) > limits[role]["max_chars"]:
             raise ValueError(f"{role} cap cannot inspect every selected text")
+        if role not in state.setdefault("reading_allocations", {}):
+            state["reading_allocations"][role] = _reading_allocations(eligible, bodies, limits[role]["max_chars"])
+            checkpoint("reading_allocations")
+        allocations = state["reading_allocations"][role]
         consumed = 0
         for index, row in enumerate(eligible):
             check()
@@ -204,10 +255,10 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
             else:
                 if stage in state["calls"]:
                     raise ValueError(f"cached reading has no frozen source ranges: {key}")
-                remaining = limits[role]["max_chars"] - consumed
-                later_min = sum(min(len(bodies[r["source_key"]]), 5000) for r in eligible[index + 1:])
-                allocation = min(100000, max(5000, remaining // (len(eligible) - index)), remaining - later_min)
+                allocation = allocations[uid]
                 more_queries = _queries((guidance or {}).get("rows", []))
+                if role == "primary":
+                    more_queries += [q.strip() for q in str(_field(decisions.get(uid, {}), "queries")).split(";") if q.strip()]
                 ranges = inspected_ranges(body, search_by[uid], allocation, more_queries)
                 if not ranges:
                     raise ValueError(f"no source window allocated for selected text: {key}")
@@ -217,10 +268,13 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
             if saved and saved["body_sha256"] != row["body_sha256"]:
                 raise ValueError(f"cached reading source hash changed: {key}")
             consumed += sum(hi - lo for lo, hi in ranges)
+            if consumed > limits[role]["max_chars"]:
+                raise ValueError(f"saved {role} reading spans exceed the frozen allowance")
             metadata = {k: v for k, v in row.items() if k not in ("profile", "citations", "page_spans")}
             result = engine(stage, f"field_investigation_{'field' if role == 'field' else 'author'}_read",
                             [_spec(key, _excerpt(body, ranges), row.get("title", ""))],
                             {**common, "plan": plan.get("final_output"), "source_metadata": metadata,
+                             "selection_guidance": decisions.get(uid) if role == "primary" else None,
                              "inspected_ranges": ranges, "guidance": (guidance or {}).get("final_output", ""),
                              "page_spans": [p for p in row.get("page_spans", [])
                                             if any(p["start"] < hi and lo < p["end"] for lo, hi in ranges)]})
@@ -278,10 +332,13 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
         field_map = maps[0]
         field_validation = validate_claims(field_map.get("rows", []), state["evidence"], required=True)
     else:
+        cited_ids = {eid for m in maps for row in m.get("rows", []) for eid in _ids(_field(row, "evidence_ids"))}
         field_map, field_validation = supported_engine("field_map", "field_investigation_field_map",
                        [_spec("field-map-batches", _json([m.get("final_output") for m in maps]))],
                        {**common, "plan": plan.get("final_output"), "map_scope": "global_reconciliation",
-                        "evidence": field_evidence, "full_readings_retained": True,
+                        "evidence": [e for e in field_evidence if e["citation_id"] in cited_ids],
+                        "evidence_selection": "original support IDs cited by batch argument maps",
+                        "field_evidence_total": len(field_evidence), "full_readings_retained": True,
                         "source_catalog": [{"uid": r["uid"], "title": r.get("title")} for r in packet["field"]]})
     checkpoint("field_map", field_map=field_map, field_map_validation=field_validation)
     if not field_validation["supported"]:
@@ -324,7 +381,7 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
                                  "prior_decision": decisions[row["uid"]]} for row in packet["primary"]]))],
                             {**common, "field_map": field_map.get("final_output"), "selection_mode": "reconcile",
                              "prior_context": context, "limits": limits["primary"]})
-    selected = []
+    selection_order = []
     available = {r["uid"] for r in packet["primary"] if _eligible(r) and bodies.get(r["source_key"])}
     for r in reconciliation.get("rows", []):
         uid = str(_field(r, "uid"))
@@ -332,10 +389,14 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
         if uid in decisions and decision in ("read", "context", "defer", "unavailable"):
             decisions[uid] = {**r, "uid": uid, "decision": decision, "reason": _field(r, "reason"),
                               "prior_decision": decisions[uid]}
-            if decision == "read" and uid in available and uid not in selected:
-                selected.append(uid)
+            if uid not in selection_order:
+                selection_order.append(uid)
     # The method's global ordering defines the cap, never title or uid sorting.
-    selected = selected[:limits["primary"]["max_texts"]]
+    ordered_candidates = [uid for uid in selection_order if uid in available and decisions[uid]["decision"] == "read"]
+    selected = ordered_candidates[:limits["primary"]["max_texts"]]
+    for uid in ordered_candidates[limits["primary"]["max_texts"]:]:
+        decisions[uid] = {**decisions[uid], "decision": "defer", "deferred_by_cap": True,
+                          "model_decision": "read", "reason": "Global reading cap; " + str(decisions[uid].get("reason", ""))}
     checkpoint("author_selection", triage=list(decisions.values()), selected_primary_uids=selected,
                selection=reconciliation)
     if not selected:
@@ -357,8 +418,11 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
     for key in ("missing_uids", "excluded_uids", "unread_uids"):
         coverage[key] = sum((coverage[r][key] for r in inventories), [])
     checkpoint("coverage", coverage=coverage)
+    mapped_ids = {eid for row in field_map.get("rows", []) for eid in _ids(_field(row, "evidence_ids"))}
     research = {**common, "coverage": coverage, "field_map": field_map.get("final_output"),
-                "evidence": evidence_context(), "prior_context": context}
+                "evidence": [e for e in evidence_context() if e["source_role"] == "primary" or e["citation_id"] in mapped_ids],
+                "evidence_selection": "all primary evidence and original field support cited by the global argument map",
+                "field_evidence_total": len(field_evidence), "full_field_evidence_retained": True, "prior_context": context}
     reading_sources = [_spec("field-argument-map", field_map.get("final_output", "")),
                        _spec("primary-readings", _json(reading_context("primary")))]
     adjudication, adjudication_validation = supported_engine("adjudication", "field_investigation_adjudicate", reading_sources, research)
