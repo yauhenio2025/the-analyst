@@ -32,8 +32,10 @@ authoritative inquiry history.
 The immutable receipt ID is `inquiry-<preparation hash>`. Database uniqueness handles
 concurrent or repeated imports: the same completed result replays, a different one
 conflicts (409). Receipt durability and the reading index are acknowledged together;
-retrying repairs an interrupted index write. The source/context snapshot and method
-fingerprints remain in central reading memory, indexed under every supplied text and
+retrying repairs an interrupted index write. Strict external reading imports serialize their index
+updates inside one database transaction; feedback reads resolve immutable events so
+concurrent snapshot refreshes cannot hide a correction. Source/context snapshots and
+method fingerprints remain in central reading memory, indexed under every supplied text and
 the supplied source authors. A later method edit does not invalidate an already
 prepared reading: completion uses its frozen method. A caller that changes source,
 context or fingerprints receives 409 and must prepare a new reading.

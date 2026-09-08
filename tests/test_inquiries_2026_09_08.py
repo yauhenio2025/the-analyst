@@ -1,6 +1,7 @@
 """Exercise the worker seam without a model, HTTP service, or real application data."""
 import copy
 import hashlib
+import threading
 from concurrent.futures import ThreadPoolExecutor
 
 import pytest
@@ -234,3 +235,93 @@ def test_input_identity_changes_with_context_source_version_and_method(client, i
             variant["method"] = "constructive_retest"
             variant["context"].update(previous_result=result_data, test=result_data["tests"][0])
         assert prepared(client, variant)["prepared_id"] != first["prepared_id"]
+
+
+@pytest.mark.parametrize("previous", [{"tests": 42}, {"tests": []}, {"tests": None}])
+def test_malformed_or_incomplete_previous_result_is_validation_error(client, input_data, result_data, previous):
+    input_data["method"] = "constructive_retest"
+    input_data["context"].update(previous_result=previous, test=result_data["tests"][0])
+    assert client.post("/v1/inquiries/prepare", json=input_data).status_code == 422
+
+
+def test_a_retest_accepts_the_shaped_prior_receipt(client, input_data, result_data):
+    p = prepared(client, input_data)
+    initial = client.post("/v1/inquiries/complete", json=completion(p, input_data, result_data)).json()
+    input_data["method"] = "constructive_retest"
+    input_data["context"].update(previous_result=initial["result"], test=initial["result"]["tests"][0])
+    assert client.post("/v1/inquiries/prepare", json=input_data).status_code == 200
+
+
+def test_evidence_cannot_collide_with_construction_row_id(client, input_data, result_data):
+    p = prepared(client, input_data)
+    result_data["evidence"][0]["id"] = "proposed_account"
+    result_data["proposed_account"]["evidence_ids"] = ["proposed_account"]
+    result_data["revisions"][0]["evidence_ids"] = ["proposed_account"]
+    assert client.post("/v1/inquiries/complete", json=completion(p, input_data, result_data)).status_code == 422
+
+
+def test_concurrent_feedback_cannot_hide_author_events(client, input_data, result_data, monkeypatch):
+    p = prepared(client, input_data)
+    receipt = client.post("/v1/inquiries/complete", json=completion(p, input_data, result_data)).json()
+    paused = threading.Event()
+    proceed = threading.Event()
+    save = readings.save_reading
+
+    def out_of_order(reading, **kwargs):
+        if [e["feedback_id"] for e in reading["author_feedback"]] == ["A"]:
+            paused.set()
+            assert proceed.wait(5)
+        save(reading, **kwargs)
+
+    monkeypatch.setattr(readings, "save_reading", out_of_order)
+    url = "/v1/inquiries/receipts/" + receipt["receipt_id"] + "/feedback"
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        first = pool.submit(client.post, url, json={"feedback_id": "A", "text": "First correction"})
+        try:
+            assert paused.wait(5)
+            second = client.post(url, json={"feedback_id": "B", "text": "Second correction"})
+            assert second.status_code == 200
+        finally:
+            proceed.set()
+        assert first.result().status_code == 200
+    reading = readings.reading(receipt["reading"]["job_id"], receipt["reading"]["phase"])
+    assert {e["feedback_id"] for e in reading["author_feedback"]} == {"A", "B"}
+
+
+def test_concurrent_imports_keep_each_source_index_entry(client, input_data, result_data, monkeypatch):
+    bodies = []
+    for revision in (1, 2, 3):
+        variant = copy.deepcopy(input_data)
+        variant["context"]["revision"] = revision
+        bodies.append(completion(prepared(client, variant), variant, result_data))
+    barrier = threading.Barrier(3)
+    save = readings.save_reading
+
+    def together(*args, **kwargs):
+        barrier.wait(timeout=5)
+        save(*args, **kwargs)
+
+    monkeypatch.setattr(readings, "save_reading", together)
+    with ThreadPoolExecutor(max_workers=3) as pool:
+        responses = list(pool.map(lambda body: client.post("/v1/inquiries/complete", json=body), bodies))
+    assert [r.status_code for r in responses] == [200, 200, 200]
+    assert readings.readings_for(text="em:SOURCE1")["count"] == 3
+    assert readings.readings_for(person="Brenner")["count"] == 3
+
+
+def test_interrupted_strict_index_transaction_rolls_back_then_replays(client, input_data, result_data, monkeypatch):
+    p = prepared(client, input_data)
+    body = completion(p, input_data, result_data)
+    save = readings._save_reading
+
+    def interrupted(*args, **kwargs):
+        save(*args, **kwargs)
+        raise RuntimeError("index transaction interrupted")
+
+    monkeypatch.setattr(readings, "_save_reading", interrupted)
+    with pytest.raises(RuntimeError, match="index transaction interrupted"):
+        client.post("/v1/inquiries/complete", json=body)
+    assert readings.readings_for(text="em:SOURCE1")["count"] == 0
+    monkeypatch.setattr(readings, "_save_reading", save)
+    replay = client.post("/v1/inquiries/complete", json=body).json()
+    assert replay["replayed"] and readings.readings_for(text="em:SOURCE1")["count"] == 1

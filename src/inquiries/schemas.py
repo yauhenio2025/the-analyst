@@ -85,8 +85,15 @@ class PrepareRequest(StrictModel):
         if self.method == "constructive_retest":
             if not self.context.previous_result or not self.context.test:
                 raise ValueError("Retest requires previous_result and selected test")
-            tests = self.context.previous_result.get("tests") or []
-            selected = [t for t in tests if isinstance(t, dict) and t.get("id") == self.context.test.id]
+            previous = self.context.previous_result
+            # Stored results include code-owned quote flags; strip those for shape
+            # validation, while retaining the original supplied context snapshot.
+            if isinstance(previous.get("evidence"), list):
+                previous = {**previous, "evidence": [
+                    {k: v for k, v in e.items() if k not in ("verified", "anchor_status")} if isinstance(e, dict) else e
+                    for e in previous["evidence"]]}
+            prior = InquiryResult.model_validate(previous)
+            selected = [t.model_dump() for t in prior.tests if t.id == self.context.test.id]
             if len(selected) != 1 or selected[0] != self.context.test.model_dump():
                 raise ValueError("Selected test must match exactly one test in previous_result")
         elif self.context.test is not None or self.context.previous_result is not None:
@@ -151,6 +158,8 @@ class InquiryResult(StrictModel):
         for name in ("evidence", "new_questions", "tests", "revisions"):
             unique([entry.id for entry in getattr(self, name)], f"{name} IDs")
         evidence_ids = {e.id for e in self.evidence}
+        if "proposed_account" in evidence_ids:
+            raise ValueError("Evidence ID proposed_account is reserved for the construction row")
         for item in [self.proposed_account, *self.revisions, *([self.test_outcome] if self.test_outcome else [])]:
             if set(item.evidence_ids) - evidence_ids:
                 raise ValueError("Unknown evidence ID in result")
