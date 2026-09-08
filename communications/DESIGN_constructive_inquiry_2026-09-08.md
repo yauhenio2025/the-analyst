@@ -1,5 +1,15 @@
 # Constructive inquiry: the first portable worker seam
 
+The broader programme remains in the Stacks repository's
+`communications/RESEARCH_CAPABILITIES_ROADMAP.md`, with the original chat-derived
+recommendations, July reassessment and provenance artifacts preserved alongside it.
+The current [delivery-branch roadmap](/home/evgeny/projects/zotero-stacks-constructive-inquiry/communications/RESEARCH_CAPABILITIES_ROADMAP.md)
+links the [real research trial](/home/evgeny/projects/zotero-stacks-constructive-inquiry/communications/2026-09-08_constructive_inquiry_research_trial.md).
+The pilot does not complete that programme. In particular, initial inquiry context
+does not yet select prior oeuvre/Brief readings from central memory; retests receive
+this inquiry's own prior result and author responses. Evaluate the actual supplied
+context, and track broader memory reuse separately.
+
 The Stacks supplies selected commitments, a live question and held case texts. The
 Analyst owns `constructive_inquiry` and `constructive_retest` as ordinary capability
 and operationalization records. Their framing, questions, method cards and synthesis

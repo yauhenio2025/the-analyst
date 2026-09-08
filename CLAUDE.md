@@ -34,6 +34,8 @@ SQLite locally). The Mastermind console (a separate Next.js repo, below) reads a
 
 ## The organs and their seams
 
+- **Research capability programme:** the Stacks repository's `communications/RESEARCH_CAPABILITIES_ROADMAP.md` preserves the original chat-derived A–G recommendations and July additions. Local delivery checkout: `../zotero-stacks-constructive-inquiry`. This organ's `communications/DESIGN_constructive_inquiry_2026-09-08.md` links the current implementation and real-case trial; the first inquiry is not completion of the wider programme.
+
 - **The Stacks** (`~/projects/zotero-stacks`, local at http://127.0.0.1:8765): the library, texts, profiles, citation ledgers, bundles, memos,
   the Brief (dictation, exchange, references, distinction challenges), the oeuvre page. Sends `role: oeuvre` bundles and `role: statements`
   files (a turn or memo against the texts it cites, windowed); reads `/oeuvre`, `/distinctions`, `/encounter`, `/page`, `/readings`,
