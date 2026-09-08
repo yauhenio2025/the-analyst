@@ -573,3 +573,33 @@ def test_resume_restores_cached_readings_together_without_repeated_triage_writes
     assert [s for s in checkpoints if s[0] == 'triage'] == [('triage', 3)]
     assert [s for s in checkpoints if s[0] == 'reading'] == [('reading', 3)]
     assert all(count == 3 for _, count in checkpoints)
+
+
+@pytest.mark.parametrize('separator', ['; ', ', ', ';\n', ' '])
+def test_grouped_memo_references_validate_every_member_and_preserve_order(separator):
+    from src.dossier.investigation import validate_memo_citations
+    refs = ['em:SKA7ATR2/E1.F1', 'em:SKA7ATR2/E1.F2', 'em:OTHER123/F3']
+    evidence = [{'citation_id': ref, 'quote_verified': True} for ref in refs]
+    prose = 'Argument [' + separator.join(refs) + ']. Another point [em:SKA7ATR2/E1.F1].'
+    result = validate_memo_citations(prose, evidence)
+    assert result['supported']
+    assert result['references'] == refs + [refs[0]]
+    assert not result['unsupported_memo_citations']
+
+
+@pytest.mark.parametrize('bad_ref', ['em:UNKNOWN1/E1.F1', 'em:CCCCCCC3/E1.F1', 'em:AAAAAAA1/F99'])
+def test_unknown_or_unverified_reference_inside_group_keeps_memo_a_draft(bad_ref):
+    _, packet, _, bodies = fixture()
+    base = fake_engine([])
+    snapshots = []
+    def call(key, sources, **kwargs):
+        result = base(key, sources, **kwargs)
+        if key.endswith('_memo'):
+            result['prose'] = f'A claim [em:AAAAAAA1/E1.F1; {bad_ref}].'
+        return result
+    with pytest.raises(ValueError, match='memo references'):
+        run_investigation(packet, bodies, call=call, save=lambda s: snapshots.append(copy.deepcopy(s)))
+    result = snapshots[-1]
+    assert not result['complete']
+    assert result['memo_validation']['references'] == ['em:AAAAAAA1/E1.F1', bad_ref]
+    assert result['memo_validation']['unsupported_memo_citations'] == [bad_ref]

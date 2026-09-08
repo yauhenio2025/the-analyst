@@ -183,6 +183,18 @@ def quote_span(quote, body, ranges):
     return None
 
 
+def validate_memo_citations(prose, evidence):
+    """Validate every UID/finding ID, including multiple IDs in one bracket."""
+    references = [token for group in re.findall(r"\[([^\[\]]+)\]", prose)
+                  for token in re.split(r"[\s,;]+", group.strip())
+                  if re.fullmatch(r"[^/\s,;]+/(?:[A-Z]\d+\.)?F\d+", token)]
+    verified_ids = {e["citation_id"] for e in evidence if e["quote_verified"]}
+    unsupported = sorted(set(references) - verified_ids)
+    missing_refs = bool(verified_ids) and not references
+    return {"supported": not unsupported and not missing_refs, "references": references,
+            "unsupported_memo_citations": unsupported, "missing_evidence_citations": missing_refs}
+
+
 def _legacy_read_inputs(state, primary, bodies, search_by, candidates, max_texts, max_chars):
     """Replay the old deterministic queue solely to recover already-paid source spans.
 
@@ -634,12 +646,7 @@ def run_investigation(packet: dict, bodies: dict, *, call: Callable, save: Calla
                    "citation_paths": memo_paths, "full_citation_path_metadata_retained": True,
                    "citation_paths_supplied": min(150, len(state["citation_paths"])), "citation_paths_total": len(state["citation_paths"])})
     prose = memo.get("prose") or memo.get("final_output", "")
-    references = re.findall(r"\[([^\[\]\s]+/(?:[A-Z]\d+\.)?F\d+)\]", prose)
-    verified_ids = {e["citation_id"] for e in evidence if e["quote_verified"]}
-    unsupported = sorted(set(references) - verified_ids)
-    missing_refs = bool(verified_ids) and not references
-    validation = {"supported": not unsupported and not missing_refs, "references": references,
-                  "unsupported_memo_citations": unsupported, "missing_evidence_citations": missing_refs}
+    validation = validate_memo_citations(prose, evidence)
     if not validation["supported"]:
         checkpoint("memo_validation", memo=prose, memo_rows=memo.get("rows", []), memo_validation=validation,
                    complete=False, paused_reason="memo_citation_validation")
