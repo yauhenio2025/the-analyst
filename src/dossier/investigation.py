@@ -168,7 +168,7 @@ def _excerpt(body, ranges):
 
 
 def quote_span(quote, body, ranges):
-    """Only whitespace may differ; return offsets in an actually inspected window."""
+    """Allow whitespace and PDF line-wrap hyphens within one inspected window."""
     if not quote or not quote.strip():
         return None
     for lo, hi in ranges:
@@ -180,6 +180,22 @@ def quote_span(quote, body, ranges):
         match = pattern.search(body, lo, hi)
         if match:
             return match.start(), match.end(), "whitespace_only"
+    # Search the original text so offsets include every removed wrap character.
+    # A wrap must follow a letter and continue with a lowercase letter after
+    # exactly one line ending. Never consume inline hyphens or blank lines.
+    words = []
+    for word in quote.split():
+        parts = []
+        for index, char in enumerate(word):
+            if index and word[index - 1].isalpha() and char.isalpha() and char.islower():
+                parts.append(r"(?:-(?:\r\n|\r|\n)[ \t]*)?")
+            parts.append(re.escape(char))
+        words.append("".join(parts))
+    pattern = re.compile(r"\s+".join(words))
+    for lo, hi in ranges:
+        match = pattern.search(body, lo, hi)
+        if match:
+            return match.start(), match.end(), "line_hyphenation"
     return None
 
 
