@@ -390,3 +390,57 @@ def test_unknown_bare_finding_ids_remain_unverified():
         run_investigation(packet, bodies, call=call, save=lambda s: snapshots.append(copy.deepcopy(s)))
     assert snapshots[-1]['memo_validation']['unsupported_memo_citations'] == ['em:AAAAAAA1/F99']
     assert not snapshots[-1]['complete']
+
+
+def test_method_shaped_rows_before_final_generic_ledger_are_recovered():
+    from src.dossier.investigation import recover_answer_rows
+    from src.executor.context_broker import split_ledger
+    output = '''## Inventory decisions
+- [T1.F1] Read the organizing argument — dim: candidate — uid: em:AAAAAAA1 — decision: read — priority: 1 — reason: Direct organizing evidence — queries: organizing; unions — anchor: "Worker organizing" — doc: inventory-batch — confidence: high
+
+## Verified Findings Ledger
+- [F1] Organization matters — dim: candidate — anchor: "Worker organizing" — doc: inventory-batch — confidence: high
+'''
+    # This is the real failure shape: the later generic ledger drops uid/decision.
+    assert 'decision: read' not in split_ledger(output)[1]
+    result = {'final_output': output, 'rows': [{'id': 'F1', 'doc': 'inventory-batch', 'dim': 'candidate',
+                                               'fields': {'confidence': 'high'}, 'anchor': 'Worker organizing'}]}
+    rows = recover_answer_rows(result)
+    selected = next(r for r in rows if r['id'] == 'T1.F1')
+    assert selected['fields']['uid'] == 'em:AAAAAAA1' and selected['fields']['decision'] == 'read'
+    assert selected['anchor_verified'] is False  # recovering shape is not verifying a primary quote
+    assert len(result['original_rows']) == 1 and len(result['rows']) == 2
+    unchanged = copy.deepcopy(result)
+    recover_answer_rows(result)
+    assert result == unchanged
+
+
+def test_cached_split_triage_rows_recover_without_paid_replay_and_source_identity_is_sufficient():
+    _, packet, _, bodies = fixture()
+    calls, snapshots = [], []
+    original = fake_engine(calls)
+    def split_call(key, sources, **kwargs):
+        result = original(key, sources, **kwargs)
+        if key.endswith('_triage'):
+            decision_rows = result['rows']
+            lines = []
+            for i, row in enumerate(decision_rows, 1):
+                f = row['fields']
+                lines.append(f'- [T1.F{i}] Candidate — dim: candidate — uid: {f["uid"]} — decision: {f["decision"]} — priority: {f["priority"]} — reason: {f["reason"]} — anchor: "Question" — doc: inventory-batch — confidence: high')
+            result['final_output'] = '\n'.join(lines) + '\n\n## Verified Findings Ledger\n- [F1] A reading — dim: candidate — anchor: "Question" — doc: inventory-batch — confidence: high'
+            result['rows'] = [{'id': 'F1', 'dim': 'candidate', 'doc': 'inventory-batch', 'fields': {}, 'anchor': 'Question'}]
+        if key.endswith('_read'):
+            for row in result['rows']:
+                if row['dim'] == 'evidence':
+                    row['fields'].pop('uid', None)  # canonical doc already identifies the single source
+        return result
+    state = run_investigation(packet, bodies, call=split_call, save=lambda s: snapshots.append(copy.deepcopy(s)))
+    assert state['complete'] and all(r['decision'] != 'read' or not r.get('triage_missing') for r in state['triage'])
+    assert state['evidence'][0]['quote_verified'] and state['evidence'][0]['uid_inferred_from_source']
+    # Restore exactly the old cached call.rows shape, retaining its complete raw output.
+    for result in state['calls'].values():
+        if result.get('engine_key') == 'author_investigation_triage':
+            result['rows'] = result['original_rows']
+    resumed = run_investigation(packet, bodies, state=state,
+                               call=lambda *a, **kw: pytest.fail('recover cached decisions instead of rerunning triage'), save=lambda s: None)
+    assert resumed['complete'] and not any(r.get('triage_missing') for r in resumed['triage'])

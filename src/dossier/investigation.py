@@ -33,6 +33,35 @@ def _field(row, name, default=""):
     return (row.get("fields") or {}).get(name, default)
 
 
+def recover_answer_rows(result):
+    """Keep method-shaped rows even when a later generic ledger omits their fields.
+
+    The real oneshot runner can retain T1/E1 decision rows before its final Fn
+    ledger. Both are paid output; parsing only the final ledger loses decisions.
+    This recovers shape, never invents a decision or asserts source verification.
+    """
+    from src.dossier.explainer import rows_with_fields
+    existing = list(result.get("rows") or [])
+    keyed = {(r.get("id"), r.get("doc"), r.get("dim")): dict(r) for r in existing}
+    failed = set((result.get("wall") or {}).get("failed_ids") or [])
+    for raw in rows_with_fields(result.get("final_output") or "", failed):
+        key = (raw["id"], raw["doc"], raw["dim"])
+        prior = keyed.get(key, {})
+        keyed[key] = {**prior, "id": raw["id"], "dim": raw["dim"], "doc": raw["doc"],
+                      "finding": raw["text"], "anchor": raw["anchor"],
+                      "fields": {**(prior.get("fields") or {}),
+                                 **{k: v for k, v in raw["fields"].items() if k not in ("anchor", "doc", "dim")}},
+                      "confidence": raw.get("confidence", ""),
+                      "anchor_verified": prior.get("anchor_verified", False)}
+    recovered = list(keyed.values())
+    if recovered != existing:
+        result.setdefault("original_rows", existing)
+        result["rows"] = recovered
+        result["row_recovery"] = {"source": "complete_final_output", "original_count": len(result["original_rows"]),
+                                  "recovered_count": len(recovered)}
+    return recovered
+
+
 def _queries(rows):
     seen = set()
     out = []
@@ -257,13 +286,19 @@ def run_investigation(packet: dict, bodies: dict, *, call: Callable, save: Calla
     def engine(stage, key, sources, upstream):
         check()
         if stage in state["calls"]:
-            return state["calls"][stage]
+            result = state["calls"][stage]
+            prior_rows = result.get("rows")
+            recover_answer_rows(result)
+            if result.get("rows") != prior_rows:
+                checkpoint(stage, running_stage=None)
+            return result
         remaining = spend_cap_usd - state["cost_usd"]
         if remaining <= 0:
             checkpoint(stage, paused_reason="spend_cap")
             raise ValueError("investigation spend cap reached; completed artifacts were saved")
         checkpoint(stage, running_stage=stage)
         result = call(key, sources, packet=upstream, depth="surface", spend_cap_usd=remaining, max_chars=650000)
+        recover_answer_rows(result)
         state["calls"][stage] = result
         state["cost_usd"] += float(result.get("cost_usd") or 0)
         phase_key = str(len(state["analysis"]) + 1)
@@ -416,11 +451,12 @@ def run_investigation(packet: dict, bodies: dict, *, call: Callable, save: Calla
             quote = str(r.get("anchor") or "")
             positions = [m.start() for m in re.finditer(re.escape(quote), body)] if quote else []
             verified_positions = [pos for pos in positions if any(lo <= pos and pos + len(quote) <= hi for lo, hi in ranges)]
-            verified = bool(verified_positions) and r.get("doc") == src.key and _field(r, "uid") == uid
+            verified = bool(verified_positions) and r.get("doc") == src.key and _field(r, "uid") in ("", uid)
             evidence.append({**r, "uid": uid, "source_key": src.key, "title": row.get("title"), "year": row.get("year"),
                              "source_role": "primary", "date_scope": row.get("date_scope"), "source_metadata": source_metadata,
                              "quote": quote, "quote_verified": verified, "anchor_verified": verified,
                              "quote_start": verified_positions[0] if verified else None,
+                             "uid_inferred_from_source": not bool(_field(r, "uid")),
                              "read_uid": row.get("read_uid"), "body_sha256": row["body_sha256"],
                              "citation_id": f"{uid}/{r.get('id', '')}", "conjecture": not verified})
         checkpoint("reading", readings=readings, evidence=evidence, citation_followups=followups)
