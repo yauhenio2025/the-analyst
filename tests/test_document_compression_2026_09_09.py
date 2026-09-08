@@ -1,9 +1,12 @@
 """Large source packets must round-trip without oversized PostgreSQL text inserts."""
 import sqlite3
+import random
+import string
 
 import pytest
 
 from src.executor import db, document_store as documents
+from src.dossier import blob_store
 
 
 @pytest.fixture
@@ -11,6 +14,7 @@ def storage(tmp_path, monkeypatch):
     monkeypatch.setattr(db, "DATABASE_URL", "")
     monkeypatch.setattr(db, "SQLITE_PATH", tmp_path / "documents.sqlite")
     monkeypatch.setattr(db, "_initialized", False)
+    monkeypatch.setattr(blob_store, "_ready", False)
     db.init_db()
 
 
@@ -78,3 +82,16 @@ def test_hash_backfill_decodes_compressed_content(storage):
     db.execute("UPDATE executor_documents SET content_hash='' WHERE doc_id=%s", (doc_id,))
     db._migrate_sqlite()
     assert documents.get_document(doc_id)["content_hash"] == documents.compute_content_hash(text)
+
+
+def test_poorly_compressible_large_source_uses_small_blob_reference(storage):
+    rng = random.Random(23)
+    text = "".join(rng.choices(string.ascii_letters + string.digits, k=1800000))
+    doc_id = documents.store_document("Large distinct source", text)
+    raw = db.execute("SELECT text,text_encoding FROM executor_documents WHERE doc_id=%s", (doc_id,), fetch="one")
+    assert raw["text_encoding"] == "blob-json-v1"
+    assert len(raw["text"]) < 100
+    assert documents.get_document_text(doc_id) == text
+    blob_store.delete_blob(raw["text"])
+    with pytest.raises(ValueError, match="blob is missing"):
+        documents.get_document_text(doc_id)
