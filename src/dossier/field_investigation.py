@@ -109,6 +109,28 @@ def _reading_allocations(rows, bodies, cap):
     return allocations
 
 
+def _baseline_context(packet):
+    """Keep reviewed memos whole without repeating multi-megabyte search artifacts."""
+    priors = packet.get("prior_investigations") or []
+    if isinstance(priors, dict):
+        priors = [priors]
+    entries = []
+    for prior in priors:
+        if not isinstance(prior, dict) or not isinstance(prior.get("answer"), dict):
+            entries.append(prior)
+            continue
+        answer = prior["answer"]
+        entry = {k: v for k, v in prior.items() if k != "answer"}
+        entry.setdefault("memo", answer.get("memo", ""))
+        entry["answer_manifest"] = {"job_id": answer.get("job_id"), "coverage": answer.get("coverage"),
+                                    "memo_validation": answer.get("memo_validation"),
+                                    "read_uids": [r.get("uid") for r in answer.get("readings", [])],
+                                    "evidence_count": len(answer.get("evidence", [])),
+                                    "full_answer_retained_in_frozen_packet": True}
+        entries.append(entry)
+    return _json(entries)
+
+
 def run_field_investigation(packet, bodies, *, call, save, state=None, check=lambda: None, spend_cap_usd=8.0):
     inventories = {role: packet[role] for role in ("field", "primary")}
     # Metadata and body content must agree even on a resumed run; the hash in a
@@ -124,6 +146,7 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
     state = state or {"version": 1, "kind": CHAIN, "packet_sha256": fingerprint,
                       "author": packet["author"], "question": packet["question"], "scope": packet.get("scope", {}),
                       "inventory": packet["primary"], "field_inventory": packet["field"],
+                      "field_collections": packet.get("field_collections", []), "field_gaps": packet.get("field_gaps", []),
                       "prior_readings_resolution": packet.get("prior_readings_resolution", []),
                       "mode": "follow_up" if packet.get("prior_investigations") else "standalone",
                       "stages": [], "calls": {}, "analysis": {}, "cost_usd": 0.0,
@@ -194,13 +217,15 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
         return result, validation
 
     common = {"author": packet["author"], "question": packet["question"], "scope": packet.get("scope", {}),
+              "field_collections": packet.get("field_collections", []), "field_gaps": packet.get("field_gaps", []),
               "mode": state["mode"], "as_of": state.setdefault("as_of", _now())}
     context = [c for c in _context(packet, bodies, cap=40000) if c["key"] != "prior_investigations"]
-    baseline = _json(packet.get("prior_investigations") or [])
-    baseline_ranges = [(0, len(baseline))] if len(baseline) <= 100000 else [(0, 50000), (len(baseline) - 50000, len(baseline))]
+    baseline = _baseline_context(packet)
+    baseline_ranges = [(0, len(baseline))] if len(baseline) <= 200000 else [(0, 100000), (len(baseline) - 100000, len(baseline))]
     context.append({"key": "prior_investigations", "kind": "prior_investigations", "title": "Prior investigation baseline",
-                    "total_chars": len(baseline), "supplied_chars": min(len(baseline), 100000),
-                    "truncated": len(baseline) > 100000, "inspected_ranges": baseline_ranges,
+                    "total_chars": len(baseline), "supplied_chars": min(len(baseline), 200000),
+                    "answer_artifacts_summarized": True, "full_prior_packet_chars": len(_json(packet.get("prior_investigations") or [])),
+                    "truncated": len(baseline) > 200000, "inspected_ranges": baseline_ranges,
                     "text": _excerpt(baseline, baseline_ranges), "selected_for_context": True})
     # The entire baseline memo is retained in the frozen packet; disclose windows
     # rather than accidentally presenting truncated JSON as a complete baseline.
@@ -403,6 +428,7 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
         raise ValueError("author selection returned no available core texts; decisions retained")
     read_population("primary", field_map, selected)
     coverage = {"inventory_count": sum(len(r) for r in inventories.values()),
+                "field_gaps": packet.get("field_gaps", []),
                 "read_count": len(state["readings"]), "inspected_chars": sum(r["inspected_chars"] for r in state["readings"]),
                 "full_read_count": sum(r["reading_mode"] == "full" for r in state["readings"]),
                 "window_read_count": sum(r["reading_mode"] == "windows" for r in state["readings"]),

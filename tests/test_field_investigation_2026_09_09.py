@@ -341,3 +341,21 @@ def test_field_allocation_finishes_short_articles_and_reserves_long_work_reading
     assert [r['reading_mode'] for r in reads]==['full','full','windows']
     assert state['reading_allocations']['field']=={'referee:0':90000,'referee:1':20000,'referee:2':50000}
     assert state['coverage']['field']['inspected_chars']<=160000
+
+
+def test_large_parent_answer_does_not_displace_reviewed_memo_or_collection_gaps():
+    raw,_,_,_=fixture(prior=False)
+    raw['parent_investigation']={'answer':{'searches':'Search artifacts ' * 500000,'readings':[{'uid':'em:AUTHOR00'}],
+                                          'evidence':[{'id':'retained'}]},
+                                  'memo':'Reviewed baseline memo tail.',
+                                  'reviews':[{'data':'Source audit ' * 9000}]}
+    raw['field_gaps']=[{'query_id':90,'code':'query_not_found'}]
+    _,packet,_,bodies=freeze(raw)
+    calls=[]
+    state=run_field_investigation(packet,bodies,call=fake(calls),save=lambda s:None)
+    memo_call=next(c for c in calls if c[0].endswith('_memo'))
+    baseline=next(c for c in memo_call[2]['prior_context'] if c['key']=='prior_investigations')
+    assert not baseline['truncated'] and 'Reviewed baseline memo tail.' in baseline['text']
+    assert 'Source audit '*9000 in baseline['text'] and 'Search artifacts Search artifacts' not in baseline['text']
+    assert baseline['full_prior_packet_chars']>8000000 and baseline['answer_artifacts_summarized']
+    assert state['field_gaps']==state['coverage']['field_gaps']==memo_call[2]['field_gaps']
