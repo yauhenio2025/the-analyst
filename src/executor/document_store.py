@@ -4,7 +4,9 @@ Books are 200-500K characters. Stored as TEXT columns in the database.
 Each document has a unique doc_id for referencing from execution plans.
 """
 
+import base64
 import hashlib
+import json
 import logging
 import uuid
 from datetime import datetime
@@ -15,6 +17,43 @@ from src.executor.db import _is_postgres, execute, get_connection, init_db
 logger = logging.getLogger(__name__)
 
 VALID_BINDING_ROLES = {"target", "prior_work", "context", "chapter"}
+_TEXT_ENCODING = "json-gzip-base64-v1"
+
+
+def _encode_document_text(text: str) -> tuple[str, str]:
+    """Keep large frozen source packets out of oversized PostgreSQL text literals."""
+    from src.dossier.blob_store import encode_blob_data, _JSON_COMPRESS_THRESHOLD
+
+    if len(text.encode("utf-8")) < _JSON_COMPRESS_THRESHOLD:
+        return text, ""
+    capsule = json.dumps({"text": text}, ensure_ascii=False, separators=(",", ":")).encode()
+    encoded = base64.b64encode(encode_blob_data("application/json", capsule)).decode("ascii")
+    return (encoded, _TEXT_ENCODING) if len(encoded) < len(text.encode("utf-8")) else (text, "")
+
+
+def decode_document_text(text: str, encoding: Optional[str] = "") -> str:
+    """Decode only explicitly marked rows; existing literal source text stays literal."""
+    if not encoding:
+        return text
+    if encoding != _TEXT_ENCODING:
+        raise ValueError(f"unsupported executor document encoding: {encoding}")
+    from src.dossier.blob_store import decode_blob_data
+
+    capsule = json.loads(decode_blob_data("application/json", base64.b64decode(text, validate=True)))
+    if not isinstance(capsule, dict) or not isinstance(capsule.get("text"), str):
+        raise ValueError("compressed executor document does not contain source text")
+    return capsule["text"]
+
+
+def _decoded_document(row: Optional[dict]) -> Optional[dict]:
+    if row is None:
+        return None
+    encoding = row.pop("text_encoding", "")
+    row["text"] = decode_document_text(row["text"], encoding)
+    if encoding and (len(row["text"]) != row["char_count"] or
+                     compute_content_hash(row["text"]) != row["content_hash"]):
+        raise ValueError("compressed executor document source hash or length changed")
+    return row
 
 
 def compute_content_hash(text: str) -> str:
@@ -50,13 +89,14 @@ def _store_document_with_cursor(
     now = datetime.utcnow().isoformat()
     char_count = len(text)
     content_hash = compute_content_hash(text)
+    stored_text, text_encoding = _encode_document_text(text)
     cursor.execute(
         _adapt_sql(
             """INSERT INTO executor_documents
-               (doc_id, title, author, role, text, char_count, content_hash, created_at)
-               VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"""
+               (doc_id, title, author, role, text, text_encoding, char_count, content_hash, created_at)
+               VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"""
         ),
-        (doc_id, title, author, role, text, char_count, content_hash, now),
+        (doc_id, title, author, role, stored_text, text_encoding, char_count, content_hash, now),
     )
     return doc_id
 
@@ -92,21 +132,21 @@ def store_document(
 
 def get_document(doc_id: str) -> Optional[dict]:
     """Retrieve a document by ID. Returns dict with all fields including text."""
-    return execute(
+    return _decoded_document(execute(
         "SELECT * FROM executor_documents WHERE doc_id = %s",
         (doc_id,),
         fetch="one",
-    )
+    ))
 
 
 def get_document_text(doc_id: str) -> Optional[str]:
     """Retrieve just the text of a document."""
     row = execute(
-        "SELECT text FROM executor_documents WHERE doc_id = %s",
+        "SELECT text, text_encoding, char_count, content_hash FROM executor_documents WHERE doc_id = %s",
         (doc_id,),
         fetch="one",
     )
-    return row["text"] if row else None
+    return _decoded_document(row)["text"] if row else None
 
 
 def list_documents(role: Optional[str] = None) -> list[dict]:
@@ -352,6 +392,7 @@ def load_registered_documents(
                    b.created_at,
                    b.updated_at,
                    d.text,
+                   d.text_encoding,
                    d.char_count
             FROM external_document_bindings b
             JOIN executor_documents d ON d.doc_id = b.doc_id
@@ -361,7 +402,7 @@ def load_registered_documents(
         (consumer_key, external_project_id, *external_doc_keys),
         fetch="all",
     )
-    return {row["external_doc_key"]: row for row in rows}
+    return {row["external_doc_key"]: _decoded_document(row) for row in rows}
 
 
 def load_registered_documents_in_order(

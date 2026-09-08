@@ -241,6 +241,7 @@ def _migrate_postgres():
         "ALTER TABLE executor_jobs ADD COLUMN IF NOT EXISTS corpus_ref VARCHAR(100)",
         "ALTER TABLE phase_outputs ADD COLUMN IF NOT EXISTS content_hash VARCHAR(64) DEFAULT ''",
         "ALTER TABLE executor_documents ADD COLUMN IF NOT EXISTS content_hash VARCHAR(64) DEFAULT ''",
+        "ALTER TABLE executor_documents ADD COLUMN IF NOT EXISTS text_encoding VARCHAR(40) DEFAULT ''",
         "ALTER TABLE presentation_cache ALTER COLUMN section TYPE VARCHAR(200)",
         # Priority 6: Project lifecycle
         "ALTER TABLE executor_jobs ADD COLUMN IF NOT EXISTS project_id VARCHAR(100)",
@@ -376,12 +377,13 @@ def _migrate_postgres():
             logger.debug(f"Phase output content_hash backfill skipped: {e}")
         try:
             cursor.execute(
-                "SELECT doc_id, text FROM executor_documents "
+                "SELECT doc_id, text, text_encoding FROM executor_documents "
                 "WHERE content_hash IS NULL OR content_hash = ''"
             )
             rows = cursor.fetchall()
             for row in rows:
-                doc_id, text = row[0], row[1] or ""
+                from src.executor.document_store import decode_document_text
+                doc_id, text = row[0], decode_document_text(row[1] or "", row[2])
                 cursor.execute(
                     "UPDATE executor_documents SET content_hash = %s WHERE doc_id = %s",
                     (hashlib.sha256(text.encode("utf-8")).hexdigest(), doc_id),
@@ -398,6 +400,7 @@ def _migrate_sqlite():
         "ALTER TABLE executor_jobs ADD COLUMN corpus_ref TEXT",
         "ALTER TABLE phase_outputs ADD COLUMN content_hash TEXT DEFAULT ''",
         "ALTER TABLE executor_documents ADD COLUMN content_hash TEXT DEFAULT ''",
+        "ALTER TABLE executor_documents ADD COLUMN text_encoding TEXT DEFAULT ''",
         """CREATE TABLE IF NOT EXISTS external_document_bindings (
                consumer_key TEXT NOT NULL,
                external_project_id TEXT NOT NULL,
@@ -521,11 +524,13 @@ def _migrate_sqlite():
             logger.debug(f"SQLite external binding index creation skipped: {e}")
         try:
             cursor.execute(
-                "SELECT doc_id, text FROM executor_documents "
+                "SELECT doc_id, text, text_encoding FROM executor_documents "
                 "WHERE content_hash IS NULL OR content_hash = ''"
             )
             rows = cursor.fetchall()
-            for doc_id, text in rows:
+            for doc_id, text, encoding in rows:
+                from src.executor.document_store import decode_document_text
+                text = decode_document_text(text or "", encoding)
                 cursor.execute(
                     "UPDATE executor_documents SET content_hash = ? WHERE doc_id = ?",
                     (hashlib.sha256((text or "").encode("utf-8")).hexdigest(), doc_id),
@@ -616,6 +621,7 @@ def _init_postgres():
         author VARCHAR(200),
         role VARCHAR(20) NOT NULL DEFAULT 'target',
         text TEXT NOT NULL,
+        text_encoding VARCHAR(40) DEFAULT '',
         char_count INTEGER DEFAULT 0,
         content_hash VARCHAR(64) DEFAULT '',
         created_at TIMESTAMP DEFAULT NOW()
@@ -908,6 +914,7 @@ def _init_sqlite():
         author TEXT,
         role TEXT NOT NULL DEFAULT 'target',
         text TEXT NOT NULL,
+        text_encoding TEXT DEFAULT '',
         char_count INTEGER DEFAULT 0,
         content_hash TEXT DEFAULT '',
         created_at TEXT
