@@ -97,6 +97,13 @@ def resolve_sources(specs: list[SourceSpec]) -> list[Document]:
             if not text:
                 logger.warning(f"source {idx} ({spec.kind}) has no text; skipped")
                 continue
+            if role == "author_investigation":
+                from src.sources.author_investigation import expand_author_investigation
+                for d in expand_author_investigation(text):
+                    role = d.role
+                    add(d)
+                role = "author_investigation"
+                continue
             if role == "oeuvre":   # the Stacks' oeuvre bundle expands at the door (2026-09-07): the focal text, the profiles, the packet
                 from src.sources.oeuvre_bundle import expand_oeuvre_bundle
                 for d in expand_oeuvre_bundle(text, key_hint=spec.key or "oeuvre"):

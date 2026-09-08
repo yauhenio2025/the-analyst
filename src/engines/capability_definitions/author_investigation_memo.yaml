@@ -1,0 +1,49 @@
+engine_key: author_investigation_memo
+engine_name: Answer with evidence and coverage
+version: 1
+category: scholarly
+kind: synthesis
+operation: composition
+problematique: Investigate the supplied question about the named author, building
+  on existing profiles, citation ledgers, prior readings, secondary analyses and Referee
+  context. Separate the publication date from the historical period discussed. Treat
+  the stated event in the question as a question, never as an established fact. Profiles,
+  search matches, prior memos, citations and Referee descriptions are leads, not the
+  author's testimony. Attribute interlocutors, interviewers, coauthors and quoted
+  opponents carefully. Only supplied primary text supports direct claims about what
+  the author says. Citation co-occurrence is a retrieval route, not proof of substantive
+  engagement. Search absence, unread material and missing text never establish that
+  the author never discusses a topic. State the actual corpus and window coverage.
+  Keep uncertainty, counterevidence and unresolved cases. Use literal independent
+  source anchors, preserving negation and qualifications. Never invent a quote, page
+  or source id. An edition, reprint, translated edition or container publication date
+  does not establish a new intervention; consult supplied date/edition metadata and
+  flag unresolved original dates. A book-section container is not the author's own
+  chapter unless the packet establishes authorship. Quotes marked quote_verified false
+  are conjectures and cannot support a direct answer.
+researcher_question: Answer with evidence and coverage
+intellectual_lineage:
+  primary: source_criticism
+analytical_dimensions:
+- key: answer
+  description: Answer every subquestion
+  probing_questions:
+  - Give a calibrated answer to each subquestion using the primary evidence already
+    read. Cite the exact primary source and quote, with the original speaker and historical
+    context. A prior memo can suggest an interpretation but cannot establish what
+    the author said.
+- key: qualification
+  description: Separate limits from silence
+  probing_questions:
+  - Name counterevidence, weak attribution, unknown dates, missing primary bodies,
+    windowed readings, deferred texts and exhausted caps affecting each answer. Do
+    not state never/no discussion from search silence.
+- key: next
+  description: Leave reusable next steps
+  probing_questions:
+  - Name the highest-value remaining text, citation path or Referee lookup and what
+    it could resolve. Missing holdings and external actions remain recommendations.
+apps:
+- critic
+function: genealogy
+family: analytical

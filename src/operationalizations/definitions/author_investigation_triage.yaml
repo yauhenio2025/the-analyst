@@ -1,0 +1,105 @@
+engine_key: author_investigation_triage
+engine_name: Choose texts for closer reading
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: Choose texts for closer reading
+  framing: Investigate the supplied question about the named author, building on existing
+    profiles, citation ledgers, prior readings, secondary analyses and Referee context.
+    Separate the publication date from the historical period discussed. Treat the
+    stated event in the question as a question, never as an established fact. Profiles,
+    search matches, prior memos, citations and Referee descriptions are leads, not
+    the author's testimony. Attribute interlocutors, interviewers, coauthors and quoted
+    opponents carefully. Only supplied primary text supports direct claims about what
+    the author says. Citation co-occurrence is a retrieval route, not proof of substantive
+    engagement. Search absence, unread material and missing text never establish that
+    the author never discusses a topic. State the actual corpus and window coverage.
+    Keep uncertainty, counterevidence and unresolved cases. Use literal independent
+    source anchors, preserving negation and qualifications. Never invent a quote,
+    page or source id. An edition, reprint, translated edition or container publication
+    date does not establish a new intervention; consult supplied date/edition metadata
+    and flag unresolved original dates. A book-section container is not the author's
+    own chapter unless the packet establishes authorship. Quotes marked quote_verified
+    false are conjectures and cannot support a direct answer.
+  scoped_outcomes: false
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: candidate
+    name: Judge every supplied inventory entry
+    questions:
+    - One row for EVERY supplied primary inventory entry, including no search hits,
+      missing bodies, undated works and explicit exclusions. Read its whole supplied
+      profile and citation context semantically. Choose read for likely direct evidence,
+      context for a historical or conceptual comparison, defer for weak/irrelevant
+      leads, unavailable for missing/excluded text. A zero lexical hit does not justify
+      rejection when the profile is relevant. Prefer distinct works over duplicate
+      editions. Priority 1 is most useful.
+    method_card: 'One row for EVERY supplied primary inventory entry, including no
+      search hits, missing bodies, undated works and explicit exclusions. Read its
+      whole supplied profile and citation context semantically. Choose read for likely
+      direct evidence, context for a historical or conceptual comparison, defer for
+      weak/irrelevant leads, unavailable for missing/excluded text. A zero lexical
+      hit does not justify rejection when the profile is relevant. Prefer distinct
+      works over duplicate editions. Priority 1 is most useful. Judge priority against
+      the actual subquestions, balancing recent interventions, historical discussion,
+      conceptual treatment, contrary evidence and speaker uncertainty. Priorities
+      must discriminate; raw word frequency is not importance. When selection_mode
+      is reconcile, the source is the complete inventory with prior semantic decisions:
+      compare those decisions globally, preserve reasons and choose a balanced reading
+      route under the supplied text and character limits, leaving alternatives explicitly
+      deferred. Do not invent information beyond the earlier decisions and metadata.'
+    indicators:
+    - question
+    - evidence
+    - context
+    scope: document
+    load_bearing: true
+    id_prefix: T1
+    answer_shape: '[T1.F<n>] <finding in one sentence> — dim: candidate — uid: <exact
+      inventory uid> — decision: read|context|defer|unavailable — priority: <1 to
+      5> — reason: <specific evidence and what closer reading should settle> — subquestions:
+      <questions this text should answer> — queries: <literal terms to locate the
+      expected discussion, separated by semicolons> — anchor: "<verbatim, <=200 chars>"
+      — doc: <actual supplied source key> — confidence: high|medium|low'
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension
+    model_tier: cheap
+    output: ledger
+    max_rows: 40
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - merge_duplicates
+    - hunt_misses
+    - name_must_keep
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: the researcher investigating this author
+    brief: Give the selection rationale and a complete per-text ledger. Account for
+      every supplied inventory item; the executor applies the reading cap after all
+      batches are judged.
+    max_rows: 60

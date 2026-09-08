@@ -376,13 +376,25 @@ def _run_step(job: DossierJob, step: str, docs) -> None:
     elif step == "plan":
         from src.dossier.plan import run_fixed_plan, run_plan
 
-        plan = run_fixed_plan(job, docs) if _fast_lane(job) else run_plan(job, docs)
+        if job.options.path and job.options.path.chain_key == "author_investigation":
+            from src.dossier.schemas import DossierPlan, DossierPlanPhase
+            from src.dossier.catalog import load_recipes
+            recipe = next(r for r in load_recipes() if r["key"] == "author_investigation")
+            plan = DossierPlan(plan_id=f"investigation:{job_id}", phases=[
+                DossierPlanPhase(phase_number=i + 1, engine_key=s["engine_key"], depth=s["depth"],
+                                 why="Question plan, semantic triage, bounded primary readings, then synthesis")
+                for i, s in enumerate(recipe["steps"])])
+        else:
+            plan = run_fixed_plan(job, docs) if _fast_lane(job) else run_plan(job, docs)
         job.plan = plan
         job.plan_id = plan.plan_id
         persist(plan=plan, plan_id=plan.plan_id)
         summary = " → ".join(f"{p.engine_key}@{p.depth}" for p in plan.phases)
     elif step == "analysis":
-        from src.dossier.analysis import run_analysis
+        if job.options.path and job.options.path.chain_key == "author_investigation":
+            from src.dossier.investigation import run_job_investigation as run_analysis
+        else:
+            from src.dossier.analysis import run_analysis
 
         sub_id, analysis = run_analysis(job, all_docs, cancel_check=lambda: is_cancelled(job_id), persist=persist)
         job.analysis_job_id = sub_id

@@ -240,6 +240,31 @@
         "distinction_draft",
         "encounter_draft"
       ]
+    },
+    {
+      "key": "author_investigation",
+      "title": "Ask about an author's work",
+      "use_when": "answer a research question across an author's accumulated corpus and analyses",
+      "yields": "evidence-linked memo, search and reading trail, reusable findings and coverage",
+      "depth": "medium",
+      "steps": [
+        {
+          "engine_key": "author_investigation_plan",
+          "depth": "surface"
+        },
+        {
+          "engine_key": "author_investigation_triage",
+          "depth": "surface"
+        },
+        {
+          "engine_key": "author_investigation_read",
+          "depth": "surface"
+        },
+        {
+          "engine_key": "author_investigation_memo",
+          "depth": "surface"
+        }
+      ]
     }
   ]
 }

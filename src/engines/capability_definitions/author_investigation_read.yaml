@@ -1,0 +1,52 @@
+engine_key: author_investigation_read
+engine_name: Read a text against the question
+version: 1
+category: scholarly
+kind: synthesis
+operation: reading
+problematique: Investigate the supplied question about the named author, building
+  on existing profiles, citation ledgers, prior readings, secondary analyses and Referee
+  context. Separate the publication date from the historical period discussed. Treat
+  the stated event in the question as a question, never as an established fact. Profiles,
+  search matches, prior memos, citations and Referee descriptions are leads, not the
+  author's testimony. Attribute interlocutors, interviewers, coauthors and quoted
+  opponents carefully. Only supplied primary text supports direct claims about what
+  the author says. Citation co-occurrence is a retrieval route, not proof of substantive
+  engagement. Search absence, unread material and missing text never establish that
+  the author never discusses a topic. State the actual corpus and window coverage.
+  Keep uncertainty, counterevidence and unresolved cases. Use literal independent
+  source anchors, preserving negation and qualifications. Never invent a quote, page
+  or source id. An edition, reprint, translated edition or container publication date
+  does not establish a new intervention; consult supplied date/edition metadata and
+  flag unresolved original dates. A book-section container is not the author's own
+  chapter unless the packet establishes authorship. Quotes marked quote_verified false
+  are conjectures and cannot support a direct answer.
+researcher_question: Read a text against the question
+intellectual_lineage:
+  primary: source_criticism
+analytical_dimensions:
+- key: evidence
+  description: Read for the question in context
+  probing_questions:
+  - Keep direct, indirect, qualified and contrary evidence. State who speaks, the
+    actual argument, the discussed historical period, the organizing/action form and
+    its relevance to the subquestion. Primary sources only for claims about the author.
+    Use a verbatim quote from an actually supplied inspected range. The publication
+    year is not the date of the event discussed.
+- key: citation_lead
+  description: Record a citation worth following
+  probing_questions:
+  - Only record a cited work if the supplied primary passage makes it a useful lead
+    for this question. Preserve its identity and context; indicate whether it is actually
+    held or known only when the packet resolves that. Do not convert a citation into
+    agreement.
+- key: gap
+  description: Record what remains unresolved
+  probing_questions:
+  - State when the inspected text does not answer a subquestion, or when excerpt coverage,
+    speaker attribution or uncertain event identity limits the reading. Never infer
+    absence across unread passages or the complete oeuvre.
+apps:
+- critic
+function: genealogy
+family: analytical

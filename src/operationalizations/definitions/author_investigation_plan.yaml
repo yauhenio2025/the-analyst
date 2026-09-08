@@ -1,0 +1,129 @@
+engine_key: author_investigation_plan
+engine_name: Plan a question across an author's work
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: Plan a question across an author's work
+  framing: Investigate the supplied question about the named author, building on existing
+    profiles, citation ledgers, prior readings, secondary analyses and Referee context.
+    Separate the publication date from the historical period discussed. Treat the
+    stated event in the question as a question, never as an established fact. Profiles,
+    search matches, prior memos, citations and Referee descriptions are leads, not
+    the author's testimony. Attribute interlocutors, interviewers, coauthors and quoted
+    opponents carefully. Only supplied primary text supports direct claims about what
+    the author says. Citation co-occurrence is a retrieval route, not proof of substantive
+    engagement. Search absence, unread material and missing text never establish that
+    the author never discusses a topic. State the actual corpus and window coverage.
+    Keep uncertainty, counterevidence and unresolved cases. Use literal independent
+    source anchors, preserving negation and qualifications. Never invent a quote,
+    page or source id. An edition, reprint, translated edition or container publication
+    date does not establish a new intervention; consult supplied date/edition metadata
+    and flag unresolved original dates. A book-section container is not the author's
+    own chapter unless the packet establishes authorship. Quotes marked quote_verified
+    false are conjectures and cannot support a direct answer.
+  scoped_outcomes: false
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: question
+    name: Subquestions and temporal distinctions
+    questions:
+    - Name each answerable subquestion and its evidential test; include contemporary
+      examples, historical analogies, conceptual treatment and potential contrary
+      evidence as the question requires.
+    method_card: Name each answerable subquestion and its evidential test; include
+      contemporary examples, historical analogies, conceptual treatment and potential
+      contrary evidence as the question requires.
+    indicators:
+    - question
+    - evidence
+    - context
+    scope: document
+    load_bearing: true
+    id_prefix: Q1
+    answer_shape: '[Q1.F<n>] <finding in one sentence> — dim: question — subquestion:
+      <question> — test: <what would support or defeat it> — anchor: "<verbatim, <=200
+      chars>" — doc: <actual supplied source key> — confidence: high|medium|low'
+  - key: query
+    name: Expand the discovery vocabulary
+    questions:
+    - 'Produce 12–32 distinct literal words or phrases for case-insensitive substring
+      search: variants, near-synonyms, named episodes and historical vocabulary justified
+      by this question and supplied context. No Boolean syntax or invented event names.
+      Search unexpected conceptual formulations, not only words in the question.'
+    method_card: 'Produce 12–32 distinct literal words or phrases for case-insensitive
+      substring search: variants, near-synonyms, named episodes and historical vocabulary
+      justified by this question and supplied context. No Boolean syntax or invented
+      event names. Search unexpected conceptual formulations, not only words in the
+      question.'
+    indicators:
+    - question
+    - evidence
+    - context
+    scope: document
+    load_bearing: true
+    id_prefix: Q2
+    answer_shape: '[Q2.F<n>] <finding in one sentence> — dim: query — query: <one
+      literal word or phrase> — purpose: <which question this retrieves> — anchor:
+      "<verbatim, <=200 chars>" — doc: <actual supplied source key> — confidence:
+      high|medium|low'
+  - key: reuse
+    name: Reuse prior work and identify gaps
+    questions:
+    - Identify prior readings, citation explanations, secondary debates and Referee
+      facts worth reusing or testing. Anchor in the inventory/context and distinguish
+      a pointer from a primary finding.
+    method_card: Identify prior readings, citation explanations, secondary debates
+      and Referee facts worth reusing or testing. Anchor in the inventory/context
+      and distinguish a pointer from a primary finding.
+    indicators:
+    - question
+    - evidence
+    - context
+    scope: document
+    load_bearing: true
+    id_prefix: Q3
+    answer_shape: '[Q3.F<n>] <finding in one sentence> — dim: reuse — source: <supplied
+      source or artifact id> — why: <what it contributes or leaves unsettled> — anchor:
+      "<verbatim, <=200 chars>" — doc: <actual supplied source key> — confidence:
+      high|medium|low'
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension
+    model_tier: cheap
+    output: ledger
+    max_rows: 40
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - merge_duplicates
+    - hunt_misses
+    - name_must_keep
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: the researcher investigating this author
+    brief: Explain the research strategy and temporal scope briefly, then give the
+      complete ledger. This is a plan, not an answer.
+    max_rows: 60

@@ -1,0 +1,59 @@
+{
+  "analytical_dimensions": [
+    {
+      "depth_guidance": {},
+      "description": "Answer every subquestion",
+      "key": "answer",
+      "probing_questions": [
+        "Give a calibrated answer to each subquestion using the primary evidence already read. Cite the exact primary source and quote, with the original speaker and historical context. A prior memo can suggest an interpretation but cannot establish what the author said."
+      ]
+    },
+    {
+      "depth_guidance": {},
+      "description": "Separate limits from silence",
+      "key": "qualification",
+      "probing_questions": [
+        "Name counterevidence, weak attribution, unknown dates, missing primary bodies, windowed readings, deferred texts and exhausted caps affecting each answer. Do not state never/no discussion from search silence."
+      ]
+    },
+    {
+      "depth_guidance": {},
+      "description": "Leave reusable next steps",
+      "key": "next",
+      "probing_questions": [
+        "Name the highest-value remaining text, citation path or Referee lookup and what it could resolve. Missing holdings and external actions remain recommendations."
+      ]
+    }
+  ],
+  "apps": [
+    "critic"
+  ],
+  "capabilities": [],
+  "category": "scholarly",
+  "composability": {
+    "consumes_from": {},
+    "shares_with": {},
+    "synergy_engines": []
+  },
+  "composition_role": null,
+  "depth_levels": [],
+  "engine_key": "author_investigation_memo",
+  "engine_name": "Answer with evidence and coverage",
+  "function": "genealogy",
+  "intellectual_lineage": {
+    "key_concepts": [],
+    "primary": "source_criticism",
+    "secondary": [],
+    "traditions": []
+  },
+  "kind": "synthesis",
+  "legacy_engine_key": null,
+  "operation": "composition",
+  "output_contract": null,
+  "output_mode": "prose",
+  "paradigm_keys": [],
+  "problematique": "Investigate the supplied question about the named author, building on existing profiles, citation ledgers, prior readings, secondary analyses and Referee context. Separate the publication date from the historical period discussed. Treat the stated event in the question as a question, never as an established fact. Profiles, search matches, prior memos, citations and Referee descriptions are leads, not the author's testimony. Attribute interlocutors, interviewers, coauthors and quoted opponents carefully. Only supplied primary text supports direct claims about what the author says. Citation co-occurrence is a retrieval route, not proof of substantive engagement. Search absence, unread material and missing text never establish that the author never discusses a topic. State the actual corpus and window coverage. Keep uncertainty, counterevidence and unresolved cases. Use literal independent source anchors, preserving negation and qualifications. Never invent a quote, page or source id. An edition, reprint, translated edition or container publication date does not establish a new intervention; consult supplied date/edition metadata and flag unresolved original dates. A book-section container is not the author's own chapter unless the packet establishes authorship. Quotes marked quote_verified false are conjectures and cannot support a direct answer.",
+  "prompt_context_keys": [],
+  "researcher_question": "Answer with evidence and coverage",
+  "version": 1
+}

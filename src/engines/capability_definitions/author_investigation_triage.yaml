@@ -1,0 +1,41 @@
+engine_key: author_investigation_triage
+engine_name: Choose texts for closer reading
+version: 1
+category: scholarly
+kind: synthesis
+operation: placement
+problematique: Investigate the supplied question about the named author, building
+  on existing profiles, citation ledgers, prior readings, secondary analyses and Referee
+  context. Separate the publication date from the historical period discussed. Treat
+  the stated event in the question as a question, never as an established fact. Profiles,
+  search matches, prior memos, citations and Referee descriptions are leads, not the
+  author's testimony. Attribute interlocutors, interviewers, coauthors and quoted
+  opponents carefully. Only supplied primary text supports direct claims about what
+  the author says. Citation co-occurrence is a retrieval route, not proof of substantive
+  engagement. Search absence, unread material and missing text never establish that
+  the author never discusses a topic. State the actual corpus and window coverage.
+  Keep uncertainty, counterevidence and unresolved cases. Use literal independent
+  source anchors, preserving negation and qualifications. Never invent a quote, page
+  or source id. An edition, reprint, translated edition or container publication date
+  does not establish a new intervention; consult supplied date/edition metadata and
+  flag unresolved original dates. A book-section container is not the author's own
+  chapter unless the packet establishes authorship. Quotes marked quote_verified false
+  are conjectures and cannot support a direct answer.
+researcher_question: Choose texts for closer reading
+intellectual_lineage:
+  primary: source_criticism
+analytical_dimensions:
+- key: candidate
+  description: Judge every supplied inventory entry
+  probing_questions:
+  - One row for EVERY supplied primary inventory entry, including no search hits,
+    missing bodies, undated works and explicit exclusions. Read its whole supplied
+    profile and citation context semantically. Choose read for likely direct evidence,
+    context for a historical or conceptual comparison, defer for weak/irrelevant leads,
+    unavailable for missing/excluded text. A zero lexical hit does not justify rejection
+    when the profile is relevant. Prefer distinct works over duplicate editions. Priority
+    1 is most useful.
+apps:
+- critic
+function: genealogy
+family: analytical

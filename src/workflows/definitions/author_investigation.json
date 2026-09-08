@@ -1,0 +1,54 @@
+{
+  "workflow_key": "author_investigation",
+  "workflow_name": "Investigate a question across an author's work",
+  "category": "analysis",
+  "version": 1,
+  "description": "Question plan → full-corpus lexical discovery and same-work citation following → semantic triage of every primary profile → bounded contextual primary reading → evidence-linked memo. The dossier author_investigation executor checkpoints every call and deterministic artifact; completed calls survive resume. It returns GET /v1/dossier/jobs/{id}/investigation and indexes phase rows in the person/text readings ledger.",
+  "phases": [
+    {
+      "phase_number": 1,
+      "phase_name": "Plan a question across an author's work",
+      "phase_description": "Explain the research strategy and temporal scope briefly, then give the complete ledger. This is a plan, not an answer.",
+      "engine_key": "author_investigation_plan",
+      "depends_on_phases": []
+    },
+    {
+      "phase_number": 2,
+      "phase_name": "Choose texts for closer reading",
+      "phase_description": "Give the selection rationale and a complete per-text ledger. Account for every supplied inventory item; the executor applies the reading cap after all batches are judged.",
+      "engine_key": "author_investigation_triage",
+      "depends_on_phases": [
+        1
+      ]
+    },
+    {
+      "phase_number": 3,
+      "phase_name": "Read a text against the question",
+      "phase_description": "Write a short source reading with the argument and limits, then preserve all evidence, citation leads and gaps as ledger rows.",
+      "engine_key": "author_investigation_read",
+      "depends_on_phases": [
+        1,
+        2
+      ]
+    },
+    {
+      "phase_number": 4,
+      "phase_name": "Answer with evidence and coverage",
+      "phase_description": "Write the final research memo in connected prose, leading with the answer. Address the actual questions separately, including contemporary labor action, historical labor struggle, conceptual treatment and any named event only where evidence supports them. Cite primary source titles, years and supplied loci with finding ids. Explain publication scope and discussed periods, distinguish evidence of engagement from absence of evidence, and finish with the material coverage limits and next readings. Then give the evidence ledger.",
+      "engine_key": "author_investigation_memo",
+      "depends_on_phases": [
+        1,
+        2,
+        3
+      ]
+    }
+  ],
+  "required_inputs": [
+    "author_investigation"
+  ],
+  "optional_inputs": [],
+  "output_description": "Memo, plan, search matches, citation paths, triage decisions, inspected ranges, verified evidence, missing and deferred inventory, cost and reusable per-text readings.",
+  "linked_transformation_keys": [],
+  "source_project": "the-analyst",
+  "target_page": "dossier"
+}

@@ -1,0 +1,134 @@
+engine_key: author_investigation_read
+engine_name: Read a text against the question
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: Read a text against the question
+  framing: Investigate the supplied question about the named author, building on existing
+    profiles, citation ledgers, prior readings, secondary analyses and Referee context.
+    Separate the publication date from the historical period discussed. Treat the
+    stated event in the question as a question, never as an established fact. Profiles,
+    search matches, prior memos, citations and Referee descriptions are leads, not
+    the author's testimony. Attribute interlocutors, interviewers, coauthors and quoted
+    opponents carefully. Only supplied primary text supports direct claims about what
+    the author says. Citation co-occurrence is a retrieval route, not proof of substantive
+    engagement. Search absence, unread material and missing text never establish that
+    the author never discusses a topic. State the actual corpus and window coverage.
+    Keep uncertainty, counterevidence and unresolved cases. Use literal independent
+    source anchors, preserving negation and qualifications. Never invent a quote,
+    page or source id. An edition, reprint, translated edition or container publication
+    date does not establish a new intervention; consult supplied date/edition metadata
+    and flag unresolved original dates. A book-section container is not the author's
+    own chapter unless the packet establishes authorship. Quotes marked quote_verified
+    false are conjectures and cannot support a direct answer.
+  scoped_outcomes: false
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: evidence
+    name: Read for the question in context
+    questions:
+    - Keep direct, indirect, qualified and contrary evidence. State who speaks, the
+      actual argument, the discussed historical period, the organizing/action form
+      and its relevance to the subquestion. Primary sources only for claims about
+      the author. Use a verbatim quote from an actually supplied inspected range.
+      The publication year is not the date of the event discussed.
+    method_card: Keep direct, indirect, qualified and contrary evidence. State who
+      speaks, the actual argument, the discussed historical period, the organizing/action
+      form and its relevance to the subquestion. Primary sources only for claims about
+      the author. Use a verbatim quote from an actually supplied inspected range.
+      The publication year is not the date of the event discussed.
+    indicators:
+    - question
+    - evidence
+    - context
+    scope: document
+    load_bearing: true
+    id_prefix: E1
+    answer_shape: '[E1.F<n>] <finding in one sentence> — dim: evidence — uid: <exact
+      uid> — subquestion: <which> — relation: direct|indirect|counterevidence|unclear
+      — speaker: <author, interlocutor, coauthor, quoted actor> — discussed_period:
+      <period or unknown> — context: <argument and qualifications> — locus: <source
+      marker if supplied, else character range> — anchor: "<verbatim, <=200 chars>"
+      — doc: <actual supplied source key> — confidence: high|medium|low'
+  - key: citation_lead
+    name: Record a citation worth following
+    questions:
+    - Only record a cited work if the supplied primary passage makes it a useful lead
+      for this question. Preserve its identity and context; indicate whether it is
+      actually held or known only when the packet resolves that. Do not convert a
+      citation into agreement.
+    method_card: Only record a cited work if the supplied primary passage makes it
+      a useful lead for this question. Preserve its identity and context; indicate
+      whether it is actually held or known only when the packet resolves that. Do
+      not convert a citation into agreement.
+    indicators:
+    - question
+    - evidence
+    - context
+    scope: document
+    load_bearing: true
+    id_prefix: E2
+    answer_shape: '[E2.F<n>] <finding in one sentence> — dim: citation_lead — uid:
+      <uid> — work_key: <supplied canonical cited-work key or unknown> — reason: <what
+      this citation could settle> — anchor: "<verbatim, <=200 chars>" — doc: <actual
+      supplied source key> — confidence: high|medium|low'
+  - key: gap
+    name: Record what remains unresolved
+    questions:
+    - State when the inspected text does not answer a subquestion, or when excerpt
+      coverage, speaker attribution or uncertain event identity limits the reading.
+      Never infer absence across unread passages or the complete oeuvre.
+    method_card: State when the inspected text does not answer a subquestion, or when
+      excerpt coverage, speaker attribution or uncertain event identity limits the
+      reading. Never infer absence across unread passages or the complete oeuvre.
+    indicators:
+    - question
+    - evidence
+    - context
+    scope: document
+    load_bearing: true
+    id_prefix: E3
+    answer_shape: '[E3.F<n>] <finding in one sentence> — dim: gap — uid: <uid> — gap:
+      <unresolved issue> — follow_up: <specific next reading or check> — anchor: "<verbatim,
+      <=200 chars>" — doc: <actual supplied source key> — confidence: high|medium|low'
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension
+    model_tier: cheap
+    output: ledger
+    max_rows: 40
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - merge_duplicates
+    - hunt_misses
+    - name_must_keep
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: the researcher investigating this author
+    brief: Write a short source reading with the argument and limits, then preserve
+      all evidence, citation leads and gaps as ledger rows.
+    max_rows: 60

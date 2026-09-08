@@ -111,6 +111,14 @@ def validate_lane(req: CreateDossierRequest) -> dict:
     if use_frame and use_frame.use_kind and use_frame.use_kind not in USE_KINDS:
         raise ValueError(f"use_frame.use_kind must be one of {USE_KINDS} (or null)")
     path = req.path
+    investigation_sources = [s for s in req.sources if s.role == "author_investigation"]
+    investigation_path = path is not None and path.chain_key == "author_investigation"
+    if investigation_sources or investigation_path:
+        if entry != "chosen" or not investigation_path or len(investigation_sources) != 1 or len(req.sources) != 1:
+            raise ValueError("author investigation needs entry='chosen', path.chain_key='author_investigation', and one author_investigation source packet")
+        output = req.output or OutputOptions()
+        if output.text or output.tables or output.figures or output.plates:
+            raise ValueError("author investigation writes its own memo; set output text=false, tables=false, figures=0, plates=0")
     if entry == "chosen":
         if path is None or (not path.steps and not path.chain_key):
             raise ValueError("entry = 'chosen' needs path.steps (1-4 executable engines) or path.chain_key (a recipe)")
@@ -313,6 +321,20 @@ def get_reread(job_id: str):
     if found is None:
         raise HTTPException(status_code=409, detail=f"no finished reference_reread phase on this job (status={job.status}, step={job.step})")
     return {**render_reread(found[0], found[1]), "status": job.status, "job_id": job.id}
+
+
+@router.get("/jobs/{job_id}/investigation")
+def get_investigation(job_id: str):
+    """Every completed research checkpoint, including partial runs and bounded coverage."""
+    from src.dossier.investigation import load_investigation
+    job = _load(job_id)
+    if not job.options.path or job.options.path.chain_key != "author_investigation":
+        raise HTTPException(status_code=409, detail="this job is not an author investigation")
+    out = load_investigation(job_id) or {"kind": "author_investigation", "question": job.options.intent,
+                                         "stages": [], "evidence": [], "readings": [], "complete": False}
+    # Raw per-call outputs are available from the durable job/ledger; this response is the research artifact.
+    return {**{k: v for k, v in out.items() if k not in ("calls", "analysis")},
+            "job_id": job_id, "status": job.status, "error": job.error, "totals": job.totals.model_dump()}
 
 
 @router.get("/jobs/{job_id}/oeuvre")

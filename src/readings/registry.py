@@ -154,6 +154,8 @@ PUBLIC_BASE = __import__("os").environ.get("PUBLIC_BASE_URL", "https://the-analy
 
 def _renders(engine: str, job_id: Optional[str]) -> list[str]:
     base = f"{PUBLIC_BASE}/v1/dossier/jobs/{job_id}"   # absolute: a render may live on another host one day (the Stacks, 19:30)
+    if engine.startswith("author_investigation_"):
+        return [f"{base}/investigation"]
     if engine in ("oeuvre_trajectory", "citation_shift", "retrospective_reading", "prospective_reading", "epistemic_rupture", "oeuvre_position_memo", "thinker_placement"):
         return [f"{base}/oeuvre", f"{base}/page"]
     if engine in ("interlocutor_position", "distinction_draft", "distinction_settle", "impact_scan"):
