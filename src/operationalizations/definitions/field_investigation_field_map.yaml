@@ -1,0 +1,122 @@
+engine_key: field_investigation_field_map
+engine_name: Map disagreements across field arguments
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: Map disagreements across field arguments
+  framing: 'Investigate a bilateral question between a named thinker and a topical
+    research field. The field is a collection of independently authored arguments,
+    competing mechanisms, methods and cases, never a homogeneous position and never
+    merely secondary commentary on the thinker. Identify what each side can teach
+    or challenge in the other, and what should change in the researcher''s own account.
+    Distinguish description, causal explanation, normative commitments, strategy,
+    historical scope, level of analysis, and conditions of applicability. A field
+    author''s finding is not the thinker''s claim: only a verified quotation from
+    a supplied primary source can support thinker attribution. A proposed extension
+    or application belongs explicitly to this inquiry. Prior memos and profiles are
+    provisional context, not primary testimony; compare against them when supplied
+    and work independently when they are absent. Attribute coauthors, interviewers,
+    opponents and quoted speakers carefully. Edition/reprint dates do not establish
+    a new intervention. Search hits guide reading; lexical silence, missing texts,
+    excluded sources and inspected windows cannot establish absence across an oeuvre
+    or field. Keep counterevidence, qualifications and unresolved cases. Use only
+    supplied evidence identities and exact source anchors; never invent a quote, page,
+    author position, event or factual claim. Inspected ranges and coverage constrain
+    every conclusion. Method interpretation is not mechanically verified by a citation
+    match. If validation_errors and a previous_draft are supplied, reconsider the
+    identified unsupported claims against the same evidence and return a complete
+    corrected output; preserve uncertainty and never manufacture support identities
+    or quotations.'
+  scoped_outcomes: false
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: debate
+    name: Identify substantive field disagreements
+    questions:
+    - 'Compare named arguments across sources: competing mechanisms, evidence, cases,
+      organizational forms, causal direction and rival interpretations. Distinguish
+      actual disagreement from a difference in scope. Give field_finding with field
+      evidence_ids; unresolved is allowed when inspected texts cannot settle a dispute.
+      Do not replace disagreement with a topical list or homogeneous field consensus.'
+    method_card: 'Compare named arguments across sources: competing mechanisms, evidence,
+      cases, organizational forms, causal direction and rival interpretations. Distinguish
+      actual disagreement from a difference in scope. Give field_finding with field
+      evidence_ids; unresolved is allowed when inspected texts cannot settle a dispute.
+      Do not replace disagreement with a topical list or homogeneous field consensus.'
+    indicators:
+    - question
+    - evidence
+    - context
+    scope: document
+    load_bearing: true
+    id_prefix: E1
+    answer_shape: '[E1.F<n>] <finding in one sentence> — dim: debate — claim_kind:
+      field_finding|unresolved — evidence_ids: <exact original field uid/E1.Fn ids>
+      — positions: <named authors and claims> — mechanism: <causal process> — discriminating_test:
+      <evidence that would decide> — anchor: "<verbatim supplied passage, <=200 chars>"
+      — doc: <actual supplied source key> — confidence: high|medium|low'
+  - key: query
+    name: Guide author reading from field tensions
+    questions:
+    - Produce literal phrases for finding the thinker's relevant causal concepts,
+      assumptions and qualifications; do not assume the thinker discusses the same
+      cases or field authors.
+    method_card: Produce literal phrases for finding the thinker's relevant causal
+      concepts, assumptions and qualifications; do not assume the thinker discusses
+      the same cases or field authors.
+    indicators:
+    - question
+    - evidence
+    - context
+    scope: document
+    load_bearing: true
+    id_prefix: E2
+    answer_shape: '[E2.F<n>] <finding in one sentence> — dim: query — query: <literal
+      phrase> — reason: <field tension that motivates reading> — anchor: "<verbatim
+      supplied passage, <=200 chars>" — doc: <actual supplied source key> — confidence:
+      high|medium|low'
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension
+    model_tier: cheap
+    output: ledger
+    max_rows: 35
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - merge_duplicates
+    - hunt_misses
+    - name_must_keep
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: the researcher developing a position through the thinker and field
+    brief: Build an argument map, naming individual texts at each fork. Explain competing
+      mechanisms, different populations/scales and methods, empirical disagreements,
+      compatible propositions and unresolved cases. In batch mode disclose that boundary.
+      In global_reconciliation compare ALL batch maps, preserve minority and contrary
+      findings, and identify cross-batch tensions. Each material claim must retain
+      original evidence ids. Then supply the debate and targeted query ledger.
+    max_rows: 60

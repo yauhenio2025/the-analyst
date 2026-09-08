@@ -376,13 +376,13 @@ def _run_step(job: DossierJob, step: str, docs) -> None:
     elif step == "plan":
         from src.dossier.plan import run_fixed_plan, run_plan
 
-        if job.options.path and job.options.path.chain_key == "author_investigation":
+        if job.options.path and job.options.path.chain_key in ("author_investigation", "field_investigation"):
             from src.dossier.schemas import DossierPlan, DossierPlanPhase
             from src.dossier.catalog import load_recipes
-            recipe = next(r for r in load_recipes() if r["key"] == "author_investigation")
+            recipe = next(r for r in load_recipes() if r["key"] == job.options.path.chain_key)
             plan = DossierPlan(plan_id=f"investigation:{job_id}", phases=[
                 DossierPlanPhase(phase_number=i + 1, engine_key=s["engine_key"], depth=s["depth"],
-                                 why="Question plan, semantic triage, bounded primary readings, then synthesis")
+                                 why=recipe.get("yields", "Checkpointed source investigation"))
                 for i, s in enumerate(recipe["steps"])])
         else:
             plan = run_fixed_plan(job, docs) if _fast_lane(job) else run_plan(job, docs)
@@ -391,7 +391,9 @@ def _run_step(job: DossierJob, step: str, docs) -> None:
         persist(plan=plan, plan_id=plan.plan_id)
         summary = " → ".join(f"{p.engine_key}@{p.depth}" for p in plan.phases)
     elif step == "analysis":
-        if job.options.path and job.options.path.chain_key == "author_investigation":
+        if job.options.path and job.options.path.chain_key == "field_investigation":
+            from src.dossier.field_investigation import run_job_field_investigation as run_analysis
+        elif job.options.path and job.options.path.chain_key == "author_investigation":
             from src.dossier.investigation import run_job_investigation as run_analysis
         else:
             from src.dossier.analysis import run_analysis

@@ -97,6 +97,13 @@ def resolve_sources(specs: list[SourceSpec]) -> list[Document]:
             if not text:
                 logger.warning(f"source {idx} ({spec.kind}) has no text; skipped")
                 continue
+            if role == "field_investigation":
+                from src.sources.field_investigation import expand_field_investigation
+                for d in expand_field_investigation(text):
+                    role = d.role
+                    add(d)
+                role = "field_investigation"
+                continue
             if role == "author_investigation":
                 from src.sources.author_investigation import expand_author_investigation
                 for d in expand_author_investigation(text):

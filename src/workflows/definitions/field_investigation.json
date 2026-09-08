@@ -1,0 +1,93 @@
+{
+  "workflow_key": "field_investigation",
+  "workflow_name": "Develop a position through a thinker and research field",
+  "category": "analysis",
+  "version": 1,
+  "description": "Bilateral plan \u2192 read every selected field text \u2192 map rival arguments and evidence in batches \u2192 read every author core text \u2192 adjudicate scale, scope and evidence \u2192 memo with explicit revisions. Standalone or follow-up, with frozen source hashes, exact inspected spans, verified quote provenance, resumable paid checkpoints and per-source reading indexes.",
+  "phases": [
+    {
+      "phase_number": 1,
+      "phase_name": "Plan a thinker and field inquiry",
+      "phase_description": "Plan the bilateral question, tests and reading vocabulary. This is a research plan, not a conclusion.",
+      "engine_key": "field_investigation_plan",
+      "depends_on_phases": []
+    },
+    {
+      "phase_number": 2,
+      "phase_name": "Read one argument in the field",
+      "phase_description": "Write a substantive reading of THIS field text: thesis, mechanism, population and cases, research design, evidence strength, rival explanations, normative/strategic stakes, qualifications and useful counterevidence. Do not force it into agreement with the thinker. Then give the evidence and gap ledger.",
+      "engine_key": "field_investigation_field_read",
+      "depends_on_phases": [
+        1
+      ]
+    },
+    {
+      "phase_number": 3,
+      "phase_name": "Map disagreements across field arguments",
+      "phase_description": "Build an argument map, naming individual texts at each fork. Explain competing mechanisms, different populations/scales and methods, empirical disagreements, compatible propositions and unresolved cases. In batch mode disclose that boundary. In global_reconciliation compare ALL batch maps, preserve minority and contrary findings, and identify cross-batch tensions. Each material claim must retain original evidence ids. Then supply the debate and targeted query ledger.",
+      "engine_key": "field_investigation_field_map",
+      "depends_on_phases": [
+        1,
+        2
+      ]
+    },
+    {
+      "phase_number": 4,
+      "phase_name": "Choose author texts from field questions",
+      "phase_description": "In batch mode give one candidate decision for EVERY inventory row, including lexical misses, missing bodies and excluded sources. Use complete profiles, citation identities, prior readings and the field map as semantic leads. In reconcile mode compare all earlier decisions and choose an ordered core of at most limits.max_texts available texts, balancing direct evidence, historical context, conceptual explanations and contrary cases. Return read rows first in priority order, and explicit defer/unavailable rows when useful. Unjudged batch rows must remain unresolved unless you have a reason to select them. Do not choose by publication title or lexical count alone. Do not assume a prior selection is authoritative.",
+      "engine_key": "field_investigation_author_select",
+      "depends_on_phases": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "phase_number": 5,
+      "phase_name": "Read the thinker against field questions",
+      "phase_description": "Read this author source carefully in light of the field map. Reconstruct its own argument before testing relations to field mechanisms. Explain what the thinker actually says, the conditions and limits, and where this inquiry is making an extension. Then preserve source evidence and gaps.",
+      "engine_key": "field_investigation_author_read",
+      "depends_on_phases": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "phase_number": 6,
+      "phase_name": "Adjudicate tensions and revise the account",
+      "phase_description": "Write an explicit adjudication across the thinker and the field. Which apparent contradictions dissolve after distinguishing scale, scope or normative from causal claims? Which survive, and which side supplies stronger evidence for a bounded conclusion? State warranted extensions as this inquiry's proposals. Preserve counterevidence and questions. Then give the judgment ledger.",
+      "engine_key": "field_investigation_adjudicate",
+      "depends_on_phases": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "phase_number": 7,
+      "phase_name": "Write a thinker and field research memo",
+      "phase_description": "Write a substantial, readable second memo when a prior investigation is supplied, or a self-contained first memo for a standalone inquiry. Lead with what the researcher should now think and why. Explain the field debates as disagreements among named authors with mechanisms and evidence; recover the thinker's actual sourced position; adjudicate where the two clarify or challenge one another. Develop several concrete examples and counterarguments. Include an explicit account of changes from the prior memo, positions retained, new distinctions, unresolved questions and the strongest counterevidence. In standalone mode name new warranted conclusions without inventing an earlier memo. Distinguish your proposed extension from anything the thinker wrote. Cite primary and field findings inline as [uid/E1.Fn], with readable author/title/year and supplied page loci. Finish with material coverage limits and focused next questions. Then provide answer, revision, counterevidence and question ledger rows; do not replace the memo with the ledger.",
+      "engine_key": "field_investigation_memo",
+      "depends_on_phases": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    }
+  ],
+  "required_inputs": [
+    "field_investigation"
+  ],
+  "optional_inputs": [],
+  "output_description": "Memo, explicit changed/retained/new/unresolved positions, field argument maps, adjudication, complete source readings, verified primary and field evidence, page anchors, coverage and accounting. GET /v1/dossier/jobs/{id}/investigation.",
+  "linked_transformation_keys": [],
+  "source_project": "the-analyst",
+  "target_page": "dossier"
+}

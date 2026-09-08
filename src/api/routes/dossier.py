@@ -111,14 +111,17 @@ def validate_lane(req: CreateDossierRequest) -> dict:
     if use_frame and use_frame.use_kind and use_frame.use_kind not in USE_KINDS:
         raise ValueError(f"use_frame.use_kind must be one of {USE_KINDS} (or null)")
     path = req.path
-    investigation_sources = [s for s in req.sources if s.role == "author_investigation"]
-    investigation_path = path is not None and path.chain_key == "author_investigation"
+    investigation_kinds = {"author_investigation", "field_investigation"}
+    investigation_sources = [s for s in req.sources if s.role in investigation_kinds]
+    investigation_path = path is not None and path.chain_key in investigation_kinds
     if investigation_sources or investigation_path:
-        if entry != "chosen" or not investigation_path or len(investigation_sources) != 1 or len(req.sources) != 1:
-            raise ValueError("author investigation needs entry='chosen', path.chain_key='author_investigation', and one author_investigation source packet")
+        if (entry != "chosen" or not investigation_path or len(investigation_sources) != 1 or len(req.sources) != 1
+                or investigation_sources[0].role != path.chain_key):
+            kind = path.chain_key if investigation_path else investigation_sources[0].role
+            raise ValueError(f"investigation needs entry='chosen', path.chain_key='{kind}', and one {kind} source packet")
         output = req.output or OutputOptions()
         if output.text or output.tables or output.figures or output.plates:
-            raise ValueError("author investigation writes its own memo; set output text=false, tables=false, figures=0, plates=0")
+            raise ValueError("investigation writes its own memo; set output text=false, tables=false, figures=0, plates=0")
     if entry == "chosen":
         if path is None or (not path.steps and not path.chain_key):
             raise ValueError("entry = 'chosen' needs path.steps (1-4 executable engines) or path.chain_key (a recipe)")
@@ -328,9 +331,9 @@ def get_investigation(job_id: str):
     """Every completed research checkpoint, including partial runs and bounded coverage."""
     from src.dossier.investigation import load_investigation
     job = _load(job_id)
-    if not job.options.path or job.options.path.chain_key != "author_investigation":
-        raise HTTPException(status_code=409, detail="this job is not an author investigation")
-    out = load_investigation(job_id) or {"kind": "author_investigation", "question": job.options.intent,
+    if not job.options.path or job.options.path.chain_key not in ("author_investigation", "field_investigation"):
+        raise HTTPException(status_code=409, detail="this job is not an investigation")
+    out = load_investigation(job_id) or {"kind": job.options.path.chain_key, "question": job.options.intent,
                                          "stages": [], "evidence": [], "readings": [], "complete": False}
     # Raw per-call outputs are available from the durable job/ledger; this response is the research artifact.
     return {**{k: v for k, v in out.items() if k not in ("calls", "analysis")},

@@ -1,0 +1,55 @@
+# Develop a position through a thinker and a research field
+
+The reusable question is bilateral: what does a thinker's account clarify about a topical research field, and what do the field's competing arguments, mechanisms, cases and evidence require the researcher to revise? The motivating Riley/tech-worker case is an instance. The method works independently or as a sourced follow-up to a prior author investigation.
+
+## Request contract
+
+Create an engines-only dossier with `entry: chosen`, `path.chain_key: field_investigation`, exactly one paste source with `role: field_investigation`, and `output: {text:false,tables:false,figures:0,plates:0}`. Its text is a JSON packet:
+
+```json
+{
+  "kind": "field_investigation",
+  "author": {"id": "thinker-id", "name": "Thinker name"},
+  "question": "What should the researcher now conclude about this bilateral question?",
+  "scope": {"context": "Research scope and historical distinctions"},
+  "primary": [{"uid":"em:SOURCE01","title":"Author work","body":"Source text","profile":{}}],
+  "field": [{"uid":"referee:67","title":"Field paper","authors":["Field author"],"body":"Field text","referee_paper_id":67,"pdf_url":"https://example.org/paper.pdf","page_spans":[{"page":1,"start":0,"end":10}]}],
+  "prior_investigations": [],
+  "prior_readings": [],
+  "limits": {"max_field_texts":80,"max_field_chars":3000000,"max_primary_texts":12,"max_primary_chars":240000}
+}
+```
+
+The displayed page span is illustrative; real half-open offsets must match the exact supplied body. UIDs are globally unique across primary, field and optional secondary inventories. Missing or excluded entries remain metadata rows. Exclude unverified PDF identities with `body_state: excluded` and an explicit reason. Bodies, rendition hashes, source URLs, external reference IDs, authors, editions, dates, original-date uncertainty, Referee metadata and exact page spans survive freezing. The adapter never fetches replacements or treats a book container as proof of chapter authorship.
+
+`primary` is the complete author inventory, not a bridge-selected shortlist. `field` is the selected topical bundle: every eligible supplied field body receives an actual reading. Missing field bodies are explicit gaps. Optional prior investigations hold the actual memo, source identities and any separately labeled reviewed source passages. Prior job/phase pointers resolve through the existing reading registry before the context packet is frozen. The prior baseline receives its own 100,000-character allowance; other prior context receives 40,000 characters. Any context windowing is disclosed and the full supplied context remains stored. No prior investigation means standalone mode; the method must not invent an earlier position.
+
+## Method and execution
+
+Seven executable capability/operationalization records, a workflow and a dossier recipe hold the reasoning:
+
+1. `field_investigation_plan` formulates bilateral questions, rival mechanisms, discriminating tests and literal reading queries.
+2. `field_investigation_field_read` reads each available field text in its own terms: argument, mechanism, evidence, method, cases, scale, contrary findings and qualifications. Each field author retains an independent position.
+3. `field_investigation_field_map` identifies disagreements and compatible claims across those readings. Field reading/evidence bundles above 200,000 characters are mapped separately and then reconciled globally. Complete per-source readings and all batch maps remain persisted; final synthesis consumes the explicitly identified argument maps.
+4. `field_investigation_author_select` receives every full author profile, compact canonical citation metadata and search leads in batches of at most 20 rows/180,000 characters, guided by the field map and prior context. A global reconciliation orders the author core under the reading cap. Missing model decisions remain marked unjudged; missing/excluded sources stay visible. Selection comes from semantic method decisions, not title or UID order.
+5. `field_investigation_author_read` recovers the thinker's actual sourced position against those questions, distinguishing primary attribution from this inquiry's extension.
+6. `field_investigation_adjudicate` judges actual tensions, scope/scale mismatches, empirical versus normative claims, counterevidence, warranted revisions and unresolved tests.
+7. `field_investigation_memo` writes the research memo with supported answers and explicit changed, retained, new and unresolved positions. The baseline is the supplied prior memo or explicitly standalone. Revising the researcher's account is not a historical change in the thinker.
+
+All eligible field texts are read, up to 80. Field allowance defaults to 3M inspected characters, hard ceiling 8M; any one text receives at most 100,000 characters. The author core defaults to 12 texts/240,000 characters, configurable up to 40/960,000. Short texts are read whole when they fit; oversized texts receive disjoint exact contextual windows. Remaining allowance is shared among remaining selected texts, with a floor check before spending. Coverage separately records field and primary inventory, full/window reads, inspected characters and missing/excluded/unread IDs. Whole-body lexical searches are distinct from model reading; no absence claim across unread material is supported.
+
+## Safeguards and memory
+
+The custom executor shares the existing author investigation's durable job shell: compressed blobs, prior hydration, phase indexing, accounting, cancellation/drain checks and resume. Every provider output is checkpointed before the next call, with numeric analysis phases and exact frozen read inputs. Resume reuses completed calls and rejects changed packets or source renditions. Costs derive from completed checkpoints. A process killed after a provider response but before checkpoint persistence still has the existing unavoidable exactly-once billing boundary.
+
+Quoted evidence is verified against the original body and actually inspected ranges. Exact/whitespace-only matching records original offsets, original source quotation, SHA-256, source role and optional PDF page anchors. Invented quotations remain conjectures. External source identities such as `referee:67` now enter the text reading index alongside Zotero IDs.
+
+Field-map, adjudication and memo claim ledgers validate source support identities. `thinker_position` requires verified primary evidence; `field_finding` requires verified field evidence; `comparison` requires both; `unresolved` cannot masquerade as established support. Memo inline citations must resolve to verified evidence and revisions must name the correct prior/standalone baseline. These checks establish identity and source-role discipline, not semantic entailment; attribution and interpretation remain method obligations. One bounded repair may reconsider a failed map, adjudication or memo against the same evidence; the original paid draft remains cached separately. Failed validation preserves the draft and every completed research artifact.
+
+Use `GET /v1/dossier/jobs/{id}/investigation` for current or partial artifacts, including field maps, decisions, source readings, evidence, revised memo and coverage. Standard job/ledger/readings endpoints retain complete paid outputs and reusable per-text rows. No paid production run is part of mechanical validation; source preparation, live budget, deployment and report rendering are coordinated with the Stacks.
+
+## Validation
+
+The focused field and author suites exercise 47 field texts with 115 author profiles, full-inventory semantic selection, standalone/follow-up baselines, long contextual windows, external IDs/PDF anchors, source hash changes, fabricated quotations, provenance failures, cap/cancel behavior, interruption/resume and no repeated paid calls, large-field map batching, registry/API dispatch, durable accounting and reading indexes. Commands and release results are recorded with the delivery commit.
+
+Delivery validation: `python -m pytest -q tests/test_field_investigation_2026_09_09.py tests/test_author_investigation_2026_09_08.py tests/test_transactional_blob_compression_2026_09_09.py tests/test_oeuvre_position_2026_09_07.py tests/test_constructive_method_records_2026_09_08.py` — 72 passed, including bounded repair with both paid drafts retained and no repeated calls on resume.

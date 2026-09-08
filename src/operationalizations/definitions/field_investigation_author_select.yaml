@@ -1,0 +1,107 @@
+engine_key: field_investigation_author_select
+engine_name: Choose author texts from field questions
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: Choose author texts from field questions
+  framing: 'Investigate a bilateral question between a named thinker and a topical
+    research field. The field is a collection of independently authored arguments,
+    competing mechanisms, methods and cases, never a homogeneous position and never
+    merely secondary commentary on the thinker. Identify what each side can teach
+    or challenge in the other, and what should change in the researcher''s own account.
+    Distinguish description, causal explanation, normative commitments, strategy,
+    historical scope, level of analysis, and conditions of applicability. A field
+    author''s finding is not the thinker''s claim: only a verified quotation from
+    a supplied primary source can support thinker attribution. A proposed extension
+    or application belongs explicitly to this inquiry. Prior memos and profiles are
+    provisional context, not primary testimony; compare against them when supplied
+    and work independently when they are absent. Attribute coauthors, interviewers,
+    opponents and quoted speakers carefully. Edition/reprint dates do not establish
+    a new intervention. Search hits guide reading; lexical silence, missing texts,
+    excluded sources and inspected windows cannot establish absence across an oeuvre
+    or field. Keep counterevidence, qualifications and unresolved cases. Use only
+    supplied evidence identities and exact source anchors; never invent a quote, page,
+    author position, event or factual claim. Inspected ranges and coverage constrain
+    every conclusion. Method interpretation is not mechanically verified by a citation
+    match. If validation_errors and a previous_draft are supplied, reconsider the
+    identified unsupported claims against the same evidence and return a complete
+    corrected output; preserve uncertainty and never manufacture support identities
+    or quotations.'
+  scoped_outcomes: false
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: candidate
+    name: Select author texts by substantive relevance
+    questions:
+    - Which passages or arguments could clarify or challenge the field mechanisms?
+      Profiles and prior verified readings guide the selection but do not substitute
+      for reading the source. Preserve unavailable, excluded and uncertain dates.
+      Reconcile an evidence-diverse core under the supplied cap, including the strongest
+      contrary leads.
+    method_card: Which passages or arguments could clarify or challenge the field
+      mechanisms? Profiles and prior verified readings guide the selection but do
+      not substitute for reading the source. Preserve unavailable, excluded and uncertain
+      dates. Reconcile an evidence-diverse core under the supplied cap, including
+      the strongest contrary leads.
+    indicators:
+    - question
+    - evidence
+    - context
+    scope: document
+    load_bearing: true
+    id_prefix: E1
+    answer_shape: '[E1.F<n>] <finding in one sentence> — dim: candidate — uid: <exact
+      inventory uid> — decision: read|context|defer|unavailable — priority: <1 strongest
+      through 5 weakest> — reason: <specific relevance and selection rationale> —
+      queries: <semicolon-separated literal phrases for targeted reading> — anchor:
+      "<verbatim supplied passage, <=200 chars>" — doc: <actual supplied source key>
+      — confidence: high|medium|low'
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension
+    model_tier: cheap
+    output: ledger
+    max_rows: 35
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - merge_duplicates
+    - hunt_misses
+    - name_must_keep
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: the researcher developing a position through the thinker and field
+    brief: In batch mode give one candidate decision for EVERY inventory row, including
+      lexical misses, missing bodies and excluded sources. Use complete profiles,
+      citation identities, prior readings and the field map as semantic leads. In
+      reconcile mode compare all earlier decisions and choose an ordered core of at
+      most limits.max_texts available texts, balancing direct evidence, historical
+      context, conceptual explanations and contrary cases. Return read rows first
+      in priority order, and explicit defer/unavailable rows when useful. Unjudged
+      batch rows must remain unresolved unless you have a reason to select them. Do
+      not choose by publication title or lexical count alone. Do not assume a prior
+      selection is authoritative.
+    max_rows: 60

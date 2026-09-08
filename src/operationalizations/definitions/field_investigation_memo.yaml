@@ -1,0 +1,172 @@
+engine_key: field_investigation_memo
+engine_name: Write a thinker and field research memo
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: Write a thinker and field research memo
+  framing: 'Investigate a bilateral question between a named thinker and a topical
+    research field. The field is a collection of independently authored arguments,
+    competing mechanisms, methods and cases, never a homogeneous position and never
+    merely secondary commentary on the thinker. Identify what each side can teach
+    or challenge in the other, and what should change in the researcher''s own account.
+    Distinguish description, causal explanation, normative commitments, strategy,
+    historical scope, level of analysis, and conditions of applicability. A field
+    author''s finding is not the thinker''s claim: only a verified quotation from
+    a supplied primary source can support thinker attribution. A proposed extension
+    or application belongs explicitly to this inquiry. Prior memos and profiles are
+    provisional context, not primary testimony; compare against them when supplied
+    and work independently when they are absent. Attribute coauthors, interviewers,
+    opponents and quoted speakers carefully. Edition/reprint dates do not establish
+    a new intervention. Search hits guide reading; lexical silence, missing texts,
+    excluded sources and inspected windows cannot establish absence across an oeuvre
+    or field. Keep counterevidence, qualifications and unresolved cases. Use only
+    supplied evidence identities and exact source anchors; never invent a quote, page,
+    author position, event or factual claim. Inspected ranges and coverage constrain
+    every conclusion. Method interpretation is not mechanically verified by a citation
+    match. If validation_errors and a previous_draft are supplied, reconsider the
+    identified unsupported claims against the same evidence and return a complete
+    corrected output; preserve uncertainty and never manufacture support identities
+    or quotations.'
+  scoped_outcomes: false
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: answer
+    name: Give supported and attributed conclusions
+    questions:
+    - Every material conclusion must be an answer row. thinker_position requires primary
+      support; field_finding requires field support; comparison requires BOTH; unresolved
+      must remain a question. Use exact verified evidence identities from the packet.
+      In prose use these same identities in square brackets and name the relevant
+      source and page when supplied. Never cite a field source as evidence that the
+      thinker says something.
+    method_card: Every material conclusion must be an answer row. thinker_position
+      requires primary support; field_finding requires field support; comparison requires
+      BOTH; unresolved must remain a question. Use exact verified evidence identities
+      from the packet. In prose use these same identities in square brackets and name
+      the relevant source and page when supplied. Never cite a field source as evidence
+      that the thinker says something.
+    indicators:
+    - question
+    - evidence
+    - context
+    scope: document
+    load_bearing: true
+    id_prefix: E1
+    answer_shape: '[E1.F<n>] <finding in one sentence> — dim: answer — claim_kind:
+      thinker_position|field_finding|comparison|unresolved — evidence_ids: <semicolon-separated
+      exact supplied uid/E1.Fn identities; no invented ids> — warrant: <reason and
+      scope> — anchor: "<verbatim supplied passage, <=200 chars>" — doc: <actual supplied
+      source key> — confidence: high|medium|low'
+  - key: revision
+    name: Make learning explicit
+    questions:
+    - Supply separate rows for concrete changed, retained, new and unresolved positions
+      as applicable, explicitly comparing with the actual available baseline. baseline
+      MUST be prior in follow_up mode and standalone otherwise. If baseline text is
+      partial, identify that limit. Do not manufacture a change merely because a second
+      memo was requested.
+    method_card: Supply separate rows for concrete changed, retained, new and unresolved
+      positions as applicable, explicitly comparing with the actual available baseline.
+      baseline MUST be prior in follow_up mode and standalone otherwise. If baseline
+      text is partial, identify that limit. Do not manufacture a change merely because
+      a second memo was requested.
+    indicators:
+    - question
+    - evidence
+    - context
+    scope: document
+    load_bearing: true
+    id_prefix: E2
+    answer_shape: '[E2.F<n>] <finding in one sentence> — dim: revision — disposition:
+      changed|retained|new|unresolved — baseline: prior|standalone — before: <actual
+      prior position or no prior> — after: <position now> — evidence_ids: <exact support
+      identities> — anchor: "<verbatim supplied passage, <=200 chars>" — doc: <actual
+      supplied source key> — confidence: high|medium|low'
+  - key: counterevidence
+    name: Keep the strongest challenge
+    questions:
+    - Name the strongest available counterevidence to your own preferred account and
+      explain why it does or does not overturn the bounded judgment.
+    method_card: Name the strongest available counterevidence to your own preferred
+      account and explain why it does or does not overturn the bounded judgment.
+    indicators:
+    - question
+    - evidence
+    - context
+    scope: document
+    load_bearing: true
+    id_prefix: E3
+    answer_shape: '[E3.F<n>] <finding in one sentence> — dim: counterevidence — evidence_ids:
+      <exact verified identities or none when the gap is explicit> — challenge: <what
+      could be wrong> — response: <qualified assessment> — anchor: "<verbatim supplied
+      passage, <=200 chars>" — doc: <actual supplied source key> — confidence: high|medium|low'
+  - key: question
+    name: State next discriminating questions
+    questions:
+    - Give specific research questions or source gaps that could change the memo.
+      Do not turn generic future reading into evidence for a present conclusion.
+    method_card: Give specific research questions or source gaps that could change
+      the memo. Do not turn generic future reading into evidence for a present conclusion.
+    indicators:
+    - question
+    - evidence
+    - context
+    scope: document
+    load_bearing: true
+    id_prefix: E4
+    answer_shape: '[E4.F<n>] <finding in one sentence> — dim: question — question:
+      <unresolved question> — test: <needed evidence> — anchor: "<verbatim supplied
+      passage, <=200 chars>" — doc: <actual supplied source key> — confidence: high|medium|low'
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension
+    model_tier: cheap
+    output: ledger
+    max_rows: 35
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - merge_duplicates
+    - hunt_misses
+    - name_must_keep
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: the researcher developing a position through the thinker and field
+    brief: Write a substantial, readable second memo when a prior investigation is
+      supplied, or a self-contained first memo for a standalone inquiry. Lead with
+      what the researcher should now think and why. Explain the field debates as disagreements
+      among named authors with mechanisms and evidence; recover the thinker's actual
+      sourced position; adjudicate where the two clarify or challenge one another.
+      Develop several concrete examples and counterarguments. Include an explicit
+      account of changes from the prior memo, positions retained, new distinctions,
+      unresolved questions and the strongest counterevidence. In standalone mode name
+      new warranted conclusions without inventing an earlier memo. Distinguish your
+      proposed extension from anything the thinker wrote. Cite primary and field findings
+      inline as [uid/E1.Fn], with readable author/title/year and supplied page loci.
+      Finish with material coverage limits and focused next questions. Then provide
+      answer, revision, counterevidence and question ledger rows; do not replace the
+      memo with the ledger.
+    max_rows: 60

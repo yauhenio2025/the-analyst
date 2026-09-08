@@ -662,7 +662,8 @@ def load_investigation(job_id):
     return json.loads(found[1]) if found else None
 
 
-def run_job_investigation(job, docs, *, cancel_check=None, persist=None):
+def run_job_investigation(job, docs, *, cancel_check=None, persist=None, chain=CHAIN, executor=None):
+    """Shared durable storage/accounting/indexing shell for research executors."""
     from src.dossier.blob_store import put_blob, get_blob
     from src.dossier.common import DossierCancelled, DossierDraining
     from src.dossier.drain import is_draining
@@ -670,8 +671,8 @@ def run_job_investigation(job, docs, *, cancel_check=None, persist=None):
     from src.dossier import events
     from src.readings.registry import index_job, reading, readings_for
     packet = next((json.loads(d.text) for d in docs if d.key == "investigation" and d.role == "plan"), None)
-    if not packet or packet.get("kind") != CHAIN:
-        raise ValueError("author_investigation recipe requires its frozen source packet")
+    if not packet or packet.get("kind") != chain:
+        raise ValueError(f"{chain} recipe requires its frozen source packet")
     frozen = get_blob(f"investigation-context:{job.id}")
     if frozen:
         packet = json.loads(frozen[1])
@@ -680,9 +681,9 @@ def run_job_investigation(job, docs, *, cancel_check=None, persist=None):
         put_blob(f"investigation-context:{job.id}", "application/json", _json(packet).encode())
     def check():
         if cancel_check and cancel_check():
-            raise DossierCancelled("author investigation cancelled between calls")
+            raise DossierCancelled(f"{chain} cancelled between calls")
         if is_draining():
-            raise DossierDraining("author investigation checkpoint saved between calls")
+            raise DossierDraining(f"{chain} checkpoint saved between calls")
     indexed_phases = {}
     def save(state):
         # Fail before another paid call if durable artifact persistence is unavailable.
@@ -707,9 +708,9 @@ def run_job_investigation(job, docs, *, cancel_check=None, persist=None):
         if changed_phases:
             index_job({**job.model_dump(), "packet": packet}, only_phases=changed_phases)
             indexed_phases.update({phase: state["analysis"][phase].get("final_output", "") for phase in changed_phases})
-        events.emit(job.id, "note", phase="analysis", detail=f"Author investigation: {state['current_stage']}",
+        events.emit(job.id, "note", phase="analysis", detail=f"{chain}: {state['current_stage']}",
                     cost_usd=state["cost_usd"], payload_json={"stage": state["current_stage"], "read_count": len(state.get("readings", []))})
-    state = run_investigation(packet, {d.key: d.text for d in docs if d.role == "source"}, call=call_engine, save=save,
+    state = (executor or run_investigation)(packet, {d.key: d.text for d in docs if d.role == "source"}, call=call_engine, save=save,
                               state=load_investigation(job.id), check=check,
                               spend_cap_usd=job.options.spend_cap_usd if job.options.spend_cap_usd is not None else 8.0)
     return "", state["analysis"]

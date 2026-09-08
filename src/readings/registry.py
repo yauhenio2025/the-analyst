@@ -69,6 +69,12 @@ def persons_of(fields: dict, row_text: str = "") -> set[str]:
 
 def texts_of(fields: dict, doc: str = "") -> set[str]:
     out = set()
+    # A frozen field packet may identify a paper outside Zotero. Preserve that
+    # exact stable identity so its granular reading can be reused by source.
+    if doc.startswith(("field:", "primary:")):
+        external = doc.split(":", 1)[1]
+        if ":" in external and not re.search(r"[\s/\[\]]", external):
+            out.add(external)
     for m in UID.finditer(doc or ""):
         out.add(m.group(1))
     for k in TEXT_FIELDS:
@@ -154,7 +160,7 @@ PUBLIC_BASE = __import__("os").environ.get("PUBLIC_BASE_URL", "https://the-analy
 
 def _renders(engine: str, job_id: Optional[str]) -> list[str]:
     base = f"{PUBLIC_BASE}/v1/dossier/jobs/{job_id}"   # absolute: a render may live on another host one day (the Stacks, 19:30)
-    if engine.startswith("author_investigation_"):
+    if engine.startswith(("author_investigation_", "field_investigation_")):
         return [f"{base}/investigation"]
     if engine in ("oeuvre_trajectory", "citation_shift", "retrospective_reading", "prospective_reading", "epistemic_rupture", "oeuvre_position_memo", "thinker_placement"):
         return [f"{base}/oeuvre", f"{base}/page"]
