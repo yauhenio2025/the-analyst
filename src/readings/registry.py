@@ -199,7 +199,7 @@ def save_reading(reading: dict, *, strict: bool = False) -> None:
         return
     # External imports acknowledge durable reading/index writes together. Serialise
     # their read/modify/write operations so concurrent receipts do not lose entries.
-    from src.dossier.blob_store import _bin, decode_blob_data, encode_blob_data, ensure_table
+    from src.dossier.blob_store import get_blob_in_cursor, put_blob_in_cursor, ensure_table
     from src.executor.db import _is_postgres, get_connection
     ensure_table()
     postgres = _is_postgres()
@@ -211,20 +211,12 @@ def save_reading(reading: dict, *, strict: bool = False) -> None:
             else:
                 cursor.execute("BEGIN IMMEDIATE")
 
-            def run(sql, values):
-                cursor.execute(sql if postgres else sql.replace("%s", "?"), values)
-
             def get(key):
-                run("SELECT mime,data FROM dossier_blobs WHERE blob_key=%s", (key,))
-                row = cursor.fetchone()
-                return decode_blob_data(row[0], row[1]) if row else None
+                found = get_blob_in_cursor(cursor, key)
+                return found[1] if found else None
 
             def put(key, mime, data):
-                data = encode_blob_data(mime, data)
-                run("INSERT INTO dossier_blobs (blob_key,mime,size,data,created_at) VALUES (%s,%s,%s,%s,%s) "
-                    "ON CONFLICT (blob_key) DO UPDATE SET mime=EXCLUDED.mime,size=EXCLUDED.size,"
-                    "data=EXCLUDED.data,created_at=EXCLUDED.created_at",
-                    (key, mime, len(data), _bin(data), time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())))
+                put_blob_in_cursor(cursor, key, mime, data)
 
             _save_reading(reading, put, get)
             conn.commit()

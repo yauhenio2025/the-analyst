@@ -5,6 +5,7 @@ console reads, and `resume(job_id)` continues from the recorded step.
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import logging
 import threading
@@ -19,6 +20,8 @@ logger = logging.getLogger(__name__)
 _table_ready = False
 _table_lock = threading.Lock()
 _receipt_lock = threading.Lock()
+_JSON_BLOB_REF = "__analyst_dossier_json_blob_v1__"
+_INLINE_JSON_BYTES = 512 * 1024
 
 JSON_COLUMNS = (
     "sources_json", "options_json", "profiles_json", "brief_json", "analysis_json",
@@ -99,19 +102,39 @@ def _jsonable(value: Any) -> Any:
 def _dumps(value: Any) -> str:
     if value is None:
         return "null"
-    return json.dumps(_jsonable(value), ensure_ascii=False, default=str)
+    value = _jsonable(value)
+    text = json.dumps(value, ensure_ascii=False, default=str)
+    raw = text.encode("utf-8")
+    if len(raw) <= _INLINE_JSON_BYTES and not (isinstance(value, dict) and _JSON_BLOB_REF in value):
+        return text
+    from src.dossier.blob_store import put_blob
+    digest = hashlib.sha256(raw).hexdigest()
+    key = f"dossier-json:{digest}"
+    # Publish the row's reference only after the complete immutable content is
+    # durable. A failed row write may leave reusable content, never a broken ref.
+    put_blob(key, "application/json", raw)
+    return json.dumps({_JSON_BLOB_REF: key, "sha256": digest, "bytes": len(raw)})
 
 
 def _loads(text: Any, default: Any) -> Any:
     if text is None:
         return default
-    if isinstance(text, (dict, list)):
-        return text
     try:
-        parsed = json.loads(text)
-        return default if parsed is None else parsed
+        parsed = text if isinstance(text, (dict, list)) else json.loads(text)
     except Exception:
         return default
+    if isinstance(parsed, dict) and _JSON_BLOB_REF in parsed:
+        from src.dossier.blob_store import get_blob
+        if set(parsed) != {_JSON_BLOB_REF, "sha256", "bytes"}:
+            raise ValueError("invalid dossier JSON storage reference")
+        found = get_blob(parsed[_JSON_BLOB_REF])
+        if not found:
+            raise ValueError("referenced dossier JSON is missing")
+        raw = found[1]
+        if len(raw) != parsed["bytes"] or hashlib.sha256(raw).hexdigest() != parsed["sha256"]:
+            raise ValueError("referenced dossier JSON hash or length changed")
+        parsed = json.loads(raw)
+    return default if parsed is None else parsed
 
 
 def _row_to_job(row: dict) -> DossierJob:

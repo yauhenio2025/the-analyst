@@ -37,16 +37,17 @@ def _get(key: str) -> dict | None:
 
 def _put_once(key: str, value: dict) -> dict:
     """Database uniqueness arbitrates retries, including concurrent imports."""
-    from src.dossier.blob_store import _bin, encode_blob_data, ensure_table
-    from src.executor.db import execute
+    from src.dossier.blob_store import get_blob_in_cursor, put_blob_in_cursor, ensure_table
+    from src.executor.db import get_connection
     ensure_table()
-    raw = encode_blob_data("application/json", encoded(value))
-    execute("INSERT INTO dossier_blobs (blob_key,mime,size,data,created_at) VALUES (%s,%s,%s,%s,%s) "
-            "ON CONFLICT (blob_key) DO NOTHING", (key, "application/json", len(raw), _bin(raw), now()))
-    saved = _get(key)
-    if saved is None:
-        raise RuntimeError("Inquiry blob was not persisted")
-    return saved
+    with get_connection() as conn:
+        cursor = conn.cursor()
+        put_blob_in_cursor(cursor, key, "application/json", encoded(value), overwrite=False)
+        saved = get_blob_in_cursor(cursor, key)
+        if saved is None:
+            raise RuntimeError("Inquiry blob was not persisted")
+        conn.commit()
+    return json.loads(saved[1])
 
 
 def method_record(key: str) -> dict:
