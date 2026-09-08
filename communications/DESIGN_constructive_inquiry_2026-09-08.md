@@ -173,3 +173,14 @@ coverage, exact retest selection, invalid references and budgets, method edits,
 concurrent imports, replay and primary-reading preparation provenance. These are
 engineering checks; actual automated discovery quality and research usefulness still
 require the Stacks acceptance trial from intent through a real author response.
+
+The connected Stacks extension has now passed five cross-service contract cases with
+real central methods, planning/reading receipts, memory retrieval and author feedback;
+external discovery and execution were controlled. The complete focused central run
+passed 81 tests. These checks include interrupted receipt delivery, refused invented
+sources and selection after evidence arrival. The Stacks
+[automation delivery note](/home/evgeny/projects/zotero-stacks-constructive-inquiry/communications/2026-09-08_inquiry_automation.md)
+records its 136 distinct backend checks and 77 browser checks, with the wider roadmap
+preserved. Broader Brief exchange, author-wide oeuvre and cross-project theory retrieval
+remain separate work. No live scholarly evaluation, merge or deployment was performed
+for this extension.
