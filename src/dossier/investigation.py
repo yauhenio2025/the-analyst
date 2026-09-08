@@ -726,7 +726,23 @@ def run_job_investigation(job, docs, *, cancel_check=None, persist=None, chain=C
             indexed_phases.update({phase: state["analysis"][phase].get("final_output", "") for phase in changed_phases})
         events.emit(job.id, "note", phase="analysis", detail=f"{chain}: {state['current_stage']}",
                     cost_usd=state["cost_usd"], payload_json={"stage": state["current_stage"], "read_count": len(state.get("readings", []))})
+    restored = load_investigation(job.id)
+    if chain == "field_investigation":
+        # Layout reviews are verification artifacts of the same frozen PDF and
+        # body, never replacement source text or additional model readings.
+        review_blob = get_blob(f"investigation-layout-review:{job.id}")
+        if review_blob and restored:
+            review_bytes = review_blob[1]
+            review_hash = hashlib.sha256(review_bytes).hexdigest()
+            previous = restored.get("quote_layout_review_artifact_sha256")
+            if previous and previous != review_hash:
+                raise ValueError("the frozen quote layout review artifact changed")
+            reviews = json.loads(review_bytes)
+            if not isinstance(reviews, dict):
+                raise ValueError("quote layout reviews must be keyed by source UID")
+            restored["quote_layout_reviews"] = reviews
+            restored["quote_layout_review_artifact_sha256"] = review_hash
     state = (executor or run_investigation)(packet, {d.key: d.text for d in docs if d.role == "source"}, call=call_engine, save=save,
-                              state=load_investigation(job.id), check=check,
+                              state=restored, check=check,
                               spend_cap_usd=job.options.spend_cap_usd if job.options.spend_cap_usd is not None else 8.0)
     return "", state["analysis"]

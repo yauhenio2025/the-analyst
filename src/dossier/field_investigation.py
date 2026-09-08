@@ -153,6 +153,9 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
                       "evidence": [], "readings": [], "read_inputs": {}, "complete": False}
     if state.get("packet_sha256") != fingerprint:
         raise ValueError("the frozen investigation packet changed; create a new run")
+    state.setdefault("quote_layout_reviews", packet.get("quote_layout_reviews") or {})
+    if not isinstance(state["quote_layout_reviews"], dict):
+        raise ValueError("quote layout reviews must be keyed by source UID")
 
     def checkpoint(stage, **fields):
         state.update(fields, updated_at=_now(), current_stage=stage)
@@ -254,7 +257,7 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
     def evidence_context(role=None):
         return [{k: v for k, v in e.items() if k in ("citation_id", "uid", "source_key", "source_role", "finding",
                                                     "source_quote", "quote_verified", "conjecture", "quote_start", "quote_end",
-                                                    "pages", "page_urls", "title", "year")}
+                                                    "quote_match", "quote_layout", "pages", "page_urls", "title", "year")}
                 for e in state["evidence"] if role is None or e["source_role"] == role]
 
     def read_population(role, guidance, selected_uids=None):
@@ -316,16 +319,28 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
                     continue
                 quote = str(r.get("anchor") or "")
                 span = quote_span(quote, body, ranges)
+                layout_quote = None
+                if span is None and role == "field" and row.get("page_spans"):
+                    from src.dossier.pdf_quote_layout import pdf_column_quote
+                    layout_quote = pdf_column_quote(
+                        quote, body, ranges, row["page_spans"],
+                        review=state["quote_layout_reviews"].get(uid),
+                        pdf_sha256=row.get("pdf_sha256") or (row.get("source_metadata") or {}).get("pdf_sha256"))
+                    if layout_quote:
+                        span = (layout_quote["quote_start"], layout_quote["quote_end"], layout_quote["quote_match"])
                 verified = bool(span) and r.get("doc") == key and _field(r, "uid") in ("", uid)
                 pages, links = _pages(row, span[0], span[1]) if verified else ([], [])
-                state["evidence"].append({**r, "uid": uid, "source_key": key, "source_role": role,
+                evidence = {**r, "uid": uid, "source_key": key, "source_role": role,
                     "title": row.get("title"), "year": row.get("year"), "source_metadata": metadata,
                     "read_uid": row.get("read_uid"), "body_sha256": row["body_sha256"],
                     "quote": quote, "model_quote": quote, "source_quote": body[span[0]:span[1]] if verified else None,
                     "quote_verified": verified, "anchor_verified": verified, "conjecture": not verified,
                     "quote_start": span[0] if verified else None, "quote_end": span[1] if verified else None,
                     "quote_match": span[2] if verified else None, "pages": pages, "page_urls": links,
-                    "citation_id": f"{uid}/{r.get('id', '')}"})
+                    "citation_id": f"{uid}/{r.get('id', '')}"}
+                if verified and layout_quote:
+                    evidence.update(layout_quote)
+                state["evidence"].append(evidence)
             checkpoint("reading")
 
     read_population("field", plan)
