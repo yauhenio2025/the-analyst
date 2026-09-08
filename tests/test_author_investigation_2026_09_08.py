@@ -236,6 +236,13 @@ def test_dossier_runner_uses_registered_specialized_executor_and_durable_account
     assert job.totals.cost_usd == pytest.approx(.7) and job.totals.llm_calls == 7
     assert job.totals.input_tokens == 77 and len(job.receipts) == 7
     assert any("analysis" in fields and "receipts" in fields for fields in writes)
+    zero = job.model_copy(deep=True)
+    zero.id = "dossier-zero-cap"
+    zero.options.spend_cap_usd = 0
+    monkeypatch.setattr(engine_call, "call_engine", lambda *a, **k: pytest.fail("zero cap must not default to eight dollars"))
+    with pytest.raises(ValueError, match="spend cap"):
+        runner._run_step(zero, "analysis", docs)
+    assert json.loads(blobs["investigation:dossier-zero-cap"])["cost_usd"] == 0
 
 
 def test_cancel_between_calls_keeps_plan_without_starting_another_call():
@@ -330,3 +337,12 @@ def test_reading_budget_is_shared_across_intended_slots():
     assert state['coverage']['inspected_chars'] <= 30000
     assert all(r['reading_mode'] == 'windows' for r in state['readings'])
     assert all(r['inspected_chars'] < 15000 for r in state['readings'])
+
+
+def test_explicit_zero_cap_refuses_all_paid_work():
+    _, packet, _, bodies = fixture()
+    snapshots = []
+    with pytest.raises(ValueError, match='spend cap'):
+        run_investigation(packet, bodies, call=lambda *a, **kw: pytest.fail('zero cap cannot call a model'),
+                          save=lambda s: snapshots.append(copy.deepcopy(s)), spend_cap_usd=0)
+    assert snapshots[-1]['cost_usd'] == 0 and not snapshots[-1]['calls']

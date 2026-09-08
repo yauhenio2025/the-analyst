@@ -508,5 +508,6 @@ def run_job_investigation(job, docs, *, cancel_check=None, persist=None):
         events.emit(job.id, "note", phase="analysis", detail=f"Author investigation: {state['current_stage']}",
                     cost_usd=state["cost_usd"], payload_json={"stage": state["current_stage"], "read_count": len(state.get("readings", []))})
     state = run_investigation(packet, {d.key: d.text for d in docs if d.role == "source"}, call=call_engine, save=save,
-                              state=load_investigation(job.id), check=check, spend_cap_usd=job.options.spend_cap_usd or 8.0)
+                              state=load_investigation(job.id), check=check,
+                              spend_cap_usd=job.options.spend_cap_usd if job.options.spend_cap_usd is not None else 8.0)
     return "", state["analysis"]
