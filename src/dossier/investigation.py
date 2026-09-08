@@ -167,6 +167,74 @@ def _excerpt(body, ranges):
     return "\n\n".join(f"[SOURCE CHARACTERS {lo}:{hi}]\n{body[lo:hi]}" for lo, hi in ranges)
 
 
+def quote_span(quote, body, ranges):
+    """Only whitespace may differ; return offsets in an actually inspected window."""
+    if not quote or not quote.strip():
+        return None
+    for lo, hi in ranges:
+        pos = body.find(quote, lo, hi)
+        if pos >= 0:
+            return pos, pos + len(quote), "exact"
+    pattern = re.compile(r"\s+".join(re.escape(part) for part in quote.split()))
+    for lo, hi in ranges:
+        match = pattern.search(body, lo, hi)
+        if match:
+            return match.start(), match.end(), "whitespace_only"
+    return None
+
+
+def _legacy_read_inputs(state, primary, bodies, search_by, candidates, max_texts, max_chars):
+    """Replay the old deterministic queue solely to recover already-paid source spans.
+
+    Old checkpoints persisted a call before its reading coverage. Never attach a
+    cached result to windows allocated by the repaired scheduler. Existing
+    coverage is an independent check on the legacy reconstruction.
+    """
+    by_uid = {r["uid"]: r for r in primary}
+    existing = {r["uid"]: r for r in state.get("readings", [])}
+    selected, processed, restored = list(candidates), set(), {}
+    consumed = 0
+    for index, candidate in enumerate(selected):
+        if len(restored) >= max_texts:
+            break
+        uid = candidate["uid"]
+        row, body = by_uid[uid], bodies[by_uid[uid]["source_key"]]
+        processed.add(uid)
+        remaining = max_chars - consumed
+        if remaining < 5000 and len(body) > remaining:
+            continue
+        slots = min(max_texts - len(restored), len(selected) - index)
+        allocation = min(60000, remaining // max(1, slots))
+        ranges = inspected_ranges(body, search_by[uid], allocation, str(_field(candidate, "queries")).split(";"))
+        if not ranges:
+            continue
+        result = state["calls"].get(f"read:{uid}")
+        if result is None:
+            break
+        if uid in existing and [list(r) for r in ranges] != [list(r) for r in existing[uid]["inspected_ranges"]]:
+            raise ValueError(f"saved reading ranges differ from legacy replay for {uid}; cached work retained")
+        consumed += sum(hi - lo for lo, hi in ranges)
+        restored[uid] = {"ranges": ranges, "selection": candidate, "recovered_from": "legacy_queue_replay"}
+        for lead in recover_answer_rows(result):
+            key = str(_field(lead, "work_key"))
+            if lead.get("dim") != "citation_lead" or key not in {str(c.get("key") or c.get("work_key")) for c in row.get("citations") or []}:
+                continue
+            for target in primary:
+                target_uid = target["uid"]
+                if target_uid == uid or not any(str(c.get("key") or c.get("work_key")) == key for c in target.get("citations") or []):
+                    continue
+                if target_uid not in processed and bodies.get(target["source_key"]) and _eligible(target):
+                    prior = next((i for i, c in enumerate(selected) if c["uid"] == target_uid), None)
+                    if prior is not None:
+                        selected.pop(prior)
+                    selected.insert(index + 1, {"uid": target_uid, "decision": "read", "reason": _field(lead, "reason"),
+                                    "fields": {"priority": "3"}, "discovered_from": uid, "work_key": key})
+    cached = {stage.removeprefix("read:") for stage in state["calls"] if stage.startswith("read:")}
+    if cached - restored.keys():
+        raise ValueError("cannot recover every cached reading's original source ranges; paid work retained")
+    return restored
+
+
 def _context(packet, bodies, cap=50000, queries=()):
     """Catalogue every prior source; search full bodies, then supply explicit windows."""
     entries = []
@@ -351,12 +419,24 @@ def run_investigation(packet: dict, bodies: dict, *, call: Callable, save: Calla
     if batch:
         batches.append(batch)
     decisions = {}
-    for i, batch in enumerate(batches):
-        result = engine(f"triage:{i + 1}", "author_investigation_triage",
-                        [_spec("inventory-batch", _json(batch)), _spec("prior-context", _json(context))],
-                        {**common, "plan": plan.get("final_output"), "queries": queries})
-        allowed = {r["inventory"]["uid"] for r in batch}
-        for row in result.get("rows") or []:
+    if "triage-selection" in state["calls"]:
+        # Expanded citation paths can change the size of batches on resume.
+        # A completed reconciliation proves triage finished: restore its paid
+        # inputs instead of repartitioning the corpus and paying for it again.
+        triage_results = [(recover_answer_rows(result), set(by_uid))
+                          for stage, result in sorted(state["calls"].items(),
+                              key=lambda item: int(item[0].split(":")[1]) if item[0].startswith("triage:") else -1)
+                          if stage.startswith("triage:")]
+    else:
+        def pending_triage_results():
+            for i, batch in enumerate(batches):
+                result = engine(f"triage:{i + 1}", "author_investigation_triage",
+                                [_spec("inventory-batch", _json(batch)), _spec("prior-context", _json(context))],
+                                {**common, "plan": plan.get("final_output"), "queries": queries})
+                yield result.get("rows") or [], {r["inventory"]["uid"] for r in batch}
+        triage_results = pending_triage_results()
+    for rows, allowed in triage_results:
+        for row in rows:
             uid = str(_field(row, "uid"))
             if uid in allowed and _field(row, "decision") in ("read", "context", "defer", "unavailable"):
                 decisions[uid] = {**row, "uid": uid, "decision": _field(row, "decision"), "reason": _field(row, "reason")}
@@ -390,11 +470,48 @@ def run_investigation(packet: dict, bodies: dict, *, call: Callable, save: Calla
     max_chars = max(5000, min(480000, int(limits.get("max_primary_chars", 240000))))
     checkpoint("triage", triage=list(decisions.values()),
                citation_paths=citation_paths(primary, state["searches"], queries, [r["uid"] for r in candidates]))
+    core_uids = {r["uid"] for r in candidates[:max_texts]}
+    # Numeric analysis phases preserve paid-call order independently of JSON key ordering.
+    read_stages = [p["stage"] for _, p in sorted(state.get("analysis", {}).items(), key=lambda item: int(item[0]))
+                   if str(p.get("stage", "")).startswith("read:")]
+    read_stages += [stage for stage in state["calls"] if stage.startswith("read:") and stage not in read_stages]
+    cached_uids = [stage.removeprefix("read:") for stage in read_stages]
+    if cached_uids and not state.get("read_inputs"):
+        restored = _legacy_read_inputs(state, primary, bodies, search_by, candidates, max_texts, max_chars)
+        checkpoint("recover_read_inputs", read_inputs=restored)
+    state.setdefault("read_inputs", {})
+    legacy_extras = [uid for uid in cached_uids if uid not in core_uids]
+    remaining_candidates = [r for r in candidates if r["uid"] not in cached_uids]
+    if len(legacy_extras) > 2 and len(cached_uids) < max_texts:
+        recovery = engine("recovery-selection", "author_investigation_triage",
+                          [_spec("inventory-selection", _json([
+                              {"inventory": {k: by_uid[r["uid"]].get(k) for k in ("uid", "title", "year", "date_scope", "body_state", "body_chars")},
+                               "prior_decision": r} for r in remaining_candidates]))],
+                          {**common, "selection_mode": "reconcile", "plan": plan.get("final_output"),
+                           "limits": {"max_read_texts": max_texts - len(cached_uids),
+                                      "max_primary_chars": max_chars - sum(sum(hi - lo for lo, hi in state["read_inputs"][uid]["ranges"]) for uid in cached_uids)},
+                           "completed_readings": [{"uid": uid, "title": by_uid[uid].get("title"),
+                               "reading": state["calls"][f"read:{uid}"].get("prose") or state["calls"][f"read:{uid}"].get("final_output", "")} for uid in cached_uids],
+                           "instructions": "Recover coverage after an earlier citation expansion consumed reading slots. Choose only the remaining number of supplemental texts, in semantic priority order, to answer the unanswered parts of the question in light of the completed readings. Address historical and contemporary dimensions and distinguish direct evidence from inference. Preserve original shortlist coverage where useful. Do not repeat completed texts."})
+        reconciled = {}
+        for r in recovery.get("rows") or []:
+            uid = str(_field(r, "uid"))
+            if uid in {c["uid"] for c in remaining_candidates} and _field(r, "decision") in ("read", "context"):
+                reconciled[uid] = {**r, "uid": uid, "decision": _field(r, "decision"), "reason": _field(r, "reason")}
+        if not reconciled:
+            checkpoint("recovery-selection", paused_reason="recovery_selection_returned_no_candidates")
+            raise ValueError("recovery selection returned no valid candidates; cached readings were retained")
+        # Stable sorting respects the model's order when priorities tie.
+        remaining_candidates = sorted(reconciled.values(), key=lambda r: priority(r)[0])
+        checkpoint("recovery-selection", recovery_selection=remaining_candidates)
     read_sources, readings, evidence = [], [], []
     consumed = 0
-    selected = candidates
+    selected = [state["read_inputs"][uid]["selection"] for uid in cached_uids] + remaining_candidates
     followups = []
     processed = set()
+    novel_uids = {uid for uid in cached_uids
+                  if state["read_inputs"][uid]["selection"].get("selection_origin") == "citation_followup"}
+    core_selected = {r["uid"] for r in selected}
     for candidate_index, candidate in enumerate(selected):
         if len(readings) >= max_texts:
             break
@@ -403,10 +520,14 @@ def run_investigation(packet: dict, bodies: dict, *, call: Callable, save: Calla
         remaining = max_chars - consumed
         if remaining < 5000 and len(body) > remaining:
             continue
-        remaining_slots = min(max_texts - len(readings), len(selected) - candidate_index)
-        allocation = min(60000, remaining // max(1, remaining_slots))
-        ranges = inspected_ranges(body, search_by[uid], allocation,
-                                  str(_field(candidate, "queries")).split(";"))
+        frozen = state["read_inputs"].get(uid)
+        if frozen:
+            ranges = [tuple(r) for r in frozen["ranges"]]
+        else:
+            remaining_slots = min(max_texts - len(readings), len(selected) - candidate_index)
+            allocation = min(60000, remaining // max(1, remaining_slots))
+            ranges = inspected_ranges(body, search_by[uid], allocation,
+                                      str(_field(candidate, "queries")).split(";"))
         if not ranges:
             continue
         consumed += sum(hi - lo for lo, hi in ranges)
@@ -419,6 +540,9 @@ def run_investigation(packet: dict, bodies: dict, *, call: Callable, save: Calla
         source_metadata = {k: row.get(k) for k in ("bibliographic", "roles", "role", "creators_short", "attribution_required",
                            "profile_provenance", "selection_reason", "selection_status", "chapter_of", "type", "work_id") if k in row}
         coverage["source_metadata"] = source_metadata
+        if not frozen:
+            state["read_inputs"][uid] = {"ranges": ranges, "selection": candidate, "coverage": coverage}
+            checkpoint("reading_input")
         result = engine(f"read:{uid}", "author_investigation_read", [src],
                         {**common, "plan": plan.get("final_output"), "selection": candidate, "coverage": coverage,
                          "profile_as_lead": row.get("profile"), "citations": citation_catalog(row.get("citations", [])),
@@ -435,30 +559,39 @@ def run_investigation(packet: dict, bodies: dict, *, call: Callable, save: Calla
             for target in targets:
                 followups.append({"from_uid": uid, "to_uid": target["uid"], "work_key": work_key,
                                   "finding_id": lead.get("id"), "reason": _field(lead, "reason"),
-                                  "basis": "close_reading_citation_lead"})
-                if target["uid"] not in processed and bodies.get(target["source_key"]) and _eligible(target):
-                    existing = next((i for i, c in enumerate(candidates) if c["uid"] == target["uid"]), None)
-                    if existing is not None:
-                        candidates.pop(existing)
-                    # A lead judged useful by a completed reading takes the next
-                    # slot, before lower-priority inventory candidates consume it.
-                    candidates.insert(candidate_index + 1, {"uid": target["uid"], "decision": "read", "reason": _field(lead, "reason"),
-                                       "fields": {"priority": "3"}, "discovered_from": uid, "work_key": work_key})
+                                  "basis": "close_reading_citation_lead", "status": "deferred",
+                                  "target_triage": decisions.get(target["uid"])})
         readings.append({**coverage, "reading": result.get("prose", ""), "rows": result.get("rows", [])})
         for r in result.get("rows") or []:
             if r.get("dim") != "evidence":
                 continue
             quote = str(r.get("anchor") or "")
-            positions = [m.start() for m in re.finditer(re.escape(quote), body)] if quote else []
-            verified_positions = [pos for pos in positions if any(lo <= pos and pos + len(quote) <= hi for lo, hi in ranges)]
-            verified = bool(verified_positions) and r.get("doc") == src.key and _field(r, "uid") in ("", uid)
+            span = quote_span(quote, body, ranges)
+            verified = bool(span) and r.get("doc") == src.key and _field(r, "uid") in ("", uid)
             evidence.append({**r, "uid": uid, "source_key": src.key, "title": row.get("title"), "year": row.get("year"),
                              "source_role": "primary", "date_scope": row.get("date_scope"), "source_metadata": source_metadata,
-                             "quote": quote, "quote_verified": verified, "anchor_verified": verified,
-                             "quote_start": verified_positions[0] if verified else None,
+                             "quote": quote, "model_quote": quote, "source_quote": body[span[0]:span[1]] if verified else None,
+                             "quote_verified": verified, "anchor_verified": verified,
+                             "quote_start": span[0] if verified else None, "quote_end": span[1] if verified else None,
+                             "quote_match": span[2] if verified else None,
                              "uid_inferred_from_source": not bool(_field(r, "uid")),
                              "read_uid": row.get("read_uid"), "body_sha256": row["body_sha256"],
                              "citation_id": f"{uid}/{r.get('id', '')}", "conjecture": not verified})
+        # Protect the semantic shortlist. A ubiquitous cited work cannot reorder
+        # it; at most two novel targets may fill otherwise unused reading slots.
+        if candidate_index + 1 == len(selected) and len(readings) < max_texts and len(novel_uids) < 2:
+            leads_by_uid = {lead["to_uid"]: lead for lead in followups
+                            if lead["to_uid"] not in processed and lead["to_uid"] not in core_selected
+                            and bodies.get(by_uid[lead["to_uid"]]["source_key"]) and _eligible(by_uid[lead["to_uid"]])}
+            ranked = sorted(leads_by_uid, key=lambda target_uid: priority(decisions[target_uid]))
+            for target_uid in ranked[:min(2 - len(novel_uids), max_texts - len(readings))]:
+                lead = leads_by_uid[target_uid]
+                selected.append({**decisions[target_uid], "uid": target_uid, "decision": "read",
+                                 "discovered_from": lead["from_uid"], "work_key": lead["work_key"],
+                                 "selection_origin": "citation_followup"})
+                novel_uids.add(target_uid)
+        for lead in followups:
+            lead["status"] = "read" if any(r["uid"] == lead["to_uid"] for r in readings) else "scheduled" if any(c["uid"] == lead["to_uid"] for c in selected[candidate_index + 1:]) else "deferred"
         checkpoint("reading", readings=readings, evidence=evidence, citation_followups=followups)
     read_uids = {r["uid"] for r in readings}
     coverage = {"inventory_count": len(primary), "searchable_count": sum(bool(s["searched_chars"]) for s in state["searches"]),
@@ -469,15 +602,30 @@ def run_investigation(packet: dict, bodies: dict, *, call: Callable, save: Calla
                 "undated_uids": [r["uid"] for r in primary if r.get("date_scope") == "undated"],
                 "unread_uids": [r["uid"] for r in primary if r["uid"] not in read_uids],
                 "deferred_candidates": [r["uid"] for r in candidates if r["uid"] not in read_uids],
+                "legacy_cached_uids": legacy_extras, "novel_citation_uids": sorted(novel_uids),
+                "max_novel_citation_texts": 2,
                 "limits": {"max_read_texts": max_texts, "max_primary_chars": max_chars},
                 "absence_claims_supported": False}
     checkpoint("coverage", coverage=coverage, readings=readings, evidence=evidence)
     memo_sources = read_sources or [_spec("investigation-question", _json(common))]
+    # Evidence repeats a source's bibliography, hash, title and model anchor in
+    # every row. Keep that provenance once per reading for the memo; the durable
+    # evidence remains complete. Supply every source window and evidence ID.
+    memo_evidence = [{k: v for k, v in e.items() if k not in
+                     ("source_metadata", "title", "year", "body_sha256", "read_uid", "anchor", "model_quote", "doc", "anchor_verified")}
+                    for e in evidence]
+    memo_readings = [{"uid": r["uid"], "title": r["title"], "year": r["year"],
+                      "reading": r["reading"], "rows": [row for row in r["rows"] if row.get("dim") != "evidence"],
+                      "source_metadata": r["source_metadata"], "body_sha256": r["body_sha256"],
+                      "read_uid": r.get("read_uid"), "inspected_ranges": r["inspected_ranges"],
+                      "evidence_supplied_separately": True} for r in readings]
+    memo_paths = [{k: p[k] for k in ("work_key", "from_uids", "to_uid", "basis", "substantive_relevance") if k in p}
+                  for p in state["citation_paths"][:150]]
     memo = engine("memo", "author_investigation_memo", memo_sources,
-                  {**common, "plan": plan.get("final_output"), "evidence": evidence,
-                   "source_readings": [{"uid": r["uid"], "reading": r["reading"], "rows": r["rows"], "source_metadata": r["source_metadata"]} for r in readings],
+                  {**common, "plan": plan.get("final_output"), "evidence": memo_evidence,
+                   "source_readings": memo_readings,
                    "coverage": coverage, "prior_context": context,
-                   "citation_paths": state["citation_paths"][:150],
+                   "citation_paths": memo_paths, "full_citation_path_metadata_retained": True,
                    "citation_paths_supplied": min(150, len(state["citation_paths"])), "citation_paths_total": len(state["citation_paths"])})
     prose = memo.get("prose") or memo.get("final_output", "")
     references = re.findall(r"\[([^\[\]\s]+/(?:[A-Z]\d+\.)?F\d+)\]", prose)

@@ -276,15 +276,16 @@ def test_prior_reading_ids_are_resolved_and_secondary_search_finds_buried_eviden
     assert sum(c["supplied_chars"] for c in context) <= 5000
 
 
-def test_new_citation_followup_takes_next_slot_before_initial_candidates_and_metadata_travels():
+def test_citation_followup_preserves_initial_candidates_and_metadata_travels():
     _, packet, _, bodies = fixture()
     packet["limits"]["max_read_texts"] = 2
     packet["primary"][0].update(bibliographic={"extra": "Original Date: 2010; reprint 2019"},
                                 attribution_required=True, roles=["guest"], creators_short="Host and Riley")
     calls = []
     state = run_investigation(packet, bodies, call=fake_engine(calls), save=lambda s: None)
-    assert [r["uid"] for r in state["readings"]] == ["em:AAAAAAA1", "em:BBBBBBB2"]
-    assert "em:CCCCCCC3" in state["coverage"]["deferred_candidates"]
+    assert [r["uid"] for r in state["readings"]] == ["em:AAAAAAA1", "em:CCCCCCC3"]
+    assert state["citation_followups"][0]["to_uid"] == "em:BBBBBBB2"
+    assert state["citation_followups"][0]["status"] == "deferred"
     read = next(c for c in calls if c[0] == "author_investigation_read")
     assert read[2]["coverage"]["source_metadata"]["attribution_required"]
     assert "Original Date" in state["evidence"][0]["source_metadata"]["bibliographic"]["extra"]
@@ -444,3 +445,114 @@ def test_cached_split_triage_rows_recover_without_paid_replay_and_source_identit
     resumed = run_investigation(packet, bodies, state=state,
                                call=lambda *a, **kw: pytest.fail('recover cached decisions instead of rerunning triage'), save=lambda s: None)
     assert resumed['complete'] and not any(r.get('triage_missing') for r in resumed['triage'])
+
+
+def test_pdf_whitespace_quote_matches_keep_exact_source_offsets_and_reject_changed_words():
+    from src.dossier.investigation import quote_span
+    # The actual Riley Positivism reading flattened these PDF line wraps.
+    model = 'Positivism could emerge in both industrial capitalist and preindustrial contexts; however, the types of positivism differ in these two cases because the structure of the intelligentsia differs.'
+    source = 'Positivism could emerge in both industrial\ncapitalist and preindustrial contexts; however, the types of positivism differ in these two\ncases because the structure of the intelligentsia differs.'
+    body = 'Unread preface. ' + source + ' Unread conclusion.'
+    lo, hi = len('Unread preface. '), len('Unread preface. ') + len(source)
+    assert quote_span(model, body, [(lo, hi)]) == (lo, hi, 'whitespace_only')
+    assert quote_span(source, body, [(lo, hi)]) == (lo, hi, 'exact')
+    assert quote_span(model, body, [(0, lo)]) is None
+    assert quote_span(model, body, [(lo, lo + 40), (lo + 40, hi)]) is None
+    assert quote_span(model.replace('could', 'cannot'), body, [(lo, hi)]) is None
+    assert quote_span(model.replace('preindustrial', 'pre-industrial'), body, [(lo, hi)]) is None
+    assert quote_span(model.replace(';', ','), body, [(lo, hi)]) is None
+
+
+def test_novel_citation_targets_rank_by_saved_semantics_and_cap_survives_resume():
+    original, _, _, _ = fixture()
+    for uid in ('em:DDDDDDD4', 'em:EEEEEEE5'):
+        original['primary'].append({'uid': uid, 'body': 'Institutions matter.', 'year': 2020,
+                                    'citations': [{'key': 'silver:forces'}]})
+    docs = expand_author_investigation(json.dumps(original))
+    packet = json.loads(docs[-1].text)
+    bodies = {d.key: d.text for d in docs if d.role == 'source'}
+    base = fake_engine([])
+    def call(key, sources, **kwargs):
+        result = base(key, sources, **kwargs)
+        if key.endswith('_triage'):
+            for r in result['rows']:
+                uid = r['fields']['uid']
+                if uid in ('em:BBBBBBB2', 'em:DDDDDDD4', 'em:EEEEEEE5'):
+                    r['fields'].update(decision='defer', priority={'em:BBBBBBB2': '5', 'em:DDDDDDD4': '2', 'em:EEEEEEE5': '1'}[uid])
+        return result
+    state = run_investigation(packet, bodies, call=call, save=lambda s: None)
+    assert [r['uid'] for r in state['readings']] == ['em:AAAAAAA1', 'em:CCCCCCC3', 'em:EEEEEEE5', 'em:DDDDDDD4']
+    assert set(state['coverage']['novel_citation_uids']) == {'em:DDDDDDD4', 'em:EEEEEEE5'}
+    assert next(r for r in state['citation_followups'] if r['to_uid'] == 'em:BBBBBBB2')['status'] == 'deferred'
+    # A reload may reorder object keys. Explicit analysis phases retain call order.
+    state = json.loads(json.dumps(state, sort_keys=True))
+    again = run_investigation(packet, bodies, state=state,
+                              call=lambda *a, **k: pytest.fail('a third novel target must not be read on resume'), save=lambda s: None)
+    assert len(again['readings']) == 4
+    assert len(again['coverage']['novel_citation_uids']) == 2
+
+
+def test_whitespace_verified_evidence_keeps_model_quote_and_exact_source_quote():
+    _, packet, _, bodies = fixture()
+    uid = 'em:AAAAAAA1'
+    bodies['primary:' + uid] = 'Worker organizing requires\ncollective power. The strike changed their organization.'
+    base = fake_engine([])
+    def call(key, sources, **kwargs):
+        result = base(key, sources, **kwargs)
+        if key.endswith('_read') and sources[0].key == 'primary:' + uid:
+            result['rows'][0]['anchor'] = 'Worker organizing requires collective power.'
+        return result
+    state = run_investigation(packet, bodies, call=call, save=lambda s: None)
+    e = next(r for r in state['evidence'] if r['uid'] == uid)
+    assert e['quote_verified'] and e['quote_match'] == 'whitespace_only'
+    assert e['model_quote'] == e['quote'] == 'Worker organizing requires collective power.'
+    assert e['source_quote'] == bodies[e['source_key']][e['quote_start']:e['quote_end']]
+    assert '\n' in e['source_quote']
+
+
+def test_legacy_paid_reading_without_coverage_replays_old_ranges_before_new_selection():
+    from src.dossier.investigation import _legacy_read_inputs
+    _, packet, _, bodies = fixture()
+    primary = packet['primary']
+    # Earlier code queued a shared-citation target ahead of the second core text.
+    candidates = [{'uid': 'em:AAAAAAA1', 'decision': 'read', 'fields': {'priority': '1'}},
+                  {'uid': 'em:CCCCCCC3', 'decision': 'read', 'fields': {'priority': '3'}}]
+    state = {'calls': {
+        'read:em:AAAAAAA1': {'rows': [row('citation_lead', 'em:AAAAAAA1', work_key='silver:forces')]},
+        'read:em:BBBBBBB2': {'rows': []}},
+        'readings': [{'uid': 'em:AAAAAAA1', 'inspected_ranges': [[0, len(bodies['primary:em:AAAAAAA1'])]]}]}
+    searches = {r['uid']: r for r in search_inventory(primary, bodies, ['worker organizing'])}
+    inputs = _legacy_read_inputs(state, primary, bodies, searches, candidates, 2, 20000)
+    assert list(inputs) == ['em:AAAAAAA1', 'em:BBBBBBB2']
+    assert inputs['em:BBBBBBB2']['ranges'] == [(0, len(bodies['primary:em:BBBBBBB2']))]
+    state['readings'][0]['inspected_ranges'][0][1] -= 1
+    with pytest.raises(ValueError, match='saved reading ranges differ'):
+        _legacy_read_inputs(state, primary, bodies, searches, candidates, 2, 20000)
+
+
+def test_completed_triage_restores_paid_decisions_when_expanded_paths_change_batch_sizes():
+    _, packet, _, bodies = fixture()
+    state = run_investigation(packet, bodies, call=fake_engine([]), save=lambda s: None)
+    expected = {r['uid']: r['decision'] for r in state['triage']}
+    # Citation expansion after reconciliation can exceed a former batch boundary.
+    state['citation_paths'].append({'work_key': 'large-shared-work', 'to_uid': 'em:AAAAAAA1',
+                                    'from_uids': ['em:' + 'X' * 240000]})
+    state = run_investigation(packet, bodies, state=state, save=lambda s: None,
+                              call=lambda *a, **k: pytest.fail('repartitioning cannot repeat paid triage'))
+    assert {r['uid']: r['decision'] for r in state['triage']} == expected
+
+
+def test_memo_deduplicates_provenance_but_keeps_source_windows_and_all_evidence_ids():
+    _, packet, _, bodies = fixture()
+    calls = []
+    state = run_investigation(packet, bodies, call=fake_engine(calls), save=lambda s: None)
+    memo = next(c for c in calls if c[0] == 'author_investigation_memo')[2]
+    assert [r['citation_id'] for r in memo['evidence']] == [r['citation_id'] for r in state['evidence']]
+    assert all('source_metadata' in r for r in state['evidence'])
+    assert all('source_metadata' not in r for r in memo['evidence'])
+    for reading in state['readings']:
+        supplied = next(r for r in memo['source_readings'] if r['uid'] == reading['uid'])
+        assert supplied['source_metadata'] == reading['source_metadata']
+        assert supplied['inspected_ranges'] == reading['inspected_ranges']
+        assert supplied['body_sha256'] == reading['body_sha256']
+    assert all(r['dim'] != 'evidence' for reading in memo['source_readings'] for r in reading['rows'])
