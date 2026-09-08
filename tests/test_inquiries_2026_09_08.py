@@ -98,6 +98,31 @@ def test_initial_roundtrip_freezes_sources_context_and_central_method(client, in
     assert client.get("/v1/inquiries/receipts/" + receipt["receipt_id"]).json()["input_fingerprint"] == p["input_fingerprint"]
 
 
+def test_empty_preparation_preserves_earlier_frozen_input_identity(client, input_data, result_data):
+    from src.inquiries.schemas import PrepareRequest
+    modeled = PrepareRequest.model_validate(input_data).model_dump(mode="json")
+    modeled["context"].pop("preparation")
+    p = prepared(client, input_data)
+    assert p["input_fingerprint"] == service.digest(modeled)
+    input_data["context"]["preparation"] = {}
+    assert p == prepared(client, input_data)
+    assert client.post("/v1/inquiries/complete", json=completion(p, input_data, result_data)).status_code == 200
+
+
+def test_preparation_receipts_coverage_and_memory_are_frozen_in_primary_reading(client, input_data, result_data):
+    input_data["context"]["preparation"] = {
+        "discovery_receipt": "planning-discovery", "selection_receipt": "planning-selection",
+        "coverage": "Full article rendition", "gaps": ["No independent second case yet."]}
+    p = prepared(client, input_data)
+    response = client.post("/v1/inquiries/complete", json=completion(p, input_data, result_data))
+    assert response.status_code == 200, response.text
+    receipt = response.json()
+    record = readings.reading(receipt["reading"]["job_id"], receipt["reading"]["phase"])
+    assert record["context"]["preparation"] == input_data["context"]["preparation"]
+    input_data["context"]["preparation"]["coverage"] = "A falsely broadened coverage claim."
+    assert client.post("/v1/inquiries/complete", json=completion(p, input_data, result_data)).status_code == 409
+
+
 @pytest.mark.parametrize("change", ["question", "revision", "source", "method_fingerprint", "input_fingerprint"])
 def test_completion_rejects_changed_frozen_input(client, input_data, result_data, change):
     p = prepared(client, input_data)

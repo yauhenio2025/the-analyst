@@ -64,6 +64,7 @@ class Context(StrictModel):
     previous_result: dict[str, Any] | None = None
     test: TestProposal | None = None
     author_responses: list[dict[str, Any]] = Field(default_factory=list)
+    preparation: dict[str, Any] = Field(default_factory=dict)
 
 
 def unique(values: list[str], label: str) -> None:

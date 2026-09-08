@@ -5,10 +5,11 @@ The broader programme remains in the Stacks repository's
 recommendations, July reassessment and provenance artifacts preserved alongside it.
 The current [delivery-branch roadmap](/home/evgeny/projects/zotero-stacks-constructive-inquiry/communications/RESEARCH_CAPABILITIES_ROADMAP.md)
 links the [real research trial](/home/evgeny/projects/zotero-stacks-constructive-inquiry/communications/2026-09-08_constructive_inquiry_research_trial.md).
-The pilot does not complete that programme. In particular, initial inquiry context
-does not yet select prior oeuvre/Brief readings from central memory; retests receive
-this inquiry's own prior result and author responses. Evaluate the actual supplied
-context, and track broader memory reuse separately.
+The pilot does not complete that programme. The preparation extension below selects
+relevant commitments, held evidence and supplied prior-reading candidates; the owning
+organ retrieves those candidates and materializes the selected context. Evaluate what
+was actually supplied and inspected, rather than treating access to the ledger as
+comprehensive memory reuse.
 
 The Stacks supplies selected commitments, a live question and held case texts. The
 Analyst owns `constructive_inquiry` and `constructive_retest` as ordinary capability
@@ -101,3 +102,71 @@ The tuned records have not yet been evaluated in a model run. A real-case evalua
 must test whether they improve clarity while preserving source coverage, meaningful
 alternatives and the inferential detail needed to assess a construction. The synthetic
 smoke motivates this tuning; it does not establish that the new guidance achieves it.
+
+## Preparing the inquiry from an intention
+
+The author's correction was consequential: the controlled Calabria experiment had
+placed paper discovery, preparation and test follow-through on the person. Those
+operations belong to the system. The July questions and meta-improvements dictations
+describe the same need: an expressed connection should commission the evidence and
+return an intellectually useful next step, leaving the author to assess the argument.
+The Stacks already owns gathering, assembly, text preparation and acquisition; a new
+paper finder is unnecessary. The reusable judgment about what to gather and what can
+be read now lives in the central `inquiry_preparation` capability/process records.
+
+`POST /v1/inquiries/planning/prepare` accepts `PlanningPrepareRequest` from
+`src/inquiries/planning_schemas.py`:
+
+- `method: inquiry_preparation`, `phase: discovery | selection`.
+- `context`: inquiry identity/revision, question, current commitment candidates,
+  purpose/stage, actual author responses, optional full `previous_result` and
+  `requested_test_id` for a retest. Zero commitments is valid input so that the
+  planner can explain the missing intellectual baseline instead of inventing one.
+- `sources`: supplied keys, bibliographic metadata, readable status, character
+  counts, coverage descriptions and short previews; optionally named text windows.
+- `prior_readings`: supplied IDs and their portable job/phase references, summaries,
+  source keys and available rows. These are context, never independent evidence.
+- `budget`: source count, selected text characters and prior-reading count, default
+  20 / 400,000 / 8. The owning organ can set a tighter budget.
+- `discovery_plan`: required in selection, containing the ready discovery result.
+
+The preparation response uses the same `system_prompt`, `user_prompt` containing
+`{input, output_schema}`, fingerprints and frozen method identity as the reading
+seam. The organ runs its subscription worker; this route makes no model call. The
+single method record explains both phases. Discovery selects relevant approved
+commitments and one exact prior test when retesting, then writes the bounded research
+brief and evidence requirements. It selects no evidence. Selection preserves those
+commitments and test and chooses from actual supplied candidates after gathering.
+This keeps choosing a test before choosing evidence that could make it look favorable.
+
+`POST /v1/inquiries/planning/complete` accepts the prepared identity, exact input,
+`result` and execution metadata. `PlanningResult` contains the phase, ready/blocked
+status, selected commitment IDs, selected prior test ID or null, research brief,
+rationale, evidence requirements, selected sources, selected prior-reading IDs,
+coverage and gaps. A source selection is `{source_key, window_ids: []}` for its full
+text or one exact supplied window ID for a bounded passage. The source identity is
+never replaced with a synthetic document assembled from disjoint excerpts.
+
+The deterministic checks reject invented references, promotion of an explicitly
+unapproved commitment, changed test/commitment selection, unreadable selections,
+unknown windows and packets above the declared budget. A ready selection requires
+held evidence; blocked results require a stated gap. The method must judge whether
+the actual coverage is defensible. A readable flag or a length check cannot establish
+article completeness, and the wall makes no such claim. Where the question needs a
+whole work and supplied windows cannot bear on it, blocked is the appropriate outcome.
+
+Planning receipts are immutable and idempotent, with a single database winner for
+concurrent conflicting answers. `GET /v1/inquiries/planning/receipts/{receipt_id}`
+returns them. They are deliberately not indexed as primary-source readings: selecting
+metadata is not reading the texts. The final inquiry accepts optional
+`context.preparation` metadata so the organ can preserve discovery/selection receipts,
+coverage, materialization hashes and gaps beside the actual selected primary texts
+and hydrated prior readings. Empty preparation context preserves pre-extension input
+fingerprints, allowing already prepared readings to finish after this schema addition.
+
+Focused validation covers both phases through the API with isolated storage, full
+article versus over-budget book selection, bounded windows, missing commitments and
+coverage, exact retest selection, invalid references and budgets, method edits,
+concurrent imports, replay and primary-reading preparation provenance. These are
+engineering checks; actual automated discovery quality and research usefulness still
+require the Stacks acceptance trial from intent through a real author response.

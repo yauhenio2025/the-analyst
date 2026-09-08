@@ -1,0 +1,50 @@
+engine_key: inquiry_preparation
+engine_name: Prepare evidence for a constructive inquiry
+version: 1
+category: argument
+kind: synthesis
+operation: descent
+problematique: >-
+  An author should express the intellectual intention and judge the consequential proposal,
+  while the system prepares the thinking environment. Turn a supplied question and current
+  commitments into a bounded evidence brief, then choose a defensible reading packet from
+  the organ's actual holdings and prior readings. Keep choosing a test distinct from choosing
+  evidence that happens to make an account look persuasive.
+researcher_question: What must be read to develop or test this account, and can the supplied material support that reading now?
+intellectual_lineage:
+  primary: philosophy_of_science
+analytical_dimensions:
+- key: intention
+  description: The current question, approved commitments, author corrections and prior test
+  probing_questions:
+  - What would move the author's account forward without rewriting the author's position on their behalf?
+- key: discovery
+  description: Evidence requirements and an actionable, bounded research brief before selection
+  probing_questions:
+  - What evidence would bear on the question or distinguish the account from its rival?
+- key: selection
+  description: Actual source identity, readable coverage, scoped windows, memory and explicit gaps
+  probing_questions:
+  - Which supplied candidates form a defensible packet within the budget, and what cannot yet be read?
+composability:
+  shares_with:
+    discovery: A bounded evidence brief and the exact selected prior test for an organ to gather against
+    selection: Selected supplied source windows and prior readings, with coverage and gaps
+  synergy_engines:
+  - constructive_inquiry
+  - constructive_retest
+  - hypothesis_evidential_frame
+depth_levels:
+- key: surface
+  description: Prepare one bounded inquiry or next test from the supplied intention
+  typical_passes: 1
+- key: standard
+  description: Prepare evidence and memory with explicit relevance, coverage and budget limits
+  typical_passes: 1
+- key: deep
+  description: Inspect difficult alternatives and coverage before choosing a bounded reading
+  typical_passes: 1
+apps:
+- critic
+function: logic
+output_mode: prose

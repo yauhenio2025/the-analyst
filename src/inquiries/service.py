@@ -60,7 +60,7 @@ def method_record(key: str) -> dict:
 
 
 def prepare(request: PrepareRequest) -> dict:
-    frozen_input = request.model_dump(mode="json")
+    frozen_input = input_data(request)
     record = method_record(request.method)
     schema = InquiryResult.model_json_schema()
     method_fingerprint = digest({"record": record, "output_schema": schema, "contract_version": CONTRACT_VERSION})
@@ -97,6 +97,15 @@ def prepare(request: PrepareRequest) -> dict:
 
 def _public_preparation(prepared: dict) -> dict:
     return {k: v for k, v in prepared.items() if k not in ("input", "method_record", "created_at", "contract_version")}
+
+
+def input_data(request: PrepareRequest) -> dict:
+    frozen = request.model_dump(mode="json")
+    # Preserve prepared identities and pending completions from before this
+    # optional context field existed. Nonempty preparation remains fully frozen.
+    if not frozen["context"].get("preparation"):
+        frozen["context"].pop("preparation", None)
+    return frozen
 
 
 def _shape(request: CompleteRequest) -> tuple[dict, dict]:
@@ -164,7 +173,7 @@ def complete(request: CompleteRequest) -> dict:
     if prepared is None:
         raise HTTPException(404, "Prepared inquiry not found")
     if (request.input_fingerprint != prepared["input_fingerprint"] or
-            digest(request.input.model_dump(mode="json")) != prepared["input_fingerprint"] or
+            digest(input_data(request.input)) != prepared["input_fingerprint"] or
             request.method_fingerprint != prepared["method_fingerprint"]):
         raise HTTPException(409, "Stale or changed inquiry input/method fingerprint")
     # Completion is checked against its frozen method, even after a catalogue edit.

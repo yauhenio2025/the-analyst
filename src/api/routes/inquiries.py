@@ -1,10 +1,26 @@
 """Central methods and durable receipts for workers owned by other applications."""
 from fastapi import APIRouter
 
-from src.inquiries import service
+from src.inquiries import planning, service
+from src.inquiries.planning_schemas import PlanningCompleteRequest, PlanningPrepareRequest
 from src.inquiries.schemas import CompleteRequest, Feedback, PrepareRequest
 
 router = APIRouter(prefix="/inquiries", tags=["inquiries"])
+
+
+@router.post("/planning/prepare")
+def planning_prepare(request: PlanningPrepareRequest):
+    return planning.prepare(request)
+
+
+@router.post("/planning/complete")
+def planning_complete(request: PlanningCompleteRequest):
+    return planning.complete(request)
+
+
+@router.get("/planning/receipts/{receipt_id}")
+def planning_receipt(receipt_id: str):
+    return planning.get_receipt(receipt_id)
 
 
 @router.post("/prepare")
