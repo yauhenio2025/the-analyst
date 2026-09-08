@@ -1,0 +1,61 @@
+# Constructive retest, 2026-09-08. The reusable method lives in the operationalization.
+engine_key: constructive_retest
+engine_name: Retest a constructive account
+version: 1
+category: argument
+kind: comparison
+operation: verification
+problematique: >-
+  A prior constructive result has a specific selected test and new or newly selected held
+  sources. Apply that test to the previous account and return an explicit outcome:
+  strengthened, weakened, revised, inconclusive or failed. Explain what changed, with
+  anchored evidence, a bounded interpretation of the result and its local or broader
+  revision consequences. Preserve the author's corrections and distinguish a substantive
+  test result from missing evidence, incomplete work or technical checks of quotations.
+researcher_question: What did this selected test return, and how must the previous constructive account change?
+intellectual_lineage:
+  primary: philosophy_of_science
+analytical_dimensions:
+- key: test_frame
+  description: The previous account and the exact selected test, with its discriminating criteria
+  probing_questions:
+  - What claim and scope are being retested, and what result would count for or against them?
+- key: evidence
+  description: Evidence actually inspected for this test, with source claims separated from interpretation
+  probing_questions:
+  - What does the selected held evidence show under the test's stated criteria?
+- key: outcome
+  description: The returned outcome and the change from the previous result
+  probing_questions:
+  - Is the account strengthened, weakened, revised, inconclusive or failed under this specific test, and why?
+- key: revision
+  description: Explicit changes to the local account and possible consequences for broader commitments
+  probing_questions:
+  - What changes locally, what wider commitment is implicated, and what remains the author's decision?
+- key: self_scrutiny
+  description: Whether the retest was discriminating and the resulting repair is independently defensible
+  probing_questions:
+  - Did the test challenge a vulnerable part of the account, or did changing criteria or adding exceptions protect it?
+composability:
+  consumes_from:
+    construction: Previous constructive_inquiry result, including account, scope and evidence
+    next_test: A specific selected test from the previous result or an explicit author replacement
+  shares_with:
+    outcome: Returned test result, evidence, changes and revision consequences
+  synergy_engines:
+  - constructive_inquiry
+  - hypothesis_evidential_frame
+depth_levels:
+- key: surface
+  description: One selected test, a concise outcome and its immediate consequence
+  typical_passes: 1
+- key: standard
+  description: A developed comparison with the previous result and local and broader revision implications
+  typical_passes: 1
+- key: deep
+  description: Fuller scrutiny of the selected test, its evidence and the consequences of proposed repairs
+  typical_passes: 1
+apps:
+- critic
+function: logic
+output_mode: prose

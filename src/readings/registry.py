@@ -186,22 +186,70 @@ def _entry(reading: dict) -> dict:
             "cost_usd": reading.get("cost_usd"), "renders": reading["renders"], "intent": reading.get("intent", "")}
 
 
-def save_reading(reading: dict) -> None:
+def save_reading(reading: dict, *, strict: bool = False) -> None:
     """The reading itself, and its entry on every person's and text's index (replacing an earlier entry for the same job and phase)."""
-    _put(f"reading:{reading['job_id']}:{reading['phase']}", "application/json", json.dumps(reading, ensure_ascii=False).encode("utf-8"))
+    if not strict:
+        _save_reading(reading, _put, _get)
+        return
+    # External imports acknowledge durable reading/index writes together. Serialise
+    # their read/modify/write operations so concurrent receipts do not lose entries.
+    from src.dossier.blob_store import _bin, ensure_table
+    from src.executor.db import _is_postgres, get_connection
+    ensure_table()
+    postgres = _is_postgres()
+    with get_connection() as conn:
+        cursor = conn.cursor()
+        try:
+            if postgres:
+                cursor.execute("SELECT pg_advisory_xact_lock(hashtext('readings-ledger-index'))")
+            else:
+                cursor.execute("BEGIN IMMEDIATE")
+
+            def run(sql, values):
+                cursor.execute(sql if postgres else sql.replace("%s", "?"), values)
+
+            def get(key):
+                run("SELECT data FROM dossier_blobs WHERE blob_key=%s", (key,))
+                row = cursor.fetchone()
+                return bytes(row[0]) if row else None
+
+            def put(key, mime, data):
+                run("INSERT INTO dossier_blobs (blob_key,mime,size,data,created_at) VALUES (%s,%s,%s,%s,%s) "
+                    "ON CONFLICT (blob_key) DO UPDATE SET mime=EXCLUDED.mime,size=EXCLUDED.size,"
+                    "data=EXCLUDED.data,created_at=EXCLUDED.created_at",
+                    (key, mime, len(data), _bin(data), time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())))
+
+            _save_reading(reading, put, get)
+            conn.commit()
+        except Exception:
+            conn.rollback()
+            raise
+
+
+def _save_reading(reading: dict, put, get) -> None:
+    def load_list(key):
+        raw = get(key)
+        if not raw:
+            return []
+        try:
+            return json.loads(raw.decode("utf-8"))
+        except ValueError:
+            return []
+
+    put(f"reading:{reading['job_id']}:{reading['phase']}", "application/json", json.dumps(reading, ensure_ascii=False).encode("utf-8"))
     entry = _entry(reading)
     for kind, values in (("person", reading["persons"]), ("text", reading["texts"])):
         for v in values:
             key = _index_key(kind, v)
-            lst = [e for e in _load_list(key) if not (e["job_id"] == entry["job_id"] and e["phase"] == entry["phase"])]
+            lst = [e for e in load_list(key) if not (e["job_id"] == entry["job_id"] and e["phase"] == entry["phase"])]
             lst.append({**entry, "name": v} if kind == "person" else entry)
-            _put(key, "application/json", json.dumps(lst[-400:], ensure_ascii=False).encode("utf-8"))
+            put(key, "application/json", json.dumps(lst[-400:], ensure_ascii=False).encode("utf-8"))
     for v in reading["persons"]:
         sk = f"readings:surname:{surname(v)}"
-        lst = [e for e in _load_list(sk) if not (e["job_id"] == entry["job_id"] and e["phase"] == entry["phase"] and e.get("name") == v)]
-        lst.append({**entry, "name": v}); _put(sk, "application/json", json.dumps(lst[-400:], ensure_ascii=False).encode("utf-8"))
-    jobs = [e for e in _load_list(f"readings:job:{reading['job_id']}") if e["phase"] != entry["phase"]] + [entry]
-    _put(f"readings:job:{reading['job_id']}", "application/json", json.dumps(jobs, ensure_ascii=False).encode("utf-8"))
+        lst = [e for e in load_list(sk) if not (e["job_id"] == entry["job_id"] and e["phase"] == entry["phase"] and e.get("name") == v)]
+        lst.append({**entry, "name": v}); put(sk, "application/json", json.dumps(lst[-400:], ensure_ascii=False).encode("utf-8"))
+    jobs = [e for e in load_list(f"readings:job:{reading['job_id']}") if e["phase"] != entry["phase"]] + [entry]
+    put(f"readings:job:{reading['job_id']}", "application/json", json.dumps(jobs, ensure_ascii=False).encode("utf-8"))
 
 
 def index_job(job: dict, only_phases: Optional[Iterable[str]] = None) -> list[dict]:
@@ -235,7 +283,16 @@ def readings_for(person: Optional[str] = None, text: Optional[str] = None, job: 
 
 def reading(job_id: str, phase: str) -> Optional[dict]:
     raw = _get(f"reading:{job_id}:{phase}")
-    return json.loads(raw.decode("utf-8")) if raw else None
+    result = json.loads(raw.decode("utf-8")) if raw else None
+    if result and str(result.get("receipt_id", "")).startswith("inquiry-"):
+        # Feedback events are authoritative. A concurrent receipt-index refresh
+        # can retain an older snapshot, but readers must always see every event.
+        from src.inquiries.service import feedback_for
+        result["author_feedback"] = feedback_for(result["receipt_id"])
+    elif result and str(result.get("receipt_id", "")).startswith("question-"):
+        from src.questions.service import feedback_for
+        result["author_feedback"] = feedback_for(result["receipt_id"])
+    return result
 
 
 def prior_block(persons: Iterable[str] = (), texts: Iterable[str] = (), limit: int = 12) -> Optional[dict]:

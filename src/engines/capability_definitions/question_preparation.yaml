@@ -1,0 +1,49 @@
+engine_key: question_preparation
+engine_name: Prepare to develop a question
+version: 1
+category: argument
+kind: synthesis
+operation: descent
+problematique: >-
+  An unresolved problem can deserve better formulation before there is an accepted
+  account to test. Decide whether useful question development needs primary reading,
+  and when it does, specify and select the evidence without putting document handling
+  back on the author. Contextual or conceptual progress must remain possible without
+  invented commitments or a compulsory literature search.
+researcher_question: What does this problem need before a better question can be proposed?
+intellectual_lineage:
+  primary: philosophy_of_science
+analytical_dimensions:
+- key: purpose
+  description: Why the problem matters, its current framing and what development would enable
+  probing_questions:
+  - Can the problem be clarified now, or would the change depend on what a source actually argues?
+- key: discovery
+  description: A bounded evidence brief when primary reading is needed
+  probing_questions:
+  - Which missing understanding would make this question answerable or expose a misleading premise?
+- key: selection
+  description: Defensible source and prior-context selection under an explicit budget
+  probing_questions:
+  - Can the actual readable candidates support the proposed work, and which gaps remain?
+composability:
+  shares_with:
+    discovery: Need for primary sources and a bounded evidence brief
+    selection: Actual source and prior-reading selections, coverage and gaps
+  synergy_engines:
+  - question_development
+  - inquiry_preparation
+depth_levels:
+- key: surface
+  description: Prepare one useful question-development step
+  typical_passes: 1
+- key: standard
+  description: Prepare relevant context and sources while preserving coverage limits
+  typical_passes: 1
+- key: deep
+  description: Resolve difficult evidence requirements without expanding the scope indefinitely
+  typical_passes: 1
+apps:
+- critic
+function: logic
+output_mode: prose
