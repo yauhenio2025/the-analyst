@@ -1,5 +1,14 @@
 # Constructive inquiry: the first portable worker seam
 
+Release candidate, 2026-09-09: master `c8526042` and both research activities are
+integrated on `release/research-activities-2026-09-09`. Storage fix `ab0799e0` preserves
+existing compressed reading indices and compresses immutable records while retaining
+transaction and replay semantics. All 184 tests across nine focused Analyst suites
+pass; deployment is authorized and pending. Earlier dated test records below describe
+their original validation scope. Eventual live verification belongs in the Stacks
+[release record](/home/evgeny/projects/zotero-stacks/communications/2026-09-09_research_activities_release.md);
+these engineering checks do not establish a scholarly outcome.
+
 The broader programme remains in the Stacks repository's
 `communications/RESEARCH_CAPABILITIES_ROADMAP.md`, with the original chat-derived
 recommendations, July reassessment and provenance artifacts preserved alongside it.

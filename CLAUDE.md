@@ -7,6 +7,18 @@ runner that executes a recipe over sources and keeps its rows, and the ledgers t
 Pydantic v2; records as JSON/YAML files persisted through GitHub; jobs, blobs and ledgers in the executor database (Postgres on Render,
 SQLite locally). The Mastermind console (a separate Next.js repo, below) reads all of it.
 
+## Research activities release candidate (2026-09-09)
+
+`release/research-activities-2026-09-09` combines master `c8526042` with constructive
+inquiry and question development (`e3b7b0f5`). Integration fix `ab0799e0` makes strict
+reading transactions and immutable receipts use the shared compressed blob format;
+184 tests across nine focused suites pass. Deployment is authorized and pending.
+The primary checkout remains `/home/evgeny/projects/the-analyst`; release integration
+is isolated in `/home/evgeny/projects/the-analyst-research-release`. Preserve the primary
+checkout's unrelated untracked research artifacts. The two activity design notes and
+the Stacks [release record](/home/evgeny/projects/zotero-stacks/communications/2026-09-09_research_activities_release.md)
+retain validation and eventual live-verification details.
+
 ## How we work: where the reasoning lives (Evgeny, 2026-09-07)
 
 - **The upper-level reasoning lives here, in the Mastermind, as records — never as prose scattered in an organ's Python.** Methods
