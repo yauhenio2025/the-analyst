@@ -419,7 +419,8 @@ def run_investigation(packet: dict, bodies: dict, *, call: Callable, save: Calla
     if batch:
         batches.append(batch)
     decisions = {}
-    if "triage-selection" in state["calls"]:
+    triage_cached = "triage-selection" in state["calls"]
+    if triage_cached:
         # Expanded citation paths can change the size of batches on resume.
         # A completed reconciliation proves triage finished: restore its paid
         # inputs instead of repartitioning the corpus and paying for it again.
@@ -440,7 +441,8 @@ def run_investigation(packet: dict, bodies: dict, *, call: Callable, save: Calla
             uid = str(_field(row, "uid"))
             if uid in allowed and _field(row, "decision") in ("read", "context", "defer", "unavailable"):
                 decisions[uid] = {**row, "uid": uid, "decision": _field(row, "decision"), "reason": _field(row, "reason")}
-        checkpoint("triage", triage=list(decisions.values()))
+        if not triage_cached:
+            checkpoint("triage", triage=list(decisions.values()))
     # Omitted decisions are disclosed, and supplied omitted texts receive a bounded fallback reading.
     for row in primary:
         if row["uid"] not in decisions:
@@ -592,7 +594,11 @@ def run_investigation(packet: dict, bodies: dict, *, call: Callable, save: Calla
                 novel_uids.add(target_uid)
         for lead in followups:
             lead["status"] = "read" if any(r["uid"] == lead["to_uid"] for r in readings) else "scheduled" if any(c["uid"] == lead["to_uid"] for c in selected[candidate_index + 1:]) else "deferred"
-        checkpoint("reading", readings=readings, evidence=evidence, citation_followups=followups)
+        # Cached readings already have durable model outputs and frozen inputs.
+        # Rebuild them together, then persist once; do not temporarily replace
+        # eight paid readings with one or reindex all phases eight times.
+        if uid not in cached_uids or uid == cached_uids[-1]:
+            checkpoint("reading", readings=readings, evidence=evidence, citation_followups=followups)
     read_uids = {r["uid"] for r in readings}
     coverage = {"inventory_count": len(primary), "searchable_count": sum(bool(s["searched_chars"]) for s in state["searches"]),
                 "read_count": len(readings), "full_read_count": sum(r["reading_mode"] == "full" for r in readings),
@@ -670,6 +676,7 @@ def run_job_investigation(job, docs, *, cancel_check=None, persist=None):
             raise DossierCancelled("author investigation cancelled between calls")
         if is_draining():
             raise DossierDraining("author investigation checkpoint saved between calls")
+    indexed_phases = {}
     def save(state):
         # Fail before another paid call if durable artifact persistence is unavailable.
         put_blob(f"investigation:{job.id}", "application/json", _json(state).encode())
@@ -688,7 +695,11 @@ def run_job_investigation(job, docs, *, cancel_check=None, persist=None):
         job.totals.output_tokens = sum(r.output_tokens for r in receipts)
         if persist:
             persist(analysis=job.analysis, receipts=receipts, totals=job.totals)
-        index_job({**job.model_dump(), "packet": packet})
+        changed_phases = [phase for phase, analysis in state["analysis"].items()
+                          if indexed_phases.get(phase) != analysis.get("final_output", "")]
+        if changed_phases:
+            index_job({**job.model_dump(), "packet": packet}, only_phases=changed_phases)
+            indexed_phases.update({phase: state["analysis"][phase].get("final_output", "") for phase in changed_phases})
         events.emit(job.id, "note", phase="analysis", detail=f"Author investigation: {state['current_stage']}",
                     cost_usd=state["cost_usd"], payload_json={"stage": state["current_stage"], "read_count": len(state.get("readings", []))})
     state = run_investigation(packet, {d.key: d.text for d in docs if d.role == "source"}, call=call_engine, save=save,

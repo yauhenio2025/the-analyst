@@ -11,6 +11,7 @@ Keys: figure:<figure_id> · figure-meta:<figure_id> · plate:<job_id>:<filename>
 """
 from __future__ import annotations
 
+import gzip
 import logging
 from datetime import datetime, timezone
 from pathlib import Path
@@ -20,6 +21,8 @@ from src.executor.db import _is_postgres, execute
 
 logger = logging.getLogger(__name__)
 _ready = False
+_JSON_GZIP_PREFIX = b"\x00analyst-json-gzip-v1\x00"
+_JSON_COMPRESS_THRESHOLD = 512 * 1024
 
 
 def ensure_table() -> None:
@@ -43,6 +46,14 @@ def _bin(data: bytes):
 
 def put_blob(key: str, mime: str, data: bytes) -> None:
     ensure_table()
+    # Large JSON checkpoints become hex bytea literals under psycopg2. A 9.5 MB
+    # investigation write was running when the production database backend was
+    # killed. Compress before SQL adaptation; callers still
+    # receive the exact original bytes and MIME type through get_blob.
+    if (mime or "").split(";", 1)[0].strip() == "application/json" and len(data) >= _JSON_COMPRESS_THRESHOLD:
+        compressed = _JSON_GZIP_PREFIX + gzip.compress(data, compresslevel=3, mtime=0)
+        if len(compressed) < len(data):
+            data = compressed
     execute(
         "INSERT INTO dossier_blobs (blob_key, mime, size, data, created_at) VALUES (%s, %s, %s, %s, %s)"
         " ON CONFLICT (blob_key) DO UPDATE SET mime = EXCLUDED.mime, size = EXCLUDED.size,"
@@ -71,7 +82,11 @@ def get_blob(key: str) -> Optional[tuple[str, bytes]]:
         data = data.tobytes()
     elif isinstance(data, str):
         data = data.encode("latin-1")
-    return (row.get("mime") or "application/octet-stream", bytes(data))
+    data = bytes(data)
+    mime = row.get("mime") or "application/octet-stream"
+    if mime.split(";", 1)[0].strip() == "application/json" and data.startswith(_JSON_GZIP_PREFIX):
+        data = gzip.decompress(data[len(_JSON_GZIP_PREFIX):])
+    return (mime, data)
 
 
 def has_blob(key: str) -> bool:

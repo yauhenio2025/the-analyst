@@ -218,7 +218,7 @@ def test_dossier_runner_uses_registered_specialized_executor_and_durable_account
     job = DossierJob(id="dossier-investigation-test", options=DossierOptions(
         intent="Question", entry="chosen", path=PathRequest(chain_key="author_investigation"),
         output=OutputOptions(text=False, tables=False, figures=0, plates=0), spend_cap_usd=2.0))
-    writes, blobs, indexed = [], {}, []
+    writes, blobs, indexed, indexed_phases = [], {}, [], []
     monkeypatch.setattr(runner, "update_job", lambda jid, **fields: writes.append(fields))
     monkeypatch.setattr(runner, "record_step_duration", lambda *a: None)
     monkeypatch.setattr(events, "emit", lambda *a, **k: None)
@@ -226,13 +226,17 @@ def test_dossier_runner_uses_registered_specialized_executor_and_durable_account
     monkeypatch.setattr(blob_store, "get_blob", lambda key: ("application/json", blobs[key]) if key in blobs else None)
     monkeypatch.setattr(investigation, "load_investigation", lambda jid: None)
     monkeypatch.setattr(engine_call, "call_engine", fake_engine([]))
-    monkeypatch.setattr(registry, "index_job", lambda job: indexed.append(copy.deepcopy(job)))
+    def index(job, only_phases=None):
+        indexed.append(copy.deepcopy(job))
+        indexed_phases.extend(only_phases or list(job['analysis']))
+    monkeypatch.setattr(registry, "index_job", index)
     runner._run_step(job, "plan", docs)
     assert job.plan.plan_id == "investigation:dossier-investigation-test"
     assert len(job.plan.phases) == 4
     runner._run_step(job, "analysis", docs)
     artifact = json.loads(blobs["investigation:dossier-investigation-test"])
     assert artifact["complete"] and job.analysis and indexed
+    assert len(indexed_phases) == len(set(indexed_phases)) == len(job.analysis)
     assert job.totals.cost_usd == pytest.approx(.7) and job.totals.llm_calls == 7
     assert job.totals.input_tokens == 77 and len(job.receipts) == 7
     assert any("analysis" in fields and "receipts" in fields for fields in writes)
@@ -556,3 +560,16 @@ def test_memo_deduplicates_provenance_but_keeps_source_windows_and_all_evidence_
         assert supplied['inspected_ranges'] == reading['inspected_ranges']
         assert supplied['body_sha256'] == reading['body_sha256']
     assert all(r['dim'] != 'evidence' for reading in memo['source_readings'] for r in reading['rows'])
+
+
+def test_resume_restores_cached_readings_together_without_repeated_triage_writes():
+    _, packet, _, bodies = fixture()
+    original = run_investigation(packet, bodies, call=fake_engine([]), save=lambda s: None)
+    checkpoints = []
+    resumed = run_investigation(packet, bodies, state=copy.deepcopy(original),
+                               call=lambda *a, **k: pytest.fail('completed calls cannot repeat'),
+                               save=lambda s: checkpoints.append((s['current_stage'], len(s['readings']))))
+    assert resumed['complete']
+    assert [s for s in checkpoints if s[0] == 'triage'] == [('triage', 3)]
+    assert [s for s in checkpoints if s[0] == 'reading'] == [('reading', 3)]
+    assert all(count == 3 for _, count in checkpoints)
