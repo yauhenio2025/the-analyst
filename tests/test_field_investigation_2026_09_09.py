@@ -219,6 +219,7 @@ def test_registry_api_runner_and_external_source_readings(monkeypatch):
     assert state['complete'] and job.totals.cost_usd==pytest.approx(len(state['calls'])*.1)
     assert len(indexed)==len(set(indexed))==len(state['analysis'])
     monkeypatch.setattr(dossier,'_load',lambda jid:job)
+    monkeypatch.setattr(dossier,'get_job_progress',lambda jid:job)
     assert dossier.get_investigation(job.id)['kind']=='field_investigation'
     monkeypatch.setattr(investigation,'load_investigation',lambda jid:None)
     assert dossier.get_investigation(job.id)['complete'] is False
