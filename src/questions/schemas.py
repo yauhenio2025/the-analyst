@@ -160,6 +160,14 @@ class PrepareRequest(StrictModel):
         if self.phase == "development" and self.discovery_plan is not None:
             if self.discovery_plan.needs_sources != bool(self.sources):
                 raise ValueError("Development evidence must respect the discovery plan's source requirement")
+        if self.phase == "development" and self.context.preparation.get("final_plan") is not None:
+            # Keep this within the existing preparation envelope so old frozen
+            # requests retain their serialized shape and remain replayable.
+            plan = QuestionPlan.model_validate(self.context.preparation["final_plan"])
+            if plan.status != "ready":
+                raise ValueError("Development requires a ready final preparation plan")
+            if plan.needs_sources != bool(self.sources):
+                raise ValueError("Development evidence must respect the final preparation plan's source requirement")
         return self
 
 

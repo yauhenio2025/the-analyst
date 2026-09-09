@@ -121,6 +121,41 @@ def test_problem_without_commitments_or_sources_produces_proposed_question_not_a
     assert client.get("/v1/questions/receipts/" + receipt["receipt_id"]).json()["result"] == receipt["result"]
 
 
+def test_final_preparation_cannot_silently_drop_required_primary_reading(client, input_data, plan):
+    plan.update(needs_sources=True, evidence_requirements=["Read the account's actual dependency on stagnation."])
+    input_data["context"]["preparation"] = {"final_plan": plan}
+    response = client.post("/v1/questions/prepare", json=input_data)
+    assert response.status_code == 422
+    assert "final preparation plan" in response.text
+    add_source(input_data)
+    prepared = prepare(client, input_data)
+    assert prepared["source_manifest"][0]["key"] == "em:CASE"
+
+
+def test_explicit_selection_fallback_can_remain_a_limited_conceptual_proposal(client, input_data, plan, result):
+    plan.update(phase="selection", needs_sources=False,
+                gaps=["The required primary text remains unavailable; its argument is untested."],
+                coverage="Preliminary framing only; the source-dependent question is deferred.")
+    input_data["context"]["preparation"] = {"final_plan": plan}
+    p = prepare(client, input_data)
+    response = finish(client, p, input_data, result)
+    assert response.status_code == 200, response.text
+    receipt = response.json()
+    retained = readings.reading(receipt["receipt_id"], "question_development")
+    assert retained["context"]["preparation"]["final_plan"] == plan
+    assert receipt["validation"]["conceptual_only"] is True
+    add_source(input_data)
+    assert client.post("/v1/questions/prepare", json=input_data).status_code == 422
+
+
+def test_blocked_final_preparation_is_not_ready_for_development(client, input_data, plan):
+    plan.update(status="blocked", gaps=["Needed evidence is missing."])
+    input_data["context"]["preparation"] = {"final_plan": plan}
+    response = client.post("/v1/questions/prepare", json=input_data)
+    assert response.status_code == 422
+    assert "ready final preparation plan" in response.text
+
+
 def test_primary_reading_retains_source_identity_coverage_and_origin_separately_from_proposal(client, input_data, result):
     add_source(input_data); add_evidence(result)
     input_data["context"].update(origin_inquiry={"id": "old:1", "attempt_id": 3},
