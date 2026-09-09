@@ -19,10 +19,12 @@ def _ids(value):
     return [v.strip("[]") for v in re.split(r"[\s,;]+", str(value or "")) if "/" in v]
 
 
-def validate_claims(rows, evidence, *, required=False):
+def validate_claims(rows, evidence, *, required=False, field_map=False):
     """Check support identities and source roles, without claiming semantic truth."""
     verified = {e["citation_id"]: e for e in evidence if e["quote_verified"]}
-    errors, claims = [], []
+    errors, claims, summaries = [], [], []
+    typed_debate = any(r.get('dim') == 'debate' and _field(r, 'claim_kind') in
+                       ('field_finding', 'unresolved') for r in rows)
     for row in rows:
         if row.get("dim") not in ("answer", "judgment", "debate"):
             continue
@@ -31,6 +33,18 @@ def validate_claims(rows, evidence, *, required=False):
         unknown = set(ids) - verified.keys()
         kind = _field(row, "claim_kind")
         roles = {verified[i]["source_role"] for i in ids if i in verified}
+        # A oneshot answer can contain the method's E1 ledger followed by a
+        # generic Fn summary ledger that omits method-specific fields. Retain
+        # those summaries and check ALL their original support IDs, but do not
+        # invent a claim classification or count them as typed method output.
+        # This exception is confined to field maps with an actual typed ledger.
+        if (field_map and typed_debate and row.get('dim') == 'debate' and not kind
+                and re.fullmatch(r'F\d+', str(row.get('id', '')))
+                and ids and not unknown and roles == {'field'}):
+            claims.pop()
+            summaries.append({'id': row['id'], 'evidence_ids': ids,
+                              'classification': 'unclassified_field_summary'})
+            continue
         needed = {"thinker_position": {"primary"}, "field_finding": {"field"},
                   "comparison": {"primary", "field"}, "unresolved": set()}.get(kind)
         if needed is None or unknown or (needed and (not ids or not needed <= roles)):
@@ -39,6 +53,7 @@ def validate_claims(rows, evidence, *, required=False):
     if required and not claims:
         errors.append({"error": "missing_claim_ledger"})
     return {"supported": not errors, "errors": errors, "claim_count": len(claims),
+            "unclassified_field_summaries": summaries,
             "semantic_attribution_checked_by": "method_not_code"}
 
 
@@ -246,13 +261,15 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
 
     def supported_engine(stage, key, sources, upstream):
         result = engine(stage, key, sources, upstream)
-        validation = validate_claims(result.get("rows", []), state["evidence"], required=True)
+        validation = validate_claims(result.get("rows", []), state["evidence"], required=True,
+                                     field_map=key == 'field_investigation_field_map')
         if not validation["supported"]:
             # Keep the paid draft under its original stage. A bounded repair uses
             # the same source evidence; it cannot verify a fabricated quotation.
             result = engine(f"{stage}:repair", key, sources,
                             {**upstream, "previous_draft": result.get("final_output"), "validation_errors": validation})
-            validation = validate_claims(result.get("rows", []), state["evidence"], required=True)
+            validation = validate_claims(result.get("rows", []), state["evidence"], required=True,
+                                         field_map=key == 'field_investigation_field_map')
         return result, validation
 
     common = {"author": packet["author"], "inquiry_type": packet.get("inquiry_type", "bilateral"),
@@ -407,7 +424,7 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
             raise ValueError("field map support validation failed; map and readings retained")
     if len(maps) == 1:
         field_map = maps[0]
-        field_validation = validate_claims(field_map.get("rows", []), state["evidence"], required=True)
+        field_validation = validate_claims(field_map.get("rows", []), state["evidence"], required=True, field_map=True)
     else:
         cited_ids = {eid for m in maps for row in m.get("rows", []) for eid in _ids(_field(row, "evidence_ids"))}
         field_map, field_validation = supported_engine("field_map", "field_investigation_field_map",
