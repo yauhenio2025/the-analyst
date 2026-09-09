@@ -66,6 +66,35 @@ def pack_reporter_context(stage, sources, upstream, *, packet_sha256):
         omit("coverage.field_gaps", coverage.pop("field_gaps"), "current call packet.field_gaps")
         coverage["field_gaps_reference"] = "The complete field_gaps list in this call's packet"
 
+    # Organizational originals recur in every source's frozen admission receipt
+    # and the collection's registry history. Supply each exact record once, with
+    # resolvable references; retain every word and the unmodified input in receipts.
+    registry = {}
+    def shared(value, path, key=''):
+        if isinstance(value, dict):
+            if key in ('registry_record', 'original') and len(_json(value)) > 1000:
+                ident = _sha(_json(value))
+                omit(path, value, 'current call packet.institutional_metadata_records.' + ident)
+                if ident not in registry:
+                    registry[ident] = copy.deepcopy(value)
+                return {'institutional_metadata_ref': ident}
+            return {k: shared(v, path + '.' + k, k) for k,v in value.items()}
+        if isinstance(value, list):
+            return [shared(v, f'{path}[{i}]', 'registry_record' if key == 'registry_records' else key) for i,v in enumerate(value)]
+        return value
+    packed = shared(packed, 'packet')
+    for source in packed_sources:
+        if source.key == 'field-readings':
+            rows = json.loads(source.text)
+            for i, row in enumerate(rows):
+                reading = row.get('reading') or {}
+                if isinstance(reading.get('source_metadata'), dict):
+                    reading['source_metadata'] = shared(reading['source_metadata'], f'field-readings[{i}].reading.source_metadata')
+            source.text = _json(rows)
+    if registry:
+        packed['institutional_metadata_records'] = registry
+        packed['institutional_metadata_format'] = 'institutional_metadata_ref resolves to the complete unchanged original record in institutional_metadata_records.'
+
     if not omissions:
         return sources, upstream, None
     manifest = {"policy": "reporter_acquisition_context_v1", "stage": stage, "packet_sha256": packet_sha256,

@@ -1,5 +1,6 @@
 import copy
 import json
+import pytest
 
 from src.dossier.reporter_context import pack_reporter_context
 from src.dossier.investigation import _spec
@@ -82,3 +83,24 @@ def test_final_coverage_references_only_exact_duplicate_gap_records():
     upstream['coverage']['field_gaps'].append({'message':'A distinct caveat'})
     a,b,receipt=pack_reporter_context('memo',[],upstream,packet_sha256='f'*64)
     assert b==upstream and receipt is None
+
+
+@pytest.mark.parametrize('stage', ['memo', 'memo_repair'])
+def test_institutional_final_and_repair_inputs_factor_identical_registry_originals_losslessly(stage):
+    record = {'hostname':'institute.example','identity_evidence':{'original':{'url':'https://institute.example/about','text':'Policy research institute. ' * 1500}}}
+    upstream = {'field_collections':[{'kind':'reporter','institutional_context':{'plan':{'registry_records':[record]}}}],
+                'evidence':[{'source_quote':'Unchanged signed claim.','finding':'Explicit disagreement.'}]}
+    readings = [{'reading':{'reading':'A complete source reading.', 'source_metadata':{'source_metadata':{'provider':'reporter',
+                'institutional_admission':{'institutions':[{'registry_record':record}]}}}},'evidence':[{'source_quote':'Unchanged signed claim.'}]} for _ in range(12)]
+    sources = [_spec('field-readings',json.dumps(readings)), _spec('field-original','Unchanged original source body.')]
+    a,b,receipt = pack_reporter_context(stage,sources,upstream,packet_sha256='f'*64)
+    assert receipt['original_chars'] - receipt['packed_chars'] > 350000
+    assert a[1].text == sources[1].text and b['evidence'] == upstream['evidence']
+    assert list(b['institutional_metadata_records'].values()) == [record]
+    restored = json.loads(a[0].text)
+    for row in restored:
+        assert row['reading']['reading'] == 'A complete source reading.'
+        assert row['evidence'] == [{'source_quote':'Unchanged signed claim.'}]
+        ref = row['reading']['source_metadata']['source_metadata']['institutional_admission']['institutions'][0]['registry_record']['institutional_metadata_ref']
+        assert b['institutional_metadata_records'][ref] == record
+    assert all(o.get('sha256') for o in receipt['omitted_metadata'])
