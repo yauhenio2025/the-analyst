@@ -4,6 +4,8 @@ from __future__ import annotations
 import hashlib
 import re
 
+from src.dossier.evidence_routing import canonical_evidence, selection_groups, support_route
+
 from src.dossier.investigation import (
     _context, _eligible, _excerpt, _field, _json, _now, _queries, _spec, citation_catalog,
     inspected_ranges, quote_span, recover_answer_rows, search_inventory,
@@ -177,6 +179,8 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
                       "evidence": [], "readings": [], "read_inputs": {}, "complete": False}
     if state.get("packet_sha256") != fingerprint:
         raise ValueError("the frozen investigation packet changed; create a new run")
+    if state.get('complete'):
+        return state  # A completed historical answer is not silently reinterpreted on resume.
     from src.engines.methods import field_methods, validate_contract, validate_snapshot, method_receipt
     validate_contract(packet)
     if 'method_snapshots' not in state:
@@ -198,7 +202,17 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
 
     def engine(stage, key, sources, upstream):
         check()
+        from src.engines.methods import digest
+        contract = digest({'engine': key, 'sources': [(s.key, s.text) for s in sources], 'upstream': upstream})
+        contracts = state.setdefault('call_contracts', {})
+        if stage in contracts and contracts[stage] != contract:
+            raise ValueError(f'{stage} frozen call input changed; fork a new investigation instead of reusing stale output')
         if stage in state["calls"]:
+            previous_ids = state.get('call_input_manifests', {}).get(stage, {}).get('evidence_ids')
+            if (stage not in contracts and 'evidence' in upstream and previous_ids is not None
+                    and set(previous_ids) != {e['citation_id'] for e in upstream['evidence']}):
+                raise ValueError(f'{stage} historical support inputs differ from the corrected route; '
+                                 'create a separate replay instead of reusing a stale synthesis')
             result = state["calls"][stage]
             recover_answer_rows(result)
             return result
@@ -242,6 +256,7 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
             checkpoint(stage, paused_reason="input_limit", complete=False)
             raise ValueError(f"{stage} input is {chars:,} characters after evidence packing; "
                              "all completed research retained; additional source-preserving compaction is required")
+        contracts[stage] = contract
         checkpoint(stage, running_stage=stage)
         from contextlib import nullcontext
         from src.executor.spend_guard import budget
@@ -279,6 +294,9 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
               "field_collections": packet.get("field_collections", []), "field_gaps": packet.get("field_gaps", []),
               "mode": state["mode"], "as_of": state.setdefault("as_of", _now())}
     state.setdefault('prior_context_policy', 'legacy_all' if state['calls'] else 'question_queries')
+    if packet.get('research_feedback'):
+        common['research_feedback'] = packet['research_feedback']
+        state['research_feedback'] = packet['research_feedback']
     context = [c for c in _context(packet, bodies, cap=40000) if c["key"] != "prior_investigations"]
     baseline = _baseline_context(packet)
     baseline_ranges = [(0, len(baseline))] if len(baseline) <= 200000 else [(0, 100000), (len(baseline) - 100000, len(baseline))]
@@ -327,7 +345,7 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
     def evidence_context(role=None):
         return [{k: v for k, v in e.items() if k in ("citation_id", "uid", "source_key", "source_role", "finding",
                                                     "source_quote", "quote_verified", "conjecture", "quote_start", "quote_end",
-                                                    "quote_match", "quote_layout", "pages", "page_urls", "title", "year")}
+                                                    "quote_match", "quote_layout", "pages", "page_urls", "title", "year", "fields")}
                 for e in state["evidence"] if role is None or e["source_role"] == role]
 
     def read_population(role, guidance, selected_uids=None):
@@ -411,6 +429,8 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
                 if verified and layout_quote:
                     evidence.update(layout_quote)
                 state["evidence"].append(evidence)
+            state['evidence'], duplicates = canonical_evidence(state['evidence'])
+            state.setdefault('evidence_identity_receipts', {})[key] = duplicates
             checkpoint("reading")
 
     read_population("field", plan)
@@ -438,16 +458,18 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
         if not validation["supported"]:
             checkpoint("field_mapping", field_map_validation=validation)
             raise ValueError("field map support validation failed; map and readings retained")
+    batch_support = support_route(maps, field_evidence)
+    checkpoint('support_routing', support_routes={'batch_to_global': batch_support})
     if len(maps) == 1:
         field_map = maps[0]
         field_validation = validate_claims(field_map.get("rows", []), state["evidence"], required=True, field_map=True)
     else:
-        cited_ids = {eid for m in maps for row in m.get("rows", []) for eid in _ids(_field(row, "evidence_ids"))}
+        cited_ids = set(batch_support["eligible_ids"])
         field_map, field_validation = supported_engine("field_map", "field_investigation_field_map",
                        [_spec("field-map-batches", _json([m.get("final_output") for m in maps]))],
                        {**common, "plan": plan.get("final_output"), "map_scope": "global_reconciliation",
                         "evidence": [e for e in field_evidence if e["citation_id"] in cited_ids],
-                        "evidence_selection": "original support IDs cited by batch argument maps",
+                        "evidence_selection": batch_support["policy"], "support_route": batch_support,
                         "field_evidence_total": len(field_evidence), "full_readings_retained": True,
                         "source_catalog": [{"uid": r["uid"], "title": r.get("title")} for r in packet["field"]]})
     checkpoint("field_map", field_map=field_map, field_map_validation=field_validation)
@@ -484,10 +506,7 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
                             [_spec("author-inventory", _json(batch))],
                             {**common, "field_map": field_map.get("final_output"), "prior_context": context,
                              "selection_mode": "batch", "limits": limits["primary"]})
-            for r in result.get("rows", []):
-                uid = str(_field(r, "uid"))
-                if uid in allowed and _field(r, "decision") in ("read", "context", "defer", "unavailable"):
-                    decisions[uid] = {**r, "uid": uid, "decision": _field(r, "decision"), "reason": _field(r, "reason")}
+            decisions.update(selection_groups(result.get('rows', []), allowed))
             for uid in allowed - decisions.keys():
                 decisions[uid] = {"uid": uid, "decision": "unjudged", "triage_missing": True,
                                   "reason": "No valid semantic decision returned; reconcile explicitly"}
@@ -498,16 +517,28 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
                                      "prior_decision": decisions[row["uid"]]} for row in candidates]))],
                                 {**common, "field_map": field_map.get("final_output"), "selection_mode": "reconcile",
                                  "prior_context": context, "limits": limits["primary"]})
-        selection_order = []
-        available = {r["uid"] for r in packet["primary"] if _eligible(r) and bodies.get(r["source_key"])}
-        for r in reconciliation.get("rows", []):
-            uid = str(_field(r, "uid"))
-            decision = _field(r, "decision")
-            if uid in decisions and decision in ("read", "context", "defer", "unavailable"):
-                decisions[uid] = {**r, "uid": uid, "decision": decision, "reason": _field(r, "reason"),
-                                  "prior_decision": decisions[uid]}
-                if uid not in selection_order:
-                    selection_order.append(uid)
+        resolved = selection_groups(reconciliation.get('rows', []), decisions)
+        conflicts = {uid: r for uid, r in resolved.items() if r['selection_conflict']}
+        conflicts.update({uid: r for uid, r in decisions.items() if r.get('selection_conflict') and uid not in resolved})
+        if conflicts:
+            checkpoint('author_selection_conflicts', selection_conflicts=conflicts)
+            repair = engine('author_selection:conflict_repair', 'field_investigation_author_select',
+                            [_spec('author-selection-conflicts', _json(list(conflicts.values())))],
+                            {**common, 'selection_mode': 'resolve_conflicts',
+                             'field_map': field_map.get('final_output'), 'limits': limits['primary'],
+                             'previous_selection': reconciliation.get('final_output'),
+                             'uncontested_decisions': [r for r in resolved.values() if not r['selection_conflict']]})
+            repaired = selection_groups(repair.get('rows', []), conflicts)
+            unresolved = [uid for uid in conflicts if uid not in repaired or repaired[uid]['selection_conflict']]
+            checkpoint('author_selection_conflicts', selection_conflict_resolution=repair,
+                       unresolved_selection_uids=unresolved)
+            if unresolved:
+                raise ValueError('author selection has unresolved conflicting decisions; all rationales and paid work retained')
+            resolved.update(repaired)
+        selection_order = list(resolved)
+        available = {r['uid'] for r in packet['primary'] if _eligible(r) and bodies.get(r['source_key'])}
+        for uid, decision in resolved.items():
+            decisions[uid] = {**decision, 'prior_decision': decisions[uid]}
         # The method's global ordering defines the cap, never title or uid sorting.
         ordered_candidates = [uid for uid in selection_order if uid in available and decisions[uid]["decision"] == "read"]
         selected = ordered_candidates[:limits["primary"]["max_texts"]]
@@ -536,10 +567,13 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
     for key in ("missing_uids", "excluded_uids", "unread_uids"):
         coverage[key] = sum((coverage[r][key] for r in inventories), [])
     checkpoint("coverage", coverage=coverage)
-    mapped_ids = {eid for row in field_map.get("rows", []) for eid in _ids(_field(row, "evidence_ids"))}
+    final_support = support_route([field_map], field_evidence, batch_support['eligible_ids'])
+    state['support_routes']['global_to_synthesis'] = final_support
+    checkpoint('support_routing')
+    mapped_ids = set(final_support['eligible_ids'])
     research = {**common, "coverage": coverage, "field_map": field_map.get("final_output"),
                 "evidence": [e for e in evidence_context() if e["source_role"] == "primary" or e["citation_id"] in mapped_ids],
-                "evidence_selection": "all primary evidence and original field support cited by the global argument map",
+                "evidence_selection": "all primary evidence plus " + final_support["policy"], "support_route": final_support,
                 "field_evidence_total": len(field_evidence), "full_field_evidence_retained": True, "prior_context": context}
     reading_sources = [_spec("field-argument-map", field_map.get("final_output", "")),
                        _spec("primary-readings", _json(reading_context("primary")))]

@@ -198,6 +198,10 @@ def _scope_protocol(spec, documents, *, doc_key="", dimension=None, reviewing=Fa
 
 
 def _corpus_reading(spec):
+    if spec.composition_role == 'decision':
+        return ('Organize this decision around the research question, observations, competing explanations and next action. '
+                'Keep exact source identities and coverage limits. Follow the method output contract; '
+                'document order does not determine the order of the decision.')
     if not spec.scoped_outcomes:
         return CORPUS_READING
     return CORPUS_READING.replace(

@@ -11,7 +11,7 @@ from __future__ import annotations
 import re
 from typing import Any, Iterable, Optional
 
-from src.dossier.cohort_export import fields_of
+from src.dossier.cohort_export import fields_of as fields_of  # Public legacy re-export.
 
 ENGINE = "citation_explainer"
 ROW = re.compile(r"^\s*(?:[-*]\s+)?\[((?:[A-Z]\d\.)?F\d+)\]")
@@ -51,22 +51,21 @@ def pin_fields(fields: dict, pinned: dict[str, list[str]]) -> list[dict]:
 def rows_with_fields(final_output: str, failed: Iterable[str] = (), engine_key: Optional[str] = None) -> list[dict]:
     """Every ledger row with its answer-shape fields, the wall's verdict folded in as `conjecture`; with `engine_key`, the fields a
     vocabulary pins are checked against it (`drift` on the row when a value was outside it)."""
-    from src.executor.ledger_walls import parse_rows
+    from src.executor.ledger_walls import parse_rows, _field_values
 
     pinned = _pinned(engine_key)
     failed = set(failed)
-    lines = {m.group(1): line.strip() for line in final_output.splitlines() for m in [ROW.match(line)] if m}
     out = []
     for r in parse_rows(final_output):
-        raw = lines.get(r.id)
-        if not raw:
-            continue
-        f = fields_of(raw)
-        head = re.sub(r"^\s*(?:[-*]\s+)?\[[^\]]+\]\s*", "", raw.split(" — ", 1)[0]).strip()
-        anchor = (f.get("anchor") or "").strip().strip('"“”')
-        anchored = bool(anchor) or bool((f.get("anchor-b") or "").strip().strip('"“”'))
+        f = {name: value for name, value, _ in _field_values(r.text)}
+        head = r.finding
+        # The wall already decodes JSON literals and rejects ambiguous inner
+        # quotes. Re-stripping its serialized value corrupts literal quotation
+        # marks and can expose field-looking text inside an anchor as metadata.
+        anchor = r.anchor
+        anchored = any(a.quote and not a.parse_error for a in r.anchors)
         row = {"id": r.id, "dim": r.dim or f.get("dim", ""), "text": head, "fields": f, "anchor": anchor,
-               "doc": r.doc or f.get("doc", ""), "conjecture": (not anchored) or (r.id in failed),
+               "doc": r.doc, "conjecture": (not anchored) or (r.id in failed),
                "confidence": f.get("confidence", "")}
         if pinned:
             drift = pin_fields(f, pinned)

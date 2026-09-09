@@ -319,6 +319,9 @@ def test_final_reconciliation_decisions_control_reads_and_caps_are_disclosed():
     _,packet,_,bodies=fixture(primary_count=3)
     base=fake([])
     def engine(key,sources,**kwargs):
+        if kwargs['packet'].get('selection_mode') == 'resolve_conflicts':
+            return {'rows': [row('candidate', uid='em:AUTHOR00', decision='defer',
+                                reason='Explicit reconciliation excludes this text')], 'cost_usd': .1}
         result=base(key,sources,**kwargs)
         if key.endswith('_author_select') and kwargs['packet']['selection_mode']=='reconcile':
             result['rows'].append({**row('candidate',uid='em:AUTHOR00',decision='defer',reason='Final reconciliation excludes this text'),'id':'E1.F99'})
