@@ -113,3 +113,11 @@ def test_unsupported_field_contract_rejects_source_expansion():
     raw,*_=fixture();raw['method_contract']={'key':'field-critical-methods','version':99}
     with pytest.raises(ValueError,match='Unsupported field'):
         freeze(raw)
+
+
+def test_practice_registration_preserves_an_explicit_version():
+    import json
+    from pathlib import Path
+    from src.api.routes.practices import PracticeIn
+    raw=json.loads((Path(__file__).parents[1]/'src/practices/definitions/topical-multimedia-discovery.json').read_text())
+    assert PracticeIn.model_validate(raw).version=='1'

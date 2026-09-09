@@ -48,6 +48,7 @@ class PracticeIn(BaseModel):
     misses: str = ""
     origin: str = ""
     owner: str = Field("the-mastermind", description="the-mastermind | the-reporter | the-referee | gs-revamp | the-stacks")
+    version: str = ""
     note: str = ""
 
 
