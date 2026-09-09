@@ -54,6 +54,8 @@ Among the completed pair, Answer-2 is preferable because it avoids the identifie
 
 ## Consequences for the system and next test
 
+The result is attached to `multimedia_source_criticism` as evaluation provenance, including the tested snapshot hash and this receipt. Shared composition carries that bounded failure history to future callers. The procedural instructions and method version are unchanged; adding provenance changes the complete snapshot hash. Twenty-three central method, freezing, execution and feedback checks pass without paid calls. Existing frozen research retains its original methods.
+
 Keep the mechanical retention repair: omission from a summary should not destroy access to a paid original finding. Retire the stronger claim that this repair alone fixes the mediocre Tether answer. Do not promote the source-feedback controller from this test; discovery and feedback did not run.
 
 The separate fresh acceptance commission preserves the original question and provides no target URLs or desired quotation. It should test actual discovery, acquisition, the current source-reading methods, conflicting Riley selection, and one feedback round. Review should check attribution from the original, distinguish advocacy from official adoption and measured effects, and ask whether new evidence changes the account of state strategy and private accumulation. Finding Collins alone is not success. This full run remains pending its separately requested $25 allocation ($10 discovery and $15 analysis); the unused $8 trial allowance is not transferred.
