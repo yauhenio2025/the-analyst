@@ -27,6 +27,12 @@ def test_progress_and_execution_skip_original_submission_blob(storage, monkeypat
     assert dossier.get_investigation(job.id)['status'] == 'queued'
     monkeypatch.setattr(dossier.dossier_events, 'list_events', lambda *a: [])
     assert dossier.get_events(job.id)['events'] == []
+    controls = []
+    monkeypatch.setattr(dossier.runner, 'cancel', lambda jid: controls.append(('cancel', jid)))
+    monkeypatch.setattr(dossier.runner, 'resume', lambda jid: controls.append(('resume', jid)) or False)
+    assert dossier.cancel(job.id)['status'] == 'cancelled'
+    assert dossier.resume(job.id)['resumed'] is False
+    assert controls == [('cancel', job.id), ('resume', job.id)]
     monkeypatch.setattr(blob_store, 'get_blob', get_blob)
     assert store.get_job(job.id).sources == job.sources
     assert dossier.get_one(job.id)['sources'] == job.sources

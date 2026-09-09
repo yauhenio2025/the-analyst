@@ -198,7 +198,7 @@ def test_partial_artifact_http_view_and_wrong_recipe(monkeypatch):
     from src.dossier import investigation
     from src.dossier.schemas import DossierJob, DossierOptions, PathRequest
     job = DossierJob(id="dossier-test", status="analysis", options=DossierOptions(intent="Question", entry="chosen", path=PathRequest(chain_key="author_investigation")))
-    monkeypatch.setattr(dossier, "_load", lambda jid: job)
+    monkeypatch.setattr(dossier, "get_job_progress", lambda jid: job)
     monkeypatch.setattr(investigation, "load_investigation", lambda jid: {"memo": "", "evidence": [{"quote": "retained"}], "calls": {"private": {}}, "complete": False})
     out = dossier.get_investigation(job.id)
     assert out["status"] == "analysis" and out["evidence"] and "calls" not in out

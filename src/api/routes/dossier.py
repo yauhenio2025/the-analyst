@@ -723,14 +723,17 @@ def get_figure(job_id: str, filename: str):
 
 @router.post("/jobs/{job_id}/cancel")
 def cancel(job_id: str):
-    _load(job_id)
+    if get_job_progress(job_id) is None:
+        raise HTTPException(status_code=404, detail='dossier job not found')
     runner.cancel(job_id)
     return {"job_id": job_id, "status": "cancelled"}
 
 
 @router.post("/jobs/{job_id}/resume")
 def resume(job_id: str):
-    job = _load(job_id)
+    job = get_job_progress(job_id)
+    if job is None:
+        raise HTTPException(status_code=404, detail='dossier job not found')
     if job.status == "done":
         return {"job_id": job_id, "status": "done", "resumed": False}
     if job.status == "awaiting_brief":
