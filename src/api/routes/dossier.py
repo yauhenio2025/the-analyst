@@ -362,6 +362,17 @@ def get_investigation(job_id: str):
             "job_id": job_id, "status": job.status, "error": job.error, "totals": job.totals.model_dump()}
 
 
+@router.post("/jobs/{job_id}/investigation/recover-reading")
+def recover_investigation_reading(job_id: str, receipt: dict):
+    _load(job_id)
+    from src.dossier.investigation_recovery import recover_saved_reading
+    from src.dossier.common import DossierDraining
+    try:
+        return recover_saved_reading(job_id, receipt)
+    except (ValueError, KeyError, TypeError, DossierDraining) as exc:
+        raise HTTPException(status_code=409, detail=str(exc)) from exc
+
+
 @router.get("/jobs/{job_id}/oeuvre")
 def get_oeuvre(job_id: str):
     """A paper's place in its author's oeuvre (recipe oeuvre_position) as JSON, rendered from the job's ledgers by code: the
