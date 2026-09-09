@@ -40,3 +40,18 @@ The provider is scripted: these tests prove actual prompt composition and
 mechanical integrity, not improved critical judgment. Paid evaluation over the
 retained Tether originals and the distinct institutional case remains required
 by the cross-repository commission. No paid calls were made for this step.
+
+Institutional runs and their frozen-source comparisons also retain per-provider-attempt
+spend reservations. Before each request, the executor checks a conservative input-byte
+and maximum-output ceiling against the approved cap, including unresolved attempts
+from earlier execution. SDK retries are disabled within this context; executor retries
+need their own reservation. Lost/partial responses keep their ceiling. Verified usage
+settles it using conservative configured rates; actual research costs remain separately
+reported by the existing call ledger. The current bounded receipt contract supports
+OpenRouter and Anthropic; an unpriced or unsupported provider stops before spending.
+
+Latest focused execution: 39 tests pass for the new guard, actual provider boundary,
+SDK retry settings, central method consumption and existing process execution. Three
+legacy `test_llm_backends.py` tests fail identically on untouched `a2e0df5a` because
+they reference the removed `_thinking_config` method; this release does not restore
+that superseded interface.

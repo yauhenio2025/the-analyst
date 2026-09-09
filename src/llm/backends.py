@@ -50,6 +50,7 @@ class LLMCallResult:
     duration_ms: int
     partial: bool = False
     connection_error: Optional[str] = None
+    usage_verified: bool = True
 
 
 # Constants shared across backends
@@ -207,7 +208,9 @@ class AnthropicBackend:
         import anthropic
         from anthropic import Anthropic
 
+        from src.executor.spend_guard import active
         client = Anthropic(
+            **({'max_retries': 0} if active() else {}),
             timeout=sdk_timeout(
                 connect=60.0,
                 read=1200.0,  # 20 min for large outputs
@@ -322,7 +325,9 @@ class AnthropicBackend:
         import anthropic
         from anthropic import Anthropic
 
+        from src.executor.spend_guard import active
         client = Anthropic(
+            **({'max_retries': 0} if active() else {}),
             timeout=sdk_timeout(
                 connect=60.0,
                 read=300.0,  # 5 min max silence on socket
@@ -837,7 +842,9 @@ class OpenRouterBackend:
                 "OPENROUTER_API_KEY not set. "
                 "Set the environment variable to use OpenRouter models."
             )
+        from src.executor.spend_guard import active
         return openai.OpenAI(
+            **({'max_retries': 0} if active() else {}),
             base_url="https://openrouter.ai/api/v1",
             api_key=api_key,
         )
@@ -924,6 +931,7 @@ class OpenRouterBackend:
             output_tokens=output_tokens,
             thinking_tokens=0,
             duration_ms=duration_ms,
+            usage_verified=bool(response.usage and response.usage.prompt_tokens and response.usage.completion_tokens),
         )
 
     def execute_streaming(
@@ -1057,4 +1065,5 @@ class OpenRouterBackend:
             duration_ms=duration_ms,
             partial=connection_error is not None,
             connection_error=connection_error,
+            usage_verified=bool(usage_data and getattr(usage_data, 'prompt_tokens', 0) and getattr(usage_data, 'completion_tokens', 0)),
         )

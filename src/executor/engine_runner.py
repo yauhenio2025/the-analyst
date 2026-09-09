@@ -26,6 +26,7 @@ from typing import Any, Callable, Optional
 from src.llm.factory import get_backend
 from src.events import context as _events_context
 from src.events import hooks as _events_hooks
+from src.executor import spend_guard
 
 logger = logging.getLogger(__name__)
 
@@ -278,6 +279,7 @@ def run_engine_call(
                 use_1m=bool(config.get("use_1m_context")), max_tokens=config["max_tokens"],
             )
 
+        reservation = spend_guard.reserve(config['model'], system_prompt, user_message, config['max_tokens'], label)
         try:
             if use_sync:
                 result_obj = backend.execute_sync(
@@ -299,6 +301,7 @@ def run_engine_call(
                     cancellation_check=cancellation_check,
                 )
 
+            spend_guard.settle(reservation, result_obj)
             result = {
                 "content": result_obj.content,
                 "model_used": result_obj.model_id,

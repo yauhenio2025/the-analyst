@@ -226,8 +226,12 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
             raise ValueError(f"{stage} input is {chars:,} characters after evidence packing; "
                              "all completed research retained; additional source-preserving compaction is required")
         checkpoint(stage, running_stage=stage)
-        result = call(key, sources, packet=upstream, depth="surface", spend_cap_usd=remaining, max_chars=650000,
-                      method_snapshot=state['method_snapshots'][key])
+        from contextlib import nullcontext
+        from src.executor.spend_guard import budget
+        bounded = institutional or any((c.get('source_policy') or {}).get('institutions_only') for c in packet.get('field_collections', []))
+        with budget(state, spend_cap_usd, save) if bounded else nullcontext():
+            result = call(key, sources, packet=upstream, depth="surface", spend_cap_usd=remaining, max_chars=650000,
+                          method_snapshot=state['method_snapshots'][key])
         recover_answer_rows(result)
         state["calls"][stage] = result
         state["cost_usd"] += float(result.get("cost_usd") or 0)
