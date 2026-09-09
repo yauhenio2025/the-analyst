@@ -1,0 +1,41 @@
+engine_key: cohort_school_placement
+engine_name: Place cohort thinkers in schools of thought
+version: 1
+category: scholarly
+kind: relational
+operation: placement
+problematique: Cohort members may lack affiliations because their identities were missed, the cohort phrase matches
+  no single school, or memberships are incomplete. Review known and unknown thinkers against all available schools
+  using their own work and the citing author’s analysis, and propose evidence-backed repairs or a distinct provisional
+  school.
+researcher_question: Where should these thinkers be placed, and what evidence supports each proposed identity and
+  affiliation?
+intellectual_lineage:
+  primary: source_criticism
+analytical_dimensions:
+- key: shortlist
+  description: Select school contexts
+  probing_questions:
+  - Which supplied schools merit closer inspection?
+- key: review
+  description: Review identities, affiliations and new schools
+  probing_questions:
+  - Which identities or affiliations should be proposed, on what evidence?
+composability:
+  synergy_engines:
+  - thinker_placement
+  - citation_cohort_synthesis
+depth_levels:
+- key: surface
+  description: Two-phase cohort placement review
+  typical_passes: 2
+- key: standard
+  description: Two-phase cohort placement review
+  typical_passes: 2
+- key: deep
+  description: Two-phase cohort placement review
+  typical_passes: 2
+apps:
+- critic
+function: genealogy
+output_mode: prose
