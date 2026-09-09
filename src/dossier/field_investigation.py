@@ -220,13 +220,15 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
         if remaining <= 0:
             checkpoint(stage, paused_reason="spend_cap")
             raise ValueError("investigation spend cap reached; completed artifacts were saved")
-        from src.dossier.context_packing import input_chars, input_hash, pack_final_context
+        from src.dossier.context_packing import expand_evidence_rows, input_chars, input_hash, pack_final_context
         from src.dossier.reporter_context import pack_reporter_context
         sources, upstream, reporter_packing = pack_reporter_context(stage, sources, upstream, packet_sha256=fingerprint)
         sources, upstream, packing = pack_final_context(stage, sources, upstream, packet_sha256=fingerprint)
         chars = input_chars(sources, upstream)
         representation = "verified_quotations"
         final_stage = stage.split(":", 1)[0] in ("adjudication", "memo")
+        bounded = institutional or any((c.get('source_policy') or {}).get('institutions_only') for c in packet.get('field_collections', []))
+        execution_output_limit = 16384 if bounded and final_stage else None
         if not final_stage and chars > 520000 and isinstance(upstream.get("evidence"), list):
             # The argument maps already state the field claims with original
             # support IDs. At the context limit, retain every such ID and its
@@ -241,8 +243,10 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
             chars = input_chars(sources, upstream)
         state.setdefault("call_input_manifests", {})[stage] = {
             "chars": chars, "context_serializer": "compact_json_v1", "evidence_representation": representation,
-            "evidence_ids": [e["citation_id"] for e in upstream.get("evidence", [])],
+            "evidence_ids": [e["citation_id"] for e in expand_evidence_rows(upstream.get("evidence", []))],
             "method_receipt": method_receipt(state['method_snapshots'][key])}
+        if execution_output_limit:
+            state['call_input_manifests'][stage]['execution_output_limit_tokens'] = execution_output_limit
         if reporter_packing:
             state["call_input_manifests"][stage]["reporter_packing"] = reporter_packing
         if packing:
@@ -260,8 +264,8 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
         checkpoint(stage, running_stage=stage)
         from contextlib import nullcontext
         from src.executor.spend_guard import budget
-        bounded = institutional or any((c.get('source_policy') or {}).get('institutions_only') for c in packet.get('field_collections', []))
-        with budget(state, spend_cap_usd, save) if bounded else nullcontext():
+        from src.executor.output_budget import limit
+        with (budget(state, spend_cap_usd, save) if bounded else nullcontext()), limit(execution_output_limit):
             result = call(key, sources, packet=upstream, depth="surface", spend_cap_usd=remaining, max_chars=650000,
                           method_snapshot=state['method_snapshots'][key])
         recover_answer_rows(result)

@@ -66,6 +66,22 @@ def test_restart_at_memo_does_not_replay_paid_reads_or_load_new_methods(monkeypa
     assert state['cost_usd'] == pytest.approx(.5)
 
 
+def test_bounded_final_output_allowance_is_recorded_without_changing_frozen_method():
+    from src.executor.output_budget import current
+    _, packet, _, bodies = institutional()
+    calls = []; observed = []; delegate = provider(calls)
+    def call(key, sources, **kwargs):
+        observed.append((key, current()))
+        return delegate(key, sources, **kwargs)
+    state = run_field_investigation(packet, bodies, call=call, save=lambda _: None)
+    assert state['complete']
+    assert observed[-1] == ('institutional_inquiry_memo', 16384)
+    assert all(limit is None for _, limit in observed[:-1])
+    assert state['call_input_manifests']['memo']['execution_output_limit_tokens'] == 16384
+    assert state['call_input_manifests']['memo']['method_receipt']['sha256'] == state['method_snapshots']['institutional_inquiry_memo']['sha256']
+    assert current() is None
+
+
 def test_contract_mixing_and_unavailable_sources_reject_before_spending():
     raw, *_ = institutional()
     raw['author'] = {'id': 'fake'}

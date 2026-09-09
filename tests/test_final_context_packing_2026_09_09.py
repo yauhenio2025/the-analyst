@@ -5,7 +5,7 @@ import json
 
 import pytest
 
-from src.dossier.context_packing import input_chars, pack_final_context
+from src.dossier.context_packing import input_chars, pack_final_context, expand_evidence_rows
 from src.dossier.investigation import _spec
 from tests.test_field_investigation_2026_09_09 import fixture, freeze, fake
 
@@ -127,3 +127,63 @@ def test_prior_metadata_table_is_lossless_and_large_memo_stays_non_anchor_contex
             assert source.role=='plan'; text=source.text
         assert text==old['text']
     assert len(restored)==40
+
+
+def test_grouped_evidence_preserves_quotes_speakers_missing_fields_and_source_order():
+    sources, upstream = sample()
+    upstream['evidence'] = [
+        {'uid':f'source:{i%3}', 'citation_id':f'source:{i%3}/F{i}', 'source_role':'field' if i%3 else 'primary',
+         'title':f'Complete title {i%3}', 'source_quote':f'Exact quotation {i}.\nIncluding punctuation—unchanged.',
+         'finding':f'A distinct finding {i}.', 'quote_verified':bool(i%4),
+         'fields':{'speaker':f'Speaker {i%3}', 'locus':f'page {i}', 'uid':f'source:{i%3}'},
+         **({'year':None} if i%2 else {})} for i in range(90)]
+    upstream['evidence'][4]['fields'].pop('locus')
+    original = copy.deepcopy(upstream['evidence'])
+    _, packed, receipt = pack_final_context('adjudication',sources,upstream,packet_sha256='f'*64)
+    assert packed['evidence']['format'] == 'grouped_evidence_v1'
+    assert expand_evidence_rows(packed['evidence']) == original == upstream['evidence']
+    assert len(json.dumps(packed['evidence'])) < len(json.dumps(original))
+    assert receipt['evidence_record_encoding'] == 'grouped_evidence_v1'
+    assert receipt['evidence_sha256'] == hashlib.sha256(json.dumps(original,ensure_ascii=False).encode()).hexdigest()
+
+
+def test_final_registry_archive_keeps_classification_proofs_and_live_references():
+    sources, upstream = sample()
+    identity={'hostname':'institute.example','name':'Institute','identity_evidence':{
+        'classification':'think_tank','quote':'An independent research institute.', 'reason':'Explicit original description.',
+        'original':{'url':'https://institute.example/about','text':'Full identity page ' * 3000}}}
+    upstream['institutional_metadata_records']={'orphan':identity,'still-used':{'complete':'Retained record'}}
+    upstream['field_collections'][0].update(institutional_context={'plan':{'registry_records':[{'institutional_metadata_ref':'orphan'}],'search_outcomes':{'institute.example':3}},'coverage':[{'name':'Institute','searched':True}]},
+        discovery_context={'identity_method_snapshot':{'version':1,'body':'Frozen method'},'report':{'leads':7},'usage':{'cost_usd':1}})
+    upstream['explicit_identity']={'institutional_metadata_ref':'still-used'}
+    original = copy.deepcopy(upstream)
+    _, packed, receipt = pack_final_context('memo',sources,upstream,packet_sha256='f'*64)
+    assert upstream == original
+    assert packed['institutional_metadata_records'] == {'still-used':{'complete':'Retained record'}}
+    proof=packed['institution_classification_receipts'][0]['identity_evidence']
+    assert proof['quote'] == identity['identity_evidence']['quote'] and proof['classification']=='think_tank'
+    assert proof['original']['url'] == identity['identity_evidence']['original']['url']
+    assert 'text' not in proof['original'] and proof['original']['text_sha256']
+    context=packed['field_collections'][0]['institutional_context']
+    assert context['coverage']==original['field_collections'][0]['institutional_context']['coverage']
+    assert context['plan']['search_outcomes']=={'institute.example':3}
+    assert any(o['path']=='institutional_metadata_records.orphan' and o['value']==identity for o in receipt['omitted_metadata'])
+    assert any(o['path'].endswith('identity_method_snapshot') and o['value']=={'version':1,'body':'Frozen method'} for o in receipt['omitted_metadata'])
+
+
+def test_repeated_baseline_memo_is_supplied_once_with_exact_reconstructable_values():
+    sources, upstream = sample()
+    memo='A complete memo with its source quotations.\n' * 400
+    records=[{'id':4,'memo':memo,'argument_map':'The complete map.'}, {'id':4,'memo':memo,'extra':'A distinct retained qualification.'}]
+    original='[SOURCE CHARACTERS 0:100000]\n'+json.dumps(records,ensure_ascii=False)
+    upstream['prior_context'][0]['text']=original
+    packed_sources, packed, receipt=pack_final_context('memo',sources,upstream,packet_sha256='f'*64)
+    source=next(s for s in packed_sources if s.key.startswith('prior-context-text:'))
+    data=json.loads(source.text.split('\n',1)[1])
+    assert data['format']=='shared_prior_text_v1' and list(data['texts'].values())==[memo]
+    restored=[]
+    for record in data['records']:
+        restored.append({k:data['texts'][v['retained_text_ref']] if isinstance(v,dict) and 'retained_text_ref' in v else v for k,v in record.items()})
+    assert restored==records and source.role=='plan'
+    assert any(o['value']==original for o in receipt['omitted_metadata'])
+    assert upstream['prior_context'][0]['text']==original
