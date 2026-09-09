@@ -109,12 +109,13 @@ def prepare(request: PrepareRequest) -> dict:
     if review:
         public["review"] = review
     saved = _put_once("inquiry:" + prepared_id, {**public, "input": frozen_input, "method_record": record,
+                                                **({"review_method_record": review_record} if review else {}),
                                                 "contract_version": CONTRACT_VERSION, "created_at": now()})
     return _public_preparation(saved)
 
 
 def _public_preparation(prepared: dict) -> dict:
-    return {k: v for k, v in prepared.items() if k not in ("input", "method_record", "created_at", "contract_version")}
+    return {k: v for k, v in prepared.items() if k not in ("input", "method_record", "review_method_record", "created_at", "contract_version")}
 
 
 def input_data(request: PrepareRequest) -> dict:

@@ -16,6 +16,9 @@ def test_review_contract_freezes_method_and_requires_matching_ready_draft(client
     input_data['context']['preparation']={'review_contract':'question-fidelity-v1'}
     p=prepared(client,input_data)
     assert p['review']['contract']=='question-fidelity-v1'
+    saved = service._get('inquiry:' + p['prepared_id'])
+    assert saved['review_method_record']['capability']['engine_key'] == 'constructive_inquiry_review'
+    assert 'review_method_record' not in p
     assert 'desired outcome' in p['review']['system_prompt']
     data=completion(p,input_data,result_data)
     assert client.post('/v1/inquiries/complete',json=data).status_code==422
