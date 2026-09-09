@@ -104,3 +104,33 @@ def test_institutional_final_and_repair_inputs_factor_identical_registry_origina
         ref = row['reading']['source_metadata']['source_metadata']['institutional_admission']['institutions'][0]['registry_record']['institutional_metadata_ref']
         assert b['institutional_metadata_records'][ref] == record
     assert all(o.get('sha256') for o in receipt['omitted_metadata'])
+
+
+@pytest.mark.parametrize('stage', ['read:reporter:pdf', 'memo', 'memo:repair'])
+def test_large_institutional_pdf_preserves_originals_pages_and_identity_without_directory_profiles(stage):
+    body = 'Exact acquired source paragraph.\n' * 10000
+    pages = [{'page': 7, 'char_start': 0, 'char_end': len(body), 'text': body}]
+    record = {'hostname': 'institute.example', 'name': 'Institute', 'country': 'France',
+              'description': 'Directory selection context. ' * 5000, 'topics': ['Labour'],
+              'business_model': 'Directory label', 'identity_evidence': {'quote': 'Independent policy research.'}}
+    upstream = {'field_collections': [{'kind': 'reporter', 'institutional_context': {
+        'plan': {'registry_records': [record], 'scope_excluded': [{'hostname': 'other.example', 'reason': 'Unknown identity'}]},
+        'coverage': [{'hostname': 'institute.example', 'searched': True}]}}],
+        'source_metadata': {'source_metadata': {'provider': 'reporter', 'provenance': {'page_spans': pages}}},
+        'evidence': [{'source_quote': 'Exact acquired source paragraph.', 'finding': 'A qualified claim.'}],
+        'previous_draft': 'The complete paid draft.'}
+    original = copy.deepcopy(upstream)
+    sources = [_spec('field:reporter:pdf', body)]
+    a, b, receipt = pack_reporter_context(stage, sources, upstream, packet_sha256='f'*64)
+    assert upstream == original and a[0].text == body
+    assert b['evidence'] == original['evidence'] and b['previous_draft'] == original['previous_draft']
+    context = b['field_collections'][0]['institutional_context']
+    assert context['coverage'] == original['field_collections'][0]['institutional_context']['coverage']
+    assert context['plan']['registry_records'][0]['identity_evidence'] == record['identity_evidence']
+    assert context['plan']['scope_excluded'][0]['reason'] == 'Unknown identity'
+    assert b['source_metadata']['source_metadata']['provenance']['page_spans'] == [
+        {'page': 7, 'char_start': 0, 'char_end': len(body)}]
+    archived = {r['path']: r['value'] for r in receipt['omitted_metadata']}
+    assert archived['source_metadata.source_metadata.provenance.page_spans'] == pages
+    assert archived['field_collections[0].institutional_context.plan.registry_records[0].directory_profile']['description'] == record['description']
+    assert receipt['packed_chars'] < 640000 < receipt['original_chars']
