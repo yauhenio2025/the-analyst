@@ -13,6 +13,7 @@ from datetime import datetime, timezone
 from typing import Callable
 
 from src.sources.schemas import SourceSpec
+from src.dossier.evidence_routing import canonical_evidence, selection_groups
 
 CHAIN = "author_investigation"
 
@@ -45,14 +46,21 @@ def recover_answer_rows(result):
     recovered = [dict(r) for r in existing]
     used = set()
     failed = set((result.get("wall") or {}).get("failed_ids") or [])
-    for raw in rows_with_fields(result.get("final_output") or "", failed):
+    parsed = rows_with_fields(result.get("final_output") or "", failed)
+    for raw in parsed:
         key = (raw["id"], raw["doc"], raw["dim"])
+        unique_identity = sum((r['id'], r['doc'], r['dim']) == key
+                              and r['fields'].get('uid', '') == raw['fields'].get('uid', '') for r in parsed) == 1
         # Repeated IDs can contain distinct dispositions or claims. Match the
         # actual finding/UID when enriching a row; never let ID reuse erase a
         # competing row before the selection/identity validators can see it.
         matches = [i for i, r in enumerate(recovered) if i not in used
                    and (r.get('id'), r.get('doc'), r.get('dim')) == key
-                   and r.get('finding', r.get('text', '')) == raw['text']
+                   and (r.get('finding', r.get('text', '')) == raw['text']
+                        or (not r.get('finding', r.get('text')) and unique_identity
+                            and r.get('anchor', '') in ('', raw['anchor'])
+                            and all(value == raw['fields'][name] for name, value in (r.get('fields') or {}).items()
+                                    if name in raw['fields'])))
                    and _field(r, 'uid') == raw['fields'].get('uid', '')]
         index = matches[0] if matches else len(recovered)
         prior = recovered[index] if matches else {}
@@ -384,6 +392,8 @@ def run_investigation(packet: dict, bodies: dict, *, call: Callable, save: Calla
                       "stages": [], "calls": {}, "analysis": {}, "cost_usd": 0.0, "evidence": [], "readings": []}
     if state.get("packet_sha256") != fingerprint:
         raise ValueError("the frozen investigation packet changed; create a new run")
+    if state.get('complete'):
+        return state  # Historical answers must not be reselected or rewritten on resume.
 
     def checkpoint(stage, **fields):
         state.update(fields, updated_at=_now(), current_stage=stage)
@@ -405,8 +415,15 @@ def run_investigation(packet: dict, bodies: dict, *, call: Callable, save: Calla
         if remaining <= 0:
             checkpoint(stage, paused_reason="spend_cap")
             raise ValueError("investigation spend cap reached; completed artifacts were saved")
+        from src.engines.methods import freeze_method, validate_snapshot, method_receipt
+        methods = state.setdefault('method_snapshots', {})
+        if key not in methods:
+            methods[key] = freeze_method(key)
+        validate_snapshot(methods[key], key)
         checkpoint(stage, running_stage=stage)
-        result = call(key, sources, packet=upstream, depth="surface", spend_cap_usd=remaining, max_chars=650000)
+        result = call(key, sources, packet=upstream, depth="surface", spend_cap_usd=remaining,
+                      max_chars=650000, method_snapshot=methods[key])
+        result.setdefault('method_receipt', method_receipt(methods[key]))
         recover_answer_rows(result)
         state["calls"][stage] = result
         state["cost_usd"] += float(result.get("cost_usd") or 0)
@@ -478,10 +495,10 @@ def run_investigation(packet: dict, bodies: dict, *, call: Callable, save: Calla
                 yield result.get("rows") or [], {r["inventory"]["uid"] for r in batch}
         triage_results = pending_triage_results()
     for rows, allowed in triage_results:
-        for row in rows:
-            uid = str(_field(row, "uid"))
-            if uid in allowed and _field(row, "decision") in ("read", "context", "defer", "unavailable"):
-                decisions[uid] = {**row, "uid": uid, "decision": _field(row, "decision"), "reason": _field(row, "reason")}
+        # Legacy batches may overlap; accumulate their original rows before
+        # reconciling, including disagreements across batch boundaries.
+        prior_rows = [r for d in decisions.values() for r in d['decision_variants']]
+        decisions = selection_groups(prior_rows + [r for r in rows if str(_field(r, 'uid')) in allowed], by_uid)
         if not triage_cached:
             checkpoint("triage", triage=list(decisions.values()))
     # Omitted decisions are disclosed, and supplied omitted texts receive a bounded fallback reading.
@@ -495,11 +512,32 @@ def run_investigation(packet: dict, bodies: dict, *, call: Callable, save: Calla
                             [_spec("inventory-selection", _json(selection_inventory))],
                             {**common, "plan": plan.get("final_output"), "selection_mode": "reconcile",
                              "limits": packet.get("limits") or {"max_read_texts": 12, "max_primary_chars": 240000}})
-    for row in reconciliation.get("rows") or []:
-        uid = str(_field(row, "uid"))
-        if uid in decisions and _field(row, "decision") in ("read", "context", "defer", "unavailable"):
-            decisions[uid] = {**row, "uid": uid, "decision": _field(row, "decision"), "reason": _field(row, "reason"),
-                              "prior_decision": decisions[uid]}
+    def resolve_selection(stage, result, prior, repair_limits=None):
+        resolved = selection_groups(result.get('rows') or [], prior)
+        conflicts = {uid: r for uid, r in resolved.items() if r['selection_conflict']}
+        conflicts.update({uid: r for uid, r in prior.items() if r.get('selection_conflict') and uid not in resolved})
+        if conflicts:
+            state.setdefault('selection_conflicts', {})[stage] = conflicts
+            checkpoint(stage + ':conflicts')
+            if 'memo' in state['calls']:
+                raise ValueError('saved synthesis predates unresolved selection conflicts; fork a new investigation')
+            repair = engine(stage + ':conflict_repair', 'author_investigation_triage',
+                            [_spec('inventory-selection-conflicts', _json(list(conflicts.values())))],
+                            {**common, 'selection_mode': 'resolve_conflicts', 'plan': plan.get('final_output'),
+                             'limits': repair_limits if repair_limits is not None else packet.get('limits') or {},
+                             'previous_selection': result.get('final_output'),
+                             'uncontested_decisions': [r for r in resolved.values() if not r['selection_conflict']]})
+            repaired = selection_groups(repair.get('rows') or [], conflicts)
+            unresolved = [uid for uid in conflicts if uid not in repaired or repaired[uid]['selection_conflict']]
+            state.setdefault('unresolved_selection_uids', {})[stage] = unresolved
+            checkpoint(stage + ':conflicts')
+            if unresolved:
+                raise ValueError('author selection has unresolved conflicting decisions; all rationales and paid work retained')
+            resolved.update(repaired)
+        return resolved
+
+    for uid, decision in resolve_selection('triage-selection', reconciliation, decisions).items():
+        decisions[uid] = {**decision, 'prior_decision': decisions[uid]}
     def priority(r):
         try:
             p = max(1, min(5, int(_field(r, "priority", "5"))))
@@ -536,11 +574,12 @@ def run_investigation(packet: dict, bodies: dict, *, call: Callable, save: Calla
                            "completed_readings": [{"uid": uid, "title": by_uid[uid].get("title"),
                                "reading": state["calls"][f"read:{uid}"].get("prose") or state["calls"][f"read:{uid}"].get("final_output", "")} for uid in cached_uids],
                            "instructions": "Recover coverage after an earlier citation expansion consumed reading slots. Choose only the remaining number of supplemental texts, in semantic priority order, to answer the unanswered parts of the question in light of the completed readings. Address historical and contemporary dimensions and distinguish direct evidence from inference. Preserve original shortlist coverage where useful. Do not repeat completed texts."})
-        reconciled = {}
-        for r in recovery.get("rows") or []:
-            uid = str(_field(r, "uid"))
-            if uid in {c["uid"] for c in remaining_candidates} and _field(r, "decision") in ("read", "context"):
-                reconciled[uid] = {**r, "uid": uid, "decision": _field(r, "decision"), "reason": _field(r, "reason")}
+        reconciled = {uid: r for uid, r in resolve_selection('recovery-selection', recovery,
+                      {c['uid']: c for c in remaining_candidates},
+                      {'max_read_texts': max_texts - len(cached_uids),
+                       'max_primary_chars': max_chars - sum(sum(hi - lo for lo, hi in state['read_inputs'][uid]['ranges'])
+                                                            for uid in cached_uids)}).items()
+                      if r['decision'] in ('read', 'context')}
         if not reconciled:
             checkpoint("recovery-selection", paused_reason="recovery_selection_returned_no_candidates")
             raise ValueError("recovery selection returned no valid candidates; cached readings were retained")
@@ -620,6 +659,8 @@ def run_investigation(packet: dict, bodies: dict, *, call: Callable, save: Calla
                              "uid_inferred_from_source": not bool(_field(r, "uid")),
                              "read_uid": row.get("read_uid"), "body_sha256": row["body_sha256"],
                              "citation_id": f"{uid}/{r.get('id', '')}", "conjecture": not verified})
+        evidence, duplicates = canonical_evidence(evidence)
+        state.setdefault('evidence_identity_receipts', {})[uid] = duplicates
         # Protect the semantic shortlist. A ubiquitous cited work cannot reorder
         # it; at most two novel targets may fill otherwise unused reading slots.
         if candidate_index + 1 == len(selected) and len(readings) < max_texts and len(novel_uids) < 2:

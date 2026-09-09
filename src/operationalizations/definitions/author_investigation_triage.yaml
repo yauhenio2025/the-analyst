@@ -1,5 +1,6 @@
 engine_key: author_investigation_triage
 engine_name: Choose texts for closer reading
+version: 2
 stance_operationalizations: []
 depth_sequences:
 - depth_key: surface
@@ -59,7 +60,14 @@ process:
       is reconcile, the source is the complete inventory with prior semantic decisions:
       compare those decisions globally, preserve reasons and choose a balanced reading
       route under the supplied text and character limits, leaving alternatives explicitly
-      deferred. Do not invent information beyond the earlier decisions and metadata.'
+      deferred. Do not invent information beyond the earlier decisions and metadata.
+      If a work has conflicting decision_variants, assess every supplied rationale
+      against the question; return one explicit disposition with a reason addressing
+      the alternatives. Never settle disagreement by row order or automatic read
+      precedence. In selection_mode resolve_conflicts, judge only disputed UIDs,
+      preserving the supplied uncontested decisions and remaining reading limits.
+      A work may supply an internal theoretical comparator even if its subject or
+      publication date differs from the contemporary case; justify its actual use.'
     indicators:
     - question
     - evidence

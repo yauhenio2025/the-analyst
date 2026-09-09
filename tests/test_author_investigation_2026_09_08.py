@@ -562,7 +562,7 @@ def test_memo_deduplicates_provenance_but_keeps_source_windows_and_all_evidence_
     assert all(r['dim'] != 'evidence' for reading in memo['source_readings'] for r in reading['rows'])
 
 
-def test_resume_restores_cached_readings_together_without_repeated_triage_writes():
+def test_completed_historical_answer_is_returned_without_reselection_or_writes():
     _, packet, _, bodies = fixture()
     original = run_investigation(packet, bodies, call=fake_engine([]), save=lambda s: None)
     checkpoints = []
@@ -570,9 +570,85 @@ def test_resume_restores_cached_readings_together_without_repeated_triage_writes
                                call=lambda *a, **k: pytest.fail('completed calls cannot repeat'),
                                save=lambda s: checkpoints.append((s['current_stage'], len(s['readings']))))
     assert resumed['complete']
-    assert [s for s in checkpoints if s[0] == 'triage'] == [('triage', 3)]
-    assert [s for s in checkpoints if s[0] == 'reading'] == [('reading', 3)]
-    assert all(count == 3 for _, count in checkpoints)
+    assert resumed == original
+    assert checkpoints == []
+
+
+@pytest.mark.parametrize('reverse', [False, True])
+@pytest.mark.parametrize('conflict_stage', ['batch', 'reconcile'])
+def test_conflicting_selection_is_reconciled_once_and_resume_reuses_resolution(reverse, conflict_stage):
+    _, packet, _, bodies = fixture()
+    original = fake_engine([], fail_once='em:CCCCCCC3')
+    snapshots, repair_calls = [], []
+    def call(key, sources, **kw):
+        mode = kw['packet'].get('selection_mode')
+        if mode == 'resolve_conflicts':
+            repair_calls.append(kw['method_snapshot']['sha256'])
+            variants = json.loads(sources[0].text)[0]['decision_variants']
+            assert {r['fields']['decision'] for r in variants} == {'read', 'defer'}
+            return {'rows': [row('candidate', 'em:AAAAAAA1', decision='read', priority='1',
+                                 reason='The competing historical rationale does not defeat direct relevance')], 'cost_usd': .1}
+        result = original(key, sources, **kw)
+        if key.endswith('_triage'):
+            if (mode == 'reconcile') == (conflict_stage == 'reconcile'):
+                result['rows'].append(row('candidate', 'em:AAAAAAA1', decision='defer', reason='Historical context'))
+                if reverse: result['rows'].reverse()
+            elif mode == 'reconcile' and conflict_stage == 'batch':
+                # Omitting a disputed UID cannot erase its unresolved batch conflict.
+                result['rows'] = [r for r in result['rows'] if r['fields']['uid'] != 'em:AAAAAAA1']
+        return result
+    with pytest.raises(RuntimeError, match='provider interruption'):
+        run_investigation(packet, bodies, call=call, save=lambda s: snapshots.append(copy.deepcopy(s)))
+    state = run_investigation(packet, bodies, state=snapshots[-1], call=call, save=lambda s: None)
+    assert state['complete'] and len(repair_calls) == 1
+    assert 'read:em:AAAAAAA1' in state['calls']
+    assert state['method_snapshots']['author_investigation_triage']['capability']['version'] == 2
+    assert state['unresolved_selection_uids']['triage-selection'] == []
+
+
+def test_unresolved_author_only_selection_stops_before_reading_and_does_not_retry():
+    _, packet, _, bodies = fixture()
+    original, snapshots = fake_engine([]), []
+    def call(key, sources, **kw):
+        if kw['packet'].get('selection_mode') == 'resolve_conflicts':
+            return {'rows': [], 'cost_usd': .1}
+        result = original(key, sources, **kw)
+        if kw['packet'].get('selection_mode') == 'reconcile':
+            result['rows'].append(row('candidate', 'em:AAAAAAA1', decision='defer', reason='Contrary rationale'))
+        return result
+    with pytest.raises(ValueError, match='unresolved conflicting'):
+        run_investigation(packet, bodies, call=call, save=lambda s: snapshots.append(copy.deepcopy(s)))
+    state = snapshots[-1]
+    assert not any(k.startswith('read:') for k in state['calls'])
+    assert 'triage-selection:conflict_repair' in state['calls']
+    with pytest.raises(ValueError, match='unresolved conflicting'):
+        run_investigation(packet, bodies, state=state,
+                          call=lambda *a, **k: pytest.fail('unresolved repair cannot be billed twice'), save=lambda s: None)
+
+
+@pytest.mark.parametrize('ambiguous', [False, True])
+def test_author_only_evidence_identity_keeps_duplicates_auditable_and_ambiguity_unsupported(ambiguous):
+    _, packet, _, bodies = fixture()
+    original, snapshots = fake_engine([]), []
+    def call(key, sources, **kw):
+        result = original(key, sources, **kw)
+        if key.endswith('_read') and sources[0].key == 'primary:em:AAAAAAA1':
+            duplicate = copy.deepcopy(result['rows'][0])
+            if ambiguous:
+                duplicate['fields']['speaker'] = 'Interviewer'
+            else:
+                duplicate['doc'] = ''
+            result['rows'].append(duplicate)
+        return result
+    if ambiguous:
+        with pytest.raises(ValueError, match='memo references'):
+            run_investigation(packet, bodies, call=call, save=lambda s: snapshots.append(copy.deepcopy(s)))
+        state = snapshots[-1]
+    else:
+        state = run_investigation(packet, bodies, call=call, save=lambda s: None)
+    target = [e for e in state['evidence'] if e['citation_id'] == 'em:AAAAAAA1/E1.F1']
+    assert len(target) == 1 and target[0]['quote_verified'] is not ambiguous
+    assert len(state['evidence_identity_receipts']['em:AAAAAAA1'][0]['variants']) == 2
 
 
 @pytest.mark.parametrize('separator', ['; ', ', ', ';\n', ' '])
