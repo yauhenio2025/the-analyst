@@ -39,12 +39,37 @@ def pack_reporter_context(stage, sources, upstream, *, packet_sha256):
                 "Null speakers and times are unknown. Exact cue text and source URLs remain in the frozen record.")
         provenance = native.get("provenance")
         if isinstance(provenance, dict):
+            pages = provenance.get("page_spans")
+            if isinstance(pages, list):
+                # PDF extraction repeats the entire original in this receipt.
+                # Keep native page offsets; the reading source supplies its text.
+                omit(path + ".source_metadata.provenance.page_spans", pages,
+                     "frozen source_metadata.provenance.page_spans")
+                provenance["page_spans"] = [
+                    {k: v for k, v in page.items() if k not in ("text", "raw_text")}
+                    for page in pages]
             for key in ("segments", "transcript_spans"):
                 if key in provenance:
                     omit(path + ".source_metadata.provenance." + key, provenance.pop(key),
                          "frozen source_metadata.provenance." + key)
 
     metadata(packed.get("source_metadata"), "source_metadata")
+    if stage != "plan" and input_chars(sources, upstream) > 520000:
+        # Later readers need the search's coverage and identity decisions, not
+        # every directory profile used to shortlist candidates. These are
+        # selection context, never publication evidence or analytical findings.
+        for i, collection in enumerate(packed.get("field_collections", [])):
+            records = ((collection.get("institutional_context") or {}).get("plan") or {}).get("registry_records", [])
+            for j, record in enumerate(records):
+                removed = {k: record.pop(k) for k in ("description", "topics", "business_model") if k in record}
+                if removed:
+                    omit(f"field_collections[{i}].institutional_context.plan.registry_records[{j}].directory_profile",
+                         removed, "frozen collection institutional_context.plan.registry_records")
+            if records:
+                collection["directory_profile_note"] = (
+                    "Directory descriptions, topics and business-model labels are retained in the frozen collection "
+                    "and this call's packing receipt. Candidate identities, classification evidence, selection and "
+                    "search outcomes remain supplied. Directory profiles are not institutional positions.")
     for source in packed_sources:
         if source.key == "investigation-question":
             question = json.loads(source.text)
