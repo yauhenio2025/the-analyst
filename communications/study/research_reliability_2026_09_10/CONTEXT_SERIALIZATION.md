@@ -1,0 +1,9 @@
+# Lossless research context serialization — 10 September 2026
+
+The approved Tether trial exposed a final-input boundary after verified field support was restored. With canonical evidence and the current query-based prior-context policy, the historical union-routed final packet occupied 654,934 characters with the previous JSON formatting. Compact serialization occupies 634,631, below the 640,000-character investigation guard. This removes 20,303 formatting characters; decoding the packet yields exactly the same values. Original strings, quotes and newlines inside those strings are unchanged.
+
+The shared light-call context composer and investigation sizing now use the same compact serializer. New field-inquiry call manifests identify `compact_json_v1`; structural packet and source hashes retain their existing definition. The fix does not remove findings, alter citation verification, or increase the guard. Newly generated outputs can still exceed the guard and must stop visibly.
+
+The release is based on integrated Analyst `47858958`; implementation is `4ac8fab5`. Sixty focused execution, packing, resumption, Reporter-context, feedback and reliability checks passed. The new regression checks exact JSON round-tripping, immutability and agreement with input-size accounting. A paid trial using the equivalent local implementation is running separately; test success does not establish answer quality.
+
+Deployment is authorized but deferred until the active production inquiry is idle. This documentation commit uses `[skip render]` so pushing the fix cannot interrupt that paid job. Verify Render health against the eventual deployment revision before claiming this serializer is live. The earlier author-only reconciliation extension is already live in `47858958`; `author_investigation_triage@2` was retrieved with method SHA `ab145bafc6cb430bf931a2dce78b0c0696cdb7148515cc71aebe8f4c4a3fe1f6`.
