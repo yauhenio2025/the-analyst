@@ -679,3 +679,22 @@ def test_unknown_or_unverified_reference_inside_group_keeps_memo_a_draft(bad_ref
     assert not result['complete']
     assert result['memo_validation']['references'] == ['em:AAAAAAA1/E1.F1', bad_ref]
     assert result['memo_validation']['unsupported_memo_citations'] == [bad_ref]
+
+
+@pytest.mark.parametrize('dash', ['-', '–', '—'])
+def test_memo_ranges_validate_hidden_members_and_inherit_only_within_brackets(dash):
+    from src.dossier.investigation import validate_memo_citations
+    evidence = [{'citation_id': f'em:ONE/E1.F{n}', 'quote_verified': n != 3} for n in range(1, 6)]
+    prose = f'Claim [em:ONE/E1.F1{dash}E1.F3; F5]. Other [em:TWO/F1]. [F5]'
+    result = validate_memo_citations(prose, evidence)
+    assert result['references'] == ['em:ONE/E1.F1', 'em:ONE/E1.F2', 'em:ONE/E1.F3', 'em:ONE/E1.F5', 'em:TWO/F1']
+    assert not result['supported']
+    assert result['unsupported_memo_citations'] == ['em:ONE/E1.F3', 'em:TWO/F1']
+
+
+@pytest.mark.parametrize('key', ['em:ONE/F4–F2', 'em:ONE/E1.F1–E2.F3', 'em:ONE/F1–F999999'])
+def test_invalid_memo_ranges_remain_unsupported_and_bounded(key):
+    from src.dossier.investigation import validate_memo_citations
+    result = validate_memo_citations('Claim [' + key + '].', [])
+    assert result['references'] == [key]
+    assert result['unsupported_memo_citations'] == [key]

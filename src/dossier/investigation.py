@@ -222,9 +222,10 @@ def quote_span(quote, body, ranges):
 
 def validate_memo_citations(prose, evidence):
     """Validate every UID/finding ID, including multiple IDs in one bracket."""
-    references = [token for group in re.findall(r"\[([^\[\]]+)\]", prose)
-                  for token in re.split(r"[\s,;]+", group.strip())
-                  if re.fullmatch(r"[^/\s,;]+/(?:[A-Z]\d+\.)?F\d+", token)]
+    from .citation_keys import citation_keys
+    references = [token for group in re.findall(r"\[([^\[\]]+)\](?!\()", prose)
+                  for token in citation_keys(group)
+                  if re.match(r"[^/\s,;]+/(?:[A-Z]\d+\.)?F\d+", token)]
     verified_ids = {e["citation_id"] for e in evidence if e["quote_verified"]}
     unsupported = sorted(set(references) - verified_ids)
     missing_refs = bool(verified_ids) and not references
