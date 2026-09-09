@@ -741,6 +741,16 @@ async def get_single_pass_prompt(
     )
 
 
+@router.get('/{engine_key}/method')
+def get_frozen_method(engine_key: str, version: Optional[int] = None):
+    """Executable central method, its exact dependencies, and a hash a caller can require."""
+    from src.engines.methods import freeze_method
+    try:
+        return freeze_method(engine_key, version=version)
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
 class EngineCallRequest(BaseModel):
     """A light engine call (2026-09-06): the engine over these sources, in the request, no dossier job. `sources` are
     the same specs as a dossier job's (kind=paste with key, title, text; role=source is analysed, any other role is
@@ -753,6 +763,7 @@ class EngineCallRequest(BaseModel):
     model: Optional[str] = Field(default=None, description="claude-…, gemini-…, openrouter/<vendor>/<id>, or <vendor>/<id> (OpenRouter); anthropic/<id> goes direct")
     spend_cap_usd: float = Field(default=0.5, ge=0.0, le=20.0)
     refs: Optional[dict[str, Any]] = None
+    method_sha256: Optional[str] = Field(default=None, pattern=r'^[a-f0-9]{64}$')
 
 
 @router.post("/{engine_key}/call")
@@ -764,7 +775,7 @@ def call_engine_route(engine_key: str, req: EngineCallRequest) -> dict:
 
     try:
         return call_engine(engine_key, req.sources, packet=req.packet, depth=req.depth, model=req.model,
-                           spend_cap_usd=req.spend_cap_usd, refs=req.refs)
+                           spend_cap_usd=req.spend_cap_usd, refs=req.refs, expected_method_sha256=req.method_sha256)
     except KeyError as e:
         raise HTTPException(status_code=404, detail=str(e.args[0] if e.args else e))
     except ValueError as e:

@@ -1,0 +1,103 @@
+engine_key: causal_mechanism_audit
+engine_name: Audit causal attribution and rival mechanisms
+version: 1
+method_metadata:
+  applies_when: When an inquiry attributes an outcome to political access, institutional
+    influence or another causal mechanism; omit inferences the supplied evidence cannot
+    address.
+  required_inputs:
+  - A proposed causal claim and its bounded outcome
+  - Original evidence and rival accounts with source identities
+  outputs:
+  - Supported, disputed and missing links
+  - Rival mechanisms and discriminating next tests
+  limitations:
+  - Cannot estimate a causal effect from unprovided data.
+  - Absence of measured effects is an evidence gap, not proof that no effect exists.
+  provenance:
+  - kind: refactor_and_method_extraction
+    date: '2026-09-09'
+    sources:
+    - zotero-stacks:app/field_investigations.py
+    - zotero-stacks:app/reporter_collections.py
+    - the-reporter:src/reporter/search/topical.py
+    example_job: dossier-f200618187ea
+    example_snapshot: snp_ad74a4fe1b454e1e
+    status: Tether informed the operation; revised method has not received a paid
+      comparative evaluation
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+process:
+  key: dvs
+  description: When an inquiry attributes an outcome to political access, institutional
+    influence or another causal mechanism; omit inferences the supplied evidence cannot
+    address.
+  framing: Test a proposed causal explanation by separating observed relationships
+    from interventions, mechanisms and outcomes. Establish the relevant units, timing
+    and counterfactual, assess evidence for each link and preserve plausible rival
+    accounts. Political proximity, a revolving door and a benefit to a system are
+    not by themselves evidence that political intervention caused an individual firm's
+    returns.
+  dimensions:
+  - key: mechanism
+    name: Trace the proposed causal links
+    id_prefix: E1
+    scope: document
+    load_bearing: true
+    method_card: Specify the explanandum and trace supported links between the proposed
+      cause and outcome. For political-economic cases distinguish connection/access,
+      an alleged intervention, who benefits and effects on costs, market access, asset
+      values or returns. Adapt this sequence to the actual case rather than treating
+      it as a universal model. Distinguish person, company, sector and system; formal
+      eligibility from asymmetrical incidence; public support from net additional
+      benefit. Record which links are observed, alleged or missing.
+    questions:
+    - Trace the proposed causal links using only supplied evidence.
+    answer_shape: '[E1.F<n>] <bounded finding> — dim: mechanism — attribution: <speaker
+      or source and authority; unknown where unresolved> — warrant: <why the passage
+      supports this finding> — qualification: <limit or counterevidence> — anchor:
+      "<exact supplied quotation, <=200 chars>" — doc: <supplied source key> — confidence:
+      high|medium|low'
+  - key: alternatives
+    name: Compare rivals and reversal conditions
+    id_prefix: E2
+    scope: document
+    load_bearing: true
+    method_card: Consider commercial, technological, monetary, organizational and
+      historical alternatives that the sources support. A chronological sequence alone
+      does not establish causation; a general policy can have unequal effects without
+      being designed for one beneficiary. Test competing explanations against the
+      same outcome and time window. State what evidence would distinguish them or
+      reverse the judgment. Treat the question's causal premise as a hypothesis, not
+      as an established fact.
+    questions:
+    - Compare rivals and reversal conditions using only supplied evidence.
+    answer_shape: '[E2.F<n>] <bounded finding> — dim: alternatives — attribution:
+      <speaker or source and authority; unknown where unresolved> — warrant: <why
+      the passage supports this finding> — qualification: <limit or counterevidence>
+      — anchor: "<exact supplied quotation, <=200 chars>" — doc: <supplied source
+      key> — confidence: high|medium|low'
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  steps:
+  - key: verify
+    kind: verify
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - hunt_misses
+  - key: synthesize
+    kind: synthesize
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    brief: Write a source-grounded critical reading that applies the method, preserves
+      disagreements and uncertainty, and ends with the findings ledger. Do not treat
+      method examples as evidence for the supplied case.
+    max_rows: 35

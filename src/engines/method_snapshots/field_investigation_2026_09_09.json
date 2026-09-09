@@ -1,0 +1,1058 @@
+{
+  "field_investigation_adjudicate": {
+    "capability": {
+      "engine_key": "field_investigation_adjudicate",
+      "engine_name": "Adjudicate tensions and revise the account",
+      "version": 1,
+      "category": "scholarly",
+      "kind": "synthesis",
+      "operation": "verification",
+      "problematique": "Investigate a bilateral question between a named thinker and a topical research field. The field is a collection of independently authored arguments, competing mechanisms, methods and cases, never a homogeneous position and never merely secondary commentary on the thinker. Identify what each side can teach or challenge in the other, and what should change in the researcher's own account. Distinguish description, causal explanation, normative commitments, strategy, historical scope, level of analysis, and conditions of applicability. A field author's finding is not the thinker's claim: only a verified quotation from a supplied primary source can support thinker attribution. A proposed extension or application belongs explicitly to this inquiry. Prior memos and profiles are provisional context, not primary testimony; compare against them when supplied and work independently when they are absent. Attribute coauthors, interviewers, opponents and quoted speakers carefully. Edition/reprint dates do not establish a new intervention. Search hits guide reading; lexical silence, missing texts, excluded sources and inspected windows cannot establish absence across an oeuvre or field. Keep counterevidence, qualifications and unresolved cases. Use only supplied evidence identities and exact source anchors; never invent a quote, page, author position, event or factual claim. Inspected ranges and coverage constrain every conclusion. Method interpretation is not mechanically verified by a citation match. If validation_errors and a previous_draft are supplied, reconsider the identified unsupported claims against the same evidence and return a complete corrected output; preserve uncertainty and never manufacture support identities or quotations. When field_evidence_representation is reference_index_to_supplied_argument_maps, the complete original field support identities are retained while quotations live in the durable source readings. Use only claims and meanings present in the supplied argument maps; do not infer new details from an evidence identity. Evidence selection or compression never licenses an absence claim.",
+      "researcher_question": "Adjudicate tensions and revise the account",
+      "intellectual_lineage": {
+        "primary": "source_criticism"
+      },
+      "analytical_dimensions": [
+        {
+          "key": "judgment",
+          "description": "Judge compatibility, tension and evidence",
+          "probing_questions": [
+            "Use thinker_position only with primary evidence_ids, field_finding only with field evidence_ids, and comparison only with evidence from BOTH populations. An unresolved claim may lack support but cannot assert facts. Explain the warrant, alternative interpretation, level/scale mismatch and what would reverse the judgment. Do not award generic convergence by common vocabulary."
+          ]
+        },
+        {
+          "key": "revision",
+          "description": "Specify what should change",
+          "probing_questions": [
+            "Compare the researcher's conclusion with the actual supplied prior baseline, or mark standalone when no prior exists. Preserve positions that survive, revise overbroad claims, add new distinctions and leave insufficiently supported claims open. A revision to the researcher's account is not a historical change in the thinker's beliefs."
+          ]
+        }
+      ],
+      "apps": [
+        "critic"
+      ],
+      "function": "genealogy",
+      "family": "analytical"
+    },
+    "operationalization": {
+      "engine_key": "field_investigation_adjudicate",
+      "engine_name": "Adjudicate tensions and revise the account",
+      "stance_operationalizations": [],
+      "depth_sequences": [
+        {
+          "depth_key": "surface",
+          "mode": "oneshot"
+        },
+        {
+          "depth_key": "standard",
+          "mode": "oneshot_checked"
+        },
+        {
+          "depth_key": "deep",
+          "mode": "dvs"
+        },
+        {
+          "depth_key": "dvs",
+          "process": "dvs"
+        }
+      ],
+      "process": {
+        "key": "dvs",
+        "description": "Adjudicate tensions and revise the account",
+        "framing": "Investigate a bilateral question between a named thinker and a topical research field. The field is a collection of independently authored arguments, competing mechanisms, methods and cases, never a homogeneous position and never merely secondary commentary on the thinker. Identify what each side can teach or challenge in the other, and what should change in the researcher's own account. Distinguish description, causal explanation, normative commitments, strategy, historical scope, level of analysis, and conditions of applicability. A field author's finding is not the thinker's claim: only a verified quotation from a supplied primary source can support thinker attribution. A proposed extension or application belongs explicitly to this inquiry. Prior memos and profiles are provisional context, not primary testimony; compare against them when supplied and work independently when they are absent. Attribute coauthors, interviewers, opponents and quoted speakers carefully. Edition/reprint dates do not establish a new intervention. Search hits guide reading; lexical silence, missing texts, excluded sources and inspected windows cannot establish absence across an oeuvre or field. Keep counterevidence, qualifications and unresolved cases. Use only supplied evidence identities and exact source anchors; never invent a quote, page, author position, event or factual claim. Inspected ranges and coverage constrain every conclusion. Method interpretation is not mechanically verified by a citation match. If validation_errors and a previous_draft are supplied, reconsider the identified unsupported claims against the same evidence and return a complete corrected output; preserve uncertainty and never manufacture support identities or quotations. When field_evidence_representation is reference_index_to_supplied_argument_maps, the complete original field support identities are retained while quotations live in the durable source readings. Use only claims and meanings present in the supplied argument maps; do not infer new details from an evidence identity. Evidence selection or compression never licenses an absence claim.",
+        "scoped_outcomes": false,
+        "routing": {
+          "cheap": "openrouter/openai/gpt-5.6-luna",
+          "mid": "openrouter/deepseek/deepseek-v4-pro",
+          "strong": "openrouter/openai/gpt-5.6-sol"
+        },
+        "dimensions": [
+          {
+            "key": "judgment",
+            "name": "Judge compatibility, tension and evidence",
+            "questions": [
+              "Use thinker_position only with primary evidence_ids, field_finding only with field evidence_ids, and comparison only with evidence from BOTH populations. An unresolved claim may lack support but cannot assert facts. Explain the warrant, alternative interpretation, level/scale mismatch and what would reverse the judgment. Do not award generic convergence by common vocabulary."
+            ],
+            "method_card": "Use thinker_position only with primary evidence_ids, field_finding only with field evidence_ids, and comparison only with evidence from BOTH populations. An unresolved claim may lack support but cannot assert facts. Explain the warrant, alternative interpretation, level/scale mismatch and what would reverse the judgment. Do not award generic convergence by common vocabulary.",
+            "indicators": [
+              "question",
+              "evidence",
+              "context"
+            ],
+            "scope": "document",
+            "load_bearing": true,
+            "id_prefix": "E1",
+            "answer_shape": "[E1.F<n>] <finding in one sentence> — dim: judgment — claim_kind: thinker_position|field_finding|comparison|unresolved — evidence_ids: <semicolon-separated exact supplied uid/E1.Fn identities; no invented ids> — relation: compatible|tension|scope_difference|revision|unresolved — warrant: <why> — counterevidence: <strongest contrary evidence or explicit gap> — anchor: \"<verbatim supplied passage, <=200 chars>\" — doc: <actual supplied source key> — confidence: high|medium|low"
+          },
+          {
+            "key": "revision",
+            "name": "Specify what should change",
+            "questions": [
+              "Compare the researcher's conclusion with the actual supplied prior baseline, or mark standalone when no prior exists. Preserve positions that survive, revise overbroad claims, add new distinctions and leave insufficiently supported claims open. A revision to the researcher's account is not a historical change in the thinker's beliefs."
+            ],
+            "method_card": "Compare the researcher's conclusion with the actual supplied prior baseline, or mark standalone when no prior exists. Preserve positions that survive, revise overbroad claims, add new distinctions and leave insufficiently supported claims open. A revision to the researcher's account is not a historical change in the thinker's beliefs.",
+            "indicators": [
+              "question",
+              "evidence",
+              "context"
+            ],
+            "scope": "document",
+            "load_bearing": true,
+            "id_prefix": "E2",
+            "answer_shape": "[E2.F<n>] <finding in one sentence> — dim: revision — disposition: changed|retained|new|unresolved — baseline: prior|standalone — before: <actual prior position or no prior> — after: <bounded revised position> — evidence_ids: <exact verified supporting identities> — anchor: \"<verbatim supplied passage, <=200 chars>\" — doc: <actual supplied source key> — confidence: high|medium|low"
+          }
+        ],
+        "steps": [
+          {
+            "key": "extract",
+            "kind": "extract",
+            "parallel_over": "dimension",
+            "model_tier": "cheap",
+            "output": "ledger",
+            "max_rows": 35
+          },
+          {
+            "key": "verify",
+            "kind": "verify",
+            "consumes": [
+              "extract"
+            ],
+            "model_tier": "mid",
+            "output": "ledger",
+            "duties": [
+              "check_anchors_in_context",
+              "merge_duplicates",
+              "hunt_misses",
+              "name_must_keep"
+            ]
+          },
+          {
+            "key": "synthesize",
+            "kind": "synthesize",
+            "consumes": [
+              "verify"
+            ],
+            "model_tier": "strong",
+            "output": "prose_ledger",
+            "is_final": true,
+            "reader": "the researcher developing a position through the thinker and field",
+            "brief": "Write an explicit adjudication across the thinker and the field. Which apparent contradictions dissolve after distinguishing scale, scope or normative from causal claims? Which survive, and which side supplies stronger evidence for a bounded conclusion? State warranted extensions as this inquiry's proposals. Preserve counterevidence and questions. Then give the judgment ledger.",
+            "max_rows": 60
+          }
+        ]
+      }
+    }
+  },
+  "field_investigation_author_read": {
+    "capability": {
+      "engine_key": "field_investigation_author_read",
+      "engine_name": "Read the thinker against field questions",
+      "version": 1,
+      "category": "scholarly",
+      "kind": "synthesis",
+      "operation": "reading",
+      "problematique": "Investigate a bilateral question between a named thinker and a topical research field. The field is a collection of independently authored arguments, competing mechanisms, methods and cases, never a homogeneous position and never merely secondary commentary on the thinker. Identify what each side can teach or challenge in the other, and what should change in the researcher's own account. Distinguish description, causal explanation, normative commitments, strategy, historical scope, level of analysis, and conditions of applicability. A field author's finding is not the thinker's claim: only a verified quotation from a supplied primary source can support thinker attribution. A proposed extension or application belongs explicitly to this inquiry. Prior memos and profiles are provisional context, not primary testimony; compare against them when supplied and work independently when they are absent. Attribute coauthors, interviewers, opponents and quoted speakers carefully. Edition/reprint dates do not establish a new intervention. Search hits guide reading; lexical silence, missing texts, excluded sources and inspected windows cannot establish absence across an oeuvre or field. Keep counterevidence, qualifications and unresolved cases. Use only supplied evidence identities and exact source anchors; never invent a quote, page, author position, event or factual claim. Inspected ranges and coverage constrain every conclusion. Method interpretation is not mechanically verified by a citation match. If validation_errors and a previous_draft are supplied, reconsider the identified unsupported claims against the same evidence and return a complete corrected output; preserve uncertainty and never manufacture support identities or quotations. When field_evidence_representation is reference_index_to_supplied_argument_maps, the complete original field support identities are retained while quotations live in the durable source readings. Use only claims and meanings present in the supplied argument maps; do not infer new details from an evidence identity. Evidence selection or compression never licenses an absence claim.",
+      "researcher_question": "Read the thinker against field questions",
+      "intellectual_lineage": {
+        "primary": "source_criticism"
+      },
+      "analytical_dimensions": [
+        {
+          "key": "evidence",
+          "description": "Recover the thinker's sourced position",
+          "probing_questions": [
+            "Keep the thinker's actual thesis, causal or normative status, speaker attribution, historical and social scope, conceptual qualifications and counterevidence. Attend to the field map's tensions without importing new field facts into the thinker's voice. Every row quotes this primary text directly."
+          ]
+        },
+        {
+          "key": "gap",
+          "description": "Separate unresolved attribution from extension",
+          "probing_questions": [
+            "State which field claims this author reading does not answer. Propose interpretations as the researcher extensions rather than the thinker's position."
+          ]
+        }
+      ],
+      "apps": [
+        "critic"
+      ],
+      "function": "genealogy",
+      "family": "analytical"
+    },
+    "operationalization": {
+      "engine_key": "field_investigation_author_read",
+      "engine_name": "Read the thinker against field questions",
+      "stance_operationalizations": [],
+      "depth_sequences": [
+        {
+          "depth_key": "surface",
+          "mode": "oneshot"
+        },
+        {
+          "depth_key": "standard",
+          "mode": "oneshot_checked"
+        },
+        {
+          "depth_key": "deep",
+          "mode": "dvs"
+        },
+        {
+          "depth_key": "dvs",
+          "process": "dvs"
+        }
+      ],
+      "process": {
+        "key": "dvs",
+        "description": "Read the thinker against field questions",
+        "framing": "Investigate a bilateral question between a named thinker and a topical research field. The field is a collection of independently authored arguments, competing mechanisms, methods and cases, never a homogeneous position and never merely secondary commentary on the thinker. Identify what each side can teach or challenge in the other, and what should change in the researcher's own account. Distinguish description, causal explanation, normative commitments, strategy, historical scope, level of analysis, and conditions of applicability. A field author's finding is not the thinker's claim: only a verified quotation from a supplied primary source can support thinker attribution. A proposed extension or application belongs explicitly to this inquiry. Prior memos and profiles are provisional context, not primary testimony; compare against them when supplied and work independently when they are absent. Attribute coauthors, interviewers, opponents and quoted speakers carefully. Edition/reprint dates do not establish a new intervention. Search hits guide reading; lexical silence, missing texts, excluded sources and inspected windows cannot establish absence across an oeuvre or field. Keep counterevidence, qualifications and unresolved cases. Use only supplied evidence identities and exact source anchors; never invent a quote, page, author position, event or factual claim. Inspected ranges and coverage constrain every conclusion. Method interpretation is not mechanically verified by a citation match. If validation_errors and a previous_draft are supplied, reconsider the identified unsupported claims against the same evidence and return a complete corrected output; preserve uncertainty and never manufacture support identities or quotations. When field_evidence_representation is reference_index_to_supplied_argument_maps, the complete original field support identities are retained while quotations live in the durable source readings. Use only claims and meanings present in the supplied argument maps; do not infer new details from an evidence identity. Evidence selection or compression never licenses an absence claim.",
+        "scoped_outcomes": false,
+        "routing": {
+          "cheap": "openrouter/openai/gpt-5.6-luna",
+          "mid": "openrouter/deepseek/deepseek-v4-pro",
+          "strong": "openrouter/openai/gpt-5.6-sol"
+        },
+        "dimensions": [
+          {
+            "key": "evidence",
+            "name": "Recover the thinker's sourced position",
+            "questions": [
+              "Keep the thinker's actual thesis, causal or normative status, speaker attribution, historical and social scope, conceptual qualifications and counterevidence. Attend to the field map's tensions without importing new field facts into the thinker's voice. Every row quotes this primary text directly."
+            ],
+            "method_card": "Keep the thinker's actual thesis, causal or normative status, speaker attribution, historical and social scope, conceptual qualifications and counterevidence. Attend to the field map's tensions without importing new field facts into the thinker's voice. Every row quotes this primary text directly.",
+            "indicators": [
+              "question",
+              "evidence",
+              "context"
+            ],
+            "scope": "document",
+            "load_bearing": true,
+            "id_prefix": "E1",
+            "answer_shape": "[E1.F<n>] <finding in one sentence> — dim: evidence — uid: <source_metadata.uid> — relation: direct|indirect|counterevidence|qualification — speaker: <actual speaker> — scale: <unit and scope> — locus: <supplied page or source characters> — anchor: \"<verbatim supplied passage, <=200 chars>\" — doc: <actual supplied source key> — confidence: high|medium|low"
+          },
+          {
+            "key": "gap",
+            "name": "Separate unresolved attribution from extension",
+            "questions": [
+              "State which field claims this author reading does not answer. Propose interpretations as the researcher extensions rather than the thinker's position."
+            ],
+            "method_card": "State which field claims this author reading does not answer. Propose interpretations as the researcher extensions rather than the thinker's position.",
+            "indicators": [
+              "question",
+              "evidence",
+              "context"
+            ],
+            "scope": "document",
+            "load_bearing": true,
+            "id_prefix": "E2",
+            "answer_shape": "[E2.F<n>] <finding in one sentence> — dim: gap — uid: <source_metadata.uid> — gap: <unsettled issue> — follow_up: <specific reading or evidential test> — anchor: \"<verbatim supplied passage, <=200 chars>\" — doc: <actual supplied source key> — confidence: high|medium|low"
+          }
+        ],
+        "steps": [
+          {
+            "key": "extract",
+            "kind": "extract",
+            "parallel_over": "dimension",
+            "model_tier": "cheap",
+            "output": "ledger",
+            "max_rows": 35
+          },
+          {
+            "key": "verify",
+            "kind": "verify",
+            "consumes": [
+              "extract"
+            ],
+            "model_tier": "mid",
+            "output": "ledger",
+            "duties": [
+              "check_anchors_in_context",
+              "merge_duplicates",
+              "hunt_misses",
+              "name_must_keep"
+            ]
+          },
+          {
+            "key": "synthesize",
+            "kind": "synthesize",
+            "consumes": [
+              "verify"
+            ],
+            "model_tier": "strong",
+            "output": "prose_ledger",
+            "is_final": true,
+            "reader": "the researcher developing a position through the thinker and field",
+            "brief": "Read this author source carefully in light of the field map. Reconstruct its own argument before testing relations to field mechanisms. Explain what the thinker actually says, the conditions and limits, and where this inquiry is making an extension. Then preserve source evidence and gaps.",
+            "max_rows": 60
+          }
+        ]
+      }
+    }
+  },
+  "field_investigation_author_select": {
+    "capability": {
+      "engine_key": "field_investigation_author_select",
+      "engine_name": "Choose author texts from field questions",
+      "version": 1,
+      "category": "scholarly",
+      "kind": "synthesis",
+      "operation": "placement",
+      "problematique": "Investigate a bilateral question between a named thinker and a topical research field. The field is a collection of independently authored arguments, competing mechanisms, methods and cases, never a homogeneous position and never merely secondary commentary on the thinker. Identify what each side can teach or challenge in the other, and what should change in the researcher's own account. Distinguish description, causal explanation, normative commitments, strategy, historical scope, level of analysis, and conditions of applicability. A field author's finding is not the thinker's claim: only a verified quotation from a supplied primary source can support thinker attribution. A proposed extension or application belongs explicitly to this inquiry. Prior memos and profiles are provisional context, not primary testimony; compare against them when supplied and work independently when they are absent. Attribute coauthors, interviewers, opponents and quoted speakers carefully. Edition/reprint dates do not establish a new intervention. Search hits guide reading; lexical silence, missing texts, excluded sources and inspected windows cannot establish absence across an oeuvre or field. Keep counterevidence, qualifications and unresolved cases. Use only supplied evidence identities and exact source anchors; never invent a quote, page, author position, event or factual claim. Inspected ranges and coverage constrain every conclusion. Method interpretation is not mechanically verified by a citation match. If validation_errors and a previous_draft are supplied, reconsider the identified unsupported claims against the same evidence and return a complete corrected output; preserve uncertainty and never manufacture support identities or quotations. When field_evidence_representation is reference_index_to_supplied_argument_maps, the complete original field support identities are retained while quotations live in the durable source readings. Use only claims and meanings present in the supplied argument maps; do not infer new details from an evidence identity. Evidence selection or compression never licenses an absence claim.",
+      "researcher_question": "Choose author texts from field questions",
+      "intellectual_lineage": {
+        "primary": "source_criticism"
+      },
+      "analytical_dimensions": [
+        {
+          "key": "candidate",
+          "description": "Select author texts by substantive relevance",
+          "probing_questions": [
+            "Which passages or arguments could clarify or challenge the field mechanisms? Profiles and prior verified readings guide the selection but do not substitute for reading the source. Preserve unavailable, excluded and uncertain dates. Reconcile an evidence-diverse core under the supplied cap, including the strongest contrary leads."
+          ]
+        }
+      ],
+      "apps": [
+        "critic"
+      ],
+      "function": "genealogy",
+      "family": "analytical"
+    },
+    "operationalization": {
+      "engine_key": "field_investigation_author_select",
+      "engine_name": "Choose author texts from field questions",
+      "stance_operationalizations": [],
+      "depth_sequences": [
+        {
+          "depth_key": "surface",
+          "mode": "oneshot"
+        },
+        {
+          "depth_key": "standard",
+          "mode": "oneshot_checked"
+        },
+        {
+          "depth_key": "deep",
+          "mode": "dvs"
+        },
+        {
+          "depth_key": "dvs",
+          "process": "dvs"
+        }
+      ],
+      "process": {
+        "key": "dvs",
+        "description": "Choose author texts from field questions",
+        "framing": "Investigate a bilateral question between a named thinker and a topical research field. The field is a collection of independently authored arguments, competing mechanisms, methods and cases, never a homogeneous position and never merely secondary commentary on the thinker. Identify what each side can teach or challenge in the other, and what should change in the researcher's own account. Distinguish description, causal explanation, normative commitments, strategy, historical scope, level of analysis, and conditions of applicability. A field author's finding is not the thinker's claim: only a verified quotation from a supplied primary source can support thinker attribution. A proposed extension or application belongs explicitly to this inquiry. Prior memos and profiles are provisional context, not primary testimony; compare against them when supplied and work independently when they are absent. Attribute coauthors, interviewers, opponents and quoted speakers carefully. Edition/reprint dates do not establish a new intervention. Search hits guide reading; lexical silence, missing texts, excluded sources and inspected windows cannot establish absence across an oeuvre or field. Keep counterevidence, qualifications and unresolved cases. Use only supplied evidence identities and exact source anchors; never invent a quote, page, author position, event or factual claim. Inspected ranges and coverage constrain every conclusion. Method interpretation is not mechanically verified by a citation match. If validation_errors and a previous_draft are supplied, reconsider the identified unsupported claims against the same evidence and return a complete corrected output; preserve uncertainty and never manufacture support identities or quotations. When field_evidence_representation is reference_index_to_supplied_argument_maps, the complete original field support identities are retained while quotations live in the durable source readings. Use only claims and meanings present in the supplied argument maps; do not infer new details from an evidence identity. Evidence selection or compression never licenses an absence claim.",
+        "scoped_outcomes": false,
+        "routing": {
+          "cheap": "openrouter/openai/gpt-5.6-luna",
+          "mid": "openrouter/deepseek/deepseek-v4-pro",
+          "strong": "openrouter/openai/gpt-5.6-sol"
+        },
+        "dimensions": [
+          {
+            "key": "candidate",
+            "name": "Select author texts by substantive relevance",
+            "questions": [
+              "Which passages or arguments could clarify or challenge the field mechanisms? Profiles and prior verified readings guide the selection but do not substitute for reading the source. Preserve unavailable, excluded and uncertain dates. Reconcile an evidence-diverse core under the supplied cap, including the strongest contrary leads."
+            ],
+            "method_card": "Which passages or arguments could clarify or challenge the field mechanisms? Profiles and prior verified readings guide the selection but do not substitute for reading the source. Preserve unavailable, excluded and uncertain dates. Reconcile an evidence-diverse core under the supplied cap, including the strongest contrary leads.",
+            "indicators": [
+              "question",
+              "evidence",
+              "context"
+            ],
+            "scope": "document",
+            "load_bearing": true,
+            "id_prefix": "E1",
+            "answer_shape": "[E1.F<n>] <finding in one sentence> — dim: candidate — uid: <exact inventory uid> — decision: read|context|defer|unavailable — priority: <1 strongest through 5 weakest> — reason: <specific relevance and selection rationale> — queries: <semicolon-separated literal phrases for targeted reading> — anchor: \"<verbatim supplied passage, <=200 chars>\" — doc: <actual supplied source key> — confidence: high|medium|low"
+          }
+        ],
+        "steps": [
+          {
+            "key": "extract",
+            "kind": "extract",
+            "parallel_over": "dimension",
+            "model_tier": "cheap",
+            "output": "ledger",
+            "max_rows": 35
+          },
+          {
+            "key": "verify",
+            "kind": "verify",
+            "consumes": [
+              "extract"
+            ],
+            "model_tier": "mid",
+            "output": "ledger",
+            "duties": [
+              "check_anchors_in_context",
+              "merge_duplicates",
+              "hunt_misses",
+              "name_must_keep"
+            ]
+          },
+          {
+            "key": "synthesize",
+            "kind": "synthesize",
+            "consumes": [
+              "verify"
+            ],
+            "model_tier": "strong",
+            "output": "prose_ledger",
+            "is_final": true,
+            "reader": "the researcher developing a position through the thinker and field",
+            "brief": "In batch mode give one candidate decision for EVERY inventory row, including lexical misses, missing bodies and excluded sources. Use complete profiles, citation identities, prior readings and the field map as semantic leads. In reconcile mode compare all earlier decisions and choose an ordered core of at most limits.max_texts available texts, balancing direct evidence, historical context, conceptual explanations and contrary cases. Return read rows first in priority order, and explicit defer/unavailable rows when useful. Unjudged batch rows must remain unresolved unless you have a reason to select them. Do not choose by publication title or lexical count alone. Do not assume a prior selection is authoritative.",
+            "max_rows": 60
+          }
+        ]
+      }
+    }
+  },
+  "field_investigation_field_map": {
+    "capability": {
+      "engine_key": "field_investigation_field_map",
+      "engine_name": "Map disagreements across field arguments",
+      "version": 1,
+      "category": "scholarly",
+      "kind": "synthesis",
+      "operation": "distinction",
+      "problematique": "Investigate a bilateral question between a named thinker and a topical research field. The field is a collection of independently authored arguments, competing mechanisms, methods and cases, never a homogeneous position and never merely secondary commentary on the thinker. Identify what each side can teach or challenge in the other, and what should change in the researcher's own account. Distinguish description, causal explanation, normative commitments, strategy, historical scope, level of analysis, and conditions of applicability. A field author's finding is not the thinker's claim: only a verified quotation from a supplied primary source can support thinker attribution. A proposed extension or application belongs explicitly to this inquiry. Prior memos and profiles are provisional context, not primary testimony; compare against them when supplied and work independently when they are absent. Attribute coauthors, interviewers, opponents and quoted speakers carefully. Edition/reprint dates do not establish a new intervention. Search hits guide reading; lexical silence, missing texts, excluded sources and inspected windows cannot establish absence across an oeuvre or field. Keep counterevidence, qualifications and unresolved cases. Use only supplied evidence identities and exact source anchors; never invent a quote, page, author position, event or factual claim. Inspected ranges and coverage constrain every conclusion. Method interpretation is not mechanically verified by a citation match. If validation_errors and a previous_draft are supplied, reconsider the identified unsupported claims against the same evidence and return a complete corrected output; preserve uncertainty and never manufacture support identities or quotations. When field_evidence_representation is reference_index_to_supplied_argument_maps, the complete original field support identities are retained while quotations live in the durable source readings. Use only claims and meanings present in the supplied argument maps; do not infer new details from an evidence identity. Evidence selection or compression never licenses an absence claim.",
+      "researcher_question": "Map disagreements across field arguments",
+      "intellectual_lineage": {
+        "primary": "source_criticism"
+      },
+      "analytical_dimensions": [
+        {
+          "key": "debate",
+          "description": "Identify substantive field disagreements",
+          "probing_questions": [
+            "Compare named arguments across sources: competing mechanisms, evidence, cases, organizational forms, causal direction and rival interpretations. Distinguish actual disagreement from a difference in scope. Give field_finding with field evidence_ids; unresolved is allowed when inspected texts cannot settle a dispute. Do not replace disagreement with a topical list or homogeneous field consensus."
+          ]
+        },
+        {
+          "key": "query",
+          "description": "Guide author reading from field tensions",
+          "probing_questions": [
+            "Produce literal phrases for finding the thinker's relevant causal concepts, assumptions and qualifications; do not assume the thinker discusses the same cases or field authors."
+          ]
+        }
+      ],
+      "apps": [
+        "critic"
+      ],
+      "function": "genealogy",
+      "family": "analytical"
+    },
+    "operationalization": {
+      "engine_key": "field_investigation_field_map",
+      "engine_name": "Map disagreements across field arguments",
+      "stance_operationalizations": [],
+      "depth_sequences": [
+        {
+          "depth_key": "surface",
+          "mode": "oneshot"
+        },
+        {
+          "depth_key": "standard",
+          "mode": "oneshot_checked"
+        },
+        {
+          "depth_key": "deep",
+          "mode": "dvs"
+        },
+        {
+          "depth_key": "dvs",
+          "process": "dvs"
+        }
+      ],
+      "process": {
+        "key": "dvs",
+        "description": "Map disagreements across field arguments",
+        "framing": "Investigate a bilateral question between a named thinker and a topical research field. The field is a collection of independently authored arguments, competing mechanisms, methods and cases, never a homogeneous position and never merely secondary commentary on the thinker. Identify what each side can teach or challenge in the other, and what should change in the researcher's own account. Distinguish description, causal explanation, normative commitments, strategy, historical scope, level of analysis, and conditions of applicability. A field author's finding is not the thinker's claim: only a verified quotation from a supplied primary source can support thinker attribution. A proposed extension or application belongs explicitly to this inquiry. Prior memos and profiles are provisional context, not primary testimony; compare against them when supplied and work independently when they are absent. Attribute coauthors, interviewers, opponents and quoted speakers carefully. Edition/reprint dates do not establish a new intervention. Search hits guide reading; lexical silence, missing texts, excluded sources and inspected windows cannot establish absence across an oeuvre or field. Keep counterevidence, qualifications and unresolved cases. Use only supplied evidence identities and exact source anchors; never invent a quote, page, author position, event or factual claim. Inspected ranges and coverage constrain every conclusion. Method interpretation is not mechanically verified by a citation match. If validation_errors and a previous_draft are supplied, reconsider the identified unsupported claims against the same evidence and return a complete corrected output; preserve uncertainty and never manufacture support identities or quotations. When field_evidence_representation is reference_index_to_supplied_argument_maps, the complete original field support identities are retained while quotations live in the durable source readings. Use only claims and meanings present in the supplied argument maps; do not infer new details from an evidence identity. Evidence selection or compression never licenses an absence claim.",
+        "scoped_outcomes": false,
+        "routing": {
+          "cheap": "openrouter/openai/gpt-5.6-luna",
+          "mid": "openrouter/deepseek/deepseek-v4-pro",
+          "strong": "openrouter/openai/gpt-5.6-sol"
+        },
+        "dimensions": [
+          {
+            "key": "debate",
+            "name": "Identify substantive field disagreements",
+            "questions": [
+              "Compare named arguments across sources: competing mechanisms, evidence, cases, organizational forms, causal direction and rival interpretations. Distinguish actual disagreement from a difference in scope. Give field_finding with field evidence_ids; unresolved is allowed when inspected texts cannot settle a dispute. Do not replace disagreement with a topical list or homogeneous field consensus."
+            ],
+            "method_card": "Compare named arguments across sources: competing mechanisms, evidence, cases, organizational forms, causal direction and rival interpretations. Distinguish actual disagreement from a difference in scope. Give field_finding with field evidence_ids; unresolved is allowed when inspected texts cannot settle a dispute. Do not replace disagreement with a topical list or homogeneous field consensus.",
+            "indicators": [
+              "question",
+              "evidence",
+              "context"
+            ],
+            "scope": "document",
+            "load_bearing": true,
+            "id_prefix": "E1",
+            "answer_shape": "[E1.F<n>] <finding in one sentence> — dim: debate — claim_kind: field_finding|unresolved — evidence_ids: <exact original field uid/E1.Fn ids> — positions: <named authors and claims> — mechanism: <causal process> — discriminating_test: <evidence that would decide> — anchor: \"<verbatim supplied passage, <=200 chars>\" — doc: <actual supplied source key> — confidence: high|medium|low"
+          },
+          {
+            "key": "query",
+            "name": "Guide author reading from field tensions",
+            "questions": [
+              "Produce literal phrases for finding the thinker's relevant causal concepts, assumptions and qualifications; do not assume the thinker discusses the same cases or field authors."
+            ],
+            "method_card": "Produce literal phrases for finding the thinker's relevant causal concepts, assumptions and qualifications; do not assume the thinker discusses the same cases or field authors.",
+            "indicators": [
+              "question",
+              "evidence",
+              "context"
+            ],
+            "scope": "document",
+            "load_bearing": true,
+            "id_prefix": "E2",
+            "answer_shape": "[E2.F<n>] <finding in one sentence> — dim: query — query: <literal phrase> — reason: <field tension that motivates reading> — anchor: \"<verbatim supplied passage, <=200 chars>\" — doc: <actual supplied source key> — confidence: high|medium|low"
+          }
+        ],
+        "steps": [
+          {
+            "key": "extract",
+            "kind": "extract",
+            "parallel_over": "dimension",
+            "model_tier": "cheap",
+            "output": "ledger",
+            "max_rows": 35
+          },
+          {
+            "key": "verify",
+            "kind": "verify",
+            "consumes": [
+              "extract"
+            ],
+            "model_tier": "mid",
+            "output": "ledger",
+            "duties": [
+              "check_anchors_in_context",
+              "merge_duplicates",
+              "hunt_misses",
+              "name_must_keep"
+            ]
+          },
+          {
+            "key": "synthesize",
+            "kind": "synthesize",
+            "consumes": [
+              "verify"
+            ],
+            "model_tier": "strong",
+            "output": "prose_ledger",
+            "is_final": true,
+            "reader": "the researcher developing a position through the thinker and field",
+            "brief": "Build an argument map, naming individual texts at each fork. Explain competing mechanisms, different populations/scales and methods, empirical disagreements, compatible propositions and unresolved cases. In batch mode disclose that boundary. In global_reconciliation compare ALL batch maps, preserve minority and contrary findings, and identify cross-batch tensions. Each material claim must retain original evidence ids. Then supply the debate and targeted query ledger.",
+            "max_rows": 60
+          }
+        ]
+      }
+    }
+  },
+  "field_investigation_field_read": {
+    "capability": {
+      "engine_key": "field_investigation_field_read",
+      "engine_name": "Read one argument in the field",
+      "version": 1,
+      "category": "scholarly",
+      "kind": "synthesis",
+      "operation": "reading",
+      "problematique": "Investigate a bilateral question between a named thinker and a topical research field. The field is a collection of independently authored arguments, competing mechanisms, methods and cases, never a homogeneous position and never merely secondary commentary on the thinker. Identify what each side can teach or challenge in the other, and what should change in the researcher's own account. Distinguish description, causal explanation, normative commitments, strategy, historical scope, level of analysis, and conditions of applicability. A field author's finding is not the thinker's claim: only a verified quotation from a supplied primary source can support thinker attribution. A proposed extension or application belongs explicitly to this inquiry. Prior memos and profiles are provisional context, not primary testimony; compare against them when supplied and work independently when they are absent. Attribute coauthors, interviewers, opponents and quoted speakers carefully. Edition/reprint dates do not establish a new intervention. Search hits guide reading; lexical silence, missing texts, excluded sources and inspected windows cannot establish absence across an oeuvre or field. Keep counterevidence, qualifications and unresolved cases. Use only supplied evidence identities and exact source anchors; never invent a quote, page, author position, event or factual claim. Inspected ranges and coverage constrain every conclusion. Method interpretation is not mechanically verified by a citation match. If validation_errors and a previous_draft are supplied, reconsider the identified unsupported claims against the same evidence and return a complete corrected output; preserve uncertainty and never manufacture support identities or quotations. When field_evidence_representation is reference_index_to_supplied_argument_maps, the complete original field support identities are retained while quotations live in the durable source readings. Use only claims and meanings present in the supplied argument maps; do not infer new details from an evidence identity. Evidence selection or compression never licenses an absence claim.",
+      "researcher_question": "Read one argument in the field",
+      "intellectual_lineage": {
+        "primary": "source_criticism"
+      },
+      "analytical_dimensions": [
+        {
+          "key": "evidence",
+          "description": "Read the field author in context",
+          "probing_questions": [
+            "Extract source-grounded claims, mechanisms, empirical design and findings, contrary cases and limits. Distinguish what the text demonstrates from what it hypothesizes; name whose claim it is. Every row must quote an actually supplied passage of this field source. Do not attribute any field fact to the focal thinker."
+          ]
+        },
+        {
+          "key": "gap",
+          "description": "State what this reading cannot establish",
+          "probing_questions": [
+            "Identify weak evidence, untested mechanisms, conflicting interpretations and relevant questions unaddressed by these inspected ranges. A missing discussion is not a refutation."
+          ]
+        }
+      ],
+      "apps": [
+        "critic"
+      ],
+      "function": "genealogy",
+      "family": "analytical"
+    },
+    "operationalization": {
+      "engine_key": "field_investigation_field_read",
+      "engine_name": "Read one argument in the field",
+      "stance_operationalizations": [],
+      "depth_sequences": [
+        {
+          "depth_key": "surface",
+          "mode": "oneshot"
+        },
+        {
+          "depth_key": "standard",
+          "mode": "oneshot_checked"
+        },
+        {
+          "depth_key": "deep",
+          "mode": "dvs"
+        },
+        {
+          "depth_key": "dvs",
+          "process": "dvs"
+        }
+      ],
+      "process": {
+        "key": "dvs",
+        "description": "Read one argument in the field",
+        "framing": "Investigate a bilateral question between a named thinker and a topical research field. The field is a collection of independently authored arguments, competing mechanisms, methods and cases, never a homogeneous position and never merely secondary commentary on the thinker. Identify what each side can teach or challenge in the other, and what should change in the researcher's own account. Distinguish description, causal explanation, normative commitments, strategy, historical scope, level of analysis, and conditions of applicability. A field author's finding is not the thinker's claim: only a verified quotation from a supplied primary source can support thinker attribution. A proposed extension or application belongs explicitly to this inquiry. Prior memos and profiles are provisional context, not primary testimony; compare against them when supplied and work independently when they are absent. Attribute coauthors, interviewers, opponents and quoted speakers carefully. Edition/reprint dates do not establish a new intervention. Search hits guide reading; lexical silence, missing texts, excluded sources and inspected windows cannot establish absence across an oeuvre or field. Keep counterevidence, qualifications and unresolved cases. Use only supplied evidence identities and exact source anchors; never invent a quote, page, author position, event or factual claim. Inspected ranges and coverage constrain every conclusion. Method interpretation is not mechanically verified by a citation match. If validation_errors and a previous_draft are supplied, reconsider the identified unsupported claims against the same evidence and return a complete corrected output; preserve uncertainty and never manufacture support identities or quotations. When field_evidence_representation is reference_index_to_supplied_argument_maps, the complete original field support identities are retained while quotations live in the durable source readings. Use only claims and meanings present in the supplied argument maps; do not infer new details from an evidence identity. Evidence selection or compression never licenses an absence claim.",
+        "scoped_outcomes": false,
+        "routing": {
+          "cheap": "openrouter/openai/gpt-5.6-luna",
+          "mid": "openrouter/deepseek/deepseek-v4-pro",
+          "strong": "openrouter/openai/gpt-5.6-sol"
+        },
+        "dimensions": [
+          {
+            "key": "evidence",
+            "name": "Read the field author in context",
+            "questions": [
+              "Extract source-grounded claims, mechanisms, empirical design and findings, contrary cases and limits. Distinguish what the text demonstrates from what it hypothesizes; name whose claim it is. Every row must quote an actually supplied passage of this field source. Do not attribute any field fact to the focal thinker."
+            ],
+            "method_card": "Extract source-grounded claims, mechanisms, empirical design and findings, contrary cases and limits. Distinguish what the text demonstrates from what it hypothesizes; name whose claim it is. Every row must quote an actually supplied passage of this field source. Do not attribute any field fact to the focal thinker.",
+            "indicators": [
+              "question",
+              "evidence",
+              "context"
+            ],
+            "scope": "document",
+            "load_bearing": true,
+            "id_prefix": "E1",
+            "answer_shape": "[E1.F<n>] <finding in one sentence> — dim: evidence — uid: <source_metadata.uid> — relation: thesis|mechanism|method|counterevidence|qualification — speaker: <actual speaker> — scale: <unit and scope> — locus: <supplied page or source characters> — anchor: \"<verbatim supplied passage, <=200 chars>\" — doc: <actual supplied source key> — confidence: high|medium|low"
+          },
+          {
+            "key": "gap",
+            "name": "State what this reading cannot establish",
+            "questions": [
+              "Identify weak evidence, untested mechanisms, conflicting interpretations and relevant questions unaddressed by these inspected ranges. A missing discussion is not a refutation."
+            ],
+            "method_card": "Identify weak evidence, untested mechanisms, conflicting interpretations and relevant questions unaddressed by these inspected ranges. A missing discussion is not a refutation.",
+            "indicators": [
+              "question",
+              "evidence",
+              "context"
+            ],
+            "scope": "document",
+            "load_bearing": true,
+            "id_prefix": "E2",
+            "answer_shape": "[E2.F<n>] <finding in one sentence> — dim: gap — uid: <source_metadata.uid> — gap: <specific unresolved issue> — follow_up: <test or text> — anchor: \"<verbatim supplied passage, <=200 chars>\" — doc: <actual supplied source key> — confidence: high|medium|low"
+          }
+        ],
+        "steps": [
+          {
+            "key": "extract",
+            "kind": "extract",
+            "parallel_over": "dimension",
+            "model_tier": "cheap",
+            "output": "ledger",
+            "max_rows": 35
+          },
+          {
+            "key": "verify",
+            "kind": "verify",
+            "consumes": [
+              "extract"
+            ],
+            "model_tier": "mid",
+            "output": "ledger",
+            "duties": [
+              "check_anchors_in_context",
+              "merge_duplicates",
+              "hunt_misses",
+              "name_must_keep"
+            ]
+          },
+          {
+            "key": "synthesize",
+            "kind": "synthesize",
+            "consumes": [
+              "verify"
+            ],
+            "model_tier": "strong",
+            "output": "prose_ledger",
+            "is_final": true,
+            "reader": "the researcher developing a position through the thinker and field",
+            "brief": "Write a substantive reading of THIS field text: thesis, mechanism, population and cases, research design, evidence strength, rival explanations, normative/strategic stakes, qualifications and useful counterevidence. Do not force it into agreement with the thinker. Then give the evidence and gap ledger.",
+            "max_rows": 60
+          }
+        ]
+      }
+    }
+  },
+  "field_investigation_memo": {
+    "capability": {
+      "engine_key": "field_investigation_memo",
+      "engine_name": "Write a thinker and field research memo",
+      "version": 1,
+      "category": "scholarly",
+      "kind": "synthesis",
+      "operation": "composition",
+      "problematique": "Investigate a bilateral question between a named thinker and a topical research field. The field is a collection of independently authored arguments, competing mechanisms, methods and cases, never a homogeneous position and never merely secondary commentary on the thinker. Identify what each side can teach or challenge in the other, and what should change in the researcher's own account. Distinguish description, causal explanation, normative commitments, strategy, historical scope, level of analysis, and conditions of applicability. A field author's finding is not the thinker's claim: only a verified quotation from a supplied primary source can support thinker attribution. A proposed extension or application belongs explicitly to this inquiry. Prior memos and profiles are provisional context, not primary testimony; compare against them when supplied and work independently when they are absent. Attribute coauthors, interviewers, opponents and quoted speakers carefully. Edition/reprint dates do not establish a new intervention. Search hits guide reading; lexical silence, missing texts, excluded sources and inspected windows cannot establish absence across an oeuvre or field. Keep counterevidence, qualifications and unresolved cases. Use only supplied evidence identities and exact source anchors; never invent a quote, page, author position, event or factual claim. Inspected ranges and coverage constrain every conclusion. Method interpretation is not mechanically verified by a citation match. If validation_errors and a previous_draft are supplied, reconsider the identified unsupported claims against the same evidence and return a complete corrected output; preserve uncertainty and never manufacture support identities or quotations. When field_evidence_representation is reference_index_to_supplied_argument_maps, the complete original field support identities are retained while quotations live in the durable source readings. Use only claims and meanings present in the supplied argument maps; do not infer new details from an evidence identity. Evidence selection or compression never licenses an absence claim.",
+      "researcher_question": "Write a thinker and field research memo",
+      "intellectual_lineage": {
+        "primary": "source_criticism"
+      },
+      "analytical_dimensions": [
+        {
+          "key": "answer",
+          "description": "Give supported and attributed conclusions",
+          "probing_questions": [
+            "Every material conclusion must be an answer row. thinker_position requires primary support; field_finding requires field support; comparison requires BOTH; unresolved must remain a question. Use exact verified evidence identities from the packet. In prose use these same identities in square brackets and name the relevant source and page when supplied. Never cite a field source as evidence that the thinker says something."
+          ]
+        },
+        {
+          "key": "revision",
+          "description": "Make learning explicit",
+          "probing_questions": [
+            "Supply separate rows for concrete changed, retained, new and unresolved positions as applicable, explicitly comparing with the actual available baseline. baseline MUST be prior in follow_up mode and standalone otherwise. If baseline text is partial, identify that limit. Do not manufacture a change merely because a second memo was requested."
+          ]
+        },
+        {
+          "key": "counterevidence",
+          "description": "Keep the strongest challenge",
+          "probing_questions": [
+            "Name the strongest available counterevidence to your own preferred account and explain why it does or does not overturn the bounded judgment."
+          ]
+        },
+        {
+          "key": "question",
+          "description": "State next discriminating questions",
+          "probing_questions": [
+            "Give specific research questions or source gaps that could change the memo. Do not turn generic future reading into evidence for a present conclusion."
+          ]
+        }
+      ],
+      "apps": [
+        "critic"
+      ],
+      "function": "genealogy",
+      "family": "analytical"
+    },
+    "operationalization": {
+      "engine_key": "field_investigation_memo",
+      "engine_name": "Write a thinker and field research memo",
+      "stance_operationalizations": [],
+      "depth_sequences": [
+        {
+          "depth_key": "surface",
+          "mode": "oneshot"
+        },
+        {
+          "depth_key": "standard",
+          "mode": "oneshot_checked"
+        },
+        {
+          "depth_key": "deep",
+          "mode": "dvs"
+        },
+        {
+          "depth_key": "dvs",
+          "process": "dvs"
+        }
+      ],
+      "process": {
+        "key": "dvs",
+        "description": "Write a thinker and field research memo",
+        "framing": "Investigate a bilateral question between a named thinker and a topical research field. The field is a collection of independently authored arguments, competing mechanisms, methods and cases, never a homogeneous position and never merely secondary commentary on the thinker. Identify what each side can teach or challenge in the other, and what should change in the researcher's own account. Distinguish description, causal explanation, normative commitments, strategy, historical scope, level of analysis, and conditions of applicability. A field author's finding is not the thinker's claim: only a verified quotation from a supplied primary source can support thinker attribution. A proposed extension or application belongs explicitly to this inquiry. Prior memos and profiles are provisional context, not primary testimony; compare against them when supplied and work independently when they are absent. Attribute coauthors, interviewers, opponents and quoted speakers carefully. Edition/reprint dates do not establish a new intervention. Search hits guide reading; lexical silence, missing texts, excluded sources and inspected windows cannot establish absence across an oeuvre or field. Keep counterevidence, qualifications and unresolved cases. Use only supplied evidence identities and exact source anchors; never invent a quote, page, author position, event or factual claim. Inspected ranges and coverage constrain every conclusion. Method interpretation is not mechanically verified by a citation match. If validation_errors and a previous_draft are supplied, reconsider the identified unsupported claims against the same evidence and return a complete corrected output; preserve uncertainty and never manufacture support identities or quotations. When field_evidence_representation is reference_index_to_supplied_argument_maps, the complete original field support identities are retained while quotations live in the durable source readings. Use only claims and meanings present in the supplied argument maps; do not infer new details from an evidence identity. Evidence selection or compression never licenses an absence claim.",
+        "scoped_outcomes": false,
+        "routing": {
+          "cheap": "openrouter/openai/gpt-5.6-luna",
+          "mid": "openrouter/deepseek/deepseek-v4-pro",
+          "strong": "openrouter/openai/gpt-5.6-sol"
+        },
+        "dimensions": [
+          {
+            "key": "answer",
+            "name": "Give supported and attributed conclusions",
+            "questions": [
+              "Every material conclusion must be an answer row. thinker_position requires primary support; field_finding requires field support; comparison requires BOTH; unresolved must remain a question. Use exact verified evidence identities from the packet. In prose use these same identities in square brackets and name the relevant source and page when supplied. Never cite a field source as evidence that the thinker says something."
+            ],
+            "method_card": "Every material conclusion must be an answer row. thinker_position requires primary support; field_finding requires field support; comparison requires BOTH; unresolved must remain a question. Use exact verified evidence identities from the packet. In prose use these same identities in square brackets and name the relevant source and page when supplied. Never cite a field source as evidence that the thinker says something.",
+            "indicators": [
+              "question",
+              "evidence",
+              "context"
+            ],
+            "scope": "document",
+            "load_bearing": true,
+            "id_prefix": "E1",
+            "answer_shape": "[E1.F<n>] <finding in one sentence> — dim: answer — claim_kind: thinker_position|field_finding|comparison|unresolved — evidence_ids: <semicolon-separated exact supplied uid/E1.Fn identities; no invented ids> — warrant: <reason and scope> — anchor: \"<verbatim supplied passage, <=200 chars>\" — doc: <actual supplied source key> — confidence: high|medium|low"
+          },
+          {
+            "key": "revision",
+            "name": "Make learning explicit",
+            "questions": [
+              "Supply separate rows for concrete changed, retained, new and unresolved positions as applicable, explicitly comparing with the actual available baseline. baseline MUST be prior in follow_up mode and standalone otherwise. If baseline text is partial, identify that limit. Do not manufacture a change merely because a second memo was requested."
+            ],
+            "method_card": "Supply separate rows for concrete changed, retained, new and unresolved positions as applicable, explicitly comparing with the actual available baseline. baseline MUST be prior in follow_up mode and standalone otherwise. If baseline text is partial, identify that limit. Do not manufacture a change merely because a second memo was requested.",
+            "indicators": [
+              "question",
+              "evidence",
+              "context"
+            ],
+            "scope": "document",
+            "load_bearing": true,
+            "id_prefix": "E2",
+            "answer_shape": "[E2.F<n>] <finding in one sentence> — dim: revision — disposition: changed|retained|new|unresolved — baseline: prior|standalone — before: <actual prior position or no prior> — after: <position now> — evidence_ids: <exact support identities> — anchor: \"<verbatim supplied passage, <=200 chars>\" — doc: <actual supplied source key> — confidence: high|medium|low"
+          },
+          {
+            "key": "counterevidence",
+            "name": "Keep the strongest challenge",
+            "questions": [
+              "Name the strongest available counterevidence to your own preferred account and explain why it does or does not overturn the bounded judgment."
+            ],
+            "method_card": "Name the strongest available counterevidence to your own preferred account and explain why it does or does not overturn the bounded judgment.",
+            "indicators": [
+              "question",
+              "evidence",
+              "context"
+            ],
+            "scope": "document",
+            "load_bearing": true,
+            "id_prefix": "E3",
+            "answer_shape": "[E3.F<n>] <finding in one sentence> — dim: counterevidence — evidence_ids: <exact verified identities or none when the gap is explicit> — challenge: <what could be wrong> — response: <qualified assessment> — anchor: \"<verbatim supplied passage, <=200 chars>\" — doc: <actual supplied source key> — confidence: high|medium|low"
+          },
+          {
+            "key": "question",
+            "name": "State next discriminating questions",
+            "questions": [
+              "Give specific research questions or source gaps that could change the memo. Do not turn generic future reading into evidence for a present conclusion."
+            ],
+            "method_card": "Give specific research questions or source gaps that could change the memo. Do not turn generic future reading into evidence for a present conclusion.",
+            "indicators": [
+              "question",
+              "evidence",
+              "context"
+            ],
+            "scope": "document",
+            "load_bearing": true,
+            "id_prefix": "E4",
+            "answer_shape": "[E4.F<n>] <finding in one sentence> — dim: question — question: <unresolved question> — test: <needed evidence> — anchor: \"<verbatim supplied passage, <=200 chars>\" — doc: <actual supplied source key> — confidence: high|medium|low"
+          }
+        ],
+        "steps": [
+          {
+            "key": "extract",
+            "kind": "extract",
+            "parallel_over": "dimension",
+            "model_tier": "cheap",
+            "output": "ledger",
+            "max_rows": 35
+          },
+          {
+            "key": "verify",
+            "kind": "verify",
+            "consumes": [
+              "extract"
+            ],
+            "model_tier": "mid",
+            "output": "ledger",
+            "duties": [
+              "check_anchors_in_context",
+              "merge_duplicates",
+              "hunt_misses",
+              "name_must_keep"
+            ]
+          },
+          {
+            "key": "synthesize",
+            "kind": "synthesize",
+            "consumes": [
+              "verify"
+            ],
+            "model_tier": "strong",
+            "output": "prose_ledger",
+            "is_final": true,
+            "reader": "the researcher developing a position through the thinker and field",
+            "brief": "Write a substantial, readable second memo when a prior investigation is supplied, or a self-contained first memo for a standalone inquiry. Lead with what the researcher should now think and why. Explain the field debates as disagreements among named authors with mechanisms and evidence; recover the thinker's actual sourced position; adjudicate where the two clarify or challenge one another. Develop several concrete examples and counterarguments. Include an explicit account of changes from the prior memo, positions retained, new distinctions, unresolved questions and the strongest counterevidence. In standalone mode name new warranted conclusions without inventing an earlier memo. Distinguish your proposed extension from anything the thinker wrote. Cite primary and field findings inline as [uid/E1.Fn], with readable author/title/year and supplied page loci. Finish with material coverage limits and focused next questions. Then provide answer, revision, counterevidence and question ledger rows; do not replace the memo with the ledger.",
+            "max_rows": 60
+          }
+        ]
+      }
+    }
+  },
+  "field_investigation_plan": {
+    "capability": {
+      "engine_key": "field_investigation_plan",
+      "engine_name": "Plan a thinker and field inquiry",
+      "version": 1,
+      "category": "scholarly",
+      "kind": "synthesis",
+      "operation": "placement",
+      "problematique": "Investigate a bilateral question between a named thinker and a topical research field. The field is a collection of independently authored arguments, competing mechanisms, methods and cases, never a homogeneous position and never merely secondary commentary on the thinker. Identify what each side can teach or challenge in the other, and what should change in the researcher's own account. Distinguish description, causal explanation, normative commitments, strategy, historical scope, level of analysis, and conditions of applicability. A field author's finding is not the thinker's claim: only a verified quotation from a supplied primary source can support thinker attribution. A proposed extension or application belongs explicitly to this inquiry. Prior memos and profiles are provisional context, not primary testimony; compare against them when supplied and work independently when they are absent. Attribute coauthors, interviewers, opponents and quoted speakers carefully. Edition/reprint dates do not establish a new intervention. Search hits guide reading; lexical silence, missing texts, excluded sources and inspected windows cannot establish absence across an oeuvre or field. Keep counterevidence, qualifications and unresolved cases. Use only supplied evidence identities and exact source anchors; never invent a quote, page, author position, event or factual claim. Inspected ranges and coverage constrain every conclusion. Method interpretation is not mechanically verified by a citation match. If validation_errors and a previous_draft are supplied, reconsider the identified unsupported claims against the same evidence and return a complete corrected output; preserve uncertainty and never manufacture support identities or quotations. When field_evidence_representation is reference_index_to_supplied_argument_maps, the complete original field support identities are retained while quotations live in the durable source readings. Use only claims and meanings present in the supplied argument maps; do not infer new details from an evidence identity. Evidence selection or compression never licenses an absence claim.",
+      "researcher_question": "Plan a thinker and field inquiry",
+      "intellectual_lineage": {
+        "primary": "source_criticism"
+      },
+      "analytical_dimensions": [
+        {
+          "key": "question",
+          "description": "Form bilateral questions",
+          "probing_questions": [
+            "State what the thinker may illuminate in the field and what the field may correct or complicate in the thinker. Identify rival causal mechanisms, units, scales, populations, time horizons, empirical and normative questions, and what evidence would make the researcher change position. Do not prejudge compatibility."
+          ]
+        },
+        {
+          "key": "query",
+          "description": "Expand source reading vocabulary",
+          "probing_questions": [
+            "Give 12–24 distinct literal search phrases, including mechanisms, actor identities, institutions, qualifications and contrary outcomes. These route windows within EVERY selected field and author text, not a selection of agreeable texts. No Boolean operators."
+          ]
+        },
+        {
+          "key": "baseline",
+          "description": "Locate a provisional starting position",
+          "probing_questions": [
+            "For follow_up, identify the supplied prior memo's conclusions and uncertainties with its real job/source identity and concrete passages; mark truncated or unavailable baseline context. For standalone, formulate a provisional research question without inventing a prior investigation."
+          ]
+        }
+      ],
+      "apps": [
+        "critic"
+      ],
+      "function": "genealogy",
+      "family": "analytical"
+    },
+    "operationalization": {
+      "engine_key": "field_investigation_plan",
+      "engine_name": "Plan a thinker and field inquiry",
+      "stance_operationalizations": [],
+      "depth_sequences": [
+        {
+          "depth_key": "surface",
+          "mode": "oneshot"
+        },
+        {
+          "depth_key": "standard",
+          "mode": "oneshot_checked"
+        },
+        {
+          "depth_key": "deep",
+          "mode": "dvs"
+        },
+        {
+          "depth_key": "dvs",
+          "process": "dvs"
+        }
+      ],
+      "process": {
+        "key": "dvs",
+        "description": "Plan a thinker and field inquiry",
+        "framing": "Investigate a bilateral question between a named thinker and a topical research field. The field is a collection of independently authored arguments, competing mechanisms, methods and cases, never a homogeneous position and never merely secondary commentary on the thinker. Identify what each side can teach or challenge in the other, and what should change in the researcher's own account. Distinguish description, causal explanation, normative commitments, strategy, historical scope, level of analysis, and conditions of applicability. A field author's finding is not the thinker's claim: only a verified quotation from a supplied primary source can support thinker attribution. A proposed extension or application belongs explicitly to this inquiry. Prior memos and profiles are provisional context, not primary testimony; compare against them when supplied and work independently when they are absent. Attribute coauthors, interviewers, opponents and quoted speakers carefully. Edition/reprint dates do not establish a new intervention. Search hits guide reading; lexical silence, missing texts, excluded sources and inspected windows cannot establish absence across an oeuvre or field. Keep counterevidence, qualifications and unresolved cases. Use only supplied evidence identities and exact source anchors; never invent a quote, page, author position, event or factual claim. Inspected ranges and coverage constrain every conclusion. Method interpretation is not mechanically verified by a citation match. If validation_errors and a previous_draft are supplied, reconsider the identified unsupported claims against the same evidence and return a complete corrected output; preserve uncertainty and never manufacture support identities or quotations. When field_evidence_representation is reference_index_to_supplied_argument_maps, the complete original field support identities are retained while quotations live in the durable source readings. Use only claims and meanings present in the supplied argument maps; do not infer new details from an evidence identity. Evidence selection or compression never licenses an absence claim.",
+        "scoped_outcomes": false,
+        "routing": {
+          "cheap": "openrouter/openai/gpt-5.6-luna",
+          "mid": "openrouter/deepseek/deepseek-v4-pro",
+          "strong": "openrouter/openai/gpt-5.6-sol"
+        },
+        "dimensions": [
+          {
+            "key": "question",
+            "name": "Form bilateral questions",
+            "questions": [
+              "State what the thinker may illuminate in the field and what the field may correct or complicate in the thinker. Identify rival causal mechanisms, units, scales, populations, time horizons, empirical and normative questions, and what evidence would make the researcher change position. Do not prejudge compatibility."
+            ],
+            "method_card": "State what the thinker may illuminate in the field and what the field may correct or complicate in the thinker. Identify rival causal mechanisms, units, scales, populations, time horizons, empirical and normative questions, and what evidence would make the researcher change position. Do not prejudge compatibility.",
+            "indicators": [
+              "question",
+              "evidence",
+              "context"
+            ],
+            "scope": "document",
+            "load_bearing": true,
+            "id_prefix": "E1",
+            "answer_shape": "[E1.F<n>] <finding in one sentence> — dim: question — subquestion: <answerable question> — test: <evidence needed> — direction: thinker_to_field|field_to_thinker|bilateral — anchor: \"<verbatim supplied passage, <=200 chars>\" — doc: <actual supplied source key> — confidence: high|medium|low"
+          },
+          {
+            "key": "query",
+            "name": "Expand source reading vocabulary",
+            "questions": [
+              "Give 12–24 distinct literal search phrases, including mechanisms, actor identities, institutions, qualifications and contrary outcomes. These route windows within EVERY selected field and author text, not a selection of agreeable texts. No Boolean operators."
+            ],
+            "method_card": "Give 12–24 distinct literal search phrases, including mechanisms, actor identities, institutions, qualifications and contrary outcomes. These route windows within EVERY selected field and author text, not a selection of agreeable texts. No Boolean operators.",
+            "indicators": [
+              "question",
+              "evidence",
+              "context"
+            ],
+            "scope": "document",
+            "load_bearing": true,
+            "id_prefix": "E2",
+            "answer_shape": "[E2.F<n>] <finding in one sentence> — dim: query — query: <literal phrase> — purpose: <what it could reveal> — anchor: \"<verbatim supplied passage, <=200 chars>\" — doc: <actual supplied source key> — confidence: high|medium|low"
+          },
+          {
+            "key": "baseline",
+            "name": "Locate a provisional starting position",
+            "questions": [
+              "For follow_up, identify the supplied prior memo's conclusions and uncertainties with its real job/source identity and concrete passages; mark truncated or unavailable baseline context. For standalone, formulate a provisional research question without inventing a prior investigation."
+            ],
+            "method_card": "For follow_up, identify the supplied prior memo's conclusions and uncertainties with its real job/source identity and concrete passages; mark truncated or unavailable baseline context. For standalone, formulate a provisional research question without inventing a prior investigation.",
+            "indicators": [
+              "question",
+              "evidence",
+              "context"
+            ],
+            "scope": "document",
+            "load_bearing": true,
+            "id_prefix": "E3",
+            "answer_shape": "[E3.F<n>] <finding in one sentence> — dim: baseline — mode: standalone|follow_up — prior_id: <supplied identity or none> — proposition: <starting position or unknown> — anchor: \"<verbatim supplied passage, <=200 chars>\" — doc: <actual supplied source key> — confidence: high|medium|low"
+          }
+        ],
+        "steps": [
+          {
+            "key": "extract",
+            "kind": "extract",
+            "parallel_over": "dimension",
+            "model_tier": "cheap",
+            "output": "ledger",
+            "max_rows": 35
+          },
+          {
+            "key": "verify",
+            "kind": "verify",
+            "consumes": [
+              "extract"
+            ],
+            "model_tier": "mid",
+            "output": "ledger",
+            "duties": [
+              "check_anchors_in_context",
+              "merge_duplicates",
+              "hunt_misses",
+              "name_must_keep"
+            ]
+          },
+          {
+            "key": "synthesize",
+            "kind": "synthesize",
+            "consumes": [
+              "verify"
+            ],
+            "model_tier": "strong",
+            "output": "prose_ledger",
+            "is_final": true,
+            "reader": "the researcher developing a position through the thinker and field",
+            "brief": "Plan the bilateral question, tests and reading vocabulary. This is a research plan, not a conclusion.",
+            "max_rows": 60
+          }
+        ]
+      }
+    }
+  }
+}

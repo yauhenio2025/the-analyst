@@ -82,7 +82,8 @@ def _context_block(packet: Optional[dict], docs: list) -> str:
 
 def call_engine(engine_key: str, sources: list[SourceSpec], *, packet: Optional[dict] = None, depth: str = "surface",
                 model: Optional[str] = None, spend_cap_usd: float = 0.5, call_fn: Optional[Callable] = None,
-                refs: Optional[dict[str, Any]] = None, max_chars: Optional[int] = None) -> dict:
+                refs: Optional[dict[str, Any]] = None, max_chars: Optional[int] = None,
+                method_snapshot: Optional[dict] = None, expected_method_sha256: Optional[str] = None) -> dict:
     """Run one engine over the supplied sources in this request. Raises KeyError for an unknown engine, ValueError
     for a bad request (depth, model, size, the cap)."""
     from src.engines.registry import get_engine_registry
@@ -94,11 +95,17 @@ def call_engine(engine_key: str, sources: list[SourceSpec], *, packet: Optional[
 
     if depth not in DEPTHS:
         raise ValueError(f"depth must be one of {DEPTHS}; the deep process runs as a dossier job")
-    cap_def = get_engine_registry().get_capability_definition(engine_key)
-    op = get_operationalization_registry().get(engine_key)
-    if cap_def is None or op is None or op.process is None:
-        raise KeyError(f"no engine with a process named {engine_key!r}")
-    spec = op.process
+    from src.engines.methods import freeze_method, compose_method, method_receipt, validate_snapshot
+    if method_snapshot is None:
+        cap_def = get_engine_registry().get_capability_definition(engine_key)
+        op = get_operationalization_registry().get(engine_key)
+        if cap_def is None or op is None or op.process is None:
+            raise KeyError(f"no engine with a process named {engine_key!r}")
+    method_snapshot = method_snapshot or freeze_method(engine_key)
+    validate_snapshot(method_snapshot, engine_key)
+    if expected_method_sha256 is not None and method_snapshot['sha256'] != expected_method_sha256:
+        raise ValueError('The requested central method version changed; nothing was spent')
+    cap_def, spec = compose_method(method_snapshot)
     from src.sources.citation_evidence import FAMILY, prepare_citation_sources
 
     docs = resolve_sources(sources)
@@ -135,7 +142,8 @@ def call_engine(engine_key: str, sources: list[SourceSpec], *, packet: Optional[
     out = {"engine_key": engine_key, "depth": depth, "model": result.final_model or strong, "model_requested": model or "", "seconds": round(time.time() - t0, 1),
            "cost_usd": result.cost_usd, "estimated_usd": est, "chars": chars, "calls": [c.as_receipt() for c in result.calls],
            "wall": {"anchors": len(rows), "verified": sum(1 for r in rows if r.anchor_verified), "failed_ids": sorted(failed), "vocabulary_drift": vocabulary_drift(rows, engine_key)[:40]},
-           "prose": prose, "final_output": result.final_content, "rows": row_dicts, "shaped": shaped}
+           "prose": prose, "final_output": result.final_content, "rows": row_dicts, "shaped": shaped,
+           "method_receipt": method_receipt(method_snapshot), "method_snapshot": method_snapshot}
     logger.info("engine call %s · %s · %s · %d chars · %d rows (%d verified) · $%.4f · %.1fs", engine_key, depth, out["model"], chars,
                 len(rows), out["wall"]["verified"], result.cost_usd, out["seconds"])
     return out

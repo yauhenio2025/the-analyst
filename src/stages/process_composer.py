@@ -109,6 +109,9 @@ def _framing(cap_def, spec: ProcessSpec, title: str) -> str:
         lines += ["## The method", "", first, ""]
     if spec.description:
         lines += [spec.description.strip(), ""]
+    if spec.method_refs:
+        from src.engines.methods import freeze_method, guidance
+        lines += [guidance(freeze_method(r.engine_key, version=r.version)) for r in spec.method_refs]
     return "\n".join(lines).rstrip()
 
 

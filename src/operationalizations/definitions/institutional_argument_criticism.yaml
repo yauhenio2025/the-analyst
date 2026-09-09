@@ -1,0 +1,105 @@
+engine_key: institutional_argument_criticism
+engine_name: Read institutional arguments, authority and framing
+version: 1
+method_metadata:
+  applies_when: When an institution publishes, commissions or hosts a statement, report,
+    signed contribution or discussion.
+  required_inputs:
+  - Institutional original sources and attributed contributions
+  - Available institutional/publisher relationships and discovery coverage
+  outputs:
+  - Claims attributed by authority and source
+  - Argument/framing map with internal disagreements and limits
+  limitations:
+  - Cannot infer an institutional position from a fellow's title or a publication
+    count.
+  - Cannot establish silence, ideology, funding influence or author motives from directory
+    metadata.
+  provenance:
+  - kind: refactor_and_method_extraction
+    date: '2026-09-09'
+    sources:
+    - zotero-stacks:app/field_investigations.py
+    - zotero-stacks:app/reporter_collections.py
+    - the-reporter:src/reporter/search/topical.py
+    example_job: dossier-f200618187ea
+    example_snapshot: snp_ad74a4fe1b454e1e
+    status: Tether informed the operation; revised method has not received a paid
+      comparative evaluation
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+process:
+  key: dvs
+  description: When an institution publishes, commissions or hosts a statement, report,
+    signed contribution or discussion.
+  framing: Analyze arguments published or hosted by institutions without collapsing
+    them into a single institutional belief. Establish authority to speak, reconstruct
+    mechanisms and policy commitments, compare internal and external disagreement,
+    and examine what the framing makes visible or leaves unresolved. Evaluate arguments
+    on their evidence while treating affiliation and funding as relationships requiring
+    evidence and an explanatory warrant.
+  dimensions:
+  - key: authority
+    name: Separate institutional authority and individual views
+    id_prefix: E1
+    scope: document
+    load_bearing: true
+    method_card: Identify publishing, commissioning, organizing and hosting relationships
+      from supplied originals or retained provenance. Distinguish an adopted institutional
+      statement, staff/fellow signed contribution, guest view, host question and event
+      participant. Preserve author-views disclaimers and evidence of institutional
+      adoption. An institution hosting a debate is not endorsing every speaker. An
+      external CDN or video can be institutional material if the publishing relationship
+      is established; directory membership or a platform domain alone is insufficient.
+    questions:
+    - Separate institutional authority and individual views using only supplied evidence.
+    answer_shape: '[E1.F<n>] <bounded finding> — dim: authority — attribution: <speaker
+      or source and authority; unknown where unresolved> — warrant: <why the passage
+      supports this finding> — qualification: <limit or counterevidence> — anchor:
+      "<exact supplied quotation, <=200 chars>" — doc: <supplied source key> — confidence:
+      high|medium|low'
+  - key: framing
+    name: Critique assumptions and compare arguments
+    id_prefix: E2
+    scope: document
+    load_bearing: true
+    method_card: Reconstruct each source's problem definition, causal assumptions,
+      affected groups, proposed interventions, normative commitments and strongest
+      counterargument. Compare changes and internal disagreement before generalizing
+      across an institution. Ask which alternatives and interests the text considers
+      or brackets; mark inferences and do not fabricate motives. Funding or affiliation
+      does not establish a position or invalidate an argument. Distinguish no search
+      result, unread material, missing text and an explicit refusal to take a position.
+      Preserve the actual institutional/geographic/language coverage and avoid manufacturing
+      consensus from duplicates or selection bias.
+    questions:
+    - Critique assumptions and compare arguments using only supplied evidence.
+    answer_shape: '[E2.F<n>] <bounded finding> — dim: framing — attribution: <speaker
+      or source and authority; unknown where unresolved> — warrant: <why the passage
+      supports this finding> — qualification: <limit or counterevidence> — anchor:
+      "<exact supplied quotation, <=200 chars>" — doc: <supplied source key> — confidence:
+      high|medium|low'
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  steps:
+  - key: verify
+    kind: verify
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - hunt_misses
+  - key: synthesize
+    kind: synthesize
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    brief: Write a source-grounded critical reading that applies the method, preserves
+      disagreements and uncertainty, and ends with the findings ledger. Do not treat
+      method examples as evidence for the supplied case.
+    max_rows: 35

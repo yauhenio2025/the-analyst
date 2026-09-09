@@ -153,6 +153,14 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
                       "evidence": [], "readings": [], "read_inputs": {}, "complete": False}
     if state.get("packet_sha256") != fingerprint:
         raise ValueError("the frozen investigation packet changed; create a new run")
+    from src.engines.methods import field_methods, validate_contract, validate_snapshot, method_receipt
+    validate_contract(packet)
+    if 'method_snapshots' not in state:
+        legacy = bool(state.get('calls'))
+        state['method_snapshots'] = field_methods(legacy=legacy)
+        state['method_origin'] = 'archived pre-refactor methods' if legacy else 'central registry frozen before first call'
+    for key, snapshot in state['method_snapshots'].items():
+        validate_snapshot(snapshot, key)
     state.setdefault("quote_layout_reviews", packet.get("quote_layout_reviews") or {})
     if not isinstance(state["quote_layout_reviews"], dict):
         raise ValueError("quote layout reviews must be keyed by source UID")
@@ -195,7 +203,8 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
             chars = sum(len(s.text) for s in sources) + len(_json(upstream))
         state.setdefault("call_input_manifests", {})[stage] = {
             "chars": chars, "evidence_representation": representation,
-            "evidence_ids": [e["citation_id"] for e in upstream.get("evidence", [])]}
+            "evidence_ids": [e["citation_id"] for e in upstream.get("evidence", [])],
+            "method_receipt": method_receipt(state['method_snapshots'][key])}
         if reporter_packing:
             state["call_input_manifests"][stage]["reporter_packing"] = reporter_packing
         if packing:
@@ -210,12 +219,14 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
             raise ValueError(f"{stage} input is {chars:,} characters after evidence packing; "
                              "all completed research retained; additional source-preserving compaction is required")
         checkpoint(stage, running_stage=stage)
-        result = call(key, sources, packet=upstream, depth="surface", spend_cap_usd=remaining, max_chars=650000)
+        result = call(key, sources, packet=upstream, depth="surface", spend_cap_usd=remaining, max_chars=650000,
+                      method_snapshot=state['method_snapshots'][key])
         recover_answer_rows(result)
         state["calls"][stage] = result
         state["cost_usd"] += float(result.get("cost_usd") or 0)
         phase = str(len(state["analysis"]) + 1)
         state["analysis"][phase] = {"phase_number": int(phase), "stage": stage, "engine_key": key,
+                                    "method_receipt": method_receipt(state['method_snapshots'][key]),
                                     "depth": "surface", "final_output": result.get("final_output", ""),
                                     "final_wall": result.get("wall", {}), "cost_usd": result.get("cost_usd"),
                                     "sources": [s.key for s in sources], "finished": _now(), "calls": result.get("calls", [])}

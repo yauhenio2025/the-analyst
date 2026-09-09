@@ -1,0 +1,100 @@
+engine_key: concept_case_stress_test
+engine_name: Test a concept against a case and qualify extensions
+version: 1
+method_metadata:
+  applies_when: When a case appears to challenge a thinker's concept, or the researcher
+    proposes widening or repairing an account.
+  required_inputs:
+  - Thinker's primary formulations and their scope
+  - Independently sourced case and optional prior researcher account
+  outputs:
+  - Criteria-to-case comparison
+  - Bounded revision or extension with counterexamples and source attribution
+  limitations:
+  - A field-only inquiry can propose conceptual distinctions but cannot attribute
+    them to an absent thinker.
+  - An attractive new label is a hypothesis, not a demonstrated mechanism.
+  provenance:
+  - kind: refactor_and_method_extraction
+    date: '2026-09-09'
+    sources:
+    - zotero-stacks:app/field_investigations.py
+    - zotero-stacks:app/reporter_collections.py
+    - the-reporter:src/reporter/search/topical.py
+    example_job: dossier-f200618187ea
+    example_snapshot: snp_ad74a4fe1b454e1e
+    status: Tether informed the operation; revised method has not received a paid
+      comparative evaluation
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+process:
+  key: dvs
+  description: When a case appears to challenge a thinker's concept, or the researcher
+    proposes widening or repairing an account.
+  framing: Reconstruct a concept's criteria, scope and inferential commitments from
+    its author's actual work, then test a concrete case. Distinguish contradiction,
+    counterexample, scope mismatch, overextended application and a proposed extension.
+    Keep revisions in this inquiry separate from historical changes in the thinker's
+    position.
+  dimensions:
+  - key: fit
+    name: Reconstruct criteria and assess the case
+    id_prefix: E1
+    scope: document
+    load_bearing: true
+    method_card: Recover the definition, causal or normative status, scope and qualifications
+      from supplied primary sources. Preserve coauthors and divergent formulations;
+      edition dates and same-year ordering do not establish conceptual development.
+      Independently establish the case, map its features to explicit criteria and
+      explain the fit or mismatch. Shared vocabulary or a later commentator's gloss
+      cannot establish the thinker's own position.
+    questions:
+    - Reconstruct criteria and assess the case using only supplied evidence.
+    answer_shape: '[E1.F<n>] <bounded finding> — dim: fit — attribution: <speaker
+      or source and authority; unknown where unresolved> — warrant: <why the passage
+      supports this finding> — qualification: <limit or counterevidence> — anchor:
+      "<exact supplied quotation, <=200 chars>" — doc: <supplied source key> — confidence:
+      high|medium|low'
+  - key: extension
+    name: Specify a warranted extension and its limits
+    id_prefix: E2
+    scope: document
+    load_bearing: true
+    method_card: Decide whether the case challenges the definition, one application,
+      a scope restriction or an untested mechanism. For an extension, state what explanatory
+      work it adds, which qualifying and nonqualifying cases it distinguishes, and
+      what evidence could defeat it. Do not widen a concept until everything fits.
+      Identify the proposed extension as this inquiry's claim unless primary text
+      supports thinker attribution. Preserve competing repairs, retained commitments
+      and unresolved questions; do not invent a prior baseline.
+    questions:
+    - Specify a warranted extension and its limits using only supplied evidence.
+    answer_shape: '[E2.F<n>] <bounded finding> — dim: extension — attribution: <speaker
+      or source and authority; unknown where unresolved> — warrant: <why the passage
+      supports this finding> — qualification: <limit or counterevidence> — anchor:
+      "<exact supplied quotation, <=200 chars>" — doc: <supplied source key> — confidence:
+      high|medium|low'
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  steps:
+  - key: verify
+    kind: verify
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - hunt_misses
+  - key: synthesize
+    kind: synthesize
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    brief: Write a source-grounded critical reading that applies the method, preserves
+      disagreements and uncertainty, and ends with the findings ledger. Do not treat
+      method examples as evidence for the supplied case.
+    max_rows: 35

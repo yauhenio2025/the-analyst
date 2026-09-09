@@ -1,0 +1,101 @@
+engine_key: multimedia_source_criticism
+engine_name: Critically read reporting and recorded testimony
+version: 1
+method_metadata:
+  applies_when: When supplied material includes reporting, essays, interviews, podcasts
+    or recorded discussions.
+  required_inputs:
+  - Original text with stable source identity
+  - Available byline/speaker, publication/event dates, native spans, completeness
+    and acquisition metadata
+  outputs:
+  - Source-attributed claims with exact anchors
+  - Independence relationships, uncertainty and additional checks
+  limitations:
+  - Does not infer identity from voice, filename or channel host alone.
+  - Does not transcribe inaccessible media or establish truth from an exact string
+    match.
+  provenance:
+  - kind: refactor_and_method_extraction
+    date: '2026-09-09'
+    sources:
+    - zotero-stacks:app/field_investigations.py
+    - zotero-stacks:app/reporter_collections.py
+    - the-reporter:src/reporter/search/topical.py
+    example_job: dossier-f200618187ea
+    example_snapshot: snp_ad74a4fe1b454e1e
+    status: Tether informed the operation; revised method has not received a paid
+      comparative evaluation
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+process:
+  key: dvs
+  description: When supplied material includes reporting, essays, interviews, podcasts
+    or recorded discussions.
+  framing: Establish what an original media source warrants and whose claim it preserves.
+    Separate independent reporting, journalistic interpretation, company statements,
+    participant testimony, host questions and quoted third parties. Published captions
+    establish an extracted utterance, not its truth or its speaker. Discovery notes,
+    snippets and directory descriptions guide acquisition; they are not original testimony.
+  dimensions:
+  - key: attribution
+    name: Establish the speaker and the claim
+    id_prefix: E1
+    scope: document
+    load_bearing: true
+    method_card: Identify the byline, quoted speaker, host and source of each assertion
+      from supplied evidence. Separate assertion, question, quotation, hypothesis,
+      denial and retrospective account. A title naming two participants does not identify
+      the speaker of an individual caption. Keep mixed or unknown speakers unknown;
+      distinguish publishing, event and retrieval dates. Attribute a thinker only
+      from their own speech or text, and label this inquiry's applications and extensions.
+    questions:
+    - Establish the speaker and the claim using only supplied evidence.
+    answer_shape: '[E1.F<n>] <bounded finding> — dim: attribution — attribution: <speaker
+      or source and authority; unknown where unresolved> — warrant: <why the passage
+      supports this finding> — qualification: <limit or counterevidence> — anchor:
+      "<exact supplied quotation, <=200 chars>" — doc: <supplied source key> — confidence:
+      high|medium|low'
+  - key: warrant
+    name: Evaluate the source and its independence
+    id_prefix: E2
+    scope: document
+    load_bearing: true
+    method_card: Reconstruct the claim in surrounding context, including qualifications
+      and denials. Distinguish first-hand observation, named or anonymous reporting,
+      interested testimony and independent corroboration. Several outlets repeating
+      one press release or several formats of one event are not independent witnesses.
+      Use native timestamp/page spans where supplied; never invent missing locators
+      or transcriptions. Preserve partial extraction and inaccessible-body limits.
+      A verified quotation is not mechanical verification of its meaning or truth.
+    questions:
+    - Evaluate the source and its independence using only supplied evidence.
+    answer_shape: '[E2.F<n>] <bounded finding> — dim: warrant — attribution: <speaker
+      or source and authority; unknown where unresolved> — warrant: <why the passage
+      supports this finding> — qualification: <limit or counterevidence> — anchor:
+      "<exact supplied quotation, <=200 chars>" — doc: <supplied source key> — confidence:
+      high|medium|low'
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  steps:
+  - key: verify
+    kind: verify
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - hunt_misses
+  - key: synthesize
+    kind: synthesize
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    brief: Write a source-grounded critical reading that applies the method, preserves
+      disagreements and uncertainty, and ends with the findings ledger. Do not treat
+      method examples as evidence for the supplied case.
+    max_rows: 35

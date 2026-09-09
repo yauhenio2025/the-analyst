@@ -149,11 +149,17 @@ class ProcessStep(BaseModel):
     max_rows: int = Field(20, description="Extraction: rows per dimension call")
 
 
+class MethodReference(BaseModel):
+    engine_key: str
+    version: int = Field(ge=1)
+
+
 class ProcessSpec(BaseModel):
     """The engine's method as a routed process the registry holds."""
 
     key: str = Field("dvs", description="Process key referenced by DepthSequence.process")
     description: str = ""
+    method_refs: list[MethodReference] = Field(default_factory=list, description="Central executable methods composed as guidance, without extra model calls")
     framing: Optional[str] = Field(
         None, description="Explicit process framing, replacing the capability opening in every process prompt. None preserves the legacy opening.",
     )
@@ -188,6 +194,8 @@ class EngineOperationalization(BaseModel):
     Contains all stance operationalizations and depth sequences.
     """
 
+    version: int = Field(default=1, ge=1)
+    method_metadata: dict = Field(default_factory=dict, description="Triggers, inputs, outputs, limits and source provenance of a reusable method")
     engine_key: str = Field(
         ...,
         description="Engine key (must match a capability engine definition)",

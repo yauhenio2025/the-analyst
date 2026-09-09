@@ -15,6 +15,8 @@ def expand_field_investigation(text: str) -> list[Document]:
     if not isinstance(packet.get("author"), dict) or not packet["author"].get("id"):
         raise ValueError("field_investigation requires author.id")
     packet = deepcopy(packet)
+    from src.engines.methods import validate_contract
+    validate_contract(packet)
     packet["kind"] = "field_investigation"
     parent = packet.get("parent_investigation")
     if parent is not None:
