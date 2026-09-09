@@ -67,3 +67,18 @@ def test_media_collection_completes_all_stages_and_retains_native_metadata_on_re
     def forbidden(*args,**kwargs):
         raise AssertionError('Completed paid call must not replay')
     assert run_field_investigation(packet,bodies,call=forbidden,save=lambda _:None,state=state)['complete']
+
+
+def test_final_coverage_references_only_exact_duplicate_gap_records():
+    gaps=[{'uid':f'reporter:{i}','message':'This source was not acquired. ' * 10} for i in range(400)]
+    upstream={'field_collections':[{'kind':'reporter'}], 'field_gaps':gaps,
+              'coverage':{'field_gaps':copy.deepcopy(gaps),'read_count':27},
+              'evidence':[{'source_quote':'Exact quotation','finding':'Exact supported finding'}]}
+    a,b,receipt=pack_reporter_context('adjudication',[],upstream,packet_sha256='f'*64)
+    assert b['field_gaps']==gaps and b['evidence']==upstream['evidence']
+    assert 'field_gaps' not in b['coverage'] and b['coverage']['read_count']==27
+    assert receipt['original_chars']-receipt['packed_chars']>100000
+    assert receipt['omitted_metadata'][0]['value']==gaps
+    upstream['coverage']['field_gaps'].append({'message':'A distinct caveat'})
+    a,b,receipt=pack_reporter_context('memo',[],upstream,packet_sha256='f'*64)
+    assert b==upstream and receipt is None

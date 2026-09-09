@@ -58,6 +58,14 @@ def pack_reporter_context(stage, sources, upstream, *, packet_sha256):
                 metadata(item.get("reading", {}).get("source_metadata"), f"field-readings[{i}].reading.source_metadata")
             source.text = _json(rows)
 
+    coverage = packed.get("coverage")
+    if (isinstance(coverage, dict) and "field_gaps" in coverage
+            and coverage["field_gaps"] == packed.get("field_gaps")):
+        # Final research supplies the same complete gap list both directly and
+        # inside coverage. Keep the direct copy, with an explicit reference.
+        omit("coverage.field_gaps", coverage.pop("field_gaps"), "current call packet.field_gaps")
+        coverage["field_gaps_reference"] = "The complete field_gaps list in this call's packet"
+
     if not omissions:
         return sources, upstream, None
     manifest = {"policy": "reporter_acquisition_context_v1", "stage": stage, "packet_sha256": packet_sha256,
