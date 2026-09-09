@@ -652,6 +652,7 @@ class DossierOptions(BaseModel):
 
 
 class CreateDossierRequest(BaseModel):
+    idempotency_key: Optional[str] = Field(default=None, min_length=1, max_length=200)
     sources: list[SourceSpec]
     intent: Optional[str] = None
     audience: Optional[str] = None

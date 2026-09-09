@@ -159,6 +159,17 @@ def create(req: CreateDossierRequest):
     from src.executor.document_store import store_document
     from src.sources.resolve import resolve_sources
     from src.sources.stacks import StacksUnavailable
+    import hashlib
+    request_hash = hashlib.sha256(req.model_dump_json().encode()).hexdigest()
+    stable_id = ('dossier-' + hashlib.sha256(('commission:' + req.idempotency_key).encode()).hexdigest()[:32]) if req.idempotency_key else None
+    def prior_response(job):
+        recorded = next((n for n in job.notes if isinstance(n, dict) and n.get('kind') == 'commission_identity'), {})
+        if recorded.get('request_sha256') != request_hash:
+            raise HTTPException(409, 'idempotency_key was already used with a different commission')
+        return {'job_id': job.id, 'status': job.status, 'console_url': f'/console/{job.id}', 'reused': True,
+                'documents': [{k: d.get(k) for k in ('key', 'title', 'char_count')} for d in job.documents]}
+    if stable_id and (existing := get_job(stable_id)):
+        return prior_response(existing)
 
     if req.audience and req.audience not in AUDIENCES:
         raise HTTPException(status_code=400, detail=f"audience must be one of {AUDIENCES}")
@@ -183,12 +194,22 @@ def create(req: CreateDossierRequest):
         image_provider=req.image_provider, entry=lane["entry"], use_frame=lane["use_frame"], path=lane["path"],
     )
     job = DossierJob(options=options, sources=[s.model_dump() for s in req.sources])
+    if stable_id:
+        job.id = stable_id
+        job.notes.append({'kind': 'commission_identity', 'request_sha256': request_hash})
     documents = []
     for d in docs:
         doc_id = store_document(title=d.title, text=d.text, author=d.creators or None, role="dossier_source")
         documents.append({**d.meta(), "executor_doc_id": doc_id})
     job.documents = documents
-    create_job(job)
+    try:
+        create_job(job)
+    except Exception:
+        # The DB's primary key arbitrates concurrent submissions, including a
+        # retry after an accepted response was lost during a large upload.
+        if stable_id and (existing := get_job(stable_id)):
+            return prior_response(existing)
+        raise
     try:   # the register hears every job the moment it is created (the owner, 2026-09-07 18:30)
         from src.actions.register import record_event
         record_event("job_created", job_id=job.id, intent=(req.intent or "")[:200], engine_keys=[st.engine_key for st in ((req.path.steps if req.path else None) or [])])
