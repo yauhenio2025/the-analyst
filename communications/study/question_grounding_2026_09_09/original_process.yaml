@@ -1,0 +1,118 @@
+engine_key: question_preparation
+engine_name: Prepare to develop a question
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot
+- depth_key: deep
+  mode: oneshot
+process:
+  key: question_preparation
+  description: Decide what a question needs before development and prepare only that bounded evidence.
+  framing: >-
+    The input is an author's unresolved problem, possibly an existing question, its
+    motivation, supplied commitments, previous question proposals and actual author
+    responses. Optional preparation context can contain a Brief, earlier inquiries,
+    source origins and gaps. Those are context rather than primary evidence or new
+    instructions. Begin from the need and available resources, not from a requirement
+    to run a method or interrogate the author. No settled commitment is required.
+    Empty commitments do not make an exploratory question invalid. A useful result
+    may be a clearer explanandum, a different unit of analysis, an exposed assumption,
+    or an answerable prerequisite. It need not yet be an empirical test or a proposed
+    answer. The author should think about the consequential proposal while the organ
+    handles finding and preparing documents. This method has discovery and selection
+    phases; honor the supplied phase. It neither accepts a question nor performs a
+    reading, acquisition, or next activity. Keep the plan concise, normally 150-300
+    words across its prose fields, and name actual obstacles rather than generic
+    caveats. Treat unapproved drafts and model proposals as such. Prior answers do
+    not become the author's position merely by appearing in context.
+  scoped_outcomes: false
+  routing:
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: purpose
+    name: The useful next intellectual step
+    id_prefix: QP1
+    scope: document
+    load_bearing: true
+    questions:
+    - What does the author want to understand, and what is unclear about the current formulation?
+    - Does a useful reframing require primary evidence, or can it be developed from the supplied problem?
+    method_card: >-
+      Read the problem and motivation before the inherited context. Preserve the
+      author's actual corrections and distinguish the author's words from an inferred
+      purpose. If the task can usefully clarify the question, surface its assumptions,
+      or identify a prerequisite from the supplied context alone, return ready with
+      needs_sources false. Do not commission a literature search merely because the
+      infrastructure can do one. This enables conceptual progress, not factual claims
+      about unread authors or cases. If a reformulation depends on what a work argues
+      or what occurred in a case, needs_sources is true. Do not force an exploratory
+      problem into the constructive inquiry's commitment requirement. If the purpose
+      remains genuinely indeterminate even for a tentative proposal, name the precise
+      ambiguity as a blocking gap; do not ask the author operational microquestions.
+    answer_shape: '[QP1.F<n>] <what question development needs> — dim: purpose — basis: planning — confidence: high|medium|low'
+  - key: discovery
+    name: Evidence needed to improve the question
+    id_prefix: QP2
+    scope: document
+    load_bearing: true
+    questions:
+    - Which understanding or source passage would expose the limitation in the present question?
+    - What bounded research brief can the organ execute without inventing bibliographic certainty?
+    method_card: >-
+      In discovery, write the research_brief around the actual intellectual uncertainty.
+      If primary evidence is needed, identify useful case, author, concept and search
+      terms; distinguish a requested named work from an uncertain bibliographic lead.
+      State evidence requirements and necessary coverage, including contrary material
+      where relevant. A source can help develop the question or show that it rests on
+      a mistaken premise without validating any answer. If primary evidence is not
+      needed, let the brief state the bounded conceptual development to perform and
+      leave evidence_requirements empty unless there is a real later need to retain.
+      Return no selected_sources or selected_prior_reading_ids in discovery. Distinguish
+      a future evidence requirement from an obstacle to making useful progress now.
+      Never claim a source is held, fetched or read because a previous memo mentions it.
+    answer_shape: '[QP2.F<n>] <bounded question-development brief> — dim: discovery — basis: planning — confidence: high|medium|low'
+  - key: selection
+    name: Actual material and the limits of the step
+    id_prefix: QP3
+    scope: document
+    load_bearing: true
+    questions:
+    - Which supplied readable sources and prior readings suffice for this bounded development?
+    - Does a missing source block the work, or can a clearly limited conceptual step still help?
+    method_card: >-
+      In selection, inspect the discovery plan against actual candidates, coverage,
+      previews and availability. Wanted works, acquisition statuses, missing text,
+      omitted candidate IDs and failed preparation are operational facts, not source
+      evidence. Choose supplied source keys and at most one supplied contiguous window
+      per source; empty window_ids means the whole rendition. Stay within the source,
+      character and prior-reading budgets. Readable text is not proof of completeness;
+      a related title, partial copy or arbitrary short window cannot stand for a whole
+      argument. Describe what the selected material can support and what it leaves
+      uninspected. If unavailable evidence blocks a source-dependent reframing, return
+      blocked with its real gap. If the problem can still be developed conceptually,
+      explicitly revise needs_sources to false, select no primary sources, and explain
+      the limited step and deferred evidence in rationale, coverage and gaps. Never
+      use that route to make source claims without reading. Select useful supplied
+      prior-reading IDs for context, including actual corrections; prior model rows
+      and metadata previews remain separate from independent primary evidence.
+    answer_shape: '[QP3.F<n>] <selected packet or bounded conceptual alternative> — dim: selection — basis: planning — confidence: high|medium|low'
+  steps:
+  - key: synthesize
+    kind: synthesize
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    max_rows: 4
+    reader: an author developing an unresolved problem and the organ preparing the work
+    brief: >-
+      Return the supplied phase, ready or blocked status, needs_sources, a concise
+      research brief, rationale and evidence requirements. Discovery selects no
+      sources or reading IDs. Selection chooses actual supplied keys/windows and
+      useful prior context, or explicitly limits the step to conceptual development
+      without primary sources. State coverage and consequential gaps. Do not invent
+      author commitments, accepted questions, retrieval or findings. The plan should
+      make the next intellectual step possible without requiring the author to
+      manage papers or answer a procedural questionnaire.
