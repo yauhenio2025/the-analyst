@@ -1,0 +1,173 @@
+engine_key: institutional_inquiry_memo
+engine_name: Write an institutional debate memo
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: Write an institutional debate memo
+  framing: Investigate the supplied question through institutional originals without requiring a
+    target thinker. Reconstruct arguments, mechanisms, constraints, interventions and disagreement
+    from the actual documents and voices. Keep adoption, signed views, guest contributions and participant
+    statements distinct. Prior maps are retained analysis; only original passages support new source
+    claims. Describe the considered, searched, acquired and actually read population separately,
+    including geographic, language and publication-date coverage. Search misses and unavailable originals
+    cannot establish institutional silence. Group by institution without manufacturing consensus
+    from internal disagreement, syndicated copies or several formats of one event. Preserve evidence
+    identities, exact quotations and native page/time loci. Never invent missing originals, authority,
+    dates, transcripts or positions. Treat question premises and causal inferences as hypotheses.
+    If validation_errors and previous_draft are supplied, return a complete corrected answer supported
+    by the same evidence; preserve uncertainty instead of manufacturing support.
+  scoped_outcomes: false
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: answer
+    name: Give supported and attributed conclusions
+    questions:
+    - Support every substantive conclusion with exact verified field evidence identities, attributed
+      to the publishing institution and actual author/speaker with adoption unknown where unsupported.
+      Use claim_kind field_finding or unresolved. Cite the same evidence identities in prose. Do
+      not invent a thinker comparison.
+    method_card: Support every substantive conclusion with exact verified field evidence identities,
+      attributed to the publishing institution and actual author/speaker with adoption unknown where
+      unsupported. Use claim_kind field_finding or unresolved. Cite the same evidence identities
+      in prose. Do not invent a thinker comparison.
+    indicators:
+    - question
+    - evidence
+    - context
+    scope: document
+    load_bearing: true
+    id_prefix: E1
+    answer_shape: '[E1.F<n>] <finding in one sentence> — dim: answer — claim_kind: field_finding|unresolved
+      — evidence_ids: <semicolon-separated exact supplied uid/E1.Fn identities; no invented ids>
+      — warrant: <reason and scope> — anchor: "<verbatim supplied passage, <=200 chars>" — doc: <actual
+      supplied source key> — confidence: high|medium|low'
+  - key: revision
+    name: Make learning explicit
+    questions:
+    - Supply separate rows for concrete changed, retained, new and unresolved positions as applicable,
+      explicitly comparing with the actual available baseline. baseline MUST be prior in follow_up
+      mode and standalone otherwise. If baseline text is partial, identify that limit. Do not manufacture
+      a change merely because a second memo was requested.
+    method_card: Supply separate rows for concrete changed, retained, new and unresolved positions
+      as applicable, explicitly comparing with the actual available baseline. baseline MUST be prior
+      in follow_up mode and standalone otherwise. If baseline text is partial, identify that limit.
+      Do not manufacture a change merely because a second memo was requested.
+    indicators:
+    - question
+    - evidence
+    - context
+    scope: document
+    load_bearing: true
+    id_prefix: E2
+    answer_shape: '[E2.F<n>] <finding in one sentence> — dim: revision — disposition: changed|retained|new|unresolved
+      — baseline: prior|standalone — before: <actual prior position or no prior> — after: <position
+      now> — evidence_ids: <exact support identities> — anchor: "<verbatim supplied passage, <=200
+      chars>" — doc: <actual supplied source key> — confidence: high|medium|low'
+  - key: counterevidence
+    name: Keep the strongest challenge
+    questions:
+    - Name the strongest available counterevidence to your own preferred account and explain why
+      it does or does not overturn the bounded judgment.
+    method_card: Name the strongest available counterevidence to your own preferred account and explain
+      why it does or does not overturn the bounded judgment.
+    indicators:
+    - question
+    - evidence
+    - context
+    scope: document
+    load_bearing: true
+    id_prefix: E3
+    answer_shape: '[E3.F<n>] <finding in one sentence> — dim: counterevidence — evidence_ids: <exact
+      verified identities or none when the gap is explicit> — challenge: <what could be wrong> —
+      response: <qualified assessment> — anchor: "<verbatim supplied passage, <=200 chars>" — doc:
+      <actual supplied source key> — confidence: high|medium|low'
+  - key: question
+    name: State next discriminating questions
+    questions:
+    - Give specific research questions or source gaps that could change the memo. Do not turn generic
+      future reading into evidence for a present conclusion.
+    method_card: Give specific research questions or source gaps that could change the memo. Do not
+      turn generic future reading into evidence for a present conclusion.
+    indicators:
+    - question
+    - evidence
+    - context
+    scope: document
+    load_bearing: true
+    id_prefix: E4
+    answer_shape: '[E4.F<n>] <finding in one sentence> — dim: question — question: <unresolved question>
+      — test: <needed evidence> — anchor: "<verbatim supplied passage, <=200 chars>" — doc: <actual
+      supplied source key> — confidence: high|medium|low'
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension
+    model_tier: cheap
+    output: ledger
+    max_rows: 35
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - merge_duplicates
+    - hunt_misses
+    - name_must_keep
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: the researcher asking about the institutional debate
+    brief: Write a substantial, self-contained institutional debate memo answering the question.
+      Lead with supported conclusions; develop arguments and mechanisms, constraints and policy interventions
+      with concrete original-source examples. Explain within- and between-institution disagreements
+      and whether they concern evidence, scale or normative choices. Attribute signed and participant
+      views accurately. Present actual institutional, source, geographic, language and temporal coverage
+      and gaps. Include focused unresolved tests and the strongest counterevidence. Prior maps remain
+      analysis. Cite original verified evidence inline as [uid/E1.Fn]. Then provide answer, revision,
+      counterevidence and question rows; a table or organisation directory cannot replace the memo.
+    max_rows: 60
+  method_refs:
+  - engine_key: multimedia_source_criticism
+    version: 1
+  - engine_key: causal_mechanism_audit
+    version: 1
+  - engine_key: institutional_argument_criticism
+    version: 1
+version: 1
+method_metadata:
+  applies_when: An author-independent inquiry asks what a specified institutional source population
+    argues.
+  required_inputs:
+  - Question and declared institutional scope
+  - Frozen institutional originals and source relationships
+  - Actual discovery/acquisition/read coverage and optional prior analysis
+  outputs:
+  - Source-linked argument and mechanism findings
+  - Policy interventions, disagreements, qualifications and open tests
+  limitations:
+  - Cannot establish official adoption or silence from hosting or search coverage
+  - Does not classify an organization from its name or infer funding influence from affiliation
+  provenance:
+  - kind: commission
+    date: '2026-09-09'
+    source: the-reporter:communications/COMMISSION_2026-09-09_think_tank_inquiries_in_stacks.md
+    evaluation: Deterministic routing tests; substantive evaluation pending

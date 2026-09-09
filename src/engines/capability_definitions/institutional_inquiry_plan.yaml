@@ -1,9 +1,9 @@
-engine_key: field_investigation_field_map
-engine_name: Map disagreements across field arguments
-version: 3
+engine_key: institutional_inquiry_plan
+engine_name: Plan an institutional debate inquiry
+version: 1
 category: scholarly
 kind: synthesis
-operation: distinction
+operation: placement
 problematique: Investigate the supplied question through institutional originals without requiring
   a target thinker. Reconstruct arguments, mechanisms, constraints, interventions and disagreement
   from the actual documents and voices. Keep adoption, signed views, guest contributions and participant
@@ -15,25 +15,30 @@ problematique: Investigate the supplied question through institutional originals
   exact quotations and native page/time loci. Never invent missing originals, authority, dates, transcripts
   or positions. Treat question premises and causal inferences as hypotheses. If validation_errors
   and previous_draft are supplied, return a complete corrected answer supported by the same evidence;
-  preserve uncertainty instead of manufacturing support. When inquiry_type is not institutional,
-  also consider the supplied thinker/field question; never attribute a field claim to the thinker.
-researcher_question: Map disagreements across field arguments
+  preserve uncertainty instead of manufacturing support.
+researcher_question: Plan an institutional debate inquiry
 intellectual_lineage:
   primary: source_criticism
 analytical_dimensions:
-- key: debate
-  description: Identify substantive field disagreements
+- key: question
+  description: Form institutional research questions
   probing_questions:
-  - 'Compare named arguments across sources: competing mechanisms, evidence, cases, organizational
-    forms, causal direction and rival interpretations. Distinguish actual disagreement from a difference
-    in scope. Give field_finding with field evidence_ids; unresolved is allowed when inspected texts
-    cannot settle a dispute. Do not replace disagreement with a topical list or homogeneous field
-    consensus.'
+  - Identify answerable questions about rival mechanisms, constraints, policy choices, assumptions,
+    affected interests and discriminating evidence. Do not presume a position, balance or exhaustive
+    representation. Use the supplied institutional population independently of any optional later
+    comparison target.
 - key: query
-  description: Guide author reading from field tensions
+  description: Expand source reading vocabulary
   probing_questions:
-  - Produce literal phrases for finding the thinker's relevant causal concepts, assumptions and qualifications;
-    do not assume the thinker discusses the same cases or field authors.
+  - Give 12–24 distinct literal search phrases, including mechanisms, actor identities, institutions,
+    qualifications and contrary outcomes. These route windows within EVERY selected institutional
+    text, not a selection of agreeable texts. No Boolean operators.
+- key: baseline
+  description: Locate a provisional starting position
+  probing_questions:
+  - For follow_up, identify the supplied prior memo's conclusions and uncertainties with its real
+    job/source identity and concrete passages; mark truncated or unavailable baseline context. For
+    standalone, formulate a provisional research question without inventing a prior investigation.
 apps:
 - critic
 function: genealogy

@@ -1,0 +1,41 @@
+# Institutional inquiry methods and consumption contract
+
+The existing field investigation executor now accepts `inquiry_type: institutional`
+and `method_contract: {key: institutional-inquiry, version: 1}` in its frozen
+`field_investigation` source packet. It requires institutional field originals;
+author, primary and secondary populations must be absent. It plans, reads every
+selected original, maps the arguments and writes a memo without author selection
+or a fictional comparison. A subsequent comparison is a separate bilateral run.
+
+Submit using `POST /v1/dossier/jobs`, `entry: chosen`,
+`path: {chain_key: field_investigation}`, one source with
+`role: field_investigation`, and the normal disabled print-desk output flags.
+Read the retained result at `/v1/dossier/jobs/{id}/investigation`.
+The catalogue workflow `institutional_inquiry@1` declares the four stages.
+
+## Instruction inventory and release matrix
+
+| Operation | Central record/version | Former instruction or new requirement | Consumer | Discovery/API | Executed proof |
+| --- | --- | --- | --- | --- | --- |
+| Multimedia source criticism | `multimedia_source_criticism@1` | Existing September 9 adapter migration, retained | Institutional plan/read/map/memo; bilateral reading and comparison | `GET /v1/engines/multimedia_source_criticism/method?version=1`; `POST /v1/engines/multimedia_source_criticism/call` | `test_independent_caller_receives_actual_central_records` checks dependency hashes in captured model input; shared-method tests call this record independently |
+| Political mechanism and causal attribution | `causal_mechanism_audit@1` | Existing Tether extraction, retained | Institutional plan/read/map/memo; bilateral adjudication | Same method/call routes with this key | Same executed composition test and independent shared-method call |
+| Concept testing and warranted extension | `concept_case_stress_test@1` | Existing Tether extraction, retained; used for the later thinker comparison | Bilateral planning/author selection/read/adjudication/memo | Same method/call routes with this key | `test_field_prompt_composes_real_shared_records_without_adding_calls` and independent shared-method call |
+| Institutional argument and framing criticism | `institutional_argument_criticism@1` | Official versus signed/guest/participant positions, disagreement and coverage limitations | Institutional plan/read/map/memo; bilateral adjudication | Same method/call routes with this key | New full field-only execution checks dependency receipts for every stage, plus independent composed model calls |
+| Author-independent planning and memo | `institutional_inquiry_plan@1`, `institutional_inquiry_memo@1` | New commission requirement | `institutional_inquiry@1` through existing field executor | Same method/call routes with these keys; `/v1/workflows/institutional_inquiry` | `tests/test_institutional_inquiry.py` resolves the source packet and completes all stages with scripted provider responses |
+| Reusable field reading and disagreement mapping | `field_investigation_field_read@3`, `field_investigation_field_map@3` | Extend existing bilateral operations to permit a field-only population | Both institutional and bilateral workflows | Same method/call routes with these keys | Existing field regression suite and new institutional executions |
+| Institutional discovery craft | `institutional-original-discovery@1` | Issue vocabulary, evidence-led selection, declared geographic/language/date coverage and original relationships | Reporter consumer integration pending | `/v1/practices/institutional-original-discovery` | Record deposited; Reporter consumption must be verified before release |
+
+Each new method has trigger, inputs, steps, structured outputs, limitations,
+version and commission provenance in its operationalization. The four shared
+critical operations reuse the deployed September 9 refactor; they are not copied
+into adapters. Frozen snapshots are kept before the first model call, and phase
+receipts retain method and dependency identities. Resumption at final synthesis
+does not refetch methods or replay completed readings.
+
+Focused validation: 38 tests passed covering independent calls, source resolution,
+field-only execution, forbidden mixed populations, unavailable bodies, existing
+bilateral behavior, frozen methods, restart continuity and workflow loading.
+The provider is scripted: these tests prove actual prompt composition and
+mechanical integrity, not improved critical judgment. Paid evaluation over the
+retained Tether originals and the distinct institutional case remains required
+by the cross-repository commission. No paid calls were made for this step.

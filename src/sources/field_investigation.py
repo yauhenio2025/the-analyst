@@ -12,9 +12,15 @@ def expand_field_investigation(text: str) -> list[Document]:
     packet = json.loads(text)
     if not isinstance(packet, dict) or not isinstance(packet.get("question"), str) or not packet["question"].strip():
         raise ValueError("field_investigation requires a question")
-    if not isinstance(packet.get("author"), dict) or not packet["author"].get("id"):
+    institutional = packet.get("inquiry_type") == "institutional"
+    if not institutional and (not isinstance(packet.get("author"), dict) or not packet["author"].get("id")):
         raise ValueError("field_investigation requires author.id")
     packet = deepcopy(packet)
+    if institutional:
+        if packet.get("author") or packet.get("primary") or packet.get("secondary"):
+            raise ValueError("institutional inquiry must be author-independent; commission a separate comparison")
+        packet["author"] = None
+        packet["primary"] = []
     from src.engines.methods import validate_contract
     validate_contract(packet)
     packet["kind"] = "field_investigation"
@@ -31,7 +37,7 @@ def expand_field_investigation(text: str) -> list[Document]:
     docs, seen = [], set()
     for role in ("primary", "field", "secondary"):
         rows = packet.setdefault(role, [])
-        if not isinstance(rows, list) or (role != "secondary" and not rows):
+        if not isinstance(rows, list) or (not rows and (role == "field" or role == "primary" and not institutional)):
             raise ValueError(f"field_investigation requires a {role} inventory list")
         for row in rows:
             if not isinstance(row, dict):

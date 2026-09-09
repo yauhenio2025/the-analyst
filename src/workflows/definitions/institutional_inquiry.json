@@ -1,0 +1,54 @@
+{
+  "workflow_key": "institutional_inquiry",
+  "workflow_name": "Map an institutional debate without a target thinker",
+  "category": "analysis",
+  "version": 1,
+  "description": "Uses the field investigation executor with inquiry_type institutional: plan, read every selected original, map disagreement, write a sourced memo. No author inventory or thinker selection. Shared critical methods and every paid checkpoint are frozen.",
+  "phases": [
+    {
+      "phase_number": 1,
+      "phase_name": "Plan an institutional debate inquiry",
+      "phase_description": "Plan an institutional debate inquiry",
+      "engine_key": "institutional_inquiry_plan",
+      "depends_on_phases": []
+    },
+    {
+      "phase_number": 2,
+      "phase_name": "Read one argument in the field",
+      "phase_description": "Read one argument in the field",
+      "engine_key": "field_investigation_field_read",
+      "depends_on_phases": [
+        1
+      ]
+    },
+    {
+      "phase_number": 3,
+      "phase_name": "Map disagreements across field arguments",
+      "phase_description": "Map disagreements across field arguments",
+      "engine_key": "field_investigation_field_map",
+      "depends_on_phases": [
+        1,
+        2
+      ]
+    },
+    {
+      "phase_number": 4,
+      "phase_name": "Write an institutional debate memo",
+      "phase_description": "Write an institutional debate memo",
+      "engine_key": "institutional_inquiry_memo",
+      "depends_on_phases": [
+        1,
+        2,
+        3
+      ]
+    }
+  ],
+  "required_inputs": [
+    "field_investigation"
+  ],
+  "optional_inputs": [],
+  "output_description": "Saved institutional memo, source readings, verified evidence, map, coverage and exact method receipts through /v1/dossier/jobs/{id}/investigation.",
+  "linked_transformation_keys": [],
+  "source_project": "the-analyst",
+  "target_page": "dossier"
+}

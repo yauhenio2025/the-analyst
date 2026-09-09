@@ -66,6 +66,9 @@ def _limits(packet, inventories, bodies):
     configured = packet.get("limits") or {}
     limits = {}
     for role in ("field", "primary"):
+        if role == "primary" and packet.get("inquiry_type") == "institutional":
+            limits[role] = {"max_texts": 0, "max_chars": 0, "eligible_count": 0}
+            continue
         text_ceiling = 80 if role == "field" else 40
         max_texts = min(text_ceiling, max(1, int(configured.get(f"max_{role}_texts", configured.get("max_read_texts", 80 if role == "field" else 12)))))
         max_chars = min(8000000 if role == "field" else 960000, max(1, int(configured.get(f"max_{role}_chars", 3000000 if role == "field" else 240000))))
@@ -132,6 +135,9 @@ def _baseline_context(packet):
 
 
 def run_field_investigation(packet, bodies, *, call, save, state=None, check=lambda: None, spend_cap_usd=8.0):
+    institutional = packet.get("inquiry_type") == "institutional"
+    if institutional and (packet.get("author") or packet.get("primary") or packet.get("secondary")):
+        raise ValueError("institutional inquiry cannot include a target thinker or primary inventory")
     inventories = {role: packet[role] for role in ("field", "primary")}
     # Metadata and body content must agree even on a resumed run; the hash in a
     # frozen plan cannot bless a replacement PDF rendition.
@@ -144,7 +150,8 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
     limits = _limits(packet, inventories, bodies)
     fingerprint = hashlib.sha256(_json(packet).encode()).hexdigest()
     state = state or {"version": 1, "kind": CHAIN, "packet_sha256": fingerprint,
-                      "author": packet["author"], "question": packet["question"], "scope": packet.get("scope", {}),
+                      "author": packet["author"], "inquiry_type": packet.get("inquiry_type", "bilateral"),
+                      "question": packet["question"], "scope": packet.get("scope", {}),
                       "inventory": packet["primary"], "field_inventory": packet["field"],
                       "field_collections": packet.get("field_collections", []), "field_gaps": packet.get("field_gaps", []),
                       "prior_readings_resolution": packet.get("prior_readings_resolution", []),
@@ -157,7 +164,7 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
     validate_contract(packet)
     if 'method_snapshots' not in state:
         legacy = bool(state.get('calls'))
-        state['method_snapshots'] = field_methods(legacy=legacy)
+        state['method_snapshots'] = field_methods(legacy=legacy, institutional=institutional)
         state['method_origin'] = 'archived pre-refactor methods' if legacy else 'central registry frozen before first call'
     for key, snapshot in state['method_snapshots'].items():
         validate_snapshot(snapshot, key)
@@ -244,7 +251,8 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
             validation = validate_claims(result.get("rows", []), state["evidence"], required=True)
         return result, validation
 
-    common = {"author": packet["author"], "question": packet["question"], "scope": packet.get("scope", {}),
+    common = {"author": packet["author"], "inquiry_type": packet.get("inquiry_type", "bilateral"),
+              "question": packet["question"], "scope": packet.get("scope", {}),
               "field_collections": packet.get("field_collections", []), "field_gaps": packet.get("field_gaps", []),
               "mode": state["mode"], "as_of": state.setdefault("as_of", _now())}
     context = [c for c in _context(packet, bodies, cap=40000) if c["key"] != "prior_investigations"]
@@ -262,7 +270,7 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
                        "profile_summary": _json(row.get("profile") or {})[:1200],
                        "profile_summary_truncated": len(_json(row.get("profile") or {})) > 1200}
                       for row in rows] for role, rows in inventories.items()}
-    plan = engine("plan", "field_investigation_plan", [_spec("investigation-question", _json(common)),
+    plan = engine("plan", "institutional_inquiry_plan" if institutional else "field_investigation_plan", [_spec("investigation-question", _json(common)),
                   _spec("investigation-inventory", _json(summary)), _spec("prior-context", _json(context))], common)
     queries = _queries(plan.get("rows") or [])
     if not queries:
@@ -408,65 +416,66 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
     checkpoint("field_map", field_map=field_map, field_map_validation=field_validation)
     if not field_validation["supported"]:
         raise ValueError("field map support validation failed; map and readings retained")
-    # Field-guided semantic selection sees the full author inventory and every
-    # complete profile. Metadata/search leads do not establish a source finding.
-    batches, current, chars = [], [], 0
-    for row in packet["primary"]:
-        search = search_by[row["uid"]]
-        item = {"inventory": {**row, "citations": citation_catalog(row.get("citations") or [])},
-                "search": {"match_count": search["match_count"],
-                           "matches": [{"query": m["query"], "count": m["count"], "hits": m["hits"][:1]}
-                                       for m in search["matches"][:12]]}}
-        size = len(_json(item))
-        if current and (chars + size > 180000 or len(current) >= 20):
+    if not institutional:
+        # Field-guided semantic selection sees the full author inventory and every
+        # complete profile. Metadata/search leads do not establish a source finding.
+        batches, current, chars = [], [], 0
+        for row in packet["primary"]:
+            search = search_by[row["uid"]]
+            item = {"inventory": {**row, "citations": citation_catalog(row.get("citations") or [])},
+                    "search": {"match_count": search["match_count"],
+                               "matches": [{"query": m["query"], "count": m["count"], "hits": m["hits"][:1]}
+                                           for m in search["matches"][:12]]}}
+            size = len(_json(item))
+            if current and (chars + size > 180000 or len(current) >= 20):
+                batches.append(current)
+                current, chars = [], 0
+            current.append(item)
+            chars += size
+        if current:
             batches.append(current)
-            current, chars = [], 0
-        current.append(item)
-        chars += size
-    if current:
-        batches.append(current)
-    decisions = {}
-    for index, batch in enumerate(batches):
-        allowed = {r["inventory"]["uid"] for r in batch}
-        result = engine(f"author_selection:{index + 1}", "field_investigation_author_select",
-                        [_spec("author-inventory", _json(batch))],
-                        {**common, "field_map": field_map.get("final_output"), "prior_context": context,
-                         "selection_mode": "batch", "limits": limits["primary"]})
-        for r in result.get("rows", []):
+        decisions = {}
+        for index, batch in enumerate(batches):
+            allowed = {r["inventory"]["uid"] for r in batch}
+            result = engine(f"author_selection:{index + 1}", "field_investigation_author_select",
+                            [_spec("author-inventory", _json(batch))],
+                            {**common, "field_map": field_map.get("final_output"), "prior_context": context,
+                             "selection_mode": "batch", "limits": limits["primary"]})
+            for r in result.get("rows", []):
+                uid = str(_field(r, "uid"))
+                if uid in allowed and _field(r, "decision") in ("read", "context", "defer", "unavailable"):
+                    decisions[uid] = {**r, "uid": uid, "decision": _field(r, "decision"), "reason": _field(r, "reason")}
+            for uid in allowed - decisions.keys():
+                decisions[uid] = {"uid": uid, "decision": "unjudged", "triage_missing": True,
+                                  "reason": "No valid semantic decision returned; reconcile explicitly"}
+            checkpoint("author_selection", triage=list(decisions.values()))
+        reconciliation = engine("author_selection", "field_investigation_author_select",
+                                [_spec("author-selection", _json([{"inventory": {k: row.get(k) for k in
+                                     ("uid", "title", "year", "date_scope", "body_state", "body_chars")},
+                                     "prior_decision": decisions[row["uid"]]} for row in packet["primary"]]))],
+                                {**common, "field_map": field_map.get("final_output"), "selection_mode": "reconcile",
+                                 "prior_context": context, "limits": limits["primary"]})
+        selection_order = []
+        available = {r["uid"] for r in packet["primary"] if _eligible(r) and bodies.get(r["source_key"])}
+        for r in reconciliation.get("rows", []):
             uid = str(_field(r, "uid"))
-            if uid in allowed and _field(r, "decision") in ("read", "context", "defer", "unavailable"):
-                decisions[uid] = {**r, "uid": uid, "decision": _field(r, "decision"), "reason": _field(r, "reason")}
-        for uid in allowed - decisions.keys():
-            decisions[uid] = {"uid": uid, "decision": "unjudged", "triage_missing": True,
-                              "reason": "No valid semantic decision returned; reconcile explicitly"}
-        checkpoint("author_selection", triage=list(decisions.values()))
-    reconciliation = engine("author_selection", "field_investigation_author_select",
-                            [_spec("author-selection", _json([{"inventory": {k: row.get(k) for k in
-                                 ("uid", "title", "year", "date_scope", "body_state", "body_chars")},
-                                 "prior_decision": decisions[row["uid"]]} for row in packet["primary"]]))],
-                            {**common, "field_map": field_map.get("final_output"), "selection_mode": "reconcile",
-                             "prior_context": context, "limits": limits["primary"]})
-    selection_order = []
-    available = {r["uid"] for r in packet["primary"] if _eligible(r) and bodies.get(r["source_key"])}
-    for r in reconciliation.get("rows", []):
-        uid = str(_field(r, "uid"))
-        decision = _field(r, "decision")
-        if uid in decisions and decision in ("read", "context", "defer", "unavailable"):
-            decisions[uid] = {**r, "uid": uid, "decision": decision, "reason": _field(r, "reason"),
-                              "prior_decision": decisions[uid]}
-            if uid not in selection_order:
-                selection_order.append(uid)
-    # The method's global ordering defines the cap, never title or uid sorting.
-    ordered_candidates = [uid for uid in selection_order if uid in available and decisions[uid]["decision"] == "read"]
-    selected = ordered_candidates[:limits["primary"]["max_texts"]]
-    for uid in ordered_candidates[limits["primary"]["max_texts"]:]:
-        decisions[uid] = {**decisions[uid], "decision": "defer", "deferred_by_cap": True,
-                          "model_decision": "read", "reason": "Global reading cap; " + str(decisions[uid].get("reason", ""))}
-    checkpoint("author_selection", triage=list(decisions.values()), selected_primary_uids=selected,
-               selection=reconciliation)
-    if not selected:
-        raise ValueError("author selection returned no available core texts; decisions retained")
-    read_population("primary", field_map, selected)
+            decision = _field(r, "decision")
+            if uid in decisions and decision in ("read", "context", "defer", "unavailable"):
+                decisions[uid] = {**r, "uid": uid, "decision": decision, "reason": _field(r, "reason"),
+                                  "prior_decision": decisions[uid]}
+                if uid not in selection_order:
+                    selection_order.append(uid)
+        # The method's global ordering defines the cap, never title or uid sorting.
+        ordered_candidates = [uid for uid in selection_order if uid in available and decisions[uid]["decision"] == "read"]
+        selected = ordered_candidates[:limits["primary"]["max_texts"]]
+        for uid in ordered_candidates[limits["primary"]["max_texts"]:]:
+            decisions[uid] = {**decisions[uid], "decision": "defer", "deferred_by_cap": True,
+                              "model_decision": "read", "reason": "Global reading cap; " + str(decisions[uid].get("reason", ""))}
+        checkpoint("author_selection", triage=list(decisions.values()), selected_primary_uids=selected,
+                   selection=reconciliation)
+        if not selected:
+            raise ValueError("author selection returned no available core texts; decisions retained")
+        read_population("primary", field_map, selected)
     coverage = {"inventory_count": sum(len(r) for r in inventories.values()),
                 "field_gaps": packet.get("field_gaps", []),
                 "read_count": len(state["readings"]), "inspected_chars": sum(r["inspected_chars"] for r in state["readings"]),
@@ -491,16 +500,21 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
                 "field_evidence_total": len(field_evidence), "full_field_evidence_retained": True, "prior_context": context}
     reading_sources = [_spec("field-argument-map", field_map.get("final_output", "")),
                        _spec("primary-readings", _json(reading_context("primary")))]
-    adjudication, adjudication_validation = supported_engine("adjudication", "field_investigation_adjudicate", reading_sources, research)
-    checkpoint("adjudication", adjudication=adjudication, adjudication_validation=adjudication_validation)
-    if not adjudication_validation["supported"]:
-        raise ValueError("adjudication support validation failed; research retained")
-    memo = engine("memo", "field_investigation_memo", reading_sources,
+    if institutional:
+        adjudication, adjudication_validation = field_map, field_validation
+        reading_sources = [reading_sources[0]]
+    else:
+        adjudication, adjudication_validation = supported_engine("adjudication", "field_investigation_adjudicate", reading_sources, research)
+        checkpoint("adjudication", adjudication=adjudication, adjudication_validation=adjudication_validation)
+        if not adjudication_validation["supported"]:
+            raise ValueError("adjudication support validation failed; research retained")
+    memo_key = "institutional_inquiry_memo" if institutional else "field_investigation_memo"
+    memo = engine("memo", memo_key, reading_sources,
                   {**research, "adjudication": adjudication.get("final_output")})
     prose, changes, validation = _memo_validation(memo, state["evidence"], state["mode"])
     checkpoint("memo_validation", memo=prose, memo_rows=memo.get("rows", []), memo_validation=validation, changes=changes)
     if not validation["supported"]:
-        memo = engine("memo:repair", "field_investigation_memo", reading_sources,
+        memo = engine("memo:repair", memo_key, reading_sources,
                       {**research, "adjudication": adjudication.get("final_output"),
                        "previous_draft": memo.get("final_output"), "validation_errors": validation})
         prose, changes, validation = _memo_validation(memo, state["evidence"], state["mode"])

@@ -13,33 +13,20 @@ depth_sequences:
 process:
   key: dvs
   description: Read one argument in the field
-  framing: 'Investigate a bilateral question between a named thinker and a topical
-    research field. The field is a collection of independently authored arguments,
-    competing mechanisms, methods and cases, never a homogeneous position and never
-    merely secondary commentary on the thinker. Identify what each side can teach
-    or challenge in the other, and what should change in the researcher''s own account.
-    Distinguish description, causal explanation, normative commitments, strategy,
-    historical scope, level of analysis, and conditions of applicability. A field
-    author''s finding is not the thinker''s claim: only a verified quotation from
-    a supplied primary source can support thinker attribution. A proposed extension
-    or application belongs explicitly to this inquiry. Prior memos and profiles are
-    provisional context, not primary testimony; compare against them when supplied
-    and work independently when they are absent. Attribute coauthors, interviewers,
-    opponents and quoted speakers carefully. Edition/reprint dates do not establish
-    a new intervention. Search hits guide reading; lexical silence, missing texts,
-    excluded sources and inspected windows cannot establish absence across an oeuvre
-    or field. Keep counterevidence, qualifications and unresolved cases. Use only
-    supplied evidence identities and exact source anchors; never invent a quote, page,
-    author position, event or factual claim. Inspected ranges and coverage constrain
-    every conclusion. Method interpretation is not mechanically verified by a citation
-    match. If validation_errors and a previous_draft are supplied, reconsider the
-    identified unsupported claims against the same evidence and return a complete
-    corrected output; preserve uncertainty and never manufacture support identities
-    or quotations. When field_evidence_representation is reference_index_to_supplied_argument_maps,
-    the complete original field support identities are retained while quotations live
-    in the durable source readings. Use only claims and meanings present in the supplied
-    argument maps; do not infer new details from an evidence identity. Evidence selection
-    or compression never licenses an absence claim.'
+  framing: Investigate the supplied question through institutional originals without requiring a
+    target thinker. Reconstruct arguments, mechanisms, constraints, interventions and disagreement
+    from the actual documents and voices. Keep adoption, signed views, guest contributions and participant
+    statements distinct. Prior maps are retained analysis; only original passages support new source
+    claims. Describe the considered, searched, acquired and actually read population separately,
+    including geographic, language and publication-date coverage. Search misses and unavailable originals
+    cannot establish institutional silence. Group by institution without manufacturing consensus
+    from internal disagreement, syndicated copies or several formats of one event. Preserve evidence
+    identities, exact quotations and native page/time loci. Never invent missing originals, authority,
+    dates, transcripts or positions. Treat question premises and causal inferences as hypotheses.
+    If validation_errors and previous_draft are supplied, return a complete corrected answer supported
+    by the same evidence; preserve uncertainty instead of manufacturing support. When inquiry_type
+    is not institutional, also consider the supplied thinker/field question; never attribute a field
+    claim to the thinker.
   scoped_outcomes: false
   routing:
     cheap: openrouter/openai/gpt-5.6-luna
@@ -49,15 +36,14 @@ process:
   - key: evidence
     name: Read the field author in context
     questions:
-    - Extract source-grounded claims, mechanisms, empirical design and findings, contrary
-      cases and limits. Distinguish what the text demonstrates from what it hypothesizes;
-      name whose claim it is. Every row must quote an actually supplied passage of
-      this field source. Do not attribute any field fact to the focal thinker.
-    method_card: Extract source-grounded claims, mechanisms, empirical design and
-      findings, contrary cases and limits. Distinguish what the text demonstrates
-      from what it hypothesizes; name whose claim it is. Every row must quote an actually
-      supplied passage of this field source. Do not attribute any field fact to the
-      focal thinker.
+    - Extract source-grounded claims, mechanisms, empirical design and findings, contrary cases and
+      limits. Distinguish what the text demonstrates from what it hypothesizes; name whose claim
+      it is. Every row must quote an actually supplied passage of this field source. Do not attribute
+      any field fact to the focal thinker.
+    method_card: Extract source-grounded claims, mechanisms, empirical design and findings, contrary
+      cases and limits. Distinguish what the text demonstrates from what it hypothesizes; name whose
+      claim it is. Every row must quote an actually supplied passage of this field source. Do not
+      attribute any field fact to the focal thinker.
     indicators:
     - question
     - evidence
@@ -66,19 +52,16 @@ process:
     load_bearing: true
     id_prefix: E1
     answer_shape: '[E1.F<n>] <finding in one sentence> — dim: evidence — uid: <source_metadata.uid>
-      — relation: thesis|mechanism|method|counterevidence|qualification — speaker:
-      <actual speaker> — scale: <unit and scope> — locus: <supplied page or source
-      characters> — anchor: "<verbatim supplied passage, <=200 chars>" — doc: <actual
-      supplied source key> — confidence: high|medium|low'
+      — relation: thesis|mechanism|method|counterevidence|qualification — speaker: <actual speaker>
+      — scale: <unit and scope> — locus: <supplied page or source characters> — anchor: "<verbatim
+      supplied passage, <=200 chars>" — doc: <actual supplied source key> — confidence: high|medium|low'
   - key: gap
     name: State what this reading cannot establish
     questions:
-    - Identify weak evidence, untested mechanisms, conflicting interpretations and
-      relevant questions unaddressed by these inspected ranges. A missing discussion
-      is not a refutation.
-    method_card: Identify weak evidence, untested mechanisms, conflicting interpretations
-      and relevant questions unaddressed by these inspected ranges. A missing discussion
-      is not a refutation.
+    - Identify weak evidence, untested mechanisms, conflicting interpretations and relevant questions
+      unaddressed by these inspected ranges. A missing discussion is not a refutation.
+    method_card: Identify weak evidence, untested mechanisms, conflicting interpretations and relevant
+      questions unaddressed by these inspected ranges. A missing discussion is not a refutation.
     indicators:
     - question
     - evidence
@@ -86,10 +69,9 @@ process:
     scope: document
     load_bearing: true
     id_prefix: E2
-    answer_shape: '[E2.F<n>] <finding in one sentence> — dim: gap — uid: <source_metadata.uid>
-      — gap: <specific unresolved issue> — follow_up: <test or text> — anchor: "<verbatim
-      supplied passage, <=200 chars>" — doc: <actual supplied source key> — confidence:
-      high|medium|low'
+    answer_shape: '[E2.F<n>] <finding in one sentence> — dim: gap — uid: <source_metadata.uid> —
+      gap: <specific unresolved issue> — follow_up: <test or text> — anchor: "<verbatim supplied
+      passage, <=200 chars>" — doc: <actual supplied source key> — confidence: high|medium|low'
   steps:
   - key: extract
     kind: extract
@@ -116,10 +98,10 @@ process:
     output: prose_ledger
     is_final: true
     reader: the researcher developing a position through the thinker and field
-    brief: 'Write a substantive reading of THIS field text: thesis, mechanism, population
-      and cases, research design, evidence strength, rival explanations, normative/strategic
-      stakes, qualifications and useful counterevidence. Do not force it into agreement
-      with the thinker. Then give the evidence and gap ledger.'
+    brief: 'Write a substantive reading of THIS field text: thesis, mechanism, population and cases,
+      research design, evidence strength, rival explanations, normative/strategic stakes, qualifications
+      and useful counterevidence. Do not force it into agreement with the thinker. Then give the
+      evidence and gap ledger.'
     max_rows: 60
   method_refs:
   - engine_key: multimedia_source_criticism
@@ -128,4 +110,22 @@ process:
     version: 1
   - engine_key: institutional_argument_criticism
     version: 1
-version: 2
+version: 3
+method_metadata:
+  applies_when: Reading or mapping field originals in a bilateral or author-independent institutional
+    inquiry.
+  required_inputs:
+  - Question and declared institutional scope
+  - Frozen institutional originals and source relationships
+  - Actual discovery/acquisition/read coverage and optional prior analysis
+  outputs:
+  - Source-linked argument and mechanism findings
+  - Policy interventions, disagreements, qualifications and open tests
+  limitations:
+  - Cannot establish official adoption or silence from hosting or search coverage
+  - Does not classify an organization from its name or infer funding influence from affiliation
+  provenance:
+  - kind: commission
+    date: '2026-09-09'
+    source: the-reporter:communications/COMMISSION_2026-09-09_think_tank_inquiries_in_stacks.md
+    evaluation: Deterministic routing tests; substantive evaluation pending

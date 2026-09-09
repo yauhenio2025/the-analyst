@@ -78,16 +78,17 @@ def method_receipt(snapshot):
             "sha256": snapshot['sha256'], "dependencies": [method_receipt(d) for d in snapshot['dependencies']]}
 
 
-def field_methods(*, legacy=False):
+def field_methods(*, legacy=False, institutional=False):
     if legacy:
         raw = json.loads((Path(__file__).parent/'method_snapshots/field_investigation_2026_09_09.json').read_text())
         return {k:seal(v['capability'], v['operationalization']) for k,v in raw.items()}
     from src.workflows.registry import get_workflow_registry
-    workflow = get_workflow_registry().get('field_investigation')
+    workflow = get_workflow_registry().get('institutional_inquiry' if institutional else 'field_investigation')
     return {p.engine_key:freeze_method(p.engine_key) for p in workflow.phases}
 
 
 def validate_contract(packet):
     required = packet.get('method_contract')
-    if required is not None and required != {'key':'field-critical-methods', 'version':1}:
+    expected = {'key': 'institutional-inquiry' if packet.get('inquiry_type') == 'institutional' else 'field-critical-methods', 'version': 1}
+    if required is not None and required != expected:
         raise ValueError('Unsupported field investigation method contract')

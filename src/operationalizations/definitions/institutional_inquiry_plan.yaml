@@ -1,0 +1,149 @@
+engine_key: institutional_inquiry_plan
+engine_name: Plan an institutional debate inquiry
+stance_operationalizations: []
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+- depth_key: standard
+  mode: oneshot_checked
+- depth_key: deep
+  mode: dvs
+- depth_key: dvs
+  process: dvs
+process:
+  key: dvs
+  description: Plan an institutional debate inquiry
+  framing: Investigate the supplied question through institutional originals without requiring a
+    target thinker. Reconstruct arguments, mechanisms, constraints, interventions and disagreement
+    from the actual documents and voices. Keep adoption, signed views, guest contributions and participant
+    statements distinct. Prior maps are retained analysis; only original passages support new source
+    claims. Describe the considered, searched, acquired and actually read population separately,
+    including geographic, language and publication-date coverage. Search misses and unavailable originals
+    cannot establish institutional silence. Group by institution without manufacturing consensus
+    from internal disagreement, syndicated copies or several formats of one event. Preserve evidence
+    identities, exact quotations and native page/time loci. Never invent missing originals, authority,
+    dates, transcripts or positions. Treat question premises and causal inferences as hypotheses.
+    If validation_errors and previous_draft are supplied, return a complete corrected answer supported
+    by the same evidence; preserve uncertainty instead of manufacturing support.
+  scoped_outcomes: false
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: question
+    name: Form institutional research questions
+    questions:
+    - Identify answerable questions about rival mechanisms, constraints, policy choices, assumptions,
+      affected interests and discriminating evidence. Do not presume a position, balance or exhaustive
+      representation. Use the supplied institutional population independently of any optional later
+      comparison target.
+    method_card: Identify answerable questions about rival mechanisms, constraints, policy choices,
+      assumptions, affected interests and discriminating evidence. Do not presume a position, balance
+      or exhaustive representation. Use the supplied institutional population independently of any
+      optional later comparison target.
+    indicators:
+    - question
+    - evidence
+    - context
+    scope: document
+    load_bearing: true
+    id_prefix: E1
+    answer_shape: '[E1.F<n>] <finding in one sentence> — dim: question — subquestion: <answerable
+      question> — test: <evidence needed> — direction: field — anchor: "<verbatim supplied passage,
+      <=200 chars>" — doc: <actual supplied source key> — confidence: high|medium|low'
+  - key: query
+    name: Expand source reading vocabulary
+    questions:
+    - Give 12–24 distinct literal search phrases, including mechanisms, actor identities, institutions,
+      qualifications and contrary outcomes. These route windows within EVERY selected institutional
+      text, not a selection of agreeable texts. No Boolean operators.
+    method_card: Give 12–24 distinct literal search phrases, including mechanisms, actor identities,
+      institutions, qualifications and contrary outcomes. These route windows within EVERY selected
+      institutional text, not a selection of agreeable texts. No Boolean operators.
+    indicators:
+    - question
+    - evidence
+    - context
+    scope: document
+    load_bearing: true
+    id_prefix: E2
+    answer_shape: '[E2.F<n>] <finding in one sentence> — dim: query — query: <literal phrase> — purpose:
+      <what it could reveal> — anchor: "<verbatim supplied passage, <=200 chars>" — doc: <actual
+      supplied source key> — confidence: high|medium|low'
+  - key: baseline
+    name: Locate a provisional starting position
+    questions:
+    - For follow_up, identify the supplied prior memo's conclusions and uncertainties with its real
+      job/source identity and concrete passages; mark truncated or unavailable baseline context.
+      For standalone, formulate a provisional research question without inventing a prior investigation.
+    method_card: For follow_up, identify the supplied prior memo's conclusions and uncertainties
+      with its real job/source identity and concrete passages; mark truncated or unavailable baseline
+      context. For standalone, formulate a provisional research question without inventing a prior
+      investigation.
+    indicators:
+    - question
+    - evidence
+    - context
+    scope: document
+    load_bearing: true
+    id_prefix: E3
+    answer_shape: '[E3.F<n>] <finding in one sentence> — dim: baseline — mode: standalone|follow_up
+      — prior_id: <supplied identity or none> — proposition: <starting position or unknown> — anchor:
+      "<verbatim supplied passage, <=200 chars>" — doc: <actual supplied source key> — confidence:
+      high|medium|low'
+  steps:
+  - key: extract
+    kind: extract
+    parallel_over: dimension
+    model_tier: cheap
+    output: ledger
+    max_rows: 35
+  - key: verify
+    kind: verify
+    consumes:
+    - extract
+    model_tier: mid
+    output: ledger
+    duties:
+    - check_anchors_in_context
+    - merge_duplicates
+    - hunt_misses
+    - name_must_keep
+  - key: synthesize
+    kind: synthesize
+    consumes:
+    - verify
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    reader: the researcher asking about the institutional debate
+    brief: Plan the institutional inquiry, competing mechanisms, source-reading vocabulary and evidence
+      needed. No target thinker is required; do not invent one.
+    max_rows: 60
+  method_refs:
+  - engine_key: multimedia_source_criticism
+    version: 1
+  - engine_key: causal_mechanism_audit
+    version: 1
+  - engine_key: institutional_argument_criticism
+    version: 1
+version: 1
+method_metadata:
+  applies_when: An author-independent inquiry asks what a specified institutional source population
+    argues.
+  required_inputs:
+  - Question and declared institutional scope
+  - Frozen institutional originals and source relationships
+  - Actual discovery/acquisition/read coverage and optional prior analysis
+  outputs:
+  - Source-linked argument and mechanism findings
+  - Policy interventions, disagreements, qualifications and open tests
+  limitations:
+  - Cannot establish official adoption or silence from hosting or search coverage
+  - Does not classify an organization from its name or infer funding influence from affiliation
+  provenance:
+  - kind: commission
+    date: '2026-09-09'
+    source: the-reporter:communications/COMMISSION_2026-09-09_think_tank_inquiries_in_stacks.md
+    evaluation: Deterministic routing tests; substantive evaluation pending
