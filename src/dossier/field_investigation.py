@@ -175,6 +175,8 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
             checkpoint(stage, paused_reason="spend_cap")
             raise ValueError("investigation spend cap reached; completed artifacts were saved")
         from src.dossier.context_packing import input_hash, pack_final_context
+        from src.dossier.reporter_context import pack_reporter_context
+        sources, upstream, reporter_packing = pack_reporter_context(stage, sources, upstream, packet_sha256=fingerprint)
         sources, upstream, packing = pack_final_context(stage, sources, upstream, packet_sha256=fingerprint)
         chars = sum(len(s.text) for s in sources) + len(_json(upstream))
         representation = "verified_quotations"
@@ -194,6 +196,8 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
         state.setdefault("call_input_manifests", {})[stage] = {
             "chars": chars, "evidence_representation": representation,
             "evidence_ids": [e["citation_id"] for e in upstream.get("evidence", [])]}
+        if reporter_packing:
+            state["call_input_manifests"][stage]["reporter_packing"] = reporter_packing
         if packing:
             # Full omitted metadata and exact input/text hashes remain durable.
             # Final-stage cited quotes stay protected even if the guard stops.
