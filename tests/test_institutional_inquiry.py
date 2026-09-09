@@ -85,7 +85,7 @@ def test_contract_mixing_and_unavailable_sources_reject_before_spending():
 
 
 @pytest.mark.parametrize('key', ['institutional_inquiry_plan', 'institutional_inquiry_memo',
-                                'field_investigation_field_read', 'field_investigation_field_map'])
+                                'field_investigation_field_read', 'field_investigation_field_map', 'institutional_source_identity'])
 def test_independent_caller_receives_actual_central_records(key):
     snapshot = freeze_method(key)
     captured = []

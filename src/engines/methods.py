@@ -84,7 +84,9 @@ def field_methods(*, legacy=False, institutional=False):
         return {k:seal(v['capability'], v['operationalization']) for k,v in raw.items()}
     from src.workflows.registry import get_workflow_registry
     workflow = get_workflow_registry().get('institutional_inquiry' if institutional else 'field_investigation')
-    return {p.engine_key:freeze_method(p.engine_key) for p in workflow.phases}
+    versions = {'institutional_inquiry_plan': 1, 'institutional_inquiry_memo': 1,
+                'field_investigation_field_read': 3, 'field_investigation_field_map': 3} if institutional else {}
+    return {p.engine_key:freeze_method(p.engine_key, version=versions.get(p.engine_key)) for p in workflow.phases}
 
 
 def validate_contract(packet):

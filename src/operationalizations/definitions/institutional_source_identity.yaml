@@ -1,0 +1,73 @@
+engine_key: institutional_source_identity
+engine_name: Establish institutional source identity
+version: 1
+method_metadata:
+  applies_when: Institution-only evidence requires original organization and publisher relationship
+    evidence before admission.
+  required_inputs:
+  - Original institution website extracts with URLs and exact text
+  - Candidate registry records marked as context
+  - Publication and linked media originals when available
+  outputs:
+  - Organizational classification and relationship with exact original warrants and uncertainty
+  limitations:
+  - Cannot establish identity from a directory or hostname alone
+  - Hosting or publishing a signed contribution does not establish adoption
+  provenance:
+  - kind: commission
+    date: '2026-09-09'
+    source: think-tank-inquiries
+    evaluation: Routing tests only; substantive evaluation pending
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+process:
+  key: dvs
+  description: Return a classification, exact source quote, supporting source key, uncertainty and
+    reason. For a source relationship retain its original URL and exact supporting passage. No original
+    evidence means unknown; never fill a missing quote from memory.
+  framing: Assess organizational classification and original publishing relationships from supplied
+    institution website extracts and original source pages. Registry descriptions and names are leads,
+    not proof. Classify a think tank only with concrete original evidence of its policy research
+    and organizational identity; distinguish universities, government agencies, central banks, companies,
+    unions and advocacy organizations. A mixed or ambiguous body stays unknown unless the declared
+    scope expressly admits it. Do not infer ideology, funding influence or positions from names or
+    countries. Quote the exact supplied passage that warrants the classification and preserve its
+    source key. For each original publication distinguish publishing, commissioning, organizing or
+    hosting from merely being mentioned, quoted or linked as an outside reference. A shared-platform
+    host alone cannot establish the institution. An external PDF/video requires retained original
+    relationship evidence. Record signed view, guest contribution, adopted statement, event participant,
+    host question and third-party quotation separately; unknown authority stays unknown. Preserve
+    author-views disclaimers. These are bounded classifications of supplied evidence, not findings
+    about the research question.
+  dimensions:
+  - key: identity
+    name: Establish institutional identity
+    id_prefix: E1
+    scope: document
+    load_bearing: true
+    questions:
+    - Return a classification, exact source quote, supporting source key, uncertainty and reason.
+      For a source relationship retain its original URL and exact supporting passage. No original
+      evidence means unknown; never fill a missing quote from memory.
+    method_card: Return a classification, exact source quote, supporting source key, uncertainty
+      and reason. For a source relationship retain its original URL and exact supporting passage.
+      No original evidence means unknown; never fill a missing quote from memory.
+    answer_shape: '[E1.F<n>] <bounded identity finding> — dim: identity — classification: think_tank|university|government|central_bank|company|union|advocacy|other|unknown
+      — relation: publisher|commissioner|organizer|host|reference|unknown — authority: adopted_statement|signed_view|guest_contribution|event_participant|host_question|quoted_third_party|unknown
+      — reason: <warrant and limits> — anchor: "<exact original passage>" — doc: <supplied source
+      key> — confidence: high|medium|low'
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  steps:
+  - key: synthesize
+    kind: synthesize
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    brief: Return a classification, exact source quote, supporting source key, uncertainty and reason.
+      For a source relationship retain its original URL and exact supporting passage. No original
+      evidence means unknown; never fill a missing quote from memory.
+    max_rows: 25
