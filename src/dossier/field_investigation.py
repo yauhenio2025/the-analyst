@@ -140,6 +140,8 @@ def _baseline_context(packet):
         answer = prior["answer"]
         entry = {k: v for k, v in prior.items() if k != "answer"}
         entry.setdefault("memo", answer.get("memo", ""))
+        if isinstance(answer.get('field_map'), dict):
+            entry.setdefault('argument_map', answer['field_map'].get('final_output', ''))
         entry["answer_manifest"] = {"job_id": answer.get("job_id"), "coverage": answer.get("coverage"),
                                     "memo_validation": answer.get("memo_validation"),
                                     "read_uids": [r.get("uid") for r in answer.get("readings", [])],
@@ -276,6 +278,7 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
               "question": packet["question"], "scope": packet.get("scope", {}),
               "field_collections": packet.get("field_collections", []), "field_gaps": packet.get("field_gaps", []),
               "mode": state["mode"], "as_of": state.setdefault("as_of", _now())}
+    state.setdefault('prior_context_policy', 'legacy_all' if state['calls'] else 'question_queries')
     context = [c for c in _context(packet, bodies, cap=40000) if c["key"] != "prior_investigations"]
     baseline = _baseline_context(packet)
     baseline_ranges = [(0, len(baseline))] if len(baseline) <= 200000 else [(0, 100000), (len(baseline) - 100000, len(baseline))]
@@ -297,6 +300,19 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
     if not queries:
         checkpoint("plan", plan=plan, paused_reason="planner_returned_no_queries")
         raise ValueError("field planner returned no valid literal queries; output saved")
+    if state['prior_context_policy'] == 'question_queries':
+        # Use the planner's saved literal queries to select optional prior
+        # context, as the shared context helper already supports. The complete
+        # reviewed baseline remains supplied; every original remains frozen.
+        queried_context = _context(packet, bodies, cap=40000, queries=queries)
+        baseline_entry = context[-1]
+        context = [c for c in queried_context if c['key'] != 'prior_investigations' and c['selected_for_context']]
+        context.append(baseline_entry)
+        checkpoint('context_selection', context_manifest=[{k:v for k,v in c.items() if k != 'text'}
+                   for c in queried_context if c['key'] != 'prior_investigations'] +
+                   [{k:v for k,v in baseline_entry.items() if k != 'text'}],
+                   prior_context_selection={'queries': queries, 'policy': 'question_queries',
+                                            'complete_prior_records_retained_in_packet': True})
     if "searches" not in state:
         checkpoint("search", plan=plan, queries=queries,
                    searches=search_inventory(packet["field"] + packet["primary"], bodies, queries))
@@ -438,10 +454,16 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
     if not field_validation["supported"]:
         raise ValueError("field map support validation failed; map and readings retained")
     if not institutional:
-        # Field-guided semantic selection sees the full author inventory and every
-        # complete profile. Metadata/search leads do not establish a source finding.
+        # Explicit scope exclusions are already decisions, not paid semantic
+        # selection candidates. Preserve the full inventory in the packet and
+        # coverage, but supply complete profiles only for permitted candidates.
+        # Older paid batches keep their original boundaries on resumption.
+        legacy_selection = any(k.startswith('author_selection') for k in state['calls']) and state.get('author_selection_scope') is None
+        if state.get('author_selection_scope') is None:
+            state['author_selection_scope'] = 'legacy_full_inventory' if legacy_selection else 'eligible_inventory'
+        candidates = [r for r in packet['primary'] if state['author_selection_scope'] == 'legacy_full_inventory' or _eligible(r)]
         batches, current, chars = [], [], 0
-        for row in packet["primary"]:
+        for row in candidates:
             search = search_by[row["uid"]]
             item = {"inventory": {**row, "citations": citation_catalog(row.get("citations") or [])},
                     "search": {"match_count": search["match_count"],
@@ -473,7 +495,7 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
         reconciliation = engine("author_selection", "field_investigation_author_select",
                                 [_spec("author-selection", _json([{"inventory": {k: row.get(k) for k in
                                      ("uid", "title", "year", "date_scope", "body_state", "body_chars")},
-                                     "prior_decision": decisions[row["uid"]]} for row in packet["primary"]]))],
+                                     "prior_decision": decisions[row["uid"]]} for row in candidates]))],
                                 {**common, "field_map": field_map.get("final_output"), "selection_mode": "reconcile",
                                  "prior_context": context, "limits": limits["primary"]})
         selection_order = []

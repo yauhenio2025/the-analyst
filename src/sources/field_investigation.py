@@ -16,6 +16,30 @@ def expand_field_investigation(text: str) -> list[Document]:
     if not institutional and (not isinstance(packet.get("author"), dict) or not packet["author"].get("id")):
         raise ValueError("field_investigation requires author.id")
     packet = deepcopy(packet)
+    transport = packet.get('research_transport')
+    if transport:
+        if transport.get('version') != 1 or transport.get('policy') != 'exact_prior_source_metadata_factoring':
+            raise ValueError('Unsupported retained-research metadata transport')
+        records = packet.get('retained_research_metadata')
+        if not isinstance(records, dict):
+            raise ValueError('Retained research metadata records are missing')
+        for ident, record in records.items():
+            encoded = json.dumps(record, ensure_ascii=False, sort_keys=True, separators=(',', ':'))
+            if hashlib.sha256(encoded.encode()).hexdigest() != ident:
+                raise ValueError('Retained research metadata hash mismatch')
+        def validate_references(value):
+            if isinstance(value, dict):
+                if set(value) == {'retained_source_metadata_ref'}:
+                    if value['retained_source_metadata_ref'] not in records:
+                        raise ValueError('Unresolved retained research metadata reference')
+                else:
+                    for child in value.values():
+                        validate_references(child)
+            elif isinstance(value, list):
+                for child in value:
+                    validate_references(child)
+        for key in ('parent_investigation', 'prior_research', 'prior_investigations'):
+            validate_references(packet.get(key))
     if institutional:
         if packet.get("author") or packet.get("primary") or packet.get("secondary"):
             raise ValueError("institutional inquiry must be author-independent; commission a separate comparison")
