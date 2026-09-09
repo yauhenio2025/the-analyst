@@ -672,6 +672,19 @@ def run_investigation(packet: dict, bodies: dict, *, call: Callable, save: Calla
     return state
 
 
+def research_accounting(state):
+    from src.dossier.schemas import Receipt
+    receipts = [Receipt(step="analysis", kind="llm", model=result.get("model", ""),
+                        label=f"{stage}: {result.get('engine_key', '')}", cost_usd=float(result.get("cost_usd") or 0),
+                        input_tokens=sum(int(c.get("input_tokens") or 0) for c in result.get("calls", [])),
+                        output_tokens=sum(int(c.get("output_tokens") or 0) for c in result.get("calls", [])))
+                for stage, result in state["calls"].items()]
+    return receipts, {"cost_usd": state["cost_usd"],
+                      "llm_calls": sum(len(r.get("calls") or [None]) for r in state["calls"].values()),
+                      "input_tokens": sum(r.input_tokens for r in receipts),
+                      "output_tokens": sum(r.output_tokens for r in receipts)}
+
+
 def load_investigation(job_id):
     from src.dossier.blob_store import get_blob
     found = get_blob(f"investigation:{job_id}")
@@ -685,6 +698,7 @@ def run_job_investigation(job, docs, *, cancel_check=None, persist=None, chain=C
     from src.dossier.drain import is_draining
     from src.dossier.engine_call import call_engine
     from src.dossier import events
+    from src.dossier.execution_lock import assert_owned
     from src.readings.registry import index_job, reading, readings_for
     packet = next((json.loads(d.text) for d in docs if d.key == "investigation" and d.role == "plan"), None)
     if not packet or packet.get("kind") != chain:
@@ -696,6 +710,7 @@ def run_job_investigation(job, docs, *, cancel_check=None, persist=None, chain=C
         packet = hydrate_prior_readings(packet, lookup_index=readings_for, lookup_reading=reading)
         put_blob(f"investigation-context:{job.id}", "application/json", _json(packet).encode())
     def check():
+        assert_owned(job.id)
         if cancel_check and cancel_check():
             raise DossierCancelled(f"{chain} cancelled between calls")
         if is_draining():
@@ -703,20 +718,13 @@ def run_job_investigation(job, docs, *, cancel_check=None, persist=None, chain=C
     indexed_phases = {}
     def save(state):
         # Fail before another paid call if durable artifact persistence is unavailable.
+        assert_owned(job.id)
         put_blob(f"investigation:{job.id}", "application/json", _json(state).encode())
         job.analysis = state["analysis"]
-        from src.dossier.schemas import Receipt
         # Derive accounting from completed checkpoints, so resume cannot double-count.
-        receipts = [Receipt(step="analysis", kind="llm", model=result.get("model", ""),
-                            label=f"{stage}: {result.get('engine_key', '')}", cost_usd=float(result.get("cost_usd") or 0),
-                            input_tokens=sum(int(c.get("input_tokens") or 0) for c in result.get("calls", [])),
-                            output_tokens=sum(int(c.get("output_tokens") or 0) for c in result.get("calls", [])))
-                    for stage, result in state["calls"].items()]
+        receipts, accounting = research_accounting(state)
         job.receipts = receipts
-        job.totals.cost_usd = state["cost_usd"]
-        job.totals.llm_calls = sum(len(r.get("calls") or [None]) for r in state["calls"].values())
-        job.totals.input_tokens = sum(r.input_tokens for r in receipts)
-        job.totals.output_tokens = sum(r.output_tokens for r in receipts)
+        job.totals = job.totals.model_copy(update=accounting)
         if persist:
             persist(analysis=job.analysis, receipts=receipts, totals=job.totals)
         changed_phases = [phase for phase, analysis in state["analysis"].items()

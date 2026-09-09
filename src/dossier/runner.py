@@ -165,6 +165,28 @@ def _pause_for_drain(job_id: str, step: str, why: str, *, record_step: bool = Fa
 
 
 def _run(job_id: str) -> None:
+    try:
+        job = get_job(job_id)
+        path = job.options.path if job is not None else None
+        if path and path.chain_key in {'author_investigation', 'field_investigation'}:
+            from src.dossier.execution_lock import investigation_owner
+            with investigation_owner(job_id, should_stop=lambda: is_draining() or is_cancelled(job_id)):
+                # Reload inside ownership: another instance may have completed
+                # a paid call, or the entire job, while this thread waited.
+                _run_owned(job_id)
+        else:
+            _run_owned(job_id)
+    except DossierDraining as exc:
+        _pause_for_drain(job_id, 'analysis', str(exc))
+    except Exception as exc:
+        logger.exception('Could not acquire investigation ownership for %s', job_id)
+        update_job(job_id, status='failed', error=f'{type(exc).__name__}: {exc}')
+    finally:
+        with _lock:
+            _running.discard(job_id)
+
+
+def _run_owned(job_id: str) -> None:
     step = "start"
     try:
         job = get_job(job_id)
