@@ -204,6 +204,25 @@ def get_job(job_id: str) -> Optional[DossierJob]:
     return _row_to_job(row) if row else None
 
 
+def get_job_for_execution(job_id: str) -> Optional[DossierJob]:
+    """Execution reads originals from the durable document store.
+
+    Avoid hydrating the duplicate commissioning payload at every checkpoint.
+    The full source specifications remain available through get_job unchanged.
+    """
+    ensure_table()
+    row = execute("SELECT * FROM dossier_jobs WHERE id = %s", (job_id,), fetch="one")
+    return _row_to_job({**row, 'sources_json': '[]'}) if row else None
+
+
+def get_job_progress(job_id: str) -> Optional[DossierJob]:
+    """Read status/options/accounting without source or analysis blob hydration."""
+    ensure_table()
+    row = execute("SELECT id,status,step,created_at,updated_at,options_json,totals_json,error "
+                  "FROM dossier_jobs WHERE id = %s", (job_id,), fetch="one")
+    return _row_to_job(row) if row else None
+
+
 def list_jobs(limit: int = 50) -> list[DossierJobSummary]:
     ensure_table()
     rows = execute(

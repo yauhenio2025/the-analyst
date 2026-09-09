@@ -31,7 +31,7 @@ from src.dossier import events as dossier_events
 from src.dossier.schemas import (AUDIENCES, BriefChoiceRequest, CreateDossierRequest, DEPTHS, DossierJob,
                                  DossierOptions, ENTRIES, OutputOptions, Shape, USE_KINDS)
 from src.dossier import runner
-from src.dossier.store import create_job, get_job, list_jobs, update_job
+from src.dossier.store import create_job, get_job, get_job_progress, list_jobs, update_job
 from src.api.gzip_request import GzipRequestRoute
 
 logger = logging.getLogger(__name__)
@@ -227,7 +227,12 @@ def list_all(limit: int = 50):
 
 
 @router.get("/jobs/{job_id}")
-def get_one(job_id: str):
+def get_one(job_id: str, view: str = 'full'):
+    if view == 'progress':
+        job = get_job_progress(job_id)
+        if job is None:
+            raise HTTPException(status_code=404, detail='dossier job not found')
+        return job.model_dump()
     return _load(job_id).model_dump()
 
 
@@ -352,7 +357,9 @@ def get_reread(job_id: str):
 def get_investigation(job_id: str):
     """Every completed research checkpoint, including partial runs and bounded coverage."""
     from src.dossier.investigation import load_investigation
-    job = _load(job_id)
+    job = get_job_progress(job_id)
+    if job is None:
+        raise HTTPException(status_code=404, detail='dossier job not found')
     if not job.options.path or job.options.path.chain_key not in ("author_investigation", "field_investigation"):
         raise HTTPException(status_code=409, detail="this job is not an investigation")
     out = load_investigation(job_id) or {"kind": job.options.path.chain_key, "question": job.options.intent,
@@ -640,7 +647,8 @@ def choose_brief(job_id: str, req: BriefChoiceRequest):
 
 @router.get("/jobs/{job_id}/events")
 def get_events(job_id: str, after: int = 0, limit: int = 500):
-    _load(job_id)
+    if get_job_progress(job_id) is None:
+        raise HTTPException(status_code=404, detail='dossier job not found')
     evs = dossier_events.list_events(job_id, after)[:limit]
     last = max((int(e.get("seq", 0) or 0) for e in evs), default=after)
     return {"job_id": job_id, "events": evs, "last_seq": last, "store": "fallback" if dossier_events.using_fallback() else "src.events.store"}

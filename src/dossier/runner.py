@@ -18,7 +18,7 @@ from src.dossier import events
 from src.dossier.common import DossierCancelled, DossierDraining, load_documents
 from src.dossier.drain import is_draining
 from src.dossier.schemas import DossierJob, STEPS
-from src.dossier.store import add_note, get_job, list_jobs, record_step_duration, update_job
+from src.dossier.store import add_note, get_job_for_execution as get_job, list_jobs, record_step_duration, update_job
 
 logger = logging.getLogger(__name__)
 
@@ -168,6 +168,7 @@ def _run(job_id: str) -> None:
     try:
         job = get_job(job_id)
         path = job.options.path if job is not None else None
+        del job  # The owned executor reloads; do not retain a duplicate analysis tree.
         if path and path.chain_key in {'author_investigation', 'field_investigation'}:
             from src.dossier.execution_lock import investigation_owner
             with investigation_owner(job_id, should_stop=lambda: is_draining() or is_cancelled(job_id)):
