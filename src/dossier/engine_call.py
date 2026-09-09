@@ -74,7 +74,7 @@ def _context_block(packet: Optional[dict], docs: list, engine_key: str = 'citati
                  "the passage sentence is the one to find in the section):\n") if engine_key == 'citation_explainer' else (
                  "RESEARCH CONTEXT (question, source metadata, prior analysis and instructions for this method; "
                  "not an original source for quotation verification):\n")
-        parts.append(label + json.dumps(packet, ensure_ascii=False))
+        parts.append(label + json.dumps(packet, ensure_ascii=False, separators=(',', ':')))
     for d in docs:
         role = getattr(d, "role", "source") or "source"
         if role == "source":

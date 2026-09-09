@@ -20,7 +20,8 @@ def _sha(text):
 
 
 def input_chars(sources, upstream):
-    return sum(len(s.text or "") for s in sources) + len(_json(upstream))
+    # Match the light-call context serializer; formatting spaces are not data.
+    return sum(len(s.text or "") for s in sources) + len(json.dumps(upstream, ensure_ascii=False, separators=(',', ':')))
 
 
 def input_hash(sources, upstream):
