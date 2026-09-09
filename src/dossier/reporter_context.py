@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import copy
 import json
+from collections import Counter
 
 from src.dossier.context_packing import _json, _sha, input_chars, input_hash
 
@@ -119,6 +120,30 @@ def pack_reporter_context(stage, sources, upstream, *, packet_sha256):
     if registry:
         packed['institutional_metadata_records'] = registry
         packed['institutional_metadata_format'] = 'institutional_metadata_ref resolves to the complete unchanged original record in institutional_metadata_records.'
+
+    # Hundreds of unsearched candidates repeat identical coverage fields. Share
+    # those exact values; retain every candidate, count, outcome and exception.
+    # This changes representation only, after the initial planning call.
+    if stage != 'plan':
+        for i, collection in enumerate(packed.get('field_collections', [])):
+            context = collection.get('institutional_context') or {}
+            rows = context.get('coverage')
+            if not isinstance(rows, list) or len(rows) < 20 or not all(isinstance(r, dict) for r in rows):
+                continue
+            keys = set.intersection(*(set(r) for r in rows))
+            defaults = {}
+            for key in sorted(keys):
+                encoded, count = Counter(_json(r[key]) for r in rows).most_common(1)[0]
+                if count > len(rows) // 2:
+                    defaults[key] = json.loads(encoded)
+            compact = {'defaults': defaults, 'rows': [
+                {k: v for k, v in row.items() if k not in defaults or _json(v) != _json(defaults[k])}
+                for row in rows]}
+            if len(_json(compact)) < len(_json(rows)):
+                omit(f'field_collections[{i}].institutional_context.coverage', rows,
+                     'frozen collection coverage; current input reconstructs each row as defaults overlaid by row fields')
+                context['coverage'] = compact
+                context['coverage_format'] = 'For each coverage record, overlay the row fields on defaults. All original records, values and exceptions are retained; an omitted row field inherits its default.'
 
     if not omissions:
         return sources, upstream, None
