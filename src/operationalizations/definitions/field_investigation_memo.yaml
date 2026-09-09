@@ -39,7 +39,10 @@ process:
     the complete original field support identities are retained while quotations live
     in the durable source readings. Use only claims and meanings present in the supplied
     argument maps; do not infer new details from an evidence identity. Evidence selection
-    or compression never licenses an absence claim.'
+    or compression never licenses an absence claim. These cautions constrain the argument;
+    they do not replace it. A memo that lists what remains to be verified has not answered
+    the question.'
+  composition_role: argument
   scoped_outcomes: false
   routing:
     cheap: openrouter/openai/gpt-5.6-luna
@@ -159,18 +162,22 @@ process:
     output: prose_ledger
     is_final: true
     reader: the researcher developing a position through the thinker and field
-    brief: Write a substantial, readable second memo when a prior investigation is
-      supplied, or a self-contained first memo for a standalone inquiry. Lead with
-      what the researcher should now think and why. Explain the field debates as disagreements
-      among named authors with mechanisms and evidence; recover the thinker's actual
-      sourced position; adjudicate where the two clarify or challenge one another.
-      Develop several concrete examples and counterarguments. Include an explicit
-      account of changes from the prior memo, positions retained, new distinctions,
-      unresolved questions and the strongest counterevidence. In standalone mode name
-      new warranted conclusions without inventing an earlier memo. Distinguish your
-      proposed extension from anything the thinker wrote. Cite primary and field findings
-      inline as [uid/E1.Fn], with readable author/title/year and supplied page loci.
-      Finish with material coverage limits and focused next questions. Then provide
+    brief: Write the memo the researcher needs in order to think, not an inventory
+      of the corpus. Open with the answer, namely the one distinction or mechanism the
+      evidence best supports in reply to the question, stated in a paragraph and then
+      developed over several paragraphs in which the case evidence does the work. For
+      that argument say what the evidence establishes, what it does not, which rival
+      explanation survives, what would weaken the argument, and the single observation
+      or comparison that would discriminate. Recover the thinker's actual sourced position
+      only as far as the argument needs it, as a short contrast between formulations rather
+      than a chronology, and adjudicate where the case and the thinker clarify or challenge
+      one another. Distinguish your proposed extension from anything the thinker wrote,
+      and give it a mechanism and an adverse observation, not only a name. Keep the strongest
+      counterevidence in the body where it bites. When a prior investigation is supplied,
+      state what changed from the prior memo and why; in standalone mode do not invent
+      an earlier memo. Cite primary and field findings inline as [uid/E1.Fn], with readable
+      author/title/year and supplied page loci. Close briefly with material coverage limits
+      and the two or three next questions that would most change the memo. Then provide
       answer, revision, counterevidence and question ledger rows; do not replace the
       memo with the ledger.
     max_rows: 60

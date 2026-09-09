@@ -160,7 +160,7 @@ class ProcessSpec(BaseModel):
     key: str = Field("dvs", description="Process key referenced by DepthSequence.process")
     description: str = ""
     method_refs: list[MethodReference] = Field(default_factory=list, description="Central executable methods composed as guidance, without extra model calls")
-    composition_role: Literal['corpus', 'decision'] = Field('corpus', description='Decision methods follow the question and action contract instead of mandatory document-by-document exposition')
+    composition_role: Literal['corpus', 'decision', 'argument'] = Field('corpus', description='Decision methods follow the question and action contract instead of mandatory document-by-document exposition; argument methods open with the best-supported answer to the question and put document coverage last')
     max_output_tokens: Optional[int] = Field(None, ge=256, le=128000, description='Optional method ceiling applied to light calls, retries and fallbacks')
     framing: Optional[str] = Field(
         None, description="Explicit process framing, replacing the capability opening in every process prompt. None preserves the legacy opening.",
