@@ -19,6 +19,15 @@ checkout's unrelated untracked research artifacts. The two activity design notes
 the Stacks [release record](/home/evgeny/projects/zotero-stacks/communications/2026-09-09_research_activities_release.md)
 retain validation and eventual live-verification details.
 
+## Definition of done for research output (standing rule, 2026-09-10)
+
+An inquiry, memo, brief or release is not accepted until a reader who did not produce it has read the answer
+against the question and written three lines: the best idea in it; whether that idea is developed with the case
+evidence or merely named; what a good answer would say that this one does not. Passing tests, matching hashes,
+retained citation counts, deployment receipts and "acceptance receipts" are evidence of transport, not of quality,
+and do not close a commission. A review of a review is not a reading. No new gate, receipt or hash check unless it
+retires one. Diagnosis and the next experiment: `/home/evgeny/projects/the-reporter/communications/DIAGNOSIS_2026-09-10_why_quality_stalls.md`.
+
 ## How we work: where the reasoning lives (Evgeny, 2026-09-07)
 
 - **The upper-level reasoning lives here, in the Mastermind, as records — never as prose scattered in an organ's Python.** Methods
