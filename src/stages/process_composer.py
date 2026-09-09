@@ -133,7 +133,7 @@ def _row_shapes(spec: ProcessSpec) -> str:
     """The dimensions' answer shapes repeated where the rows are written: a row carries every field of its shape.
     Part of the compact-ledger contract (a final step with max_rows < 12): few rows, each complete. The generic
     skeleton above it is what a model copies when the shapes sit only in the method cards (the Stacks' first explainer
-    call came back without move, stance and place, 2026-09-06). Released engines keep their prompts byte-identical."""
+    call came back without move, stance and place, 2026-09-06). The generic shell also repeats these shapes for typed claim ledgers."""
     shaped = [d for d in spec.dimensions if d.answer_shape]
     if not shaped:
         return ""
@@ -141,6 +141,15 @@ def _row_shapes(spec: ProcessSpec) -> str:
              "a row that drops a field is incomplete. The shapes:"]
     lines += [f"- `{d.answer_shape.strip()}`" for d in shaped]
     return "\n".join(lines)
+
+
+def _typed_claim_shapes(spec: ProcessSpec) -> str:
+    """Carry the method's validation fields through the generic output shell."""
+    if not any('claim_kind:' in (d.answer_shape or '') for d in spec.dimensions):
+        return ''
+    return ('Use the method answer shapes in the final Findings ledger, including every '
+            'claim_kind and evidence_ids field. Do not add a second reduced summary ledger.\n'
+            + _row_shapes(spec))
 
 
 def _source_block(documents: dict[str, str]) -> str:
@@ -447,6 +456,7 @@ def compose_synthesize_prompt(
             '(Cross-document rows also retain `anchor-b: "<verbatim B>" — doc-b: <B>` and all further pairs.)'
             if len(documents) > 1 else "",
             "(renumber F1..Fn in the order the reading uses them; 12-30 rows; every row the reading cites appears here)",
+            *([_typed_claim_shapes(spec)] if _typed_claim_shapes(spec) else []),
             "### Counter-evidence",
             "- <anchored>",
             "### Open questions",
@@ -511,7 +521,7 @@ def compose_oneshot_prompt(cap_def, spec: ProcessSpec, documents: dict[str, str]
             + (" — doc: <doc_key>" if len(documents) > 1 else "") + " — confidence: high|medium|low",
             (f"(at most {final.max_rows} rows per dimension, in the order the reading uses them; no positive minimum)"
              if final and final.max_rows < 12 else "(12-30 rows in the order the reading uses them)"),
-            _row_shapes(spec) if final and final.max_rows < 12 else "",
+            _typed_claim_shapes(spec) or (_row_shapes(spec) if final and final.max_rows < 12 else ""),
             "### Counter-evidence",
             "### Open questions",
         ] if line),

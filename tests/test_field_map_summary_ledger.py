@@ -34,3 +34,21 @@ def test_summary_never_bypasses_original_evidence_or_required_typed_ledger(inval
     elif invalid == 'invalid_typed': rows[0]['fields']['claim_kind'] = 'thinker_position'
     else: rows[0]['fields']['evidence_ids'] = 'source/F99'
     assert not validate_claims(rows, evidence, required=True, field_map=True)['supported']
+
+
+@pytest.mark.parametrize('key', ['field_investigation_field_map',
+                                'field_investigation_adjudicate', 'field_investigation_memo', 'institutional_inquiry_memo'])
+def test_generic_output_shell_preserves_central_claim_fields_at_actual_model_boundary(key):
+    from src.engines.methods import freeze_method
+    from src.dossier.engine_call import call_engine
+    from src.sources.schemas import SourceSpec
+    from tests.test_shared_critical_methods import model
+    frozen = freeze_method(key)
+    captured = []
+    call_engine(key, [SourceSpec(kind='paste', key='source', text='worker power')],
+                method_snapshot=frozen, call_fn=model(captured), spend_cap_usd=1)
+    output = captured[0][0].split('## Output')[-1]
+    assert 'claim_kind:' in output and 'evidence_ids:' in output
+    assert 'Do not add a second reduced summary ledger.' in output
+    # This is schema transport; the frozen analytical record is unchanged.
+    assert frozen['operationalization']['process']['framing'] in captured[0][0]
