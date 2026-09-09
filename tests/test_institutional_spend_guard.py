@@ -55,3 +55,56 @@ def test_bounded_openrouter_client_disables_hidden_sdk_retries(monkeypatch):
         OpenRouterBackend(MODEL)._get_client()
     OpenRouterBackend(MODEL)._get_client()
     assert captured[0]['max_retries'] == 0 and 'max_retries' not in captured[1]
+
+
+def repeated_request_ledger():
+    state = {'cost_usd': 0}
+    with guard.budget(state, 10, lambda _: None):
+        lost = guard.reserve(MODEL, 'Instructions', 'Source ' * 10000, 65536, 'read')
+        retry = guard.reserve(MODEL, 'Instructions', 'Source ' * 10000, 65536, 'read retry')
+        guard.settle(retry, LLMCallResult('Complete', MODEL, 15000, 4000, 0, 120))
+    return state, lost, retry
+
+
+def test_identical_verified_retry_bounds_input_without_settling_lost_output():
+    state, lost, retry = repeated_request_ledger()
+    original = lost['ceiling_usd']
+    saves = []
+    with guard.budget(state, 10, lambda s: saves.append(copy.deepcopy(s))):
+        assert lost['status'] == 'reserved' and 'cost_usd' not in lost
+        assert lost['original_ceiling_usd'] == original > lost['ceiling_usd']
+        receipt = lost['input_bound_receipt']
+        assert receipt['witness_attempt_id'] == retry['id']
+        assert receipt['input_token_ceiling'] == 15000 + 4096
+        assert receipt['max_output_tokens'] == 65536
+        assert receipt['charge_remains_unresolved']
+        assert lost['ceiling_usd'] == round(((15000 + 4096) * 4 + 65536 * 10) / 1e6, 6)
+    assert len(saves) == 1
+    restarted = saves[0]
+    with guard.budget(restarted, 10, lambda _: pytest.fail('unchanged refinement resaved')):
+        assert restarted['spend_reservations'] == state['spend_reservations']
+
+
+@pytest.mark.parametrize('change', [
+    {'input_sha256': 'another-input'}, {'model': 'claude-sonnet-4-6'},
+    {'status': 'uncertain'}, {'input_tokens': 0}, {'output_tokens': 0}, {'cost_usd': 100},
+])
+def test_mismatched_or_unverified_usage_cannot_release_a_reservation(change):
+    state, lost, retry = repeated_request_ledger()
+    original = copy.deepcopy(lost)
+    retry.update(change)
+    assert not guard.refine_repeated_input_bounds(state['spend_reservations'])
+    assert lost == original
+
+
+def test_largest_matching_input_witness_is_used_and_later_larger_usage_restores_headroom():
+    state, lost, retry = repeated_request_ledger()
+    larger = {**retry, 'id': 'larger-verified', 'input_tokens': 18000, 'cost_usd': .112}
+    state['spend_reservations']['attempts'].append(larger)
+    assert guard.refine_repeated_input_bounds(state['spend_reservations'])
+    assert lost['input_bound_receipt']['witness_attempt_id'] == larger['id']
+    before = lost['ceiling_usd']
+    larger.update(input_tokens=22000, cost_usd=.128)
+    assert guard.refine_repeated_input_bounds(state['spend_reservations'])
+    assert before < lost['ceiling_usd'] < lost['original_ceiling_usd']
+    assert lost['input_bound_receipt']['input_token_ceiling'] == 22000 + 4096

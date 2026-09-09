@@ -42,7 +42,13 @@ Institutional runs and their frozen-source comparisons also retain per-provider-
 spend reservations. Before each request, the executor checks a conservative input-byte
 and maximum-output ceiling against the approved cap, including unresolved attempts
 from earlier execution. SDK retries are disabled within this context; executor retries
-need their own reservation. Lost/partial responses keep their ceiling. Verified usage
+need their own reservation. Lost/partial responses keep an unresolved ceiling. When
+another settled request has the identical model and exact system/user hash, its
+verified input count plus the existing 4,096-token framing allowance can tighten
+the input bound. The full original output allowance remains reserved, the original
+ceiling and witness receipt remain durable, and the missing charge is not settled
+or counted as zero. A later larger matching input receipt raises the bound again,
+up to the original byte bound. Verified usage
 settles it using conservative configured rates; actual research costs remain separately
 reported by the existing call ledger. The current bounded receipt contract supports
 OpenRouter and Anthropic; an unpriced or unsupported provider stops before spending.

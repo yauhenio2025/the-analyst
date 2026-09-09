@@ -1,7 +1,8 @@
 """Durable per-attempt reservations for explicitly bounded institutional research.
 
-An interrupted request retains its ceiling. A retry is a new reservation, never
-an assumption that the missing response was free. Other executor jobs are unchanged.
+An interrupted request retains an unresolved ceiling. Only an identical verified
+request can refine its input bound; the full output allowance stays reserved.
+A retry is a new reservation, never an assumption that a missing response was free.
 """
 from contextlib import contextmanager
 from contextvars import ContextVar
@@ -21,9 +22,54 @@ def active():
     return _CURRENT.get() is not None
 
 
+def refine_repeated_input_bounds(ledger):
+    """Tighten only input bounds witnessed by an identical completed request.
+
+    A missing response is still an uncertain charge. Its entire configured
+    output allowance remains reserved, and its original ceiling is retained.
+    The witness must have provider-verified usage (a settled record), the same
+    model and exact system/user hash, and matching configured accounting rates.
+    An extra 4096 input tokens retain the existing framing safety allowance.
+    """
+    changed = False
+    attempts = ledger.get('attempts', [])
+    for record in attempts:
+        if record.get('status') not in ('reserved', 'uncertain') or 'cost_usd' in record:
+            continue
+        price = resolve_pricing(record.get('model', ''))
+        if not price or not record.get('input_sha256') or not record.get('max_output_tokens'):
+            continue
+        witnesses = [r for r in attempts if r.get('status') == 'settled'
+                     and r.get('model') == record['model']
+                     and r.get('input_sha256') == record['input_sha256']
+                     and r.get('input_tokens', 0) > 0 and r.get('output_tokens', 0) > 0
+                     and r.get('cost_usd') == round(
+                         (r['input_tokens'] * price[0] * 2 + r['output_tokens'] * price[1]) / 1e6, 6)]
+        if not witnesses:
+            continue
+        witness = max(witnesses, key=lambda r: r['input_tokens'])
+        input_bound = witness['input_tokens'] + 4096
+        original = record.get('original_ceiling_usd', record['ceiling_usd'])
+        ceiling = min(original, round((input_bound * price[0] * 2 + record['max_output_tokens'] * price[1]) / 1e6, 6))
+        if ceiling == record['ceiling_usd']:
+            continue
+        record.setdefault('original_ceiling_usd', record['ceiling_usd'])
+        record.update(ceiling_usd=ceiling, input_bound_receipt={
+            'policy': 'identical_request_usage_with_framing_allowance_v1',
+            'witness_attempt_id': witness['id'], 'input_sha256': record['input_sha256'],
+            'witness_input_tokens': witness['input_tokens'], 'framing_allowance_tokens': 4096,
+            'input_token_ceiling': input_bound, 'max_output_tokens': record['max_output_tokens'],
+            'input_usd_per_million': price[0] * 2, 'output_usd_per_million': price[1],
+            'charge_remains_unresolved': True})
+        changed = True
+    return changed
+
+
 @contextmanager
 def budget(state, cap, save):
     ledger = state.setdefault('spend_reservations', {'base_cost_usd': state['cost_usd'], 'attempts': []})
+    if refine_repeated_input_bounds(ledger):
+        save(state)
     token = _CURRENT.set((ledger, cap, lambda: save(state)))
     try:
         yield
