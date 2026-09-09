@@ -21,7 +21,10 @@ cited in an oeuvre. This method broadens the input to all kept cohort members,
 including people not cited in the local corpus and thinkers already in other schools.
 
 Stacks owns jobs, model approval and a shared spending cap, saved reviews and decisions.
-An approved identity links the local member to an existing Referee thinker. Existing
+An approved identity is persisted in the Referee's shared identity registry before
+the local member is linked. Later resolution, search, growth and duplicate checks
+reuse that alias and evidence; Referee branch `fix/shared-thinker-identity` supplies
+the shared endpoint. Existing
 school proposals enter Referee's candidates API with full source evidence. Approved
 new schools use its provisional-school creation API, with resolved seeds and unresolved
 people as candidates. No discovery, harvesting or automatic thinker creation is invoked.
