@@ -107,9 +107,15 @@ process:
       in priority order, and explicit defer/unavailable rows when useful. Unjudged
       batch rows must remain unresolved unless you have a reason to select them. Do
       not choose by publication title or lexical count alone. Do not assume a prior
-      selection is authoritative.
+      selection is authoritative. Every occurrence of a UID in the output must agree
+      on its final disposition. If prior_decision contains decision_variants, consider
+      every rationale rather than treating the first or last row as authoritative.
+      In resolve_conflicts mode return exactly one decision for each supplied disputed
+      UID, explaining why its competing rationales warrant that disposition. Preserve
+      uncontested decisions and the total reading cap. A read recommendation does not
+      automatically defeat a contrary recommendation; relevance is your judgment.
     max_rows: 60
   method_refs:
   - engine_key: concept_case_stress_test
     version: 1
-version: 2
+version: 3
