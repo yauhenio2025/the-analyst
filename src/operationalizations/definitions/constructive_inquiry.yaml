@@ -158,7 +158,12 @@ process:
       suggest a theory-wide collapse from an isolated difficulty. State when no broader
       implication can yet be inferred. Preserve author corrections as the current baseline.
       All possible revisions are conditional proposals, not edits to the author's commitments
-      or a claim that they have been adopted.
+      or a claim that they have been adopted. A revision to the construction's use of a
+      commitment or to an analogy extending it is not a revision to that commitment's text.
+      In the JSON handoff, set commitment_id to null for those inquiry-level proposals. Set
+      it to a supplied commitment ID only when proposing to replace that exact commitment,
+      copying the complete supplied text into before unchanged. This distinction applies to
+      broader revisions as well as local ones; mentioning a dependency does not target an edit.
     answer_shape: '[C5.F<n>] <conditional revision> — dim: revision — level: local|broader — trigger: <evidence or test outcome> — before: <current formulation> — after: <proposed formulation> — commitment-ids: <supplied IDs or none> — from: <supporting finding IDs or none> — anchor: "<verbatim relevant premise, <=200 chars>" — doc: <actual source key> — confidence: high|medium|low'
   - key: self_scrutiny
     name: Scrutiny of the construction itself

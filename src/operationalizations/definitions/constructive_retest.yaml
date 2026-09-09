@@ -129,6 +129,10 @@ process:
       change to a central commitment as a minor exception. Explain what remains intact, what
       is no longer defensible and what the author must decide. If this test cannot decide a
       broader consequence, keep it conditional and identify the further evidence needed.
+      A change to the proposed account's use of a commitment or to an extension of it does
+      not replace the commitment itself. Such proposals use commitment_id null in the JSON
+      handoff, including broader revisions. A non-null commitment_id targets replacement of
+      the actual commitment and requires its complete supplied text unchanged in before.
     answer_shape: '[R4.F<n>] <revision or explicit reason no revision follows> — dim: revision — level: local|broader — before: <baseline> — after: <proposed change or unchanged> — commitment-ids: <supplied IDs or none> — dependency: <why the change reaches this level> — from: <supporting finding IDs or none> — anchor: "<verbatim relevant evidence, <=200 chars>" — doc: <actual source key> — confidence: high|medium|low'
   - key: self_scrutiny
     name: Scrutiny of the test and repair
