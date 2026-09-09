@@ -1,0 +1,27 @@
+engine_key: thinker_identity_reconciliation
+engine_name: Reconcile a thinker's identity across records
+version: 1
+category: scholarly
+kind: relational
+operation: reconciliation
+problematique: A person may already exist under another name; treating failed name lookup as absence creates duplicates and hides their affiliations.
+researcher_question: Which existing person, if any, does this observed name denote?
+intellectual_lineage:
+  primary: source_criticism
+analytical_dimensions:
+- key: identity
+  description: Weigh identity evidence and declare the next action
+  probing_questions:
+  - Is this an existing person under another name, a distinct person, or unresolved?
+composability:
+  synergy_engines:
+  - cohort_school_placement
+  - thinker_placement
+depth_levels:
+- key: standard
+  description: Evidence-based identity judgment
+  typical_passes: 1
+apps:
+- critic
+function: genealogy
+output_mode: prose

@@ -25,3 +25,18 @@ def test_cohort_method_preserves_the_oeuvre_placement_scope():
     assert 'PERSONS_UNKNOWN' in oeuvre.framing
     assert [d.key for d in oeuvre.dimensions] == ['fit', 'new_school', 'verdict']
     assert [d.key for d in cohort.dimensions] == ['shortlist', 'review']
+
+
+def test_shared_identity_method_is_discoverable_and_owns_automatic_identity_judgment(monkeypatch, tmp_path):
+    from src.engines import history_tracker
+    monkeypatch.setattr(history_tracker, 'HISTORY_DIR', tmp_path / 'history')
+    from src.api.routes.engines import get_capability_definition
+    from src.api.routes.operationalizations import get_process
+    key = 'thinker_identity_reconciliation'
+    cap = asyncio.run(get_capability_definition(key))
+    process = asyncio.run(get_process(key))
+    assert cap.engine_key == process.key == key
+    assert [d.key for d in process.dimensions] == ['identity']
+    assert process.final_step.model_tier == 'strong'
+    assert 'link_existing' in process.dimensions[0].method_card
+    assert 'automatically' in process.framing
