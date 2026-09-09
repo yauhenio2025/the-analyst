@@ -54,9 +54,9 @@ def pack_reporter_context(stage, sources, upstream, *, packet_sha256):
                          "frozen source_metadata.provenance." + key)
 
     metadata(packed.get("source_metadata"), "source_metadata")
-    if stage != "plan" and input_chars(sources, upstream) > 520000:
-        # Later readers need the search's coverage and identity decisions, not
-        # every directory profile used to shortlist candidates. These are
+    if input_chars(sources, upstream) > 520000:
+        # Research over an already frozen collection needs its coverage and
+        # identity decisions, not every directory profile used to shortlist it. These are
         # selection context, never publication evidence or analytical findings.
         for i, collection in enumerate(packed.get("field_collections", [])):
             records = ((collection.get("institutional_context") or {}).get("plan") or {}).get("registry_records", [])
@@ -74,7 +74,7 @@ def pack_reporter_context(stage, sources, upstream, *, packet_sha256):
         if source.key == "investigation-question":
             question = json.loads(source.text)
             for key in ("field_collections", "field_gaps"):
-                if key in question and question[key] == packed.get(key):
+                if key in question and question[key] == upstream.get(key):
                     omit("investigation-question." + key, question.pop(key), "current call packet." + key)
             source.text = _json(question)
         elif source.key == "field-readings":
