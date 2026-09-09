@@ -1,0 +1,617 @@
+{
+  "status": "stopped",
+  "cost_usd": 3.465,
+  "cap_usd": 8.0,
+  "model": "openrouter/openai/gpt-5.6-sol",
+  "output_token_limit": 16000,
+  "archive_sha256": {
+    "analyst-investigation.json": "ec4d212cc053c6cc6364036faf378220cabf42fa4140a049586a336cb1fb5ee9",
+    "analyst-job.json": "4eaf4f8c7a6d5c3968692a82c204ab60f7747a93d0d35d92e6efe8e66a85e7ec"
+  },
+  "code_commit": "47ea6dd06b44277d8e3620d6c004d75d2bcbfe10",
+  "selection_fixed": [
+    "em:GEFERFPB",
+    "em:VE9TU4JA",
+    "em:V68V5D49",
+    "em:CX58SV9M",
+    "em:FTZU53HT",
+    "em:UVIAU67M",
+    "em:9CUAIZIE",
+    "em:EDIQ7A7T",
+    "em:3YLGA6BQ",
+    "em:2GB6VHBN",
+    "em:VWKV5TPB"
+  ],
+  "context_policy": "saved_plan_queries_using_current_executor_policy",
+  "evidence_policy": "canonical original identities, same in all arms; no additional quote verification",
+  "reviewer": "Unblinded primary Codex session; no independent or paid model judge",
+  "arms": {
+    "Answer-1": {
+      "routing": "union",
+      "reverse": false,
+      "stages": {
+        "field_map": {
+          "status": "complete",
+          "error": null,
+          "input_sha256": "961125122b7d5675959fc7e6fda860e5bda7915017f6b9f89e5f822b6b66fad4",
+          "chars": 452465,
+          "eligible_count": 135,
+          "traced_supports": {
+            "hegemony": {
+              "input_eligible": true,
+              "output_occurrences": 0
+            },
+            "hines": {
+              "input_eligible": true,
+              "output_occurrences": 2
+            },
+            "contrary_demand": {
+              "input_eligible": true,
+              "output_occurrences": 2
+            }
+          },
+          "validation_supported": true,
+          "cost_usd": 0.3085
+        },
+        "adjudication": {
+          "status": "complete",
+          "error": null,
+          "input_sha256": "3885cbdf87a597069deff30883e8c71343f7f72e0b6a98ceb8e1a2dbac5cc92b",
+          "chars": 599512,
+          "eligible_count": 135,
+          "traced_supports": {
+            "hegemony": {
+              "input_eligible": true,
+              "output_occurrences": 1
+            },
+            "hines": {
+              "input_eligible": true,
+              "output_occurrences": 2
+            },
+            "contrary_demand": {
+              "input_eligible": true,
+              "output_occurrences": 1
+            }
+          },
+          "validation_supported": true,
+          "cost_usd": 0.415
+        },
+        "memo": {
+          "status": "complete",
+          "error": null,
+          "input_sha256": "ed4e930187a345f4c5d20eef053b9a931e9ca2235efeb40284d70d081584785f",
+          "chars": 638494,
+          "eligible_count": 135,
+          "traced_supports": {
+            "hegemony": {
+              "input_eligible": true,
+              "output_occurrences": 0
+            },
+            "hines": {
+              "input_eligible": true,
+              "output_occurrences": 5
+            },
+            "contrary_demand": {
+              "input_eligible": true,
+              "output_occurrences": 2
+            }
+          },
+          "validation_supported": true,
+          "cost_usd": 0.4391
+        }
+      },
+      "memo": {
+        "file": "Answer-1-memo.md",
+        "sha256": "573d208c970db0f74a5a8e910dbbe915de2a710d0d908b2f757415108c937842",
+        "words": 2224
+      }
+    },
+    "Answer-2": {
+      "routing": "baseline",
+      "reverse": false,
+      "stages": {
+        "field_map": {
+          "status": "complete",
+          "error": null,
+          "input_sha256": "9c4238a808d71fe0f10edced0d7052a5e91f80ad40d4d8453e9e8a60e51466a2",
+          "chars": 422738,
+          "eligible_count": 101,
+          "traced_supports": {
+            "hegemony": {
+              "input_eligible": false,
+              "output_occurrences": 0
+            },
+            "hines": {
+              "input_eligible": true,
+              "output_occurrences": 3
+            },
+            "contrary_demand": {
+              "input_eligible": true,
+              "output_occurrences": 2
+            }
+          },
+          "validation_supported": true,
+          "cost_usd": 0.2878
+        },
+        "adjudication": {
+          "status": "complete",
+          "error": null,
+          "input_sha256": "83c7b20cff03018fe610bc0953211f3e876bb809a7f1a1b8e46b9c6fb037b0e5",
+          "chars": 510493,
+          "eligible_count": 33,
+          "traced_supports": {
+            "hegemony": {
+              "input_eligible": false,
+              "output_occurrences": 0
+            },
+            "hines": {
+              "input_eligible": true,
+              "output_occurrences": 3
+            },
+            "contrary_demand": {
+              "input_eligible": true,
+              "output_occurrences": 1
+            }
+          },
+          "validation_supported": true,
+          "cost_usd": 0.3559
+        },
+        "memo": {
+          "status": "complete",
+          "error": null,
+          "input_sha256": "0a37543173ea159874d43d90370e7a0bead94776458f839ebb0d7b6229ceb249",
+          "chars": 546451,
+          "eligible_count": 33,
+          "traced_supports": {
+            "hegemony": {
+              "input_eligible": false,
+              "output_occurrences": 0
+            },
+            "hines": {
+              "input_eligible": true,
+              "output_occurrences": 4
+            },
+            "contrary_demand": {
+              "input_eligible": true,
+              "output_occurrences": 1
+            }
+          },
+          "validation_supported": true,
+          "cost_usd": 0.3701
+        }
+      },
+      "memo": {
+        "file": "Answer-2-memo.md",
+        "sha256": "539c04bf1b66169486e5c9211520855817ea8ceed1cf7c5a6bceb96b7684711f",
+        "words": 2447
+      }
+    },
+    "Answer-3": {
+      "routing": "baseline",
+      "reverse": true,
+      "stages": {
+        "field_map": {
+          "status": "complete",
+          "error": null,
+          "input_sha256": "342e8768fe95576dd90dce2d26820c81050884923ab65504060a9fbf7b5b37ba",
+          "chars": 422738,
+          "eligible_count": 101,
+          "traced_supports": {
+            "hegemony": {
+              "input_eligible": false,
+              "output_occurrences": 0
+            },
+            "hines": {
+              "input_eligible": true,
+              "output_occurrences": 2
+            },
+            "contrary_demand": {
+              "input_eligible": true,
+              "output_occurrences": 2
+            }
+          },
+          "validation_supported": true,
+          "cost_usd": 0.2878
+        },
+        "adjudication": {
+          "status": "complete",
+          "error": null,
+          "input_sha256": "7d9a25dd7c292f2585bc3ab49638b52ce5a9843f05dc9f4a96b597f08c2ec527",
+          "chars": 505928,
+          "eligible_count": 28,
+          "traced_supports": {
+            "hegemony": {
+              "input_eligible": false,
+              "output_occurrences": 0
+            },
+            "hines": {
+              "input_eligible": true,
+              "output_occurrences": 2
+            },
+            "contrary_demand": {
+              "input_eligible": true,
+              "output_occurrences": 1
+            }
+          },
+          "validation_supported": true,
+          "cost_usd": 0.3366
+        },
+        "memo": {
+          "status": "complete",
+          "error": null,
+          "input_sha256": "aec0bbe4755bf6d1d16b7411f1d1e5e1ee725ab756e93d21cedb40c003436ee8",
+          "chars": 534787,
+          "eligible_count": 28,
+          "traced_supports": {
+            "hegemony": {
+              "input_eligible": false,
+              "output_occurrences": 0
+            },
+            "hines": {
+              "input_eligible": true,
+              "output_occurrences": 4
+            },
+            "contrary_demand": {
+              "input_eligible": true,
+              "output_occurrences": 1
+            }
+          },
+          "validation_supported": true,
+          "cost_usd": 0.3615
+        }
+      },
+      "memo": {
+        "file": "Answer-3-memo.md",
+        "sha256": "fa4db7bd282531248f7912f5e8e6227e2d46dfdfc29e8139f908022ea947443e",
+        "words": 2187
+      }
+    },
+    "Answer-4": {
+      "routing": "union",
+      "reverse": true,
+      "stages": {
+        "field_map": {
+          "status": "complete",
+          "error": null,
+          "input_sha256": "95f67b0593390b158f2cb399bce1a9c9cdddd548648abb489f01b94beb14cf74",
+          "chars": 452465,
+          "eligible_count": 135,
+          "traced_supports": {
+            "hegemony": {
+              "input_eligible": true,
+              "output_occurrences": 0
+            },
+            "hines": {
+              "input_eligible": true,
+              "output_occurrences": 3
+            },
+            "contrary_demand": {
+              "input_eligible": true,
+              "output_occurrences": 2
+            }
+          },
+          "validation_supported": true,
+          "cost_usd": 0.3027
+        },
+        "adjudication": {
+          "status": "invoking",
+          "error": "SpendLimit: Analysis cap $8.00: $6.19 spent/reserved; next call ceiling $2.67. Research retained",
+          "input_sha256": "56318b860716b80400f3bd65baa730eabcec6800f1060817e6044240f8349cfe",
+          "chars": 597208,
+          "eligible_count": 135,
+          "traced_supports": {
+            "hegemony": {
+              "input_eligible": true,
+              "output_occurrences": 0
+            },
+            "hines": {
+              "input_eligible": true,
+              "output_occurrences": 0
+            },
+            "contrary_demand": {
+              "input_eligible": true,
+              "output_occurrences": 0
+            }
+          },
+          "validation_supported": null,
+          "cost_usd": null
+        }
+      }
+    }
+  },
+  "method_receipts": {
+    "field_investigation_field_map": {
+      "version": 3,
+      "sha256": "021f4d504c188408bb9e7013688778ddbcfd3bbf8d6f042fd1540f2bf5b3d665",
+      "dependencies": [
+        {
+          "key": "multimedia_source_criticism",
+          "version": 1,
+          "sha256": "694b48a78c2a5fc1fe313dda21e419ebc317d4112560f22b78a634ca871da887"
+        },
+        {
+          "key": "causal_mechanism_audit",
+          "version": 1,
+          "sha256": "1828cd7e0e7c9bc7486cbc3dce14eebb52dabf82caf29b8169952f5daa7bfcf5"
+        },
+        {
+          "key": "institutional_argument_criticism",
+          "version": 1,
+          "sha256": "ec035f66a29e04ed2ed0da68a5b5f1c3d283e92659b359dd5ae5ad37156a746b"
+        }
+      ]
+    },
+    "field_investigation_adjudicate": {
+      "version": 2,
+      "sha256": "c09ae262379f1cf4f2a26d52f85fdc855327903a00ab5ec69278bd8b652ae313",
+      "dependencies": [
+        {
+          "key": "multimedia_source_criticism",
+          "version": 1,
+          "sha256": "694b48a78c2a5fc1fe313dda21e419ebc317d4112560f22b78a634ca871da887"
+        },
+        {
+          "key": "causal_mechanism_audit",
+          "version": 1,
+          "sha256": "1828cd7e0e7c9bc7486cbc3dce14eebb52dabf82caf29b8169952f5daa7bfcf5"
+        },
+        {
+          "key": "concept_case_stress_test",
+          "version": 1,
+          "sha256": "a08c9cb47d0f3871f975569f22dc69ff628cbaac093beed0ec2c6feba8ab0fa6"
+        },
+        {
+          "key": "institutional_argument_criticism",
+          "version": 1,
+          "sha256": "ec035f66a29e04ed2ed0da68a5b5f1c3d283e92659b359dd5ae5ad37156a746b"
+        }
+      ]
+    },
+    "field_investigation_memo": {
+      "version": 2,
+      "sha256": "f09bfe57b2386d8429bec603a696c2bbd74c39e86a5fce97225facbe7adbe627",
+      "dependencies": [
+        {
+          "key": "multimedia_source_criticism",
+          "version": 1,
+          "sha256": "694b48a78c2a5fc1fe313dda21e419ebc317d4112560f22b78a634ca871da887"
+        },
+        {
+          "key": "causal_mechanism_audit",
+          "version": 1,
+          "sha256": "1828cd7e0e7c9bc7486cbc3dce14eebb52dabf82caf29b8169952f5daa7bfcf5"
+        },
+        {
+          "key": "concept_case_stress_test",
+          "version": 1,
+          "sha256": "a08c9cb47d0f3871f975569f22dc69ff628cbaac093beed0ec2c6feba8ab0fa6"
+        },
+        {
+          "key": "institutional_argument_criticism",
+          "version": 1,
+          "sha256": "ec035f66a29e04ed2ed0da68a5b5f1c3d283e92659b359dd5ae5ad37156a746b"
+        }
+      ]
+    }
+  },
+  "provider_files": [
+    {
+      "file": "provider-01-request.json",
+      "sha256": "687ce6201c40d5d59c43f0de4427fc831277db5a920ce52139ba2a43a70d41b9"
+    },
+    {
+      "file": "provider-01-response.json",
+      "sha256": "424f4cac6a5a03f1312a84eb69ebceb388e93647f04ef3a03b6959a990c70ce5"
+    },
+    {
+      "file": "provider-02-request.json",
+      "sha256": "0f71fb2135fcc43cc3e088f7b2cd6a3d3a87dfbccb195d9081a6172c478da310"
+    },
+    {
+      "file": "provider-02-response.json",
+      "sha256": "6d49c3683a63ca876573af8898dfd3bad78422fbd3a12822803497b50a8318a7"
+    },
+    {
+      "file": "provider-03-request.json",
+      "sha256": "47d902c697e33c5c45d5e465c64eaaf1c90095439335b2b3368edd7f467c2da2"
+    },
+    {
+      "file": "provider-03-response.json",
+      "sha256": "fffc298ee424e5a41c2d2ba68222230d0e6ebca6d41b147fa3d21ca995c0780a"
+    },
+    {
+      "file": "provider-04-request.json",
+      "sha256": "1b23b2158ebbcf5a4c76a17e0ab80320b9575c5b654a1213f94412e5eaedf083"
+    },
+    {
+      "file": "provider-04-response.json",
+      "sha256": "ee20982b40976b3637e85d232c6f4920120ab3043f7f4119feca2b64b58cbb96"
+    },
+    {
+      "file": "provider-05-request.json",
+      "sha256": "54baf9c23a0487097906835e48835bb6fffc1e3fa4825458fd7768a893d03474"
+    },
+    {
+      "file": "provider-05-response.json",
+      "sha256": "45f91c7089f74b12f3bd2a295e4bccf5257cba2a3eb113991466b49a7e2e0b6e"
+    },
+    {
+      "file": "provider-06-request.json",
+      "sha256": "6e22db33277dd71ce7ff6a1f09b13dfd4cd394d751ef44e644e48e69448b02f9"
+    },
+    {
+      "file": "provider-06-response.json",
+      "sha256": "505e92a65d8266af4a814002c8665f7d767a4168356df29e13bb5a70afb50934"
+    },
+    {
+      "file": "provider-07-request.json",
+      "sha256": "9634ba34c7bf8cdc628df929278a64e09d68314596eb2ee327e1325c51b8313e"
+    },
+    {
+      "file": "provider-07-response.json",
+      "sha256": "802c2a0141fa15980e993a28f678cc1a07c917f0ccb76512a9c8439cccbe57d3"
+    },
+    {
+      "file": "provider-08-request.json",
+      "sha256": "0b859302715b79340c248b799402f57af1d8748d1652c750233ec1ce9bc7fcce"
+    },
+    {
+      "file": "provider-08-response.json",
+      "sha256": "dca759f4c815122f23e0ceeac16727d2fdec7e02f3407e2f3e5c5d2110f5fac4"
+    },
+    {
+      "file": "provider-09-request.json",
+      "sha256": "780492aee1553d91f8f86a465375338ad124d9985a09f9aacf124500594ea113"
+    },
+    {
+      "file": "provider-09-response.json",
+      "sha256": "70358762ef6eb70df6baf0bc539e06e2e6dc75b3b739703c69f379e961138364"
+    },
+    {
+      "file": "provider-10-request.json",
+      "sha256": "213e514f63cd4db11291383dd1b730e3f288572e82ef2472bd719059d487ae78"
+    },
+    {
+      "file": "provider-10-response.json",
+      "sha256": "df205cabf23167d611ee76ff7671e0b907565a080d8e1b7c80f682160817a0fe"
+    },
+    {
+      "file": "provider-11-request.json",
+      "sha256": "f8a703fd57a048dba2e485710a13c630639265fcd6b902077ef3e7901a862769"
+    }
+  ],
+  "providers_returned": 10,
+  "adapter_entries_without_response": 1,
+  "admission_review": {
+    "refused_before_backend": 1,
+    "unresolved_provider_calls": 0,
+    "basis": "Recorded SpendLimit at spend_guard.reserve before backend.execute; ten settled reservations and responses. The wrapper wrote request 11 before admission, leaving a stale invoking label. No resume or additional request was made."
+  },
+  "conservative_charged_or_reserved_usd": 6.19196,
+  "reservation_ledger": {
+    "base_cost_usd": 0,
+    "attempts": [
+      {
+        "id": "8f3caf15302743c0b738802d1593e249",
+        "model": "openrouter/openai/gpt-5.6-sol",
+        "label": "field_investigation_field_map | oneshot",
+        "ceiling_usd": 2.066324,
+        "status": "settled",
+        "input_sha256": "e2b5a6b68c1edc513dd0fb1fce5935f93061d362f25e05c991ab1ae4e250e28d",
+        "max_output_tokens": 16000,
+        "input_tokens": 118698,
+        "output_tokens": 7107,
+        "cost_usd": 0.545862
+      },
+      {
+        "id": "522ef77ff6504e5e9aab8f3926a62c1e",
+        "model": "openrouter/openai/gpt-5.6-sol",
+        "label": "field_investigation_adjudicate | oneshot",
+        "ceiling_usd": 2.678356,
+        "status": "settled",
+        "input_sha256": "37de5804a10b0f35f4edb2cc6091adaf16d39e9593dc01ab7a2f1311596f4603",
+        "max_output_tokens": 16000,
+        "input_tokens": 163796,
+        "output_tokens": 8741,
+        "cost_usd": 0.742594
+      },
+      {
+        "id": "4292e43c06024ac58c9da48e11e51401",
+        "model": "openrouter/openai/gpt-5.6-sol",
+        "label": "field_investigation_memo | oneshot",
+        "ceiling_usd": 2.847784,
+        "status": "settled",
+        "input_sha256": "1484abcdd339b361d7d45ba14bc1a212b2e72df12b542e3f2062942e1130119a",
+        "max_output_tokens": 16000,
+        "input_tokens": 173036,
+        "output_tokens": 9305,
+        "cost_usd": 0.785194
+      },
+      {
+        "id": "4349aa1bb86f42259344b6cb7746b145",
+        "model": "openrouter/openai/gpt-5.6-sol",
+        "label": "field_investigation_field_map | oneshot",
+        "ceiling_usd": 1.946896,
+        "status": "settled",
+        "input_sha256": "81f52afb0677f637dc4237734f9fadb51fd69ded52996385a6fe4e37db02173a",
+        "max_output_tokens": 16000,
+        "input_tokens": 110382,
+        "output_tokens": 6701,
+        "cost_usd": 0.508538
+      },
+      {
+        "id": "e0efb8f5dccc441eb653da054c6d3005",
+        "model": "openrouter/openai/gpt-5.6-sol",
+        "label": "field_investigation_adjudicate | oneshot",
+        "ceiling_usd": 2.321028,
+        "status": "settled",
+        "input_sha256": "40779d5de12315419b0c4568f0199776fbfa0a7acce8483c159c873787ccad80",
+        "max_output_tokens": 16000,
+        "input_tokens": 139082,
+        "output_tokens": 7778,
+        "cost_usd": 0.634108
+      },
+      {
+        "id": "1fe8961235b34c708559887f6c0c7e1b",
+        "model": "openrouter/openai/gpt-5.6-sol",
+        "label": "field_investigation_memo | oneshot",
+        "ceiling_usd": 2.478536,
+        "status": "settled",
+        "input_sha256": "0671993df5c2d4d1cef749ddaef6192c19cf4f195eb5472c013a903492b30d43",
+        "max_output_tokens": 16000,
+        "input_tokens": 147317,
+        "output_tokens": 7548,
+        "cost_usd": 0.664748
+      },
+      {
+        "id": "32c7989cf97d4d5096a55c824471f92a",
+        "model": "openrouter/openai/gpt-5.6-sol",
+        "label": "field_investigation_field_map | oneshot",
+        "ceiling_usd": 1.946896,
+        "status": "settled",
+        "input_sha256": "c6f91eebebc3c6c2ab03afeb753449bb8dcfd4aa6448dc656517e8e06c9d3f73",
+        "max_output_tokens": 16000,
+        "input_tokens": 110382,
+        "output_tokens": 6705,
+        "cost_usd": 0.508578
+      },
+      {
+        "id": "eecd7c95a16644de97ee652f536c39cf",
+        "model": "openrouter/openai/gpt-5.6-sol",
+        "label": "field_investigation_adjudicate | oneshot",
+        "ceiling_usd": 2.30266,
+        "status": "settled",
+        "input_sha256": "cf9a746eaaef1793b425c516e158ce1c85efb682179cb27c3cc397693ab81cfd",
+        "max_output_tokens": 16000,
+        "input_tokens": 137756,
+        "output_tokens": 6105,
+        "cost_usd": 0.612074
+      },
+      {
+        "id": "9aa0c7df36de4762af39c565cd19531d",
+        "model": "openrouter/openai/gpt-5.6-sol",
+        "label": "field_investigation_memo | oneshot",
+        "ceiling_usd": 2.430716,
+        "status": "settled",
+        "input_sha256": "87dc6de081b4d878e993bffcbb2340154a2dce6bc17fd6f4dfcd4e26f48e3867",
+        "max_output_tokens": 16000,
+        "input_tokens": 144353,
+        "output_tokens": 7280,
+        "cost_usd": 0.650212
+      },
+      {
+        "id": "759a7f156cb844a291762a809246c249",
+        "model": "openrouter/openai/gpt-5.6-sol",
+        "label": "field_investigation_field_map | oneshot",
+        "ceiling_usd": 2.066324,
+        "status": "settled",
+        "input_sha256": "b3f4baac8d36f47b3efb4c510794a22fae61284c8d63fc8175413358dc981fda",
+        "max_output_tokens": 16000,
+        "input_tokens": 118698,
+        "output_tokens": 6526,
+        "cost_usd": 0.540052
+      }
+    ]
+  },
+  "original_memo_sha256": "25b09a14dd36f29316c05c4b11a3517714f1e5e9054e813c6f59036756805ea9"
+}
