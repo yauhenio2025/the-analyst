@@ -685,6 +685,7 @@ def run_job_investigation(job, docs, *, cancel_check=None, persist=None, chain=C
     from src.dossier.drain import is_draining
     from src.dossier.engine_call import call_engine
     from src.dossier import events
+    from src.dossier.execution_lock import assert_owned
     from src.readings.registry import index_job, reading, readings_for
     packet = next((json.loads(d.text) for d in docs if d.key == "investigation" and d.role == "plan"), None)
     if not packet or packet.get("kind") != chain:
@@ -696,6 +697,7 @@ def run_job_investigation(job, docs, *, cancel_check=None, persist=None, chain=C
         packet = hydrate_prior_readings(packet, lookup_index=readings_for, lookup_reading=reading)
         put_blob(f"investigation-context:{job.id}", "application/json", _json(packet).encode())
     def check():
+        assert_owned(job.id)
         if cancel_check and cancel_check():
             raise DossierCancelled(f"{chain} cancelled between calls")
         if is_draining():
@@ -703,6 +705,7 @@ def run_job_investigation(job, docs, *, cancel_check=None, persist=None, chain=C
     indexed_phases = {}
     def save(state):
         # Fail before another paid call if durable artifact persistence is unavailable.
+        assert_owned(job.id)
         put_blob(f"investigation:{job.id}", "application/json", _json(state).encode())
         job.analysis = state["analysis"]
         from src.dossier.schemas import Receipt

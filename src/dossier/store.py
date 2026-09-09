@@ -254,6 +254,8 @@ COLUMN_FOR_FIELD = {
 
 def update_job(job_id: str, **fields: Any) -> None:
     """Persist selected fields (Pydantic models / dicts / lists are JSON-encoded)."""
+    from src.dossier.execution_lock import assert_owned
+    assert_owned(job_id)
     ensure_table()
     if not fields:
         return
