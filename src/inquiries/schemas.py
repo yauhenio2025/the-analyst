@@ -176,6 +176,26 @@ class Execution(StrictModel):
     list_price_usd: float | None = Field(default=None, ge=0, allow_inf_nan=False)
 
 
+class InquiryReview(StrictModel):
+    verdict: Literal["ready", "revise"]
+    problem_alignment: Text
+    competing_explanations: Text
+    next_step: Text
+    issues: list[Text] = Field(max_length=12)
+
+    @model_validator(mode="after")
+    def coherent_verdict(self):
+        if (self.verdict == "revise") != bool(self.issues):
+            raise ValueError("A revise verdict needs issues; a ready verdict has none")
+        return self
+
+
+class ReviewReceipt(StrictModel):
+    result_fingerprint: Text
+    assessment: InquiryReview
+    execution: Execution
+
+
 class CompleteRequest(StrictModel):
     prepared_id: Identifier
     input_fingerprint: Text
@@ -183,6 +203,21 @@ class CompleteRequest(StrictModel):
     input: PrepareRequest
     result: InquiryResult
     execution: Execution
+    review: ReviewReceipt | None = None
+
+    @model_validator(mode="before")
+    @classmethod
+    def reviewed_draft_matches(cls, data):
+        # Bind the attestation to the exact worker JSON before Pydantic adds defaults.
+        # This checks identity, never the semantic merit of a review.
+        if isinstance(data, dict) and isinstance(data.get("review"), dict):
+            import hashlib
+            import json
+            fingerprint = hashlib.sha256(json.dumps(data.get("result"), ensure_ascii=False,
+                sort_keys=True, separators=(",", ":"), allow_nan=False).encode()).hexdigest()
+            if data["review"].get("result_fingerprint") != fingerprint:
+                raise ValueError("Review does not match the submitted draft")
+        return data
 
 
 class Feedback(StrictModel):

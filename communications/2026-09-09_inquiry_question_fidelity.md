@@ -1,0 +1,13 @@
+# Keep the research problem through account construction
+
+The Riley inquiry exposed premature narrowing: a conditional question about capitalism's renewal and class politics became a mechanism and test centered on institutions for solidarity. National incorporation was mentioned but not developed at comparable causal depth. Stacks also omitted the original problem from the accepted-question handoff while retaining the model's motivation.
+
+Central question development, inquiry preparation, construction and retesting now distinguish explanation from design for a desired outcome. Consequential rival outcomes require positive causal explanations and an account of the conditions separating them. They shape the main explanation and the choice of test, rather than appearing only as caveats. These are general reasoning duties, not case-specific political conclusions or keyword checks.
+
+`constructive_inquiry_review` is a separate reusable method. Stacks requests it with `context.preparation.review_contract = question-fidelity-v1`. `/v1/inquiries/prepare` freezes the review record, review schema and two-correction bound into the method identity, and returns `review` alongside the reading specification. A fresh subscription invocation assesses the draft's problem alignment, competing explanations and next step. A revise verdict has concrete issues; ready has none. The worker may correct and review again twice, retaining every step.
+
+Completion of such a preparation requires a ready assessment and the SHA-256 fingerprint of the exact submitted draft JSON. The receipt and shared reading retain the assessment and reviewer execution metadata. This is an execution and identity requirement, not a deterministic guarantee of scholarly adequacy. Quote verification remains separately scoped to source presence. Neither a reviewer nor a matching quotation accepts an author commitment.
+
+Clients and frozen preparations without the review contract remain supported. Their identities and completion rules are unchanged. Updating a review record changes new preparation identities and never retroactively changes a frozen reading. Unknown review contracts fail explicitly.
+
+Validation: 135 central inquiry, planning, question and method tests pass, including missing/non-ready review rejection, draft identity mismatch, inconsistent verdict rejection, frozen-review continuity after method edits, and legacy completion. Stacks cross-service validation passes with both real service stores and fixture model execution. Real-case quality evaluation and deployment evidence will be recorded in the Stacks companion release note.

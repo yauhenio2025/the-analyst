@@ -12,7 +12,7 @@ from typing import Any
 
 from fastapi import HTTPException
 
-from src.inquiries.schemas import CompleteRequest, Feedback, InquiryResult, PrepareRequest
+from src.inquiries.schemas import CompleteRequest, Feedback, InquiryResult, InquiryReview, PrepareRequest
 
 CONTRACT_VERSION = 1
 
@@ -64,7 +64,22 @@ def prepare(request: PrepareRequest) -> dict:
     frozen_input = input_data(request)
     record = method_record(request.method)
     schema = InquiryResult.model_json_schema()
-    method_fingerprint = digest({"record": record, "output_schema": schema, "contract_version": CONTRACT_VERSION})
+    method_identity = {"record": record, "output_schema": schema, "contract_version": CONTRACT_VERSION}
+    review = None
+    contract = request.context.preparation.get("review_contract")
+    if contract:
+        if contract != "question-fidelity-v1":
+            raise HTTPException(422, "Unsupported inquiry review contract")
+        review_record = method_record("constructive_inquiry_review")
+        process = review_record["operationalization"]["process"]
+        lines = [process["framing"]]
+        for dimension in process["dimensions"]:
+            lines.extend([dimension["name"], *dimension["questions"], dimension["method_card"]])
+        lines.extend(s["brief"] for s in process["steps"] if s.get("kind") == "synthesize" and s.get("brief"))
+        review = {"contract": contract, "system_prompt": "\n\n".join(lines),
+                  "output_schema": InquiryReview.model_json_schema(), "max_corrections": 2}
+        method_identity["review"] = {"record": review_record, **review}
+    method_fingerprint = digest(method_identity)
     input_fingerprint = digest(frozen_input)
     prepared_id = "prepared-" + digest([input_fingerprint, method_fingerprint])
     existing = _get("inquiry:" + prepared_id)
@@ -91,6 +106,8 @@ def prepare(request: PrepareRequest) -> dict:
               "method_fingerprint": method_fingerprint, "source_manifest": source_manifest,
               "system_prompt": system_prompt,
               "user_prompt": encoded({"input": frozen_input, "output_schema": schema}).decode(), "output_schema": schema}
+    if review:
+        public["review"] = review
     saved = _put_once("inquiry:" + prepared_id, {**public, "input": frozen_input, "method_record": record,
                                                 "contract_version": CONTRACT_VERSION, "created_at": now()})
     return _public_preparation(saved)
@@ -166,7 +183,7 @@ def _reading(receipt: dict, prepared: dict) -> dict:
             "receipt_id": receipt["receipt_id"], "input_fingerprint": receipt["input_fingerprint"],
             "method_fingerprint": receipt["method_fingerprint"], "source_manifest": prepared["source_manifest"],
             "context": prepared["input"]["context"], "result": result, "validation": receipt["validation"],
-            "author_feedback": feedback_for(receipt["receipt_id"])}
+            "author_feedback": feedback_for(receipt["receipt_id"]), "review": receipt.get("review")}
 
 
 def complete(request: CompleteRequest) -> dict:
@@ -178,6 +195,8 @@ def complete(request: CompleteRequest) -> dict:
             request.method_fingerprint != prepared["method_fingerprint"]):
         raise HTTPException(409, "Stale or changed inquiry input/method fingerprint")
     # Completion is checked against its frozen method, even after a catalogue edit.
+    if prepared.get("review") and (request.review is None or request.review.assessment.verdict != "ready"):
+        raise HTTPException(422, "This frozen inquiry requires a ready review of the submitted draft")
     result, validation = _shape(request)
     receipt_id = "inquiry-" + request.prepared_id.removeprefix("prepared-")
     key = "inquiry:receipt:" + receipt_id
@@ -189,6 +208,8 @@ def complete(request: CompleteRequest) -> dict:
                  "reading": {"job_id": receipt_id, "phase": prepared["method"]},
                  "execution": request.execution.model_dump(mode="json"), "source_manifest": prepared["source_manifest"],
                  "created_at": now()}
+    if request.review is not None:
+        candidate["review"] = request.review.model_dump(mode="json")
     receipt = _put_once(key, candidate)
     if receipt["result_fingerprint"] != result_fingerprint:
         raise HTTPException(409, "This prepared inquiry already has a different completed result")
