@@ -67,11 +67,14 @@ def estimate_usd(model: str, chars: int, *, depth: str, mid_model: str = "") -> 
     return round(cost, 4)
 
 
-def _context_block(packet: Optional[dict], docs: list) -> str:
+def _context_block(packet: Optional[dict], docs: list, engine_key: str = 'citation_explainer') -> str:
     parts = []
     if packet:
-        parts.append("CITATION PACKET (context, not an anchor source; its citation ids are the `ref` field of the rows; "
-                     "the passage sentence is the one to find in the section):\n" + json.dumps(packet, ensure_ascii=False))
+        label = ("CITATION PACKET (context, not an anchor source; its citation ids are the `ref` field of the rows; "
+                 "the passage sentence is the one to find in the section):\n") if engine_key == 'citation_explainer' else (
+                 "RESEARCH CONTEXT (question, source metadata, prior analysis and instructions for this method; "
+                 "not an original source for quotation verification):\n")
+        parts.append(label + json.dumps(packet, ensure_ascii=False))
     for d in docs:
         role = getattr(d, "role", "source") or "source"
         if role == "source":
@@ -91,7 +94,7 @@ def call_engine(engine_key: str, sources: list[SourceSpec], *, packet: Optional[
     from src.executor.context_broker import split_ledger
     from src.executor.process_runner import ProcessStep, resolve_step_model, run_oneshot_checked
     from src.operationalizations.registry import get_operationalization_registry
-    from src.dossier.cohort_export import fields_of
+    from src.executor.ledger_walls import _field_values
 
     if depth not in DEPTHS:
         raise ValueError(f"depth must be one of {DEPTHS}; the deep process runs as a dossier job")
@@ -113,7 +116,7 @@ def call_engine(engine_key: str, sources: list[SourceSpec], *, packet: Optional[
     documents = {d.key: d.text for d in docs if (getattr(d, "role", "source") or "source") in unpacked_roles | {"source"} and d.text}
     if not documents:
         raise ValueError("no source with text was supplied (a source needs kind=paste and text)")
-    upstream = _context_block(packet, [d for d in docs if (getattr(d, "role", "source") or "source") not in unpacked_roles])
+    upstream = _context_block(packet, [d for d in docs if (getattr(d, "role", "source") or "source") not in unpacked_roles], engine_key)
     chars = sum(len(v) for v in documents.values()) + len(upstream)
     cap = max_chars or MAX_CHARS
     if chars > cap:
@@ -124,8 +127,10 @@ def call_engine(engine_key: str, sources: list[SourceSpec], *, packet: Optional[
     if est > spend_cap_usd:
         raise ValueError(f"estimated ${est:.2f} for {chars:,} chars on {strong} at {depth} depth passes the cap ${spend_cap_usd:.2f}; nothing was spent")
     t0 = time.time()
-    result = run_oneshot_checked(cap_def, spec, documents, depth=depth, check=(depth == "standard"),
-                                 tier_overrides={"strong": strong} if model else None, call_fn=call_fn, upstream_context=upstream)
+    from src.executor.output_budget import limit
+    with limit(spec.max_output_tokens):
+        result = run_oneshot_checked(cap_def, spec, documents, depth=depth, check=(depth == "standard"),
+                                     tier_overrides={"strong": strong} if model else None, call_fn=call_fn, upstream_context=upstream)
     prose, ledger = split_ledger(result.final_content or "")
     rows = parse_rows(ledger or result.final_content or "")
     witnesses = prepare_citation_sources(engine_key, documents)[0] if engine_key in FAMILY else documents   # the wall reads what the engine read
@@ -133,8 +138,8 @@ def call_engine(engine_key: str, sources: list[SourceSpec], *, packet: Optional[
     failed = set(rep.failed_ids)
     row_dicts = []
     for r in rows:
-        f = fields_of(r.render())
-        row_dicts.append({"id": r.id, "dim": r.dim or f.get("dim", ""), "doc": r.doc or f.get("doc", ""), "finding": r.finding or r.text.split(" — ", 1)[0],
+        f = {name: value for name, value, _ in _field_values(r.text)}
+        row_dicts.append({"id": r.id, "dim": r.dim or f.get("dim", ""), "doc": r.doc, "finding": r.finding or r.text.split(" — ", 1)[0],
                           "fields": {k: v for k, v in f.items() if k not in ("anchor", "doc", "dim")}, "anchor": r.anchor,
                           "anchor_verified": bool(r.anchor_verified), "status": r.status, "confidence": r.confidence})
     renderer = _renderers().get(engine_key)

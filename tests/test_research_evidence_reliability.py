@@ -120,3 +120,14 @@ def test_workflow_keeps_batch_prose_support_in_final_even_when_global_omits_it()
     assert len(state['field_maps']) > 1 and state['complete']
     assert target in state['call_input_manifests']['field_map']['evidence_ids']
     assert target in state['call_input_manifests']['memo']['evidence_ids']
+
+
+def test_recovery_does_not_hide_conflicting_rows_that_reuse_an_id():
+    text = ('- [E1.F1] Read the internal comparator — dim: candidate — uid: book — decision: read — reason: Internal comparator\n'
+            '- [E1.F1] Defer historical material — dim: candidate — uid: book — decision: defer — reason: Old context')
+    result = {'rows': [], 'final_output': text}
+    recover_answer_rows(result)
+    assert len(result['rows']) == 2
+    assert selection_groups(result['rows'], {'book'})['book']['selection_conflict']
+    recover_answer_rows(result)
+    assert len(result['rows']) == 2

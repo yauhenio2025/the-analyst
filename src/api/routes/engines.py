@@ -774,6 +774,11 @@ def call_engine_route(engine_key: str, req: EngineCallRequest) -> dict:
     from src.dossier.engine_call import call_engine
 
     try:
+        if engine_key == 'research_evidence_feedback':
+            from src.dossier.research_feedback import run
+            if req.depth != 'surface' or req.model:
+                raise ValueError('Experimental research feedback uses its frozen surface method and model')
+            return run(req.sources, packet=req.packet, spend_cap_usd=req.spend_cap_usd, method_sha256=req.method_sha256)
         return call_engine(engine_key, req.sources, packet=req.packet, depth=req.depth, model=req.model,
                            spend_cap_usd=req.spend_cap_usd, refs=req.refs, expected_method_sha256=req.method_sha256)
     except KeyError as e:

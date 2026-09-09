@@ -189,6 +189,9 @@ def run_engine_call(
         thinking_tokens, duration_ms, retries
     """
     config = resolve_model_config(phase_number, model_hint, depth, requires_full_documents)
+    from src.executor.output_budget import current as output_limit
+    if output_limit() is not None:
+        config['max_tokens'] = min(config['max_tokens'], output_limit())
     if force_no_thinking:
         config["effort"] = None
     label = label or f"Phase {phase_number}"

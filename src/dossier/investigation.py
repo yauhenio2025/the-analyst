@@ -42,18 +42,31 @@ def recover_answer_rows(result):
     """
     from src.dossier.explainer import rows_with_fields
     existing = list(result.get("rows") or [])
-    keyed = {(r.get("id"), r.get("doc"), r.get("dim")): dict(r) for r in existing}
+    recovered = [dict(r) for r in existing]
+    used = set()
     failed = set((result.get("wall") or {}).get("failed_ids") or [])
     for raw in rows_with_fields(result.get("final_output") or "", failed):
         key = (raw["id"], raw["doc"], raw["dim"])
-        prior = keyed.get(key, {})
-        keyed[key] = {**prior, "id": raw["id"], "dim": raw["dim"], "doc": raw["doc"],
+        # Repeated IDs can contain distinct dispositions or claims. Match the
+        # actual finding/UID when enriching a row; never let ID reuse erase a
+        # competing row before the selection/identity validators can see it.
+        matches = [i for i, r in enumerate(recovered) if i not in used
+                   and (r.get('id'), r.get('doc'), r.get('dim')) == key
+                   and r.get('finding', r.get('text', '')) == raw['text']
+                   and _field(r, 'uid') == raw['fields'].get('uid', '')]
+        index = matches[0] if matches else len(recovered)
+        prior = recovered[index] if matches else {}
+        merged = {**prior, "id": raw["id"], "dim": raw["dim"], "doc": raw["doc"],
                       "finding": raw["text"], "anchor": raw["anchor"],
                       "fields": {**(prior.get("fields") or {}),
                                  **{k: v for k, v in raw["fields"].items() if k not in ("anchor", "doc", "dim")}},
                       "confidence": raw.get("confidence", ""),
                       "anchor_verified": prior.get("anchor_verified", False)}
-    recovered = list(keyed.values())
+        if matches:
+            recovered[index] = merged
+        elif merged not in recovered:
+            recovered.append(merged)
+        used.add(index)
     if recovered != existing:
         result.setdefault("original_rows", existing)
         result["rows"] = recovered

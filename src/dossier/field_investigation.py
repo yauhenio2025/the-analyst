@@ -177,6 +177,8 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
                       "evidence": [], "readings": [], "read_inputs": {}, "complete": False}
     if state.get("packet_sha256") != fingerprint:
         raise ValueError("the frozen investigation packet changed; create a new run")
+    if state.get('complete'):
+        return state  # A completed historical answer is not silently reinterpreted on resume.
     from src.engines.methods import field_methods, validate_contract, validate_snapshot, method_receipt
     validate_contract(packet)
     if 'method_snapshots' not in state:
@@ -204,6 +206,11 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
         if stage in contracts and contracts[stage] != contract:
             raise ValueError(f'{stage} frozen call input changed; fork a new investigation instead of reusing stale output')
         if stage in state["calls"]:
+            previous_ids = state.get('call_input_manifests', {}).get(stage, {}).get('evidence_ids')
+            if (stage not in contracts and 'evidence' in upstream and previous_ids is not None
+                    and set(previous_ids) != {e['citation_id'] for e in upstream['evidence']}):
+                raise ValueError(f'{stage} historical support inputs differ from the corrected route; '
+                                 'create a separate replay instead of reusing a stale synthesis')
             result = state["calls"][stage]
             recover_answer_rows(result)
             return result
@@ -284,6 +291,9 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
               "question": packet["question"], "scope": packet.get("scope", {}),
               "field_collections": packet.get("field_collections", []), "field_gaps": packet.get("field_gaps", []),
               "mode": state["mode"], "as_of": state.setdefault("as_of", _now())}
+    if packet.get('research_feedback'):
+        common['research_feedback'] = packet['research_feedback']
+        state['research_feedback'] = packet['research_feedback']
     context = [c for c in _context(packet, bodies, cap=40000) if c["key"] != "prior_investigations"]
     baseline = _baseline_context(packet)
     baseline_ranges = [(0, len(baseline))] if len(baseline) <= 200000 else [(0, 100000), (len(baseline) - 100000, len(baseline))]
@@ -487,6 +497,7 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
                                  "prior_context": context, "limits": limits["primary"]})
         resolved = selection_groups(reconciliation.get('rows', []), decisions)
         conflicts = {uid: r for uid, r in resolved.items() if r['selection_conflict']}
+        conflicts.update({uid: r for uid, r in decisions.items() if r.get('selection_conflict') and uid not in resolved})
         if conflicts:
             checkpoint('author_selection_conflicts', selection_conflicts=conflicts)
             repair = engine('author_selection:conflict_repair', 'field_investigation_author_select',
