@@ -35,12 +35,36 @@ def load(archive: Path, state_path: Path):
     return packet, bodies
 
 
+def redo_from_memo(state):
+    """Forget the final memo stages of a saved state so they run again under the current methods: the paid readings, the
+    adjudication and every cost stay; the memo, critic and revision calls, their contracts, manifests and frozen methods go."""
+    from datetime import datetime, timezone
+    redo = {'from': 'memo', 'at': datetime.now(timezone.utc).isoformat(), 'cost_before_usd': state.get('cost_usd'),
+            'forgotten_calls': sorted(k for k in state.get('calls', {}) if k.startswith('memo')),
+            'previous_memo_source': state.get('memo_source')}
+    for table in ('calls', 'call_contracts', 'call_input_manifests', 'stage_status'):
+        for k in list(state.get(table) or {}):
+            if k.startswith('memo'):
+                del state[table][k]
+    for k in ('memo_critic', 'field_investigation_memo'):
+        (state.get('method_snapshots') or {}).pop(k, None)
+    for k in [k for k in state if k.startswith('memo') or k in ('changes', 'paused_reason', 'running_stage')]:
+        state.pop(k, None)
+    state['stages'] = [s for s in state.get('stages', []) if not s.startswith('memo') and s != 'done']
+    state['complete'] = False
+    state.setdefault('redo', []).append(redo)
+    return state
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument('--archive', required=True, type=Path)
     ap.add_argument('--research-state', required=True, type=Path)
     ap.add_argument('--out', required=True, type=Path)
     ap.add_argument('--execute-approved-usd', type=float, default=None)
+    ap.add_argument('--redo-from', choices=['memo'], default=None,
+                    help='on an existing state: forget the memo, critic and revision calls and their frozen methods so they run again under the '
+                         'current methods; every reading and the adjudication stay paid and reused')
     args = ap.parse_args()
     args.out.mkdir(parents=True, exist_ok=True, mode=0o700)
     args.out.chmod(0o700)
@@ -64,6 +88,10 @@ def main():
     engine_runner.FALLBACK_MODEL = MODEL
     state_path = args.out / 'state.json'
     state = json.loads(state_path.read_text()) if state_path.exists() else None
+    if state and args.redo_from == 'memo':
+        state = redo_from_memo(state)
+        save_redo = dict(state)
+        write(state_path, save_redo)
 
     def save(s):
         write(state_path, s)
@@ -86,6 +114,8 @@ def main():
     (args.out / 'memo.md').write_text((state.get('memo') or '') + '\n')
     (args.out / 'memo-draft.md').write_text((state.get('memo_draft') or '') + '\n')
     (args.out / 'memo-critic.md').write_text((state.get('memo_critic') or '') + '\n')
+    (args.out / 'memo-critic-of-revision.md').write_text((state.get('memo_critic_revision') or '') + '\n')
+    (args.out / 'memo-revision-1.md').write_text((state.get('memo_revision') or '') + '\n')
     (args.out / 'field-map-tables.md').write_text((state.get('field_map') or {}).get('final_output', '') + '\n')
     receipt = {'status': 'complete' if state.get('complete') else 'incomplete', 'cost_usd': state.get('cost_usd'), 'code_commit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
                'selected_primary_uids': state.get('selected_primary_uids'), 'plan_source': state.get('plan_source'), 'memo_source': state.get('memo_source'),
@@ -94,7 +124,10 @@ def main():
                'evidence': {'total': len(state.get('evidence') or []), 'verified': sum(1 for e in state.get('evidence') or [] if e.get('quote_verified')),
                             'with_voice': sum(1 for e in state.get('evidence') or [] if e.get('voice')), 'with_bearing': sum(1 for e in state.get('evidence') or [] if e.get('bearing')),
                             'speaker_not_in_context': sum(1 for e in state.get('evidence') or [] if e.get('speaker_in_context') is False)},
-               'memo_words': len((state.get('memo') or '').split()), 'draft_words': len((state.get('memo_draft') or '').split())}
+               'memo_words': len((state.get('memo') or '').split()), 'draft_words': len((state.get('memo_draft') or '').split()),
+               'unused_findings_after_draft': (state.get('memo_unused_findings') or {}).get('count'),
+               'unused_findings_after_revision': (state.get('memo_unused_after_revision') or {}).get('count'),
+               'dropped_citations': (state.get('memo_dropped_citations') or {}).get('count'), 'must_use': state.get('memo_must_use'), 'redo': state.get('redo')}
     write(args.out / 'receipt.json', receipt)
     print(json.dumps({k: receipt[k] for k in ('status', 'cost_usd', 'selected_primary_uids', 'memo_source', 'evidence', 'memo_words', 'draft_words')}), flush=True)
 

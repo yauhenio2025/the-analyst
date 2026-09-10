@@ -248,6 +248,58 @@ def _speaker_near(speaker, body, span, window=400):
     return any(t.casefold() in around for t in tokens)
 
 
+def cited_identities(prose):
+    """The evidence identities a memo cites in square brackets, read the way the citation wall reads them."""
+    from .citation_keys import citation_keys
+    return {token for group in re.findall(r"\[([^\[\]]+)\](?!\()", prose or "") for token in citation_keys(group)
+            if re.match(r"[^/\s,;]+/(?:[A-Z]\d+\.)?F\d+", token)}
+
+
+VOICE_ORDER = ("direct", "document", "reported", "narration")
+
+
+def unused_bearing_findings(tables, cited, *, limit=40, per_source=6):
+    """What the memo did not use: every verified finding that supports or undercuts an explanation and that the memo does not
+    cite, counted by source and listed with the speaker's own words first (direct, then document, reported, narration), undercutting
+    before supporting, at most a few per source so one transcript cannot fill the list. Code assembles it; the critic and the
+    revision read it and say, per finding that matters, use it or leave it and why."""
+    rows = []
+    for ex in tables.get("explanations") or []:
+        for label in ("supports", "undercuts"):
+            for c in ex.get(label) or []:
+                if c["citation_id"] not in cited:
+                    rows.append({"citation_id": c["citation_id"], "explanation": ex.get("id"), "bearing": label, "voice": c.get("voice"),
+                                 "speaker": c.get("speaker"), "title": c.get("title"), "finding": c.get("finding"), "quote": (c.get("quote") or "")[:160]})
+    by_source = {}
+    for r in rows:
+        by_source[r.get("title") or r["citation_id"].split("/")[0]] = by_source.get(r.get("title") or r["citation_id"].split("/")[0], 0) + 1
+    def rank(r):
+        v = (r.get("voice") or "").lower()
+        return (VOICE_ORDER.index(v) if v in VOICE_ORDER else len(VOICE_ORDER), 0 if r["bearing"] == "undercuts" else 1)
+    rows.sort(key=rank)
+    listed, taken = [], {}
+    for r in rows:
+        src = r["citation_id"].split("/")[0]
+        if taken.get(src, 0) < per_source:
+            taken[src] = taken.get(src, 0) + 1
+            listed.append(r)
+    return {"count": len(rows), "by_source": dict(sorted(by_source.items(), key=lambda kv: -kv[1])),
+            "rows": listed[:limit], "listed": min(len(listed), limit),
+            "note": "verified findings that support or undercut an explanation and that the memo does not cite; the speaker's own words first"}
+
+
+def dropped_citations(draft, revision, evidence):
+    """The identities the draft cited and the revision does not, by source, so a reader can see what a revision quietly dropped."""
+    gone = cited_identities(draft) - cited_identities(revision)
+    titles = {e["citation_id"]: e.get("title") for e in evidence}
+    by_source = {}
+    for cid in sorted(gone):
+        src = cid.split("/")[0]
+        entry = by_source.setdefault(src, {"title": titles.get(cid), "identities": []})
+        entry["identities"].append(cid)
+    return {"count": len(gone), "by_source": by_source}
+
+
 def _baseline_context(packet):
     """Keep reviewed memos whole without repeating multi-megabyte search artifacts."""
     priors = packet.get("prior_investigations") or []
@@ -307,9 +359,11 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
         state['method_snapshots'] = field_methods(legacy=legacy, institutional=institutional)
         state['method_origin'] = 'archived pre-refactor methods' if legacy else 'central registry frozen before first call'
     program = program_path(packet, state)
-    if program and 'memo_critic' not in state['method_snapshots']:
+    if program:
         from src.engines.methods import freeze_method
-        state['method_snapshots']['memo_critic'] = freeze_method('memo_critic')
+        for needed in ('memo_critic', 'field_investigation_memo'):
+            if needed not in state['method_snapshots']:
+                state['method_snapshots'][needed] = freeze_method(needed)
     for key, snapshot in state['method_snapshots'].items():
         validate_snapshot(snapshot, key)
     state.setdefault("quote_layout_reviews", packet.get("quote_layout_reviews") or {})
@@ -850,19 +904,43 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
         raise ValueError("memo support/revision validation failed; draft and full research retained")
     if program and not institutional:
         # The reader's three lines as a method, then one revision (2026-09-10). The draft stays if the revision fails its support check.
-        critic = engine("memo:critic", "memo_critic", [_spec("memo-draft", prose, "memo-draft")],
-                        {**{k: v for k, v in research.items() if k not in ("evidence", "prior_context", "field_map", "support_route")},
-                         "research_state": common.get("research_state"), "adjudication": adjudication.get("final_output"),
-                         "evidence_identities": sorted({e["citation_id"] for e in research["evidence"]})})
-        checkpoint("memo_critic", memo_critic=critic.get("final_output"), memo_critic_rows=critic.get("rows", []), memo_draft=prose)
+        # Code tells the critic and the writer what the draft did not use; a second critic reads the revision against the draft and
+        # names what it dropped; one more revision only when that critic says a dropped or unused finding must be used (2026-09-11).
+        tables = field_map.get("tables") or {}
+        critic_context = {**{k: v for k, v in research.items() if k not in ("evidence", "prior_context", "field_map", "support_route")},
+                          "research_state": common.get("research_state"), "adjudication": adjudication.get("final_output"),
+                          "evidence_identities": sorted({e["citation_id"] for e in research["evidence"]})}
+        unused = unused_bearing_findings(tables, cited_identities(prose))
+        critic = engine("memo:critic", "memo_critic", [_spec("memo-draft", prose, "memo-draft")], {**critic_context, "unused_bearing_findings": unused})
+        checkpoint("memo_critic", memo_critic=critic.get("final_output"), memo_critic_rows=critic.get("rows", []), memo_draft=prose, memo_unused_findings=unused)
         revised = engine("memo:revise", memo_key, reading_sources,
                          {**research, "adjudication": adjudication.get("final_output"), "previous_draft": memo.get("final_output"),
-                          "critic": critic.get("final_output"), "critic_rows": critic.get("rows", [])})
+                          "critic": critic.get("final_output"), "critic_rows": critic.get("rows", []), "unused_bearing_findings": unused})
         r_prose, r_changes, r_validation = _memo_validation(revised, state["evidence"], state["mode"])
         checkpoint("memo_revision", memo_revision=r_prose, memo_revision_rows=revised.get("rows", []), memo_revision_validation=r_validation)
         if r_validation["supported"]:
             memo, prose, changes, validation = revised, r_prose, r_changes, r_validation
             checkpoint("memo_validation", memo=prose, memo_rows=memo.get("rows", []), memo_validation=validation, changes=changes, memo_source="revision")
+            dropped = dropped_citations(state["memo_draft"], r_prose, state["evidence"])
+            unused_after = unused_bearing_findings(tables, cited_identities(r_prose))
+            critic2 = engine("memo:critic2", "memo_critic", [_spec("memo-revision", r_prose, "memo-revision")],
+                             {**critic_context, "reading": "revision", "previous_draft": state["memo_draft"], "first_critic": critic.get("final_output"),
+                              "dropped_citations": dropped, "unused_bearing_findings": unused_after})
+            must_use = [r for r in critic2.get("rows", []) if r.get("dim") == "unused" and _field(r, "disposition") == "must_use"]
+            checkpoint("memo_critic2", memo_critic_revision=critic2.get("final_output"), memo_critic_revision_rows=critic2.get("rows", []),
+                       memo_dropped_citations=dropped, memo_unused_after_revision=unused_after, memo_must_use=[r.get("id") for r in must_use])
+            if must_use:
+                revised2 = engine("memo:revise2", memo_key, reading_sources,
+                                  {**research, "adjudication": adjudication.get("final_output"), "previous_draft": revised.get("final_output"),
+                                   "critic": critic2.get("final_output"), "critic_rows": critic2.get("rows", []),
+                                   "unused_bearing_findings": unused_after, "dropped_citations": dropped})
+                r2_prose, r2_changes, r2_validation = _memo_validation(revised2, state["evidence"], state["mode"])
+                checkpoint("memo_revision2", memo_revision2=r2_prose, memo_revision2_validation=r2_validation)
+                if r2_validation["supported"]:
+                    memo, prose, changes, validation = revised2, r2_prose, r2_changes, r2_validation
+                    checkpoint("memo_validation", memo=prose, memo_rows=memo.get("rows", []), memo_validation=validation, changes=changes, memo_source="revision2")
+                else:
+                    checkpoint("memo_validation", memo_source="revision_kept_second_unsupported")
         else:
             checkpoint("memo_validation", memo_source="draft_kept_revision_unsupported")
     checkpoint("done", complete=True, running_stage=None, paused_reason=None)

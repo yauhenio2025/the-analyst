@@ -44,7 +44,12 @@ process:
     the question. If a critic and a previous_draft are supplied, revise the draft: develop the
     best idea the critic names, add the sentences a good answer would contain where the cited
     evidence supports them, correct the attribution risks, keep every supported claim and
-    identity, and do not lengthen the memo for its own sake.'
+    identity, and do not lengthen the memo for its own sake. If unused_bearing_findings are supplied, they
+    are the verified findings that support or undercut an explanation and that the draft does not cite,
+    counted by source: use the ones that matter, above all a participant''s or an official''s own words and
+    the record''s documents, or set each aside in a sentence that says why. A revision keeps every source
+    the draft cited unless a revision row says why it was dropped; if dropped_citations are supplied,
+    restore what the critic says must be used.'
   composition_role: argument
   scoped_outcomes: false
   routing:
@@ -166,9 +171,14 @@ process:
     is_final: true
     reader: the researcher developing a position through the thinker and field
     brief: Write the memo the researcher needs in order to think, not an inventory
-      of the corpus. Open with the answer, namely the one distinction or mechanism the
+      of the corpus. Open with the case in facts as the record gives them, in one paragraph
+      that carries its citations, namely the actors, the magnitudes (issuance, reserves, income, holdings,
+      shares of a market), the custodians and counterparties, the provisions and events at
+      stake. A reader must learn what happened before being told what it means. Then the
+      answer, namely the one distinction or mechanism the
       evidence best supports in reply to the question, stated in a paragraph and then
-      developed over several paragraphs in which the case evidence does the work. For
+      developed over several paragraphs in which the case evidence does the work, and in
+      which a participant or an official speaks in their own words where the record has them. For
       that argument say what the evidence establishes, what it does not, which rival
       explanation survives, what would weaken the argument, and the single observation
       or comparison that would discriminate. Recover the thinker's actual sourced position
@@ -179,8 +189,9 @@ process:
       counterevidence in the body where it bites. When a prior investigation is supplied,
       state what changed from the prior memo and why; in standalone mode do not invent
       an earlier memo. Cite primary and field findings inline as [uid/E1.Fn], with readable
-      author/title/year and supplied page loci. Close briefly with material coverage limits
-      and the two or three next questions that would most change the memo. Then provide
+      author/title/year and supplied page loci. Close with the two or three next questions
+      that would most change the memo; a coverage limit belongs beside the claim it
+      constrains, not in a closing inventory, and the receipt carries the counts. Then provide
       answer, revision, counterevidence and question ledger rows; do not replace the
       memo with the ledger.
     max_rows: 60
@@ -193,4 +204,4 @@ process:
     version: 1
   - engine_key: institutional_argument_criticism
     version: 1
-version: 2
+version: 3
