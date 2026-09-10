@@ -67,10 +67,36 @@ def exclude_primary_copies(field_rows: list[dict], primary: list[dict]) -> list[
     return out
 
 
-def build(base_packet: dict, snapshot: dict, research_state: dict | None) -> dict:
+def select_by_bearing(field_rows: list[dict], bearings: list[dict] | None, max_field: int | None) -> list[dict]:
+    """Read the sources that bear on an explanation first (supports, then undercuts, then context), within the reading cap; the rest
+    stay in the packet as leads with the reason. The Reporter's per-hit bearing is the ranking; nothing here judges relevance."""
+    if not max_field:
+        return field_rows
+    rank = {"supports": 0, "undercuts": 0, "context": 2, None: 3, "": 3}
+    by_url = {}
+    for h in bearings or []:
+        for u in (h.get("url"), h.get("canonical_url")):
+            if u:
+                by_url[u] = min(by_url.get(u, 9), rank.get(h.get("bearing"), 3))
+    available = [r for r in field_rows if r["body_state"] == "available"]
+    def key(r):
+        urls = [r.get("source_url"), (r.get("source_metadata") or {}).get("url"), (r.get("source_metadata") or {}).get("canonical_url")]
+        return (min([by_url.get(u, 3) for u in urls if u] or [3]), -r["body_chars"])
+    ordered = sorted(available, key=key)
+    keep = {r["uid"] for r in ordered[:max_field]}
+    out = []
+    for r in field_rows:
+        if r["body_state"] == "available" and r["uid"] not in keep:
+            r = {**r, "body": "", "body_chars": 0, "body_sha256": _hash(""), "page_spans": [], "body_state": "excluded",
+                 "selection_reason": f"Not read under the field reading cap of {max_field}: no supporting or undercutting bearing in discovery; retained as a lead"}
+        out.append(r)
+    return out
+
+
+def build(base_packet: dict, snapshot: dict, research_state: dict | None, *, bearings: list[dict] | None = None, max_field: int | None = None) -> dict:
     loaded = field_rows_from_snapshot(snapshot)
     packet = {k: v for k, v in base_packet.items() if k not in ("field", "field_collections", "field_gaps", "reporter_snapshots", "research_state", "research_program")}
-    packet["field"] = exclude_primary_copies(loaded["field"], base_packet.get("primary") or [])
+    packet["field"] = select_by_bearing(exclude_primary_copies(loaded["field"], base_packet.get("primary") or []), bearings, max_field)
     packet["field_collections"] = loaded["collections"]
     packet["field_gaps"] = loaded["gaps"]
     packet["reporter_snapshots"] = [{k: snapshot[k] for k in ("snapshot_id", "collection_id", "packet_sha256")}]
@@ -87,12 +113,15 @@ def main():
     ap.add_argument("--research-state", type=Path, default=None)
     ap.add_argument("--out", required=True, type=Path)
     ap.add_argument("--check-against", type=Path, default=None, help="a packet the Stacks built from the same snapshot: compare the field rows")
+    ap.add_argument("--bearings", type=Path, default=None, help="JSON list of the discovery's hits with url/canonical_url/bearing, to read bearing sources first")
+    ap.add_argument("--max-field", type=int, default=None, help="how many field bodies to read; the rest stay as leads")
     args = ap.parse_args()
     job = json.loads((args.base_archive / "analyst-job.json").read_text())
     base = json.loads(job["sources"][0]["text"])
     snapshot = json.loads(args.snapshot.read_text())
     rs = json.loads(args.research_state.read_text()) if args.research_state else None
-    packet = build(base, snapshot, rs)
+    bearings = json.loads(args.bearings.read_text()) if args.bearings else None
+    packet = build(base, snapshot, rs, bearings=bearings, max_field=args.max_field)
     args.out.mkdir(parents=True, exist_ok=True)
     (args.out / "analyst-job.json").write_text(json.dumps({"sources": [{"kind": "paste", "role": "field_investigation", "key": "investigation",
                                                                         "title": f"{base['author']['name']}: {base['question'][:120]}",
@@ -100,6 +129,8 @@ def main():
     available = [r for r in packet["field"] if r["body_state"] == "available"]
     report = {"field_rows": len(packet["field"]), "available": len(available), "available_chars": sum(r["body_chars"] for r in available),
               "excluded_primary_copies": sum(1 for r in packet["field"] if r.get("primary_uid")), "gaps": len(packet["field_gaps"]),
+              "not_read_under_cap": sum(1 for r in packet["field"] if "reading cap" in (r.get("selection_reason") or "")),
+              "read_hosts": sorted({(r.get("source_metadata") or {}).get("publication") or "" for r in available})[:40],
               "snapshot": packet["reporter_snapshots"][0], "research_state": bool(rs)}
     if args.check_against:
         other = json.loads(json.loads((args.check_against / "analyst-job.json").read_text())["sources"][0]["text"])
