@@ -389,6 +389,21 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
                 sources = slimmed
                 upstream = {k: v for k, v in upstream.items() if k != "critic_rows"}
                 upstream["primary_reading_rows_omitted"] = "the evidence list carries every verified primary quotation"
+            if input_chars(sources, upstream) > 620000 and isinstance(upstream.get("coverage"), dict):
+                # The coverage record lists every unread, missing and excluded uid (308 leads here); the counts serve the writer,
+                # and the lists stay in the state.
+                cov = dict(upstream["coverage"])
+                for key in ("missing_uids", "excluded_uids", "unread_uids"):
+                    if isinstance(cov.get(key), list):
+                        cov[key.replace("_uids", "_count")] = len(cov.pop(key))
+                for role in ("field", "primary"):
+                    if isinstance(cov.get(role), dict):
+                        sub = dict(cov[role])
+                        for key in ("missing_uids", "excluded_uids", "unread_uids"):
+                            if isinstance(sub.get(key), list):
+                                sub[key.replace("_uids", "_count")] = len(sub.pop(key))
+                        cov[role] = sub
+                upstream = {**upstream, "coverage": cov, "coverage_uid_lists_summarized": True}
             if input_chars(sources, upstream) > 620000:
                 # Last resort before the guard: the code-rendered evidence tables carry a 240-character window of each verified
                 # quotation; every quotation is kept in full in the state and re-verified there, so the window can shrink to 160.
