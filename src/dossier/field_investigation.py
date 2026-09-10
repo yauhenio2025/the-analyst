@@ -301,6 +301,9 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
     if packet.get('research_feedback'):
         common['research_feedback'] = packet['research_feedback']
         state['research_feedback'] = packet['research_feedback']
+    if packet.get('research_state'):   # the research program (2026-09-10): explanations, lanes and reading order, as context for every stage
+        common['research_state'] = {k: v for k, v in packet['research_state'].items() if k not in ('prose', 'candidates')}
+        state['research_state'] = packet['research_state']
     context = [c for c in _context(packet, bodies, cap=40000) if c["key"] != "prior_investigations"]
     baseline = _baseline_context(packet)
     baseline_ranges = [(0, len(baseline))] if len(baseline) <= 200000 else [(0, 100000), (len(baseline) - 100000, len(baseline))]

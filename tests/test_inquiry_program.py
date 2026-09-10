@@ -109,3 +109,36 @@ def test_scan_rows_parse_and_the_body_scan_surfaces_texts_the_profiles_hide():
     assert ranked[0] == ("em:REPLY", 3, False) and ("em:REVIEW", 1, False) in ranked and ("em:TITLED", 1, True) in ranked
     assert all(c.uid != "em:OTHER" for c in state.candidates)
     assert state.candidates[0].explanations == ["E1"] and "major source of profits" in state.candidates[0].windows[0]
+
+
+def test_program_route_wrapper_returns_state_and_the_reporter_program():
+    from src.dossier.inquiry_program import run
+    from src.dossier.investigation import _json, _spec
+    ledger = "\n".join([
+        "[P1.F1] Political power determines the rate of return — dim: stake — thinker: Riley — formulation: em:A1 — bears_on: E1 — anchor: \"asset circuit\" — doc: thinker-inventory — confidence: high",
+        "[P2.F1] Private reserve income serves state dollar strategy — dim: explanation — id: E1 — origin: hunch — supports_if: executives and Treasury say so — undercuts_if: demand only displaces — voices: participant; official — venues: podcasts; treasury.gov — actors: Ardoino — discriminating: net Treasury demand — priority: 1 — confidence: medium",
+        "[P2.F2] Ordinary intermediation — dim: explanation — id: E2 — origin: field — supports_if: growth predates access — undercuts_if: returns jump after intervention — voices: comparator — venues: filings — actors: Circle — discriminating: fundamentals model — priority: 2 — confidence: medium",
+        "[P3.F1] Participants in their own voice — dim: lane — explanations: E1 — voice: participant — venues: podcasts; omny.fm — actors: Ardoino — queries: \"Tether CEO interview dollar\"; Tether Treasury reserves podcast — contrary: Tether critics dollar — coverage: one statement — confidence: medium",
+        "[P3.F2] Broken — dim: lane — explanations: E1 — voice: pundit — venues: x — actors: — queries: a — contrary: b — coverage: c — confidence: low",
+        "[P4.F1] Settles the stake — dim: reading — uid: em:A1 — explanations: E1 — look_for: asset circuit — order: 1 — confidence: high",
+        "[P6.F1] Mechanisms — dim: scan — phrases: state loans; deficit — explanations: E1 — confidence: medium",
+        "[P5.F1] Verify the lead — dim: gap — kind: lead_to_verify — lead: a co-founder on dollar dominance — resolve_by: Reporter — confidence: medium",
+    ])
+    def fake(system, user, **kwargs):
+        return {"content": "The stake is the asset circuit.\n\n## Findings ledger\n" + ledger, "model_used": "openrouter/openai/gpt-5.6-sol",
+                "input_tokens": 1000, "output_tokens": 400}
+    packet = {"question": "Does Tether complicate Riley?", "author": {"id": "riley-dylan", "name": "Riley, Dylan"},
+              "scope": {"hunch": "monetary-infrastructural", "leads": ["a co-founder on dollar dominance"], "good_answer": "tests the bridge"}}
+    sources = [_spec("inquiry-question", _json(packet)), _spec("thinker-inventory", _json([{"uid": "em:A1", "title": "Thesis", "profile_summary": "asset circuit"}]))]
+    result = run(sources, packet=packet, spend_cap_usd=1.0, call_fn=fake, model="openrouter/openai/gpt-5.6-sol")
+    state = result["research_state"]
+    assert state["hunch"] == "monetary-infrastructural" and state["leads"] == ["a co-founder on dollar dominance"] and state["thinker"] == "Riley, Dylan"
+    assert [e["id"] for e in state["explanations"]] == ["E1", "E2"] and state["readings"][0]["in_inventory"] is True
+    assert state["scans"][0]["phrases"] == ["state loans", "deficit"]
+    assert any("'pundit'" in p for p in state["problems"])
+    program = result["program"]
+    assert [e["id"] for e in program["explanations"]] == ["E1", "E2"] and program["explanations"][0]["voices"] == ["participant", "official"]
+    assert [l["id"] for l in program["lanes"]] == ["P3.F1"]                         # the pundit lane is left out; the state names it
+    assert program["lanes"][0]["queries"] == ["Tether CEO interview dollar", "Tether Treasury reserves podcast"]
+    assert program["stake"].startswith("Political power") and len(program["source"]) == 64 and program["queries_per_lane"] == 3
+    assert result["research_state_sha256"] == program["source"] and result["charged_or_reserved_usd"] >= result["cost_usd"]

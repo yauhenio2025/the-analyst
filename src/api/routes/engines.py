@@ -774,6 +774,10 @@ def call_engine_route(engine_key: str, req: EngineCallRequest) -> dict:
     from src.dossier.engine_call import call_engine
 
     try:
+        if engine_key == 'inquiry_program':   # the research program (2026-09-10): the state and the Reporter's program ride with the result
+            from src.dossier.inquiry_program import run as run_program
+            return run_program(req.sources, packet=req.packet, spend_cap_usd=req.spend_cap_usd, method_sha256=req.method_sha256,
+                               depth=req.depth, model=req.model)
         if engine_key == 'research_evidence_feedback':
             from src.dossier.research_feedback import run
             if req.depth != 'surface' or req.model:

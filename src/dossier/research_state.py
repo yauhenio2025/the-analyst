@@ -261,6 +261,22 @@ def research_state_from_program(result: dict, *, question: str, hunch: str = "",
     return state
 
 
+def program_for_reporter(state: ResearchState) -> dict:
+    """The program in the shape the Reporter's commission takes (`ProgramIn` in the-reporter): explanations with their voices
+    and venues, lanes by voice with plain phrases, the stake, and the state's identity for the ledger. Lanes without queries
+    or serving unknown explanations are left out; the state's `problems` already name them."""
+    eids = {e.id for e in state.explanations}
+    explanations = [{"id": e.id, "claim": e.claim, "origin": e.origin[:40], "supports_if": e.supports_if[:1200], "undercuts_if": e.undercuts_if[:1200],
+                     "voices": [v for v in e.voices if v in VOICES], "venues": e.venues[:1200], "actors": e.actors[:1200],
+                     "discriminating": e.discriminating[:1200], "priority": min(5, max(1, e.priority)) if e.priority else None}
+                    for e in state.explanations if len(e.claim) >= 8]
+    lanes = [{"id": l.id[:40], "purpose": l.purpose[:800], "explanations": [x for x in l.explanations if x in eids], "voice": l.voice,
+              "venues": l.venues[:1200], "actors": l.actors[:800], "queries": l.queries[:8], "contrary": l.contrary[:300], "coverage": l.coverage[:600]}
+             for l in state.lanes if l.queries and l.voice in VOICES and any(x in eids for x in l.explanations) and len(l.purpose) >= 4]
+    return {"stake": " ".join(s.claim for s in state.stakes)[:3000], "explanations": explanations, "lanes": lanes,
+            "queries_per_lane": 3, "source": state.sha256()[:64]}
+
+
 def scan_inventory(state: ResearchState, rows: list[dict], bodies: dict[str, str], *, max_candidates: int = 8, window: int = 240) -> ResearchState:
     """Deterministic: search every available thinker body for the program's scan phrases and rank the texts by hits.
 
