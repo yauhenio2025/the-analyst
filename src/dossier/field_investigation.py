@@ -129,6 +129,9 @@ def _reading_allocations(rows, bodies, cap):
     return allocations
 
 
+MAX_SCAN_CANDIDATES = 3
+
+
 def program_path(packet, state):
     """The research state drives the run when the packet carries one and the run is not a legacy resumption (2026-09-10)."""
     rs = packet.get("research_state")
@@ -171,9 +174,16 @@ def program_selection(rs, packet, bodies, max_texts):
         selected.append(uid)
         decisions[uid] = {"uid": uid, "decision": "read", "reason": r.get("why") or "ordered by the research program", "selection_source": "research_program",
                           "fields": {"queries": str(r.get("look_for") or ""), "priority": str(r.get("order") or "")}}
-    for c in sorted(rs.get("candidates") or [], key=lambda c: (-len(c.get("hits") or {}), -int(c.get("total") or 0))):
+    # The scan is a place to look, not a relevance judgment: at most three candidates enter the reading, the ones that match
+    # the most distinct phrases, then the most hits, then the most recent, so a generic phrase in an unrelated text costs little.
+    ranked = sorted(rs.get("candidates") or [], key=lambda c: (-len(c.get("hits") or {}), -int(c.get("total") or 0), -int(c.get("year") or 0)))
+    added = 0
+    for c in ranked:
         uid = c.get("uid")
+        if added >= MAX_SCAN_CANDIDATES:
+            break
         if uid in available and uid not in decisions and len(selected) < max_texts:
+            added += 1
             selected.append(uid)
             decisions[uid] = {"uid": uid, "decision": "read", "reason": f"code scan of the body for the program's phrases: {c.get('hits')}",
                               "selection_source": "program_scan", "fields": {"queries": "; ".join((c.get("hits") or {}).keys()), "priority": ""}}
