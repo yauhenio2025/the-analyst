@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import re
 from datetime import datetime, timezone
 from typing import Callable
@@ -24,6 +25,46 @@ def _json(obj):
 
 def _now():
     return datetime.now(timezone.utc).isoformat()
+
+
+MEMO_MAX_CHARS = int(os.environ.get("INVESTIGATION_MEMO_MAX_CHARS", "640000"))   # under the engine route's 650,000 (engine() passes max_chars=650000)
+
+
+def _pack_memo_input(key, sources, upstream, cap=None):
+    """Fit the memo's one engine call under its route cap, measured exactly as the route measures it (the source texts plus
+    the context block). Sheds, in order, what the memo can do without: fewer citation paths (the full list stays in the
+    job), the prior context as a catalogue without its excerpts, the source readings without their non-evidence rows
+    (the reading text stays), a shortened plan. The evidence rows and the source windows the memo cites are never cut:
+    when they alone pass the cap the caller stops with the research retained. Returns (packed upstream, packing record);
+    the caller's upstream is not mutated. (10 Sep 2026: a Brenner inquiry read twelve texts for $4.34 and then failed
+    here at 675,786 characters.)"""
+    from src.dossier.engine_call import _context_block
+    cap = cap or MEMO_MAX_CHARS
+    base = sum(len(s.text or "") for s in sources)
+    def size(p):
+        return base + len(_context_block(p, [], key))
+    packed = dict(upstream)
+    before, steps = size(packed), []
+    paths = list(upstream.get("citation_paths") or [])
+    for n in (50, 20, 0):
+        if size(packed) <= cap or len(paths) <= n:
+            continue
+        packed["citation_paths"] = paths[:n]
+        packed["citation_paths_supplied"] = len(packed["citation_paths"])
+        steps.append(f"citation_paths:{n}")
+    if size(packed) > cap and packed.get("prior_context"):
+        packed["prior_context"] = [{k: v for k, v in c.items() if k != "text"} if isinstance(c, dict) else c for c in packed["prior_context"]]
+        steps.append("prior_context:catalogue")
+    if size(packed) > cap and packed.get("source_readings"):
+        packed["source_readings"] = [{k: v for k, v in r.items() if k != "rows"} if isinstance(r, dict) else r for r in packed["source_readings"]]
+        steps.append("source_readings:without_rows")
+    if size(packed) > cap and isinstance(packed.get("plan"), str) and len(packed["plan"]) > 20000:
+        packed["plan"] = packed["plan"][:20000] + "\n[the plan was shortened to fit the memo call; the full plan is retained in the job]"
+        steps.append("plan:20000")
+    if steps:
+        packed["memo_input_reduced_to_fit"] = steps
+    return packed, {"cap": cap, "chars_before": before, "chars_after": size(packed), "steps": steps,
+                    "evidence_rows_supplied": len(packed.get("evidence") or []), "source_windows_supplied": len(sources)}
 
 
 def _spec(key, text, title=""):
@@ -710,12 +751,21 @@ def run_investigation(packet: dict, bodies: dict, *, call: Callable, save: Calla
                       "evidence_supplied_separately": True} for r in readings]
     memo_paths = [{k: p[k] for k in ("work_key", "from_uids", "to_uid", "basis", "substantive_relevance") if k in p}
                   for p in state["citation_paths"][:150]]
-    memo = engine("memo", "author_investigation_memo", memo_sources,
-                  {**common, "plan": plan.get("final_output"), "evidence": memo_evidence,
-                   "source_readings": memo_readings,
-                   "coverage": coverage, "prior_context": context,
-                   "citation_paths": memo_paths, "full_citation_path_metadata_retained": True,
-                   "citation_paths_supplied": min(150, len(state["citation_paths"])), "citation_paths_total": len(state["citation_paths"])})
+    memo_upstream = {**common, "plan": plan.get("final_output"), "evidence": memo_evidence,
+                     "source_readings": memo_readings,
+                     "coverage": coverage, "prior_context": context,
+                     "citation_paths": memo_paths, "full_citation_path_metadata_retained": True,
+                     "citation_paths_supplied": min(150, len(state["citation_paths"])), "citation_paths_total": len(state["citation_paths"])}
+    if "memo" not in state["calls"]:
+        memo_upstream, packing = _pack_memo_input("author_investigation_memo", memo_sources, memo_upstream)
+        if packing["steps"] or packing["chars_after"] > packing["cap"]:
+            state["memo_input_packing"] = packing
+        if packing["chars_after"] > packing["cap"]:
+            state.update(paused_reason="input_limit", updated_at=_now())
+            save(state)
+            raise ValueError(f"the memo's input is {packing['chars_after']:,} characters after compaction (cap {packing['cap']:,}): "
+                             "the evidence and source windows alone exceed it; all completed research retained")
+    memo = engine("memo", "author_investigation_memo", memo_sources, memo_upstream)
     prose = memo.get("prose") or memo.get("final_output", "")
     validation = validate_memo_citations(prose, evidence)
     if not validation["supported"]:

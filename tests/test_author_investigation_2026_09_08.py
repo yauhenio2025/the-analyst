@@ -698,3 +698,36 @@ def test_invalid_memo_ranges_remain_unsupported_and_bounded(key):
     result = validate_memo_citations('Claim [' + key + '].', [])
     assert result['references'] == [key]
     assert result['unsupported_memo_citations'] == [key]
+
+
+def test_memo_input_packing_fits_the_cap_in_order_and_never_cuts_evidence():
+    """10 Sep 2026: a Brenner inquiry read twelve texts and failed at the memo call at 675,786 characters (cap 650,000)."""
+    from src.dossier.investigation import _pack_memo_input, _spec
+    sources = [_spec("primary:em:A", "x" * 1000)]
+    upstream = {"question": "q", "evidence": [{"id": f"E{i}", "quote": "q" * 200} for i in range(50)],
+                "source_readings": [{"uid": "em:A", "reading": "r" * 500, "rows": [{"dim": "claim", "text": "c" * 2000}] * 10}],
+                "citation_paths": [{"work_key": f"w{i}", "basis": "b" * 300} for i in range(150)],
+                "prior_context": [{"key": "memo:x", "title": "old", "text": "t" * 30000}], "plan": "p" * 50000}
+    same, record = _pack_memo_input("author_investigation_memo", sources, upstream, cap=10 ** 9)
+    assert same == upstream and record["steps"] == []
+    packed, record = _pack_memo_input("author_investigation_memo", sources, upstream, cap=60000)
+    assert record["chars_after"] <= 60000 < record["chars_before"]
+    assert packed["evidence"] == upstream["evidence"] and record["steps"][0] == "citation_paths:50"
+    assert packed["memo_input_reduced_to_fit"] == record["steps"]
+    assert len(upstream["citation_paths"]) == 150 and "text" in upstream["prior_context"][0]   # the caller's packet is untouched
+    impossible, record = _pack_memo_input("author_investigation_memo", sources, upstream, cap=5000)
+    assert record["chars_after"] > 5000 and impossible["evidence"] == upstream["evidence"]
+
+
+def test_memo_that_cannot_fit_stops_before_the_call_with_research_retained(monkeypatch):
+    from src.dossier import investigation
+    _, packet, _, bodies = fixture()
+    calls, snapshots = [], []
+    monkeypatch.setattr(investigation, "MEMO_MAX_CHARS", 50)
+    with pytest.raises(ValueError, match="after compaction"):
+        run_investigation(packet, bodies, call=fake_engine(calls), save=lambda s: snapshots.append(copy.deepcopy(s)))
+    assert not any(c[0] == "author_investigation_memo" for c in calls)
+    assert snapshots[-1]["paused_reason"] == "input_limit" and snapshots[-1]["evidence"] and snapshots[-1]["readings"]
+    monkeypatch.setattr(investigation, "MEMO_MAX_CHARS", 640000)
+    state = run_investigation(packet, bodies, call=fake_engine(calls), save=lambda s: None, state=snapshots[-1])
+    assert state["complete"] and state["memo"] and sum(c[0] == "author_investigation_plan" for c in calls) == 1
