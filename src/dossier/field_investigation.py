@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import hashlib
+import json
 import re
 
 from src.dossier.evidence_routing import canonical_evidence, selection_groups, support_route
@@ -371,6 +372,23 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
                              "note": "the memo stage read the complete baseline; this stage receives its opening window"}
                     entries.append(c)
                 upstream = {**upstream, "prior_context": entries}
+            if input_chars(sources, upstream) > 620000:
+                # Still over: drop what this stage holds twice. The thinker readings' rows repeat quotations the evidence list
+                # carries as verified primary evidence; the critic's rows repeat its note. Both stay in the state.
+                slimmed = []
+                for spec in sources:
+                    if spec.key == "primary-readings":
+                        try:
+                            readings = json.loads(spec.text)
+                            for r in readings:
+                                r.pop("rows", None)
+                            spec = _spec(spec.key, _json(readings), spec.title or spec.key)
+                        except (ValueError, TypeError, AttributeError):
+                            pass
+                    slimmed.append(spec)
+                sources = slimmed
+                upstream = {k: v for k, v in upstream.items() if k != "critic_rows"}
+                upstream["primary_reading_rows_omitted"] = "the evidence list carries every verified primary quotation"
         sources, upstream, packing = pack_final_context(stage, sources, upstream, packet_sha256=fingerprint)
         chars = input_chars(sources, upstream)
         bounded = institutional or any((c.get('source_policy') or {}).get('institutions_only') for c in packet.get('field_collections', []))
