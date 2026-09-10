@@ -938,7 +938,10 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
             critic2 = engine("memo:critic2", "memo_critic", [_spec("memo-revision", r_prose, "memo-revision")],
                              {**critic_context, "reading": "revision", "previous_draft": state["memo_draft"], "first_critic": critic.get("final_output"),
                               "dropped_citations": dropped, "unused_bearing_findings": unused_after})
-            must_use = [r for r in critic2.get("rows", []) if r.get("dim") == "unused" and _field(r, "disposition") == "must_use"]
+            must_use, seen_ids = [], set()
+            for r in critic2.get("rows", []):
+                if r.get("dim") == "unused" and _field(r, "disposition") == "must_use" and r.get("id") not in seen_ids:
+                    must_use.append(r); seen_ids.add(r.get("id"))
             checkpoint("memo_critic2", memo_critic_revision=critic2.get("final_output"), memo_critic_revision_rows=critic2.get("rows", []),
                        memo_dropped_citations=dropped, memo_unused_after_revision=unused_after, memo_must_use=[r.get("id") for r in must_use])
             if must_use:

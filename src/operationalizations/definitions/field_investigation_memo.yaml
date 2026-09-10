@@ -48,8 +48,10 @@ process:
     are the verified findings that support or undercut an explanation and that the draft does not cite,
     counted by source: use the ones that matter, above all a participant''s or an official''s own words and
     the record''s documents, or set each aside in a sentence that says why. A revision keeps every source
-    the draft cited unless a revision row says why it was dropped; if dropped_citations are supplied,
-    restore what the critic says must be used.'
+    the draft cited unless a revision row says why it was dropped. If dropped_citations are supplied, this
+    is an insertion pass, not a rewrite: keep the previous draft''s text and every citation it carries, work
+    in the findings the critic marked must_use where they bite, restore what was dropped, and change
+    nothing else; if validation_errors name dropped_required_citations, put each of them back.'
   composition_role: argument
   scoped_outcomes: false
   routing:
@@ -172,9 +174,10 @@ process:
     reader: the researcher developing a position through the thinker and field
     brief: Write the memo the researcher needs in order to think, not an inventory
       of the corpus. Open with the case in facts as the record gives them, in one paragraph
-      that carries its citations, namely the actors, the magnitudes (issuance, reserves, income, holdings,
-      shares of a market), the custodians and counterparties, the provisions and events at
-      stake. A reader must learn what happened before being told what it means. Then the
+      that carries its citations, namely the actors with the offices they hold and the firms they
+      own or ran, the magnitudes (issuance, reserves, income, holdings, shares of a market), the
+      custodians and counterparties, the provisions and events at stake. A reader must learn
+      what happened, and who is who, before being told what it means. Then the
       answer, namely the one distinction or mechanism the
       evidence best supports in reply to the question, stated in a paragraph and then
       developed over several paragraphs in which the case evidence does the work, and in
@@ -204,4 +207,4 @@ process:
     version: 1
   - engine_key: institutional_argument_criticism
     version: 1
-version: 3
+version: 4
