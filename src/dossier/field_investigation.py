@@ -389,6 +389,19 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
                 sources = slimmed
                 upstream = {k: v for k, v in upstream.items() if k != "critic_rows"}
                 upstream["primary_reading_rows_omitted"] = "the evidence list carries every verified primary quotation"
+            if input_chars(sources, upstream) > 620000:
+                # Last resort before the guard: the code-rendered evidence tables carry a 240-character window of each verified
+                # quotation; every quotation is kept in full in the state and re-verified there, so the window can shrink to 160.
+                def _shorten(line):
+                    m = re.match(r'^(- \[.*? — ")(.*)("\s*)$', line)
+                    return line if not m or len(m.group(2)) <= 160 else m.group(1) + m.group(2)[:160] + "…" + m.group(3)
+                slimmed = []
+                for spec in sources:
+                    if spec.key == "field-argument-map" and (spec.text or "").startswith("# Evidence by explanation"):
+                        spec = _spec(spec.key, "\n".join(_shorten(l) for l in spec.text.splitlines()), spec.title or spec.key)
+                    slimmed.append(spec)
+                sources = slimmed
+                upstream["table_quote_window_chars"] = 160
         sources, upstream, packing = pack_final_context(stage, sources, upstream, packet_sha256=fingerprint)
         chars = input_chars(sources, upstream)
         bounded = institutional or any((c.get('source_policy') or {}).get('institutions_only') for c in packet.get('field_collections', []))
