@@ -345,15 +345,23 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
         from src.dossier.context_packing import expand_evidence_rows, input_chars, input_hash, pack_final_context
         from src.dossier.reporter_context import pack_reporter_context
         sources, upstream, reporter_packing = pack_reporter_context(stage, sources, upstream, packet_sha256=fingerprint)
-        sources, upstream, packing = pack_final_context(stage, sources, upstream, packet_sha256=fingerprint)
-        chars = input_chars(sources, upstream)
         representation = "verified_quotations"
         final_stage = stage.split(":", 1)[0] in ("adjudication", "memo")
+        if program and final_stage and isinstance(upstream.get("evidence"), list) and input_chars(sources, upstream) > 520000:
+            # On the program path the code-assembled tables carry every verified field quotation, so a final stage can take the
+            # field evidence as identities before the final packing groups it (Tether trial, 2026-09-10: 642,025 chars).
+            upstream = {**upstream, "evidence": [
+                {k: e[k] for k in ("citation_id", "source_role", "quote_verified")} if e["source_role"] == "field" else e for e in upstream["evidence"]],
+                "field_evidence_representation": "reference_index_to_supplied_argument_maps", "full_field_evidence_retained": True}
+            representation = "field_reference_index_and_primary_quotations"
+            if isinstance(upstream.get("prior_context"), list) and input_chars(sources, upstream) > 600000:
+                upstream = {**upstream, "prior_context": [c for c in upstream["prior_context"] if c.get("kind") == "prior_investigations"],
+                            "prior_context_trimmed_for_size": True}
+        sources, upstream, packing = pack_final_context(stage, sources, upstream, packet_sha256=fingerprint)
+        chars = input_chars(sources, upstream)
         bounded = institutional or any((c.get('source_policy') or {}).get('institutions_only') for c in packet.get('field_collections', []))
         execution_output_limit = 16384 if bounded and final_stage else None
-        if (not final_stage or program) and chars > 520000 and isinstance(upstream.get("evidence"), list):
-            # On the program path the code-assembled evidence tables carry every verified field quotation, so a final stage
-            # can take the field evidence as a reference index without losing a quote (Tether trial, 2026-09-10: 642,025 chars).
+        if not final_stage and chars > 520000 and isinstance(upstream.get("evidence"), list):
             # The argument maps already state the field claims with original
             # support IDs. At the context limit, retain every such ID and its
             # verified role instead of repeating the same field quotations.
@@ -364,12 +372,6 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
                 "field_evidence_representation": "reference_index_to_supplied_argument_maps",
                 "full_field_evidence_retained": True}
             representation = "field_reference_index_and_primary_quotations"
-            chars = input_chars(sources, upstream)
-        if program and final_stage and chars > 600000 and isinstance(upstream.get("prior_context"), list):
-            # Still over: keep the reviewed baseline and drop the truncated prior-context records (the audit found 324 of 326 at
-            # about 122 characters each); the complete records remain in the frozen packet.
-            upstream = {**upstream, "prior_context": [c for c in upstream["prior_context"] if c.get("kind") == "prior_investigations"],
-                        "prior_context_trimmed_for_size": True}
             chars = input_chars(sources, upstream)
         state.setdefault("call_input_manifests", {})[stage] = {
             "chars": chars, "context_serializer": "compact_json_v1", "evidence_representation": representation,
