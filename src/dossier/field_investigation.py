@@ -391,17 +391,19 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
                 upstream["primary_reading_rows_omitted"] = "the evidence list carries every verified primary quotation"
             if input_chars(sources, upstream) > 620000 and isinstance(upstream.get("coverage"), dict):
                 # The coverage record lists every unread, missing and excluded uid (308 leads here); the counts serve the writer,
-                # and the lists stay in the state.
+                # and the lists stay in the state. The keys stay (the final packing reads them); their lists become empty.
                 cov = dict(upstream["coverage"])
                 for key in ("missing_uids", "excluded_uids", "unread_uids"):
                     if isinstance(cov.get(key), list):
-                        cov[key.replace("_uids", "_count")] = len(cov.pop(key))
+                        cov[key.replace("_uids", "_count")] = len(cov[key])
+                        cov[key] = []
                 for role in ("field", "primary"):
                     if isinstance(cov.get(role), dict):
                         sub = dict(cov[role])
                         for key in ("missing_uids", "excluded_uids", "unread_uids"):
                             if isinstance(sub.get(key), list):
-                                sub[key.replace("_uids", "_count")] = len(sub.pop(key))
+                                sub[key.replace("_uids", "_count")] = len(sub[key])
+                                sub[key] = []
                         cov[role] = sub
                 upstream = {**upstream, "coverage": cov, "coverage_uid_lists_summarized": True}
             if input_chars(sources, upstream) > 620000:
