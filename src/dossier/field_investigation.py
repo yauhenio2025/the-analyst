@@ -300,7 +300,7 @@ def unused_bearing_findings(tables, cited, *, limit=60, per_source=6, first_per_
             "note": "verified findings that support or undercut an explanation and that the memo does not cite; every source's strongest first, then the speaker's own words"}
 
 
-FIGURE = re.compile(r"(\$\s?\d|\d[\d,.]*\s?(?:billion|bn|million|mn|trillion|percent|%|bps|basis points)|\b\d{2,4}\s?(?:employees|staff|holders|users|countries))", re.I)
+FIGURE = re.compile(r"(\$\s?\d[\d,.]*\s?(?:billion|bn|million|mn|trillion)?|\d[\d,.]*\s?(?:billion|bn|million|mn|trillion|percent|%|bps|basis points)|\b\d{2,4}\s?(?:employees|staff|holders|users|countries))", re.I)
 
 
 def unused_figures(evidence, cited, *, limit=25, per_source=3):
