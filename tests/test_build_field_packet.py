@@ -18,3 +18,5 @@ def test_venue_hosts_and_selection_read_the_program_venues_first():
     assert kept == ["r:2", "r:3"]                                                   # the Treasury document and the supporting source
     assert [r["uid"] for r in out if "reading cap" in (r.get("selection_reason") or "")] == ["r:1", "r:4"]
     assert {r["uid"] for r in select_by_bearing(rows, bearings, 2) if r["body_state"] == "available"} == {"r:3", "r:1"}   # without venues, bearing then context
+    kept = select_by_bearing(rows, bearings, 2, venue_hosts(rs), keep={"r:4"})
+    assert {r["uid"] for r in kept if r["body_state"] == "available"} == {"r:4", "r:2"}                                  # already read first, then the venue document
