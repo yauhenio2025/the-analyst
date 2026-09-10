@@ -427,6 +427,7 @@ def test_program_path_reads_thinker_first_replaces_maps_and_selection_and_revise
     second_revision = calls[memo_calls[2]][2]
     assert second_revision['dropped_citations']['count'] == 4 and second_revision['critic_rows'][-1]['fields']['disposition'] == 'must_use'
     assert state['memo_source'] == 'revision2' and len(state['memo_validation']['references']) == 5        # the second revision restored them
+    assert state['memo_dropped_by_second_revision']['count'] == 0
     assert any(k.startswith('memo_critic') for k in state['method_snapshots'])
 
 

@@ -938,7 +938,9 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
                 checkpoint("memo_revision2", memo_revision2=r2_prose, memo_revision2_validation=r2_validation)
                 if r2_validation["supported"]:
                     memo, prose, changes, validation = revised2, r2_prose, r2_changes, r2_validation
-                    checkpoint("memo_validation", memo=prose, memo_rows=memo.get("rows", []), memo_validation=validation, changes=changes, memo_source="revision2")
+                    # Nobody reads the second revision; code at least records what it dropped from the first, for the reader.
+                    checkpoint("memo_validation", memo=prose, memo_rows=memo.get("rows", []), memo_validation=validation, changes=changes, memo_source="revision2",
+                               memo_dropped_by_second_revision=dropped_citations(r_prose, r2_prose, state["evidence"]))
                 else:
                     checkpoint("memo_validation", memo_source="revision_kept_second_unsupported")
         else:

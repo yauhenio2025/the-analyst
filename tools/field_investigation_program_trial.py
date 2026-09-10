@@ -127,7 +127,8 @@ def main():
                'memo_words': len((state.get('memo') or '').split()), 'draft_words': len((state.get('memo_draft') or '').split()),
                'unused_findings_after_draft': (state.get('memo_unused_findings') or {}).get('count'),
                'unused_findings_after_revision': (state.get('memo_unused_after_revision') or {}).get('count'),
-               'dropped_citations': (state.get('memo_dropped_citations') or {}).get('count'), 'must_use': state.get('memo_must_use'), 'redo': state.get('redo')}
+               'dropped_citations': (state.get('memo_dropped_citations') or {}).get('count'), 'must_use': state.get('memo_must_use'),
+               'dropped_by_second_revision': (state.get('memo_dropped_by_second_revision') or {}).get('by_source'), 'redo': state.get('redo')}
     write(args.out / 'receipt.json', receipt)
     print(json.dumps({k: receipt[k] for k in ('status', 'cost_usd', 'selected_primary_uids', 'memo_source', 'evidence', 'memo_words', 'draft_words')}), flush=True)
 
