@@ -393,17 +393,17 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
                 # The coverage record lists every unread, missing and excluded uid (308 leads here); the counts serve the writer,
                 # and the lists stay in the state. The keys stay (the final packing reads them); their lists become empty.
                 cov = dict(upstream["coverage"])
-                for key in ("missing_uids", "excluded_uids", "unread_uids"):
-                    if isinstance(cov.get(key), list):
-                        cov[key.replace("_uids", "_count")] = len(cov[key])
-                        cov[key] = []
+                for uid_key in ("missing_uids", "excluded_uids", "unread_uids"):   # not `key`: that is this engine call's engine key
+                    if isinstance(cov.get(uid_key), list):
+                        cov[uid_key.replace("_uids", "_count")] = len(cov[uid_key])
+                        cov[uid_key] = []
                 for role in ("field", "primary"):
                     if isinstance(cov.get(role), dict):
                         sub = dict(cov[role])
-                        for key in ("missing_uids", "excluded_uids", "unread_uids"):
-                            if isinstance(sub.get(key), list):
-                                sub[key.replace("_uids", "_count")] = len(sub[key])
-                                sub[key] = []
+                        for uid_key in ("missing_uids", "excluded_uids", "unread_uids"):
+                            if isinstance(sub.get(uid_key), list):
+                                sub[uid_key.replace("_uids", "_count")] = len(sub[uid_key])
+                                sub[uid_key] = []
                         cov[role] = sub
                 upstream = {**upstream, "coverage": cov, "coverage_uid_lists_summarized": True}
             if input_chars(sources, upstream) > 620000:

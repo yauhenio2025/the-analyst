@@ -79,6 +79,8 @@ def main():
     try:
         state = run_field_investigation(packet, bodies, call=call, save=save, state=state, spend_cap_usd=args.execute_approved_usd)
     except Exception as exc:
+        import traceback
+        traceback.print_exc()
         print(json.dumps({'stopped': f'{type(exc).__name__}: {str(exc)[:300]}'}), flush=True)
         raise SystemExit(1)
     (args.out / 'memo.md').write_text((state.get('memo') or '') + '\n')
