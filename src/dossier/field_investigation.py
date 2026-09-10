@@ -406,16 +406,32 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
                                 sub[uid_key] = []
                         cov[role] = sub
                 upstream = {**upstream, "coverage": cov, "coverage_uid_lists_summarized": True}
+            if input_chars(sources, upstream) > 620000 and isinstance(upstream.get("field_gaps"), list):
+                # The snapshot's gap list names every unacquired lead twice (no body; no date). Gaps on the collection and on the
+                # sources that were read travel in full; the leads' gaps travel as counts by message. The list stays in the packet.
+                gaps = upstream["field_gaps"]
+                read_uids = {e.get("uid") for e in field_evidence} | {r["uid"] for r in state["readings"]}
+                kept = [g for g in gaps if not g.get("uid") or g.get("body_state") == "available" or g.get("uid") in read_uids]
+                counts = {}
+                for g in gaps:
+                    if g not in kept:
+                        counts[g.get("message", "")] = counts.get(g.get("message", ""), 0) + 1
+                upstream = {**upstream, "field_gaps": kept, "field_gaps_on_unread_leads": {"count": len(gaps) - len(kept), "by_message": counts},
+                            "field_gaps_summarized_for_size": True}
             if input_chars(sources, upstream) > 620000:
                 # Last resort before the guard: the code-rendered evidence tables carry a 240-character window of each verified
                 # quotation; every quotation is kept in full in the state and re-verified there, so the window can shrink to 160.
+                # The upstream copy of the tables is shortened identically so the final packing still sees one text and drops the copy.
                 def _shorten(line):
                     m = re.match(r'^(- \[.*? — ")(.*)("\s*)$', line)
                     return line if not m or len(m.group(2)) <= 160 else m.group(1) + m.group(2)[:160] + "…" + m.group(3)
                 slimmed = []
                 for spec in sources:
                     if spec.key == "field-argument-map" and (spec.text or "").startswith("# Evidence by explanation"):
-                        spec = _spec(spec.key, "\n".join(_shorten(l) for l in spec.text.splitlines()), spec.title or spec.key)
+                        shortened = "\n".join(_shorten(l) for l in spec.text.splitlines())
+                        if upstream.get("field_map") == spec.text:
+                            upstream = {**upstream, "field_map": shortened}
+                        spec = _spec(spec.key, shortened, spec.title or spec.key)
                     slimmed.append(spec)
                 sources = slimmed
                 upstream["table_quote_window_chars"] = 160
@@ -451,6 +467,10 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
                            all_evidence_quotes_and_findings_retained=representation == "verified_quotations")
             state["call_input_manifests"][stage]["packing"] = packing
         if chars > 640000:
+            # Record what is large so the next compaction step can be chosen by reading the numbers, not by guessing.
+            sizes = {**{f"source:{s.key}": len(s.text or "") for s in sources},
+                     **{f"upstream:{k}": len(json.dumps(v, ensure_ascii=False, separators=(',', ':'))) for k, v in upstream.items()}}
+            state["call_input_manifests"][stage]["input_breakdown"] = dict(sorted(sizes.items(), key=lambda kv: -kv[1])[:16])
             checkpoint(stage, paused_reason="input_limit", complete=False)
             raise ValueError(f"{stage} input is {chars:,} characters after evidence packing; "
                              "all completed research retained; additional source-preserving compaction is required")
