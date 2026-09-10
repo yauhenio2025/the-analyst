@@ -22,6 +22,8 @@ from src.sources.field_investigation import expand_field_investigation
 KEY = 'inquiry_program'
 MODEL = 'openrouter/openai/gpt-5.6-sol'
 OUTPUT_TOKENS = 9000
+DEPTH = 'surface'
+MID = 'openrouter/deepseek/deepseek-v4-pro'   # the critic's tier at standard depth
 
 
 def write(path, value):
@@ -73,7 +75,7 @@ def compose(sources, packet, method):
     def capture(system, user, **kwargs):
         raise Captured(system, user)
     try:
-        call_engine(KEY, sources, packet=packet, depth='surface', model=MODEL, spend_cap_usd=100.0, call_fn=capture, max_chars=650000, method_snapshot=method)
+        call_engine(KEY, sources, packet=packet, depth=DEPTH, model=MODEL, spend_cap_usd=100.0, call_fn=capture, max_chars=650000, method_snapshot=method)
     except Captured as c:
         return c.system, c.user
     raise RuntimeError('the engine returned without invoking the provider')
@@ -89,9 +91,12 @@ def main():
     ap.add_argument('--with-field-inventory', action='store_true')
     ap.add_argument('--blind', action='store_true', help='withhold the leads so the program must locate voices and venues itself')
     ap.add_argument('--execute-approved-usd', type=float, default=None)
+    ap.add_argument('--depth', default='surface', choices=['surface', 'standard'], help='standard adds the mid-tier critic over the rows')
     args = ap.parse_args()
     args.out.mkdir(parents=True, exist_ok=True, mode=0o700)
     args.out.chmod(0o700)
+    global DEPTH
+    DEPTH = args.depth
     packet, bodies = load_packet(args.archive)
     leads = [] if args.blind else args.lead
     sources, common = build_inputs(packet, bodies, hunch=args.hunch, leads=leads, good_answer=args.good_answer, with_field=args.with_field_inventory)
@@ -130,18 +135,20 @@ def main():
         write(state_path, state)
 
     def provider(system_, user_, **kwargs):
-        if kwargs.get('model_hint') != MODEL:
-            raise ValueError('only the pinned model is authorized')
-        write(args.out / 'provider-01-request.json', {'system': system_, 'user': user_, 'max_output_tokens': OUTPUT_TOKENS,
-                                                       'options': {k: v for k, v in kwargs.items() if k != 'cancellation_check'}})
+        if kwargs.get('model_hint') not in (MODEL, MID):
+            raise ValueError('only the pinned models are authorized')
+        n = len(state.setdefault('provider_requests', [])) + 1
+        state['provider_requests'].append({'label': kwargs.get('label'), 'model': kwargs.get('model_hint')})
+        write(args.out / f'provider-{n:02d}-request.json', {'system': system_, 'user': user_, 'max_output_tokens': OUTPUT_TOKENS,
+                                                             'options': {k: v for k, v in kwargs.items() if k != 'cancellation_check'}})
         result = _default_call(system_, user_, **kwargs)
-        write(args.out / 'provider-01-response.json', result)
+        write(args.out / f'provider-{n:02d}-response.json', result)
         return result
 
     save()
     try:
         with budget(state, max(guard_ceiling + 0.01, args.execute_approved_usd), save), limit(OUTPUT_TOKENS):
-            result = call_engine(KEY, sources, packet=common, depth='surface', model=MODEL, call_fn=provider,
+            result = call_engine(KEY, sources, packet=common, depth=args.depth, model=MODEL, call_fn=provider,
                                  spend_cap_usd=max(guard_ceiling + 0.01, args.execute_approved_usd), max_chars=650000, method_snapshot=method)
     except SpendLimit as exc:
         state.update(status='refused_by_guard', error=str(exc)); save(); raise SystemExit(str(exc))

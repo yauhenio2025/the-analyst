@@ -129,6 +129,114 @@ def _reading_allocations(rows, bodies, cap):
     return allocations
 
 
+def program_path(packet, state):
+    """The research state drives the run when the packet carries one and the run is not a legacy resumption (2026-09-10)."""
+    rs = packet.get("research_state")
+    if not isinstance(rs, dict) or not rs.get("explanations"):
+        return None
+    if state.get("calls") and not state.get("program_path"):
+        return None
+    state["program_path"] = True
+    return rs
+
+
+def program_plan(rs):
+    """The plan the program supplies: its prose as guidance, its scan phrases and look-for terms as the literal local queries.
+    No planner call, and no instruction words as regular expressions."""
+    phrases = []
+    for scan in rs.get("scans") or []:
+        phrases += [p for p in (scan.get("phrases") or []) if isinstance(p, str)]
+    for r in rs.get("readings") or []:
+        phrases += [p.strip() for p in re.split(r"[;]", str(r.get("look_for") or "")) if p.strip()]
+    seen, rows = set(), []
+    for p in phrases:
+        p = p.strip().strip('"\'')
+        if 2 <= len(p) <= 120 and p.casefold() not in seen:
+            seen.add(p.casefold())
+            rows.append({"id": f"P.Q{len(rows) + 1}", "dim": "query", "fields": {"query": p}, "finding": p})
+    text = rs.get("prose") or ("Research program: " + "; ".join(f"{e.get('id')}: {e.get('claim')}" for e in rs.get("explanations") or []))
+    return {"final_output": text, "prose": text, "rows": rows[:48], "source": "research_state", "cost_usd": 0}
+
+
+def program_selection(rs, packet, bodies, max_texts):
+    """Thinker texts to read first, chosen by the program: its ordered readings, then the code scan's candidates, within the cap.
+    Replaces the batch scan of every profile; every other available text is recorded as deferred with the reason."""
+    available = {r["uid"]: r for r in packet.get("primary") or [] if _eligible(r) and bodies.get(r["source_key"])}
+    ordered = sorted((r for r in rs.get("readings") or [] if r.get("uid") in available), key=lambda r: (r.get("order") is None, r.get("order") or 0))
+    selected, decisions = [], {}
+    for r in ordered:
+        uid = r["uid"]
+        if uid in decisions:
+            continue
+        selected.append(uid)
+        decisions[uid] = {"uid": uid, "decision": "read", "reason": r.get("why") or "ordered by the research program", "selection_source": "research_program",
+                          "fields": {"queries": str(r.get("look_for") or ""), "priority": str(r.get("order") or "")}}
+    for c in sorted(rs.get("candidates") or [], key=lambda c: (-len(c.get("hits") or {}), -int(c.get("total") or 0))):
+        uid = c.get("uid")
+        if uid in available and uid not in decisions and len(selected) < max_texts:
+            selected.append(uid)
+            decisions[uid] = {"uid": uid, "decision": "read", "reason": f"code scan of the body for the program's phrases: {c.get('hits')}",
+                              "selection_source": "program_scan", "fields": {"queries": "; ".join((c.get("hits") or {}).keys()), "priority": ""}}
+    selected = selected[:max_texts]
+    for uid in list(decisions):
+        if uid not in selected:
+            decisions[uid] = {**decisions[uid], "decision": "defer", "deferred_by_cap": True}
+    for uid in available:
+        decisions.setdefault(uid, {"uid": uid, "decision": "defer", "reason": "not named by the research program or its body scan", "selection_source": "research_program"})
+    return selected, decisions
+
+
+def _cite(e):
+    return {"citation_id": e["citation_id"], "uid": e.get("uid"), "title": e.get("title"), "finding": e.get("finding"),
+            "voice": e.get("voice"), "speaker": _field(e, "speaker"), "bearing": e.get("bearing"), "quote": (e.get("source_quote") or "")[:240]}
+
+
+def program_field_map(rs, field_evidence):
+    """The field map assembled by code from the verified field readings, per explanation: what supports, what undercuts, what
+    informs. No model summarises the readings, so nothing is lost between them and the writer; every verified finding that bears
+    on an explanation is eligible for the final stages (every verified finding, when the readings carry no bearing)."""
+    verified = [e for e in field_evidence if e.get("quote_verified")]
+    tagged = [e for e in verified if e.get("bears_on")]
+    eligible = tagged or verified
+    tables = {"explanations": [], "unassigned": [_cite(e) for e in eligible if not e.get("bears_on")]}
+    lines = ["# Evidence by explanation", "Assembled by code from the verified field readings: each row is a verified finding with its voice and the "
+             "explanation it bears on. No model summarised these readings; the writer reads the table and the readings themselves."]
+    for ex in rs.get("explanations") or []:
+        rows = [e for e in eligible if ex.get("id") in (e.get("bears_on") or [])]
+        entry = {"id": ex.get("id"), "claim": ex.get("claim"), "priority": ex.get("priority"), "undercuts_if": ex.get("undercuts_if"),
+                 "supports": [_cite(e) for e in rows if e.get("bearing") == "supports"],
+                 "undercuts": [_cite(e) for e in rows if e.get("bearing") == "undercuts"],
+                 "context": [_cite(e) for e in rows if e.get("bearing") not in ("supports", "undercuts")]}
+        tables["explanations"].append(entry)
+        lines.append(f"\n## {entry['id']} — {entry['claim']}" + (f" (undercut if {entry['undercuts_if']})" if entry.get("undercuts_if") else ""))
+        for label in ("supports", "undercuts", "context"):
+            if entry[label]:
+                lines.append(f"{label}:")
+                lines += [f"- [{c['citation_id']}] ({c.get('voice') or 'voice?'}; {c.get('speaker') or 'speaker?'}) {c.get('finding')} — \"{c['quote']}\"" for c in entry[label]]
+        if not any(entry[l] for l in ("supports", "undercuts", "context")):
+            lines.append("(no verified field finding bears on this explanation)")
+    if tables["unassigned"]:
+        lines.append("\n## Verified findings not assigned to an explanation")
+        lines += [f"- [{c['citation_id']}] ({c.get('voice') or 'voice?'}; {c.get('speaker') or 'speaker?'}) {c.get('finding')} — \"{c['quote']}\"" for c in tables["unassigned"]]
+    text = "\n".join(lines)
+    field_map = {"final_output": text, "prose": text, "rows": [], "source": "code_evidence_tables", "tables": tables, "cost_usd": 0,
+                 "engine_key": "code_evidence_tables"}
+    validation = {"supported": True, "policy": "code_evidence_tables", "eligible": len(eligible), "verified": len(verified), "tagged": len(tagged)}
+    support = {"eligible_ids": [e["citation_id"] for e in eligible],
+               "policy": "program evidence tables: every verified field finding" + (" that bears on an explanation" if tagged else "") + "; no routing"}
+    return field_map, validation, support
+
+
+def _speaker_near(speaker, body, span, window=400):
+    """Whether the named speaker appears near the quoted span: a cheap check that a direct or reported voice has its speaker in the text."""
+    tokens = [t for t in re.split(r"[\s,;:()\[\]\"']+", speaker or "") if len(t) >= 3]
+    if not tokens or not span:
+        return None
+    lo, hi = max(0, span[0] - window), min(len(body), span[1] + window)
+    around = body[lo:hi].casefold()
+    return any(t.casefold() in around for t in tokens)
+
+
 def _baseline_context(packet):
     """Keep reviewed memos whole without repeating multi-megabyte search artifacts."""
     priors = packet.get("prior_investigations") or []
@@ -187,6 +295,10 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
         legacy = bool(state.get('calls'))
         state['method_snapshots'] = field_methods(legacy=legacy, institutional=institutional)
         state['method_origin'] = 'archived pre-refactor methods' if legacy else 'central registry frozen before first call'
+    program = program_path(packet, state)
+    if program and 'memo_critic' not in state['method_snapshots']:
+        from src.engines.methods import freeze_method
+        state['method_snapshots']['memo_critic'] = freeze_method('memo_critic')
     for key, snapshot in state['method_snapshots'].items():
         validate_snapshot(snapshot, key)
     state.setdefault("quote_layout_reviews", packet.get("quote_layout_reviews") or {})
@@ -319,8 +431,14 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
                        "profile_summary": _json(row.get("profile") or {})[:1200],
                        "profile_summary_truncated": len(_json(row.get("profile") or {})) > 1200}
                       for row in rows] for role, rows in inventories.items()}
-    plan = engine("plan", "institutional_inquiry_plan" if institutional else "field_investigation_plan", [_spec("investigation-question", _json(common)),
-                  _spec("investigation-inventory", _json(summary)), _spec("prior-context", _json(context))], common)
+    plan = program_plan(program) if program else None
+    if plan and plan.get("rows"):
+        checkpoint("plan", plan=plan, plan_source="research_state")
+    else:
+        if program:
+            checkpoint("plan", plan_source="planner_fallback_program_named_no_phrases")
+        plan = engine("plan", "institutional_inquiry_plan" if institutional else "field_investigation_plan", [_spec("investigation-question", _json(common)),
+                      _spec("investigation-inventory", _json(summary)), _spec("prior-context", _json(context))], common)
     queries = _queries(plan.get("rows") or [])
     if not queries:
         checkpoint("plan", plan=plan, paused_reason="planner_returned_no_queries")
@@ -352,7 +470,8 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
     def evidence_context(role=None):
         return [{k: v for k, v in e.items() if k in ("citation_id", "uid", "source_key", "source_role", "finding",
                                                     "source_quote", "quote_verified", "conjecture", "quote_start", "quote_end",
-                                                    "quote_match", "quote_layout", "pages", "page_urls", "title", "year", "fields")}
+                                                    "quote_match", "quote_layout", "pages", "page_urls", "title", "year", "fields",
+                                                    "voice", "bears_on", "bearing", "speaker_in_context")}
                 for e in state["evidence"] if role is None or e["source_role"] == role]
 
     def read_population(role, guidance, selected_uids=None):
@@ -435,54 +554,74 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
                     "citation_id": f"{uid}/{r.get('id', '')}"}
                 if verified and layout_quote:
                     evidence.update(layout_quote)
+                voice = str(_field(r, "voice") or "").strip().lower()
+                bears = [b for b in re.split(r"[;,\s]+", str(_field(r, "bears_on") or "")) if re.fullmatch(r"E\d+", b)]
+                bearing = str(_field(r, "bearing") or "").strip().lower()
+                evidence.update(voice=voice if voice in ("direct", "reported", "narration", "document") else None, bears_on=bears,
+                                bearing=bearing if bearing in ("supports", "undercuts", "context") else None,
+                                speaker_in_context=_speaker_near(str(_field(r, "speaker") or ""), body, span) if verified and voice in ("direct", "reported") else None)
                 state["evidence"].append(evidence)
             state['evidence'], duplicates = canonical_evidence(state['evidence'])
             state.setdefault('evidence_identity_receipts', {})[key] = duplicates
             checkpoint("reading")
 
+    decisions = {}
+    program_selected = []
+    if program and not institutional:
+        program_selected, decisions = program_selection(program, packet, bodies, limits["primary"]["max_texts"])
+        if program_selected:
+            checkpoint("author_selection", triage=list(decisions.values()), selected_primary_uids=program_selected,
+                       selection={"source": "research_program", "ordered": [r.get("uid") for r in program.get("readings") or []],
+                                  "candidates": [c.get("uid") for c in program.get("candidates") or []], "selected": program_selected})
+            read_population("primary", plan, program_selected)   # the thinker first: the criterion before the case (2026-09-10)
     read_population("field", plan)
     field_readings = reading_context("field")
     field_evidence = evidence_context("field")
-    bundles, current, chars = [], [], 0
-    for reading in field_readings:
-        item = {"reading": reading, "evidence": [e for e in field_evidence if e["uid"] == reading["uid"]]}
-        size = len(_json(item))
-        if current and chars + size > 200000:
-            bundles.append(current)
-            current, chars = [], 0
-        current.append(item)
-        chars += size
-    if current:
-        bundles.append(current)
-    maps = []
-    for index, bundle in enumerate(bundles):
-        result, validation = supported_engine(f"field_map:{index + 1}", "field_investigation_field_map",
-                        [_spec("field-readings", _json(bundle))],
-                        {**common, "plan": plan.get("final_output"), "map_scope": "batch",
-                         "batch_number": index + 1, "batch_count": len(bundles)})
-        maps.append(result)
-        checkpoint("field_mapping", field_maps=maps)
-        if not validation["supported"]:
-            checkpoint("field_mapping", field_map_validation=validation)
-            raise ValueError("field map support validation failed; map and readings retained")
-    batch_support = support_route(maps, field_evidence)
-    checkpoint('support_routing', support_routes={'batch_to_global': batch_support})
-    if len(maps) == 1:
-        field_map = maps[0]
-        field_validation = validate_claims(field_map.get("rows", []), state["evidence"], required=True, field_map=True)
+    if program:
+        field_map, field_validation, batch_support = program_field_map(program, field_evidence)
+        checkpoint('support_routing', support_routes={'batch_to_global': batch_support})
+        checkpoint("field_map", field_map=field_map, field_map_validation=field_validation)
     else:
-        cited_ids = set(batch_support["eligible_ids"])
-        field_map, field_validation = supported_engine("field_map", "field_investigation_field_map",
-                       [_spec("field-map-batches", _json([m.get("final_output") for m in maps]))],
-                       {**common, "plan": plan.get("final_output"), "map_scope": "global_reconciliation",
-                        "evidence": [e for e in field_evidence if e["citation_id"] in cited_ids],
-                        "evidence_selection": batch_support["policy"], "support_route": batch_support,
-                        "field_evidence_total": len(field_evidence), "full_readings_retained": True,
-                        "source_catalog": [{"uid": r["uid"], "title": r.get("title")} for r in packet["field"]]})
-    checkpoint("field_map", field_map=field_map, field_map_validation=field_validation)
-    if not field_validation["supported"]:
-        raise ValueError("field map support validation failed; map and readings retained")
-    if not institutional:
+        bundles, current, chars = [], [], 0
+        for reading in field_readings:
+            item = {"reading": reading, "evidence": [e for e in field_evidence if e["uid"] == reading["uid"]]}
+            size = len(_json(item))
+            if current and chars + size > 200000:
+                bundles.append(current)
+                current, chars = [], 0
+            current.append(item)
+            chars += size
+        if current:
+            bundles.append(current)
+        maps = []
+        for index, bundle in enumerate(bundles):
+            result, validation = supported_engine(f"field_map:{index + 1}", "field_investigation_field_map",
+                            [_spec("field-readings", _json(bundle))],
+                            {**common, "plan": plan.get("final_output"), "map_scope": "batch",
+                             "batch_number": index + 1, "batch_count": len(bundles)})
+            maps.append(result)
+            checkpoint("field_mapping", field_maps=maps)
+            if not validation["supported"]:
+                checkpoint("field_mapping", field_map_validation=validation)
+                raise ValueError("field map support validation failed; map and readings retained")
+        batch_support = support_route(maps, field_evidence)
+        checkpoint('support_routing', support_routes={'batch_to_global': batch_support})
+        if len(maps) == 1:
+            field_map = maps[0]
+            field_validation = validate_claims(field_map.get("rows", []), state["evidence"], required=True, field_map=True)
+        else:
+            cited_ids = set(batch_support["eligible_ids"])
+            field_map, field_validation = supported_engine("field_map", "field_investigation_field_map",
+                           [_spec("field-map-batches", _json([m.get("final_output") for m in maps]))],
+                           {**common, "plan": plan.get("final_output"), "map_scope": "global_reconciliation",
+                            "evidence": [e for e in field_evidence if e["citation_id"] in cited_ids],
+                            "evidence_selection": batch_support["policy"], "support_route": batch_support,
+                            "field_evidence_total": len(field_evidence), "full_readings_retained": True,
+                            "source_catalog": [{"uid": r["uid"], "title": r.get("title")} for r in packet["field"]]})
+        checkpoint("field_map", field_map=field_map, field_map_validation=field_validation)
+        if not field_validation["supported"]:
+            raise ValueError("field map support validation failed; map and readings retained")
+    if not institutional and not program_selected:
         # Explicit scope exclusions are already decisions, not paid semantic
         # selection candidates. Preserve the full inventory in the packet and
         # coverage, but supply complete profiles only for permitted candidates.
@@ -506,7 +645,7 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
             chars += size
         if current:
             batches.append(current)
-        decisions = {}
+        decisions.clear()
         for index, batch in enumerate(batches):
             allowed = {r["inventory"]["uid"] for r in batch}
             result = engine(f"author_selection:{index + 1}", "field_investigation_author_select",
@@ -574,7 +713,8 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
     for key in ("missing_uids", "excluded_uids", "unread_uids"):
         coverage[key] = sum((coverage[r][key] for r in inventories), [])
     checkpoint("coverage", coverage=coverage)
-    final_support = support_route([field_map], field_evidence, batch_support['eligible_ids'])
+    final_support = ({"eligible_ids": batch_support["eligible_ids"], "policy": batch_support["policy"]} if program
+                     else support_route([field_map], field_evidence, batch_support['eligible_ids']))
     state['support_routes']['global_to_synthesis'] = final_support
     checkpoint('support_routing')
     mapped_ids = set(final_support['eligible_ids'])
@@ -606,6 +746,23 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
     if not validation["supported"]:
         checkpoint("memo_validation", paused_reason="memo_support_validation", complete=False)
         raise ValueError("memo support/revision validation failed; draft and full research retained")
+    if program and not institutional:
+        # The reader's three lines as a method, then one revision (2026-09-10). The draft stays if the revision fails its support check.
+        critic = engine("memo:critic", "memo_critic", [_spec("memo-draft", prose, "memo-draft")],
+                        {**{k: v for k, v in research.items() if k not in ("evidence", "prior_context", "field_map", "support_route")},
+                         "research_state": common.get("research_state"), "adjudication": adjudication.get("final_output"),
+                         "evidence_identities": sorted({e["citation_id"] for e in research["evidence"]})})
+        checkpoint("memo_critic", memo_critic=critic.get("final_output"), memo_critic_rows=critic.get("rows", []), memo_draft=prose)
+        revised = engine("memo:revise", memo_key, reading_sources,
+                         {**research, "adjudication": adjudication.get("final_output"), "previous_draft": memo.get("final_output"),
+                          "critic": critic.get("final_output"), "critic_rows": critic.get("rows", [])})
+        r_prose, r_changes, r_validation = _memo_validation(revised, state["evidence"], state["mode"])
+        checkpoint("memo_revision", memo_revision=r_prose, memo_revision_rows=revised.get("rows", []), memo_revision_validation=r_validation)
+        if r_validation["supported"]:
+            memo, prose, changes, validation = revised, r_prose, r_changes, r_validation
+            checkpoint("memo_validation", memo=prose, memo_rows=memo.get("rows", []), memo_validation=validation, changes=changes, memo_source="revision")
+        else:
+            checkpoint("memo_validation", memo_source="draft_kept_revision_unsupported")
     checkpoint("done", complete=True, running_stage=None, paused_reason=None)
     return state
 

@@ -49,7 +49,7 @@ def fake(calls, *, fail_stage=None, bad_memo=False, large_readings=False, select
         elif key.endswith(('_field_read', '_author_read')):
             src = sources[0]
             uid = packet['source_metadata']['uid']
-            r = row('evidence', uid=uid, relation='direct', speaker='source author')
+            r = row('evidence', uid=uid, relation='direct', speaker='source author', voice='reported', bears_on='E1', bearing='supports')
             first_window = src.text.split('\n', 1)[1].split('\n\n')[0]
             quote = first_window.split('.')[0] + '.' if '.' in first_window else first_window[:80]
             r.update(doc=src.key, anchor=quote)
@@ -61,6 +61,11 @@ def fake(calls, *, fail_stage=None, bad_memo=False, large_readings=False, select
             rows = [row('candidate', uid=item['inventory']['uid'], decision='read', reason='Field-guided relevance', priority='1') for item in items]
             for i, r in enumerate(rows):
                 r['id'] = f'E1.F{i+1}'
+        elif key == 'memo_critic':
+            rows = [{**row('verdict', explanation='E1', state='settled', evidence_used='x'), 'id': 'C1.F1'},
+                    {**row('best_idea', first_paragraph='1', developed='partly', why='named once'), 'id': 'C2.F1'},
+                    {**row('gap', explanation='E1', rests_on='x'), 'id': 'C3.F1'}]
+            prose = 'The best idea is named once and not developed.'
         elif key.endswith('_field_map'):
             items = json.loads(sources[0].text)
             ev = packet.get('evidence') or [e for item in items for e in item['evidence']]
@@ -369,3 +374,48 @@ def test_large_parent_answer_does_not_displace_reviewed_memo_or_collection_gaps(
     assert 'Source audit '*9000 in baseline['text'] and 'Search artifacts Search artifacts' not in baseline['text']
     assert baseline['full_prior_packet_chars']>8000000 and baseline['answer_artifacts_summarized']
     assert state['field_gaps']==state['coverage']['field_gaps']==memo_call[2]['field_gaps']
+
+
+
+def test_program_path_reads_thinker_first_replaces_maps_and_selection_and_revises_after_critic():
+    raw, packet, _, bodies = fixture(field_count=3, primary_count=5)
+    packet['research_state'] = {"question": packet["question"], "hunch": "a hunch", "prose": "Program prose: the stake and four explanations.",
+                                "explanations": [{"id": "E1", "claim": "Collective organization mediates agency", "priority": 1, "undercuts_if": "agency without organization"},
+                                                 {"id": "E2", "claim": "Networks substitute for organization", "priority": 2}],
+                                "readings": [{"order": 1, "uid": "em:AUTHOR03", "why": "settles the stake", "look_for": "organization; agency"}],
+                                "candidates": [{"uid": "em:AUTHOR01", "hits": {"agency": 1}, "total": 1, "already_ordered": False}],
+                                "scans": [{"phrases": ["agency"], "explanations": ["E1"]}], "lanes": [], "gaps": [], "problems": []}
+    calls = []
+    state = run_field_investigation(packet, bodies, call=fake(calls), save=lambda s: None)
+    keys = [c[0] for c in calls]
+    assert state['complete'] and state['program_path'] is True and state['plan_source'] == 'research_state'
+    assert 'field_investigation_plan' not in keys and 'field_investigation_author_select' not in keys and 'field_investigation_field_map' not in keys
+    author_reads = [i for i, k in enumerate(keys) if k == 'field_investigation_author_read']
+    field_reads = [i for i, k in enumerate(keys) if k == 'field_investigation_field_read']
+    assert author_reads and field_reads and max(author_reads) < min(field_reads)          # the thinker first
+    assert state['selected_primary_uids'] == ['em:AUTHOR03', 'em:AUTHOR01'] and state['selection']['source'] == 'research_program'
+    assert state['coverage']['primary']['read_count'] == 2 and state['coverage']['field']['read_count'] == 3
+    assert state['field_map']['source'] == 'code_evidence_tables' and state['field_map']['tables']['explanations'][0]['id'] == 'E1'
+    assert len(state['field_map']['tables']['explanations'][0]['supports']) == 3          # every verified field finding bears on E1 in the fake
+    assert state['support_routes']['global_to_synthesis']['policy'].startswith('program evidence tables')
+    field = [e for e in state['evidence'] if e['source_role'] == 'field'][0]
+    assert field['voice'] == 'reported' and field['bears_on'] == ['E1'] and field['bearing'] == 'supports' and field['speaker_in_context'] in (True, False)
+    assert keys.count('memo_critic') == 1 and keys.count('field_investigation_memo') == 2
+    assert keys.index('memo_critic') < len(keys) - 1 and keys[-1] == 'field_investigation_memo'
+    assert state['memo_source'] == 'revision' and state['memo_critic_rows'][1]['fields']['developed'] == 'partly'
+    critic_packet = calls[keys.index('memo_critic')][2]
+    assert 'research_state' in critic_packet and 'evidence' not in critic_packet and critic_packet['evidence_identities']
+    revise_packet = calls[-1][2]
+    assert revise_packet['previous_draft'] and revise_packet['critic'] and revise_packet['critic_rows']
+    assert any(k.startswith('memo_critic') for k in state['method_snapshots'])
+
+
+def test_program_path_falls_back_to_legacy_selection_when_the_program_names_nothing_available():
+    raw, packet, _, bodies = fixture(field_count=2, primary_count=3)
+    packet['research_state'] = {"question": packet["question"], "explanations": [{"id": "E1", "claim": "x"}], "readings": [{"order": 1, "uid": "em:NOPE"}],
+                                "candidates": [], "scans": [], "prose": "p"}
+    calls = []
+    state = run_field_investigation(packet, bodies, call=fake(calls), save=lambda s: None)
+    keys = [c[0] for c in calls]
+    assert state['complete'] and 'field_investigation_author_select' in keys and 'field_investigation_field_map' not in keys
+    assert state['field_map']['source'] == 'code_evidence_tables'
