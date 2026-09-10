@@ -13,7 +13,7 @@ def test_program_method_freezes_with_the_decision_role_and_no_position_map():
     method = freeze_method("inquiry_program")
     cap, spec = compose_method(method)
     assert spec.composition_role == "decision"
-    assert [d.key for d in spec.dimensions] == ["stake", "explanation", "lane", "reading", "gap"]
+    assert [d.key for d in spec.dimensions] == ["stake", "explanation", "lane", "reading", "scan", "gap"]
     from src.stages.process_composer import _corpus_reading
     assert "position map" not in _corpus_reading(spec)
     assert {d["capability"]["engine_key"] for d in method["dependencies"]} == {"causal_mechanism_audit", "multimedia_source_criticism"}
@@ -83,3 +83,29 @@ def test_research_state_flags_a_hunch_that_no_explanation_carries():
     state = research_state_from_program(result, question="Q", hunch="a hunch")
     assert "no explanation is marked as originating from it" in "\n".join(state.problems)
     assert "fewer than two competing explanations" in "\n".join(state.problems)
+
+
+def test_scan_rows_parse_and_the_body_scan_surfaces_texts_the_profiles_hide():
+    from src.dossier.research_state import scan_inventory
+    result = {"prose": "", "rows": [
+        _row("P2.F1", "explanation", "A", id="E1", origin="hunch", supports_if="x", undercuts_if="y", voices="official", venues="v", discriminating="d", priority="1"),
+        _row("P2.F2", "explanation", "B", id="E2", origin="field", supports_if="x", undercuts_if="y", voices="critic", venues="v", discriminating="d", priority="2"),
+        _row("P3.F1", "lane", "L", explanations="E1; E2", voice="official", venues="treasury.gov", queries="a; b", contrary="c", coverage="one"),
+        _row("P4.F1", "reading", "first", uid="em:TITLED", explanations="E1", look_for="definition", order="1"),
+        _row("P6.F1", "scan", "deficit finance is the mechanism", phrases='"deficit"; state loans; seigniorage', explanations="E1"),
+    ]}
+    state = research_state_from_program(result, question="Q", hunch="H", inventory_uids={"em:TITLED", "em:REPLY", "em:REVIEW", "em:OTHER"})
+    assert state.scans[0].phrases == ["deficit", "state loans", "seigniorage"]
+    rows = [{"uid": "em:TITLED", "title": "Thesis", "source_key": "primary:em:TITLED"},
+            {"uid": "em:REPLY", "title": "A reply to critics", "source_key": "primary:em:REPLY", "year": 2025},
+            {"uid": "em:REVIEW", "title": "Routes or rivals", "source_key": "primary:em:REVIEW", "year": 2013},
+            {"uid": "em:OTHER", "title": "Elsewhere", "source_key": "primary:em:OTHER"}]
+    bodies = {"primary:em:TITLED": "Political capitalism defined. Deficit once.",
+              "primary:em:REPLY": "Financing permanent deficits became a major source of profits; the deficit again; deficit spending.",
+              "primary:em:REVIEW": "Weber linked state loans, arms and interstate competition.",
+              "primary:em:OTHER": "Nothing about money here."}
+    scan_inventory(state, rows, bodies)
+    ranked = [(c.uid, c.total, c.already_ordered) for c in state.candidates]
+    assert ranked[0] == ("em:REPLY", 3, False) and ("em:REVIEW", 1, False) in ranked and ("em:TITLED", 1, True) in ranked
+    assert all(c.uid != "em:OTHER" for c in state.candidates)
+    assert state.candidates[0].explanations == ["E1"] and "major source of profits" in state.candidates[0].windows[0]

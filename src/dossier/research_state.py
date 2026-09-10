@@ -75,6 +75,28 @@ class Reading(BaseModel):
     confidence: str = ""
 
 
+class Scan(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    id: str
+    why: str
+    phrases: list[str] = Field(default_factory=list)
+    explanations: list[str] = Field(default_factory=list)
+    confidence: str = ""
+
+
+class ScanCandidate(BaseModel):
+    """A thinker text surfaced by a code scan of its body for the program's phrases. Not a reading; proves nothing."""
+    model_config = ConfigDict(extra="forbid")
+    uid: str
+    title: str = ""
+    year: Optional[int] = None
+    hits: dict[str, int] = Field(default_factory=dict)
+    total: int = 0
+    explanations: list[str] = Field(default_factory=list)
+    windows: list[str] = Field(default_factory=list)
+    already_ordered: bool = False
+
+
 class Gap(BaseModel):
     model_config = ConfigDict(extra="forbid")
     id: str
@@ -98,6 +120,8 @@ class ResearchState(BaseModel):
     explanations: list[Explanation] = Field(default_factory=list)
     lanes: list[Lane] = Field(default_factory=list)
     readings: list[Reading] = Field(default_factory=list)
+    scans: list[Scan] = Field(default_factory=list)
+    candidates: list[ScanCandidate] = Field(default_factory=list)
     gaps: list[Gap] = Field(default_factory=list)
     prose: str = ""
     method_receipt: dict = Field(default_factory=dict)
@@ -109,7 +133,7 @@ class ResearchState(BaseModel):
 
 
 _ID_LIST = re.compile(r"E\d+")
-_PREFIX_DIM = {"P1": "stake", "P2": "explanation", "P3": "lane", "P4": "reading", "P5": "gap"}
+_PREFIX_DIM = {"P1": "stake", "P2": "explanation", "P3": "lane", "P4": "reading", "P5": "gap", "P6": "scan"}
 
 
 def _ids(value: str) -> list[str]:
@@ -203,6 +227,12 @@ def research_state_from_program(result: dict, *, question: str, hunch: str = "",
                 state.problems.append(f"{rid}: reading names a uid not in the inventory: {uid}")
             state.readings.append(Reading(id=rid, uid=uid, why=text, explanations=_ids(f.get("explanations", "")), look_for=f.get("look_for", ""),
                                           order=_int(f.get("order", "")), in_inventory=known, confidence=row.get("confidence") or f.get("confidence", "")))
+        elif dim == "scan":
+            phrases = [p.strip('"\' ') for p in _split(f.get("phrases", "")) if p.strip('"\' ')]
+            if not phrases:
+                state.problems.append(f"{rid}: scan row without phrases")
+            state.scans.append(Scan(id=rid, why=text, phrases=phrases, explanations=_ids(f.get("explanations", "")),
+                                    confidence=row.get("confidence") or f.get("confidence", "")))
         elif dim == "gap":
             state.gaps.append(Gap(id=rid, text=text, kind=f.get("kind", ""), lead=f.get("lead", ""), resolve_by=f.get("resolve_by", ""),
                                   confidence=row.get("confidence") or f.get("confidence", "")))
@@ -224,4 +254,40 @@ def research_state_from_program(result: dict, *, question: str, hunch: str = "",
         state.problems.append("fewer than two competing explanations")
     state.readings.sort(key=lambda r: (r.order is None, r.order or 0))
     state.explanations.sort(key=lambda e: (e.priority is None, e.priority or 0))
+    return state
+
+
+def scan_inventory(state: ResearchState, rows: list[dict], bodies: dict[str, str], *, max_candidates: int = 8, window: int = 240) -> ResearchState:
+    """Deterministic: search every available thinker body for the program's scan phrases and rank the texts by hits.
+
+    This is the shortlist the profiles cannot give (a 1,200-character profile of a 2025 reply said nothing of debt,
+    deficits or state loans while the body did). Candidates sit beside the ordered readings for the reader to take
+    or leave; a hit is a place to look, never evidence.
+    """
+    phrases = {}
+    for scan in state.scans:
+        for phrase in scan.phrases:
+            phrases.setdefault(phrase.lower(), set()).update(scan.explanations)
+    if not phrases:
+        return state
+    ordered = {r.uid for r in state.readings}
+    candidates = []
+    for row in rows:
+        uid = row.get("uid") or ""
+        body = bodies.get(row.get("source_key") or "") or next((v for k, v in bodies.items() if k.endswith(uid)), "")
+        if not body:
+            continue
+        hits, windows, served = {}, [], set()
+        for phrase, eids in phrases.items():
+            matches = list(re.finditer(re.escape(phrase), body, re.IGNORECASE))
+            if matches:
+                hits[phrase] = len(matches)
+                served.update(eids)
+                m = matches[0]
+                windows.append(body[max(0, m.start() - window // 2): m.end() + window // 2].replace("\n", " ").strip())
+        if hits:
+            candidates.append(ScanCandidate(uid=uid, title=row.get("title") or "", year=row.get("year"), hits=hits, total=sum(hits.values()),
+                                            explanations=sorted(served), windows=windows[:3], already_ordered=uid in ordered))
+    candidates.sort(key=lambda c: (-len(c.hits), -c.total))
+    state.candidates = candidates[:max_candidates]
     return state

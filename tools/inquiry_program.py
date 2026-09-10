@@ -14,7 +14,7 @@ from pathlib import Path
 
 from src.dossier.engine_call import call_engine
 from src.dossier.investigation import _context, _json, _spec
-from src.dossier.research_state import research_state_from_program
+from src.dossier.research_state import research_state_from_program, scan_inventory
 from src.engines.methods import freeze_method, method_receipt
 from src.executor.spend_guard import SpendLimit, budget
 from src.sources.field_investigation import expand_field_investigation
@@ -151,12 +151,14 @@ def main():
     inventory_uids = {r['uid'] for r in packet.get('primary') or []}
     rs = research_state_from_program(result, question=packet['question'], hunch=args.hunch, leads=leads, good_answer=args.good_answer,
                                      thinker=(packet.get('author') or {}).get('name', ''), inventory_uids=inventory_uids)
+    scan_inventory(rs, packet.get('primary') or [], bodies)
     write(args.out / 'research-state.json', rs.model_dump(mode='json'))
     (args.out / 'program.md').write_text((result.get('prose') or '') + '\n')
     write(args.out / 'program-response.json', result)
     state.update(status='complete', calls=result.get('calls'), wall=result.get('wall'),
                  summary={'explanations': [(e.id, e.priority, e.voices) for e in rs.explanations], 'lanes': len(rs.lanes),
                           'readings': [(r.order, r.uid, r.in_inventory) for r in rs.readings], 'gaps': len(rs.gaps), 'problems': rs.problems,
+                          'scan_candidates': [(c.uid, c.total, c.already_ordered) for c in rs.candidates],
                           'research_state_sha256': rs.sha256()})
     save()
     print(json.dumps({'cost_usd': state['cost_usd'], **state['summary']}, ensure_ascii=False), flush=True)

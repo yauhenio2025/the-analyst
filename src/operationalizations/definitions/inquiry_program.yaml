@@ -116,7 +116,13 @@ process:
       that seeks the strongest opposing material, and what counts as coverage for the lane
       (for example: one participant statement in the participant's own words, or one official
       document stating the policy). A lane the Reporter cannot execute is worthless; prefer a
-      narrow lane with a real host to a broad one.
+      narrow lane with a real host to a broad one. A participant voice is sought where the
+      participant speaks to someone else: interviews, podcasts, recorded panels, testimony,
+      depositions. Company-controlled venues (its own site, press releases, transparency pages)
+      are record or advocacy, not participant testimony; name both kinds and keep them apart.
+      When an explanation has critics, give them their own lane as a critic voice (named
+      investigators, legislators, rating agencies, adversarial economists), distinct from the
+      general press lane.
     answer_shape: '[P3.F<n>] <what this lane is for> — dim: lane — explanations: <E ids> — voice: participant|official|critic|economist|comparator|record|press|thinker — venues: <hosts or source types> — actors: <names or none> — queries: <two to four literal phrases, semicolon-separated> — contrary: <one phrase seeking the strongest opposing material> — coverage: <what counts as done for this lane> — confidence: high|medium|low'
   - key: reading
     name: The thinker texts to read first
@@ -130,9 +136,28 @@ process:
       the field. For each say which explanations it bears on and what to look for: the
       passages, terms or arguments that would settle the stake, qualify it, or supply an
       internal comparator from the thinker's earlier work. A text that might contain the
-      thinker's own version of the hunch belongs high in the order. Do not order a text you
-      cannot name from the inventory.
+      thinker's own version of the hunch belongs high in the order. Scan the whole inventory
+      for comparators by the mechanisms at stake (debt, deficits, state loans, hegemony,
+      finance, rent), not only by the texts whose titles name the topic; an earlier review or
+      reply can carry the thinker's clearest statement. Do not order a text you cannot name
+      from the inventory.
     answer_shape: '[P4.F<n>] <why this text should be read first> — dim: reading — uid: <supplied thinker text uid> — explanations: <E ids> — look_for: <passages, terms or arguments> — order: <1 first> — confidence: high|medium|low'
+  - key: scan
+    name: Phrases for a scan of every available thinker text
+    id_prefix: P6
+    scope: document
+    load_bearing: true
+    questions:
+    - Which mechanism words would find the thinker's clearest statement in a text whose title and profile do not announce it?
+    method_card: >-
+      Profiles are short and titles announce topics, not mechanisms. Give four to ten literal
+      phrases (no operators, two to four words each) that code will search across every
+      available text in the inventory to surface comparators for the explanations: the
+      mechanisms at stake (for example debt financing, state loans, deficit spending,
+      seigniorage, hegemony), not the case's proper nouns. Say which explanations each phrase
+      serves. The hits return to the reader as candidates beside the ordered texts; they are
+      not readings and prove nothing.
+    answer_shape: '[P6.F<n>] <why this phrase would surface a comparator> — dim: scan — phrases: <literal phrases, semicolon-separated> — explanations: <E ids> — confidence: high|medium|low'
   - key: gap
     name: What remains open
     id_prefix: P5
@@ -160,8 +185,8 @@ process:
       case bites, and what would make the case unremarkable. Then the explanations, one short
       paragraph each, with the voice and venue that would carry the decisive statement and the
       observation that separates it from its rival. Then the lanes and the reading order as
-      compact lists. Close with the gaps. Then the rows: stake, explanation, lane, reading and
-      gap, with exact supplied uids and anchors only where a supplied text supplies them; the
+      compact lists, then the scan phrases in one line. Close with the gaps. Then the rows:
+      stake, explanation, lane, reading, scan and gap, with exact supplied uids and anchors only where a supplied text supplies them; the
       explanation, lane, reading and gap rows are research judgments and carry no anchor.
   method_refs:
   - engine_key: causal_mechanism_audit
