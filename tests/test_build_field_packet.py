@@ -20,3 +20,20 @@ def test_venue_hosts_and_selection_read_the_program_venues_first():
     assert {r["uid"] for r in select_by_bearing(rows, bearings, 2) if r["body_state"] == "available"} == {"r:3", "r:1"}   # without venues, bearing then context
     kept = select_by_bearing(rows, bearings, 2, venue_hosts(rs), keep={"r:4"})
     assert {r["uid"] for r in kept if r["body_state"] == "available"} == {"r:4", "r:2"}                                  # already read first, then the venue document
+
+
+def test_extend_state_carries_paid_readings_and_the_program_flag_only():
+    from tools.field_investigation_program_trial import extend_state
+    old = {"packet_sha256": "old", "mode": "standalone", "program_path": True, "cost_usd": 7.9,
+           "calls": {"read:field:a": {"rows": []}, "read:primary:b": {"rows": []}, "adjudication": {}, "memo": {}, "memo:critic": {}},
+           "call_contracts": {"read:field:a": "c1", "memo": "c2"}, "call_input_manifests": {"read:field:a": {"chars": 1}, "memo": {"chars": 2}},
+           "read_inputs": {"read:field:a": {"ranges": [[0, 10]]}, "read:primary:b": {"ranges": [[0, 5]]}},
+           "method_snapshots": {"field_investigation_memo": {"sha256": "x"}},
+           "analysis": {"1": {"stage": "read:field:a", "cost_usd": 0.2}, "2": {"stage": "memo", "cost_usd": 0.3}},
+           "evidence": [{"citation_id": "a/F1"}], "readings": [{"uid": "a"}], "memo": "text"}
+    new = extend_state(old, {"question": "q"})
+    assert new["program_path"] is True and new["packet_sha256"] != "old" and new["cost_usd"] == 0.0 and new["complete"] is False
+    assert set(new["calls"]) == {"read:field:a", "read:primary:b"} and "call_contracts" not in new
+    assert set(new["read_inputs"]) == {"read:field:a", "read:primary:b"} and set(new["call_input_manifests"]) == {"read:field:a"}
+    assert new["evidence"] == [] and new["readings"] == [] and "memo" not in new and new["method_snapshots"] == old["method_snapshots"]
+    assert new["extended_from"]["readings_carried"] == 2 and new["extended_from"]["carried_cost_usd"] == 0.2

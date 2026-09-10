@@ -46,6 +46,8 @@ def extend_state(old, packet):
     carried_cost = sum(float(a.get('cost_usd') or 0) for a in old.get('analysis', {}).values() if str(a.get('stage', '')).startswith('read:'))
     return {'packet_sha256': packet_fingerprint(packet), 'mode': old.get('mode', 'standalone'), 'stages': [], 'calls': reads, 'analysis': {},
             'cost_usd': 0.0, 'evidence': [], 'readings': [], 'complete': False,
+            # a state with cached calls and no program flag is a legacy resumption to run_field_investigation: carry the flag
+            'program_path': bool(old.get('program_path')),
             'read_inputs': {k: v for k, v in old.get('read_inputs', {}).items() if k in reads},
             'call_input_manifests': {k: v for k, v in old.get('call_input_manifests', {}).items() if k in reads},
             'method_snapshots': dict(old.get('method_snapshots') or {}),
