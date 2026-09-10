@@ -214,11 +214,15 @@ def research_state_from_program(result: dict, *, question: str, hunch: str = "",
             voice = f.get("voice", "").lower().strip()
             if voice and voice not in VOICES:
                 state.problems.append(f"{rid}: lane voice {voice!r} is not a known voice")
-            queries = _split(f.get("queries", ""))
+            # Quotation marks would make Google demand the exact phrase; the Reporter adds site: itself.
+            queries = [q.strip('"\'“” ') for q in _split(f.get("queries", ""))]
+            queries = [q for q in queries if q]
+            if any(op in q.lower().split() for q in queries for op in ("site:", "and", "or", "not")) or any(":" in q for q in queries):
+                state.problems.append(f"{rid}: lane queries carry operators; the Reporter supplies site: and Google needs plain phrases")
             if not queries:
                 state.problems.append(f"{rid}: lane without literal queries")
             state.lanes.append(Lane(id=rid, purpose=text, explanations=_ids(f.get("explanations", "")), voice=voice, venues=f.get("venues", ""),
-                                    actors=f.get("actors", ""), queries=queries, contrary=f.get("contrary", ""), coverage=f.get("coverage", ""),
+                                    actors=f.get("actors", ""), queries=queries, contrary=f.get("contrary", "").strip('"\'“” '), coverage=f.get("coverage", ""),
                                     confidence=row.get("confidence") or f.get("confidence", "")))
         elif dim == "reading":
             uid = f.get("uid", "")

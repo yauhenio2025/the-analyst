@@ -53,7 +53,7 @@ def test_research_state_is_built_from_rows_and_names_its_defects():
         _row("P2.F3", "explanation", "Ordinary intermediation, politics marginal", id="E4", origin="inquiry", supports_if="growth predates access",
              undercuts_if="", voices="comparator", venues="issuer reports", actors="Circle", discriminating="", priority="3"),
         _row("P3.F1", "lane", "Participants in their own voice", explanations="E3", voice="participant", venues="podcasts.apple.com; omny.fm",
-             actors="Ardoino", queries="Ardoino Treasury dollar; Tether CEO interview dollar dominance", contrary="Tether critics dollar", coverage="one participant statement"),
+             actors="Ardoino", queries='"Ardoino Treasury dollar"; Tether CEO interview dollar dominance', contrary='"Tether critics dollar"', coverage="one participant statement"),
         _row("P3.F2", "lane", "Official policy", explanations="E3; E1", voice="official", venues="treasury.gov", actors="Bessent",
              queries="stablecoin Treasury statement", contrary="Fed stablecoin demand displacement", coverage="one official document"),
         _row("P3.F3", "lane", "Broken lane", explanations="E9", voice="pundit", venues="", actors="", queries="", contrary="", coverage=""),
@@ -64,7 +64,7 @@ def test_research_state_is_built_from_rows_and_names_its_defects():
     state = research_state_from_program(result, question="Q", hunch="H", leads=["a co-founder on dollar dominance"], thinker="Riley", inventory_uids={"em:A1"})
     assert [e.id for e in state.explanations] == ["E3", "E1", "E4"]          # by priority
     assert state.explanations[0].voices == ["participant", "official", "economist"]
-    assert state.lanes[0].queries == ["Ardoino Treasury dollar", "Tether CEO interview dollar dominance"]
+    assert state.lanes[0].queries == ["Ardoino Treasury dollar", "Tether CEO interview dollar dominance"] and state.lanes[0].contrary == "Tether critics dollar"
     assert [r.uid for r in state.readings] == ["em:A1", "em:ZZ"] and state.readings[1].in_inventory is False
     assert state.gaps[0].kind == "lead_to_verify"
     problems = "\n".join(state.problems)
