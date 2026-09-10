@@ -357,6 +357,20 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
             if isinstance(upstream.get("prior_context"), list) and input_chars(sources, upstream) > 600000:
                 upstream = {**upstream, "prior_context": [c for c in upstream["prior_context"] if c.get("kind") == "prior_investigations"],
                             "prior_context_trimmed_for_size": True}
+            over = input_chars(sources, upstream) - 620000
+            if over > 0 and isinstance(upstream.get("prior_context"), list):
+                # Still over (the revision carries the draft and the critic beside everything the memo saw): shrink the
+                # prior-investigation baseline window, which the memo stage read in full, never below 20,000 characters.
+                entries = []
+                for c in upstream["prior_context"]:
+                    text = c.get("text") or ""
+                    if c.get("kind") == "prior_investigations" and over > 0 and len(text) > 20000:
+                        keep = max(20000, len(text) - over)
+                        over -= len(text) - keep
+                        c = {**c, "text": text[:keep], "supplied_chars": keep, "baseline_window_trimmed_for_size": True,
+                             "note": "the memo stage read the complete baseline; this stage receives its opening window"}
+                    entries.append(c)
+                upstream = {**upstream, "prior_context": entries}
         sources, upstream, packing = pack_final_context(stage, sources, upstream, packet_sha256=fingerprint)
         chars = input_chars(sources, upstream)
         bounded = institutional or any((c.get('source_policy') or {}).get('institutions_only') for c in packet.get('field_collections', []))
