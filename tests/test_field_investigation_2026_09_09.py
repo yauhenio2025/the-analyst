@@ -488,3 +488,23 @@ def test_unused_figures_lists_the_magnitudes_the_memo_does_not_carry():
           {"citation_id": "c:4/F1", "source_role": "field", "quote_verified": False, "source_quote": "$9 billion", "finding": "unverified"}]
     out = unused_figures(ev, {"b:2/F1"})
     assert out["count"] == 1 and out["rows"][0]["citation_id"] == "a:1/F1" and out["rows"][0]["figure"].startswith("$13.7")
+
+
+def test_program_selects_the_field_read_set_over_the_cap_venues_then_bearing():
+    from src.dossier.field_investigation import program_field_selection
+    raw, packet, _, bodies = fixture(field_count=4, primary_count=3)
+    rows = {r["uid"]: r for r in packet["field"]}
+    rows["referee:0"]["source_metadata"] = {"discovery": {"bearing": "context"}}
+    rows["referee:1"]["pdf_url"] = "https://home.treasury.gov/system/files/x.pdf"
+    rows["referee:2"]["bearing"] = "undercuts"
+    rs = {"question": packet["question"], "prose": "p", "explanations": [{"id": "E1", "claim": "x", "priority": 1}],
+          "readings": [{"order": 1, "uid": "em:AUTHOR01", "why": "w"}], "candidates": [], "scans": [], "gaps": [], "problems": [],
+          "lanes": [{"id": "P3.F2", "voice": "official", "venues": "treasury.gov; federalreserve.gov"}]}
+    selected, decisions = program_field_selection(rs, packet, bodies, 2)
+    assert selected == ["referee:1", "referee:2"] and decisions["referee:3"]["decision"] == "defer" and decisions["referee:0"]["reason"].startswith("its hit is context")
+    packet["research_state"] = rs
+    packet["limits"] = {**packet.get("limits", {}), "max_field_texts": 2}
+    calls = []
+    state = run_field_investigation(packet, bodies, call=fake(calls), save=lambda s: None)
+    assert state["complete"] and state["field_selection"]["selected"] == ["referee:1", "referee:2"] and state["field_selection"]["eligible"] == 4
+    assert state["coverage"]["field"]["read_count"] == 2 and sorted(state["coverage"]["field"]["unread_uids"]) == ["referee:0", "referee:3"]

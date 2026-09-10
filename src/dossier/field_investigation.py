@@ -84,7 +84,7 @@ def _memo_validation(memo, evidence, mode, must_keep=None):
     return prose, changes, validation
 
 
-def _limits(packet, inventories, bodies):
+def _limits(packet, inventories, bodies, program_selects_field=False):
     configured = packet.get("limits") or {}
     limits = {}
     for role in ("field", "primary"):
@@ -97,7 +97,7 @@ def _limits(packet, inventories, bodies):
         eligible = [r for r in inventories[role] if _eligible(r) and bodies.get(r["source_key"])]
         if not eligible:
             raise ValueError(f"field investigation needs at least one available {role} body")
-        if role == "field" and len(eligible) > max_texts:
+        if role == "field" and len(eligible) > max_texts and not program_selects_field:
             raise ValueError(f"{role} inventory exceeds {max_texts} selected texts; narrow the packet before spending")
         # Every selected item receives an actual reading. Never silently drop a
         # text to meet the cap. Short texts require only their actual length.
@@ -146,6 +146,54 @@ def program_path(packet, state):
         return None
     state["program_path"] = True
     return rs
+
+
+def venue_hosts(rs):
+    """The hosts the program's lanes name as venues (treasury.gov, federalreserve.gov, ...): a document from one of them is the voice
+    the lane was for, whatever bearing the evaluator gave its snippet."""
+    hosts = []
+    for lane in (rs or {}).get("lanes") or []:
+        for token in re.findall(r"[a-z0-9-]+(?:\.[a-z0-9-]+)*\.[a-z]{2,}", (lane.get("venues") or "").lower()):
+            host = re.sub(r"^www\.", "", token)
+            if host not in hosts:
+                hosts.append(host)
+    return hosts
+
+
+def _row_host(row):
+    meta = row.get("source_metadata") or {}
+    for u in (row.get("source_url"), meta.get("url"), meta.get("canonical_url"), row.get("pdf_url"), row.get("url")):
+        if u:
+            return re.sub(r"^www\.", "", re.sub(r"^https?://", "", str(u)).split("/")[0].lower())
+    return ""
+
+
+def _row_bearing(row):
+    meta = row.get("source_metadata") or {}
+    return row.get("bearing") or meta.get("bearing") or (meta.get("discovery") or {}).get("bearing")
+
+
+def program_field_selection(rs, packet, bodies, max_texts):
+    """Field texts to read when the inventory exceeds the cap, chosen by the program rather than refused: documents from the
+    lanes' venue hosts first (the voice the lane was for), then the sources whose hit supports or undercuts an explanation, then
+    context, then the rest, the longer body first within a class. The Reporter's per-hit bearing and the program's venues are the
+    ranking; nothing here judges relevance. Every deferred text is recorded with the reason (2026-09-11)."""
+    available = [r for r in packet.get("field") or [] if _eligible(r) and bodies.get(r["source_key"])]
+    venues = venue_hosts(rs)
+    def klass(r):
+        host, b = _row_host(r), _row_bearing(r)
+        if venues and any(host == v or host.endswith("." + v) for v in venues):
+            return 0, "a document from a venue the program named"
+        if b in ("supports", "undercuts"):
+            return 1, f"its hit {b} an explanation"
+        if b == "context":
+            return 2, "its hit is context for an explanation"
+        return 3, "no bearing recorded for its hit"
+    ranked = sorted(available, key=lambda r: (klass(r)[0], -len(bodies.get(r["source_key"]) or "")))
+    selected = [r["uid"] for r in ranked[:max_texts]]
+    decisions = {r["uid"]: {"uid": r["uid"], "decision": "read" if i < max_texts else "defer", "reason": klass(r)[1],
+                            "selection_source": "research_program", "rank": i + 1} for i, r in enumerate(ranked)}
+    return selected, decisions
 
 
 def program_plan(rs):
@@ -374,7 +422,8 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
             actual = hashlib.sha256(body.encode()).hexdigest() if body else None
             if actual != row["body_sha256"] or len(body) != row["body_chars"]:
                 raise ValueError(f"source rendition changed: {row['source_key']}")
-    limits = _limits(packet, inventories, bodies)
+    rs_in_packet = packet.get("research_state")
+    limits = _limits(packet, inventories, bodies, program_selects_field=isinstance(rs_in_packet, dict) and bool(rs_in_packet.get("explanations")))
     fingerprint = packet_fingerprint(packet)
     state = state or {"version": 1, "kind": CHAIN, "packet_sha256": fingerprint,
                       "author": packet["author"], "inquiry_type": packet.get("inquiry_type", "bilateral"),
@@ -767,7 +816,15 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
                        selection={"source": "research_program", "ordered": [r.get("uid") for r in program.get("readings") or []],
                                   "candidates": [c.get("uid") for c in program.get("candidates") or []], "selected": program_selected})
             read_population("primary", plan, program_selected)   # the thinker first: the criterion before the case (2026-09-10)
-    read_population("field", plan)
+    field_selected = None
+    if program and not institutional:
+        eligible_field = [r for r in inventories["field"] if _eligible(r) and bodies.get(r["source_key"])]
+        if len(eligible_field) > limits["field"]["max_texts"]:
+            # More available field texts than the cap: the program chooses (venue documents, then bearing), and records the rest.
+            field_selected, field_decisions = program_field_selection(program, packet, bodies, limits["field"]["max_texts"])
+            checkpoint("field_selection", field_selection={"source": "research_program", "cap": limits["field"]["max_texts"], "eligible": len(eligible_field),
+                                                           "selected": field_selected, "decisions": list(field_decisions.values())})
+    read_population("field", plan, field_selected)
     field_readings = reading_context("field")
     field_evidence = evidence_context("field")
     if program:

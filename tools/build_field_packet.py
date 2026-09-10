@@ -68,16 +68,7 @@ def exclude_primary_copies(field_rows: list[dict], primary: list[dict]) -> list[
     return out
 
 
-def venue_hosts(research_state: dict | None) -> list[str]:
-    """The hosts the program's lanes name as venues (treasury.gov, federalreserve.gov, ...): a document from one of them is the voice
-    the lane was for, whatever bearing the evaluator gave its snippet."""
-    hosts = []
-    for lane in (research_state or {}).get("lanes") or []:
-        for token in re.findall(r"[a-z0-9-]+(?:\.[a-z0-9-]+)*\.[a-z]{2,}", (lane.get("venues") or "").lower()):
-            host = re.sub(r"^www\.", "", token)
-            if host not in hosts:
-                hosts.append(host)
-    return hosts
+from src.dossier.field_investigation import venue_hosts  # noqa: E402  (the program's venue hosts, shared with the pipeline)
 
 
 def _host(url: str | None) -> str:
