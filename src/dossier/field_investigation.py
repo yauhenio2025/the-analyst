@@ -66,7 +66,7 @@ def _pages(row, start, end):
     return pages, [f"{pdf.split('#')[0]}#page={p}" for p in pages] if pdf else []
 
 
-def _memo_validation(memo, evidence, mode):
+def _memo_validation(memo, evidence, mode, must_keep=None):
     prose = memo.get("prose") or memo.get("final_output", "")
     citations = validate_memo_citations(prose, evidence)
     claims = validate_claims(memo.get("rows", []), evidence, required=True)
@@ -75,8 +75,12 @@ def _memo_validation(memo, evidence, mode):
     errors = [r.get("id") for r in changes if _field(r, "disposition") not in ("changed", "retained", "new", "unresolved")
               or _field(r, "baseline") != ("prior" if mode == "follow_up" else "standalone")
               or set(_ids(_field(r, "evidence_ids"))) - verified_ids]
+    # A later revision may not quietly drop what the previous one cited (2026-09-11): the identities the critic did not set
+    # aside must stay cited, or the revision is sent back once with the list.
+    dropped = sorted(set(must_keep or ()) - cited_identities(prose))
+    sound = citations["supported"] and claims["supported"] and bool(changes) and not errors
     validation = {**citations, "claims": claims, "revision_errors": errors, "missing_revision_ledger": not bool(changes),
-                  "supported": citations["supported"] and claims["supported"] and bool(changes) and not errors}
+                  "dropped_required_citations": dropped, "supported_except_drops": sound, "supported": sound and not dropped}
     return prose, changes, validation
 
 
@@ -248,6 +252,10 @@ def _speaker_near(speaker, body, span, window=400):
     return any(t.casefold() in around for t in tokens)
 
 
+def packet_fingerprint(packet):
+    return hashlib.sha256(_json(packet).encode()).hexdigest()
+
+
 def cited_identities(prose):
     """The evidence identities a memo cites in square brackets, read the way the citation wall reads them."""
     from .citation_keys import citation_keys
@@ -258,11 +266,12 @@ def cited_identities(prose):
 VOICE_ORDER = ("direct", "document", "reported", "narration")
 
 
-def unused_bearing_findings(tables, cited, *, limit=40, per_source=6):
+def unused_bearing_findings(tables, cited, *, limit=60, per_source=6, first_per_source=2):
     """What the memo did not use: every verified finding that supports or undercuts an explanation and that the memo does not
-    cite, counted by source and listed with the speaker's own words first (direct, then document, reported, narration), undercutting
-    before supporting, at most a few per source so one transcript cannot fill the list. Code assembles it; the critic and the
-    revision read it and say, per finding that matters, use it or leave it and why."""
+    cite, counted by source. Listed so that no source is crowded out: every source's strongest two first (sources by how much
+    they hold), then the rest with the speaker's own words first (direct, then document, reported, narration), undercutting
+    before supporting, at most a few per source. Code assembles it; the critic and the revision read it and say, per finding
+    that matters, use it or leave it and why."""
     rows = []
     for ex in tables.get("explanations") or []:
         for label in ("supports", "undercuts"):
@@ -270,22 +279,25 @@ def unused_bearing_findings(tables, cited, *, limit=40, per_source=6):
                 if c["citation_id"] not in cited:
                     rows.append({"citation_id": c["citation_id"], "explanation": ex.get("id"), "bearing": label, "voice": c.get("voice"),
                                  "speaker": c.get("speaker"), "title": c.get("title"), "finding": c.get("finding"), "quote": (c.get("quote") or "")[:160]})
-    by_source = {}
+    src_of = lambda r: r["citation_id"].split("/")[0]
+    counts, titles = {}, {}
     for r in rows:
-        by_source[r.get("title") or r["citation_id"].split("/")[0]] = by_source.get(r.get("title") or r["citation_id"].split("/")[0], 0) + 1
+        counts[src_of(r)] = counts.get(src_of(r), 0) + 1
+        titles.setdefault(src_of(r), r.get("title") or src_of(r))
     def rank(r):
         v = (r.get("voice") or "").lower()
         return (VOICE_ORDER.index(v) if v in VOICE_ORDER else len(VOICE_ORDER), 0 if r["bearing"] == "undercuts" else 1)
     rows.sort(key=rank)
-    listed, taken = [], {}
+    listed, taken, seen = [], {}, set()
+    for src in sorted(counts, key=lambda k: -counts[k]):
+        for r in [r for r in rows if src_of(r) == src][:first_per_source]:
+            listed.append(r); seen.add(r["citation_id"]); taken[src] = taken.get(src, 0) + 1
     for r in rows:
-        src = r["citation_id"].split("/")[0]
-        if taken.get(src, 0) < per_source:
-            taken[src] = taken.get(src, 0) + 1
-            listed.append(r)
-    return {"count": len(rows), "by_source": dict(sorted(by_source.items(), key=lambda kv: -kv[1])),
-            "rows": listed[:limit], "listed": min(len(listed), limit),
-            "note": "verified findings that support or undercut an explanation and that the memo does not cite; the speaker's own words first"}
+        if r["citation_id"] not in seen and taken.get(src_of(r), 0) < per_source:
+            listed.append(r); seen.add(r["citation_id"]); taken[src_of(r)] = taken.get(src_of(r), 0) + 1
+    by_source = {titles[k]: counts[k] for k in sorted(counts, key=lambda k: -counts[k])}
+    return {"count": len(rows), "by_source": by_source, "rows": listed[:limit], "listed": min(len(listed), limit),
+            "note": "verified findings that support or undercut an explanation and that the memo does not cite; every source's strongest first, then the speaker's own words"}
 
 
 def dropped_citations(draft, revision, evidence):
@@ -338,7 +350,7 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
             if actual != row["body_sha256"] or len(body) != row["body_chars"]:
                 raise ValueError(f"source rendition changed: {row['source_key']}")
     limits = _limits(packet, inventories, bodies)
-    fingerprint = hashlib.sha256(_json(packet).encode()).hexdigest()
+    fingerprint = packet_fingerprint(packet)
     state = state or {"version": 1, "kind": CHAIN, "packet_sha256": fingerprint,
                       "author": packet["author"], "inquiry_type": packet.get("inquiry_type", "bilateral"),
                       "question": packet["question"], "scope": packet.get("scope", {}),
@@ -934,12 +946,24 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
                                   {**research, "adjudication": adjudication.get("final_output"), "previous_draft": revised.get("final_output"),
                                    "critic": critic2.get("final_output"), "critic_rows": critic2.get("rows", []),
                                    "unused_bearing_findings": unused_after, "dropped_citations": dropped})
-                r2_prose, r2_changes, r2_validation = _memo_validation(revised2, state["evidence"], state["mode"])
+                set_aside = {_field(r, "identity") for r in critic2.get("rows", []) if r.get("dim") == "unused" and _field(r, "disposition") == "rightly_left"}
+                must_keep = cited_identities(r_prose) - set_aside
+                r2_prose, r2_changes, r2_validation = _memo_validation(revised2, state["evidence"], state["mode"], must_keep=must_keep)
                 checkpoint("memo_revision2", memo_revision2=r2_prose, memo_revision2_validation=r2_validation)
-                if r2_validation["supported"]:
+                if r2_validation["supported_except_drops"] and r2_validation["dropped_required_citations"]:
+                    # Sent back once with the list; the method says restore them or say why in a revision row.
+                    revised2 = engine("memo:revise2:repair", memo_key, reading_sources,
+                                      {**research, "adjudication": adjudication.get("final_output"), "previous_draft": revised2.get("final_output"),
+                                       "critic": critic2.get("final_output"), "critic_rows": critic2.get("rows", []),
+                                       "validation_errors": {"dropped_required_citations": r2_validation["dropped_required_citations"],
+                                                             "rule": "the revision dropped identities the previous revision cited and the critic did not set aside; restore each or say in a revision row why it goes"}})
+                    r2_prose, r2_changes, r2_validation = _memo_validation(revised2, state["evidence"], state["mode"], must_keep=must_keep)
+                    checkpoint("memo_revision2", memo_revision2=r2_prose, memo_revision2_validation=r2_validation, memo_revision2_repaired=True)
+                if r2_validation["supported"] or r2_validation["supported_except_drops"]:
                     memo, prose, changes, validation = revised2, r2_prose, r2_changes, r2_validation
                     # Nobody reads the second revision; code at least records what it dropped from the first, for the reader.
-                    checkpoint("memo_validation", memo=prose, memo_rows=memo.get("rows", []), memo_validation=validation, changes=changes, memo_source="revision2",
+                    checkpoint("memo_validation", memo=prose, memo_rows=memo.get("rows", []), memo_validation=validation, changes=changes,
+                               memo_source="revision2" if r2_validation["supported"] else "revision2_with_recorded_drops",
                                memo_dropped_by_second_revision=dropped_citations(r_prose, r2_prose, state["evidence"]))
                 else:
                     checkpoint("memo_validation", memo_source="revision_kept_second_unsupported")

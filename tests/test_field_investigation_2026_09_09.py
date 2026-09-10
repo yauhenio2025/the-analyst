@@ -34,7 +34,7 @@ def row(dim, **fields):
             "finding": "A bounded supported claim", "confidence": "high"}
 
 
-def fake(calls, *, fail_stage=None, bad_memo=False, large_readings=False, select_last=False):
+def fake(calls, *, fail_stage=None, bad_memo=False, large_readings=False, select_last=False, drop_in_second=False):
     failed = False
     def call(key, sources, *, packet, **kwargs):
         nonlocal failed
@@ -88,6 +88,8 @@ def fake(calls, *, fail_stage=None, bad_memo=False, large_readings=False, select
                 prose = f'The inquiry revises its scope [{ids.replace(";", "; ")}].'
                 if packet.get('critic') and 'dropped_citations' not in packet:      # the first revision quietly drops all but one source
                     prose = f'The inquiry revises its scope [{ids.split(";")[0]}].'
+                if drop_in_second and 'dropped_citations' in packet and 'validation_errors' not in packet:   # the second drops one too
+                    prose = f'The inquiry revises its scope [{"; ".join(ids.split(";")[1:])}].'
                 if bad_memo:
                     rows[0]['fields'].update(claim_kind='thinker_position', evidence_ids='referee:0/E1.F1')
         return {"engine_key": key, "rows": rows, "cost_usd": .1, "model": "fake", "wall": {"failed_ids": []},
@@ -443,9 +445,25 @@ def test_unused_and_dropped_lists_are_assembled_by_code():
                                                           + [{'citation_id': f't:9/F{n}', 'voice': 'direct', 'title': 'T', 'finding': 'more', 'quote': 'q'} for n in range(2, 12)],
                                 'undercuts': [{'citation_id': 'f:5/F2', 'voice': 'document', 'title': 'Fed', 'finding': 'displaces', 'quote': 'q'}]}]}
     unused = unused_bearing_findings(tables, {'a:1/F1'})
-    assert unused['count'] == 12 and unused['by_source'] == {'T': 11, 'Fed': 1} and unused['listed'] == 7        # six per source, then the Fed
-    assert [r['citation_id'] for r in unused['rows'][:2]] == ['t:9/F1', 't:9/F2'] and unused['rows'][6]['citation_id'] == 'f:5/F2'
+    assert unused['count'] == 12 and unused['by_source'] == {'T': 11, 'Fed': 1} and unused['listed'] == 7        # six per source at most
+    assert [r['citation_id'] for r in unused['rows'][:3]] == ['t:9/F1', 't:9/F2', 'f:5/F2']                     # every source's strongest first
+    assert all(r['citation_id'].startswith('t:9/') for r in unused['rows'][3:])
     assert len(unused['rows'][0]['quote']) == 160 and unused['rows'][0]['bearing'] == 'supports'
+
+
+def test_second_revision_that_drops_what_the_first_cited_is_sent_back_once():
+    raw, packet, _, bodies = fixture(field_count=3, primary_count=5)
+    packet['research_state'] = {"question": packet["question"], "hunch": "a hunch", "prose": "p",
+                                "explanations": [{"id": "E1", "claim": "Collective organization mediates agency", "priority": 1}],
+                                "readings": [{"order": 1, "uid": "em:AUTHOR03", "why": "settles the stake"}], "candidates": [], "scans": [], "lanes": [], "gaps": [], "problems": []}
+    calls = []
+    state = run_field_investigation(packet, bodies, call=fake(calls, drop_in_second=True), save=lambda s: None)
+    keys = [c[0] for c in calls]
+    assert keys.count('field_investigation_memo') == 4 and keys.count('memo_critic') == 2
+    repair = calls[-1][2]
+    assert repair['validation_errors']['dropped_required_citations'] and repair['previous_draft'] and repair['critic_rows']
+    assert state['memo_revision2_repaired'] is True and state['memo_source'] == 'revision2'
+    assert state['memo_validation']['dropped_required_citations'] == [] and state['memo_dropped_by_second_revision']['count'] == 0
 
 
 def test_program_path_falls_back_to_legacy_selection_when_the_program_names_nothing_available():

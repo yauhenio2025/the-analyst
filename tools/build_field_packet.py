@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 from pathlib import Path
 
 
@@ -67,9 +68,26 @@ def exclude_primary_copies(field_rows: list[dict], primary: list[dict]) -> list[
     return out
 
 
-def select_by_bearing(field_rows: list[dict], bearings: list[dict] | None, max_field: int | None) -> list[dict]:
-    """Read the sources that bear on an explanation first (supports, then undercuts, then context), within the reading cap; the rest
-    stay in the packet as leads with the reason. The Reporter's per-hit bearing is the ranking; nothing here judges relevance."""
+def venue_hosts(research_state: dict | None) -> list[str]:
+    """The hosts the program's lanes name as venues (treasury.gov, federalreserve.gov, ...): a document from one of them is the voice
+    the lane was for, whatever bearing the evaluator gave its snippet."""
+    hosts = []
+    for lane in (research_state or {}).get("lanes") or []:
+        for token in re.findall(r"[a-z0-9-]+(?:\.[a-z0-9-]+)*\.[a-z]{2,}", (lane.get("venues") or "").lower()):
+            host = re.sub(r"^www\.", "", token)
+            if host not in hosts:
+                hosts.append(host)
+    return hosts
+
+
+def _host(url: str | None) -> str:
+    return re.sub(r"^www\.", "", re.sub(r"^https?://", "", url or "").split("/")[0].lower())
+
+
+def select_by_bearing(field_rows: list[dict], bearings: list[dict] | None, max_field: int | None, venues: list[str] | None = None) -> list[dict]:
+    """Read the sources that bear on an explanation first (supports, then undercuts, with documents from the program's venues beside
+    them, then context), within the reading cap; the rest stay in the packet as leads with the reason. The Reporter's per-hit
+    bearing and the program's venues are the ranking; nothing here judges relevance."""
     if not max_field:
         return field_rows
     rank = {"supports": 0, "undercuts": 0, "context": 2, None: 3, "": 3}
@@ -81,7 +99,8 @@ def select_by_bearing(field_rows: list[dict], bearings: list[dict] | None, max_f
     available = [r for r in field_rows if r["body_state"] == "available"]
     def key(r):
         urls = [r.get("source_url"), (r.get("source_metadata") or {}).get("url"), (r.get("source_metadata") or {}).get("canonical_url")]
-        return (min([by_url.get(u, 3) for u in urls if u] or [3]), -r["body_chars"])
+        venue = any(_host(u) == v or _host(u).endswith("." + v) for u in urls if u for v in (venues or []))
+        return (0 if venue else min([by_url.get(u, 3) for u in urls if u] or [3]), -r["body_chars"])
     ordered = sorted(available, key=key)
     keep = {r["uid"] for r in ordered[:max_field]}
     out = []
@@ -96,7 +115,7 @@ def select_by_bearing(field_rows: list[dict], bearings: list[dict] | None, max_f
 def build(base_packet: dict, snapshot: dict, research_state: dict | None, *, bearings: list[dict] | None = None, max_field: int | None = None) -> dict:
     loaded = field_rows_from_snapshot(snapshot)
     packet = {k: v for k, v in base_packet.items() if k not in ("field", "field_collections", "field_gaps", "reporter_snapshots", "research_state", "research_program")}
-    packet["field"] = select_by_bearing(exclude_primary_copies(loaded["field"], base_packet.get("primary") or []), bearings, max_field)
+    packet["field"] = select_by_bearing(exclude_primary_copies(loaded["field"], base_packet.get("primary") or []), bearings, max_field, venue_hosts(research_state))
     packet["field_collections"] = loaded["collections"]
     packet["field_gaps"] = loaded["gaps"]
     packet["reporter_snapshots"] = [{k: snapshot[k] for k in ("snapshot_id", "collection_id", "packet_sha256")}]

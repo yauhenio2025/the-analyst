@@ -35,6 +35,24 @@ def load(archive: Path, state_path: Path):
     return packet, bodies
 
 
+def extend_state(old, packet):
+    """A new run's state from an old one: the reading calls, their frozen inputs and manifests and the frozen methods carry over;
+    everything derived (evidence, readings, selection, plan, coverage, final stages) is computed again under the new packet. The
+    reading contracts do not carry: the readings' upstream names the snapshot, which changed; the cached result is reused as the
+    reading of the same text (same source key, same body hash, checked by read_population)."""
+    from datetime import datetime, timezone
+    from src.dossier.field_investigation import packet_fingerprint
+    reads = {k: v for k, v in old.get('calls', {}).items() if k.startswith('read:')}
+    carried_cost = sum(float(a.get('cost_usd') or 0) for a in old.get('analysis', {}).values() if str(a.get('stage', '')).startswith('read:'))
+    return {'packet_sha256': packet_fingerprint(packet), 'mode': old.get('mode', 'standalone'), 'stages': [], 'calls': reads, 'analysis': {},
+            'cost_usd': 0.0, 'evidence': [], 'readings': [], 'complete': False,
+            'read_inputs': {k: v for k, v in old.get('read_inputs', {}).items() if k in reads},
+            'call_input_manifests': {k: v for k, v in old.get('call_input_manifests', {}).items() if k in reads},
+            'method_snapshots': dict(old.get('method_snapshots') or {}),
+            'extended_from': {'packet_sha256': old.get('packet_sha256'), 'at': datetime.now(timezone.utc).isoformat(), 'readings_carried': len(reads),
+                              'carried_cost_usd': round(carried_cost, 4), 'previous_cost_usd': old.get('cost_usd')}}
+
+
 def redo_from_memo(state):
     """Forget the final memo stages of a saved state so they run again under the current methods: the paid readings, the
     adjudication and every cost stay; the memo, critic and revision calls, their contracts, manifests and frozen methods go."""
@@ -62,6 +80,9 @@ def main():
     ap.add_argument('--research-state', required=True, type=Path)
     ap.add_argument('--out', required=True, type=Path)
     ap.add_argument('--execute-approved-usd', type=float, default=None)
+    ap.add_argument('--extend-from', type=Path, default=None,
+                    help='a previous run directory: its paid readings of unchanged source texts are reused under this new packet; new sources are '
+                         'read and the final stages run again (the state records what was carried)')
     ap.add_argument('--redo-from', choices=['memo'], default=None,
                     help='on an existing state: forget the memo, critic and revision calls and their frozen methods so they run again under the '
                          'current methods; every reading and the adjudication stay paid and reused')
@@ -88,6 +109,9 @@ def main():
     engine_runner.FALLBACK_MODEL = MODEL
     state_path = args.out / 'state.json'
     state = json.loads(state_path.read_text()) if state_path.exists() else None
+    if state is None and args.extend_from:
+        state = extend_state(json.loads((args.extend_from / 'state.json').read_text()), packet)
+        write(state_path, state)
     if state and args.redo_from == 'memo':
         state = redo_from_memo(state)
         save_redo = dict(state)
@@ -128,7 +152,8 @@ def main():
                'unused_findings_after_draft': (state.get('memo_unused_findings') or {}).get('count'),
                'unused_findings_after_revision': (state.get('memo_unused_after_revision') or {}).get('count'),
                'dropped_citations': (state.get('memo_dropped_citations') or {}).get('count'), 'must_use': state.get('memo_must_use'),
-               'dropped_by_second_revision': (state.get('memo_dropped_by_second_revision') or {}).get('by_source'), 'redo': state.get('redo')}
+               'dropped_by_second_revision': (state.get('memo_dropped_by_second_revision') or {}).get('by_source'), 'redo': state.get('redo'),
+               'extended_from': state.get('extended_from'), 'second_revision_repaired': state.get('memo_revision2_repaired')}
     write(args.out / 'receipt.json', receipt)
     print(json.dumps({k: receipt[k] for k in ('status', 'cost_usd', 'selected_primary_uids', 'memo_source', 'evidence', 'memo_words', 'draft_words')}), flush=True)
 
