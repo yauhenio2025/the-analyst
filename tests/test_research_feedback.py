@@ -107,3 +107,23 @@ def test_frozen_output_limit_reaches_real_backend_boundary_without_network(monke
     assert result['spend_reservations']['attempts'][0]['status'] == 'settled'
     assert result['spend_reservations']['attempts'][0]['ceiling_usd'] < 2
     assert current() is None
+
+
+def test_with_a_research_state_up_to_three_searches_are_returned_each_validated_on_its_own():
+    output = FINAL.replace('- [E3.F1] Seek a discriminating measurement', '- [E3.F1] Seek a discriminating measurement — explanation: E1')
+    output += ('\n- [E3.F2] Find the official framing — dim: next_action — action: search — query: Treasury statement stablecoins dollar primacy — explanation: E3 — basis: E1.F1 — gap: official voice — expected_value: settles E3 — confidence: medium'
+               '\n- [E3.F3] Broken — dim: next_action — action: search — query: x — basis: E1.F1 — gap: g — expected_value: v — confidence: low'
+               '\n- [E3.F4] Repeat — dim: next_action — action: search — query: stablecoin treasury portfolio substitution evidence — basis: E1.F1 — gap: g — expected_value: v — confidence: low')
+    result = {'rows': [], 'final_output': output, 'prose': output}
+    from src.dossier.investigation import recover_answer_rows
+    recover_answer_rows(result)
+    packet = {'question': 'Q', 'research_state': {'explanations': [{'id': 'E1'}, {'id': 'E3'}]}}
+    d = decision(result, SOURCES, packet)
+    assert d['action'] == 'search' and d['query'] == 'stablecoin treasury portfolio substitution evidence'
+    assert [a['query'] for a in d['actions']] == ['stablecoin treasury portfolio substitution evidence', 'Treasury statement stablecoins dollar primacy']
+    assert d['actions'][0]['explanation'] == 'E1' and d['actions'][1]['explanation'] == 'E3'
+    assert any('E3.F3' in e for e in d['dropped_actions']) and any('beyond the limit' in e for e in d['dropped_actions'])
+    legacy = decision(result, SOURCES, {'question': 'Q'})
+    assert legacy['action'] == 'stop' and 'one unambiguous' in legacy['reason']          # without a program the single-action rule stands
+    single = decision({'rows': [], 'final_output': FINAL, 'prose': FINAL}, SOURCES, {'question': 'Q'})
+    recover_answer_rows(single) if False else None
