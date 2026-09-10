@@ -1,7 +1,7 @@
 # The reader's three lines as a method, applied to the memo before revision. 2026-09-10.
 engine_key: memo_critic
 engine_name: Read the memo against the program
-version: 2
+version: 3
 method_metadata:
   status: experimental
   applies_when: A field inquiry with a research program has a validated memo draft and allowance for one critic pass and one revision.
@@ -45,7 +45,9 @@ process:
     and which it rightly leaves aside, naming the identity; a transcript's twenty findings are one
     source with the two or three that matter named. When dropped_citations and a previous_draft are
     supplied you are reading the revision, not the draft: say for each dropped source whether the
-    revision was right to drop it. Be brief: 250 to 400 words of prose, then the rows. You do not
+    revision was right to drop it. When unused_figures are supplied, they are the case's magnitudes
+    the memo does not carry (money, shares, counts, whatever their bearing): a memo about returns that
+    does not state the income is not finished; mark the figures it must carry. Be brief: 250 to 400 words of prose, then the rows. You do not
     rewrite the memo and you do not verify quotations; you say what the reader would say.
   scoped_outcomes: false
   routing:
@@ -96,8 +98,8 @@ process:
     load_bearing: true
     questions:
     - Which verified findings that bear on an explanation, and which sources the draft cited, does the memo leave unused or drop, and must it use them?
-    method_card: One row per finding or source that matters, from unused_bearing_findings and dropped_citations when supplied; none is a legitimate answer when nothing is supplied. must_use only when the argument changes with it, above all a participant's or an official's own words or a record document; rightly_left with the reason otherwise.
-    answer_shape: '[C5.F<n>] <the finding or source and what it would add, one sentence> — dim: unused — identity: <citation identity or source uid> — kind: unused_finding|dropped_source — disposition: must_use|rightly_left — explanation: E<n> — confidence: high|medium|low'
+    method_card: One row per finding, figure or source that matters, from unused_bearing_findings, unused_figures and dropped_citations when supplied; none is a legitimate answer when nothing is supplied. must_use only when the argument changes with it, above all a participant's or an official's own words or a record document; rightly_left with the reason otherwise.
+    answer_shape: '[C5.F<n>] <the finding or source and what it would add, one sentence> — dim: unused — identity: <citation identity or source uid> — kind: unused_finding|unused_figure|dropped_source — disposition: must_use|rightly_left — explanation: E<n> — confidence: high|medium|low'
   steps:
   - key: synthesize
     kind: synthesize

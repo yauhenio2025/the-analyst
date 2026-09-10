@@ -417,6 +417,7 @@ def test_program_path_reads_thinker_first_replaces_maps_and_selection_and_revise
     critic_packet = calls[critic_calls[0]][2]
     assert 'research_state' in critic_packet and 'evidence' not in critic_packet and critic_packet['evidence_identities']
     assert critic_packet['unused_bearing_findings']['count'] == 0                    # the draft cited every verified finding
+    assert critic_packet['unused_figures']['count'] == 0 and 'unused_figures' in calls[memo_calls[1]][2]
     revise_packet = calls[memo_calls[1]][2]
     assert revise_packet['previous_draft'] and revise_packet['critic'] and revise_packet['critic_rows'] and 'unused_bearing_findings' in revise_packet
     second_critic = calls[critic_calls[1]][2]
@@ -475,3 +476,15 @@ def test_program_path_falls_back_to_legacy_selection_when_the_program_names_noth
     keys = [c[0] for c in calls]
     assert state['complete'] and 'field_investigation_author_select' in keys and 'field_investigation_field_map' not in keys
     assert state['field_map']['source'] == 'code_evidence_tables'
+
+
+def test_unused_figures_lists_the_magnitudes_the_memo_does_not_carry():
+    from src.dossier.field_investigation import unused_figures
+    ev = [{"citation_id": "a:1/F1", "source_role": "field", "quote_verified": True, "bearing": "context", "title": "A",
+           "source_quote": "In 2024, Tether reported $13.7 billion in net income with only 150 employees", "finding": "profit"},
+          {"citation_id": "a:1/F2", "source_role": "field", "quote_verified": True, "bearing": "supports", "title": "A", "source_quote": "no number here", "finding": "words"},
+          {"citation_id": "b:2/F1", "source_role": "field", "quote_verified": True, "bearing": "supports", "title": "B", "source_quote": "over 60 percent of supply", "finding": "share"},
+          {"citation_id": "p:3/F1", "source_role": "primary", "quote_verified": True, "source_quote": "$5 billion", "finding": "thinker"},
+          {"citation_id": "c:4/F1", "source_role": "field", "quote_verified": False, "source_quote": "$9 billion", "finding": "unverified"}]
+    out = unused_figures(ev, {"b:2/F1"})
+    assert out["count"] == 1 and out["rows"][0]["citation_id"] == "a:1/F1" and out["rows"][0]["figure"].startswith("$13.7")
