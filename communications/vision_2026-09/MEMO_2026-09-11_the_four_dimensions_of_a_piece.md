@@ -48,6 +48,12 @@ Verbatim: `communications/inputs_2026-09-11/DICTATION_2026-09-11_1120_precedence
    sitting, and nothing else).
 4. **The rest.** What the dictations and the studies ask for beyond the core goes on one list, "nice to have · where it will land", and
    leaves it only when it already looks logical and is something he would want now.
+5. **The use test, corrected (Evgeny, 18:00; verbatim `inputs_2026-09-11/DICTATION_2026-09-11_1800_pages_were_hard_to_find_VERBATIM.md`).**
+   "One of the reasons why I didn't use the old pages is that they were hard to find in the UI — so it's not that I didn't use them, I
+   couldn't even find them. We'll still implement the new features." So the studies' finding (0 pad verdicts, 0 card comments, 0 steering;
+   Study 3 §2) is confounded by discoverability and does not rule the tabs out: the modelling still lives first in the readers and the
+   sitting, and the four tabs are built — with the way to them part of the core surface (one door from the Brief page and from the
+   sitting, named in his words, never a link in a corner). The use test of rule 3 becomes: would he open it, once he can find it.
 
 ## 1. The dictation, cleaned
 
@@ -144,7 +150,7 @@ others, shown as its own tab where the argument column stands today, and open to
 **The three distinctions he insists on**: research thinking (the lanes) ≠ the structural vision (the logical outline) ≠ the telling (the
 narrative outline). The materials are the fourth dimension and cut across all three. "The argument", as one column, conflated the first three.
 
-**The cross-feed — the core of the vision (§0.2): the four are interconnected and modelled continuously; a change in one is assessed for what it changes in the other three, by a cheap model, as a proposed revision** (the rules the desk keeps; each is a reaction shown on the page and in the trace, none applied silently):
+**The cross-feed — the core of the vision (§0.2): the four are interconnected and modelled continuously; a change in one is assessed for what it changes in the other three, by a cheap model, as a proposed revision** (the rules the desk keeps). *Corrected 12:20 against his words of 11:20 and the July dictations (Study 4 §c 28, §d 6): the first draft of these rules said "none applied silently", which would reproduce the ballot pile. The rule is: the assessment runs by itself and is silent when nothing moves; a filing proceeds; a re-filing proceeds unless it moves a proposition he approved; a proposed revision reaches him only when the change moves something, once, with its severity, when a burst of his closes; nothing cascades — his click applies it; the desk's own decisions go to the pile.* The rules:
 1. Anything that arrives is filed into lanes at once (dictation · note · paste · a pass · a reading · a card). The filing is re-checked on a
    cadence and whenever a lane's scope changes; a re-filing is proposed, with why.
 2. A material filed under a lane is read against the propositions that draw on that lane: bears on · supports · contradicts — the reading is
@@ -156,6 +162,13 @@ narrative outline). The materials are the fourth dimension and cut across all th
 5. When the materials in a lane outgrow it, or an accumulation fits no lane, a new lane is proposed. Lanes can be merged, split, closed;
    nothing filed is lost — it moves.
 6. His comment on any tab is a turn read against all four (effects on lanes, materials, propositions, sections), with the trace drawn.
+7. *(added 12:20, from his 11:20 words "changes anything in the narrative or the logic or the headings … affects everything else" and the
+   July dictations, Study 4 §c 18–19)* The arrows run back from the telling: a chosen order, or a concept accepted for clarity, is read back
+   against the propositions as a proposed revision (4 → 3); a section's stated need — a case of a kind, a quotation of a kind — is a want
+   the desk goes to fetch (4 → 2); a proposition's test commissions its fetch (3 → 2).
+8. *(added 12:20, the law that bounds the core; his words of 22 Jul: "the structure, the dichotomies, the order of what I present … I would
+   never want to delegate to the LLM"; "if it is predictable, then who needs me?")* The desk derives and proposes; a dichotomy, a
+   periodisation, a name and the order are his, or shown as the machine's; a coined term is flagged for his renaming.
 
 **Where the categories live.** The repertoire of lane kinds is a vocabulary record in the Mastermind (owner the-stacks, like `reaction_kinds`),
 so that other organs read it and an engine can propose a new kind by editing a record. A Brief's lanes are rows under the Brief in the Stacks
