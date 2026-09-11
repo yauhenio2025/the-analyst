@@ -143,7 +143,7 @@ and in the number of lanes. Nothing in dimensions 1–3 knows a chapter.
 | The pad (units on the elliptical) | The unit-level surface for **materials** and lane filings | A card verdict files the unit under a lane, not a part. |
 | The Mastermind's vocabularies and practices (`/v1/vocabularies`, `/v1/practices`) | The lane repertoire; the classifier's and deriver's practices | New records, owner the-stacks. |
 
-## 4. The decisions that are his
+## 4. The questions the examination answers from the Riley record (revised 09:10 on his word: "we definitely want to avoid recreating shit from scratch" — the answers are read off the living half-project, not decided in the abstract)
 
 1. **Riley's migration**: turn the seven current parts into seven lanes (their roles) plus seven propositions (their texts, versions kept), and
    file what hangs under each part under its lane — or start Riley's lanes afresh from his dictations and notes and let the desk propose the
@@ -161,9 +161,12 @@ and in the number of lanes. Nothing in dimensions 1–3 knows a chapter.
 
 - This memo and the verbatim dictation are committed on `main` and pushed to GitHub; copies with an index sit in the Analyst / Mastermind repo
   `communications/vision_2026-09/` (pushed) and the verbatim in the live corpus `~/projects/oaas/communications/dictations/` (pushed).
-- The examination — the code and the page, what would need to change, a staged plan with falsifiers — is the commission
-  `communications/COMMISSION_FOUR_DIMENSIONS_EXAMINATION_2026-09-11.md` for a fresh session; it returns a plan, not code, and stops for his
-  decisions in §4 before anything is built.
+- The examination is the commission `communications/COMMISSION_FOUR_DIMENSIONS_EXAMINATION_2026-09-11.md` for a fresh session (revised
+  09:10): Part A reconstructs how the Riley piece got written from the record in the Stacks (30 turns, 13 part versions, 33 challenges, 19
+  hunches, 75 runs, 1,729 claims, 41 asks, 349 lookups, the searches in `logs/app.log`, the 29 landed cards, the 6 Sep imports from ganrl and
+  the dossiefier) and answers §4 from it; Part B learns from his older repo `strategizer-v2` (the logical vs rhetorical distinction it got
+  right; why the rest did not work); Part C is the plan — a plan, not code. **The goal is the infrastructure for future essays; the Riley essay
+  is due tonight and is not to be finished inside the software.**
 - A line for CLAUDE.md's Principles, to be committed when the file is not held by another lane's edits:
   *The four dimensions (Evgeny, 11 Sep 08:30): a piece is modelled as lanes · materials · the logical outline · the narrative outline, in
   parallel and cross-fed; "the argument" as one column conflated the first three — `communications/2026-09-11_four_dimensions_of_a_piece.md`.*
