@@ -11,6 +11,44 @@ happens next. The commission for the examination of the code and the page: `comm
 
 ---
 
+## 0. The rule of precedence, and the core (Evgeny, 11 Sep 11:20 — added after the three studies, before the July dictations were re-read)
+
+Verbatim: `communications/inputs_2026-09-11/DICTATION_2026-09-11_1120_precedence_and_the_core_VERBATIM.md`. His words, cleaned:
+
+> We have done this exercise several times: every three or four weeks we go back to my dictations from before and we rebuild everything,
+> and it gets super complex very soon. Whatever we are building now has to be faithful to the vision I gave you this morning with those four
+> dimensions. Everything else from my dictations can enhance it and build onto it, but it cannot override it. The main vision remains those
+> four, and constant modelling.
+>
+> The main part that might not yet be fully obvious is that I want completely ongoing modelling in each of the four components, based on
+> changes in each. We need to be able to assess, using some cheap LLM like DeepSeek V4, whether my adding three more examples to the
+> empirical part changes anything in the narrative, or the logic, or the argument's eight headings; or maybe we discover that we now need
+> to swap a more abstract heading in the argument — the category, or whatever — for a more specific one, and then refactor, and that might
+> affect everything else elsewhere. There has to be this dynamic modelling of everything, and we need to state explicitly that these parts
+> are interconnected. That is the key to getting it right.
+>
+> All the other stuff from the dictations is nice to have; it probably gives an idea of where I will land as I keep using it, and we need
+> to add whatever already looks logical and something I would definitely want even now. But we should make sure that we deliver on the
+> core vision first, without overwhelming or overstretching us and building an apparatus I would never use.
+
+**The rules that follow, in the Stacks' words.**
+
+1. **Precedence.** §1–§2 of this memo — the morning's vision — are the constitution. The July dictations, the three studies, the Google Doc
+   and any later reading are amendments only where they add; where they conflict, the morning's vision stands. A revision of the vision
+   memo (`2026-09-11_four_dimensions_vision.md`) says, per change, which rule of §2 it enhances and confirms that it overrides nothing;
+   an enhancement that would override is recorded and left.
+2. **The core.** The four dimensions are interconnected and modelled continuously. A change in any one — three examples added to the
+   materials; a heading of the lanes swapped for a more specific one; a proposition revised; a section moved — triggers an assessment of
+   what it changes in the other three: by a cheap model (DeepSeek V4 class), in words, small, one proposed revision per affected dimension,
+   never applied silently, shown where he looks (the sitting, the lane map). The interconnection is stated on the page: every object shows
+   what it feeds and what feeds it. This is the cross-feed of §2, and it is the core; the tabs, the repertoire and the records serve it.
+3. **Delivery order.** The core first: the smallest build that gives ongoing modelling across the four over Riley's record and his next
+   piece; nothing else until it has been used on more than one day. Every addition passes two tests before it is built — the stall test
+   (does he have to service it before it delivers?) and the use test (would he open it? — the record says he opens the exchange and the
+   sitting, and nothing else).
+4. **The rest.** What the dictations and the studies ask for beyond the core goes on one list, "nice to have · where it will land", and
+   leaves it only when it already looks logical and is something he would want now.
+
 ## 1. The dictation, cleaned
 
 It has now become clear to me that once we get out of the Riley project, the Argument block will be super-important, but it will also be
@@ -106,7 +144,7 @@ others, shown as its own tab where the argument column stands today, and open to
 **The three distinctions he insists on**: research thinking (the lanes) ≠ the structural vision (the logical outline) ≠ the telling (the
 narrative outline). The materials are the fourth dimension and cut across all three. "The argument", as one column, conflated the first three.
 
-**The cross-feed** (the rules the desk keeps; each is a reaction shown on the page and in the trace, none applied silently):
+**The cross-feed — the core of the vision (§0.2): the four are interconnected and modelled continuously; a change in one is assessed for what it changes in the other three, by a cheap model, as a proposed revision** (the rules the desk keeps; each is a reaction shown on the page and in the trace, none applied silently):
 1. Anything that arrives is filed into lanes at once (dictation · note · paste · a pass · a reading · a card). The filing is re-checked on a
    cadence and whenever a lane's scope changes; a re-filing is proposed, with why.
 2. A material filed under a lane is read against the propositions that draw on that lane: bears on · supports · contradicts — the reading is
