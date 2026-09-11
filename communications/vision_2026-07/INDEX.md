@@ -16,3 +16,7 @@ Verbatim copies from `/home/evgeny/projects/oaas/communications/dictations/` (th
 | `DISTINCTIONS_REPORT.md` | The July report on the distinctions found. |
 
 What was built from them in July lives in `/home/evgeny/projects/oaas/factory/distinction_module/` (foils, per-thinker dossiers, the contrast run with verdicts parallel · collides · overlaps-then-diverges, distinction propositions) and `oaas/factory/review_pilot/distinctions.py` (a Distinction with a reframe and an impact scan). The Mastermind's port: `communications/DESIGN_distinction_maker_2026-09-07.md`.
+
+---
+
+**The sequel (2026-09-11)**: `../vision_2026-09/INDEX.md` — the four dimensions of a piece (lanes · materials · the logical outline · the narrative outline), Evgeny's dictation of 11 Sep 08:30 with the memo drawn from it.
