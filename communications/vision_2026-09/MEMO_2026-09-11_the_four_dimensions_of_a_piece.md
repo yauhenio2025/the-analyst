@@ -55,6 +55,30 @@ Verbatim: `communications/inputs_2026-09-11/DICTATION_2026-09-11_1120_precedence
    sitting, and the four tabs are built — with the way to them part of the core surface (one door from the Brief page and from the
    sitting, named in his words, never a link in a corner). The use test of rule 3 becomes: would he open it, once he can find it.
 
+## 0.6 The six decisions (Evgeny, 11 Sep 19:15, on the fourth revision of the vision memo; verbatim `inputs_2026-09-11/DICTATION_2026-09-11_1915_the_six_decisions_VERBATIM.md`)
+
+1. **Start with Riley.** The core runs over Riley's record now; the essay stays outside the software.
+2. **What proceeds without him — "sounds right", with one addition that is part of the core**: "we need to keep assessing whether our
+   lanes are adequate for our material — maybe we need a few that are more abstract or more particular. So they are always provisional and
+   revisable, and there should be a module just doing that assessment somewhere." A lane is never final; the lane set is assessed against
+   the material it holds, and the desk proposes a split (more particular), a merge (more abstract), an opening or a closing, on the lane map.
+3. **The logical outline is flexible**: "it's just a way for us to test causal chains, etc. It can be several logical elements — propositions,
+   chains, etc. — it's just a way of testing all of the testable theoretical parts of the argument." Not one shape: propositions, chains,
+   tests, whatever a testable part of the argument needs; the desk keeps them small and derived.
+4. **The arrows and the boundary**: "the machine proposes and sometimes revises on its own; I then critique and propose better formulations."
+   The desk revises by itself where the change touches nothing he has approved (decision 2's rule of silence) and records the revision as a
+   reaction he can undo; where it touches his own formulations it proposes; he critiques and reformulates. Dichotomies, periodisations,
+   names and the order stay his or are shown as the machine's.
+5. **Which surface first**: "you decide" — the commissioning session's call: the lane map first, read-only, with one door from the Brief
+   page and one from the sitting; the sitting composed across the four; the four tabs as views over one object after the map has been used.
+6. **The theory above the piece is real, now**: "so we'll need to think about how projects will fit into the broader THEORY we are building.
+   My dictations surely contain enough stuff on that. Think of lanes as local instances of theory, which will help us refine THEORY — these
+   are like testing grounds, encounters." A Brief of kind theory holds the pillars; a piece's lane may be an instance of a theory lane; what a
+   piece's lanes and propositions establish is proposed back to the theory (the July loop-back and merge, Study 4 §c A), never silently.
+
+"Please use all of this and continue with the building." The build commission for the core:
+`communications/COMMISSION_BUILD_FOUR_DIMENSIONS_CORE_2026-09-11.md`.
+
 ## 1. The dictation, cleaned
 
 It has now become clear to me that once we get out of the Riley project, the Argument block will be super-important, but it will also be
