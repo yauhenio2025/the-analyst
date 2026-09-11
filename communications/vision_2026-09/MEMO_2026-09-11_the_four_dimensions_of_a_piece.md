@@ -161,12 +161,14 @@ and in the number of lanes. Nothing in dimensions 1–3 knows a chapter.
 
 - This memo and the verbatim dictation are committed on `main` and pushed to GitHub; copies with an index sit in the Analyst / Mastermind repo
   `communications/vision_2026-09/` (pushed) and the verbatim in the live corpus `~/projects/oaas/communications/dictations/` (pushed).
-- The examination is the commission `communications/COMMISSION_FOUR_DIMENSIONS_EXAMINATION_2026-09-11.md` for a fresh session (revised
-  09:10): Part A reconstructs how the Riley piece got written from the record in the Stacks (30 turns, 13 part versions, 33 challenges, 19
-  hunches, 75 runs, 1,729 claims, 41 asks, 349 lookups, the searches in `logs/app.log`, the 29 landed cards, the 6 Sep imports from ganrl and
-  the dossiefier) and answers §4 from it; Part B learns from his older repo `strategizer-v2` (the logical vs rhetorical distinction it got
-  right; why the rest did not work); Part C is the plan — a plan, not code. **The goal is the infrastructure for future essays; the Riley essay
-  is due tonight and is not to be finished inside the software.**
+- The commission `communications/COMMISSION_FOUR_DIMENSIONS_EXAMINATION_2026-09-11.md` (revised 09:25 on his word: "we want to come up with
+  a perfect vision for this before we start executing … ground it in a history of our earlier commits … this is the culmination") is a
+  study-and-strategy commission for a fresh session — it builds nothing and plans no build. Three memos: how the Riley piece got written (the
+  living record: 30 turns, 13 part versions, 33 challenges, 19 hunches, 75 runs, 1,729 claims, 41 asks, 349 lookups, the searches in
+  `logs/app.log`, the 29 landed cards, the 6 Sep imports); the genealogy of the vision in our own memos and commits since 5 Sep and in his older
+  repo `strategizer-v2` (the logical vs rhetorical distinction it got right; why the rest did not work); and the vision itself, criticised in
+  earnest, with alternatives, a map of what the code can bear, the falsifiers, and the questions for him. Then the session stays to strategise
+  with him. **The aim is the infrastructure for future essays; the Riley essay is due tonight and is not to be finished inside the software.**
 - A line for CLAUDE.md's Principles, to be committed when the file is not held by another lane's edits:
   *The four dimensions (Evgeny, 11 Sep 08:30): a piece is modelled as lanes · materials · the logical outline · the narrative outline, in
   parallel and cross-fed; "the argument" as one column conflated the first three — `communications/2026-09-11_four_dimensions_of_a_piece.md`.*
