@@ -79,6 +79,34 @@ Verbatim: `communications/inputs_2026-09-11/DICTATION_2026-09-11_1120_precedence
 "Please use all of this and continue with the building." The build commission for the core:
 `communications/COMMISSION_BUILD_FOUR_DIMENSIONS_CORE_2026-09-11.md`.
 
+## 0.7 A lane is a category, not a topic (Evgeny, 12 Sep 09:57, on the first map; verbatim `inputs_2026-09-12/DICTATION_2026-09-12_0957_headings_are_categories_VERBATIM.md`)
+
+His words, cleaned: "My first impression is that it gets the broad category wrong. Headings are supposed to refer to abstract and reusable
+CATEGORIES — things like mechanisms, genealogy, implications, tensions — basic analytical categories that allow me to engage critically
+with a material. What you currently list as headings would be folded across or onto them. The upside is that we will have a reusable roster
+of them; they are not logically tightly coupled, but they do eventually give rise to a logical outline, and they map most closely onto how I
+think, because my observations usually arrive structured into one of those buckets even if I am not aware of it. So for each new project we
+will have a roster, a menu, of them, and we will choose the most adequate ones — and we will keep searching for opportunities to refactor
+them, to arrive at the most precise straitjacket for my observations as we keep adding observations. Is that enough feedback to warrant a
+rewrite of that page and approach? Go ahead."
+
+**What this corrects in §2.** The lane IS the analytical category — mechanism · genealogy · implications · tensions · distinctions ·
+alternative interpretation · reception · periodisation · stakes · the international · institutions · legitimation … — abstract, reusable,
+kept as a roster across projects; what §2 called the lane's "kind" is the lane, and what the first map called a heading ("The state has a
+logic — theory of the state", sixteen of them) is a THREAD: a topical road filed under a category, sometimes under two, that carries his rows.
+The four dimensions, the core and the cross-feed stand as they are; the lanes dimension gains its proper level: **the roster** (the categories,
+in the Mastermind as a record, refactored over time — split, merge, made more abstract or more particular — this is decision 2's adequacy
+module at its true object), **the piece's selection** from the roster (the categories this piece needs, chosen by him or proposed by the desk from
+his first words), and **the threads** under each category (his observations as they arrive, "structured into one of those buckets even if I am
+not aware of it"). The classifier files an arrival into a category and names or extends a thread; the logical outline arises from the categories
+and their threads, not from the threads alone.
+
+**The roster's first entries**, from his words this morning and the studies: mechanisms · genealogy (of terms and thinkers) · implications
+(what follows; the stakes) · tensions (within the interlocutor's own texts) · distinctions (against interlocutors) · alternative interpretations
+(of the facts) · reception (who answered, with what) · periodisation · the paradigm (the programme as a history-of-science object) · the
+international (scale) · institutions (the meso-level; the firm) · legitimation (ideology, the imaginary). He strikes and adds; the roster is
+never final.
+
 ## 1. The dictation, cleaned
 
 It has now become clear to me that once we get out of the Riley project, the Argument block will be super-important, but it will also be
