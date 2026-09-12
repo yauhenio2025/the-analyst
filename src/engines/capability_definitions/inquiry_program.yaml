@@ -1,0 +1,65 @@
+engine_key: inquiry_program
+engine_name: Write the research program for an inquiry
+version: 1
+category: argument
+kind: synthesis
+operation: descent
+problematique: >-
+  Before any search, turn a researcher's question and hunch into a program of candidate
+  explanations that the organs can execute: what the thinker actually claims at the point
+  where the question bites, which explanations of the case compete, what observation would
+  support or undercut each, who would have said it and where it would have been published,
+  what should be read first, and what remains open. The hunch is a hypothesis to test, never
+  a conclusion to confirm; the strongest rival to the hunch and the ordinary explanation in
+  which the theory is not needed are always among the candidates.
+researcher_question: What are the candidate explanations of this question, what would each need, who would supply it and where, and what should be read first?
+intellectual_lineage:
+  primary: philosophy_of_science
+analytical_dimensions:
+- key: stake
+  description: The thinker's claim at the point where the question bites, anchored in supplied texts, profiles or prior readings
+  probing_questions:
+  - Which formulation of the thinker's position does the case actually test, and which qualification in the thinker's own work already anticipates the case?
+- key: explanation
+  description: Competing explanations of the case, each with what would support or undercut it, who would say it, where, and the discriminating observation
+  probing_questions:
+  - Which explanations of the case compete, including the hunch stated as a hypothesis, its strongest rival, and the account in which the theory is not needed?
+  - For each, who would have said the decisive thing, in what voice, and where would it have been published?
+- key: lane
+  description: The search brief an organ executes, organized by explanation and voice rather than by topic
+  probing_questions:
+  - What lanes, venues, actors and literal phrases would surface the voices each explanation needs, and what seeks the strongest opposing material?
+- key: reading
+  description: The thinker texts to read first and what to look for in them
+  probing_questions:
+  - Which held texts settle the stake or supply an internal comparator, and what passages or terms should the reader look for?
+- key: scan
+  description: Literal phrases for a code scan of every available thinker text, to surface comparators the profiles do not name
+  probing_questions:
+  - Which mechanism words would find the thinker's clearest statement in a text whose title and profile do not announce it?
+- key: gap
+  description: What neither the hunch nor the holdings settle, including the researcher's leads as unverified pointers
+  probing_questions:
+  - Which leads must be verified for speaker, date and venue before they can count, and which conceptual or methodological questions no source will settle?
+composability:
+  shares_with:
+    lane: A search brief by explanation, voice and venue for the Reporter
+    reading: A reading order for the thinker's texts before the field is read
+  synergy_engines:
+  - research_evidence_feedback
+  - field_investigation_field_read
+  - field_investigation_memo
+depth_levels:
+- key: surface
+  description: One program from the question, the hunch and the inventories
+  typical_passes: 1
+- key: standard
+  description: The same program, checked by a critic for a missing rival or an unlocated voice
+  typical_passes: 2
+- key: deep
+  description: A program revised after reading the thinker texts it named first
+  typical_passes: 2
+apps:
+- critic
+function: logic
+output_mode: prose

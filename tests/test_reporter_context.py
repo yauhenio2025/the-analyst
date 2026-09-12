@@ -134,3 +134,19 @@ def test_large_institutional_pdf_preserves_originals_pages_and_identity_without_
     assert archived['source_metadata.source_metadata.provenance.page_spans'] == pages
     assert archived['field_collections[0].institutional_context.plan.registry_records[0].directory_profile']['description'] == record['description']
     assert receipt['packed_chars'] < 640000 < receipt['original_chars']
+
+
+def test_bulky_provenance_records_stay_out_of_the_reading_input():
+    from src.dossier.investigation import _spec
+    from src.dossier.reporter_context import pack_reporter_context
+    big = "x" * 900000
+    span = {"char_start": 0, "char_end": 5, "text": "hello", "raw_text": "[...]", "speaker": "Speaker 1"}
+    row = {"uid": "reporter:src_a", "title": "Odd Lots", "passage_spans": [span],
+           "source_metadata": {"provider": "reporter", "uid": "reporter:src_a", "spans": [span],
+                               "provenance": {"original_text": big, "transcript_spans": [{"t": 1}], "page_url": "https://omny.fm/x", "retrieval_receipts": [{"ok": True}]}}}
+    upstream = {"field_collections": [{"kind": "reporter"}], "source_metadata": row}
+    sources, packed, manifest = pack_reporter_context("read:field:reporter:src_a", [_spec("field:reporter:src_a", "hello world")], upstream, packet_sha256="0" * 64)
+    prov = packed["source_metadata"]["source_metadata"]["provenance"]
+    assert "original_text" not in prov and prov["original_text_omitted"]["chars"] > 900000 and prov["page_url"] == "https://omny.fm/x" and prov["retrieval_receipts"] == [{"ok": True}]
+    assert {o["path"] for o in manifest["omitted_metadata"]} >= {"source_metadata.source_metadata.provenance.original_text", "source_metadata.source_metadata.provenance.transcript_spans"} or any("original_text" in o["path"] for o in manifest["omitted_metadata"])
+    assert manifest["packed_chars"] < 5000 and manifest["original_chars"] > 900000

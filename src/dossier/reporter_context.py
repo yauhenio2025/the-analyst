@@ -53,6 +53,14 @@ def pack_reporter_context(stage, sources, upstream, *, packet_sha256):
                 if key in provenance:
                     omit(path + ".source_metadata.provenance." + key, provenance.pop(key),
                          "frozen source_metadata.provenance." + key)
+            # A publisher transcript's raw JSON (every word with its timing) or any other bulky acquisition record is a
+            # receipt, not reading material: the body carries the text. (Odd Lots, 2026-09-10: 853,000 characters of
+            # original_text beside a 42,000-character transcript pushed one reading past the input guard.)
+            for key, value in list(provenance.items()):
+                if key in ("original_text", "original_json", "raw", "words", "captions") or len(_json(value)) > 20000:
+                    omit(path + ".source_metadata.provenance." + key, provenance.pop(key),
+                         "frozen source_metadata.provenance." + key)
+                    provenance[key + "_omitted"] = {"chars": len(_json(value)), "note": "retained in the frozen record and the call manifest"}
 
     metadata(packed.get("source_metadata"), "source_metadata")
     if input_chars(sources, upstream) > 520000:

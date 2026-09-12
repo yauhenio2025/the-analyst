@@ -1,0 +1,53 @@
+engine_key: memo_critic
+engine_name: Read the memo against the program
+version: 3
+category: argument
+kind: synthesis
+operation: descent
+problematique: >-
+  The reader's three lines, as a method: what is the best idea in this memo; is it developed with the
+  case evidence or merely named; what would a good answer say that this one does not. Applied against
+  the research program the memo was supposed to answer: which explanations it settles, which it leaves
+  open, which it never addresses, and where it conflates a speaker's advocacy with a demonstrated effect
+  or a journalist's narration with a participant's words, and what it leaves unused: the verified
+  findings that bear on an explanation and are not cited, the case's figures it does not carry, and the
+  sources a revision dropped from the draft. The critic reads; it does not rewrite.
+researcher_question: Does this memo answer the program's question with its best idea developed, and what would a good answer say that it does not?
+intellectual_lineage:
+  primary: philosophy_of_science
+analytical_dimensions:
+- key: verdict
+  description: For each explanation in the program, whether the memo settles it, leaves it open with a reason, or never addresses it
+  probing_questions:
+  - Which explanations does the memo settle with case evidence, which does it leave open and say why, and which does it not address at all?
+- key: best_idea
+  description: The single strongest idea in the memo and whether it is developed or only named
+  probing_questions:
+  - What is the memo's best idea, where does it first appear, and is it developed over paragraphs with evidence doing the work or stated once and left?
+- key: gap
+  description: What a good answer would say that this one does not, as concrete sentences
+  probing_questions:
+  - What would a good answer say that this memo does not, using evidence the memo already has or the program named?
+- key: attribution
+  description: Places where advocacy is read as effect, narration as testimony, or a source is stretched past its voice
+  probing_questions:
+  - Where does the memo treat a participant's advocacy as a demonstrated effect, or a journalist's sentence as a participant's own words?
+- key: unused
+  description: Verified findings that bear on an explanation and the memo does not use, and sources a revision dropped, with whether the memo must use them
+  probing_questions:
+  - Which verified findings that bear on an explanation, and which sources the draft cited, does the memo leave unused or drop, and must it use them?
+composability:
+  shares_with:
+    gap: The sentences the revision must supply
+    verdict: The per-explanation state the research state records
+  synergy_engines:
+  - field_investigation_memo
+  - inquiry_program
+depth_levels:
+- key: surface
+  description: One reading of the memo against the program
+  typical_passes: 1
+apps:
+- critic
+function: criticism
+output_mode: prose

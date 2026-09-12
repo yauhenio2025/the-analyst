@@ -1,0 +1,115 @@
+# The reader's three lines as a method, applied to the memo before revision. 2026-09-10.
+engine_key: memo_critic
+engine_name: Read the memo against the program
+version: 3
+method_metadata:
+  status: experimental
+  applies_when: A field inquiry with a research program has a validated memo draft and allowance for one critic pass and one revision.
+  required_inputs:
+  - The memo draft; the research state (explanations, stake, gaps); the adjudication; the evidence identities the memo may cite
+  outputs:
+  - A verdict per explanation; the best idea and whether it is developed; the sentences a good answer would add; attribution risks with the cited anchor
+  limitations:
+  - The critic reads one text at a time, the draft or the revision; it does not verify quotations (the wall does) and does not write the revision
+  evaluation:
+    promotion: The revised memo reads better to the owner than the draft on the Tether case, with no support or attribution regression
+    retire: Revisions that lengthen the memo without developing the best idea
+    receipts: []
+  provenance:
+  - kind: structural_redesign
+    date: '2026-09-10'
+    design: the-reporter:communications/DESIGN_2026-09-10_inquiry_as_program_of_explanations.md
+depth_sequences:
+- depth_key: surface
+  mode: oneshot
+process:
+  key: dvs
+  description: Read the memo against the program
+  composition_role: decision
+  max_output_tokens: 5000
+  framing: >-
+    You are the reader the memo was written for, checking it before it is accepted. You have the
+    research program (the stake, the competing explanations with what would undercut each, the gaps),
+    the adjudication, and the memo draft. Read the draft as an answer to the program, not as a document
+    to inventory. Say, for each explanation, whether the memo settles it with case evidence, leaves it
+    open with a stated reason, or never addresses it. Name the single best idea in the memo and say
+    whether it is developed over paragraphs with the evidence doing the work, or stated once and left;
+    say which paragraph it first appears in. Then write the sentences a good answer would contain that
+    this one does not, using only evidence the memo already cites or the program named as available;
+    each must be a sentence the revision could write, not a topic. Finally mark attribution risks: a
+    participant's advocacy of an effect read as the effect; a journalist's sentence read as a
+    participant's words; a source stretched past its voice; cite the memo's own bracketed identity for
+    each. When unused_bearing_findings are supplied, they are the verified findings that support or
+    undercut an explanation and that the memo does not cite, counted by source and listed with the
+    speaker's own words first: say which the memo must use, because the argument changes with them,
+    and which it rightly leaves aside, naming the identity; a transcript's twenty findings are one
+    source with the two or three that matter named. When dropped_citations and a previous_draft are
+    supplied you are reading the revision, not the draft: say for each dropped source whether the
+    revision was right to drop it. When unused_figures are supplied, they are the case's magnitudes
+    the memo does not carry (money, shares, counts, whatever their bearing): a memo about returns that
+    does not state the income is not finished; mark the figures it must carry. Be brief: 250 to 400 words of prose, then the rows. You do not
+    rewrite the memo and you do not verify quotations; you say what the reader would say.
+  scoped_outcomes: false
+  routing:
+    cheap: openrouter/openai/gpt-5.6-luna
+    mid: openrouter/deepseek/deepseek-v4-pro
+    strong: openrouter/openai/gpt-5.6-sol
+  dimensions:
+  - key: verdict
+    name: Verdict per explanation
+    id_prefix: C1
+    scope: document
+    load_bearing: true
+    questions:
+    - Which explanations does the memo settle with case evidence, which does it leave open and say why, and which does it not address at all?
+    method_card: One row per explanation in the program. settled means the memo reaches a bounded judgment with evidence; open means it names why it cannot; absent means the memo does not engage it.
+    answer_shape: '[C1.F<n>] <the memo''s treatment of this explanation, one sentence> — dim: verdict — explanation: E<n> — state: settled|open|absent — evidence_used: <the memo''s bracketed identities it relies on, or none> — confidence: high|medium|low'
+  - key: best_idea
+    name: The best idea, developed or named
+    id_prefix: C2
+    scope: document
+    load_bearing: true
+    questions:
+    - What is the memo's best idea, where does it first appear, and is it developed over paragraphs with evidence doing the work or stated once and left?
+    method_card: Exactly one row. The paragraph number counts from the first paragraph after the title.
+    answer_shape: '[C2.F1] <the best idea, one sentence> — dim: best_idea — first_paragraph: <n> — developed: yes|partly|no — why: <what develops it or what is missing> — confidence: high|medium|low'
+  - key: gap
+    name: What a good answer would say
+    id_prefix: C3
+    scope: document
+    load_bearing: true
+    questions:
+    - What would a good answer say that this memo does not, using evidence the memo already has or the program named?
+    method_card: Two to five rows, each a sentence the revision could write, with the evidence it would rest on and the explanation it serves. A topic is not a gap; a sentence is.
+    answer_shape: '[C3.F<n>] <the sentence a good answer would contain> — dim: gap — explanation: E<n> — rests_on: <bracketed identities already available, or the program''s gap it depends on> — confidence: high|medium|low'
+  - key: attribution
+    name: Attribution risks
+    id_prefix: C4
+    scope: document
+    load_bearing: true
+    questions:
+    - Where does the memo treat a participant's advocacy as a demonstrated effect, or a journalist's sentence as a participant's own words?
+    method_card: Zero or more rows; none is a legitimate answer. Cite the memo's own bracketed identity and quote the memo's phrase.
+    answer_shape: '[C4.F<n>] <the risk, one sentence> — dim: attribution — identity: <the memo''s bracketed identity> — memo_phrase: "<the memo''s words, <=160 chars>" — kind: advocacy_as_effect|narration_as_testimony|voice_stretched|other — confidence: high|medium|low'
+  - key: unused
+    name: What the memo did not use
+    id_prefix: C5
+    scope: document
+    load_bearing: true
+    questions:
+    - Which verified findings that bear on an explanation, and which sources the draft cited, does the memo leave unused or drop, and must it use them?
+    method_card: One row per finding, figure or source that matters, from unused_bearing_findings, unused_figures and dropped_citations when supplied; none is a legitimate answer when nothing is supplied. must_use only when the argument changes with it, above all a participant's or an official's own words or a record document; rightly_left with the reason otherwise.
+    answer_shape: '[C5.F<n>] <the finding or source and what it would add, one sentence> — dim: unused — identity: <citation identity or source uid> — kind: unused_finding|unused_figure|dropped_source — disposition: must_use|rightly_left — explanation: E<n> — confidence: high|medium|low'
+  steps:
+  - key: synthesize
+    kind: synthesize
+    model_tier: strong
+    output: prose_ledger
+    is_final: true
+    max_rows: 30
+    reader: the researcher deciding whether to accept the memo, and the revision that follows
+    brief: >-
+      Open with the best idea and whether it is developed. Then the explanations the memo settles,
+      leaves open and does not address. Then the sentences a good answer would add. Then the attribution
+      risks, or say there are none. Then what the memo did not use or dropped and whether it must,
+      when such lists are supplied. Then the rows.

@@ -40,10 +40,18 @@ process:
       limits. Distinguish what the text demonstrates from what it hypothesizes; name whose claim
       it is. Every row must quote an actually supplied passage of this field source. Do not attribute
       any field fact to the focal thinker.
-    method_card: Extract source-grounded claims, mechanisms, empirical design and findings, contrary
+    method_card: >-
+      Extract source-grounded claims, mechanisms, empirical design and findings, contrary
       cases and limits. Distinguish what the text demonstrates from what it hypothesizes; name whose
       claim it is. Every row must quote an actually supplied passage of this field source. Do not
-      attribute any field fact to the focal thinker.
+      attribute any field fact to the focal thinker. Name the voice of every finding as direct (the
+      speaker's own words, quoted), reported (their words as the author reports them), narration (the
+      author's or journalist's own claim) or document (an official or institutional text). A journalist's
+      sentence about what a company's purchases should mean to a party is narration, not the
+      executive's statement. When a research_state is supplied in context, say which of its
+      explanations the finding bears on and whether it supports, undercuts or only gives context; a
+      participant advocating an effect supports the claim that they advocate it, not that the effect
+      exists.
     indicators:
     - question
     - evidence
@@ -53,6 +61,8 @@ process:
     id_prefix: E1
     answer_shape: '[E1.F<n>] <finding in one sentence> — dim: evidence — uid: <source_metadata.uid>
       — relation: thesis|mechanism|method|counterevidence|qualification — speaker: <actual speaker>
+      — voice: direct|reported|narration|document — bears_on: <program explanation ids, or none>
+      — bearing: supports|undercuts|context|none
       — scale: <unit and scope> — locus: <supplied page or source characters> — anchor: "<verbatim
       supplied passage, <=200 chars>" — doc: <actual supplied source key> — confidence: high|medium|low'
   - key: gap

@@ -74,6 +74,21 @@ CORPUS_READING = (
 )
 
 
+ARGUMENT_READING = (
+    "## Answering the question from the whole corpus\n\n"
+    "The unit of analysis is the complete supplied collection, but the question, not the document list, governs "
+    "the order of the reading. Decide first which single distinction or mechanism the evidence supports most "
+    "strongly in answer to the question. Open with it, and develop it over several paragraphs in which the case "
+    "evidence does the argumentative work: what it establishes, what it fails to establish, which rival "
+    "explanation survives, what would weaken the argument, and the one observation or comparison that would "
+    "discriminate between the candidates. Bring in each document where its claim bears on that argument, with "
+    "document-keyed quotations, rather than in corpus order. Do not begin with a document-by-document position "
+    "map. Put coverage, what each document was for and what could not be assessed and why, in a short closing "
+    "section. The cautions about attribution, absence and inspected ranges bind every sentence, but they are "
+    "constraints on the argument, not a substitute for it: a list of what remains to be verified is not an answer."
+)
+
+
 class ProcessPrompt(BaseModel):
     """A composed prompt for one step invocation."""
 
@@ -202,6 +217,8 @@ def _corpus_reading(spec):
         return ('Organize this decision around the research question, observations, competing explanations and next action. '
                 'Keep exact source identities and coverage limits. Follow the method output contract; '
                 'document order does not determine the order of the decision.')
+    if spec.composition_role == 'argument':
+        return ARGUMENT_READING
     if not spec.scoped_outcomes:
         return CORPUS_READING
     return CORPUS_READING.replace(

@@ -34,7 +34,7 @@ def row(dim, **fields):
             "finding": "A bounded supported claim", "confidence": "high"}
 
 
-def fake(calls, *, fail_stage=None, bad_memo=False, large_readings=False, select_last=False):
+def fake(calls, *, fail_stage=None, bad_memo=False, large_readings=False, select_last=False, drop_in_second=False):
     failed = False
     def call(key, sources, *, packet, **kwargs):
         nonlocal failed
@@ -49,7 +49,7 @@ def fake(calls, *, fail_stage=None, bad_memo=False, large_readings=False, select
         elif key.endswith(('_field_read', '_author_read')):
             src = sources[0]
             uid = packet['source_metadata']['uid']
-            r = row('evidence', uid=uid, relation='direct', speaker='source author')
+            r = row('evidence', uid=uid, relation='direct', speaker='source author', voice='reported', bears_on='E1', bearing='supports')
             first_window = src.text.split('\n', 1)[1].split('\n\n')[0]
             quote = first_window.split('.')[0] + '.' if '.' in first_window else first_window[:80]
             r.update(doc=src.key, anchor=quote)
@@ -61,6 +61,16 @@ def fake(calls, *, fail_stage=None, bad_memo=False, large_readings=False, select
             rows = [row('candidate', uid=item['inventory']['uid'], decision='read', reason='Field-guided relevance', priority='1') for item in items]
             for i, r in enumerate(rows):
                 r['id'] = f'E1.F{i+1}'
+        elif key == 'memo_critic':
+            rows = [{**row('verdict', explanation='E1', state='settled', evidence_used='x'), 'id': 'C1.F1'},
+                    {**row('best_idea', first_paragraph='1', developed='partly', why='named once'), 'id': 'C2.F1'},
+                    {**row('gap', explanation='E1', rests_on='x'), 'id': 'C3.F1'}]
+            prose = 'The best idea is named once and not developed.'
+            if packet.get('reading') == 'revision':          # the second critic reads the revision against the draft
+                dropped = packet['dropped_citations']
+                rows.append({**row('unused', identity=next(iter(dropped['by_source']), 'none'), kind='dropped_source',
+                                   disposition='must_use' if dropped['count'] else 'rightly_left', explanation='E1'), 'id': 'C5.F1'})
+                prose = 'The revision dropped a source it must restore.' if dropped['count'] else 'Nothing dropped.'
         elif key.endswith('_field_map'):
             items = json.loads(sources[0].text)
             ev = packet.get('evidence') or [e for item in items for e in item['evidence']]
@@ -76,6 +86,10 @@ def fake(calls, *, fail_stage=None, bad_memo=False, large_readings=False, select
                                 baseline='prior' if packet['mode'] == 'follow_up' else 'standalone',
                                 before='Provisional old view', after='Revised bounded view', evidence_ids=ids), 'id':'E2.F1'}]
                 prose = f'The inquiry revises its scope [{ids.replace(";", "; ")}].'
+                if packet.get('critic') and 'dropped_citations' not in packet:      # the first revision quietly drops all but one source
+                    prose = f'The inquiry revises its scope [{ids.split(";")[0]}].'
+                if drop_in_second and 'dropped_citations' in packet and 'validation_errors' not in packet:   # the second drops one too
+                    prose = f'The inquiry revises its scope [{"; ".join(ids.split(";")[1:])}].'
                 if bad_memo:
                     rows[0]['fields'].update(claim_kind='thinker_position', evidence_ids='referee:0/E1.F1')
         return {"engine_key": key, "rows": rows, "cost_usd": .1, "model": "fake", "wall": {"failed_ids": []},
@@ -369,3 +383,128 @@ def test_large_parent_answer_does_not_displace_reviewed_memo_or_collection_gaps(
     assert 'Source audit '*9000 in baseline['text'] and 'Search artifacts Search artifacts' not in baseline['text']
     assert baseline['full_prior_packet_chars']>8000000 and baseline['answer_artifacts_summarized']
     assert state['field_gaps']==state['coverage']['field_gaps']==memo_call[2]['field_gaps']
+
+
+
+def test_program_path_reads_thinker_first_replaces_maps_and_selection_and_revises_after_critic():
+    raw, packet, _, bodies = fixture(field_count=3, primary_count=5)
+    packet['research_state'] = {"question": packet["question"], "hunch": "a hunch", "prose": "Program prose: the stake and four explanations.",
+                                "explanations": [{"id": "E1", "claim": "Collective organization mediates agency", "priority": 1, "undercuts_if": "agency without organization"},
+                                                 {"id": "E2", "claim": "Networks substitute for organization", "priority": 2}],
+                                "readings": [{"order": 1, "uid": "em:AUTHOR03", "why": "settles the stake", "look_for": "organization; agency"}],
+                                "candidates": [{"uid": "em:AUTHOR01", "hits": {"agency": 1}, "total": 1, "already_ordered": False}],
+                                "scans": [{"phrases": ["agency"], "explanations": ["E1"]}], "lanes": [], "gaps": [], "problems": []}
+    calls = []
+    state = run_field_investigation(packet, bodies, call=fake(calls), save=lambda s: None)
+    keys = [c[0] for c in calls]
+    assert state['complete'] and state['program_path'] is True and state['plan_source'] == 'research_state'
+    assert 'field_investigation_plan' not in keys and 'field_investigation_author_select' not in keys and 'field_investigation_field_map' not in keys
+    author_reads = [i for i, k in enumerate(keys) if k == 'field_investigation_author_read']
+    field_reads = [i for i, k in enumerate(keys) if k == 'field_investigation_field_read']
+    assert author_reads and field_reads and max(author_reads) < min(field_reads)          # the thinker first
+    assert state['selected_primary_uids'] == ['em:AUTHOR03', 'em:AUTHOR01'] and state['selection']['source'] == 'research_program'
+    assert state['coverage']['primary']['read_count'] == 2 and state['coverage']['field']['read_count'] == 3
+    assert state['field_map']['source'] == 'code_evidence_tables' and state['field_map']['tables']['explanations'][0]['id'] == 'E1'
+    assert len(state['field_map']['tables']['explanations'][0]['supports']) == 3          # every verified field finding bears on E1 in the fake
+    assert state['support_routes']['global_to_synthesis']['policy'].startswith('program evidence tables')
+    field = [e for e in state['evidence'] if e['source_role'] == 'field'][0]
+    assert field['voice'] == 'reported' and field['bears_on'] == ['E1'] and field['bearing'] == 'supports' and field['speaker_in_context'] in (True, False)
+    assert keys.count('memo_critic') == 2 and keys.count('field_investigation_memo') == 3
+    memo_calls = [i for i, k in enumerate(keys) if k == 'field_investigation_memo']
+    critic_calls = [i for i, k in enumerate(keys) if k == 'memo_critic']
+    assert memo_calls[0] < critic_calls[0] < memo_calls[1] < critic_calls[1] < memo_calls[2] == len(keys) - 1
+    assert state['memo_critic_rows'][1]['fields']['developed'] == 'partly'
+    critic_packet = calls[critic_calls[0]][2]
+    assert 'research_state' in critic_packet and 'evidence' not in critic_packet and critic_packet['evidence_identities']
+    assert critic_packet['unused_bearing_findings']['count'] == 0                    # the draft cited every verified finding
+    assert critic_packet['unused_figures']['count'] == 0 and 'unused_figures' in calls[memo_calls[1]][2]
+    revise_packet = calls[memo_calls[1]][2]
+    assert revise_packet['previous_draft'] and revise_packet['critic'] and revise_packet['critic_rows'] and 'unused_bearing_findings' in revise_packet
+    second_critic = calls[critic_calls[1]][2]
+    assert second_critic['reading'] == 'revision' and second_critic['previous_draft'] == state['memo_draft'] and second_critic['first_critic']
+    verified = [e['citation_id'] for e in state['evidence'] if e['quote_verified']]
+    assert len(verified) == 5 and verified[0].startswith('em:')                                  # two thinker rows first, then three field rows
+    assert second_critic['dropped_citations']['count'] == 4                                       # the revision kept the first thinker citation only
+    assert second_critic['unused_bearing_findings']['count'] == 3                                 # so every field finding that bears on E1 is unused
+    assert state['memo_dropped_citations']['count'] == 4 and state['memo_must_use'] == ['C5.F1']
+    second_revision = calls[memo_calls[2]][2]
+    assert second_revision['dropped_citations']['count'] == 4 and second_revision['critic_rows'][-1]['fields']['disposition'] == 'must_use'
+    assert state['memo_source'] == 'revision2' and len(state['memo_validation']['references']) == 5        # the second revision restored them
+    assert state['memo_dropped_by_second_revision']['count'] == 0
+    assert any(k.startswith('memo_critic') for k in state['method_snapshots'])
+
+
+def test_unused_and_dropped_lists_are_assembled_by_code():
+    from src.dossier.field_investigation import cited_identities, dropped_citations, unused_bearing_findings
+    draft = 'One [a:1/F1; b:2/E1.F3] and two [c:3/F2].'
+    revision = 'One [a:1/F1].'
+    assert cited_identities(draft) == {'a:1/F1', 'b:2/E1.F3', 'c:3/F2'}
+    dropped = dropped_citations(draft, revision, [{'citation_id': 'b:2/E1.F3', 'title': 'B'}, {'citation_id': 'c:3/F2', 'title': 'C'}])
+    assert dropped['count'] == 2 and dropped['by_source'] == {'b:2': {'title': 'B', 'identities': ['b:2/E1.F3']}, 'c:3': {'title': 'C', 'identities': ['c:3/F2']}}
+    tables = {'explanations': [{'id': 'E1', 'supports': [{'citation_id': 'a:1/F1', 'voice': 'narration', 'title': 'A', 'finding': 'f', 'quote': 'q'},
+                                                          {'citation_id': 't:9/F1', 'voice': 'direct', 'speaker': 'CEO', 'title': 'T', 'finding': 'own words', 'quote': 'q' * 300}]
+                                                          + [{'citation_id': f't:9/F{n}', 'voice': 'direct', 'title': 'T', 'finding': 'more', 'quote': 'q'} for n in range(2, 12)],
+                                'undercuts': [{'citation_id': 'f:5/F2', 'voice': 'document', 'title': 'Fed', 'finding': 'displaces', 'quote': 'q'}]}]}
+    unused = unused_bearing_findings(tables, {'a:1/F1'})
+    assert unused['count'] == 12 and unused['by_source'] == {'T': 11, 'Fed': 1} and unused['listed'] == 7        # six per source at most
+    assert [r['citation_id'] for r in unused['rows'][:3]] == ['t:9/F1', 't:9/F2', 'f:5/F2']                     # every source's strongest first
+    assert all(r['citation_id'].startswith('t:9/') for r in unused['rows'][3:])
+    assert len(unused['rows'][0]['quote']) == 160 and unused['rows'][0]['bearing'] == 'supports'
+
+
+def test_second_revision_that_drops_what_the_first_cited_is_sent_back_once():
+    raw, packet, _, bodies = fixture(field_count=3, primary_count=5)
+    packet['research_state'] = {"question": packet["question"], "hunch": "a hunch", "prose": "p",
+                                "explanations": [{"id": "E1", "claim": "Collective organization mediates agency", "priority": 1}],
+                                "readings": [{"order": 1, "uid": "em:AUTHOR03", "why": "settles the stake"}], "candidates": [], "scans": [], "lanes": [], "gaps": [], "problems": []}
+    calls = []
+    state = run_field_investigation(packet, bodies, call=fake(calls, drop_in_second=True), save=lambda s: None)
+    keys = [c[0] for c in calls]
+    assert keys.count('field_investigation_memo') == 4 and keys.count('memo_critic') == 2
+    repair = calls[-1][2]
+    assert repair['validation_errors']['dropped_required_citations'] and repair['previous_draft'] and repair['critic_rows']
+    assert state['memo_revision2_repaired'] is True and state['memo_source'] == 'revision2'
+    assert state['memo_validation']['dropped_required_citations'] == [] and state['memo_dropped_by_second_revision']['count'] == 0
+
+
+def test_program_path_falls_back_to_legacy_selection_when_the_program_names_nothing_available():
+    raw, packet, _, bodies = fixture(field_count=2, primary_count=3)
+    packet['research_state'] = {"question": packet["question"], "explanations": [{"id": "E1", "claim": "x"}], "readings": [{"order": 1, "uid": "em:NOPE"}],
+                                "candidates": [], "scans": [], "prose": "p"}
+    calls = []
+    state = run_field_investigation(packet, bodies, call=fake(calls), save=lambda s: None)
+    keys = [c[0] for c in calls]
+    assert state['complete'] and 'field_investigation_author_select' in keys and 'field_investigation_field_map' not in keys
+    assert state['field_map']['source'] == 'code_evidence_tables'
+
+
+def test_unused_figures_lists_the_magnitudes_the_memo_does_not_carry():
+    from src.dossier.field_investigation import unused_figures
+    ev = [{"citation_id": "a:1/F1", "source_role": "field", "quote_verified": True, "bearing": "context", "title": "A",
+           "source_quote": "In 2024, Tether reported $13.7 billion in net income with only 150 employees", "finding": "profit"},
+          {"citation_id": "a:1/F2", "source_role": "field", "quote_verified": True, "bearing": "supports", "title": "A", "source_quote": "no number here", "finding": "words"},
+          {"citation_id": "b:2/F1", "source_role": "field", "quote_verified": True, "bearing": "supports", "title": "B", "source_quote": "over 60 percent of supply", "finding": "share"},
+          {"citation_id": "p:3/F1", "source_role": "primary", "quote_verified": True, "source_quote": "$5 billion", "finding": "thinker"},
+          {"citation_id": "c:4/F1", "source_role": "field", "quote_verified": False, "source_quote": "$9 billion", "finding": "unverified"}]
+    out = unused_figures(ev, {"b:2/F1"})
+    assert out["count"] == 1 and out["rows"][0]["citation_id"] == "a:1/F1" and out["rows"][0]["figure"].startswith("$13.7")
+
+
+def test_program_selects_the_field_read_set_over_the_cap_venues_then_bearing():
+    from src.dossier.field_investigation import program_field_selection
+    raw, packet, _, bodies = fixture(field_count=4, primary_count=3)
+    rows = {r["uid"]: r for r in packet["field"]}
+    rows["referee:0"]["source_metadata"] = {"discovery": {"bearing": "context"}}
+    rows["referee:1"]["pdf_url"] = "https://home.treasury.gov/system/files/x.pdf"
+    rows["referee:2"]["bearing"] = "undercuts"
+    rs = {"question": packet["question"], "prose": "p", "explanations": [{"id": "E1", "claim": "x", "priority": 1}],
+          "readings": [{"order": 1, "uid": "em:AUTHOR01", "why": "w"}], "candidates": [], "scans": [], "gaps": [], "problems": [],
+          "lanes": [{"id": "P3.F2", "voice": "official", "venues": "treasury.gov; federalreserve.gov"}]}
+    selected, decisions = program_field_selection(rs, packet, bodies, 2)
+    assert selected == ["referee:1", "referee:2"] and decisions["referee:3"]["decision"] == "defer" and decisions["referee:0"]["reason"].startswith("its hit is context")
+    packet["research_state"] = rs
+    packet["limits"] = {**packet.get("limits", {}), "max_field_texts": 2}
+    calls = []
+    state = run_field_investigation(packet, bodies, call=fake(calls), save=lambda s: None)
+    assert state["complete"] and state["field_selection"]["selected"] == ["referee:1", "referee:2"] and state["field_selection"]["eligible"] == 4
+    assert state["coverage"]["field"]["read_count"] == 2 and sorted(state["coverage"]["field"]["unread_uids"]) == ["referee:0", "referee:3"]
