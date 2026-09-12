@@ -91,3 +91,37 @@ def recover_saved_reading(job_id, receipt):
         return {'job_id': job_id, 'attempt_id': ident, 'receipt_sha256': record['receipt_sha256'],
                 'recovered_cost_usd': record['cost_usd'], 'total_cost_usd': recovered['cost_usd'],
                 'already_recovered': recovered is state, 'current_memo_and_evidence_unchanged': True}
+
+
+def redo_final_stages(job_id, from_stage="memo"):
+    """Forget a stopped field investigation's memo stages and run them again under the current methods (2026-09-12): the readings
+    and the adjudication stay paid; the job goes back to its analysis step and resumes. Returns what was forgotten."""
+    from src.dossier.store import get_job, update_job
+    from src.dossier.investigation import load_investigation, research_accounting, _json
+    from src.dossier.field_investigation import forget_final_stages
+    from src.dossier.blob_store import put_blob
+    from src.dossier.execution_lock import investigation_owner, assert_owned
+    from src.dossier.drain import is_draining
+    from src.dossier import events, runner
+    terminal = {'done', 'failed', 'cancelled'}
+    job = get_job(job_id)
+    if job is None or job.status not in terminal:
+        raise ValueError('Redo the memo only after the investigation has stopped')
+    with investigation_owner(job_id, should_stop=is_draining):
+        job = get_job(job_id)
+        if job is None or job.status not in terminal:
+            raise ValueError('Investigation resumed while the redo was waiting')
+        state = load_investigation(job_id)
+        if not state or state.get('kind') != 'field_investigation':
+            raise ValueError('No frozen field investigation is available to redo')
+        state = forget_final_stages(state, from_stage)
+        assert_owned(job_id)
+        put_blob(f'investigation:{job_id}', 'application/json', _json(state).encode())
+        receipts, accounting = research_accounting(state)
+        update_job(job_id, analysis=state['analysis'], receipts=receipts, totals=job.totals.model_copy(update=accounting),
+                   status=runner.STATUS_FOR_STEP['analysis'], step='analysis', error=None)
+        redo = state['redo'][-1]
+        events.emit(job_id, 'note', phase='analysis', detail=f"redo from {from_stage}: {len(redo['forgotten_calls'])} memo calls forgotten; the readings and the adjudication are reused",
+                    payload_json={'redo': redo})
+    started = runner.resume(job_id)
+    return {'job_id': job_id, 'from_stage': from_stage, 'forgotten_calls': redo['forgotten_calls'], 'resumed': started}

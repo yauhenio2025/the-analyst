@@ -173,15 +173,19 @@ def _row_bearing(row):
     return row.get("bearing") or meta.get("bearing") or (meta.get("discovery") or {}).get("bearing")
 
 
-def program_field_selection(rs, packet, bodies, max_texts):
-    """Field texts to read when the inventory exceeds the cap, chosen by the program rather than refused: documents from the
-    lanes' venue hosts first (the voice the lane was for), then the sources whose hit supports or undercuts an explanation, then
-    context, then the rest, the longer body first within a class. The Reporter's per-hit bearing and the program's venues are the
-    ranking; nothing here judges relevance. Every deferred text is recorded with the reason (2026-09-11)."""
+def program_field_selection(rs, packet, bodies, max_texts, cached_keys=()):
+    """Field texts to read when the inventory exceeds the cap, chosen by the program rather than refused: texts whose reading
+    is already paid (an extended run) first, then documents from the lanes' venue hosts (the voice the lane was for), then the
+    sources whose hit supports or undercuts an explanation, then context, then the rest, the longer body first within a class.
+    The Reporter's per-hit bearing and the program's venues are the ranking; nothing here judges relevance. Every deferred
+    text is recorded with the reason (2026-09-11)."""
     available = [r for r in packet.get("field") or [] if _eligible(r) and bodies.get(r["source_key"])]
     venues = venue_hosts(rs)
+    cached = set(cached_keys or ())
     def klass(r):
         host, b = _row_host(r), _row_bearing(r)
+        if r.get("source_key") in cached:
+            return -1, "already read; the reading is reused"
         if venues and any(host == v or host.endswith("." + v) for v in venues):
             return 0, "a document from a venue the program named"
         if b in ("supports", "undercuts"):
@@ -194,6 +198,48 @@ def program_field_selection(rs, packet, bodies, max_texts):
     decisions = {r["uid"]: {"uid": r["uid"], "decision": "read" if i < max_texts else "defer", "reason": klass(r)[1],
                             "selection_source": "research_program", "rank": i + 1} for i, r in enumerate(ranked)}
     return selected, decisions
+
+
+def forget_final_stages(state, from_stage="memo"):
+    """Forget the final stages of a saved investigation so they run again under the current methods: every reading and the
+    adjudication stay paid and reused; the memo, critic and revision calls, their contracts, manifests and frozen methods go.
+    The state records the redo (2026-09-11; the trial tool's --redo-from, now the Analyst's own operation)."""
+    if from_stage != "memo":
+        raise ValueError("only the memo stages can be forgotten")
+    redo = {"from": from_stage, "at": _now(), "cost_before_usd": state.get("cost_usd"),
+            "forgotten_calls": sorted(k for k in state.get("calls", {}) if k.startswith("memo")), "previous_memo_source": state.get("memo_source")}
+    for table in ("calls", "call_contracts", "call_input_manifests", "stage_status"):
+        for k in list(state.get(table) or {}):
+            if k.startswith("memo"):
+                del state[table][k]
+    for k in ("memo_critic", "field_investigation_memo"):
+        (state.get("method_snapshots") or {}).pop(k, None)
+    for k in [k for k in state if k.startswith("memo") or k in ("changes", "paused_reason", "running_stage")]:
+        state.pop(k, None)
+    state["stages"] = [st for st in state.get("stages", []) if not st.startswith("memo") and st != "done"]
+    state["complete"] = False
+    state["current_stage"] = "redo"
+    state.setdefault("redo", []).append(redo)
+    return state
+
+
+def extend_state(old, packet):
+    """A new investigation's state from a finished one under a new packet: the reading calls, their frozen inputs and manifests
+    and the frozen reading methods carry over; everything derived (evidence, readings, selection, plan, coverage, the final stages)
+    is computed again, and the memo and critic methods are frozen afresh from the registry so the final stages run under the
+    current methods. The reading contracts do not carry: the readings' upstream names the snapshot, which changed; a cached
+    result is reused as the reading of the same text (same source key, same body hash, checked by read_population)."""
+    reads = {k: v for k, v in (old.get("calls") or {}).items() if k.startswith("read:")}
+    carried_cost = sum(float(a.get("cost_usd") or 0) for a in (old.get("analysis") or {}).values() if str(a.get("stage", "")).startswith("read:"))
+    snapshots = {k: v for k, v in (old.get("method_snapshots") or {}).items() if k not in ("memo_critic", "field_investigation_memo")}
+    return {"version": 1, "kind": CHAIN, "packet_sha256": packet_fingerprint(packet), "mode": old.get("mode", "standalone"),
+            "stages": [], "calls": reads, "analysis": {}, "cost_usd": 0.0, "evidence": [], "readings": [], "complete": False,
+            "current_stage": "extended", "program_path": bool(old.get("program_path")),
+            "read_inputs": {k: v for k, v in (old.get("read_inputs") or {}).items() if k in reads},
+            "call_input_manifests": {k: v for k, v in (old.get("call_input_manifests") or {}).items() if k in reads},
+            "method_snapshots": snapshots,
+            "extended_from": {"packet_sha256": old.get("packet_sha256"), "at": _now(), "readings_carried": len(reads),
+                              "carried_cost_usd": round(carried_cost, 4), "previous_cost_usd": old.get("cost_usd")}}
 
 
 def program_plan(rs):
@@ -821,7 +867,8 @@ def run_field_investigation(packet, bodies, *, call, save, state=None, check=lam
         eligible_field = [r for r in inventories["field"] if _eligible(r) and bodies.get(r["source_key"])]
         if len(eligible_field) > limits["field"]["max_texts"]:
             # More available field texts than the cap: the program chooses (venue documents, then bearing), and records the rest.
-            field_selected, field_decisions = program_field_selection(program, packet, bodies, limits["field"]["max_texts"])
+            field_selected, field_decisions = program_field_selection(program, packet, bodies, limits["field"]["max_texts"],
+                                                                      cached_keys={k[len("read:"):] for k in state["calls"] if k.startswith("read:")})
             checkpoint("field_selection", field_selection={"source": "research_program", "cap": limits["field"]["max_texts"], "eligible": len(eligible_field),
                                                            "selected": field_selected, "decisions": list(field_decisions.values())})
     read_population("field", plan, field_selected)

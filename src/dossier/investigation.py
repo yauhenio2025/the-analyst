@@ -840,6 +840,17 @@ def run_job_investigation(job, docs, *, cancel_check=None, persist=None, chain=C
         events.emit(job.id, "note", phase="analysis", detail=f"{chain}: {state['current_stage']}",
                     cost_usd=state["cost_usd"], payload_json={"stage": state["current_stage"], "read_count": len(state.get("readings", []))})
     restored = load_investigation(job.id)
+    if restored is None and chain == "field_investigation" and packet.get("extend_from_job_id"):
+        # An extension (2026-09-12): the paid readings of the investigation named in the packet carry into this one; new
+        # sources are read and the final stages run again under the current methods. The carry is recorded in the state.
+        from src.dossier.field_investigation import extend_state
+        previous = load_investigation(str(packet["extend_from_job_id"]))
+        if not previous:
+            raise ValueError(f"the investigation to extend has no frozen state: {packet['extend_from_job_id']}")
+        restored = extend_state(previous, packet)
+        put_blob(f"investigation:{job.id}", "application/json", _json(restored).encode())
+        events.emit(job.id, "note", phase="analysis", detail=f"{chain}: extends {packet['extend_from_job_id']}, {restored['extended_from']['readings_carried']} readings carried",
+                    payload_json={"extended_from": restored["extended_from"]})
     if chain == "field_investigation":
         # Layout reviews are verification artifacts of the same frozen PDF and
         # body, never replacement source text or additional model readings.

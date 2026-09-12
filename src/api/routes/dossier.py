@@ -380,6 +380,22 @@ def recover_investigation_reading(job_id: str, receipt: dict):
         raise HTTPException(status_code=409, detail=str(exc)) from exc
 
 
+class RedoRequest(BaseModel):
+    from_stage: str = "memo"
+
+
+@router.post("/jobs/{job_id}/investigation/redo")
+def redo_investigation_final_stages(job_id: str, req: RedoRequest):
+    """Run a stopped field investigation's memo stages again under the current methods; readings and adjudication are reused."""
+    _load(job_id)
+    from src.dossier.investigation_recovery import redo_final_stages
+    from src.dossier.common import DossierDraining
+    try:
+        return redo_final_stages(job_id, req.from_stage)
+    except (ValueError, KeyError, TypeError, DossierDraining) as exc:
+        raise HTTPException(status_code=409, detail=str(exc)) from exc
+
+
 @router.get("/jobs/{job_id}/oeuvre")
 def get_oeuvre(job_id: str):
     """A paper's place in its author's oeuvre (recipe oeuvre_position) as JSON, rendered from the job's ledgers by code: the

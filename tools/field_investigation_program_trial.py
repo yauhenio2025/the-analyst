@@ -35,45 +35,11 @@ def load(archive: Path, state_path: Path):
     return packet, bodies
 
 
-def extend_state(old, packet):
-    """A new run's state from an old one: the reading calls, their frozen inputs and manifests and the frozen methods carry over;
-    everything derived (evidence, readings, selection, plan, coverage, final stages) is computed again under the new packet. The
-    reading contracts do not carry: the readings' upstream names the snapshot, which changed; the cached result is reused as the
-    reading of the same text (same source key, same body hash, checked by read_population)."""
-    from datetime import datetime, timezone
-    from src.dossier.field_investigation import packet_fingerprint
-    reads = {k: v for k, v in old.get('calls', {}).items() if k.startswith('read:')}
-    carried_cost = sum(float(a.get('cost_usd') or 0) for a in old.get('analysis', {}).values() if str(a.get('stage', '')).startswith('read:'))
-    return {'packet_sha256': packet_fingerprint(packet), 'mode': old.get('mode', 'standalone'), 'stages': [], 'calls': reads, 'analysis': {},
-            'cost_usd': 0.0, 'evidence': [], 'readings': [], 'complete': False,
-            # a state with cached calls and no program flag is a legacy resumption to run_field_investigation: carry the flag
-            'program_path': bool(old.get('program_path')),
-            'read_inputs': {k: v for k, v in old.get('read_inputs', {}).items() if k in reads},
-            'call_input_manifests': {k: v for k, v in old.get('call_input_manifests', {}).items() if k in reads},
-            'method_snapshots': dict(old.get('method_snapshots') or {}),
-            'extended_from': {'packet_sha256': old.get('packet_sha256'), 'at': datetime.now(timezone.utc).isoformat(), 'readings_carried': len(reads),
-                              'carried_cost_usd': round(carried_cost, 4), 'previous_cost_usd': old.get('cost_usd')}}
+from src.dossier.field_investigation import extend_state, forget_final_stages  # noqa: E402  (the Analyst's own operations)
 
 
 def redo_from_memo(state):
-    """Forget the final memo stages of a saved state so they run again under the current methods: the paid readings, the
-    adjudication and every cost stay; the memo, critic and revision calls, their contracts, manifests and frozen methods go."""
-    from datetime import datetime, timezone
-    redo = {'from': 'memo', 'at': datetime.now(timezone.utc).isoformat(), 'cost_before_usd': state.get('cost_usd'),
-            'forgotten_calls': sorted(k for k in state.get('calls', {}) if k.startswith('memo')),
-            'previous_memo_source': state.get('memo_source')}
-    for table in ('calls', 'call_contracts', 'call_input_manifests', 'stage_status'):
-        for k in list(state.get(table) or {}):
-            if k.startswith('memo'):
-                del state[table][k]
-    for k in ('memo_critic', 'field_investigation_memo'):
-        (state.get('method_snapshots') or {}).pop(k, None)
-    for k in [k for k in state if k.startswith('memo') or k in ('changes', 'paused_reason', 'running_stage')]:
-        state.pop(k, None)
-    state['stages'] = [s for s in state.get('stages', []) if not s.startswith('memo') and s != 'done']
-    state['complete'] = False
-    state.setdefault('redo', []).append(redo)
-    return state
+    return forget_final_stages(state, 'memo')
 
 
 def main():

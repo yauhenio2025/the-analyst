@@ -508,3 +508,82 @@ def test_program_selects_the_field_read_set_over_the_cap_venues_then_bearing():
     state = run_field_investigation(packet, bodies, call=fake(calls), save=lambda s: None)
     assert state["complete"] and state["field_selection"]["selected"] == ["referee:1", "referee:2"] and state["field_selection"]["eligible"] == 4
     assert state["coverage"]["field"]["read_count"] == 2 and sorted(state["coverage"]["field"]["unread_uids"]) == ["referee:0", "referee:3"]
+
+
+def _program_state(packet):
+    return {"question": packet["question"], "hunch": "a hunch", "prose": "p",
+            "explanations": [{"id": "E1", "claim": "Collective organization mediates agency", "priority": 1}],
+            "readings": [{"order": 1, "uid": "em:AUTHOR01", "why": "settles the stake"}], "candidates": [], "scans": [], "lanes": [], "gaps": [], "problems": []}
+
+
+def test_an_extended_job_reuses_the_paid_readings_and_reruns_the_final_stages(monkeypatch):
+    from src.dossier.schemas import PathRequest, DossierJob, DossierOptions, OutputOptions
+    from src.dossier import runner, blob_store, engine_call, events
+    from src.readings import registry
+    raw, packet, docs, bodies = fixture(field_count=2, primary_count=3)
+    raw["research_state"] = _program_state(packet)
+    docs = freeze(raw)[2]
+    blobs, calls = {}, []
+    monkeypatch.setattr(runner, "update_job", lambda jid, **fields: None)
+    monkeypatch.setattr(runner, "record_step_duration", lambda *a: None)
+    monkeypatch.setattr(events, "emit", lambda *a, **k: None)
+    monkeypatch.setattr(blob_store, "put_blob", lambda key, mime, data: blobs.update({key: data}))
+    monkeypatch.setattr(blob_store, "get_blob", lambda key: ("application/json", blobs[key]) if key in blobs else None)
+    monkeypatch.setattr(engine_call, "call_engine", fake(calls))
+    monkeypatch.setattr(registry, "index_job", lambda job, only_phases=None: None)
+    def job(jid):
+        return DossierJob(id=jid, options=DossierOptions(intent="Question", entry="chosen", path=PathRequest(chain_key="field_investigation"),
+                          output=OutputOptions(text=False, tables=False, figures=0, plates=0), spend_cap_usd=8))
+    first = job("field-first")
+    runner._run_step(first, "plan", docs)
+    runner._run_step(first, "analysis", docs)
+    state_a = json.loads(blobs["investigation:field-first"])
+    assert state_a["complete"] and state_a["memo_source"] == "revision2"
+    reads_a = [k for k in state_a["calls"] if k.startswith("read:")]
+    calls.clear()
+    raw2 = json.loads(json.dumps(raw))
+    raw2["field"].append({**raw2["field"][0], "uid": "referee:9", "title": "Field argument 9", "referee_paper_id": 9, "external_reference_id": "referee:9",
+                          "pdf_url": "https://example.org/9.pdf", "body": "A new source on networks. It argues something else.",
+                          "page_spans": [{"page": 1, "start": 0, "end": 51}]})
+    raw2["extend_from_job_id"] = "field-first"
+    docs2 = freeze(raw2)[2]
+    second = job("field-second")
+    runner._run_step(second, "plan", docs2)
+    runner._run_step(second, "analysis", docs2)
+    state_b = json.loads(blobs["investigation:field-second"])
+    keys = [c[0] for c in calls]
+    assert state_b["complete"] and state_b["extended_from"]["readings_carried"] == len(reads_a) and state_b["program_path"] is True
+    assert keys.count("field_investigation_field_read") == 1 and keys.count("field_investigation_author_read") == 0     # only the new text is read
+    assert keys.count("field_investigation_memo") >= 2 and "memo_critic" in keys                                        # the final stages run again
+    assert len(state_b["readings"]) == len(state_a["readings"]) + 1 and state_b["cost_usd"] == pytest.approx(len(calls) * .1)
+
+
+def test_redo_forgets_the_memo_stages_and_resumes_the_job(monkeypatch):
+    from contextlib import nullcontext
+    from src.dossier.schemas import PathRequest, DossierJob, DossierOptions, OutputOptions
+    from src.dossier import investigation_recovery as rec, blob_store, runner, events, store
+    from src.dossier import execution_lock
+    raw, packet, docs, bodies = fixture(field_count=2, primary_count=3)
+    packet["research_state"] = _program_state(packet)
+    state = run_field_investigation(packet, bodies, call=fake([]), save=lambda s: None)
+    assert state["complete"] and state["memo_source"] == "revision2"
+    blobs = {"investigation:field-done": json.dumps(state).encode()}
+    job = DossierJob(id="field-done", status="done", step="receipts", options=DossierOptions(intent="Question", entry="chosen", path=PathRequest(chain_key="field_investigation"),
+                     output=OutputOptions(text=False, tables=False, figures=0, plates=0), spend_cap_usd=8))
+    updates, resumed = {}, []
+    monkeypatch.setattr(store, "get_job", lambda jid: job)
+    monkeypatch.setattr(store, "update_job", lambda jid, **fields: updates.update(fields))
+    monkeypatch.setattr(blob_store, "put_blob", lambda key, mime, data: blobs.update({key: data}))
+    monkeypatch.setattr(blob_store, "get_blob", lambda key: ("application/json", blobs[key]) if key in blobs else None)
+    monkeypatch.setattr(execution_lock, "investigation_owner", lambda jid, should_stop=None: nullcontext())
+    monkeypatch.setattr(execution_lock, "assert_owned", lambda jid: None)
+    monkeypatch.setattr(events, "emit", lambda *a, **k: None)
+    monkeypatch.setattr(runner, "resume", lambda jid: resumed.append(jid) or True)
+    out = rec.redo_final_stages("field-done", "memo")
+    after = json.loads(blobs["investigation:field-done"])
+    assert out["resumed"] and resumed == ["field-done"] and out["forgotten_calls"] and all(k.startswith("memo") for k in out["forgotten_calls"])
+    assert not after["complete"] and not any(k.startswith("memo") for k in after["calls"]) and "memo" not in after and after["redo"][-1]["from"] == "memo"
+    assert "adjudication" in after["calls"] and any(k.startswith("read:") for k in after["calls"]) and "field_investigation_memo" not in after["method_snapshots"]
+    assert updates["step"] == "analysis" and updates["status"] == "analysis" and updates["error"] is None
+    with pytest.raises(ValueError):
+        rec.redo_final_stages("field-done", "adjudication")
